@@ -40,7 +40,7 @@ public class UpdateTemplateCommandHandler(
         );
         if (template == null || template.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyTemplateDto>.Failure("Template not found.");
+            return Result<SurveyTemplateDto>.Failure("Handler.TemplateNotFound");
         }
 
         // Check if new name conflicts with existing template

@@ -40,7 +40,7 @@ public class GenerateBulkLinksCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Namespace context is required.");
+            return Result<BulkLinkGenerationResultDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
@@ -65,7 +65,7 @@ public class GenerateBulkLinksCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Survey not found.");
+            return Result<BulkLinkGenerationResultDto>.Failure("Handler.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

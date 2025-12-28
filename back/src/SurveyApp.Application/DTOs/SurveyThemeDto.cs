@@ -96,6 +96,11 @@ public class ThemeBrandingDto
 {
     public string? LogoUrl { get; set; }
     public LogoPosition LogoPosition { get; set; } = LogoPosition.TopLeft;
+    public LogoSize LogoSize { get; set; } = LogoSize.Medium;
+    public bool ShowLogoBackground { get; set; } = true;
+    public string? LogoBackgroundColor { get; set; }
+    public string? BrandingTitle { get; set; }
+    public string? BrandingSubtitle { get; set; }
     public bool ShowPoweredBy { get; set; } = true;
 }
 

@@ -39,7 +39,7 @@ public class CreateRecurringSurveyCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<RecurringSurveyDto>.Failure("Survey not found.");
+            return Result<RecurringSurveyDto>.Failure("Handler.SurveyNotFound");
         }
 
         if (survey.NamespaceId != ctx.NamespaceId)

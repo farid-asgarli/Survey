@@ -29,7 +29,7 @@ public class GetLinkAnalyticsQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<LinkAnalyticsDto>.Failure("Namespace context is required.");
+            return Result<LinkAnalyticsDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
@@ -42,7 +42,7 @@ public class GetLinkAnalyticsQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<LinkAnalyticsDto>.Failure("Survey not found.");
+            return Result<LinkAnalyticsDto>.Failure("Handler.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

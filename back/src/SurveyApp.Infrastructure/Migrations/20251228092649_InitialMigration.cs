@@ -168,6 +168,11 @@ namespace SurveyApp.Infrastructure.Migrations
                     ProgressBarStyle = table.Column<string>(type: "text", nullable: false, defaultValue: "Bar"),
                     LogoUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     LogoPosition = table.Column<string>(type: "text", nullable: false, defaultValue: "TopLeft"),
+                    LogoSize = table.Column<int>(type: "integer", nullable: false),
+                    ShowLogoBackground = table.Column<bool>(type: "boolean", nullable: false),
+                    LogoBackgroundColor = table.Column<string>(type: "text", nullable: true),
+                    BrandingTitle = table.Column<string>(type: "text", nullable: true),
+                    BrandingSubtitle = table.Column<string>(type: "text", nullable: true),
                     ShowPoweredBy = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     ButtonStyle = table.Column<string>(type: "text", nullable: false, defaultValue: "Rounded"),
                     ButtonTextColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#FFFFFF"),
@@ -329,6 +334,8 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false, defaultValue: "Classic"),
+                    CxMetricType = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
@@ -1090,6 +1097,11 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "IX_Surveys_ThemeId",
                 table: "Surveys",
                 column: "ThemeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Surveys_Type",
+                table: "Surveys",
+                column: "Type");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_Category",

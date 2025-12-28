@@ -30,7 +30,7 @@ public class GetSurveyByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyDetailsDto>.Failure("Namespace context is required.");
+            return Result<SurveyDetailsDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
@@ -39,7 +39,7 @@ public class GetSurveyByIdQueryHandler(
         );
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyDetailsDto>.Failure("Survey not found.");
+            return Result<SurveyDetailsDto>.Failure("Handler.SurveyNotFound");
         }
 
         // Check permission

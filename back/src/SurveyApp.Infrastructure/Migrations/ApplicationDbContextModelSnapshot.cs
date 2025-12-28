@@ -369,6 +369,63 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.ToTable("EmailTemplates", (string)null);
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.EmailTemplateTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DesignJson")
+                        .HasColumnType("jsonb");
+
+                    b.Property<Guid>("EmailTemplateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("HtmlBody")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PlainTextBody")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmailTemplateId");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("EmailTemplateId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("EmailTemplateTranslations", (string)null);
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.LinkClick", b =>
                 {
                     b.Property<Guid>("Id")
@@ -600,6 +657,13 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DefaultLanguage")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasDefaultValue("en");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -738,6 +802,55 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("QuestionId", "Priority");
 
                     b.ToTable("QuestionLogics", (string)null);
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.QuestionTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("TranslatedSettingsJson")
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("QuestionId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("QuestionTranslations", (string)null);
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.RecurringSurvey", b =>
@@ -999,6 +1112,17 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CxMetricType")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("DefaultLanguage")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasDefaultValue("en");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1053,6 +1177,13 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("Classic");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1079,6 +1210,8 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("Status");
 
                     b.HasIndex("ThemeId");
+
+                    b.HasIndex("Type");
 
                     b.ToTable("Surveys", (string)null);
                 });
@@ -1363,6 +1496,64 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.ToTable("SurveyTemplates", (string)null);
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTemplateTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("TemplateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ThankYouMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("WelcomeMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("TemplateId");
+
+                    b.HasIndex("TemplateId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("SurveyTemplateTranslations", (string)null);
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTheme", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1397,6 +1588,12 @@ namespace SurveyApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(16);
+
+                    b.Property<string>("BrandingSubtitle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BrandingTitle")
+                        .HasColumnType("text");
 
                     b.Property<string>("ButtonStyle")
                         .IsRequired()
@@ -1476,11 +1673,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Classic");
 
+                    b.Property<string>("LogoBackgroundColor")
+                        .HasColumnType("text");
+
                     b.Property<string>("LogoPosition")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("TopLeft");
+
+                    b.Property<int>("LogoSize")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LogoUrl")
                         .HasMaxLength(500)
@@ -1554,6 +1757,9 @@ namespace SurveyApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("ShowLogoBackground")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("ShowPoweredBy")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -1626,6 +1832,106 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.ToTable("SurveyThemes", (string)null);
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyThemeTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<Guid>("ThemeId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("ThemeId");
+
+                    b.HasIndex("ThemeId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("SurveyThemeTranslations", (string)null);
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ThankYouMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("WelcomeMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("SurveyId");
+
+                    b.HasIndex("SurveyId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("SurveyTranslations", (string)null);
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.TemplateQuestion", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1692,6 +1998,55 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("TemplateId", "Order");
 
                     b.ToTable("TemplateQuestions", (string)null);
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.TemplateQuestionTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TemplateQuestionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("TranslatedSettingsJson")
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("TemplateQuestionId");
+
+                    b.HasIndex("TemplateQuestionId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("TemplateQuestionTranslations", (string)null);
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.User", b =>
@@ -2093,6 +2448,17 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Distribution");
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.EmailTemplateTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.EmailTemplate", "EmailTemplate")
+                        .WithMany()
+                        .HasForeignKey("EmailTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmailTemplate");
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.LinkClick", b =>
                 {
                     b.HasOne("SurveyApp.Domain.Entities.SurveyResponse", "Response")
@@ -2165,6 +2531,17 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("SourceQuestion");
 
                     b.Navigation("TargetQuestion");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.QuestionTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.Question", "Question")
+                        .WithMany("Translations")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.RecurringSurvey", b =>
@@ -2255,6 +2632,17 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Namespace");
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTemplateTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.SurveyTemplate", "Template")
+                        .WithMany()
+                        .HasForeignKey("TemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Template");
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTheme", b =>
                 {
                     b.HasOne("SurveyApp.Domain.Entities.Namespace", "Namespace")
@@ -2266,6 +2654,28 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Namespace");
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyThemeTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.SurveyTheme", "Theme")
+                        .WithMany()
+                        .HasForeignKey("ThemeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Theme");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.Survey", "Survey")
+                        .WithMany("Translations")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Survey");
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.TemplateQuestion", b =>
                 {
                     b.HasOne("SurveyApp.Domain.Entities.SurveyTemplate", "Template")
@@ -2275,6 +2685,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Template");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.TemplateQuestionTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.TemplateQuestion", "TemplateQuestion")
+                        .WithMany()
+                        .HasForeignKey("TemplateQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TemplateQuestion");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.UserPreferences", b =>
@@ -2300,6 +2721,11 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Surveys");
                 });
 
+            modelBuilder.Entity("SurveyApp.Domain.Entities.Question", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
             modelBuilder.Entity("SurveyApp.Domain.Entities.RecurringSurvey", b =>
                 {
                     b.Navigation("Runs");
@@ -2310,6 +2736,8 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Responses");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyLink", b =>

@@ -22,7 +22,7 @@ public class GetThemePreviewQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<ThemePreviewDto>.Failure("Namespace context is required.");
+            return Result<ThemePreviewDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
@@ -37,7 +37,7 @@ public class GetThemePreviewQueryHandler(
         // Check namespace access - allow if same namespace or if theme is public
         if (theme.NamespaceId != namespaceId.Value && !theme.IsPublic)
         {
-            return Result<ThemePreviewDto>.Failure("You do not have access to this theme.");
+            return Result<ThemePreviewDto>.Failure("Handler.NoAccessToTheme");
         }
 
         var generatedCss = theme.GenerateCss();
@@ -79,6 +79,11 @@ public class GetThemePreviewQueryHandler(
             {
                 LogoUrl = theme.LogoUrl,
                 LogoPosition = theme.LogoPosition,
+                LogoSize = theme.LogoSize,
+                ShowLogoBackground = theme.ShowLogoBackground,
+                LogoBackgroundColor = theme.LogoBackgroundColor,
+                BrandingTitle = theme.BrandingTitle,
+                BrandingSubtitle = theme.BrandingSubtitle,
                 ShowPoweredBy = theme.ShowPoweredBy,
             },
             Button = new ThemeButtonDto

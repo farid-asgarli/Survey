@@ -30,7 +30,7 @@ public class GetRecurringSurveyRunsQueryHandler(
         if (!namespaceId.HasValue)
         {
             return Result<PagedList<RecurringSurveyRunDto>>.Failure(
-                "Namespace context is required."
+                "Handler.NamespaceContextRequired"
             );
         }
 

@@ -225,6 +225,31 @@ public class SurveyTheme : AggregateRoot<Guid>
     public LogoPosition LogoPosition { get; private set; } = LogoPosition.TopLeft;
 
     /// <summary>
+    /// Gets the logo size.
+    /// </summary>
+    public LogoSize LogoSize { get; private set; } = LogoSize.Medium;
+
+    /// <summary>
+    /// Gets whether to show a background container behind the logo.
+    /// </summary>
+    public bool ShowLogoBackground { get; private set; } = true;
+
+    /// <summary>
+    /// Gets the logo background color (hex format). Only used when ShowLogoBackground is true.
+    /// </summary>
+    public string? LogoBackgroundColor { get; private set; }
+
+    /// <summary>
+    /// Gets the branding title text shown alongside the logo.
+    /// </summary>
+    public string? BrandingTitle { get; private set; }
+
+    /// <summary>
+    /// Gets the branding subtitle text shown below the title.
+    /// </summary>
+    public string? BrandingSubtitle { get; private set; }
+
+    /// <summary>
     /// Gets whether to show "Powered by SurveyApp" branding.
     /// </summary>
     public bool ShowPoweredBy { get; private set; } = true;
@@ -491,10 +516,24 @@ public class SurveyTheme : AggregateRoot<Guid>
     /// <summary>
     /// Updates the branding settings.
     /// </summary>
-    public void UpdateBranding(string? logoUrl, LogoPosition logoPosition, bool showPoweredBy)
+    public void UpdateBranding(
+        string? logoUrl,
+        LogoPosition logoPosition,
+        LogoSize logoSize,
+        bool showLogoBackground,
+        string? logoBackgroundColor,
+        string? brandingTitle,
+        string? brandingSubtitle,
+        bool showPoweredBy
+    )
     {
         LogoUrl = logoUrl;
         LogoPosition = logoPosition;
+        LogoSize = logoSize;
+        ShowLogoBackground = showLogoBackground;
+        LogoBackgroundColor = logoBackgroundColor;
+        BrandingTitle = brandingTitle;
+        BrandingSubtitle = brandingSubtitle;
         ShowPoweredBy = showPoweredBy;
     }
 
@@ -557,6 +596,11 @@ public class SurveyTheme : AggregateRoot<Guid>
         duplicate.ProgressBarStyle = ProgressBarStyle;
         duplicate.LogoUrl = LogoUrl;
         duplicate.LogoPosition = LogoPosition;
+        duplicate.LogoSize = LogoSize;
+        duplicate.ShowLogoBackground = ShowLogoBackground;
+        duplicate.LogoBackgroundColor = LogoBackgroundColor;
+        duplicate.BrandingTitle = BrandingTitle;
+        duplicate.BrandingSubtitle = BrandingSubtitle;
         duplicate.ShowPoweredBy = ShowPoweredBy;
         duplicate.ButtonStyle = ButtonStyle;
         duplicate.ButtonTextColor = ButtonTextColor;

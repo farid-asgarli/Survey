@@ -28,7 +28,7 @@ public class GetQuestionLogicQueryHandler(
         if (!namespaceId.HasValue)
         {
             return Result<IReadOnlyList<QuestionLogicDto>>.Failure(
-                "Namespace context is required."
+                "Handler.NamespaceContextRequired"
             );
         }
 
@@ -39,7 +39,7 @@ public class GetQuestionLogicQueryHandler(
         );
         if (survey == null)
         {
-            return Result<IReadOnlyList<QuestionLogicDto>>.Failure("Survey not found.");
+            return Result<IReadOnlyList<QuestionLogicDto>>.Failure("Handler.SurveyNotFound");
         }
 
         // Verify survey belongs to namespace

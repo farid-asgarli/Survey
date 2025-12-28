@@ -30,7 +30,7 @@ public class GetSurveysQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<PagedList<SurveyListItemDto>>.Failure("Namespace context is required.");
+            return Result<PagedList<SurveyListItemDto>>.Failure("Handler.NamespaceContextRequired");
         }
 
         // Check permission

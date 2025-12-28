@@ -25,7 +25,7 @@ public class GetTemplateByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyTemplateDto>.Failure("Namespace context is required.");
+            return Result<SurveyTemplateDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var template = await _templateRepository.GetByIdWithQuestionsAsync(

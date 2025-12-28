@@ -29,6 +29,22 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
         builder.Property(q => q.NpsType).HasConversion<string>().HasMaxLength(30);
 
+        // Localization
+        builder
+            .Property(q => q.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
+
+        // Translations relationship
+        builder
+            .HasMany(q => q.Translations)
+            .WithOne(t => t.Question)
+            .HasForeignKey(t => t.QuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(q => q.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
+
         // Audit fields
         builder.Property(q => q.CreatedAt).IsRequired();
         builder.Property(q => q.CreatedBy);

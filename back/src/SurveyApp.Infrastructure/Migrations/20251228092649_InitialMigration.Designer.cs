@@ -12,7 +12,7 @@ using SurveyApp.Infrastructure.Persistence;
 namespace SurveyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251227210507_InitialMigration")]
+    [Migration("20251228092649_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -1002,6 +1002,10 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CxMetricType")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1056,6 +1060,13 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("Classic");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1082,6 +1093,8 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("Status");
 
                     b.HasIndex("ThemeId");
+
+                    b.HasIndex("Type");
 
                     b.ToTable("Surveys", (string)null);
                 });
@@ -1401,6 +1414,12 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(16);
 
+                    b.Property<string>("BrandingSubtitle")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BrandingTitle")
+                        .HasColumnType("text");
+
                     b.Property<string>("ButtonStyle")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -1479,11 +1498,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasDefaultValue("Classic");
 
+                    b.Property<string>("LogoBackgroundColor")
+                        .HasColumnType("text");
+
                     b.Property<string>("LogoPosition")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("TopLeft");
+
+                    b.Property<int>("LogoSize")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LogoUrl")
                         .HasMaxLength(500)
@@ -1556,6 +1581,9 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Property<string>("SecondaryContainerColor")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("ShowLogoBackground")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("ShowPoweredBy")
                         .ValueGeneratedOnAdd()

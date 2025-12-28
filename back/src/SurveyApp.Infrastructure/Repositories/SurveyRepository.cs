@@ -56,6 +56,7 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     {
         return await _context
             .Surveys.Include(s => s.Questions.OrderBy(q => q.Order))
+            .Include(s => s.Theme)
             .FirstOrDefaultAsync(s => s.AccessToken == shareToken, cancellationToken);
     }
 

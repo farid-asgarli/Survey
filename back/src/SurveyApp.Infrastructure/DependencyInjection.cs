@@ -101,7 +101,13 @@ public static class DependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddScoped<INotificationService, EmailNotificationService>();
+
+        // File storage configuration
+        services.Configure<FileStorageOptions>(
+            configuration.GetSection(FileStorageOptions.SectionName)
+        );
         services.AddSingleton<IFileStorageService, LocalFileStorageService>();
+
         services.AddScoped<ILogicEvaluationService, LogicEvaluationService>();
         services.AddScoped<IExportService, ExportService>();
         services.AddScoped<INpsService, NpsService>();

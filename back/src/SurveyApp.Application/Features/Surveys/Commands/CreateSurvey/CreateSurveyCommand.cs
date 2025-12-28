@@ -16,6 +16,8 @@ public record CreateSurveyCommand : IRequest<Result<SurveyDto>>, INamespaceComma
 
     public string Title { get; init; } = string.Empty;
     public string? Description { get; init; }
+    public SurveyType Type { get; init; } = SurveyType.Classic;
+    public CxMetricType? CxMetricType { get; init; }
     public string? WelcomeMessage { get; init; }
     public string? ThankYouMessage { get; init; }
     public bool IsAnonymous { get; init; }

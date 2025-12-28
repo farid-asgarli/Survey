@@ -35,7 +35,7 @@ public class GetSurveyLinkByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Namespace context is required.");
+            return Result<SurveyLinkDetailsDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
@@ -48,7 +48,7 @@ public class GetSurveyLinkByIdQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Survey not found.");
+            return Result<SurveyLinkDetailsDto>.Failure("Handler.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

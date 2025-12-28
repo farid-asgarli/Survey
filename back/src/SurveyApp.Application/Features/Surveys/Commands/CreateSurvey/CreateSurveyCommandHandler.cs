@@ -50,8 +50,14 @@ public class CreateSurveyCommandHandler(
             );
         }
 
-        // Create survey
-        var survey = Survey.Create(ctx.NamespaceId, request.Title, ctx.UserId);
+        // Create survey with type
+        var survey = Survey.Create(
+            ctx.NamespaceId,
+            request.Title,
+            ctx.UserId,
+            request.Type,
+            request.CxMetricType
+        );
 
         survey.UpdateDescription(request.Description);
 
@@ -79,6 +85,16 @@ public class CreateSurveyCommandHandler(
         if (request.StartDate.HasValue || request.EndDate.HasValue)
         {
             survey.SetSchedule(request.StartDate, request.EndDate);
+        }
+
+        // Auto-create CX metric question for Customer Experience surveys
+        if (
+            request.Type == SurveyType.CustomerExperience
+            && request.CxMetricType.HasValue
+            && request.Questions.Count == 0
+        )
+        {
+            AddCxMetricQuestion(survey, request.CxMetricType.Value);
         }
 
         // Add questions
@@ -119,5 +135,63 @@ public class CreateSurveyCommandHandler(
         // This ensures all properties including RatingStyle and YesNoStyle are preserved
         var json = System.Text.Json.JsonSerializer.Serialize(dto);
         return QuestionSettings.FromJson(json);
+    }
+
+    /// <summary>
+    /// Adds the appropriate CX metric question based on the metric type.
+    /// Also adds a follow-up open-ended question for qualitative feedback.
+    /// </summary>
+    private static void AddCxMetricQuestion(Survey survey, CxMetricType metricType)
+    {
+        var (questionText, minValue, maxValue, minLabel, maxLabel, followUpText) = metricType switch
+        {
+            CxMetricType.NPS => (
+                "How likely are you to recommend us to a friend or colleague?",
+                0,
+                10,
+                "Not at all likely",
+                "Extremely likely",
+                "What is the primary reason for your score?"
+            ),
+            CxMetricType.CES => (
+                "How easy was it to interact with our company?",
+                1,
+                7,
+                "Very difficult",
+                "Very easy",
+                "What could we do to make your experience easier?"
+            ),
+            CxMetricType.CSAT => (
+                "How satisfied are you with your experience?",
+                1,
+                5,
+                "Very dissatisfied",
+                "Very satisfied",
+                "What could we improve to better serve you?"
+            ),
+            _ => (
+                "How likely are you to recommend us?",
+                0,
+                10,
+                "Not at all likely",
+                "Extremely likely",
+                "What is the primary reason for your score?"
+            ),
+        };
+
+        // Add main CX metric question
+        var mainQuestion = survey.AddQuestion(questionText, QuestionType.NPS, isRequired: true);
+        var settings = QuestionSettings.CreateScaleSettings(minValue, maxValue, minLabel, maxLabel);
+        mainQuestion.UpdateSettings(settings);
+
+        // Add follow-up open-ended question
+        var followUpQuestion = survey.AddQuestion(
+            followUpText,
+            QuestionType.LongText,
+            isRequired: false
+        );
+        followUpQuestion.UpdateDescription("Please share your thoughts");
+        var textSettings = QuestionSettings.CreateTextSettings("Share your feedback here...", 2000);
+        followUpQuestion.UpdateSettings(textSettings);
     }
 }

@@ -30,7 +30,7 @@ public class DeactivateSurveyLinkCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Namespace context is required.");
+            return Result<bool>.Failure("Handler.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
@@ -43,7 +43,7 @@ public class DeactivateSurveyLinkCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<bool>.Failure("Survey not found.");
+            return Result<bool>.Failure("Handler.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

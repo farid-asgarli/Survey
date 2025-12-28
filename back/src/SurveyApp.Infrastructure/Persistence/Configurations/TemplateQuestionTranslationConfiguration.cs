@@ -1,0 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SurveyApp.Domain.Entities;
+
+namespace SurveyApp.Infrastructure.Persistence.Configurations;
+
+public class TemplateQuestionTranslationConfiguration
+    : IEntityTypeConfiguration<TemplateQuestionTranslation>
+{
+    public void Configure(EntityTypeBuilder<TemplateQuestionTranslation> builder)
+    {
+        builder.ToTable("TemplateQuestionTranslations");
+
+        builder.HasKey(t => t.Id);
+
+        builder.Property(t => t.LanguageCode).IsRequired().HasMaxLength(10);
+
+        builder.Property(t => t.IsDefault).IsRequired().HasDefaultValue(false);
+
+        builder.Property(t => t.Text).IsRequired().HasMaxLength(2000);
+
+        builder.Property(t => t.Description).HasMaxLength(2000);
+
+        builder.Property(t => t.TranslatedSettingsJson).HasColumnType("jsonb");
+
+        builder.Property(t => t.LastModifiedAt);
+        builder.Property(t => t.LastModifiedBy);
+
+        // Relationship
+        builder
+            .HasOne(t => t.TemplateQuestion)
+            .WithMany()
+            .HasForeignKey(t => t.TemplateQuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Indexes
+        builder.HasIndex(t => t.TemplateQuestionId);
+        builder.HasIndex(t => new { t.TemplateQuestionId, t.LanguageCode }).IsUnique();
+        builder.HasIndex(t => t.LanguageCode);
+    }
+}

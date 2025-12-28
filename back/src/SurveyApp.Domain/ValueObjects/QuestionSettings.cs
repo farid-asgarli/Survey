@@ -567,4 +567,36 @@ public sealed class QuestionSettings : ValueObject
         yield return RatingStyle;
         yield return YesNoStyle;
     }
+
+    /// <summary>
+    /// Creates a new QuestionSettings with translated text values merged in.
+    /// Non-text values (numbers, styles) are preserved from the original settings.
+    /// </summary>
+    public QuestionSettings WithTranslations(TranslatedQuestionSettings translations)
+    {
+        if (translations == null)
+            return this;
+
+        return new QuestionSettings(
+            options: translations.Options ?? Options,
+            minValue: MinValue,
+            maxValue: MaxValue,
+            minLabel: translations.MinLabel ?? MinLabel,
+            maxLabel: translations.MaxLabel ?? MaxLabel,
+            allowedFileTypes: AllowedFileTypes,
+            maxFileSize: MaxFileSize,
+            matrixRows: translations.MatrixRows ?? MatrixRows,
+            matrixColumns: translations.MatrixColumns ?? MatrixColumns,
+            placeholder: translations.Placeholder ?? Placeholder,
+            allowOther: AllowOther,
+            maxLength: MaxLength,
+            minLength: MinLength,
+            maxSelections: MaxSelections,
+            validationPattern: ValidationPattern,
+            validationMessage: translations.ValidationMessage ?? ValidationMessage,
+            validationPreset: ValidationPreset,
+            ratingStyle: RatingStyle,
+            yesNoStyle: YesNoStyle
+        );
+    }
 }

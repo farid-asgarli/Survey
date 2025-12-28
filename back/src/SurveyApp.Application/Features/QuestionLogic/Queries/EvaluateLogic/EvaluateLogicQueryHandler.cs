@@ -28,7 +28,7 @@ public class EvaluateLogicQueryHandler(
         );
         if (survey == null)
         {
-            return Result<LogicEvaluationResultDto>.Failure("Survey not found.");
+            return Result<LogicEvaluationResultDto>.Failure("Handler.SurveyNotFound");
         }
 
         // Get all logic rules for the survey

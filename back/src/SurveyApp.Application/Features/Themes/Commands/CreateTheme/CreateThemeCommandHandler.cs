@@ -113,6 +113,11 @@ public class CreateThemeCommandHandler(
             theme.UpdateBranding(
                 request.Branding.LogoUrl,
                 request.Branding.LogoPosition,
+                request.Branding.LogoSize,
+                request.Branding.ShowLogoBackground,
+                request.Branding.LogoBackgroundColor,
+                request.Branding.BrandingTitle,
+                request.Branding.BrandingSubtitle,
                 request.Branding.ShowPoweredBy
             );
         }
@@ -173,6 +178,11 @@ public class CreateThemeCommandHandler(
             {
                 LogoUrl = theme.LogoUrl,
                 LogoPosition = theme.LogoPosition,
+                LogoSize = theme.LogoSize,
+                ShowLogoBackground = theme.ShowLogoBackground,
+                LogoBackgroundColor = theme.LogoBackgroundColor,
+                BrandingTitle = theme.BrandingTitle,
+                BrandingSubtitle = theme.BrandingSubtitle,
                 ShowPoweredBy = theme.ShowPoweredBy,
             },
             Button = new ThemeButtonDto

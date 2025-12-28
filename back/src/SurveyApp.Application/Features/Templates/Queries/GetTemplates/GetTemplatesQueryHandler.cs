@@ -26,7 +26,7 @@ public class GetTemplatesQueryHandler(
         if (!namespaceId.HasValue)
         {
             return Result<PagedList<SurveyTemplateSummaryDto>>.Failure(
-                "Namespace context is required."
+                "Handler.NamespaceContextRequired"
             );
         }
 

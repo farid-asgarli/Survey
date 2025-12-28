@@ -32,14 +32,16 @@ public class GetResponsesQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure("Namespace context is required.");
+            return Result<PagedList<ResponseListItemDto>>.Failure(
+                "Handler.NamespaceContextRequired"
+            );
         }
 
         // Verify survey belongs to namespace
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure("Survey not found.");
+            return Result<PagedList<ResponseListItemDto>>.Failure("Handler.SurveyNotFound");
         }
 
         // Check permission

@@ -31,13 +31,13 @@ public class DeleteThemeCommandHandler(
         var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
         if (theme == null)
         {
-            return Result<bool>.Failure("Theme not found.");
+            return Result<bool>.Failure("Handler.ThemeNotFound");
         }
 
         // Verify theme belongs to namespace
         if (theme.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Theme not found in this namespace.");
+            return Result<bool>.Failure("Handler.ThemeNotFoundInNamespace");
         }
 
         // Don't allow deleting default theme

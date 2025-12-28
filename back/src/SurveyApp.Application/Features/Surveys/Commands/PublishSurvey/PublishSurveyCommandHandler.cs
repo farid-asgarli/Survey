@@ -37,7 +37,7 @@ public class PublishSurveyCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Survey not found.");
+            return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
         }
 
         // Validate survey has at least one question

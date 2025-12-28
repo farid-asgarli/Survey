@@ -24,7 +24,7 @@ public class UpdateUserPreferencesCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<UserPreferencesDto>.Failure("User not authenticated.");
+            return Result<UserPreferencesDto>.Failure("Handler.UserNotAuthenticated");
         }
 
         // Get or create preferences

@@ -11,6 +11,8 @@ public class SurveyDto
     public Guid NamespaceId { get; set; }
     public string Title { get; set; } = null!;
     public string? Description { get; set; }
+    public SurveyType Type { get; set; }
+    public CxMetricType? CxMetricType { get; set; }
     public SurveyStatus Status { get; set; }
     public string? WelcomeMessage { get; set; }
     public string? ThankYouMessage { get; set; }
@@ -47,6 +49,8 @@ public class SurveyListItemDto
     public Guid Id { get; set; }
     public string Title { get; set; } = null!;
     public string? Description { get; set; }
+    public SurveyType Type { get; set; }
+    public CxMetricType? CxMetricType { get; set; }
     public SurveyStatus Status { get; set; }
     public int QuestionCount { get; set; }
     public int ResponseCount { get; set; }
@@ -69,4 +73,57 @@ public class PublicSurveyDto
     public bool IsAnonymous { get; set; }
     public IReadOnlyList<PublicQuestionDto> Questions { get; set; } =
         Array.Empty<PublicQuestionDto>();
+    public PublicSurveyThemeDto? Theme { get; set; }
+}
+
+/// <summary>
+/// Simplified theme DTO for public survey respondents.
+/// Contains only the visual styling information needed to render the survey.
+/// </summary>
+public class PublicSurveyThemeDto
+{
+    // Primary colors
+    public string PrimaryColor { get; set; } = "#6750A4";
+    public string? OnPrimaryColor { get; set; }
+    public string? PrimaryContainerColor { get; set; }
+    public string? OnPrimaryContainerColor { get; set; }
+
+    // Secondary colors
+    public string SecondaryColor { get; set; } = "#625B71";
+    public string? OnSecondaryColor { get; set; }
+    public string? SecondaryContainerColor { get; set; }
+    public string? OnSecondaryContainerColor { get; set; }
+
+    // Surface colors
+    public string? SurfaceColor { get; set; }
+    public string? SurfaceContainerLowestColor { get; set; }
+    public string? SurfaceContainerLowColor { get; set; }
+    public string? SurfaceContainerColor { get; set; }
+    public string? SurfaceContainerHighColor { get; set; }
+    public string? SurfaceContainerHighestColor { get; set; }
+    public string? OnSurfaceColor { get; set; }
+    public string? OnSurfaceVariantColor { get; set; }
+
+    // Outline colors
+    public string? OutlineColor { get; set; }
+    public string? OutlineVariantColor { get; set; }
+
+    // Legacy colors
+    public string? BackgroundColor { get; set; }
+    public string? TextColor { get; set; }
+
+    // Typography
+    public string? FontFamily { get; set; }
+
+    // Branding
+    public string? LogoUrl { get; set; }
+    public int? LogoSize { get; set; }
+    public bool? ShowLogoBackground { get; set; }
+    public string? LogoBackgroundColor { get; set; }
+    public string? BrandingTitle { get; set; }
+    public string? BrandingSubtitle { get; set; }
+
+    // Layout
+    public string? BackgroundImageUrl { get; set; }
+    public string? BackgroundPosition { get; set; }
 }

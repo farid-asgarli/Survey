@@ -33,7 +33,7 @@ public class DeleteTemplateCommandHandler(
         );
         if (template == null || template.NamespaceId != ctx.NamespaceId)
         {
-            return Result.Failure("Template not found.");
+            return Result.Failure("Handler.TemplateNotFound");
         }
 
         _templateRepository.Delete(template);

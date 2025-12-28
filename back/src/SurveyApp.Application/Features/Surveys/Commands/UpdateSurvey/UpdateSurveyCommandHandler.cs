@@ -35,7 +35,7 @@ public class UpdateSurveyCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Survey not found.");
+            return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
         }
 
         // Check if survey can be edited

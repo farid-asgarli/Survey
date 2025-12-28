@@ -28,7 +28,9 @@ public class GetUpcomingRunsQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<IReadOnlyList<UpcomingRunDto>>.Failure("Namespace context is required.");
+            return Result<IReadOnlyList<UpcomingRunDto>>.Failure(
+                "Handler.NamespaceContextRequired"
+            );
         }
 
         var recurringSurveys = await _recurringSurveyRepository.GetUpcomingRunsAsync(

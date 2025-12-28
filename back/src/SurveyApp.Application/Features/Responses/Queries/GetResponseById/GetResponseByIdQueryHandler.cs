@@ -32,7 +32,7 @@ public class GetResponseByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyResponseDto>.Failure("Namespace context is required.");
+            return Result<SurveyResponseDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var response = await _responseRepository.GetByIdWithAnswersAsync(

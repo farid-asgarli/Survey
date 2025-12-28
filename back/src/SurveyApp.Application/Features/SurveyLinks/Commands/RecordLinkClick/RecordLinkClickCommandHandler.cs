@@ -58,7 +58,7 @@ public class RecordLinkClickCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(link.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<RecordLinkClickResult>.Failure("Survey not found.");
+            return Result<RecordLinkClickResult>.Failure("Handler.SurveyNotFound");
         }
 
         if (!survey.CanAcceptResponses)

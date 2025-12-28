@@ -236,6 +236,11 @@ public class MappingProfile : Profile
                     {
                         LogoUrl = s.LogoUrl,
                         LogoPosition = s.LogoPosition,
+                        LogoSize = s.LogoSize,
+                        ShowLogoBackground = s.ShowLogoBackground,
+                        LogoBackgroundColor = s.LogoBackgroundColor,
+                        BrandingTitle = s.BrandingTitle,
+                        BrandingSubtitle = s.BrandingSubtitle,
                         ShowPoweredBy = s.ShowPoweredBy,
                     })
             )

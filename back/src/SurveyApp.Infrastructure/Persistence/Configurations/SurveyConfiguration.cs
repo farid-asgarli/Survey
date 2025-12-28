@@ -20,6 +20,15 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
 
         builder.Property(s => s.ThankYouMessage).HasMaxLength(1000);
 
+        builder
+            .Property(s => s.Type)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(30)
+            .HasDefaultValue(Domain.Enums.SurveyType.Classic);
+
+        builder.Property(s => s.CxMetricType).HasConversion<string>().HasMaxLength(20);
+
         builder.Property(s => s.Status).IsRequired().HasConversion<string>().HasMaxLength(20);
 
         builder.Property(s => s.AccessToken).HasMaxLength(100);
@@ -33,6 +42,13 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
         builder.Property(s => s.EndsAt);
         builder.Property(s => s.PublishedAt);
         builder.Property(s => s.ClosedAt);
+
+        // Localization
+        builder
+            .Property(s => s.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
 
         // Audit fields
         builder.Property(s => s.CreatedAt).IsRequired();
@@ -62,6 +78,15 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
         // Configure EF Core to use the backing field for Responses collection
         builder.Navigation(s => s.Responses).UsePropertyAccessMode(PropertyAccessMode.Field);
 
+        // Translations relationship
+        builder
+            .HasMany(s => s.Translations)
+            .WithOne(t => t.Survey)
+            .HasForeignKey(t => t.SurveyId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(s => s.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
+
         // Theme relationships
         // PresetThemeId stores preset identifiers like "midnight", "ocean"
         builder.Property(s => s.PresetThemeId).HasMaxLength(50);
@@ -79,6 +104,7 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
 
         // Indexes
         builder.HasIndex(s => s.NamespaceId);
+        builder.HasIndex(s => s.Type);
         builder.HasIndex(s => s.Status);
         builder.HasIndex(s => s.AccessToken).IsUnique();
         builder.HasIndex(s => s.CreatedAt);

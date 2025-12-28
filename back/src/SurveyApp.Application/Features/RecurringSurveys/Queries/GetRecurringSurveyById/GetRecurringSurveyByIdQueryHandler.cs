@@ -31,7 +31,7 @@ public class GetRecurringSurveyByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<RecurringSurveyDto>.Failure("Namespace context is required.");
+            return Result<RecurringSurveyDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         var recurringSurvey = await _recurringSurveyRepository.GetByIdAsync(

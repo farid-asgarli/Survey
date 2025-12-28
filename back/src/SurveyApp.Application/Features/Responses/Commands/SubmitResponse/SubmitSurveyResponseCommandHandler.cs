@@ -35,7 +35,7 @@ public class SubmitSurveyResponseCommandHandler(
         );
         if (survey == null)
         {
-            return Result<SurveyResponseDto>.Failure("Survey not found.");
+            return Result<SurveyResponseDto>.Failure("Handler.SurveyNotFound");
         }
 
         // Validate survey is accepting responses

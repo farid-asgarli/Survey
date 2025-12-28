@@ -1,7 +1,31 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SurveyApp.Application.Services;
 
 namespace SurveyApp.Infrastructure.Services;
+
+/// <summary>
+/// Configuration options for file storage
+/// </summary>
+public class FileStorageOptions
+{
+    public const string SectionName = "FileStorage";
+
+    /// <summary>
+    /// Base path for storing files (relative or absolute)
+    /// </summary>
+    public string BasePath { get; set; } = "uploads";
+
+    /// <summary>
+    /// Base URL for accessing files via API
+    /// </summary>
+    public string BaseUrl { get; set; } = "/api/files";
+
+    /// <summary>
+    /// Maximum file size in bytes (default: 5 MB)
+    /// </summary>
+    public long MaxFileSizeBytes { get; set; } = 5 * 1024 * 1024;
+}
 
 public class LocalFileStorageService : IFileStorageService
 {
@@ -11,17 +35,22 @@ public class LocalFileStorageService : IFileStorageService
 
     public LocalFileStorageService(
         ILogger<LocalFileStorageService> logger,
-        string basePath = "uploads",
-        string baseUrl = "/files"
+        IOptions<FileStorageOptions>? options = null
     )
     {
         _logger = logger;
-        _basePath = basePath;
-        _baseUrl = baseUrl;
+        var config = options?.Value ?? new FileStorageOptions();
+        _baseUrl = config.BaseUrl;
+
+        // Always use absolute path for consistency
+        _basePath = Path.IsPathRooted(config.BasePath)
+            ? config.BasePath
+            : Path.Combine(Directory.GetCurrentDirectory(), config.BasePath);
 
         if (!Directory.Exists(_basePath))
         {
             Directory.CreateDirectory(_basePath);
+            _logger.LogInformation("Created upload directory: {Path}", _basePath);
         }
     }
 
@@ -101,14 +130,15 @@ public class LocalFileStorageService : IFileStorageService
                 ContentType = GetContentType(fileInfo.Extension),
                 Size = fileInfo.Length,
                 CreatedAt = fileInfo.CreationTimeUtc,
-                Url = GetFileUrl(fileId)
+                Url = GetFileUrl(fileId),
             }
         );
     }
 
     public string GetFileUrl(string fileId)
     {
-        return $"{_baseUrl}/{fileId}";
+        // Return simple download URL - the API will resolve the file by ID
+        return $"{_baseUrl}/{fileId}/download";
     }
 
     private static string GetContentType(string extension)
@@ -118,12 +148,14 @@ public class LocalFileStorageService : IFileStorageService
             ".jpg" or ".jpeg" => "image/jpeg",
             ".png" => "image/png",
             ".gif" => "image/gif",
+            ".webp" => "image/webp",
+            ".svg" => "image/svg+xml",
             ".pdf" => "application/pdf",
             ".doc" => "application/msword",
             ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             ".xls" => "application/vnd.ms-excel",
             ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            _ => "application/octet-stream"
+            _ => "application/octet-stream",
         };
     }
 }

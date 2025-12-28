@@ -36,13 +36,13 @@ public class DuplicateThemeCommandHandler(
         var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
         if (theme == null)
         {
-            return Result<SurveyThemeDto>.Failure("Theme not found.");
+            return Result<SurveyThemeDto>.Failure("Handler.ThemeNotFound");
         }
 
         // Verify theme belongs to namespace
         if (theme.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyThemeDto>.Failure("Theme not found in this namespace.");
+            return Result<SurveyThemeDto>.Failure("Handler.ThemeNotFoundInNamespace");
         }
 
         // Generate new name if not provided
@@ -127,6 +127,11 @@ public class DuplicateThemeCommandHandler(
             {
                 LogoUrl = theme.LogoUrl,
                 LogoPosition = theme.LogoPosition,
+                LogoSize = theme.LogoSize,
+                ShowLogoBackground = theme.ShowLogoBackground,
+                LogoBackgroundColor = theme.LogoBackgroundColor,
+                BrandingTitle = theme.BrandingTitle,
+                BrandingSubtitle = theme.BrandingSubtitle,
                 ShowPoweredBy = theme.ShowPoweredBy,
             },
             Button = new ThemeButtonDto

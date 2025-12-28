@@ -7,15 +7,26 @@ namespace SurveyApp.Domain.Entities;
 /// <summary>
 /// Represents a survey in the system.
 /// </summary>
-public class Survey : AggregateRoot<Guid>
+public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 {
     private readonly List<Question> _questions = [];
     private readonly List<SurveyResponse> _responses = [];
+    private readonly List<SurveyTranslation> _translations = [];
 
     /// <summary>
     /// Gets the namespace ID this survey belongs to.
     /// </summary>
     public Guid NamespaceId { get; private set; }
+
+    /// <summary>
+    /// Gets the type/category of the survey.
+    /// </summary>
+    public SurveyType Type { get; private set; }
+
+    /// <summary>
+    /// Gets the Customer Experience metric type (only applicable when Type is CustomerExperience).
+    /// </summary>
+    public CxMetricType? CxMetricType { get; private set; }
 
     /// <summary>
     /// Gets the title of the survey.
@@ -103,6 +114,16 @@ public class Survey : AggregateRoot<Guid>
     public string? ThemeCustomizations { get; private set; }
 
     /// <summary>
+    /// Gets the default language code for this survey (ISO 639-1).
+    /// </summary>
+    public string DefaultLanguage { get; private set; } = "en";
+
+    /// <summary>
+    /// Gets the translations for this survey.
+    /// </summary>
+    public IReadOnlyCollection<SurveyTranslation> Translations => _translations.AsReadOnly();
+
+    /// <summary>
     /// Gets whether the survey is currently accepting responses.
     /// </summary>
     public bool IsAcceptingResponses => CanAcceptResponses;
@@ -158,6 +179,7 @@ public class Survey : AggregateRoot<Guid>
     {
         NamespaceId = namespaceId;
         Title = title;
+        Type = SurveyType.Classic;
         Status = SurveyStatus.Draft;
         AccessToken = GenerateAccessToken();
         AllowAnonymousResponses = true;
@@ -174,6 +196,38 @@ public class Survey : AggregateRoot<Guid>
             throw new ArgumentException("Survey title cannot be empty.", nameof(title));
 
         return new Survey(Guid.NewGuid(), namespaceId, title, createdBy);
+    }
+
+    /// <summary>
+    /// Creates a new survey with a specific type.
+    /// </summary>
+    public static Survey Create(
+        Guid namespaceId,
+        string title,
+        Guid createdBy,
+        SurveyType type,
+        CxMetricType? cxMetricType = null
+    )
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+
+        var survey = new Survey(Guid.NewGuid(), namespaceId, title, createdBy)
+        {
+            Type = type,
+            CxMetricType = type == SurveyType.CustomerExperience ? cxMetricType : null,
+        };
+
+        return survey;
+    }
+
+    /// <summary>
+    /// Sets the survey type.
+    /// </summary>
+    public void SetType(SurveyType type, CxMetricType? cxMetricType = null)
+    {
+        Type = type;
+        CxMetricType = type == SurveyType.CustomerExperience ? cxMetricType : null;
     }
 
     /// <summary>
@@ -473,4 +527,133 @@ public class Survey : AggregateRoot<Guid>
     {
         return Guid.NewGuid().ToString("N");
     }
+
+    #region Localization Methods
+
+    /// <summary>
+    /// Sets the default language for this survey.
+    /// </summary>
+    public void SetDefaultLanguage(string languageCode)
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            throw new ArgumentException("Language code is required.", nameof(languageCode));
+
+        DefaultLanguage = languageCode.ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Adds or updates a translation for this survey.
+    /// </summary>
+    public SurveyTranslation AddOrUpdateTranslation(
+        string languageCode,
+        string title,
+        string? description = null,
+        string? welcomeMessage = null,
+        string? thankYouMessage = null
+    )
+    {
+        var existingTranslation = _translations.FirstOrDefault(t =>
+            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
+        );
+
+        if (existingTranslation != null)
+        {
+            existingTranslation.Update(title, description, welcomeMessage, thankYouMessage);
+            return existingTranslation;
+        }
+
+        var isDefault = !_translations.Any();
+        var translation = SurveyTranslation.Create(
+            Id,
+            languageCode,
+            title,
+            description,
+            welcomeMessage,
+            thankYouMessage,
+            isDefault
+        );
+
+        _translations.Add(translation);
+
+        if (isDefault)
+        {
+            DefaultLanguage = languageCode.ToLowerInvariant();
+        }
+
+        return translation;
+    }
+
+    /// <summary>
+    /// Removes a translation from this survey.
+    /// </summary>
+    public void RemoveTranslation(string languageCode)
+    {
+        var translation = _translations.FirstOrDefault(t =>
+            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
+        );
+
+        if (translation == null)
+            return;
+
+        if (translation.IsDefault && _translations.Count > 1)
+            throw new InvalidOperationException(
+                "Cannot remove the default translation while other translations exist."
+            );
+
+        _translations.Remove(translation);
+
+        // If we removed the default, set a new one
+        if (translation.IsDefault && _translations.Count > 0)
+        {
+            var newDefault = _translations.First();
+            newDefault.SetAsDefault();
+            DefaultLanguage = newDefault.LanguageCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets a translation for the specified language, falling back to default if not found.
+    /// </summary>
+    public SurveyTranslation? GetTranslation(string? languageCode)
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            return _translations.FirstOrDefault(t => t.IsDefault);
+
+        return _translations.FirstOrDefault(t =>
+                t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
+            ) ?? _translations.FirstOrDefault(t => t.IsDefault);
+    }
+
+    /// <summary>
+    /// Sets a translation as the default.
+    /// </summary>
+    public void SetDefaultTranslation(string languageCode)
+    {
+        var translation = _translations.FirstOrDefault(t =>
+            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
+        );
+
+        if (translation == null)
+            throw new InvalidOperationException(
+                $"Translation for language '{languageCode}' not found."
+            );
+
+        foreach (var t in _translations)
+        {
+            t.RemoveDefault();
+        }
+
+        translation.SetAsDefault();
+        DefaultLanguage = languageCode.ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Gets all available language codes for this survey.
+    /// </summary>
+    public IReadOnlyList<string> GetAvailableLanguages()
+    {
+        return _translations.Select(t => t.LanguageCode).ToList().AsReadOnly();
+    }
+
+    #endregion
 }

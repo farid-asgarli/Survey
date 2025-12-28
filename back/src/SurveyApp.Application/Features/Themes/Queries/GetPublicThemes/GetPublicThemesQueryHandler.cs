@@ -24,7 +24,7 @@ public class GetPublicThemesQueryHandler(
         if (!namespaceId.HasValue)
         {
             return Result<IReadOnlyList<SurveyThemeSummaryDto>>.Failure(
-                "Namespace context is required."
+                "Handler.NamespaceContextRequired"
             );
         }
 

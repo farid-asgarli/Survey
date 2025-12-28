@@ -35,6 +35,17 @@ public class ApplicationDbContext(
     public DbSet<LinkClick> LinkClicks => Set<LinkClick>();
     public DbSet<UserPreferences> UserPreferences => Set<UserPreferences>();
 
+    // Translation tables
+    public DbSet<SurveyTranslation> SurveyTranslations => Set<SurveyTranslation>();
+    public DbSet<QuestionTranslation> QuestionTranslations => Set<QuestionTranslation>();
+    public DbSet<SurveyTemplateTranslation> SurveyTemplateTranslations =>
+        Set<SurveyTemplateTranslation>();
+    public DbSet<TemplateQuestionTranslation> TemplateQuestionTranslations =>
+        Set<TemplateQuestionTranslation>();
+    public DbSet<EmailTemplateTranslation> EmailTemplateTranslations =>
+        Set<EmailTemplateTranslation>();
+    public DbSet<SurveyThemeTranslation> SurveyThemeTranslations => Set<SurveyThemeTranslation>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -29,7 +29,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Namespace context is required.");
+            return Result<RecurringSurveyRunDto>.Failure("Handler.NamespaceContextRequired");
         }
 
         // Verify the recurring survey exists and belongs to this namespace

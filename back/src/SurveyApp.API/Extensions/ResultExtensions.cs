@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Common;
 
 namespace SurveyApp.API.Extensions;
@@ -8,6 +9,24 @@ namespace SurveyApp.API.Extensions;
 /// </summary>
 public static class ResultExtensions
 {
+    /// <summary>
+    /// Localizes an error message using the IStringLocalizer.
+    /// If the error looks like a localization key (e.g., "Handler.NamespaceContextRequired"),
+    /// it will be translated. Otherwise, the original message is returned.
+    /// </summary>
+    private static string LocalizeError(HttpContext context, string? error)
+    {
+        if (string.IsNullOrEmpty(error))
+            return error ?? string.Empty;
+
+        var localizer = context.RequestServices.GetService<IStringLocalizer>();
+        if (localizer == null)
+            return error;
+
+        var localized = localizer[error];
+        return localized.ResourceNotFound ? error : localized.Value;
+    }
+
     /// <summary>
     /// Converts a failed Result to an appropriate ProblemDetails response.
     /// </summary>
@@ -24,7 +43,7 @@ public static class ResultExtensions
             "UNAUTHORIZED" => CreateUnauthorizedProblem(result, context),
             "FORBIDDEN" => CreateForbiddenProblem(result, context),
             "VALIDATION_ERROR" => CreateValidationProblem(result, context),
-            _ => CreateBadRequestProblem(result, context)
+            _ => CreateBadRequestProblem(result, context),
         };
     }
 
@@ -44,7 +63,7 @@ public static class ResultExtensions
             "UNAUTHORIZED" => CreateUnauthorizedProblem(result, context),
             "FORBIDDEN" => CreateForbiddenProblem(result, context),
             "VALIDATION_ERROR" => CreateValidationProblem(result, context),
-            _ => CreateBadRequestProblem(result, context)
+            _ => CreateBadRequestProblem(result, context),
         };
     }
 
@@ -55,8 +74,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "Resource not found.",
             Status = StatusCodes.Status404NotFound,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new NotFoundObjectResult(problemDetails);
@@ -69,8 +88,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "Resource not found.",
             Status = StatusCodes.Status404NotFound,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new NotFoundObjectResult(problemDetails);
@@ -83,8 +102,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "Unauthorized.",
             Status = StatusCodes.Status401Unauthorized,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new UnauthorizedObjectResult(problemDetails);
@@ -97,8 +116,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "Unauthorized.",
             Status = StatusCodes.Status401Unauthorized,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new UnauthorizedObjectResult(problemDetails);
@@ -111,8 +130,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
             Title = "Access denied.",
             Status = StatusCodes.Status403Forbidden,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new ObjectResult(problemDetails) { StatusCode = StatusCodes.Status403Forbidden };
@@ -125,8 +144,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
             Title = "Access denied.",
             Status = StatusCodes.Status403Forbidden,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new ObjectResult(problemDetails) { StatusCode = StatusCodes.Status403Forbidden };
@@ -142,8 +161,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "One or more validation errors occurred.",
             Status = StatusCodes.Status400BadRequest,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new BadRequestObjectResult(problemDetails);
@@ -159,8 +178,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "One or more validation errors occurred.",
             Status = StatusCodes.Status400BadRequest,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         return new BadRequestObjectResult(problemDetails);
@@ -173,8 +192,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "Bad request.",
             Status = StatusCodes.Status400BadRequest,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         if (result.ValidationErrors != null && result.ValidationErrors.Count > 0)
@@ -192,8 +211,8 @@ public static class ResultExtensions
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Title = "Bad request.",
             Status = StatusCodes.Status400BadRequest,
-            Detail = result.Error,
-            Instance = context.Request.Path
+            Detail = LocalizeError(context, result.Error),
+            Instance = context.Request.Path,
         };
 
         if (result.ValidationErrors != null && result.ValidationErrors.Count > 0)
