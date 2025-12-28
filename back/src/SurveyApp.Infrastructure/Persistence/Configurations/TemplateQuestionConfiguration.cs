@@ -12,9 +12,16 @@ public class TemplateQuestionConfiguration : IEntityTypeConfiguration<TemplateQu
 
         builder.HasKey(q => q.Id);
 
-        builder.Property(q => q.Text).IsRequired().HasMaxLength(500);
+        // Ignore computed properties (resolved from translations)
+        builder.Ignore(q => q.Text);
+        builder.Ignore(q => q.Description);
 
-        builder.Property(q => q.Description).HasMaxLength(1000);
+        // Default language for translations
+        builder
+            .Property(q => q.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
 
         builder.Property(q => q.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
 
@@ -37,5 +44,14 @@ public class TemplateQuestionConfiguration : IEntityTypeConfiguration<TemplateQu
         builder.HasIndex(q => q.TemplateId);
         builder.HasIndex(q => new { q.TemplateId, q.Order });
         builder.HasIndex(q => q.IsDeleted);
+
+        // Translations relationship - configure from parent side
+        builder
+            .HasMany(q => q.Translations)
+            .WithOne(t => t.TemplateQuestion)
+            .HasForeignKey(t => t.TemplateQuestionId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(q => q.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

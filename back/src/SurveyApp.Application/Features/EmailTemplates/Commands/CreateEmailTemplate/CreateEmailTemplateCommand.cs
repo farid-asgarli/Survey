@@ -15,6 +15,7 @@ public record CreateEmailTemplateCommand : IRequest<Result<EmailTemplateDto>>
     public string Subject { get; init; } = null!;
     public string HtmlBody { get; init; } = null!;
     public string? PlainTextBody { get; init; }
+    public string LanguageCode { get; init; } = "en";
 
     /// <summary>
     /// JSON representation of the visual editor design state (blocks and styles).

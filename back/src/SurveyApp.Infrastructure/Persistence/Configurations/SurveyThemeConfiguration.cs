@@ -13,9 +13,15 @@ public class SurveyThemeConfiguration : IEntityTypeConfiguration<SurveyTheme>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
+        // Ignore computed properties (resolved from translations)
+        builder.Ignore(x => x.Name);
+        builder.Ignore(x => x.Description);
 
-        builder.Property(x => x.Description).HasMaxLength(500);
+        builder
+            .Property(x => x.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
 
         builder.Property(x => x.NamespaceId).IsRequired();
 
@@ -115,5 +121,14 @@ public class SurveyThemeConfiguration : IEntityTypeConfiguration<SurveyTheme>
             .WithMany()
             .HasForeignKey(x => x.NamespaceId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // Translations relationship - configure from parent side
+        builder
+            .HasMany(x => x.Translations)
+            .WithOne(t => t.Theme)
+            .HasForeignKey(t => t.ThemeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

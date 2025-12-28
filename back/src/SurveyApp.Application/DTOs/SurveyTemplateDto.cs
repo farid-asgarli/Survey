@@ -22,6 +22,11 @@ public class SurveyTemplateDto
     public DateTime CreatedAt { get; set; }
     public Guid? CreatedBy { get; set; }
     public IReadOnlyList<TemplateQuestionDto> Questions { get; set; } = [];
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
+    public string Language { get; set; } = "en";
+    public IReadOnlyList<string> AvailableLanguages { get; set; } = [];
 }
 
 /// <summary>
@@ -36,6 +41,9 @@ public class TemplateQuestionDto
     public bool IsRequired { get; set; }
     public string? Description { get; set; }
     public QuestionSettingsResponseDto? Settings { get; set; }
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
 }
 
 /// <summary>
@@ -77,4 +85,7 @@ public class SurveyTemplateSummaryDto
     public int UsageCount { get; set; }
     public int QuestionCount { get; set; }
     public DateTime CreatedAt { get; set; }
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
 }

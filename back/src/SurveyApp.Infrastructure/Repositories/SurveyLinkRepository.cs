@@ -19,6 +19,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     {
         return await _context
             .SurveyLinks.Include(l => l.Survey)
+            .ThenInclude(s => s.Translations)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
@@ -29,6 +30,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     {
         return await _context
             .SurveyLinks.Include(l => l.Survey)
+            .ThenInclude(s => s.Translations)
             .Include(l => l.Clicks)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
@@ -40,6 +42,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     {
         return await _context
             .SurveyLinks.Include(l => l.Survey)
+            .ThenInclude(s => s.Translations)
             .FirstOrDefaultAsync(l => l.Token == token, cancellationToken);
     }
 

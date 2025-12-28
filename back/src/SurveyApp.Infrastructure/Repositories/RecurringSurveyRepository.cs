@@ -19,6 +19,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         return await _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Include(r => r.Namespace)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
@@ -30,6 +31,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         return await _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Include(r => r.Namespace)
             .Include(r => r.Runs.OrderByDescending(run => run.ScheduledAt))
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
@@ -42,6 +44,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         return await _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId)
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -65,6 +68,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         return await _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Where(r => r.IsActive && r.NextRunAt.HasValue && r.NextRunAt.Value <= asOfTime)
             .ToListAsync(cancellationToken);
     }
@@ -80,6 +84,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         var query = _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId);
 
         if (isActive.HasValue)
@@ -89,8 +94,15 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
+            // Query through translations table since Survey.Title is a computed property
+            var matchingSurveyIds = await _context
+                .SurveyTranslations.Where(t => t.Title.Contains(searchTerm))
+                .Select(t => t.SurveyId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
             query = query.Where(r =>
-                r.Name.Contains(searchTerm) || r.Survey.Title.Contains(searchTerm)
+                r.Name.Contains(searchTerm) || matchingSurveyIds.Contains(r.SurveyId)
             );
         }
 
@@ -113,6 +125,7 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     {
         return await _context
             .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId && r.IsActive && r.NextRunAt.HasValue)
             .OrderBy(r => r.NextRunAt)
             .Take(count)

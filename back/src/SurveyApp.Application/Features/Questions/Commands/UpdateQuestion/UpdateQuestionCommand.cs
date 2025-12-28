@@ -24,4 +24,9 @@ public record UpdateQuestionCommand : IRequest<Result<QuestionDto>>, INamespaceC
     public QuestionSettingsDto? Settings { get; init; }
     public bool IsNpsQuestion { get; init; }
     public NpsQuestionType? NpsType { get; init; }
+
+    /// <summary>
+    /// The language code for the content being updated. If not provided, updates the default language.
+    /// </summary>
+    public string? LanguageCode { get; init; }
 }

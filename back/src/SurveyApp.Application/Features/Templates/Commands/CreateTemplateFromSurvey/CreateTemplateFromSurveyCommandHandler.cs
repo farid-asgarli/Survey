@@ -56,14 +56,19 @@ public class CreateTemplateFromSurveyCommandHandler(
             return Result<SurveyTemplateDto>.Failure("A template with this name already exists.");
         }
 
-        // Create template from survey
-        var template = SurveyTemplate.CreateFromSurvey(survey, request.TemplateName, ctx.UserId);
+        // Create template from survey (with optional language support)
+        var template = SurveyTemplate.CreateFromSurvey(
+            survey,
+            request.TemplateName,
+            ctx.UserId,
+            request.LanguageCode
+        );
 
         if (!string.IsNullOrEmpty(request.Description))
-            template.UpdateDescription(request.Description);
+            template.UpdateDescription(request.Description, request.LanguageCode);
 
         if (!string.IsNullOrEmpty(request.Category))
-            template.UpdateCategory(request.Category);
+            template.UpdateCategory(request.Category, request.LanguageCode);
 
         template.SetPublic(request.IsPublic);
 

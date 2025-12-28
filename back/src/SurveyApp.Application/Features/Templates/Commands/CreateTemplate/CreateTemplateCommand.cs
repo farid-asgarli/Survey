@@ -19,6 +19,7 @@ public record CreateTemplateCommand : IRequest<Result<SurveyTemplateDto>>, IName
     public string? ThankYouMessage { get; init; }
     public bool DefaultAllowAnonymous { get; init; } = true;
     public bool DefaultAllowMultipleResponses { get; init; }
+    public string LanguageCode { get; init; } = "en";
     public List<CreateTemplateQuestionDto> Questions { get; init; } = [];
 }
 

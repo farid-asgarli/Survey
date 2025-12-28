@@ -19,6 +19,7 @@ public record UpdateThemeCommand : IRequest<Result<SurveyThemeDto>>, INamespaceC
     public Guid ThemeId { get; init; }
     public string Name { get; init; } = null!;
     public string? Description { get; init; }
+    public string? LanguageCode { get; init; }
     public bool IsPublic { get; init; }
     public ThemeColorsDto Colors { get; init; } = null!;
     public ThemeTypographyDto Typography { get; init; } = null!;

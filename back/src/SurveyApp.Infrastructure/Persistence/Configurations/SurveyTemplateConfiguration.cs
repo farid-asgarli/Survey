@@ -12,15 +12,19 @@ public class SurveyTemplateConfiguration : IEntityTypeConfiguration<SurveyTempla
 
         builder.HasKey(t => t.Id);
 
-        builder.Property(t => t.Name).IsRequired().HasMaxLength(200);
+        // Ignore computed properties (resolved from translations)
+        builder.Ignore(t => t.Name);
+        builder.Ignore(t => t.Description);
+        builder.Ignore(t => t.Category);
+        builder.Ignore(t => t.WelcomeMessage);
+        builder.Ignore(t => t.ThankYouMessage);
 
-        builder.Property(t => t.Description).HasMaxLength(2000);
-
-        builder.Property(t => t.Category).HasMaxLength(100);
-
-        builder.Property(t => t.WelcomeMessage).HasMaxLength(1000);
-
-        builder.Property(t => t.ThankYouMessage).HasMaxLength(1000);
+        // Default language for translations
+        builder
+            .Property(t => t.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
 
         builder.Property(t => t.IsPublic).IsRequired().HasDefaultValue(false);
 
@@ -54,10 +58,19 @@ public class SurveyTemplateConfiguration : IEntityTypeConfiguration<SurveyTempla
 
         // Indexes
         builder.HasIndex(t => t.NamespaceId);
-        builder.HasIndex(t => t.Category);
+        // Note: Category and Name indexes removed - these are now computed properties from translations
+        // To search by Category/Name, query through SurveyTemplateTranslations table
         builder.HasIndex(t => t.IsPublic);
         builder.HasIndex(t => t.CreatedAt);
         builder.HasIndex(t => t.IsDeleted);
-        builder.HasIndex(t => new { t.NamespaceId, t.Name }).IsUnique();
+
+        // Translations relationship - configure from parent side
+        builder
+            .HasMany(t => t.Translations)
+            .WithOne(tr => tr.Template)
+            .HasForeignKey(tr => tr.TemplateId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(t => t.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

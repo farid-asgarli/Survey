@@ -6,6 +6,8 @@ namespace SurveyApp.Domain.Entities;
 
 /// <summary>
 /// Represents a survey in the system.
+/// All localizable content (Title, Description, WelcomeMessage, ThankYouMessage)
+/// is stored in the Translations collection.
 /// </summary>
 public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 {
@@ -29,29 +31,33 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public CxMetricType? CxMetricType { get; private set; }
 
     /// <summary>
-    /// Gets the title of the survey.
-    /// </summary>
-    public string Title { get; private set; } = null!;
-
-    /// <summary>
-    /// Gets the description of the survey.
-    /// </summary>
-    public string? Description { get; private set; }
-
-    /// <summary>
     /// Gets the status of the survey.
     /// </summary>
     public SurveyStatus Status { get; private set; }
 
-    /// <summary>
-    /// Gets the welcome message shown at the start of the survey.
-    /// </summary>
-    public string? WelcomeMessage { get; private set; }
+    #region Localized Content Properties (resolved from default translation)
 
     /// <summary>
-    /// Gets the thank you message shown at the end of the survey.
+    /// Gets the title of the survey from the default translation.
     /// </summary>
-    public string? ThankYouMessage { get; private set; }
+    public string Title => GetDefaultTranslation()?.Title ?? string.Empty;
+
+    /// <summary>
+    /// Gets the description of the survey from the default translation.
+    /// </summary>
+    public string? Description => GetDefaultTranslation()?.Description;
+
+    /// <summary>
+    /// Gets the welcome message from the default translation.
+    /// </summary>
+    public string? WelcomeMessage => GetDefaultTranslation()?.WelcomeMessage;
+
+    /// <summary>
+    /// Gets the thank you message from the default translation.
+    /// </summary>
+    public string? ThankYouMessage => GetDefaultTranslation()?.ThankYouMessage;
+
+    #endregion
 
     /// <summary>
     /// Gets the unique access token for public survey access.
@@ -174,11 +180,10 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 
     private Survey() { }
 
-    private Survey(Guid id, Guid namespaceId, string title, Guid createdBy)
+    private Survey(Guid id, Guid namespaceId, Guid createdBy)
         : base(id)
     {
         NamespaceId = namespaceId;
-        Title = title;
         Type = SurveyType.Classic;
         Status = SurveyStatus.Draft;
         AccessToken = GenerateAccessToken();
@@ -188,35 +193,76 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     }
 
     /// <summary>
-    /// Creates a new survey.
+    /// Creates a new survey with a default translation.
     /// </summary>
-    public static Survey Create(Guid namespaceId, string title, Guid createdBy)
+    /// <param name="namespaceId">The namespace ID.</param>
+    /// <param name="title">The survey title.</param>
+    /// <param name="createdBy">The user who created the survey.</param>
+    /// <param name="languageCode">The default language code (ISO 639-1). Defaults to "en".</param>
+    /// <param name="description">Optional description.</param>
+    /// <param name="welcomeMessage">Optional welcome message.</param>
+    /// <param name="thankYouMessage">Optional thank you message.</param>
+    public static Survey Create(
+        Guid namespaceId,
+        string title,
+        Guid createdBy,
+        string languageCode = "en",
+        string? description = null,
+        string? welcomeMessage = null,
+        string? thankYouMessage = null
+    )
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Survey title cannot be empty.", nameof(title));
 
-        return new Survey(Guid.NewGuid(), namespaceId, title, createdBy);
+        var survey = new Survey(Guid.NewGuid(), namespaceId, createdBy);
+        survey.DefaultLanguage = languageCode.ToLowerInvariant();
+
+        // Create the default translation
+        survey.AddOrUpdateTranslation(
+            languageCode,
+            title,
+            description,
+            welcomeMessage,
+            thankYouMessage
+        );
+
+        return survey;
     }
 
     /// <summary>
-    /// Creates a new survey with a specific type.
+    /// Creates a new survey with a specific type and default translation.
     /// </summary>
     public static Survey Create(
         Guid namespaceId,
         string title,
         Guid createdBy,
         SurveyType type,
-        CxMetricType? cxMetricType = null
+        CxMetricType? cxMetricType = null,
+        string languageCode = "en",
+        string? description = null,
+        string? welcomeMessage = null,
+        string? thankYouMessage = null
     )
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Survey title cannot be empty.", nameof(title));
 
-        var survey = new Survey(Guid.NewGuid(), namespaceId, title, createdBy)
+        var survey = new Survey(Guid.NewGuid(), namespaceId, createdBy)
         {
             Type = type,
             CxMetricType = type == SurveyType.CustomerExperience ? cxMetricType : null,
+            DefaultLanguage = languageCode.ToLowerInvariant(),
         };
+
+        // Create the default translation
+        survey.AddOrUpdateTranslation(
+            languageCode,
+            title,
+            description,
+            welcomeMessage,
+            thankYouMessage
+        );
 
         return survey;
     }
@@ -231,63 +277,128 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     }
 
     /// <summary>
-    /// Updates the survey title.
+    /// Updates the survey title in the specified language (or default language).
     /// </summary>
-    public void UpdateTitle(string title)
+    public void UpdateTitle(string title, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Survey title cannot be empty.", nameof(title));
 
-        Title = title;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation == null)
+        {
+            AddOrUpdateTranslation(lang, title);
+        }
+        else
+        {
+            translation.Update(
+                title,
+                translation.Description,
+                translation.WelcomeMessage,
+                translation.ThankYouMessage
+            );
+        }
     }
 
     /// <summary>
-    /// Updates the survey description.
+    /// Updates the survey description in the specified language (or default language).
     /// </summary>
-    public void UpdateDescription(string? description)
+    public void UpdateDescription(string? description, string? languageCode = null)
     {
-        Description = description;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation != null)
+        {
+            translation.Update(
+                translation.Title,
+                description,
+                translation.WelcomeMessage,
+                translation.ThankYouMessage
+            );
+        }
     }
 
     /// <summary>
-    /// Updates the welcome message.
+    /// Updates the welcome message in the specified language (or default language).
     /// </summary>
-    public void UpdateWelcomeMessage(string? message)
+    public void UpdateWelcomeMessage(string? message, string? languageCode = null)
     {
-        WelcomeMessage = message;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation != null)
+        {
+            translation.Update(
+                translation.Title,
+                translation.Description,
+                message,
+                translation.ThankYouMessage
+            );
+        }
     }
 
     /// <summary>
-    /// Updates the thank you message.
+    /// Updates the thank you message in the specified language (or default language).
     /// </summary>
-    public void UpdateThankYouMessage(string? message)
+    public void UpdateThankYouMessage(string? message, string? languageCode = null)
     {
-        ThankYouMessage = message;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation != null)
+        {
+            translation.Update(
+                translation.Title,
+                translation.Description,
+                translation.WelcomeMessage,
+                message
+            );
+        }
     }
 
     /// <summary>
-    /// Updates the survey details.
+    /// Updates the survey details (title and description) in the specified language.
     /// </summary>
-    public void UpdateDetails(string title, string? description)
+    public void UpdateDetails(string title, string? description, string? languageCode = null)
     {
-        UpdateTitle(title);
-        UpdateDescription(description);
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation == null)
+        {
+            AddOrUpdateTranslation(lang, title, description);
+        }
+        else
+        {
+            translation.Update(
+                title,
+                description,
+                translation.WelcomeMessage,
+                translation.ThankYouMessage
+            );
+        }
     }
 
     /// <summary>
-    /// Sets the welcome message.
+    /// Sets the welcome message in the default language.
     /// </summary>
     public void SetWelcomeMessage(string message)
     {
-        WelcomeMessage = message;
+        UpdateWelcomeMessage(message);
     }
 
     /// <summary>
-    /// Sets the thank you message.
+    /// Sets the thank you message in the default language.
     /// </summary>
     public void SetThankYouMessage(string message)
     {
-        ThankYouMessage = message;
+        UpdateThankYouMessage(message);
     }
 
     /// <summary>
@@ -335,12 +446,22 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     /// <summary>
     /// Adds a question to the survey.
     /// </summary>
-    public Question AddQuestion(string text, QuestionType type, bool isRequired = false)
+    /// <param name="text">The question text.</param>
+    /// <param name="type">The question type.</param>
+    /// <param name="isRequired">Whether the question is required.</param>
+    /// <param name="languageCode">The language code for the question. Defaults to survey's default language.</param>
+    public Question AddQuestion(
+        string text,
+        QuestionType type,
+        bool isRequired = false,
+        string? languageCode = null
+    )
     {
         EnsureDraft();
 
         var order = _questions.Count + 1;
-        var question = Question.Create(Id, text, type, order, isRequired);
+        var lang = languageCode ?? DefaultLanguage;
+        var question = Question.Create(Id, text, type, order, isRequired, lang);
         _questions.Add(question);
 
         return question;
@@ -530,6 +651,15 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 
     #region Localization Methods
 
+    // TranslationManager handles common translation operations
+    private TranslationManager<SurveyTranslation>? _translationManager;
+
+    private TranslationManager<SurveyTranslation> TranslationHelper =>
+        _translationManager ??= new TranslationManager<SurveyTranslation>(
+            _translations,
+            lang => DefaultLanguage = lang
+        );
+
     /// <summary>
     /// Sets the default language for this survey.
     /// </summary>
@@ -552,9 +682,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         string? thankYouMessage = null
     )
     {
-        var existingTranslation = _translations.FirstOrDefault(t =>
-            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-        );
+        var existingTranslation = TranslationHelper.Find(languageCode);
 
         if (existingTranslation != null)
         {
@@ -562,7 +690,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
             return existingTranslation;
         }
 
-        var isDefault = !_translations.Any();
+        var isDefault = TranslationHelper.Count == 0;
         var translation = SurveyTranslation.Create(
             Id,
             languageCode,
@@ -586,74 +714,54 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     /// <summary>
     /// Removes a translation from this survey.
     /// </summary>
-    public void RemoveTranslation(string languageCode)
-    {
-        var translation = _translations.FirstOrDefault(t =>
-            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-        );
-
-        if (translation == null)
-            return;
-
-        if (translation.IsDefault && _translations.Count > 1)
-            throw new InvalidOperationException(
-                "Cannot remove the default translation while other translations exist."
-            );
-
-        _translations.Remove(translation);
-
-        // If we removed the default, set a new one
-        if (translation.IsDefault && _translations.Count > 0)
-        {
-            var newDefault = _translations.First();
-            newDefault.SetAsDefault();
-            DefaultLanguage = newDefault.LanguageCode;
-        }
-    }
+    public void RemoveTranslation(string languageCode) => TranslationHelper.Remove(languageCode);
 
     /// <summary>
     /// Gets a translation for the specified language, falling back to default if not found.
     /// </summary>
-    public SurveyTranslation? GetTranslation(string? languageCode)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-            return _translations.FirstOrDefault(t => t.IsDefault);
+    public SurveyTranslation? GetTranslation(string? languageCode) =>
+        TranslationHelper.Get(languageCode);
 
-        return _translations.FirstOrDefault(t =>
-                t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-            ) ?? _translations.FirstOrDefault(t => t.IsDefault);
-    }
+    /// <summary>
+    /// Gets the default translation for this survey.
+    /// </summary>
+    public SurveyTranslation? GetDefaultTranslation() => TranslationHelper.GetDefault();
+
+    /// <summary>
+    /// Gets the localized title for the specified language.
+    /// </summary>
+    public string GetLocalizedTitle(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Title ?? string.Empty;
+
+    /// <summary>
+    /// Gets the localized description for the specified language.
+    /// </summary>
+    public string? GetLocalizedDescription(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Description;
+
+    /// <summary>
+    /// Gets the localized welcome message for the specified language.
+    /// </summary>
+    public string? GetLocalizedWelcomeMessage(string? languageCode = null) =>
+        GetTranslation(languageCode)?.WelcomeMessage;
+
+    /// <summary>
+    /// Gets the localized thank you message for the specified language.
+    /// </summary>
+    public string? GetLocalizedThankYouMessage(string? languageCode = null) =>
+        GetTranslation(languageCode)?.ThankYouMessage;
 
     /// <summary>
     /// Sets a translation as the default.
     /// </summary>
-    public void SetDefaultTranslation(string languageCode)
-    {
-        var translation = _translations.FirstOrDefault(t =>
-            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-        );
-
-        if (translation == null)
-            throw new InvalidOperationException(
-                $"Translation for language '{languageCode}' not found."
-            );
-
-        foreach (var t in _translations)
-        {
-            t.RemoveDefault();
-        }
-
-        translation.SetAsDefault();
-        DefaultLanguage = languageCode.ToLowerInvariant();
-    }
+    public void SetDefaultTranslation(string languageCode) =>
+        TranslationHelper.SetDefault(languageCode);
 
     /// <summary>
     /// Gets all available language codes for this survey.
     /// </summary>
-    public IReadOnlyList<string> GetAvailableLanguages()
-    {
-        return _translations.Select(t => t.LanguageCode).ToList().AsReadOnly();
-    }
+    public IReadOnlyList<string> GetAvailableLanguages() =>
+        TranslationHelper.GetAvailableLanguages();
 
     #endregion
 }

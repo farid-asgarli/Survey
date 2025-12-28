@@ -23,6 +23,11 @@ public class EmailTemplateDto
     public IReadOnlyList<string> AvailablePlaceholders { get; set; } = [];
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
+    public string Language { get; set; } = "en";
+    public IReadOnlyList<string> AvailableLanguages { get; set; } = [];
 }
 
 /// <summary>
@@ -36,6 +41,9 @@ public class EmailTemplateSummaryDto
     public string Subject { get; set; } = null!;
     public bool IsDefault { get; set; }
     public DateTime CreatedAt { get; set; }
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
 }
 
 /// <summary>

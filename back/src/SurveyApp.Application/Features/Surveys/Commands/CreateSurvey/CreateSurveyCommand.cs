@@ -25,6 +25,11 @@ public record CreateSurveyCommand : IRequest<Result<SurveyDto>>, INamespaceComma
     public DateTime? StartDate { get; init; }
     public DateTime? EndDate { get; init; }
     public List<CreateQuestionDto> Questions { get; init; } = [];
+
+    /// <summary>
+    /// The language code for the survey content (ISO 639-1). Defaults to "en".
+    /// </summary>
+    public string LanguageCode { get; init; } = "en";
 }
 
 public record CreateQuestionDto

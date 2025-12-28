@@ -16,4 +16,5 @@ public record CreateSurveyFromTemplateCommand : IRequest<Result<SurveyDto>>, INa
     public Guid TemplateId { get; init; }
     public string SurveyTitle { get; init; } = string.Empty;
     public string? Description { get; init; }
+    public string? LanguageCode { get; init; }
 }

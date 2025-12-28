@@ -57,24 +57,17 @@ public class CreateEmailTemplateCommandHandler(
             return Result<EmailTemplateDto>.Failure($"Errors.EmailTemplateExists|{request.Name}");
         }
 
-        // Create template
+        // Create template with localization support
         var template = EmailTemplate.Create(
             namespaceId.Value,
             request.Name,
             request.Type,
             request.Subject,
-            request.HtmlBody
+            request.HtmlBody,
+            request.LanguageCode,
+            request.PlainTextBody,
+            request.DesignJson
         );
-
-        if (!string.IsNullOrWhiteSpace(request.PlainTextBody))
-        {
-            template.UpdatePlainTextBody(request.PlainTextBody);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.DesignJson))
-        {
-            template.UpdateDesignJson(request.DesignJson);
-        }
 
         // If this should be default, remove default from other templates of same type
         if (request.IsDefault)

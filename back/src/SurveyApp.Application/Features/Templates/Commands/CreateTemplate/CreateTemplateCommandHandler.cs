@@ -47,20 +47,25 @@ public class CreateTemplateCommandHandler(
             return Result<SurveyTemplateDto>.Failure("A template with this name already exists.");
         }
 
-        // Create template
-        var template = SurveyTemplate.Create(ctx.NamespaceId, request.Name, ctx.UserId);
+        // Create template with localization support
+        var template = SurveyTemplate.Create(
+            ctx.NamespaceId,
+            request.Name,
+            ctx.UserId,
+            request.LanguageCode,
+            request.Description,
+            request.Category,
+            request.WelcomeMessage,
+            request.ThankYouMessage
+        );
 
-        template.UpdateDescription(request.Description);
-        template.UpdateCategory(request.Category);
         template.SetPublic(request.IsPublic);
-        template.SetWelcomeMessage(request.WelcomeMessage);
-        template.SetThankYouMessage(request.ThankYouMessage);
         template.ConfigureDefaults(
             request.DefaultAllowAnonymous,
             request.DefaultAllowMultipleResponses
         );
 
-        // Add questions
+        // Add questions with the same language
         foreach (var questionDto in request.Questions.OrderBy(q => q.Order))
         {
             var settingsJson =
@@ -73,7 +78,8 @@ public class CreateTemplateCommandHandler(
                 questionDto.Type,
                 questionDto.IsRequired,
                 questionDto.Description,
-                settingsJson
+                settingsJson,
+                request.LanguageCode
             );
         }
 

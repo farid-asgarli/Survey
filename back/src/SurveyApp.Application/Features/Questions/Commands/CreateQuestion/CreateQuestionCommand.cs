@@ -23,4 +23,9 @@ public record CreateQuestionCommand : IRequest<Result<QuestionDto>>, INamespaceC
     public QuestionSettingsDto? Settings { get; init; }
     public bool IsNpsQuestion { get; init; }
     public NpsQuestionType? NpsType { get; init; }
+
+    /// <summary>
+    /// The language code for the question content. If not provided, uses the survey's default language.
+    /// </summary>
+    public string? LanguageCode { get; init; }
 }

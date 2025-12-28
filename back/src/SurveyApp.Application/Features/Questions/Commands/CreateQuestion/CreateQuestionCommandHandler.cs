@@ -48,13 +48,21 @@ public class CreateQuestionCommandHandler(
             return Result<QuestionDto>.Failure("Only draft surveys can be edited.");
         }
 
-        // Add question
-        var question = survey.AddQuestion(request.Text, request.Type, request.IsRequired);
+        // Use provided language or survey's default language
+        var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
 
-        // Update additional properties if needed
+        // Add question with localized content
+        var question = survey.AddQuestion(
+            request.Text,
+            request.Type,
+            request.IsRequired,
+            languageCode
+        );
+
+        // Update description if provided
         if (!string.IsNullOrEmpty(request.Description))
         {
-            question.UpdateDescription(request.Description);
+            question.UpdateDescription(request.Description, languageCode);
         }
 
         // Handle order if specified

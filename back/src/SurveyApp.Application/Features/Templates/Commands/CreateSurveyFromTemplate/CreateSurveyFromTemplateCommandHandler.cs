@@ -59,11 +59,11 @@ public class CreateSurveyFromTemplateCommandHandler(
             return Result<SurveyDto>.Failure("Template not found.");
         }
 
-        // Create survey from template
-        var survey = template.CreateSurvey(request.SurveyTitle, ctx.UserId);
+        // Create survey from template (with optional language support)
+        var survey = template.CreateSurvey(request.SurveyTitle, ctx.UserId, request.LanguageCode);
 
         if (!string.IsNullOrEmpty(request.Description))
-            survey.UpdateDescription(request.Description);
+            survey.UpdateDescription(request.Description, request.LanguageCode);
 
         await _surveyRepository.AddAsync(survey, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

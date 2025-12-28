@@ -28,6 +28,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
             .SurveyResponses.Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)
+            .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
@@ -40,6 +41,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
             .SurveyResponses.Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)
+            .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 

@@ -15,6 +15,7 @@ public record CreateThemeCommand : IRequest<Result<SurveyThemeDto>>, INamespaceC
 
     public string Name { get; init; } = null!;
     public string? Description { get; init; }
+    public string LanguageCode { get; init; } = "en";
     public bool IsPublic { get; init; } = true;
     public ThemeColorsDto? Colors { get; init; }
     public ThemeTypographyDto? Typography { get; init; }

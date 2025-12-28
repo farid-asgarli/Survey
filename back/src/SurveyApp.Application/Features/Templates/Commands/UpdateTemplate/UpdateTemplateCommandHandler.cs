@@ -57,13 +57,30 @@ public class UpdateTemplateCommandHandler(
             return Result<SurveyTemplateDto>.Failure("A template with this name already exists.");
         }
 
-        // Update template properties
-        template.UpdateName(request.Name);
-        template.UpdateDescription(request.Description);
-        template.UpdateCategory(request.Category);
+        // Update template properties (with optional language support)
+        // If LanguageCode is specified, update/add translation for that language
+        // Otherwise, update the default language
+        if (!string.IsNullOrEmpty(request.LanguageCode))
+        {
+            template.AddOrUpdateTranslation(
+                request.LanguageCode,
+                request.Name,
+                request.Description,
+                request.Category,
+                request.WelcomeMessage,
+                request.ThankYouMessage
+            );
+        }
+        else
+        {
+            template.UpdateName(request.Name);
+            template.UpdateDescription(request.Description);
+            template.UpdateCategory(request.Category);
+            template.SetWelcomeMessage(request.WelcomeMessage);
+            template.SetThankYouMessage(request.ThankYouMessage);
+        }
+
         template.SetPublic(request.IsPublic);
-        template.SetWelcomeMessage(request.WelcomeMessage);
-        template.SetThankYouMessage(request.ThankYouMessage);
         template.ConfigureDefaults(
             request.DefaultAllowAnonymous,
             request.DefaultAllowMultipleResponses
@@ -88,12 +105,25 @@ public class UpdateTemplateCommandHandler(
         {
             if (questionDto.Id.HasValue && existingQuestionIds.Contains(questionDto.Id.Value))
             {
-                // Update existing question
+                // Update existing question (with optional language support)
                 var existingQuestion = template.Questions.First(q => q.Id == questionDto.Id.Value);
-                existingQuestion.UpdateText(questionDto.Text);
+
+                if (!string.IsNullOrEmpty(request.LanguageCode))
+                {
+                    existingQuestion.AddOrUpdateTranslation(
+                        request.LanguageCode,
+                        questionDto.Text,
+                        questionDto.Description
+                    );
+                }
+                else
+                {
+                    existingQuestion.UpdateText(questionDto.Text);
+                    existingQuestion.UpdateDescription(questionDto.Description);
+                }
+
                 existingQuestion.UpdateType(questionDto.Type);
                 existingQuestion.UpdateRequired(questionDto.IsRequired);
-                existingQuestion.UpdateDescription(questionDto.Description);
                 existingQuestion.UpdateOrder(questionDto.Order);
 
                 if (questionDto.Settings != null)
@@ -117,7 +147,8 @@ public class UpdateTemplateCommandHandler(
                     questionDto.Type,
                     questionDto.IsRequired,
                     questionDto.Description,
-                    settingsJson
+                    settingsJson,
+                    request.LanguageCode
                 );
             }
         }

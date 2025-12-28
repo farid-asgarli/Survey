@@ -44,10 +44,19 @@ public class UpdateSurveyCommandHandler(
             return Result<SurveyDto>.Failure("Only draft surveys can be edited.");
         }
 
-        // Update survey
-        survey.UpdateDetails(request.Title, request.Description);
-        survey.SetWelcomeMessage(request.WelcomeMessage ?? string.Empty);
-        survey.SetThankYouMessage(request.ThankYouMessage ?? string.Empty);
+        // Determine the language to update
+        var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
+
+        // Update or create translation for the specified language
+        survey.AddOrUpdateTranslation(
+            languageCode,
+            request.Title,
+            request.Description,
+            request.WelcomeMessage,
+            request.ThankYouMessage
+        );
+
+        // Update non-localized settings
         survey.ConfigureResponseSettings(
             request.AllowAnonymousResponses,
             request.AllowMultipleResponses,

@@ -65,33 +65,53 @@ public class UpdateEmailTemplateCommandHandler(
                     $"Errors.EmailTemplateExists|{request.Name}"
                 );
             }
+        }
 
-            template.UpdateName(request.Name);
+        // Update with localization support
+        if (!string.IsNullOrEmpty(request.LanguageCode))
+        {
+            // Update specific language translation
+            template.AddOrUpdateTranslation(
+                request.LanguageCode,
+                request.Name ?? template.Name,
+                request.Subject ?? template.Subject,
+                request.HtmlBody ?? template.HtmlBody,
+                request.PlainTextBody,
+                request.DesignJson
+            );
+        }
+        else
+        {
+            // Update default language
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                template.UpdateName(request.Name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Subject))
+            {
+                template.UpdateSubject(request.Subject);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.HtmlBody))
+            {
+                template.UpdateHtmlBody(request.HtmlBody);
+            }
+
+            if (request.PlainTextBody != null)
+            {
+                template.UpdatePlainTextBody(request.PlainTextBody);
+            }
+
+            if (request.DesignJson != null)
+            {
+                template.UpdateDesignJson(request.DesignJson);
+            }
         }
 
         if (request.Type.HasValue)
         {
             template.UpdateType(request.Type.Value);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.Subject))
-        {
-            template.UpdateSubject(request.Subject);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.HtmlBody))
-        {
-            template.UpdateHtmlBody(request.HtmlBody);
-        }
-
-        if (request.PlainTextBody != null)
-        {
-            template.UpdatePlainTextBody(request.PlainTextBody);
-        }
-
-        if (request.DesignJson != null)
-        {
-            template.UpdateDesignJson(request.DesignJson);
         }
 
         // Handle default status change

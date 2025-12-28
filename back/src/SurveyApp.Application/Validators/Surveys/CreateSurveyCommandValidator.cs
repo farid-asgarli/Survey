@@ -6,6 +6,31 @@ namespace SurveyApp.Application.Validators.Surveys;
 
 public class CreateSurveyCommandValidator : AbstractValidator<CreateSurveyCommand>
 {
+    private static readonly string[] SupportedLanguages =
+    [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "pt",
+        "ru",
+        "zh",
+        "ja",
+        "ko",
+        "ar",
+        "hi",
+        "tr",
+        "pl",
+        "nl",
+        "sv",
+        "da",
+        "no",
+        "fi",
+        "cs",
+        "uk",
+    ];
+
     public CreateSurveyCommandValidator()
     {
         RuleFor(x => x.Title)
@@ -30,6 +55,14 @@ public class CreateSurveyCommandValidator : AbstractValidator<CreateSurveyComman
             .MaximumLength(1000)
             .WithMessage("Thank you message cannot exceed 1000 characters.")
             .When(x => !string.IsNullOrEmpty(x.ThankYouMessage));
+
+        RuleFor(x => x.LanguageCode)
+            .NotEmpty()
+            .WithMessage("Language code is required.")
+            .Length(2, 10)
+            .WithMessage("Language code must be between 2 and 10 characters.")
+            .Must(code => SupportedLanguages.Contains(code.ToLowerInvariant()))
+            .WithMessage("Invalid or unsupported language code.");
 
         RuleFor(x => x.MaxResponses)
             .GreaterThan(0)

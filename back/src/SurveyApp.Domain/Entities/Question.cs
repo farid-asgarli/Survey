@@ -6,6 +6,7 @@ namespace SurveyApp.Domain.Entities;
 
 /// <summary>
 /// Represents a question in a survey.
+/// All localizable content (Text, Description) is stored in the Translations collection.
 /// </summary>
 public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
 {
@@ -16,10 +17,19 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     /// </summary>
     public Guid SurveyId { get; private set; }
 
+    #region Localized Content Properties (resolved from default translation)
+
     /// <summary>
-    /// Gets the text of the question.
+    /// Gets the text of the question from the default translation.
     /// </summary>
-    public string Text { get; private set; } = null!;
+    public string Text => GetDefaultTranslation()?.Text ?? string.Empty;
+
+    /// <summary>
+    /// Gets the description/help text from the default translation.
+    /// </summary>
+    public string? Description => GetDefaultTranslation()?.Description;
+
+    #endregion
 
     /// <summary>
     /// Gets the type of the question.
@@ -35,11 +45,6 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     /// Gets whether the question is required.
     /// </summary>
     public bool IsRequired { get; private set; }
-
-    /// <summary>
-    /// Gets the description/help text for the question.
-    /// </summary>
-    public string? Description { get; private set; }
 
     /// <summary>
     /// Gets the settings for the question as JSON.
@@ -75,18 +80,10 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
 
     private Question() { }
 
-    private Question(
-        Guid id,
-        Guid surveyId,
-        string text,
-        QuestionType type,
-        int order,
-        bool isRequired
-    )
+    private Question(Guid id, Guid surveyId, QuestionType type, int order, bool isRequired)
         : base(id)
     {
         SurveyId = surveyId;
-        Text = text;
         Type = type;
         Order = order;
         IsRequired = isRequired;
@@ -94,31 +91,58 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     }
 
     /// <summary>
-    /// Creates a new question.
+    /// Creates a new question with a default translation.
     /// </summary>
+    /// <param name="surveyId">The survey ID.</param>
+    /// <param name="text">The question text.</param>
+    /// <param name="type">The question type.</param>
+    /// <param name="order">The question order.</param>
+    /// <param name="isRequired">Whether the question is required.</param>
+    /// <param name="languageCode">The language code for the default translation.</param>
+    /// <param name="description">Optional description.</param>
     public static Question Create(
         Guid surveyId,
         string text,
         QuestionType type,
         int order,
-        bool isRequired = false
+        bool isRequired = false,
+        string languageCode = "en",
+        string? description = null
     )
     {
         if (string.IsNullOrWhiteSpace(text))
             throw new ArgumentException("Question text cannot be empty.", nameof(text));
 
-        return new Question(Guid.NewGuid(), surveyId, text, type, order, isRequired);
+        var question = new Question(Guid.NewGuid(), surveyId, type, order, isRequired)
+        {
+            DefaultLanguage = languageCode.ToLowerInvariant(),
+        };
+
+        // Create the default translation
+        question.AddOrUpdateTranslation(languageCode, text, description);
+
+        return question;
     }
 
     /// <summary>
-    /// Updates the question text.
+    /// Updates the question text in the specified language (or default language).
     /// </summary>
-    public void UpdateText(string text)
+    public void UpdateText(string text, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(text))
             throw new ArgumentException("Question text cannot be empty.", nameof(text));
 
-        Text = text;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation == null)
+        {
+            AddOrUpdateTranslation(lang, text);
+        }
+        else
+        {
+            translation.Update(text, translation.Description, translation.GetTranslatedSettings());
+        }
     }
 
     /// <summary>
@@ -150,11 +174,17 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     }
 
     /// <summary>
-    /// Updates the question description.
+    /// Updates the question description in the specified language (or default language).
     /// </summary>
-    public void UpdateDescription(string? description)
+    public void UpdateDescription(string? description, string? languageCode = null)
     {
-        Description = description;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation != null)
+        {
+            translation.Update(translation.Text, description, translation.GetTranslatedSettings());
+        }
     }
 
     /// <summary>
@@ -203,6 +233,15 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
 
     #region Localization Methods
 
+    // TranslationManager handles common translation operations
+    private TranslationManager<QuestionTranslation>? _translationManager;
+
+    private TranslationManager<QuestionTranslation> TranslationHelper =>
+        _translationManager ??= new TranslationManager<QuestionTranslation>(
+            _translations,
+            lang => DefaultLanguage = lang
+        );
+
     /// <summary>
     /// Sets the default language for this question.
     /// </summary>
@@ -224,9 +263,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
         TranslatedQuestionSettings? translatedSettings = null
     )
     {
-        var existingTranslation = _translations.FirstOrDefault(t =>
-            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-        );
+        var existingTranslation = TranslationHelper.Find(languageCode);
 
         if (existingTranslation != null)
         {
@@ -234,7 +271,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
             return existingTranslation;
         }
 
-        var isDefault = !_translations.Any();
+        var isDefault = TranslationHelper.Count == 0;
         var translation = QuestionTranslation.Create(
             Id,
             languageCode,
@@ -257,53 +294,30 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     /// <summary>
     /// Removes a translation from this question.
     /// </summary>
-    public void RemoveTranslation(string languageCode)
-    {
-        var translation = _translations.FirstOrDefault(t =>
-            t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-        );
-
-        if (translation == null)
-            return;
-
-        if (translation.IsDefault && _translations.Count > 1)
-            throw new InvalidOperationException(
-                "Cannot remove the default translation while other translations exist."
-            );
-
-        _translations.Remove(translation);
-
-        // If we removed the default, set a new one
-        if (translation.IsDefault && _translations.Count > 0)
-        {
-            var newDefault = _translations.First();
-            newDefault.SetAsDefault();
-            DefaultLanguage = newDefault.LanguageCode;
-        }
-    }
+    public void RemoveTranslation(string languageCode) => TranslationHelper.Remove(languageCode);
 
     /// <summary>
     /// Gets a translation for the specified language, falling back to default if not found.
     /// </summary>
-    public QuestionTranslation? GetTranslation(string? languageCode)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-            return _translations.FirstOrDefault(t => t.IsDefault);
+    public QuestionTranslation? GetTranslation(string? languageCode) =>
+        TranslationHelper.Get(languageCode);
 
-        return _translations.FirstOrDefault(t =>
-                t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
-            ) ?? _translations.FirstOrDefault(t => t.IsDefault);
-    }
+    /// <summary>
+    /// Gets the default translation for this question.
+    /// </summary>
+    public QuestionTranslation? GetDefaultTranslation() => TranslationHelper.GetDefault();
 
     /// <summary>
     /// Gets the translated text for the specified language.
-    /// Falls back to the default Text property if no translation exists.
     /// </summary>
-    public string GetLocalizedText(string? languageCode)
-    {
-        var translation = GetTranslation(languageCode);
-        return translation?.Text ?? Text;
-    }
+    public string GetLocalizedText(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Text ?? string.Empty;
+
+    /// <summary>
+    /// Gets the translated description for the specified language.
+    /// </summary>
+    public string? GetLocalizedDescription(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Description;
 
     /// <summary>
     /// Gets the translated settings merged with the base settings.

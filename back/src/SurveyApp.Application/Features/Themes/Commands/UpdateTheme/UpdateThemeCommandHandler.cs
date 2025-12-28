@@ -60,9 +60,18 @@ public class UpdateThemeCommandHandler(
             );
         }
 
-        // Update theme properties
-        theme.UpdateName(request.Name);
-        theme.UpdateDescription(request.Description);
+        // Update theme properties with localization support
+        if (!string.IsNullOrEmpty(request.LanguageCode))
+        {
+            // Update specific language translation
+            theme.AddOrUpdateTranslation(request.LanguageCode, request.Name, request.Description);
+        }
+        else
+        {
+            // Update default language
+            theme.UpdateName(request.Name);
+            theme.UpdateDescription(request.Description);
+        }
         theme.SetPublic(request.IsPublic);
 
         theme.UpdateColors(

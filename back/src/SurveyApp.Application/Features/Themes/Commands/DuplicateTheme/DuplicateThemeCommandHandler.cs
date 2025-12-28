@@ -80,8 +80,8 @@ public class DuplicateThemeCommandHandler(
             }
         }
 
-        // Create duplicate
-        var duplicate = theme.Duplicate(newName);
+        // Create duplicate with localization support
+        var duplicate = theme.Duplicate(newName, request.LanguageCode);
 
         _themeRepository.Add(duplicate);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

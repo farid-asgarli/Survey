@@ -26,12 +26,7 @@ public class TemplateQuestionTranslationConfiguration
         builder.Property(t => t.LastModifiedAt);
         builder.Property(t => t.LastModifiedBy);
 
-        // Relationship
-        builder
-            .HasOne(t => t.TemplateQuestion)
-            .WithMany()
-            .HasForeignKey(t => t.TemplateQuestionId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Note: Relationship is configured in TemplateQuestionConfiguration (parent side)
 
         // Indexes
         builder.HasIndex(t => t.TemplateQuestionId);

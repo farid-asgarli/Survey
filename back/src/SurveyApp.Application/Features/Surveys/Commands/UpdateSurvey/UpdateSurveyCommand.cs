@@ -23,4 +23,9 @@ public record UpdateSurveyCommand : IRequest<Result<SurveyDto>>, INamespaceComma
     public int? MaxResponses { get; init; }
     public DateTime? StartsAt { get; init; }
     public DateTime? EndsAt { get; init; }
+
+    /// <summary>
+    /// The language code for the content being updated. If not provided, updates the default language.
+    /// </summary>
+    public string? LanguageCode { get; init; }
 }

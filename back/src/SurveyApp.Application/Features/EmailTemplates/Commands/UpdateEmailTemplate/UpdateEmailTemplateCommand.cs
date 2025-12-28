@@ -16,6 +16,7 @@ public record UpdateEmailTemplateCommand : IRequest<Result<EmailTemplateDto>>
     public string? Subject { get; init; }
     public string? HtmlBody { get; init; }
     public string? PlainTextBody { get; init; }
+    public string? LanguageCode { get; init; }
 
     /// <summary>
     /// JSON representation of the visual editor design state (blocks and styles).

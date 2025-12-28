@@ -24,6 +24,11 @@ public class SurveyThemeDto
     public int UsageCount { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    // Localization metadata
+    public string DefaultLanguage { get; set; } = "en";
+    public string Language { get; set; } = "en";
+    public IReadOnlyList<string> AvailableLanguages { get; set; } = [];
 }
 
 /// <summary>

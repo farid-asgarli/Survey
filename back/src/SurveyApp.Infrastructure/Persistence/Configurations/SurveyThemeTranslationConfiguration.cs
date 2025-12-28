@@ -23,12 +23,7 @@ public class SurveyThemeTranslationConfiguration : IEntityTypeConfiguration<Surv
         builder.Property(t => t.LastModifiedAt);
         builder.Property(t => t.LastModifiedBy);
 
-        // Relationship
-        builder
-            .HasOne(t => t.Theme)
-            .WithMany()
-            .HasForeignKey(t => t.ThemeId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Note: Relationship is configured in SurveyThemeConfiguration (parent side)
 
         // Indexes
         builder.HasIndex(t => t.ThemeId);

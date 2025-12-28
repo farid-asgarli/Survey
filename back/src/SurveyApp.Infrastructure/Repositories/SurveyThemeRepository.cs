@@ -14,7 +14,9 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.SurveyThemes.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+        return await _context
+            .SurveyThemes.Include(t => t.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
     public async Task<IReadOnlyList<SurveyTheme>> GetByNamespaceIdAsync(
@@ -23,9 +25,10 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Where(t => t.NamespaceId == namespaceId)
+            .SurveyThemes.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId)
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .ToListAsync(cancellationToken);
     }
 
@@ -34,10 +37,12 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.SurveyThemes.FirstOrDefaultAsync(
-            t => t.NamespaceId == namespaceId && t.IsDefault,
-            cancellationToken
-        );
+        return await _context
+            .SurveyThemes.Include(t => t.Translations)
+            .FirstOrDefaultAsync(
+                t => t.NamespaceId == namespaceId && t.IsDefault,
+                cancellationToken
+            );
     }
 
     public async Task<IReadOnlyList<SurveyTheme>> GetPublicThemesByNamespaceIdAsync(
@@ -46,9 +51,10 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Where(t => t.NamespaceId == namespaceId && t.IsPublic)
+            .SurveyThemes.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId && t.IsPublic)
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .ToListAsync(cancellationToken);
     }
 
@@ -59,13 +65,14 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.SurveyThemes.Where(t =>
-            t.NamespaceId == namespaceId && t.Name == name
+        // Query through translations table since Name is a computed property
+        var query = _context.SurveyThemeTranslations.Where(t =>
+            t.Theme.NamespaceId == namespaceId && t.Name == name
         );
 
         if (excludeId.HasValue)
         {
-            query = query.Where(t => t.Id != excludeId.Value);
+            query = query.Where(t => t.ThemeId != excludeId.Value);
         }
 
         return await query.AnyAsync(cancellationToken);
@@ -79,21 +86,30 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.SurveyThemes.Where(t => t.NamespaceId == namespaceId);
+        var query = _context
+            .SurveyThemes.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            query = query.Where(t =>
-                t.Name.Contains(searchTerm)
-                || (t.Description != null && t.Description.Contains(searchTerm))
-            );
+            // Query through translations table since Name/Description are computed properties
+            var matchingThemeIds = await _context
+                .SurveyThemeTranslations.Where(t =>
+                    t.Name.Contains(searchTerm)
+                    || (t.Description != null && t.Description.Contains(searchTerm))
+                )
+                .Select(t => t.ThemeId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            query = query.Where(t => matchingThemeIds.Contains(t.Id));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
 
         var items = await query
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

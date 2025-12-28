@@ -50,27 +50,18 @@ public class CreateSurveyCommandHandler(
             );
         }
 
-        // Create survey with type
+        // Create survey with type and localized content
         var survey = Survey.Create(
             ctx.NamespaceId,
             request.Title,
             ctx.UserId,
             request.Type,
-            request.CxMetricType
+            request.CxMetricType,
+            request.LanguageCode,
+            request.Description,
+            request.WelcomeMessage,
+            request.ThankYouMessage
         );
-
-        survey.UpdateDescription(request.Description);
-
-        // Set optional properties
-        if (!string.IsNullOrEmpty(request.WelcomeMessage))
-        {
-            survey.SetWelcomeMessage(request.WelcomeMessage);
-        }
-
-        if (!string.IsNullOrEmpty(request.ThankYouMessage))
-        {
-            survey.SetThankYouMessage(request.ThankYouMessage);
-        }
 
         if (request.IsAnonymous)
         {
@@ -94,7 +85,7 @@ public class CreateSurveyCommandHandler(
             && request.Questions.Count == 0
         )
         {
-            AddCxMetricQuestion(survey, request.CxMetricType.Value);
+            AddCxMetricQuestion(survey, request.CxMetricType.Value, request.LanguageCode);
         }
 
         // Add questions
@@ -141,7 +132,11 @@ public class CreateSurveyCommandHandler(
     /// Adds the appropriate CX metric question based on the metric type.
     /// Also adds a follow-up open-ended question for qualitative feedback.
     /// </summary>
-    private static void AddCxMetricQuestion(Survey survey, CxMetricType metricType)
+    private static void AddCxMetricQuestion(
+        Survey survey,
+        CxMetricType metricType,
+        string languageCode
+    )
     {
         var (questionText, minValue, maxValue, minLabel, maxLabel, followUpText) = metricType switch
         {
@@ -179,18 +174,24 @@ public class CreateSurveyCommandHandler(
             ),
         };
 
-        // Add main CX metric question
-        var mainQuestion = survey.AddQuestion(questionText, QuestionType.NPS, isRequired: true);
+        // Add main CX metric question with translation
+        var mainQuestion = survey.AddQuestion(
+            questionText,
+            QuestionType.NPS,
+            isRequired: true,
+            languageCode: languageCode
+        );
         var settings = QuestionSettings.CreateScaleSettings(minValue, maxValue, minLabel, maxLabel);
         mainQuestion.UpdateSettings(settings);
 
-        // Add follow-up open-ended question
+        // Add follow-up open-ended question with translation
         var followUpQuestion = survey.AddQuestion(
             followUpText,
             QuestionType.LongText,
-            isRequired: false
+            isRequired: false,
+            languageCode: languageCode
         );
-        followUpQuestion.UpdateDescription("Please share your thoughts");
+        followUpQuestion.UpdateDescription("Please share your thoughts", languageCode);
         var textSettings = QuestionSettings.CreateTextSettings("Share your feedback here...", 2000);
         followUpQuestion.UpdateSettings(textSettings);
     }

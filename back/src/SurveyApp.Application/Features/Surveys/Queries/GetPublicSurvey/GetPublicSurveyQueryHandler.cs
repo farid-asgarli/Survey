@@ -35,25 +35,34 @@ public class GetPublicSurveyQueryHandler(ISurveyRepository surveyRepository, IMa
             );
         }
 
+        // Determine the language to use
+        var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
+
         var dto = new PublicSurveyDto
         {
             Id = survey.Id,
-            Title = survey.Title,
-            Description = survey.Description,
-            WelcomeMessage = survey.WelcomeMessage,
-            ThankYouMessage = survey.ThankYouMessage,
+            Title = survey.GetLocalizedTitle(languageCode),
+            Description = survey.GetLocalizedDescription(languageCode),
+            WelcomeMessage = survey.GetLocalizedWelcomeMessage(languageCode),
+            ThankYouMessage = survey.GetLocalizedThankYouMessage(languageCode),
             IsAnonymous = survey.IsAnonymous,
+            Language = languageCode,
+            AvailableLanguages = survey.GetAvailableLanguages(),
             Questions = survey
                 .Questions.OrderBy(q => q.Order)
                 .Select(q => new PublicQuestionDto
                 {
                     Id = q.Id,
-                    Text = q.Text,
-                    Description = q.Description,
+                    Text = q.GetLocalizedText(languageCode),
+                    Description = q.GetLocalizedDescription(languageCode),
                     Type = q.Type,
                     IsRequired = q.IsRequired,
                     Order = q.Order,
-                    Settings = _mapper.Map<DTOs.QuestionSettingsDto>(q.GetSettings()),
+                    Settings = _mapper.Map<DTOs.QuestionSettingsDto>(
+                        q.GetLocalizedSettings(languageCode)
+                    ),
+                    IsNpsQuestion = q.IsNpsQuestion,
+                    NpsType = q.NpsType,
                 })
                 .ToList(),
         };

@@ -30,12 +30,7 @@ public class EmailTemplateTranslationConfiguration
         builder.Property(t => t.LastModifiedAt);
         builder.Property(t => t.LastModifiedBy);
 
-        // Relationship
-        builder
-            .HasOne(t => t.EmailTemplate)
-            .WithMany()
-            .HasForeignKey(t => t.EmailTemplateId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Note: Relationship is configured in EmailTemplateConfiguration (parent side)
 
         // Indexes
         builder.HasIndex(t => t.EmailTemplateId);

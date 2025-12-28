@@ -30,12 +30,7 @@ public class SurveyTemplateTranslationConfiguration
         builder.Property(t => t.LastModifiedAt);
         builder.Property(t => t.LastModifiedBy);
 
-        // Relationship
-        builder
-            .HasOne(t => t.Template)
-            .WithMany()
-            .HasForeignKey(t => t.TemplateId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Note: Relationship is configured in SurveyTemplateConfiguration (parent side)
 
         // Indexes
         builder.HasIndex(t => t.TemplateId);

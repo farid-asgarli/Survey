@@ -14,6 +14,7 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     {
         return await _context
             .Surveys.Include(s => s.Namespace)
+            .Include(s => s.Translations)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
@@ -24,7 +25,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     {
         return await _context
             .Surveys.Include(s => s.Namespace)
+            .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
@@ -35,7 +38,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     {
         return await _context
             .Surveys.Include(s => s.Namespace)
+            .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
@@ -45,7 +50,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Questions.OrderBy(q => q.Order))
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(s => s.AccessToken == accessToken, cancellationToken);
     }
 
@@ -55,8 +62,11 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Questions.OrderBy(q => q.Order))
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
             .Include(s => s.Theme)
+            .ThenInclude(t => t!.Translations)
             .FirstOrDefaultAsync(s => s.AccessToken == shareToken, cancellationToken);
     }
 
@@ -66,7 +76,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Questions)
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions)
+            .ThenInclude(q => q.Translations)
             .Include(s => s.Responses)
             .Where(s => s.NamespaceId == namespaceId)
             .OrderByDescending(s => s.CreatedAt)
@@ -80,7 +92,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Questions)
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions)
+            .ThenInclude(q => q.Translations)
             .Where(s => s.NamespaceId == namespaceId && s.Status == status)
             .OrderByDescending(s => s.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -93,7 +107,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Questions)
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions)
+            .ThenInclude(q => q.Translations)
             .Where(s => s.NamespaceId == namespaceId && s.CreatedBy == creatorId)
             .OrderByDescending(s => s.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -109,7 +125,9 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         var query = _context
-            .Surveys.Include(s => s.Questions)
+            .Surveys.Include(s => s.Translations)
+            .Include(s => s.Questions)
+            .ThenInclude(q => q.Translations)
             .Include(s => s.Responses)
             .Where(s => s.NamespaceId == namespaceId);
 
@@ -120,10 +138,17 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            query = query.Where(s =>
-                s.Title.Contains(searchTerm)
-                || (s.Description != null && s.Description.Contains(searchTerm))
-            );
+            // Query through translations table since Title/Description are computed properties
+            var matchingSurveyIds = await _context
+                .SurveyTranslations.Where(t =>
+                    t.Title.Contains(searchTerm)
+                    || (t.Description != null && t.Description.Contains(searchTerm))
+                )
+                .Select(t => t.SurveyId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            query = query.Where(s => matchingSurveyIds.Contains(s.Id));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);

@@ -17,12 +17,8 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Subject = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    HtmlBody = table.Column<string>(type: "text", nullable: false),
-                    PlainTextBody = table.Column<string>(type: "text", nullable: true),
-                    DesignJson = table.Column<string>(type: "text", nullable: true),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     AvailablePlaceholders = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -91,17 +87,40 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmailTemplateTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    EmailTemplateId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Subject = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    HtmlBody = table.Column<string>(type: "text", nullable: false),
+                    PlainTextBody = table.Column<string>(type: "text", nullable: true),
+                    DesignJson = table.Column<string>(type: "jsonb", nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmailTemplateTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmailTemplateTranslations_EmailTemplates_EmailTemplateId",
+                        column: x => x.EmailTemplateId,
+                        principalTable: "EmailTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SurveyTemplates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    Category = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    WelcomeMessage = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    ThankYouMessage = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     DefaultAllowAnonymous = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     DefaultAllowMultipleResponses = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     UsageCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
@@ -130,8 +149,7 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     IsPublic = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     IsSystem = table.Column<bool>(type: "boolean", nullable: false),
@@ -298,16 +316,42 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SurveyTemplateTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TemplateId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Category = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    WelcomeMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    ThankYouMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyTemplateTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SurveyTemplateTranslations_SurveyTemplates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "SurveyTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TemplateQuestions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TemplateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
                     IsRequired = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     SettingsJson = table.Column<string>(type: "jsonb", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -336,11 +380,7 @@ namespace SurveyApp.Infrastructure.Migrations
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
                     Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false, defaultValue: "Classic"),
                     CxMetricType = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
                     Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    WelcomeMessage = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    ThankYouMessage = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     AccessToken = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PublishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ClosedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -352,6 +392,7 @@ namespace SurveyApp.Infrastructure.Migrations
                     ThemeId = table.Column<Guid>(type: "uuid", nullable: true),
                     PresetThemeId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     ThemeCustomizations = table.Column<string>(type: "jsonb", nullable: true),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -375,6 +416,55 @@ namespace SurveyApp.Infrastructure.Migrations
                         principalTable: "SurveyThemes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyThemeTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ThemeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyThemeTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SurveyThemeTranslations_SurveyThemes_ThemeId",
+                        column: x => x.ThemeId,
+                        principalTable: "SurveyThemes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TemplateQuestionTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TemplateQuestionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    TranslatedSettingsJson = table.Column<string>(type: "jsonb", nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TemplateQuestionTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TemplateQuestionTranslations_TemplateQuestions_TemplateQues~",
+                        column: x => x.TemplateQuestionId,
+                        principalTable: "TemplateQuestions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -430,14 +520,13 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
                     IsRequired = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
                     SettingsJson = table.Column<string>(type: "jsonb", nullable: true),
                     IsNpsQuestion = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     NpsType = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -590,6 +679,32 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SurveyTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    WelcomeMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    ThankYouMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SurveyTranslations_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmailRecipients",
                 columns: table => new
                 {
@@ -666,6 +781,31 @@ namespace SurveyApp.Infrastructure.Migrations
                         principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuestionTranslations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    TranslatedSettingsJson = table.Column<string>(type: "jsonb", nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuestionTranslations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuestionTranslations_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -853,16 +993,25 @@ namespace SurveyApp.Infrastructure.Migrations
                 column: "NamespaceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailTemplates_NamespaceId_Name",
-                table: "EmailTemplates",
-                columns: new[] { "NamespaceId", "Name" },
-                unique: true,
-                filter: "\"IsDeleted\" = false");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_NamespaceId_Type_IsDefault",
                 table: "EmailTemplates",
                 columns: new[] { "NamespaceId", "Type", "IsDefault" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailTemplateTranslations_EmailTemplateId",
+                table: "EmailTemplateTranslations",
+                column: "EmailTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailTemplateTranslations_EmailTemplateId_LanguageCode",
+                table: "EmailTemplateTranslations",
+                columns: new[] { "EmailTemplateId", "LanguageCode" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailTemplateTranslations_LanguageCode",
+                table: "EmailTemplateTranslations",
+                column: "LanguageCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkClicks_ClickedAt",
@@ -960,6 +1109,22 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "IX_Questions_SurveyId_Order",
                 table: "Questions",
                 columns: new[] { "SurveyId", "Order" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuestionTranslations_LanguageCode",
+                table: "QuestionTranslations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuestionTranslations_QuestionId",
+                table: "QuestionTranslations",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuestionTranslations_QuestionId_LanguageCode",
+                table: "QuestionTranslations",
+                columns: new[] { "QuestionId", "LanguageCode" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveyRuns_IsDeleted",
@@ -1104,11 +1269,6 @@ namespace SurveyApp.Infrastructure.Migrations
                 column: "Type");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SurveyTemplates_Category",
-                table: "SurveyTemplates",
-                column: "Category");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_CreatedAt",
                 table: "SurveyTemplates",
                 column: "CreatedAt");
@@ -1129,9 +1289,19 @@ namespace SurveyApp.Infrastructure.Migrations
                 column: "NamespaceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SurveyTemplates_NamespaceId_Name",
-                table: "SurveyTemplates",
-                columns: new[] { "NamespaceId", "Name" },
+                name: "IX_SurveyTemplateTranslations_LanguageCode",
+                table: "SurveyTemplateTranslations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyTemplateTranslations_TemplateId",
+                table: "SurveyTemplateTranslations",
+                column: "TemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyTemplateTranslations_TemplateId_LanguageCode",
+                table: "SurveyTemplateTranslations",
+                columns: new[] { "TemplateId", "LanguageCode" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1155,6 +1325,38 @@ namespace SurveyApp.Infrastructure.Migrations
                 columns: new[] { "NamespaceId", "IsDefault" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_SurveyThemeTranslations_LanguageCode",
+                table: "SurveyThemeTranslations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyThemeTranslations_ThemeId",
+                table: "SurveyThemeTranslations",
+                column: "ThemeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyThemeTranslations_ThemeId_LanguageCode",
+                table: "SurveyThemeTranslations",
+                columns: new[] { "ThemeId", "LanguageCode" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyTranslations_LanguageCode",
+                table: "SurveyTranslations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyTranslations_SurveyId",
+                table: "SurveyTranslations",
+                column: "SurveyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyTranslations_SurveyId_LanguageCode",
+                table: "SurveyTranslations",
+                columns: new[] { "SurveyId", "LanguageCode" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestions_IsDeleted",
                 table: "TemplateQuestions",
                 column: "IsDeleted");
@@ -1168,6 +1370,22 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "IX_TemplateQuestions_TemplateId_Order",
                 table: "TemplateQuestions",
                 columns: new[] { "TemplateId", "Order" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemplateQuestionTranslations_LanguageCode",
+                table: "TemplateQuestionTranslations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemplateQuestionTranslations_TemplateQuestionId",
+                table: "TemplateQuestionTranslations",
+                column: "TemplateQuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemplateQuestionTranslations_TemplateQuestionId_LanguageCode",
+                table: "TemplateQuestionTranslations",
+                columns: new[] { "TemplateQuestionId", "LanguageCode" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPreferences_UserId",
@@ -1202,6 +1420,9 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "EmailRecipients");
 
             migrationBuilder.DropTable(
+                name: "EmailTemplateTranslations");
+
+            migrationBuilder.DropTable(
                 name: "LinkClicks");
 
             migrationBuilder.DropTable(
@@ -1211,10 +1432,22 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "QuestionLogics");
 
             migrationBuilder.DropTable(
+                name: "QuestionTranslations");
+
+            migrationBuilder.DropTable(
                 name: "RecurringSurveyRuns");
 
             migrationBuilder.DropTable(
-                name: "TemplateQuestions");
+                name: "SurveyTemplateTranslations");
+
+            migrationBuilder.DropTable(
+                name: "SurveyThemeTranslations");
+
+            migrationBuilder.DropTable(
+                name: "SurveyTranslations");
+
+            migrationBuilder.DropTable(
+                name: "TemplateQuestionTranslations");
 
             migrationBuilder.DropTable(
                 name: "UserPreferences");
@@ -1235,7 +1468,7 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "RecurringSurveys");
 
             migrationBuilder.DropTable(
-                name: "SurveyTemplates");
+                name: "TemplateQuestions");
 
             migrationBuilder.DropTable(
                 name: "EmailTemplates");
@@ -1245,6 +1478,9 @@ namespace SurveyApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Surveys");
+
+            migrationBuilder.DropTable(
+                name: "SurveyTemplates");
 
             migrationBuilder.DropTable(
                 name: "SurveyThemes");

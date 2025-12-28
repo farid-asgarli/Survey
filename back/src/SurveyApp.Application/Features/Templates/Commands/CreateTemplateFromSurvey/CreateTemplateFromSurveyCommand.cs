@@ -20,4 +20,5 @@ public record CreateTemplateFromSurveyCommand
     public string? Description { get; init; }
     public string? Category { get; init; }
     public bool IsPublic { get; init; }
+    public string? LanguageCode { get; init; }
 }

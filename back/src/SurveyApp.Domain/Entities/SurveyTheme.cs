@@ -5,23 +5,40 @@ namespace SurveyApp.Domain.Entities;
 
 /// <summary>
 /// Represents a survey theme with branding and styling options.
+/// All localizable content (Name, Description) is stored in the Translations collection.
 /// </summary>
-public class SurveyTheme : AggregateRoot<Guid>
+public class SurveyTheme : AggregateRoot<Guid>, ILocalizable<SurveyThemeTranslation>
 {
+    private readonly List<SurveyThemeTranslation> _translations = [];
+
     /// <summary>
     /// Gets the namespace ID this theme belongs to.
     /// </summary>
     public Guid NamespaceId { get; private set; }
 
-    /// <summary>
-    /// Gets the name of the theme.
-    /// </summary>
-    public string Name { get; private set; } = null!;
+    #region Localized Content Properties (resolved from default translation)
 
     /// <summary>
-    /// Gets the description of the theme.
+    /// Gets the name of the theme from the default translation.
     /// </summary>
-    public string? Description { get; private set; }
+    public string Name => GetDefaultTranslation()?.Name ?? string.Empty;
+
+    /// <summary>
+    /// Gets the description of the theme from the default translation.
+    /// </summary>
+    public string? Description => GetDefaultTranslation()?.Description;
+
+    #endregion
+
+    /// <summary>
+    /// Gets the default language code for this theme (ISO 639-1).
+    /// </summary>
+    public string DefaultLanguage { get; private set; } = "en";
+
+    /// <summary>
+    /// Gets the translations for this theme.
+    /// </summary>
+    public IReadOnlyCollection<SurveyThemeTranslation> Translations => _translations.AsReadOnly();
 
     /// <summary>
     /// Gets whether this is the default theme for the namespace.
@@ -312,43 +329,73 @@ public class SurveyTheme : AggregateRoot<Guid>
 
     private SurveyTheme() { }
 
-    private SurveyTheme(Guid id, Guid namespaceId, string name)
+    private SurveyTheme(Guid id, Guid namespaceId)
         : base(id)
     {
         NamespaceId = namespaceId;
-        Name = name;
         IsDefault = false;
         IsPublic = true;
     }
 
     /// <summary>
-    /// Creates a new survey theme.
+    /// Creates a new survey theme with a default translation.
     /// </summary>
-    public static SurveyTheme Create(Guid namespaceId, string name)
+    /// <param name="namespaceId">The namespace ID.</param>
+    /// <param name="name">The theme name.</param>
+    /// <param name="languageCode">The default language code (ISO 639-1). Defaults to "en".</param>
+    /// <param name="description">Optional description.</param>
+    public static SurveyTheme Create(
+        Guid namespaceId,
+        string name,
+        string languageCode = "en",
+        string? description = null
+    )
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Theme name cannot be empty.", nameof(name));
 
-        return new SurveyTheme(Guid.NewGuid(), namespaceId, name);
+        var theme = new SurveyTheme(Guid.NewGuid(), namespaceId);
+        theme.DefaultLanguage = languageCode.ToLowerInvariant();
+
+        // Create the default translation
+        theme.AddOrUpdateTranslation(languageCode, name, description);
+
+        return theme;
     }
 
     /// <summary>
-    /// Updates the theme name.
+    /// Updates the theme name in the specified language (or default language).
     /// </summary>
-    public void UpdateName(string name)
+    public void UpdateName(string name, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Theme name cannot be empty.", nameof(name));
 
-        Name = name;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation == null)
+        {
+            AddOrUpdateTranslation(lang, name);
+        }
+        else
+        {
+            translation.Update(name, translation.Description);
+        }
     }
 
     /// <summary>
-    /// Updates the theme description.
+    /// Updates the theme description in the specified language (or default language).
     /// </summary>
-    public void UpdateDescription(string? description)
+    public void UpdateDescription(string? description, string? languageCode = null)
     {
-        Description = description;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+
+        if (translation != null)
+        {
+            translation.Update(translation.Name, description);
+        }
     }
 
     /// <summary>
@@ -574,10 +621,10 @@ public class SurveyTheme : AggregateRoot<Guid>
     /// <summary>
     /// Creates a duplicate of this theme.
     /// </summary>
-    public SurveyTheme Duplicate(string newName)
+    public SurveyTheme Duplicate(string newName, string? languageCode = null)
     {
-        var duplicate = Create(NamespaceId, newName);
-        duplicate.Description = Description;
+        var lang = languageCode ?? DefaultLanguage;
+        var duplicate = Create(NamespaceId, newName, lang);
         duplicate.IsPublic = IsPublic;
         duplicate.PrimaryColor = PrimaryColor;
         duplicate.SecondaryColor = SecondaryColor;
@@ -717,4 +764,104 @@ h1, h2, h3, h4, h5, h6 {{
 
         return color.ToUpperInvariant();
     }
+
+    #region Localization Methods
+
+    // TranslationManager handles common translation operations
+    private TranslationManager<SurveyThemeTranslation>? _translationManager;
+
+    private TranslationManager<SurveyThemeTranslation> TranslationHelper =>
+        _translationManager ??= new TranslationManager<SurveyThemeTranslation>(
+            _translations,
+            lang => DefaultLanguage = lang
+        );
+
+    /// <summary>
+    /// Sets the default language for this theme.
+    /// </summary>
+    public void SetDefaultLanguage(string languageCode)
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            throw new ArgumentException("Language code is required.", nameof(languageCode));
+
+        DefaultLanguage = languageCode.ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Adds or updates a translation for this theme.
+    /// </summary>
+    public SurveyThemeTranslation AddOrUpdateTranslation(
+        string languageCode,
+        string name,
+        string? description = null
+    )
+    {
+        var existingTranslation = TranslationHelper.Find(languageCode);
+
+        if (existingTranslation != null)
+        {
+            existingTranslation.Update(name, description);
+            return existingTranslation;
+        }
+
+        var isDefault = TranslationHelper.Count == 0;
+        var translation = SurveyThemeTranslation.Create(
+            Id,
+            languageCode,
+            name,
+            description,
+            isDefault
+        );
+
+        _translations.Add(translation);
+
+        if (isDefault)
+        {
+            DefaultLanguage = languageCode.ToLowerInvariant();
+        }
+
+        return translation;
+    }
+
+    /// <summary>
+    /// Removes a translation from this theme.
+    /// </summary>
+    public void RemoveTranslation(string languageCode) => TranslationHelper.Remove(languageCode);
+
+    /// <summary>
+    /// Gets a translation for the specified language, falling back to default if not found.
+    /// </summary>
+    public SurveyThemeTranslation? GetTranslation(string? languageCode) =>
+        TranslationHelper.Get(languageCode);
+
+    /// <summary>
+    /// Gets the default translation for this theme.
+    /// </summary>
+    public SurveyThemeTranslation? GetDefaultTranslation() => TranslationHelper.GetDefault();
+
+    /// <summary>
+    /// Gets the localized name for the specified language.
+    /// </summary>
+    public string GetLocalizedName(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Name ?? string.Empty;
+
+    /// <summary>
+    /// Gets the localized description for the specified language.
+    /// </summary>
+    public string? GetLocalizedDescription(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Description;
+
+    /// <summary>
+    /// Sets a translation as the default.
+    /// </summary>
+    public void SetDefaultTranslation(string languageCode) =>
+        TranslationHelper.SetDefault(languageCode);
+
+    /// <summary>
+    /// Gets all available language codes for this theme.
+    /// </summary>
+    public IReadOnlyList<string> GetAvailableLanguages() =>
+        TranslationHelper.GetAvailableLanguages();
+
+    #endregion
 }

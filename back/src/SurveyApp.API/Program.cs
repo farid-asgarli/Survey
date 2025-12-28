@@ -209,6 +209,7 @@ builder.Services.AddHttpContextAccessor();
 // Add API services
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<INamespaceContext, NamespaceContext>();
+builder.Services.AddScoped<ILanguageContext, LanguageContext>();
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -266,6 +267,9 @@ app.UseAuthorization();
 
 // Namespace context middleware (after auth)
 app.UseNamespaceContext();
+
+// Language context middleware (extracts Accept-Language header)
+app.UseLanguageContext();
 
 app.MapControllers();
 

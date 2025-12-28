@@ -54,16 +54,14 @@ public class UpdateQuestionCommandHandler(
             return Result<QuestionDto>.Failure("Question not found.");
         }
 
-        // Update question properties
-        question.UpdateText(request.Text);
-        question.UpdateRequired(request.IsRequired);
-        question.UpdateDescription(request.Description);
+        // Determine the language to update
+        var languageCode = request.LanguageCode ?? question.DefaultLanguage;
 
-        // Update type if changed
-        if (question.Type != request.Type)
-        {
-            question.UpdateType(request.Type);
-        }
+        // Update localized content via translation
+        question.AddOrUpdateTranslation(languageCode, request.Text, request.Description);
+
+        // Update non-localized properties
+        question.UpdateRequired(request.IsRequired);
 
         // Update order if specified
         if (request.Order.HasValue)

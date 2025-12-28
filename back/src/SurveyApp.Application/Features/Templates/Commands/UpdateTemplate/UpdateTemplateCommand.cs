@@ -23,6 +23,7 @@ public record UpdateTemplateCommand : IRequest<Result<SurveyTemplateDto>>, IName
     public string? ThankYouMessage { get; init; }
     public bool DefaultAllowAnonymous { get; init; }
     public bool DefaultAllowMultipleResponses { get; init; }
+    public string? LanguageCode { get; init; }
     public List<UpdateTemplateQuestionDto> Questions { get; init; } = [];
 }
 

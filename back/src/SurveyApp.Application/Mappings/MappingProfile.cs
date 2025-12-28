@@ -83,12 +83,17 @@ public class MappingProfile : Profile
             .ForMember(d => d.NamespaceSlug, opt => opt.MapFrom(s => s.Namespace.Slug))
             .ForMember(d => d.Role, opt => opt.MapFrom(s => s.Role.ToString()));
 
-        // Survey mappings
+        // Survey mappings - Title, Description, WelcomeMessage, ThankYouMessage come from default translation
         CreateMap<Survey, SurveyDto>()
             .ForMember(d => d.QuestionCount, opt => opt.MapFrom(s => s.Questions.Count))
             .ForMember(
                 d => d.ResponseCount,
                 opt => opt.MapFrom(s => s.Responses.Count(r => r.IsComplete))
+            )
+            .ForMember(d => d.Language, opt => opt.MapFrom(s => s.DefaultLanguage))
+            .ForMember(
+                d => d.AvailableLanguages,
+                opt => opt.MapFrom(s => s.GetAvailableLanguages())
             );
 
         CreateMap<Survey, SurveyDetailsDto>()
@@ -97,9 +102,11 @@ public class MappingProfile : Profile
                 d => d.ResponseCount,
                 opt => opt.MapFrom(s => s.Responses.Count(r => r.IsComplete))
             )
+            .ForMember(d => d.Questions, opt => opt.MapFrom(s => s.Questions.OrderBy(q => q.Order)))
+            .ForMember(d => d.Language, opt => opt.MapFrom(s => s.DefaultLanguage))
             .ForMember(
-                d => d.Questions,
-                opt => opt.MapFrom(s => s.Questions.OrderBy(q => q.Order))
+                d => d.AvailableLanguages,
+                opt => opt.MapFrom(s => s.GetAvailableLanguages())
             );
 
         CreateMap<Survey, SurveyListItemDto>()
@@ -110,12 +117,14 @@ public class MappingProfile : Profile
             );
 
         CreateMap<Survey, PublicSurveyDto>()
+            .ForMember(d => d.Questions, opt => opt.MapFrom(s => s.Questions.OrderBy(q => q.Order)))
+            .ForMember(d => d.Language, opt => opt.MapFrom(s => s.DefaultLanguage))
             .ForMember(
-                d => d.Questions,
-                opt => opt.MapFrom(s => s.Questions.OrderBy(q => q.Order))
+                d => d.AvailableLanguages,
+                opt => opt.MapFrom(s => s.GetAvailableLanguages())
             );
 
-        // Question mappings
+        // Question mappings - Text and Description come from default translation
         CreateMap<Question, QuestionDto>()
             .ForMember(
                 d => d.Settings,

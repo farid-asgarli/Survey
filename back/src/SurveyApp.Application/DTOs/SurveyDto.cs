@@ -31,6 +31,21 @@ public class SurveyDto
     public int ResponseCount { get; set; }
     public DateTime CreatedAt { get; set; }
     public Guid? CreatedBy { get; set; }
+
+    /// <summary>
+    /// The default language code for this survey.
+    /// </summary>
+    public string DefaultLanguage { get; set; } = "en";
+
+    /// <summary>
+    /// The language of the returned content.
+    /// </summary>
+    public string Language { get; set; } = "en";
+
+    /// <summary>
+    /// List of available language codes for this survey.
+    /// </summary>
+    public IReadOnlyList<string> AvailableLanguages { get; set; } = [];
 }
 
 /// <summary>
@@ -57,6 +72,7 @@ public class SurveyListItemDto
     public DateTime CreatedAt { get; set; }
     public DateTime? PublishedAt { get; set; }
     public DateTime? ClosedAt { get; set; }
+    public string DefaultLanguage { get; set; } = "en";
 }
 
 /// <summary>
@@ -74,6 +90,16 @@ public class PublicSurveyDto
     public IReadOnlyList<PublicQuestionDto> Questions { get; set; } =
         Array.Empty<PublicQuestionDto>();
     public PublicSurveyThemeDto? Theme { get; set; }
+
+    /// <summary>
+    /// The language of the returned content.
+    /// </summary>
+    public string Language { get; set; } = "en";
+
+    /// <summary>
+    /// List of available language codes for this survey.
+    /// </summary>
+    public IReadOnlyList<string> AvailableLanguages { get; set; } = [];
 }
 
 /// <summary>

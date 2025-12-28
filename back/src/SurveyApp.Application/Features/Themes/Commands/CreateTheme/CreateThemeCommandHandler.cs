@@ -46,9 +46,13 @@ public class CreateThemeCommandHandler(
             );
         }
 
-        // Create theme
-        var theme = SurveyTheme.Create(ctx.NamespaceId, request.Name);
-        theme.UpdateDescription(request.Description);
+        // Create theme with localization support
+        var theme = SurveyTheme.Create(
+            ctx.NamespaceId,
+            request.Name,
+            request.LanguageCode,
+            request.Description
+        );
         theme.SetPublic(request.IsPublic);
 
         // Apply colors if provided

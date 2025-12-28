@@ -13,20 +13,22 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
 
         builder.HasKey(x => x.Id);
 
+        // Ignore computed properties (resolved from translations)
+        builder.Ignore(x => x.Name);
+        builder.Ignore(x => x.Subject);
+        builder.Ignore(x => x.HtmlBody);
+        builder.Ignore(x => x.PlainTextBody);
+        builder.Ignore(x => x.DesignJson);
+
+        builder
+            .Property(x => x.DefaultLanguage)
+            .IsRequired()
+            .HasMaxLength(10)
+            .HasDefaultValue("en");
+
         builder.Property(x => x.NamespaceId).IsRequired();
 
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
-
         builder.Property(x => x.Type).IsRequired().HasConversion<string>().HasMaxLength(50);
-
-        builder.Property(x => x.Subject).IsRequired().HasMaxLength(500);
-
-        builder.Property(x => x.HtmlBody).IsRequired();
-
-        builder.Property(x => x.PlainTextBody);
-
-        // Store design JSON for visual editor state (blocks, styles, preheader)
-        builder.Property(x => x.DesignJson).HasColumnType("text");
 
         builder.Property(x => x.IsDefault).IsRequired().HasDefaultValue(false);
 
@@ -58,15 +60,20 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
 
         // Indexes
         builder.HasIndex(x => x.NamespaceId);
-        builder
-            .HasIndex(x => new { x.NamespaceId, x.Name })
-            .IsUnique()
-            .HasFilter("\"IsDeleted\" = false");
         builder.HasIndex(x => new
         {
             x.NamespaceId,
             x.Type,
             x.IsDefault,
         });
+
+        // Translations relationship - configure from parent side
+        builder
+            .HasMany(x => x.Translations)
+            .WithOne(t => t.EmailTemplate)
+            .HasForeignKey(t => t.EmailTemplateId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(x => x.Translations).UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

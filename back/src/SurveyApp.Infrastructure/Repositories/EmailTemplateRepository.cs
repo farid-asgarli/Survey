@@ -15,10 +15,9 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.EmailTemplates.FirstOrDefaultAsync(
-            t => t.Id == id,
-            cancellationToken
-        );
+        return await _context
+            .EmailTemplates.Include(t => t.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
     public async Task<IReadOnlyList<EmailTemplate>> GetByNamespaceIdAsync(
@@ -27,9 +26,10 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Where(t => t.NamespaceId == namespaceId)
+            .EmailTemplates.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId)
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .ToListAsync(cancellationToken);
     }
 
@@ -39,10 +39,12 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.EmailTemplates.FirstOrDefaultAsync(
-            t => t.NamespaceId == namespaceId && t.Type == type && t.IsDefault,
-            cancellationToken
-        );
+        return await _context
+            .EmailTemplates.Include(t => t.Translations)
+            .FirstOrDefaultAsync(
+                t => t.NamespaceId == namespaceId && t.Type == type && t.IsDefault,
+                cancellationToken
+            );
     }
 
     public async Task<IReadOnlyList<EmailTemplate>> GetByTypeAsync(
@@ -52,9 +54,10 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Where(t => t.NamespaceId == namespaceId && t.Type == type)
+            .EmailTemplates.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId && t.Type == type)
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .ToListAsync(cancellationToken);
     }
 
@@ -65,13 +68,14 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.EmailTemplates.Where(t =>
-            t.NamespaceId == namespaceId && t.Name == name
+        // Query through translations table since Name is a computed property
+        var query = _context.EmailTemplateTranslations.Where(t =>
+            t.EmailTemplate.NamespaceId == namespaceId && t.Name == name
         );
 
         if (excludeId.HasValue)
         {
-            query = query.Where(t => t.Id != excludeId.Value);
+            query = query.Where(t => t.EmailTemplateId != excludeId.Value);
         }
 
         return await query.AnyAsync(cancellationToken);
@@ -86,11 +90,22 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.EmailTemplates.Where(t => t.NamespaceId == namespaceId);
+        var query = _context
+            .EmailTemplates.Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            query = query.Where(t => t.Name.Contains(searchTerm) || t.Subject.Contains(searchTerm));
+            // Query through translations table since Name/Subject are computed properties
+            var matchingTemplateIds = await _context
+                .EmailTemplateTranslations.Where(t =>
+                    t.Name.Contains(searchTerm) || t.Subject.Contains(searchTerm)
+                )
+                .Select(t => t.EmailTemplateId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            query = query.Where(t => matchingTemplateIds.Contains(t.Id));
         }
 
         if (type.HasValue)
@@ -102,7 +117,7 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
 
         var items = await query
             .OrderByDescending(t => t.IsDefault)
-            .ThenBy(t => t.Name)
+            .ThenByDescending(t => t.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

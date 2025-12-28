@@ -12,9 +12,9 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
         builder.HasKey(q => q.Id);
 
-        builder.Property(q => q.Text).IsRequired().HasMaxLength(500);
-
-        builder.Property(q => q.Description).HasMaxLength(1000);
+        // Ignore computed properties that are resolved from translations
+        builder.Ignore(q => q.Text);
+        builder.Ignore(q => q.Description);
 
         builder.Property(q => q.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
 

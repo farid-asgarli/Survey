@@ -6,18 +6,51 @@ namespace SurveyApp.Domain.Entities;
 
 /// <summary>
 /// Represents a question in a survey template.
+/// All localizable content (Text, Description) is stored in the Translations collection.
 /// </summary>
-public class TemplateQuestion : Entity<Guid>
+public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTranslation>
 {
+    private readonly List<TemplateQuestionTranslation> _translations = [];
+    private TranslationManager<TemplateQuestionTranslation>? _translationManager;
+
+    /// <summary>
+    /// Gets the translation helper for managing translations.
+    /// </summary>
+    private TranslationManager<TemplateQuestionTranslation> TranslationHelper =>
+        _translationManager ??= new TranslationManager<TemplateQuestionTranslation>(
+            _translations,
+            lang => DefaultLanguage = lang
+        );
+
     /// <summary>
     /// Gets the template ID this question belongs to.
     /// </summary>
     public Guid TemplateId { get; private set; }
 
     /// <summary>
-    /// Gets the text of the question.
+    /// Gets the default language code (ISO 639-1) for this question.
     /// </summary>
-    public string Text { get; private set; } = null!;
+    public string DefaultLanguage { get; private set; } = "en";
+
+    /// <summary>
+    /// Gets the translations for this question.
+    /// </summary>
+    public IReadOnlyCollection<TemplateQuestionTranslation> Translations =>
+        _translations.AsReadOnly();
+
+    #region Localized Content Properties (resolved from default translation)
+
+    /// <summary>
+    /// Gets the text of the question from the default translation.
+    /// </summary>
+    public string Text => GetDefaultTranslation()?.Text ?? string.Empty;
+
+    /// <summary>
+    /// Gets the description/help text from the default translation.
+    /// </summary>
+    public string? Description => GetDefaultTranslation()?.Description;
+
+    #endregion
 
     /// <summary>
     /// Gets the type of the question.
@@ -35,11 +68,6 @@ public class TemplateQuestion : Entity<Guid>
     public bool IsRequired { get; private set; }
 
     /// <summary>
-    /// Gets the description/help text for the question.
-    /// </summary>
-    public string? Description { get; private set; }
-
-    /// <summary>
     /// Gets the settings for the question as JSON.
     /// </summary>
     public string? SettingsJson { get; private set; }
@@ -54,33 +82,38 @@ public class TemplateQuestion : Entity<Guid>
     private TemplateQuestion(
         Guid id,
         Guid templateId,
-        string text,
         QuestionType type,
         int order,
         bool isRequired,
-        string? description,
         string? settingsJson
     )
         : base(id)
     {
         TemplateId = templateId;
-        Text = text;
         Type = type;
         Order = order;
         IsRequired = isRequired;
-        Description = description;
         SettingsJson = settingsJson ?? QuestionSettings.CreateDefault(type).ToJson();
     }
 
     /// <summary>
-    /// Creates a new template question.
+    /// Creates a new template question with a default translation.
     /// </summary>
+    /// <param name="templateId">The template ID.</param>
+    /// <param name="text">The question text.</param>
+    /// <param name="type">The question type.</param>
+    /// <param name="order">The question order.</param>
+    /// <param name="isRequired">Whether the question is required.</param>
+    /// <param name="languageCode">The language code for the default translation (defaults to "en").</param>
+    /// <param name="description">Optional description.</param>
+    /// <param name="settingsJson">Optional settings JSON.</param>
     public static TemplateQuestion Create(
         Guid templateId,
         string text,
         QuestionType type,
         int order,
         bool isRequired = false,
+        string languageCode = "en",
         string? description = null,
         string? settingsJson = null
     )
@@ -88,27 +121,138 @@ public class TemplateQuestion : Entity<Guid>
         if (string.IsNullOrWhiteSpace(text))
             throw new ArgumentException("Question text cannot be empty.", nameof(text));
 
-        return new TemplateQuestion(
+        var question = new TemplateQuestion(
             Guid.NewGuid(),
             templateId,
-            text,
             type,
             order,
             isRequired,
-            description,
             settingsJson
         );
+
+        // Create the default translation with the provided content
+        var translation = TemplateQuestionTranslation.Create(
+            question.Id,
+            languageCode,
+            text,
+            description,
+            null, // translatedSettings
+            isDefault: true
+        );
+
+        question._translations.Add(translation);
+        question.DefaultLanguage = languageCode.ToLowerInvariant();
+
+        return question;
+    }
+
+    #region Localization Methods
+
+    /// <summary>
+    /// Gets the default translation.
+    /// </summary>
+    public TemplateQuestionTranslation? GetDefaultTranslation() => TranslationHelper.GetDefault();
+
+    /// <summary>
+    /// Gets a translation for the specified language, falling back to default if not found.
+    /// </summary>
+    public TemplateQuestionTranslation? GetTranslation(string? languageCode) =>
+        TranslationHelper.Get(languageCode);
+
+    /// <summary>
+    /// Removes a translation from the question.
+    /// </summary>
+    public void RemoveTranslation(string languageCode) => TranslationHelper.Remove(languageCode);
+
+    /// <summary>
+    /// Sets a translation as the default.
+    /// </summary>
+    public void SetDefaultTranslation(string languageCode) =>
+        TranslationHelper.SetDefault(languageCode);
+
+    /// <summary>
+    /// Gets all available language codes.
+    /// </summary>
+    public IReadOnlyList<string> GetAvailableLanguages() =>
+        TranslationHelper.GetAvailableLanguages();
+
+    /// <summary>
+    /// Adds or updates a translation for the question.
+    /// </summary>
+    public void AddOrUpdateTranslation(
+        string languageCode,
+        string text,
+        string? description = null,
+        TranslatedQuestionSettings? translatedSettings = null
+    )
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            throw new ArgumentException("Language code is required.", nameof(languageCode));
+
+        if (string.IsNullOrWhiteSpace(text))
+            throw new ArgumentException("Question text is required.", nameof(text));
+
+        var existing = TranslationHelper.Find(languageCode);
+        if (existing != null)
+        {
+            existing.Update(text, description, translatedSettings);
+        }
+        else
+        {
+            var translation = TemplateQuestionTranslation.Create(
+                Id,
+                languageCode,
+                text,
+                description,
+                translatedSettings,
+                isDefault: false
+            );
+            TranslationHelper.Add(translation);
+        }
     }
 
     /// <summary>
-    /// Updates the question text.
+    /// Gets the localized text for the specified language.
     /// </summary>
-    public void UpdateText(string text)
+    public string GetLocalizedText(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Text ?? string.Empty;
+
+    /// <summary>
+    /// Gets the localized description for the specified language.
+    /// </summary>
+    public string? GetLocalizedDescription(string? languageCode = null) =>
+        GetTranslation(languageCode)?.Description;
+
+    /// <summary>
+    /// Gets the translated settings for the specified language.
+    /// </summary>
+    public TranslatedQuestionSettings? GetLocalizedSettings(string? languageCode = null) =>
+        GetTranslation(languageCode)?.GetTranslatedSettings();
+
+    #endregion
+
+    #region Mutation Methods
+
+    /// <summary>
+    /// Updates the question text for the specified language.
+    /// </summary>
+    /// <param name="text">The new text.</param>
+    /// <param name="languageCode">The language code (defaults to default language).</param>
+    public void UpdateText(string text, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(text))
             throw new ArgumentException("Question text cannot be empty.", nameof(text));
 
-        Text = text;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+        if (translation != null)
+        {
+            translation.Update(text, translation.Description, translation.GetTranslatedSettings());
+        }
+        else
+        {
+            AddOrUpdateTranslation(lang, text);
+        }
     }
 
     /// <summary>
@@ -140,11 +284,18 @@ public class TemplateQuestion : Entity<Guid>
     }
 
     /// <summary>
-    /// Updates the question description.
+    /// Updates the question description for the specified language.
     /// </summary>
-    public void UpdateDescription(string? description)
+    /// <param name="description">The new description.</param>
+    /// <param name="languageCode">The language code (defaults to default language).</param>
+    public void UpdateDescription(string? description, string? languageCode = null)
     {
-        Description = description;
+        var lang = languageCode ?? DefaultLanguage;
+        var translation = GetTranslation(lang);
+        if (translation != null)
+        {
+            translation.Update(translation.Text, description, translation.GetTranslatedSettings());
+        }
     }
 
     /// <summary>
@@ -154,6 +305,8 @@ public class TemplateQuestion : Entity<Guid>
     {
         SettingsJson = settings.ToJson();
     }
+
+    #endregion
 
     /// <summary>
     /// Gets the question settings.

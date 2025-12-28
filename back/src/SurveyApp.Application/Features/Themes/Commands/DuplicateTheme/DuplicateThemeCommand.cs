@@ -18,4 +18,5 @@ public record DuplicateThemeCommand : IRequest<Result<SurveyThemeDto>>, INamespa
 
     public Guid ThemeId { get; init; }
     public string? NewName { get; init; }
+    public string? LanguageCode { get; init; }
 }

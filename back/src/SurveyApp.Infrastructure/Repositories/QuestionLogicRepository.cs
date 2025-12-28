@@ -27,8 +27,11 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     {
         return await _context
             .QuestionLogics.Include(ql => ql.Question)
+            .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
+            .ThenInclude(q => q!.Translations)
             .Include(ql => ql.TargetQuestion)
+            .ThenInclude(q => q!.Translations)
             .FirstOrDefaultAsync(ql => ql.Id == id, cancellationToken);
     }
 
@@ -39,7 +42,9 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     {
         return await _context
             .QuestionLogics.Include(ql => ql.SourceQuestion)
+            .ThenInclude(q => q!.Translations)
             .Include(ql => ql.TargetQuestion)
+            .ThenInclude(q => q!.Translations)
             .Where(ql => ql.QuestionId == questionId)
             .OrderBy(ql => ql.Priority)
             .ToListAsync(cancellationToken);
@@ -52,8 +57,11 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     {
         return await _context
             .QuestionLogics.Include(ql => ql.Question)
+            .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
+            .ThenInclude(q => q!.Translations)
             .Include(ql => ql.TargetQuestion)
+            .ThenInclude(q => q!.Translations)
             .Where(ql => ql.Question.SurveyId == surveyId)
             .OrderBy(ql => ql.Question.Order)
             .ThenBy(ql => ql.Priority)
@@ -67,7 +75,9 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     {
         return await _context
             .QuestionLogics.Include(ql => ql.Question)
+            .ThenInclude(q => q.Translations)
             .Include(ql => ql.TargetQuestion)
+            .ThenInclude(q => q!.Translations)
             .Where(ql => ql.SourceQuestionId == sourceQuestionId)
             .OrderBy(ql => ql.Priority)
             .ToListAsync(cancellationToken);
@@ -80,7 +90,9 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     {
         return await _context
             .QuestionLogics.Include(ql => ql.Question)
+            .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
+            .ThenInclude(q => q!.Translations)
             .Where(ql => ql.TargetQuestionId == targetQuestionId)
             .OrderBy(ql => ql.Priority)
             .ToListAsync(cancellationToken);

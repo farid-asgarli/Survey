@@ -61,18 +61,22 @@ public class GetSurveysQueryHandler(
             cancellationToken
         );
 
+        // Map surveys - Title and Description come from default translation via computed properties
         var dtos = surveys
             .Select(s => new SurveyListItemDto
             {
                 Id = s.Id,
                 Title = s.Title,
                 Description = s.Description,
+                Type = s.Type,
+                CxMetricType = s.CxMetricType,
                 Status = s.Status,
                 ResponseCount = s.Responses.Count,
                 QuestionCount = s.Questions.Count,
                 CreatedAt = s.CreatedAt,
                 PublishedAt = s.PublishedAt,
                 ClosedAt = s.ClosedAt,
+                DefaultLanguage = s.DefaultLanguage,
             })
             .ToList();
 

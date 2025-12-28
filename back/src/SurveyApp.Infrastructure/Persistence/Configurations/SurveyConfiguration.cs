@@ -12,13 +12,11 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
 
         builder.HasKey(s => s.Id);
 
-        builder.Property(s => s.Title).IsRequired().HasMaxLength(200);
-
-        builder.Property(s => s.Description).HasMaxLength(2000);
-
-        builder.Property(s => s.WelcomeMessage).HasMaxLength(1000);
-
-        builder.Property(s => s.ThankYouMessage).HasMaxLength(1000);
+        // Ignore computed properties that are resolved from translations
+        builder.Ignore(s => s.Title);
+        builder.Ignore(s => s.Description);
+        builder.Ignore(s => s.WelcomeMessage);
+        builder.Ignore(s => s.ThankYouMessage);
 
         builder
             .Property(s => s.Type)
