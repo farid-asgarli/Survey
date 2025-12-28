@@ -1,0 +1,122 @@
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using SurveyApp.Application.Common.Exceptions;
+
+namespace SurveyApp.API.Middleware;
+
+public class ExceptionHandlingMiddleware(
+    RequestDelegate next,
+    ILogger<ExceptionHandlingMiddleware> logger,
+    IStringLocalizer<ExceptionHandlingMiddleware> localizer
+)
+{
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger = logger;
+    private readonly IStringLocalizer<ExceptionHandlingMiddleware> _localizer = localizer;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        var problemDetails = CreateProblemDetails(context, exception);
+
+        context.Response.StatusCode =
+            problemDetails.Status ?? (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = "application/problem+json";
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
+    }
+
+    private ProblemDetails CreateProblemDetails(HttpContext context, Exception exception)
+    {
+        return exception switch
+        {
+            ValidationException validationException => new ValidationProblemDetails(
+                validationException.Errors
+            )
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = _localizer["Errors.ValidationErrors"],
+                Status = (int)HttpStatusCode.BadRequest,
+                Instance = context.Request.Path,
+            },
+
+            NotFoundException notFoundException => new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = "Resource not found.",
+                Status = (int)HttpStatusCode.NotFound,
+                Detail = notFoundException.Message,
+                Instance = context.Request.Path,
+            },
+
+            ForbiddenAccessException => new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+                Title = "Access denied.",
+                Status = (int)HttpStatusCode.Forbidden,
+                Detail = _localizer["Errors.PermissionDenied"],
+                Instance = context.Request.Path,
+            },
+
+            NamespaceException namespaceException => new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "Namespace error.",
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail = namespaceException.Message,
+                Instance = context.Request.Path,
+            },
+
+            UnauthorizedAccessException => new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "Unauthorized.",
+                Status = (int)HttpStatusCode.Unauthorized,
+                Detail = _localizer["Errors.AuthenticationRequired"],
+                Instance = context.Request.Path,
+            },
+
+            _ => CreateInternalServerError(context, exception),
+        };
+    }
+
+    private ProblemDetails CreateInternalServerError(HttpContext context, Exception exception)
+    {
+        _logger.LogError(exception, "An unhandled exception occurred");
+
+        var problemDetails = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Title = _localizer["Errors.InternalError"],
+            Status = (int)HttpStatusCode.InternalServerError,
+            Detail = _localizer["Errors.UnexpectedError"],
+            Instance = context.Request.Path,
+        };
+
+#if DEBUG
+        problemDetails.Extensions["exception"] = exception.ToString();
+#endif
+
+        return problemDetails;
+    }
+}
+
+public static class ExceptionHandlingMiddlewareExtensions
+{
+    public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<ExceptionHandlingMiddleware>();
+    }
+}

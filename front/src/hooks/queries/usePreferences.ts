@@ -1,0 +1,177 @@
+// React Query hooks for User Preferences operations
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { preferencesApi } from '@/services';
+import { usePreferencesStore, defaultDashboard, defaultSurveyBuilder } from '@/stores';
+import { toast } from '@/components/ui';
+import type { UserPreferences, UpdateUserPreferencesRequest } from '@/types';
+
+// Query keys
+export const preferencesKeys = {
+  all: ['preferences'] as const,
+  current: () => [...preferencesKeys.all, 'current'] as const,
+};
+
+/**
+ * Hook to fetch current user preferences
+ * Automatically syncs with local store
+ */
+export function useUserPreferences() {
+  const setPreferences = usePreferencesStore((s) => s.setPreferences);
+  const setLoading = usePreferencesStore((s) => s.setLoading);
+
+  return useQuery({
+    queryKey: preferencesKeys.current(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const preferences = await preferencesApi.getPreferences();
+        // Ensure dashboard and surveyBuilder exist with defaults
+        const normalizedPreferences: UserPreferences = {
+          ...preferences,
+          dashboard: preferences.dashboard || defaultDashboard,
+          surveyBuilder: preferences.surveyBuilder || defaultSurveyBuilder,
+        };
+        setPreferences(normalizedPreferences);
+        return normalizedPreferences;
+      } finally {
+        setLoading(false);
+      }
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
+  });
+}
+
+/**
+ * Hook to update user preferences
+ * Optimistically updates local store and syncs with backend
+ */
+export function useUpdatePreferences() {
+  const queryClient = useQueryClient();
+  const setPreferences = usePreferencesStore((s) => s.setPreferences);
+  const setSaving = usePreferencesStore((s) => s.setSaving);
+  const currentPreferences = usePreferencesStore((s) => s.preferences);
+
+  return useMutation({
+    mutationFn: async (data: UpdateUserPreferencesRequest) => {
+      setSaving(true);
+      return preferencesApi.updatePreferences(data);
+    },
+    onMutate: async (newData) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: preferencesKeys.current() });
+
+      // Snapshot the previous value
+      const previousPreferences = queryClient.getQueryData<UserPreferences>(preferencesKeys.current());
+
+      // Optimistically update the local store
+      const optimisticPreferences: UserPreferences = {
+        ...currentPreferences,
+        ...(newData.themeMode && { themeMode: newData.themeMode }),
+        ...(newData.colorPalette && { colorPalette: newData.colorPalette }),
+        accessibility: {
+          ...currentPreferences.accessibility,
+          ...(newData.accessibility || {}),
+        },
+        regional: {
+          ...currentPreferences.regional,
+          ...(newData.regional || {}),
+        },
+        notifications: {
+          ...currentPreferences.notifications,
+          ...(newData.notifications || {}),
+        },
+        dashboard: {
+          ...currentPreferences.dashboard,
+          ...(newData.dashboard || {}),
+        },
+        surveyBuilder: {
+          ...currentPreferences.surveyBuilder,
+          ...(newData.surveyBuilder || {}),
+        },
+        onboarding: {
+          ...currentPreferences.onboarding,
+          ...(newData.onboarding || {}),
+        },
+      };
+
+      setPreferences(optimisticPreferences);
+      queryClient.setQueryData(preferencesKeys.current(), optimisticPreferences);
+
+      return { previousPreferences };
+    },
+    onError: (_err, _newData, context) => {
+      // Revert to previous state on error
+      if (context?.previousPreferences) {
+        setPreferences(context.previousPreferences);
+        queryClient.setQueryData(preferencesKeys.current(), context.previousPreferences);
+      }
+      toast.error('Failed to save preferences');
+    },
+    onSuccess: (data) => {
+      // Update with server response
+      const normalizedData: UserPreferences = {
+        ...data,
+        dashboard: data.dashboard || defaultDashboard,
+        surveyBuilder: data.surveyBuilder || defaultSurveyBuilder,
+      };
+      setPreferences(normalizedData);
+      queryClient.setQueryData(preferencesKeys.current(), normalizedData);
+    },
+    onSettled: () => {
+      setSaving(false);
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: preferencesKeys.current() });
+    },
+  });
+}
+
+/**
+ * Hook to sync preferences when user logs in
+ */
+export function useSyncPreferencesOnLogin() {
+  const queryClient = useQueryClient();
+  const setPreferences = usePreferencesStore((s) => s.setPreferences);
+
+  return async () => {
+    try {
+      const preferences = await preferencesApi.getPreferences();
+      const normalizedPreferences: UserPreferences = {
+        ...preferences,
+        dashboard: preferences.dashboard || defaultDashboard,
+        surveyBuilder: preferences.surveyBuilder || defaultSurveyBuilder,
+      };
+      setPreferences(normalizedPreferences);
+      queryClient.setQueryData(preferencesKeys.current(), normalizedPreferences);
+    } catch (error) {
+      // If fetching fails, keep local preferences
+      console.warn('Failed to sync preferences from server:', error);
+    }
+  };
+}
+
+/**
+ * Convenience hook to update a single preference value
+ */
+export function useUpdateSinglePreference() {
+  const updatePreferences = useUpdatePreferences();
+
+  return {
+    updateThemeMode: (themeMode: UserPreferences['themeMode']) => updatePreferences.mutate({ themeMode }),
+
+    updateColorPalette: (colorPalette: UserPreferences['colorPalette']) => updatePreferences.mutate({ colorPalette }),
+
+    updateAccessibility: (accessibility: Partial<UserPreferences['accessibility']>) => updatePreferences.mutate({ accessibility }),
+
+    updateRegional: (regional: Partial<UserPreferences['regional']>) => updatePreferences.mutate({ regional }),
+
+    updateNotifications: (notifications: Partial<UserPreferences['notifications']>) => updatePreferences.mutate({ notifications }),
+
+    updateDashboard: (dashboard: Partial<UserPreferences['dashboard']>) => updatePreferences.mutate({ dashboard }),
+
+    updateSurveyBuilder: (surveyBuilder: Partial<UserPreferences['surveyBuilder']>) => updatePreferences.mutate({ surveyBuilder }),
+
+    isPending: updatePreferences.isPending,
+  };
+}

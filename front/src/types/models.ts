@@ -1,0 +1,1060 @@
+// Domain models for Survey App
+// All enums are imported from enums.ts and use numeric values
+
+export {
+  SubscriptionTier,
+  MemberRole,
+  SurveyStatus,
+  QuestionType,
+  NpsQuestionType,
+  RatingStyle,
+  YesNoStyle,
+  LogicOperator,
+  LogicAction,
+  LinkType,
+  DistributionStatus,
+  RecipientStatus,
+  EmailTemplateType,
+  ButtonStyle,
+  ThemeLayout,
+  LogoPosition,
+  ProgressBarStyle,
+  BackgroundImagePosition,
+  RecurrencePattern,
+  RunStatus,
+  AudienceType,
+  NpsCategory,
+  NpsTrendDirection,
+  NpsTrendGroupBy,
+  NpsSegmentBy,
+  ExportFormat,
+  NamespacePermission,
+  DayOfWeek,
+  // Label maps for display (static fallbacks)
+  SubscriptionTierLabels,
+  MemberRoleLabels,
+  SurveyStatusLabels,
+  QuestionTypeLabels,
+  RatingStyleLabels,
+  YesNoStyleLabels,
+  LogicOperatorLabels,
+  LogicActionLabels,
+  LinkTypeLabels,
+  DistributionStatusLabels,
+  RecipientStatusLabels,
+  EmailTemplateTypeLabels,
+  ButtonStyleLabels,
+  ThemeLayoutLabels,
+  LogoPositionLabels,
+  ProgressBarStyleLabels,
+  RecurrencePatternLabels,
+  RunStatusLabels,
+  AudienceTypeLabels,
+  NpsCategoryLabels,
+  NpsSegmentByLabels,
+  ExportFormatLabels,
+  NamespacePermissionLabels,
+  DayOfWeekLabels,
+  BackgroundImagePositionLabels,
+  // Localized label getter functions
+  getSubscriptionTierLabel,
+  getMemberRoleLabel,
+  getSurveyStatusLabel,
+  getQuestionTypeLabel,
+  getRatingStyleLabel,
+  getYesNoStyleLabel,
+  getLogicOperatorLabel,
+  getLogicActionLabel,
+  getLinkTypeLabel,
+  getDistributionStatusLabel,
+  getRecipientStatusLabel,
+  getEmailTemplateTypeLabel,
+  getButtonStyleLabel,
+  getThemeLayoutLabel,
+  getLogoPositionLabel,
+  getProgressBarStyleLabel,
+  getRecurrencePatternLabel,
+  getRunStatusLabel,
+  getAudienceTypeLabel,
+  getNpsCategoryLabel,
+  getNpsSegmentByLabel,
+  getExportFormatLabel,
+  getNamespacePermissionLabel,
+  getDayOfWeekLabel,
+  getBackgroundImagePositionLabel,
+} from './enums';
+
+import {
+  SubscriptionTier,
+  MemberRole,
+  SurveyStatus,
+  QuestionType,
+  NpsQuestionType,
+  LogicOperator,
+  LogicAction,
+  LinkType,
+  DistributionStatus,
+  RecipientStatus,
+  EmailTemplateType,
+  ButtonStyle,
+  ThemeLayout,
+  LogoPosition,
+  ProgressBarStyle,
+  BackgroundImagePosition,
+  RecurrencePattern,
+  RunStatus,
+  AudienceType,
+  NpsCategory,
+  NpsTrendDirection,
+  DayOfWeek,
+} from './enums';
+
+// ============ User & Auth ============
+export interface User {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  token: string;
+  newPassword: string;
+}
+
+// User profile update types
+export interface UpdateProfileRequest {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface UploadAvatarResponse {
+  avatarUrl: string;
+}
+
+// ============ Namespace ============
+export interface Namespace {
+  id: string;
+  name: string;
+  slug: string;
+  subscriptionTier: SubscriptionTier;
+  isActive: boolean;
+  maxUsers: number;
+  maxSurveys: number;
+  description?: string;
+  logoUrl?: string;
+  memberCount: number;
+  surveyCount: number;
+  ownerId?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface NamespaceMembership {
+  membershipId: string;
+  namespaceId?: string;
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  avatarUrl?: string;
+  profilePictureUrl?: string;
+  role: MemberRole;
+  joinedAt: string;
+}
+
+export interface CreateNamespaceRequest {
+  name: string;
+  slug: string;
+  description?: string;
+  logoUrl?: string;
+}
+
+export interface InviteMemberRequest {
+  email: string;
+  role: MemberRole;
+}
+
+// ============ Survey ============
+export interface Survey {
+  id: string;
+  namespaceId: string;
+  title: string;
+  description?: string;
+  status: SurveyStatus;
+  // Backend fields
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  accessToken?: string;
+  // Settings
+  allowAnonymousResponses?: boolean;
+  allowMultipleResponses: boolean;
+  maxResponses?: number;
+  // Dates
+  startsAt?: string;
+  endsAt?: string;
+  publishedAt?: string;
+  closedAt?: string;
+  createdAt: string;
+  updatedAt?: string;
+  createdBy?: string;
+  // Theme
+  themeId?: string;
+  presetThemeId?: string;
+  themeCustomizations?: string;
+  // Counts - questionCount is used in list views, questions array in detail views
+  questionCount: number;
+  responseCount: number;
+  // Questions array - only populated in detail views (SurveyDetailsDto)
+  questions?: Question[];
+}
+
+export interface CreateSurveyRequest {
+  title: string;
+  description?: string;
+  themeId?: string;
+}
+
+export interface UpdateSurveyRequest {
+  surveyId: string;
+  title?: string;
+  description?: string;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  allowAnonymousResponses?: boolean;
+  allowMultipleResponses?: boolean;
+  maxResponses?: number;
+  startsAt?: string;
+  endsAt?: string;
+}
+
+// ============ Question ============
+export interface Question {
+  id: string;
+  surveyId: string;
+  text: string;
+  type: QuestionType;
+  order: number;
+  isRequired: boolean;
+  description?: string;
+  settings?: QuestionSettings;
+  // NPS support
+  isNpsQuestion?: boolean;
+  npsType?: NpsQuestionType;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface QuestionSettings {
+  // Options for choice questions (backend stores as string[])
+  options?: string[];
+
+  // Rating/Scale settings
+  minValue?: number;
+  maxValue?: number;
+  minLabel?: string;
+  maxLabel?: string;
+
+  // Matrix settings (backend uses matrixRows/matrixColumns)
+  matrixRows?: string[];
+  matrixColumns?: string[];
+
+  // Text settings
+  maxLength?: number;
+  minLength?: number;
+  placeholder?: string;
+
+  // File upload settings
+  allowedFileTypes?: string[];
+  maxFileSize?: number;
+  maxFiles?: number;
+
+  // Selection settings
+  maxSelections?: number;
+  allowOther?: boolean;
+
+  // Other settings (frontend only)
+  randomizeOptions?: boolean;
+  otherLabel?: string;
+  validationPattern?: string;
+  validationMessage?: string;
+  validationPreset?: string;
+
+  // Rating style (stars, hearts, thumbs, smileys, numbers)
+  ratingStyle?: number;
+
+  // Yes/No style (text, thumbs, toggle, checkX)
+  yesNoStyle?: number;
+}
+
+export interface CreateQuestionRequest {
+  type: QuestionType;
+  text: string;
+  description?: string;
+  isRequired?: boolean;
+  order?: number;
+  settings?: QuestionSettings;
+}
+
+export interface UpdateQuestionRequest {
+  type?: QuestionType;
+  text?: string;
+  description?: string;
+  isRequired?: boolean;
+  order?: number;
+  settings?: QuestionSettings;
+}
+
+// ============ Question Logic ============
+export interface QuestionLogic {
+  id: string;
+  questionId: string;
+  sourceQuestionId: string;
+  sourceQuestionText?: string;
+  operator: LogicOperator;
+  conditionValue: string;
+  action: LogicAction;
+  targetQuestionId?: string;
+  targetQuestionText?: string;
+  priority: number;
+}
+
+export interface CreateLogicRequest {
+  sourceQuestionId: string;
+  operator: LogicOperator;
+  conditionValue: string;
+  action: LogicAction;
+  targetQuestionId?: string;
+  priority?: number;
+}
+
+// ============ Survey Links ============
+export interface SurveyLink {
+  id: string;
+  surveyId: string;
+  type: LinkType;
+  token: string;
+  fullUrl: string;
+  name?: string;
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  isActive: boolean;
+  expiresAt?: string;
+  maxUses?: number;
+  usageCount: number;
+  responseCount: number;
+  hasPassword: boolean;
+  createdAt: string;
+  // Extended fields (from SurveyLinkDetailsDto)
+  prefillData?: Record<string, string>;
+}
+
+export interface CreateLinkRequest {
+  type: LinkType;
+  name?: string;
+  maxResponses?: number;
+  expiresAt?: string;
+  password?: string;
+  prefillData?: Record<string, string>;
+  source?: string;
+  medium?: string;
+  campaign?: string;
+}
+
+export interface UpdateLinkRequest extends Partial<CreateLinkRequest> {
+  isActive?: boolean;
+}
+
+export interface BulkLinkGenerationRequest {
+  count: number;
+  namePrefix?: string;
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  expiresAt?: string;
+}
+
+// BulkLinkGenerationResult matching backend BulkLinkGenerationResultDto
+export interface BulkLinkGenerationResult {
+  requestedCount: number;
+  generatedCount: number;
+  links: SurveyLink[];
+}
+
+// ============ Email Distribution ============
+export interface EmailDistribution {
+  id: string;
+  surveyId: string;
+  surveyTitle?: string;
+  emailTemplateId?: string;
+  emailTemplateName?: string;
+  subject: string;
+  body: string;
+  senderName?: string;
+  senderEmail?: string;
+  status: DistributionStatus;
+  scheduledAt?: string;
+  sentAt?: string;
+  totalRecipients: number;
+  sentCount: number;
+  deliveredCount: number;
+  openedCount: number;
+  clickedCount: number;
+  bouncedCount: number;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface DistributionRecipient {
+  id: string;
+  distributionId: string;
+  email: string;
+  name?: string;
+  status: RecipientStatus;
+  sentAt?: string;
+  openedAt?: string;
+  clickedAt?: string;
+}
+
+export interface RecipientInput {
+  email: string;
+  name?: string;
+}
+
+export interface CreateDistributionRequest {
+  emailTemplateId?: string;
+  subject: string;
+  body: string;
+  recipients: RecipientInput[];
+  senderName?: string;
+  senderEmail?: string;
+}
+
+// ============ Email Templates ============
+export interface EmailTemplate {
+  id: string;
+  namespaceId: string;
+  name: string;
+  subject: string;
+  htmlBody: string;
+  plainTextBody?: string;
+  /** JSON representation of the visual editor design state (blocks and styles) */
+  designJson?: string;
+  type: EmailTemplateType;
+  isDefault: boolean;
+  availablePlaceholders?: string[];
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface EmailTemplateSummary {
+  id: string;
+  name: string;
+  type: EmailTemplateType;
+  subject: string;
+  isDefault: boolean;
+  createdAt: string;
+}
+
+export interface CreateEmailTemplateRequest {
+  name: string;
+  subject: string;
+  htmlBody: string;
+  plainTextBody?: string;
+  /** JSON representation of the visual editor design state (blocks and styles) */
+  designJson?: string;
+  type: EmailTemplateType;
+  isDefault?: boolean;
+}
+
+export interface UpdateEmailTemplateRequest {
+  name?: string;
+  subject?: string;
+  htmlBody?: string;
+  plainTextBody?: string;
+  /** JSON representation of the visual editor design state (blocks and styles) */
+  designJson?: string;
+  type?: EmailTemplateType;
+  isDefault?: boolean;
+}
+
+// ============ Survey Themes ============
+export interface ThemeColors {
+  // Primary
+  primary: string;
+  onPrimary: string;
+  primaryContainer: string;
+  onPrimaryContainer: string;
+
+  // Secondary
+  secondary: string;
+  onSecondary: string;
+  secondaryContainer: string;
+  onSecondaryContainer: string;
+
+  // Surface
+  surface: string;
+  surfaceContainerLowest: string;
+  surfaceContainerLow: string;
+  surfaceContainer: string;
+  surfaceContainerHigh: string;
+  surfaceContainerHighest: string;
+  onSurface: string;
+  onSurfaceVariant: string;
+
+  // Outline
+  outline: string;
+  outlineVariant: string;
+
+  // Semantic
+  error: string;
+  success: string;
+
+  // Legacy - deprecated but kept for backward compatibility
+  background: string;
+  text: string;
+  accent: string;
+}
+
+export interface ThemeTypography {
+  fontFamily: string;
+  headingFontFamily: string;
+  baseFontSize: number;
+}
+
+export interface ThemeLayoutSettings {
+  layout: ThemeLayout;
+  backgroundImageUrl?: string;
+  backgroundPosition: BackgroundImagePosition;
+  showProgressBar: boolean;
+  progressBarStyle: ProgressBarStyle;
+}
+
+export interface ThemeBranding {
+  logoUrl?: string;
+  logoPosition: LogoPosition;
+  showPoweredBy: boolean;
+}
+
+export interface ThemeButton {
+  style: ButtonStyle;
+  textColor: string;
+}
+
+export interface SurveyTheme {
+  id: string;
+  namespaceId?: string;
+  name: string;
+  description?: string;
+  isDefault: boolean;
+  isPublic: boolean;
+  isSystem: boolean;
+  isDark: boolean;
+  colors?: ThemeColors;
+  typography?: ThemeTypography;
+  layout?: ThemeLayoutSettings;
+  branding?: ThemeBranding;
+  button?: ThemeButton;
+  customCss?: string;
+  usageCount: number;
+  createdAt: string;
+  updatedAt?: string;
+  // Flat fields (from list/summary endpoint)
+  primaryColor?: string;
+  secondaryColor?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  fontFamily?: string;
+  fontSize?: number;
+  logoUrl?: string;
+  backgroundImageUrl?: string;
+  buttonStyle?: ButtonStyle;
+}
+
+// ============ Survey Templates ============
+export type TemplateCategory = 'feedback' | 'hr' | 'research' | 'events' | 'education' | 'marketing' | 'healthcare' | 'other';
+
+export interface TemplateQuestion {
+  id: string;
+  text: string;
+  type: QuestionType;
+  order: number;
+  isRequired: boolean;
+  description?: string;
+  settings?: QuestionSettings;
+}
+
+export interface SurveyTemplate {
+  id: string;
+  namespaceId: string;
+  name: string;
+  description?: string;
+  category?: string;
+  isPublic: boolean;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  defaultAllowAnonymous?: boolean;
+  defaultAllowMultipleResponses?: boolean;
+  usageCount: number;
+  questionCount: number;
+  createdAt: string;
+  createdBy?: string;
+  questions: TemplateQuestion[];
+  updatedAt?: string;
+}
+
+export interface CreateTemplateRequest {
+  name: string;
+  description?: string;
+  category: TemplateCategory;
+  isPublic?: boolean;
+}
+
+export interface CreateTemplateFromSurveyRequest {
+  surveyId: string;
+  name: string;
+  description?: string;
+  category: TemplateCategory;
+  isPublic?: boolean;
+}
+
+export interface UpdateTemplateRequest {
+  name?: string;
+  description?: string;
+  category?: TemplateCategory;
+  isPublic?: boolean;
+}
+
+export interface CreateSurveyFromTemplateRequest {
+  title: string;
+  description?: string;
+}
+
+// ============ Responses ============
+export interface SurveyResponse {
+  id: string;
+  surveyId: string;
+  respondentId?: string;
+  respondentEmail?: string;
+  respondentName?: string;
+  linkId?: string;
+  isComplete: boolean;
+  startedAt: string;
+  submittedAt?: string;
+  completedAt?: string;
+  timeSpentSeconds?: number;
+  ipAddress?: string;
+  answers: Answer[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface ResponseListItem {
+  id: string;
+  respondentId?: string;
+  respondentEmail?: string;
+  respondentName?: string;
+  isComplete: boolean;
+  isCompleted: boolean;
+  startedAt: string;
+  submittedAt?: string;
+  completedAt?: string;
+  timeSpentSeconds?: number;
+  answerCount: number;
+}
+
+export interface Answer {
+  id: string;
+  questionId: string;
+  answerValue: string;
+  answeredAt: string;
+  values?: string[];
+  fileUrls?: string[];
+  matrixAnswers?: Record<string, string>;
+}
+
+export interface SubmitResponseRequest {
+  linkShortCode?: string;
+  answers: Array<{
+    questionId: string;
+    answerValue: string;
+  }>;
+  respondentEmail?: string;
+}
+
+// ============ Recurring Surveys ============
+// Keep RecurrenceFrequency as alias for backward compatibility
+export type RecurrenceFrequency = RecurrencePattern;
+
+export interface RecurringSurvey {
+  id: string;
+  surveyId: string;
+  surveyTitle: string;
+  namespaceId: string;
+  name: string;
+  isActive: boolean;
+  // Schedule
+  pattern: RecurrencePattern;
+  cronExpression?: string;
+  sendTime: string;
+  timezoneId: string;
+  daysOfWeek?: DayOfWeek[];
+  dayOfMonth?: number;
+  // Audience
+  audienceType: AudienceType;
+  recipientEmails?: string[];
+  audienceListId?: string;
+  recipientCount: number;
+  // Options
+  sendReminders: boolean;
+  reminderDaysAfter: number;
+  maxReminders: number;
+  customSubject?: string;
+  customMessage?: string;
+  // Tracking
+  nextRunAt?: string;
+  lastRunAt?: string;
+  totalRuns: number;
+  endsAt?: string;
+  maxRuns?: number;
+  // Audit
+  createdAt: string;
+  createdBy?: string;
+}
+
+export interface RecurringSurveyListItem {
+  id: string;
+  surveyId: string;
+  surveyTitle: string;
+  name: string;
+  isActive: boolean;
+  pattern: RecurrencePattern;
+  nextRunAt?: string;
+  lastRunAt?: string;
+  totalRuns: number;
+  recipientCount: number;
+  createdAt: string;
+}
+
+export interface RecurringRun {
+  id: string;
+  recurringSurveyId: string;
+  runNumber: number;
+  scheduledAt: string;
+  startedAt?: string;
+  completedAt?: string;
+  status: RunStatus;
+  recipientsCount: number;
+  sentCount: number;
+  failedCount: number;
+  responsesCount: number;
+  errorMessage?: string;
+  durationMs: number;
+}
+
+export interface UpcomingRun {
+  recurringSurveyId: string;
+  recurringSurveyName: string;
+  surveyTitle: string;
+  scheduledAt: string;
+  estimatedRecipients: number;
+}
+
+export interface CreateRecurringSurveyRequest {
+  surveyId: string;
+  name: string;
+  // Schedule
+  pattern: RecurrencePattern;
+  cronExpression?: string;
+  sendTime: string;
+  timezoneId: string;
+  daysOfWeek?: DayOfWeek[];
+  dayOfMonth?: number;
+  // Audience
+  audienceType: AudienceType;
+  recipientEmails?: string[];
+  audienceListId?: string;
+  // Options
+  sendReminders?: boolean;
+  reminderDaysAfter?: number;
+  maxReminders?: number;
+  customSubject?: string;
+  customMessage?: string;
+  // End conditions
+  endsAt?: string;
+  maxRuns?: number;
+  // Activation
+  activateImmediately?: boolean;
+}
+
+export interface UpdateRecurringSurveyRequest {
+  name?: string;
+  // Schedule
+  pattern?: RecurrencePattern;
+  cronExpression?: string;
+  sendTime?: string;
+  timezoneId?: string;
+  daysOfWeek?: DayOfWeek[];
+  dayOfMonth?: number;
+  // Audience
+  audienceType?: AudienceType;
+  recipientEmails?: string[];
+  audienceListId?: string;
+  // Options
+  sendReminders?: boolean;
+  reminderDaysAfter?: number;
+  maxReminders?: number;
+  customSubject?: string;
+  customMessage?: string;
+  // End conditions
+  endsAt?: string;
+  maxRuns?: number;
+}
+
+// ============ Analytics ============
+export interface SurveyAnalytics {
+  surveyId: string;
+  surveyTitle: string;
+  totalResponses: number;
+  completedResponses: number;
+  partialResponses: number;
+  completionRate: number;
+  averageCompletionTimeSeconds: number;
+  firstResponseAt?: string;
+  lastResponseAt?: string;
+  responsesByDate?: Record<string, number>;
+  questions: QuestionAnalytics[];
+}
+
+export interface MatrixAnalyticsCell {
+  row: string;
+  column: string;
+  count: number;
+  percentage: number;
+}
+
+export interface MatrixAnalyticsData {
+  rows: string[];
+  columns: string[];
+  cells: MatrixAnalyticsCell[];
+  totalResponses: number;
+}
+
+export interface QuestionAnalytics {
+  questionId: string;
+  questionText: string;
+  questionType: QuestionType;
+  totalAnswers: number;
+  skippedCount: number;
+  answerOptions?: AnswerOptionStats[];
+  averageRating?: number;
+  averageValue?: number;
+  minValue?: number;
+  maxValue?: number;
+  sampleAnswers?: string[];
+  matrixData?: MatrixAnalyticsData;
+}
+
+export interface AnswerOptionStats {
+  option: string;
+  count: number;
+  percentage: number;
+}
+
+// ============ NPS Analytics ============
+export interface NpsScore {
+  score: number;
+  promoters: number;
+  passives: number;
+  detractors: number;
+  totalResponses: number;
+  promoterPercentage: number;
+  passivePercentage: number;
+  detractorPercentage: number;
+  category: NpsCategory;
+  categoryDescription: string;
+}
+
+export interface NpsTrendPoint {
+  date: string;
+  score: number;
+  responseCount: number;
+  promoters: number;
+  passives: number;
+  detractors: number;
+}
+
+export interface NpsTrend {
+  surveyId: string;
+  dataPoints: NpsTrendPoint[];
+  averageScore: number;
+  changeFromPrevious: number;
+  trendDirection: NpsTrendDirection;
+  fromDate: string;
+  toDate: string;
+}
+
+export interface NpsQuestion {
+  questionId: string;
+  questionText: string;
+  npsType: NpsQuestionType;
+  score: NpsScore;
+}
+
+export interface SurveyNpsSummary {
+  surveyId: string;
+  surveyTitle: string;
+  overallScore?: NpsScore;
+  questions: NpsQuestion[];
+  fromDate?: string;
+  toDate?: string;
+}
+
+// Response Trends
+export interface ResponseTrend {
+  surveyId: string;
+  fromDate: string;
+  toDate: string;
+  totalResponses: number;
+  averageResponsesPerDay: number;
+  dailyResponses: Record<string, number>;
+  responsesByHour: Record<number, number>;
+  responsesByDayOfWeek: Record<string, number>;
+}
+
+// ============ User Preferences/Settings ============
+
+export type ThemeMode = 'light' | 'dark' | 'system';
+export type ColorPalette = 'purple' | 'blue' | 'green' | 'orange' | 'pink' | 'teal';
+export type FontSizeScale = 'small' | 'medium' | 'large' | 'extra-large';
+export type DateFormatOption = 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY-MM-DD';
+export type TimeFormatOption = '12h' | '24h';
+export type DecimalSeparator = 'dot' | 'comma';
+export type ThousandsSeparator = 'comma' | 'dot' | 'space' | 'none';
+export type SupportedLanguage = 'en' | 'az' | 'ru';
+export type ViewMode = 'grid' | 'list';
+export type SortField = 'title' | 'createdAt' | 'updatedAt' | 'status' | 'responseCount';
+export type SortOrder = 'asc' | 'desc';
+export type QuestionNumberingStyle = 'numbers' | 'letters' | 'none';
+export type PageBreakBehavior = 'auto' | 'manual' | 'per-question';
+export type HomeWidget = 'stats' | 'recent' | 'quick-actions' | 'pinned' | 'analytics';
+
+export interface AccessibilitySettings {
+  highContrastMode: boolean;
+  reducedMotion: boolean;
+  screenReaderOptimized: boolean;
+  fontSizeScale: FontSizeScale;
+  dyslexiaFriendlyFont: boolean;
+}
+
+export interface RegionalSettings {
+  language: SupportedLanguage;
+  dateFormat: DateFormatOption;
+  timeFormat: TimeFormatOption;
+  timezone: string;
+  decimalSeparator: DecimalSeparator;
+  thousandsSeparator: ThousandsSeparator;
+}
+
+export interface NotificationSettings {
+  emailNotifications: boolean;
+  responseAlerts: boolean;
+  weeklyDigest: boolean;
+  marketingEmails: boolean;
+  completionAlerts: boolean;
+  distributionReports: boolean;
+}
+
+export interface DashboardSettings {
+  defaultViewMode: ViewMode;
+  itemsPerPage: number;
+  sidebarCollapsed: boolean;
+  defaultSortField: SortField;
+  defaultSortOrder: SortOrder;
+  homeWidgets: HomeWidget[];
+  pinnedSurveyIds: string[];
+}
+
+export interface SurveyBuilderSettings {
+  defaultQuestionRequired: boolean;
+  defaultThemeId: string | null;
+  defaultWelcomeMessage: string;
+  defaultThankYouMessage: string;
+  autoSaveInterval: number;
+  questionNumberingStyle: QuestionNumberingStyle;
+  showQuestionDescriptions: boolean;
+  defaultPageBreakBehavior: PageBreakBehavior;
+}
+
+export type OnboardingStatus = 'not_started' | 'in_progress' | 'completed' | 'skipped';
+
+export interface OnboardingSettings {
+  status: OnboardingStatus;
+  completedAt: string | null;
+  currentStep: number;
+  hasSeenWelcomeTour: boolean;
+  hasCompletedProfileSetup: boolean;
+  hasCreatedFirstSurvey: boolean;
+  // Getting Started Guide tracking
+  hasCompletedGettingStarted: boolean;
+  gettingStartedStep: number;
+  gettingStartedCompletedAt: string | null;
+}
+
+export interface UserPreferences {
+  // Appearance
+  themeMode: ThemeMode;
+  colorPalette: ColorPalette;
+  // Grouped settings
+  accessibility: AccessibilitySettings;
+  regional: RegionalSettings;
+  notifications: NotificationSettings;
+  dashboard: DashboardSettings;
+  surveyBuilder: SurveyBuilderSettings;
+  onboarding: OnboardingSettings;
+}
+
+export interface UpdateUserPreferencesRequest {
+  themeMode?: ThemeMode;
+  colorPalette?: ColorPalette;
+  accessibility?: Partial<AccessibilitySettings>;
+  regional?: Partial<RegionalSettings>;
+  notifications?: Partial<NotificationSettings>;
+  dashboard?: Partial<DashboardSettings>;
+  surveyBuilder?: Partial<SurveyBuilderSettings>;
+  onboarding?: Partial<OnboardingSettings>;
+}

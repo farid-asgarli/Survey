@@ -1,0 +1,3613 @@
+{
+  "common": {
+    "appName": "Sorğu Tətbiqi",
+    "loading": "Yüklənir...",
+    "loadingApp": "Yüklənir",
+    "signingIn": "Daxil olursunuz",
+    "initializing": "Hazırlanır",
+    "loadingResources": "Resurslar yüklənir",
+    "preparingWorkspace": "İş sahəniz hazırlanır",
+    "almostReady": "Demək olar ki hazırdır",
+    "save": "Yadda saxla",
+    "saveChanges": "Dəyişiklikləri Saxla",
+    "cancel": "Ləğv et",
+    "delete": "Sil",
+    "deleting": "Silinir...",
+    "edit": "Redaktə et",
+    "create": "Yarat",
+    "close": "Bağla",
+    "confirm": "Təsdiq et",
+    "back": "Geri",
+    "next": "Növbəti",
+    "previous": "Əvvəlki",
+    "submit": "Göndər",
+    "search": "Axtar",
+    "filter": "Filtr",
+    "refresh": "Yenilə",
+    "viewAll": "Hamısına bax",
+    "actions": "Əməliyyatlar",
+    "status": "Status",
+    "date": "Tarix",
+    "time": "Vaxt",
+    "name": "Ad",
+    "description": "Təsvir",
+    "title": "Başlıq",
+    "type": "Növ",
+    "required": "Tələb olunur",
+    "optional": "İstəyə bağlı",
+    "yes": "Bəli",
+    "no": "Xeyr",
+    "all": "Hamısı",
+    "none": "Heç biri",
+    "noResults": "Nəticə tapılmadı",
+    "error": "Xəta",
+    "success": "Uğurlu",
+    "warning": "Xəbərdarlıq",
+    "info": "Məlumat",
+    "duplicate": "Kopyala",
+    "updated": "Yeniləndi",
+    "remove": "Sil",
+    "add": "Əlavə et",
+    "clearAll": "Hamısını Təmizlə",
+    "continue": "Davam et",
+    "dismissNotification": "Bildirişi bağla",
+    "changeLanguage": "Dili dəyiş",
+    "selectLanguage": "Dil seç",
+    "closeDrawer": "Paneli bağla",
+    "viewMode": "Görünüş rejimi",
+    "gridView": "Şəbəkə görünüşü",
+    "listView": "Siyahı görünüşü",
+    "progress": "İrəliləyiş",
+    "breadcrumb": "Naviqasiya",
+    "openMenu": "Menyunu aç",
+    "notifications": "Bildirişlər",
+    "workspaceOptions": "İş sahəsi seçimləri",
+    "example": "Nümunə",
+    "saving": "Saxlanılır...",
+    "unknown": "Naməlum",
+    "clearFilters": "Filtrləri təmizlə",
+    "clearSearch": "Axtarışı təmizlə",
+    "tryAgain": "Yenidən cəhd edin",
+    "retry": "Yenidən cəhd et",
+    "failedToLoad": "Yüklənə bilmədi",
+    "somethingWentWrong": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "saved": "Bütün dəyişikliklər saxlanıldı",
+    "clickToInsert": "daxil etmək üçün klikləyin",
+    "insert": "Daxil et",
+    "done": "Tamamlandı",
+    "copy": "Kopyala",
+    "default": "Standart",
+    "enabled": "Aktiv",
+    "disabled": "Deaktiv",
+    "comingSoon": "Tezliklə",
+    "disconnect": "Bağlantını kəs",
+    "connect": "Qoşul",
+    "email": "E-poçt"
+  },
+  "emptyState": {
+    "surveys": {
+      "title": "İlk sorğunuzu yaradın",
+      "titleFiltered": "Sorğu tapılmadı",
+      "description": "Yeni sorğu yaradaraq rəy toplamağa başlayın",
+      "descriptionFiltered": "Filtrləri və ya axtarış sorğusunu dəyişdirməyə çalışın",
+      "createButton": "Sorğu yarat"
+    },
+    "responses": {
+      "title": "Hələ cavab yoxdur",
+      "titleFiltered": "Cavab tapılmadı",
+      "description": "İnsanlar sorğunuzu doldurmağa başladıqda cavablar burada görünəcək",
+      "descriptionFiltered": "Filtrləri və ya tarix aralığını dəyişdirməyə çalışın"
+    },
+    "templates": {
+      "title": "Hələ şablon yoxdur",
+      "titleFiltered": "Şablon tapılmadı",
+      "description": "Sorğu yaratmağı sürətləndirmək üçün təkrar istifadə edilə bilən şablonlar yaradın",
+      "descriptionFiltered": "Axtarışı və ya kateqoriya filtrini dəyişdirməyə çalışın",
+      "createButton": "Şablon yarat"
+    },
+    "search": {
+      "title": "Nəticə tapılmadı",
+      "description": "Fərqli axtarış termini sınayın",
+      "descriptionWithQuery": "\"{{query}}\" üçün nəticə tapılmadı"
+    }
+  },
+  "auth": {
+    "backToLogin": "Girişə qayıt",
+    "signIn": "Daxil ol",
+    "signOut": "Çıxış",
+    "signUp": "Qeydiyyat",
+    "login": "Giriş",
+    "register": "Qeydiyyatdan keç",
+    "email": "E-poçt",
+    "password": "Şifrə",
+    "confirmPassword": "Şifrəni təsdiqlə",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "rememberMe": "Məni xatırla",
+    "forgotPassword": "Şifrəni unutmusunuz?",
+    "resetPassword": "Şifrəni sıfırla",
+    "newPassword": "Yeni şifrə",
+    "currentPassword": "Cari şifrə",
+    "createAccount": "Hesab yarat",
+    "alreadyHaveAccount": "Artıq hesabınız var?",
+    "dontHaveAccount": "Hesabınız yoxdur?",
+    "enterCredentials": "Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin",
+    "createYourAccount": "Başlamaq üçün hesab yaradın",
+    "welcomeBack": "Xoş gəlmisiniz",
+    "signInToContinue": "Hesabınıza davam etmək üçün daxil olun",
+    "joinUs": "Daha yaxşı sorğular yaradan minlərlə komandaya qoşulun",
+    "illustrationTitle": "İlham verən sorğular yaradın",
+    "illustrationSubtitle": "Məlumatlar toplayın, auditoriyanızı anlayın və məlumatlara əsaslanan qərarlar verin.",
+    "registerIllustrationTitle": "Cəmiyyətimizə qoşulun",
+    "registerIllustrationSubtitle": "Komandalar üçün nəzərdə tutulmuş güclü alətlərlə sorğular yaradın, paylaşın və təhlil edin.",
+    "loginFailed": "Giriş uğursuz oldu",
+    "invalidCredentials": "Yanlış e-poçt və ya şifrə",
+    "passwordResetSent": "Şifrə sıfırlama linki e-poçtunuza göndərildi",
+    "passwordResetSuccess": "Şifrə uğurla sıfırlandı",
+    "registrationSuccess": "Qeydiyyat uğurla tamamlandı",
+    "emailPlaceholder": "siz@numune.com",
+    "tagline": "Asanlıqla sorğular yaradın və idarə edin"
+  },
+  "navigation": {
+    "dashboard": "İdarə paneli",
+    "surveys": "Sorğular",
+    "responses": "Cavablar",
+    "analytics": "Analitika",
+    "templates": "Şablonlar",
+    "themes": "Mövzular",
+    "distributions": "Paylaşım",
+    "emailTemplates": "E-poçt şablonları",
+    "recurringSurveys": "Təkrarlanan sorğular",
+    "settings": "Parametrlər",
+    "workspaces": "İş sahələri",
+    "profile": "Profil",
+    "appearance": "Görünüş",
+    "openMenu": "Menyunu aç"
+  },
+  "dashboard": {
+    "title": "İdarə paneli",
+    "greeting": {
+      "morning": "Sabahınız xeyir",
+      "afternoon": "Günortanız xeyir",
+      "evening": "Axşamınız xeyir"
+    },
+    "subtitle": "Bu gün sorğularınızla bağlı nələr baş verir.",
+    "personalWorkspace": "Şəxsi iş sahəsi",
+    "stats": {
+      "totalSurveys": "Ümumi sorğular",
+      "activeSurveys": "Aktiv sorğular",
+      "draftSurveys": "Qaralama sorğular",
+      "totalResponses": "Ümumi cavablar",
+      "allTimeSurveys": "Yaradılmış bütün sorğular",
+      "currentlyCollecting": "Hal-hazırda cavab toplayan",
+      "readyToPublish": "Nəşrə hazır",
+      "acrossAllSurveys": "Bütün sorğularda"
+    },
+    "recentSurveys": "Son sorğular",
+    "quickActions": "Sürətli əməliyyatlar",
+    "createSurvey": "Sorğu yarat",
+    "newSurvey": "Yeni sorğu",
+    "startFromScratch": "Sıfırdan başla",
+    "useTemplate": "Şablon istifadə et",
+    "preBuiltTemplates": "Hazır şablonlar",
+    "distribute": "Paylaş",
+    "shareYourSurveys": "Sorğularınızı paylaşın",
+    "viewAnalytics": "Analitikaya bax",
+    "insightsReports": "Hesabatlar və təhlillər",
+    "noSurveysYet": "Hələ sorğu yoxdur",
+    "createFirstSurvey": "Başlamaq üçün ilk sorğunuzu yaradın"
+  },
+  "surveys": {
+    "title": "Sorğular",
+    "description": "Sorğularınızı yaradın və idarə edin",
+    "createSurvey": "Sorğu yarat",
+    "newSurvey": "Yeni sorğu",
+    "editSurvey": "Sorğunu redaktə et",
+    "deleteSurvey": "Sorğunu sil",
+    "duplicateSurvey": "Sorğunu kopyala",
+    "publishSurvey": "Sorğunu nəşr et",
+    "closeSurvey": "Sorğunu bağla",
+    "archiveSurvey": "Sorğunu arxivlə",
+    "surveyTitle": "Sorğu başlığı",
+    "surveyDescription": "Sorğu təsviri",
+    "questions": "Suallar",
+    "responses": "cavab",
+    "unknown": "Naməlum sorğu",
+    "status": {
+      "draft": "Qaralama",
+      "published": "Nəşr edilmiş",
+      "active": "Aktiv",
+      "closed": "Bağlanmış",
+      "archived": "Arxivlənmiş"
+    },
+    "empty": {
+      "title": "Hələ sorğu yoxdur",
+      "description": "Rəy toplamağa başlamaq üçün yeni sorğu yaradın",
+      "searchTitle": "Sorğu tapılmadı",
+      "searchDescription": "Axtarış və ya filtrləri dəyişdirməyə çalışın"
+    },
+    "deleteConfirm": {
+      "title": "Sorğunu sil",
+      "description": "Bu sorğunu silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz."
+    },
+    "filters": {
+      "all": "Hamısı",
+      "draft": "Qaralamalar",
+      "published": "Nəşr edilmiş",
+      "closed": "Bağlanmış"
+    },
+    "form": {
+      "titlePlaceholder": "Sorğu başlığını daxil edin",
+      "descriptionPlaceholder": "Sorğu təsvirini daxil edin (istəyə bağlı)",
+      "descriptionLabel": "Təsvir (istəyə bağlı)",
+      "addDescription": "Təsvir əlavə et",
+      "getStarted": "Başlamaq üçün sorğunuza ad verin",
+      "createButton": "Sorğu yarat",
+      "updateButton": "Sorğunu yenilə"
+    },
+    "suggestions": {
+      "title": "Sürətli başlanğıc təklifləri",
+      "customerSatisfaction": "Müştəri məmnuniyyəti sorğusu",
+      "employeeFeedback": "İşçi rəyi formu",
+      "eventRegistration": "Tədbir qeydiyyatı",
+      "productFeedback": "Məhsul rəyi",
+      "npsSurvey": "NPS sorğusu",
+      "marketResearch": "Bazar araşdırması"
+    },
+    "searchPlaceholder": "Sorğularda axtar...",
+    "count": "{{count}} sorğu",
+    "showingAll": "Bütün {{count}} sorğu göstərilir",
+    "showingOf": "{{total}} sorğudan {{shown}} göstərilir",
+    "publishConfirm": "\"{{title}}\" sorğusunu nəşr etmək istədiyinizdən əminsiniz? Nəşr edildikdən sonra sorğu paylaşıla bilən link vasitəsilə əlçatan olacaq və cavablar toplamağa başlayacaq.",
+    "closeConfirm": "\"{{title}}\" sorğusunu bağlamaq istədiyinizdən əminsiniz? Sorğu yeni cavablar qəbul etməyi dayandıracaq.",
+    "publishSuccess": "Sorğu uğurla nəşr edildi",
+    "publishError": "Sorğu nəşr edilə bilmədi",
+    "closeSuccess": "Sorğu uğurla bağlandı",
+    "closeError": "Sorğu bağlana bilmədi"
+  },
+  "analytics": {
+    "title": "Analitika",
+    "description": "Sorğu performansı və cavab məlumatları",
+    "overview": "Ümumi baxış",
+    "responseRate": "Cavab nisbəti",
+    "completionRate": "Tamamlanma nisbəti",
+    "averageTime": "Orta vaxt",
+    "totalViews": "Ümumi baxışlar",
+    "noData": "Analitik məlumat yoxdur",
+    "selectSurvey": "Sorğu seçin...",
+    "selectSurveyTitle": "Sorğu seçin",
+    "selectSurveyDesc": "Analitika və cavab məlumatlarını görmək üçün açılan siyahıdan sorğu seçin",
+    "loadError": "Analitika yüklənə bilmədi",
+    "loadErrorDesc": "Analitika məlumatlarını yükləyərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "noResponses": "Hələ cavab yoxdur",
+    "noResponsesDesc": "Bu sorğuya hələ cavab verilməyib. Məlumat toplamağa başlamaq üçün paylaşın!",
+    "viewSurvey": "Sorğuya bax",
+    "responseTrend": "Cavab trendi",
+    "responseTrendDesc": "Gündəlik cavablar",
+    "responseDistribution": "Cavab paylanması",
+    "completionBreakdown": "Tamamlanma statusu",
+    "completed": "Tamamlandı",
+    "partial": "Qismən",
+    "questionInsights": "Sual təhlilləri",
+    "npsQuestions": "NPS sualları"
+  },
+  "templates": {
+    "title": "Şablonlar",
+    "description": "Hazır sorğu şablonlarından başlayın",
+    "useTemplate": "Şablonu istifadə et",
+    "preview": "Önbaxış",
+    "createTemplate": "Şablon yarat",
+    "searchPlaceholder": "Şablonlarda axtar...",
+    "public": "İctimai",
+    "myTemplates": "Şablonlarım",
+    "noFound": "Şablon tapılmadı",
+    "noFoundFilters": "Filtrləri dəyişdirməyə çalışın",
+    "noFoundDesc": "Başlamaq üçün ilk şablonunuzu yaradın",
+    "loadError": "Şablonlar yüklənə bilmədi",
+    "loadErrorDesc": "Zəhmət olmasa səhifəni yeniləyin",
+    "categories": {
+      "all": "Hamısı",
+      "feedback": "Rəy",
+      "research": "Araşdırma",
+      "hr": "İnsan resursları",
+      "education": "Təhsil",
+      "marketing": "Marketinq"
+    },
+    "empty": {
+      "title": "Şablon mövcud deyil",
+      "description": "Şablonlar tezliklə əlavə ediləcək"
+    },
+    "form": {
+      "title": "Şablon yarat",
+      "description": "Təkrar istifadə edilə bilən sorğu şablonu yaradın",
+      "name": "Şablon Adı",
+      "namePlaceholder": "məs., Müştəri Məmnuniyyəti Sorğusu",
+      "templateDescription": "Təsvir",
+      "descriptionPlaceholder": "Bu şablonun nə üçün olduğunu təsvir edin...",
+      "descriptionHelperText": "İsteğe bağlı - başqalarının bu şablondan nə vaxt istifadə edəcəyini başa düşməsinə kömək edir",
+      "category": "Kateqoriya",
+      "selectSurvey": "Sorğu seçin",
+      "loadingSurveys": "Sorğular yüklənir...",
+      "chooseSurvey": "Kopyalamaq üçün sorğu seçin",
+      "questions": "{{count}} sual",
+      "visibility": {
+        "public": "İctimai Şablon",
+        "private": "Şəxsi Şablon",
+        "publicDescription": "Təşkilatınızdakı hər kəs bunu istifadə edə bilər",
+        "privateDescription": "Yalnız siz bu şablonu görə və istifadə edə bilərsiniz"
+      },
+      "modes": {
+        "scratch": "Sıfırdan",
+        "scratchDescription": "Boş şablonla başlayın",
+        "survey": "Sorğudan",
+        "surveyDescription": "Mövcud sorğunu kopyalayın"
+      }
+    }
+  },
+  "themes": {
+    "title": "Mövzular",
+    "description": "Sorğularınızın görünüşünü fərdiləşdirin",
+    "createTheme": "Mövzu yarat",
+    "editTheme": "Mövzunu redaktə et",
+    "deleteTheme": "Mövzunu sil",
+    "applyTheme": "Mövzunu tətbiq et",
+    "themeName": "Mövzu adı",
+    "preview": "Önbaxış",
+    "colors": "Rənglər",
+    "primaryColor": "Əsas rəng",
+    "backgroundColor": "Arxa fon rəngi",
+    "textColor": "Mətn rəngi",
+    "searchPlaceholder": "Mövzuları axtar...",
+    "system": "Sistem",
+    "custom": "Xüsusi",
+    "setAsDefault": "Defolt olaraq təyin et",
+    "buttons": "düymələr",
+    "theme": "mövzu",
+    "themes": "mövzular",
+    "emptyDescription": "Sorğularınızı fərdiləşdirmək üçün ilk xüsusi mövzunuzu yaradın",
+    "empty": {
+      "title": "Hələ mövzu yoxdur",
+      "description": "Sorğularınız üçün xüsusi mövzular yaradın"
+    },
+    "appearance": "Görünüş",
+    "customizeLook": "Sorğunuzun görünüşünü fərdiləşdirin",
+    "resetToDefaults": "Defoltlara qaytar",
+    "presets": "Hazır seçimlər",
+    "customize": "Fərdiləşdir",
+    "saved": "Saxlanmış",
+    "colorPalettes": "Rəng palitraları",
+    "default": "Defolt",
+    "selected": "Seçilmiş",
+    "light": "İşıqlı",
+    "dark": "Qaranlıq",
+    "quickOptions": "Sürətli seçimlər",
+    "progressIndicator": "İrəliləyiş göstəricisi",
+    "showProgressBar": "Tamamlanma irəliləyişini göstər",
+    "questionNumbers": "Sual nömrələri",
+    "displayQuestionNumbers": "S1, S2 və s. göstər",
+    "typography": "Tipografiya",
+    "cornerRadius": "Künc radiusu",
+    "primary": "Əsas",
+    "secondary": "İkinci",
+    "accent": "Vurğu",
+    "background": "Arxa fon",
+    "applySuccess": "Mövzu uğurla tətbiq edildi",
+    "applyError": "Mövzu tətbiq edilə bilmədi",
+    "savedThemes": "Saxlanmış mövzular",
+    "noSavedThemes": "Hələ saxlanmış mövzu yoxdur",
+    "createThemeDesc": "Burada saxlamaq üçün xüsusi mövzu yaradın"
+  },
+  "distributions": {
+    "title": "Paylaşım",
+    "description": "Sorğu linkləri və e-poçt kampaniyaları",
+    "shareLink": "Linki paylaş",
+    "copyLink": "Linki kopyala",
+    "linkCopied": "Link buferə kopyalandı",
+    "emailCampaign": "E-poçt kampaniyası",
+    "qrCode": "QR kod",
+    "embedCode": "Yerləşdirmə kodu",
+    "socialShare": "Sosial şəbəkələrdə paylaş",
+    "surveyLinks": "Sorğu linkləri",
+    "emailCampaigns": "E-poçt kampaniyaları",
+    "selectSurvey": "Sorğu seçin",
+    "selectASurvey": "Sorğu seçin",
+    "selectSurveyForLinks": "Paylaşım linklərini idarə etmək üçün açılan menyudan sorğu seçin",
+    "selectSurveyForEmail": "E-poçt paylaşımlarını idarə etmək üçün açılan menyudan sorğu seçin",
+    "searchPlaceholder": "Axtar...",
+    "newDistribution": "Yeni paylaşım",
+    "untitledDistribution": "Adsız paylaşım",
+    "created": "Yaradıldı",
+    "viewDetails": "Detalları gör",
+    "cancelSchedule": "Cədvəli ləğv et",
+    "sendNow": "İndi göndər",
+    "sending": "Göndərilir...",
+    "openRate": "Açılma faizi",
+    "clickRate": "Klik faizi",
+    "scheduledFor": "Planlaşdırılıb",
+    "readyToSend": "{{count}} alıcıya göndərməyə hazır",
+    "recipientsCount": "{{count}} alıcı",
+    "statusDraft": "Qaralama",
+    "statusScheduled": "Planlaşdırılıb",
+    "statusSending": "Göndərilir",
+    "statusSent": "Göndərildi",
+    "statusFailed": "Uğursuz",
+    "statusCancelled": "Ləğv edildi",
+    "sendDistribution": "Paylaşımı göndər",
+    "sendConfirm": "Bu paylaşımı indi göndərmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+    "cancelDistribution": "Paylaşımı ləğv et",
+    "cancelConfirm": "Bu planlaşdırılmış paylaşımı ləğv etmək istədiyinizə əminsiniz?",
+    "deleteDistribution": "Paylaşımı sil",
+    "deleteConfirm": "Bu paylaşımı silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+    "noFound": "Paylaşım tapılmadı",
+    "tryAdjustFilters": "Filtrlərinizi dəyişməyə çalışın",
+    "createFirst": "İlk paylaşımınızı yaradın",
+    "createFirstDesc": "Cavab toplamaq üçün sorğuları e-poçtla göndərin",
+    "distributionDetails": "Paylaşım detalları"
+  },
+  "recipientImporter": {
+    "enterEmail": "Zəhmət olmasa e-poçt ünvanı daxil edin",
+    "invalidEmail": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+    "duplicateEmail": "Bu e-poçt artıq siyahıda var",
+    "maxRecipientsError": "Maksimum {{max}} alıcı icazə verilir",
+    "emailPlaceholder": "E-poçt ünvanını daxil edin...",
+    "dropCsvHere": "CSV faylınızı bura atın",
+    "orClickToBrowse": "və ya gözdən keçirin",
+    "browseFiles": "Faylları Gözdən Keçir",
+    "recipientCount": "{{count}} alıcı",
+    "recipientCount_plural": "{{count}} alıcı",
+    "moreRecipients": "+{{count}} daha",
+    "importTitle": "Alıcıları İdxal Et",
+    "importDescription": "Siyahınıza əlavə etmədən əvvəl idxal nəticələrini nəzərdən keçirin",
+    "validEmails": "{{count}} düzgün e-poçt",
+    "validEmails_plural": "{{count}} düzgün e-poçt",
+    "willBeAdded": "Alıcı siyahınıza əlavə ediləcək",
+    "duplicatesSkipped": "{{count}} dublikat atıldı",
+    "duplicatesSkipped_plural": "{{count}} dublikat atıldı",
+    "alreadyInList": "Artıq siyahınızda var",
+    "invalidEmails": "{{count}} səhv e-poçt",
+    "invalidEmails_plural": "{{count}} səhv e-poçt",
+    "moreInvalid": "+{{count}} daha",
+    "importButton": "{{count}} E-poçt İdxal Et"
+  },
+  "createDistribution": {
+    "title": "E-poçt Paylaşımı Yarat",
+    "description": "Sorğunuzu paylaşmaq üçün yeni e-poçt kampaniyası yaradın",
+    "descriptionWithTitle": "\"{{title}}\" sorğusunu e-poçt ilə paylaşın",
+    "steps": {
+      "recipients": "Alıcılar",
+      "recipientsDesc": "Kimlər alacaq?",
+      "content": "Məzmun",
+      "contentDesc": "E-poçtunuzu fərdiləşdirin",
+      "schedule": "Planlaşdırma",
+      "scheduleDesc": "Nə vaxt göndəriləcək"
+    },
+    "addRecipients": "Alıcı Əlavə Et",
+    "importOrAddManually": "E-poçtları idxal edin və ya əl ilə əlavə edin",
+    "noRecipientsYet": "Hələ alıcı yoxdur",
+    "noRecipientsDesc": "Başlamaq üçün e-poçt ünvanlarını əl ilə əlavə edin və ya CSV faylından idxal edin",
+    "recipientsAdded": "{{count}} alıcı əlavə edildi",
+    "recipientsAdded_plural": "{{count}} alıcı əlavə edildi",
+    "readyToProceed": "Növbəti addıma keçməyə hazırdır",
+    "emailContent": "E-poçt Məzmunu",
+    "customizeMessage": "E-poçt mesajınızı fərdiləşdirin",
+    "chooseTemplate": "Şablon Seçin",
+    "senderDetails": "Göndərən Məlumatları",
+    "namePlaceholder": "Adınız və ya Şirkət",
+    "emailPlaceholder": "reply@example.com",
+    "subjectLine": "Mövzu",
+    "subjectPlaceholder": "E-poçt mövzusunu daxil edin...",
+    "subjectRequired": "Mövzu tələb olunur",
+    "emailBody": "E-poçt Mətni",
+    "bodyPlaceholder": "E-poçt məzmununuzu yazın...",
+    "bodyRequired": "E-poçt mətni tələb olunur",
+    "surveyLinkHint": "{{surveyLink}} yer tutucusu kimi istifadə edin — həqiqi sorğu linki ilə əvəz ediləcək",
+    "whenToSend": "Nə Vaxt Göndəriləcək",
+    "chooseWhenEmailsGoOut": "E-poçtların nə vaxt göndəriləcəyini seçin",
+    "sendNow": "İndi Göndər",
+    "deliverImmediately": "Dərhal çatdır",
+    "scheduleLabel": "Planlaşdır",
+    "pickDateTime": "Tarix və vaxt seçin",
+    "selectDateTime": "Tarix və Vaxt Seçin",
+    "scheduledFor": "Planlaşdırılıb",
+    "summary": "Paylaşım Xülasəsi",
+    "summaryRecipients": "Alıcılar",
+    "summarySubject": "Mövzu",
+    "summarySendTime": "Göndərmə Vaxtı",
+    "now": "İndi",
+    "creating": "Yaradılır...",
+    "scheduleSuccess": "Paylaşım uğurla planlaşdırıldı!",
+    "createSuccess": "Paylaşım yaradıldı və göndərilir!",
+    "createError": "Paylaşım yaradılmadı. Zəhmət olmasa yenidən cəhd edin."
+  },
+  "settings": {
+    "title": "Parametrlər",
+    "description": "Hesabınızı və seçimlərinizi idarə edin",
+    "groups": {
+      "account": "Hesab",
+      "preferences": "Seçimlər",
+      "personalization": "Fərdiləşdirmə",
+      "about": "Haqqında"
+    },
+    "about": {
+      "title": "Haqqında",
+      "description": "Tətbiq məlumatları və tanışlıq",
+      "version": "Versiya {{version}}",
+      "buildDate": "Yaradılma tarixi",
+      "appInfo": "Tətbiq məlumatları",
+      "onboardingSection": "Tanışlıq",
+      "onboardingDescription": "Tanışlıq təcrübənizi idarə edin",
+      "onboardingStatus": "Status",
+      "onboardingCompleted": "Tanışlıq tamamlandı",
+      "onboardingSkipped": "Tanışlıq keçildi",
+      "onboardingNotStarted": "Başlamayıb",
+      "onboardingInProgress": "Davam edir",
+      "restartOnboarding": "Tanışlığı yenidən başlat",
+      "restartOnboardingDesc": "Xoş gəldiniz turunu yenidən keçin və seçimlərinizi yenidən konfiqurasiya edin",
+      "restartSuccess": "Tanışlıq uğurla yenidən başladıldı",
+      "madeWith": "Survey App komandası tərəfindən ❤️ ilə hazırlanıb",
+      "setupWizard": "Quraşdırma Sehrbazı",
+      "setupWizardDescription": "İlkin quraşdırma təcrübəsini yenidən başladın",
+      "restart": "Yenidən başlat",
+      "resources": "Resurslar",
+      "resourcesDescription": "Faydalı bağlantılar və sənədlər",
+      "documentation": "Sənədlər",
+      "support": "Dəstək",
+      "privacy": "Məxfilik Siyasəti",
+      "terms": "Xidmət Şərtləri"
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Şəxsi məlumatlarınızı idarə edin",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-poçt",
+      "avatar": "Profil şəkli",
+      "changeAvatar": "Şəkli dəyiş",
+      "removeAvatar": "Şəkli sil",
+      "saveChanges": "Dəyişiklikləri yadda saxla",
+      "updateSuccess": "Profil uğurla yeniləndi"
+    },
+    "security": {
+      "title": "Təhlükəsizlik",
+      "description": "Hesab təhlükəsizliyinizi idarə edin",
+      "changePassword": "Şifrəni dəyiş",
+      "currentPassword": "Cari şifrə",
+      "newPassword": "Yeni şifrə",
+      "confirmPassword": "Yeni şifrəni təsdiqlə",
+      "twoFactor": "İki faktorlu doğrulama",
+      "twoFactorDesc": "Əlavə təhlükəsizlik səviyyəsi əlavə edin",
+      "apiKeys": "API açarları",
+      "apiKeysDesc": "API açarlarınızı idarə edin",
+      "createApiKey": "API açarı yarat",
+      "createKey": "Açar yarat",
+      "apiKeyCreated": "API açarı yaradıldı",
+      "apiKeyCreatedDesc": "API açarınızı indi kopyalayın. Bir daha görə bilməyəcəksiniz!",
+      "apiKeyWarning": "API açarınızı mütləq indi kopyalayın. Bir daha görə bilməyəcəksiniz.",
+      "copyKey": "Açarı kopyala",
+      "keyCopied": "API açarı buferə kopyalandı",
+      "keyName": "Açar adı",
+      "keyNamePlaceholder": "Bu açar üçün ad daxil edin",
+      "keyScopes": "İcazələr",
+      "noApiKeys": "API açarı yoxdur",
+      "noApiKeysDesc": "Xarici xidmətlərlə inteqrasiya üçün ilk API açarınızı yaradın",
+      "deleteKey": "API açarını sil",
+      "deleteKeyConfirm": "Bu API açarını silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz.",
+      "passwordChanged": "Şifrə uğurla dəyişdirildi",
+      "scopes": {
+        "surveysRead": "Sorğuları Oxu",
+        "surveysReadDesc": "Sorğu detallarını və sualları görüntüləyin",
+        "surveysWrite": "Sorğuları Yaz",
+        "surveysWriteDesc": "Sorğuları yaradın, redaktə edin və silin",
+        "responsesRead": "Cavabları Oxu",
+        "responsesReadDesc": "Sorğu cavablarını görüntüləyin",
+        "responsesWrite": "Cavabları Yaz",
+        "responsesWriteDesc": "API vasitəsilə cavabları göndərin",
+        "analyticsRead": "Analitikanı Oxu",
+        "analyticsReadDesc": "Sorğu analitika məlumatlarına daxil olun"
+      }
+    },
+    "appearance": {
+      "title": "Görünüş",
+      "description": "Tətbiqin görünüşünü fərdiləşdirin",
+      "theme": "Mövzu",
+      "lightMode": "İşıqlı",
+      "darkMode": "Qaranlıq",
+      "systemMode": "Sistem",
+      "alwaysLight": "Həmişə işıqlı rejim",
+      "alwaysDark": "Həmişə qaranlıq rejim",
+      "matchSystem": "Sistem parametrlərinə uyğun",
+      "colorPalette": "Rəng palitrası",
+      "colorDesc": "İnterfeys üçün vurğu rəngini seçin",
+      "lavender": "Lavanda",
+      "ocean": "Okean",
+      "forest": "Meşə",
+      "sunset": "Gün batımı",
+      "rose": "Qızılgül",
+      "aqua": "Akva"
+    },
+    "accessibility": {
+      "title": "Əlçatanlıq",
+      "description": "Daha yaxşı təcrübə üçün əlçatanlıq xüsusiyyətlərini fərdiləşdirin",
+      "visual": {
+        "title": "Vizual Parametrlər",
+        "description": "Oxunaqlılığı artırmaq üçün vizual elementləri tənzimləyin"
+      },
+      "highContrast": {
+        "title": "Yüksək Kontrast Rejimi",
+        "description": "Daha yaxşı görünürlük üçün kontrastı artırın"
+      },
+      "screenReader": {
+        "title": "Ekran Oxuyucu Optimallaşdırması",
+        "description": "Təkmilləşdirilmiş fokus göstəriciləri və ARIA dəstəyi"
+      },
+      "motion": {
+        "title": "Hərəkət və Animasiya",
+        "description": "Animasiya və hərəkət effektlərini idarə edin"
+      },
+      "reducedMotion": {
+        "title": "Hərəkəti Azalt",
+        "description": "Animasiya və keçidləri minimuma endirin"
+      },
+      "font": {
+        "title": "Şrift Fərdiləşdirməsi",
+        "description": "Oxunaqlılıq üçün optimallaşdırılmış şriftlər seçin"
+      },
+      "fontSize": {
+        "title": "Mətn Ölçüsü"
+      },
+      "fontSizes": {
+        "small": "Kiçik",
+        "medium": "Normal",
+        "large": "Böyük",
+        "extraLarge": "Çox Böyük"
+      },
+      "dyslexiaFont": {
+        "title": "Disleksiya Dostu Şrift",
+        "description": "Daha asan oxuma üçün artırılmış aralıq ilə OpenSans şriftini istifadə edin"
+      },
+      "preview": {
+        "title": "Önizləmə",
+        "sampleTitle": "Nümunə Başlıq",
+        "sampleText": "Mətnləriniz cari əlçatanlıq parametrləri ilə belə görünəcək. Oxu təcrübənizi fərdiləşdirmək üçün yuxarıdakı seçimləri tənzimləyin."
+      }
+    },
+    "regional": {
+      "title": "Dil və Regional",
+      "description": "Üstünlük verdiyiniz dil və regional formatları təyin edin",
+      "language": {
+        "title": "Dil",
+        "description": "Üstünlük verdiyiniz interfeys dilini seçin"
+      },
+      "dateTime": {
+        "title": "Tarix və Vaxt",
+        "description": "Tarix və vaxtın necə göstərildiyini konfiqurasiya edin"
+      },
+      "dateFormat": {
+        "title": "Tarix Formatı"
+      },
+      "timeFormat": {
+        "title": "Vaxt Formatı"
+      },
+      "timeFormats": {
+        "12h": "12-saatlıq",
+        "24h": "24-saatlıq"
+      },
+      "timezone": {
+        "title": "Vaxt Zonası",
+        "placeholder": "Vaxt zonası seçin...",
+        "helper": "Planlaşdırma və tarix/vaxtların göstərilməsi üçün istifadə olunur"
+      },
+      "numbers": {
+        "title": "Rəqəm Formatları",
+        "description": "Rəqəmlərin necə göstərildiyini konfiqurasiya edin"
+      },
+      "decimal": {
+        "title": "Onluq Ayırıcı",
+        "dot": "Nöqtə (1.5)",
+        "comma": "Vergül (1,5)"
+      },
+      "thousands": {
+        "title": "Minlik Ayırıcı",
+        "comma": "Vergül",
+        "dot": "Nöqtə",
+        "space": "Boşluq",
+        "none": "Heç biri"
+      }
+    },
+    "notifications": {
+      "title": "Bildirişlər",
+      "description": "Bildiriş parametrlərini konfiqurasiya edin",
+      "emailNotifications": "E-poçt bildirişləri",
+      "pushNotifications": "Ani bildirişlər",
+      "responseAlerts": "Cavab xəbərdarlıqları",
+      "weeklyDigest": "Həftəlik xülasə"
+    },
+    "dashboard": {
+      "title": "İdarə Paneli və UI",
+      "description": "Tətbiqin məzmunu necə göstərdiyini fərdiləşdirin",
+      "viewMode": "Standart Görünüş Rejimi",
+      "viewModeDesc": "Sorğuların və siyahıların standart olaraq necə göstəriləcəyini seçin",
+      "gridView": "Şəbəkə Görünüşü",
+      "listView": "Siyahı Görünüşü",
+      "listingPreferences": "Siyahı Seçimləri",
+      "listingPreferencesDesc": "Siyahılarda elementlərin necə göstəriləcəyini konfiqurasiya edin",
+      "itemsPerPage": "Səhifə Başına Element",
+      "itemsPerPageHint": "Daha çox element daha çox məzmun deməkdir, lakin performansa təsir edə bilər",
+      "sortBy": "Sıralama",
+      "sortOrder": "Sıra",
+      "sortByUpdated": "Son Yenilənmə",
+      "sortByCreated": "Yaradılma Tarixi",
+      "sortByTitle": "Başlıq",
+      "sortByStatus": "Status",
+      "sortByResponses": "Cavab Sayı",
+      "ascending": "Artan (A-Z, Köhnə-Yeni)",
+      "descending": "Azalan (Z-A, Yeni-Köhnə)",
+      "items6": "6 element",
+      "items12": "12 element",
+      "items18": "18 element",
+      "items24": "24 element",
+      "items36": "36 element",
+      "items48": "48 element",
+      "sidebarBehavior": "Yan Panel Davranışı",
+      "sidebarBehaviorDesc": "Yan panelin standart vəziyyətini idarə edin",
+      "collapsedByDefault": "Standart Olaraq Bağlı",
+      "collapsedByDefaultDesc": "Daha çox məzmun sahəsi üçün yan paneli minimuma endirilmiş olaraq başlat",
+      "homeWidgets": "Ana Səhifə Vidjetləri",
+      "homeWidgetsDesc": "İdarə panelinizdə hansı vidjetlərin göstəriləcəyini seçin",
+      "widgetStats": "Statistika İcmalı",
+      "widgetStatsDesc": "Sorğu saylarını və cavab cəmini göstər",
+      "widgetRecent": "Son Sorğular",
+      "widgetRecentDesc": "Son yenilənmiş sorğulara sürətli giriş",
+      "widgetQuickActions": "Sürətli Əməliyyatlar",
+      "widgetQuickActionsDesc": "Sorğu yaratmaq kimi ümumi tapşırıqlar üçün düymələr",
+      "widgetPinned": "Sabitlənmiş Sorğular",
+      "widgetPinnedDesc": "Sürətli giriş üçün sabitlənmiş sorğularınızı göstərin",
+      "widgetAnalytics": "Analitika Xülasəsi",
+      "widgetAnalyticsDesc": "Cavab tendensiyaları və metriklərin icmalı"
+    },
+    "surveyBuilder": {
+      "title": "Sorğu Qurucusu",
+      "description": "Yeni sorğular yaratmaq üçün standart parametrləri təyin edin",
+      "questionDefaults": "Sual Standartları",
+      "questionDefaultsDesc": "Yeni suallara tətbiq olunan standart parametrlər",
+      "requiredByDefault": "Standart Olaraq Tələb Olunur",
+      "requiredByDefaultDesc": "Yeni suallar tələb olunur kimi işarələnəcək",
+      "showDescriptions": "Sual Təsvirlərini Göstər",
+      "showDescriptionsDesc": "Hər sual üçün təsvir sahəsini göstər",
+      "numberingStyle": "Sual Nömrələməsi",
+      "numberingStyleDesc": "Sorğularda sualların necə nömrələnəcəyini seçin",
+      "numberingNumbers": "Rəqəmlər (1, 2, 3...)",
+      "numberingLetters": "Hərflər (A, B, C...)",
+      "numberingNone": "Nömrələmə Yoxdur",
+      "defaultTheme": "Standart Mövzu",
+      "defaultThemeDesc": "Yeni sorğulara avtomatik tətbiq olunan mövzu",
+      "selectTheme": "Mövzu seçin...",
+      "noDefaultTheme": "Standart yoxdur (sistem mövzusunu istifadə et)",
+      "defaultMessages": "Standart Mesajlar",
+      "defaultMessagesDesc": "Yeni sorğular üçün qarşılama və təşəkkür mesajlarını əvvəlcədən doldurun",
+      "welcomeMessage": "Qarşılama Mesajı",
+      "welcomeMessagePlaceholder": "Yeni sorğular üçün standart qarşılama mesajını daxil edin...",
+      "thankYouMessage": "Təşəkkür Mesajı",
+      "thankYouMessagePlaceholder": "Yeni sorğular üçün standart təşəkkür mesajını daxil edin...",
+      "autoSave": "Avtomatik Saxlama",
+      "autoSaveDesc": "Sorğuları redaktə edərkən dəyişiklikləri avtomatik saxla",
+      "autoSaveDisabled": "Deaktiv",
+      "autoSave15s": "Hər 15 saniyə",
+      "autoSave30s": "Hər 30 saniyə",
+      "autoSave1m": "Hər 1 dəqiqə",
+      "autoSave2m": "Hər 2 dəqiqə",
+      "autoSave5m": "Hər 5 dəqiqə",
+      "pageBreakBehavior": "Səhifə Fasiləsi Davranışı",
+      "pageBreakBehaviorDesc": "Sorğu səhifələrinin necə strukturlaşdırılacağını idarə edin",
+      "pageBreakAuto": "Avtomatik",
+      "pageBreakAutoDesc": "Sistem sual sayına əsasən optimal səhifə fasilələrini təyin edir",
+      "pageBreakManual": "Əl ilə",
+      "pageBreakManualDesc": "Yalnız açıq şəkildə yerləşdirdiyiniz yerlərdə səhifə fasiləsi əlavə edin",
+      "pageBreakPerQuestion": "Hər Sual Üçün Bir Səhifə",
+      "pageBreakPerQuestionDesc": "Hər sual öz səhifəsində görünür"
+    }
+  },
+  "workspaces": {
+    "title": "İş sahələri",
+    "description": "İş sahələrinizi və komandalarınızı idarə edin",
+    "workspace": "iş sahəsi",
+    "workspaces": "iş sahələri",
+    "createWorkspace": "İş sahəsi yarat",
+    "newWorkspace": "Yeni iş sahəsi",
+    "editWorkspace": "İş sahəsini redaktə et",
+    "deleteWorkspace": "İş sahəsini sil",
+    "workspaceName": "İş sahəsi adı",
+    "members": "Üzvlər",
+    "inviteMember": "Üzv dəvət et",
+    "role": "Rol",
+    "active": "Aktiv",
+    "settings": "İş sahəsi parametrləri",
+    "switchTo": "Bu iş sahəsinə keç",
+    "switchedTo": "{{name}} iş sahəsinə keçildi",
+    "welcome": "Xoş gəlmisiniz!",
+    "welcomeDescription": "Sorğular yaratmağa və komandanızla əməkdaşlıq etməyə başlamaq üçün ilk iş sahənizi yaradın.",
+    "createFirst": "İlk iş sahənizi yaradın",
+    "tryAdjustSearch": "Axtarış şərtlərinizi dəyişməyə çalışın",
+    "searchPlaceholder": "İş sahələrində axtar...",
+    "loadError": "İş sahələri yüklənə bilmədi",
+    "loadErrorDesc": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "roles": {
+      "owner": "Sahib",
+      "admin": "Admin",
+      "member": "Üzv",
+      "viewer": "Baxıcı"
+    },
+    "empty": {
+      "title": "Hələ iş sahəsi yoxdur",
+      "description": "Komandanızla əməkdaşlıq etmək üçün iş sahəsi yaradın"
+    },
+    "selectWorkspace": "İş sahəsi seçin",
+    "selectWorkspaceDesc": "Sorğulara baxmaq və idarə etmək üçün yan paneldən iş sahəsi seçin",
+    "create": {
+      "title": "Yeni İş Sahəsi Yarat",
+      "description": "Sorğularınızı təşkil etmək və komandanızla əməkdaşlıq etmək üçün yeni iş sahəsi qurun.",
+      "nameLabel": "İş Sahəsi Adı",
+      "namePlaceholder": "Mənim Möhtəşəm İş Sahəm",
+      "urlLabel": "İş Sahəsi URL",
+      "urlHelper": "Bu iş sahəsi URL-inizdə istifadə ediləcək",
+      "descriptionLabel": "Təsvir (İstəyə bağlı)",
+      "descriptionPlaceholder": "Bu iş sahəsinin qısa təsviri...",
+      "proTip": "Məsləhət",
+      "proTipText": "İş sahəsi yaradıldıqdan sonra iş sahəsi parametrlərindən komanda üzvlərini dəvət edə bilərsiniz.",
+      "creating": "Yaradılır...",
+      "success": "İş sahəsi uğurla yaradıldı!",
+      "error": "İş sahəsi yaradılmadı"
+    },
+    "validation": {
+      "nameRequired": "Ad tələb olunur",
+      "nameMinLength": "Ad ən azı 2 simvol olmalıdır",
+      "nameMaxLength": "Ad 100 simvoldan az olmalıdır",
+      "slugRequired": "Slug tələb olunur",
+      "slugFormat": "Slug yalnız kiçik hərflər, rəqəmlər və tire ehtiva edə bilər",
+      "slugMinLength": "Slug ən azı 2 simvol olmalıdır",
+      "slugMaxLength": "Slug 50 simvoldan az olmalıdır"
+    },
+    "team": {
+      "title": "Komanda Üzvləri",
+      "description": "Bu iş sahəsinə kimin girişi olduğunu idarə edin",
+      "invite": "Üzv Dəvət Et",
+      "inviteTitle": "Komanda Üzvü Dəvət Et",
+      "inviteDescription": "Bu iş sahəsinə qoşulmaq üçün dəvət göndərin",
+      "emailLabel": "E-poçt Ünvanı",
+      "emailPlaceholder": "həmkar@example.com",
+      "roleLabel": "Rol",
+      "selectRole": "Rol seçin",
+      "roleDescriptions": {
+        "admin": "Adminlər sorğuları idarə edə və bütün cavablara baxa bilər",
+        "member": "Üzvlər öz sorğularını yarada və idarə edə bilər",
+        "viewer": "Baxıcılar yalnız sorğulara və cavablara baxa bilər"
+      },
+      "sendInvitation": "Dəvət Göndər",
+      "sending": "Göndərilir...",
+      "invitationSent": "{{email}} ünvanına dəvət göndərildi",
+      "inviteError": "Dəvət göndərilə bilmədi",
+      "removeTitle": "Üzvü Sil",
+      "removeConfirm": "{{name}} üzvünü bu iş sahəsindən silmək istədiyinizə əminsiniz? Bütün resurslara girişini itirəcək.",
+      "removeFromWorkspace": "İş sahəsindən sil",
+      "removeSuccess": "Üzv uğurla silindi",
+      "removeError": "Üzv silinə bilmədi",
+      "noMembers": "Hələ komanda üzvü yoxdur",
+      "noMembersDesc": "Bu iş sahəsində əməkdaşlıq etmək üçün komanda üzvlərini dəvət edin",
+      "inviteFirst": "İlk üzvünüzü dəvət edin",
+      "failedToLoad": "Üzvlər yüklənə bilmədi",
+      "tryAgain": "Yenidən cəhd et",
+      "you": "(Siz)"
+    }
+  },
+  "questions": {
+    "title": "Suallar",
+    "addQuestion": "Sual əlavə et",
+    "editQuestion": "Sualı redaktə et",
+    "deleteQuestion": "Sualı sil",
+    "questionText": "Sual mətni",
+    "questionType": "Sual növü",
+    "required": "Tələb olunur",
+    "types": {
+      "text": "Mətn",
+      "textarea": "Uzun mətn",
+      "number": "Rəqəm",
+      "email": "E-poçt",
+      "phone": "Telefon",
+      "date": "Tarix",
+      "time": "Vaxt",
+      "select": "Açılan siyahı",
+      "radio": "Çoxseçimli",
+      "checkbox": "İşarə qutuları",
+      "rating": "Reytinq",
+      "scale": "Şkala",
+      "file": "Fayl yükləmə"
+    },
+    "options": "Seçimlər",
+    "addOption": "Seçim əlavə et",
+    "placeholder": "Yer tutucu"
+  },
+  "publicSurvey": {
+    "submit": "Göndər",
+    "submitSuccess": "Cavabınız üçün təşəkkür edirik!",
+    "submitError": "Göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin.",
+    "required": "Bu sahə tələb olunur",
+    "surveyNotFound": "Sorğu tapılmadı",
+    "surveyClosed": "Bu sorğu bağlanıb",
+    "alreadySubmitted": "Artıq cavab göndərmisiniz",
+    "thankYouTitle": "Təşəkkür edirik!",
+    "thankYouMessage": "Bu sorğunu tamamlamaq üçün vaxt ayırdığınız üçün təşəkkür edirik. Rəyiniz bizim üçün çox dəyərlidir!",
+    "continue": "Davam et",
+    "closeMessage": "Bu pəncərəni etibarlı şəkildə bağlaya bilərsiniz.",
+    "questionCount": "{{count}} sual",
+    "answeredCount": "{{count}} cavablandırılıb",
+    "submitting": "Göndərilir...",
+    "submitSurvey": "Sorğunu göndər",
+    "fixErrors": "Göndərməzdən əvvəl yuxarıdakı xətaları düzəldin."
+  },
+  "errors": {
+    "generic": "Xəta baş verdi",
+    "notFound": "Səhifə tapılmadı",
+    "notFoundDesc": "Axtardığınız səhifə mövcud deyil",
+    "unauthorized": "İcazəsiz",
+    "unauthorizedDesc": "Bu səhifəyə giriş icazəniz yoxdur",
+    "accessDenied": "Giriş rədd edildi",
+    "accessDeniedDesc": "Bu resursa giriş icazəniz yoxdur",
+    "networkError": "Şəbəkə xətası",
+    "networkErrorDesc": "İnternet bağlantınızı yoxlayın",
+    "serverError": "Server xətası",
+    "serverErrorDesc": "Gözlənilməz xəta baş verdi. Zəhmət olmasa sonra yenidən cəhd edin.",
+    "goHome": "Ana səhifəyə qayıt",
+    "goBack": "Geri qayıt",
+    "tryAgain": "Yenidən cəhd et",
+    "showDetails": "Texniki detalları göstər",
+    "hideDetails": "Texniki detalları gizlət",
+    "thinkBug": "Bu bir xəta olduğunu düşünürsünüz?",
+    "reportIssue": "Bu problemi bildirin",
+    "errorId": "Xəta ID"
+  },
+  "validation": {
+    "required": "Bu sahə tələb olunur",
+    "questionRequired": "Bu sual tələb olunur",
+    "email": "Düzgün e-poçt ünvanı daxil edin",
+    "invalidEmail": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+    "phone": "Düzgün telefon nömrəsi daxil edin",
+    "url": "Düzgün URL daxil edin",
+    "number": "Düzgün rəqəm daxil edin",
+    "minLength": "Ən azı {{count}} simvol olmalıdır",
+    "maxLength": "Ən çox {{count}} simvol olmalıdır",
+    "maxCharacters": "Maksimum {{max}} simvol icazə verilir",
+    "minValue": "Dəyər ən azı {{min}} olmalıdır",
+    "maxValue": "Dəyər ən çox {{max}} olmalıdır",
+    "valueBetween": "Dəyər {{min}} ilə {{max}} arasında olmalıdır",
+    "passwordMismatch": "Şifrələr uyğun gəlmir",
+    "invalidFormat": "Yanlış format",
+    "invalidAnswer": "Yanlış cavab",
+    "selectAtLeastOne": "Ən azı bir seçim edin",
+    "answerAllRows": "Bütün sıralara cavab verin"
+  },
+  "time": {
+    "justNow": "İndicə",
+    "minutesAgo": "{{count}} dəqiqə əvvəl",
+    "hoursAgo": "{{count}} saat əvvəl",
+    "daysAgo": "{{count}} gün əvvəl",
+    "weeksAgo": "{{count}} həftə əvvəl",
+    "monthsAgo": "{{count}} ay əvvəl"
+  },
+  "recurringSurveys": {
+    "title": "Təkrarlanan sorğular",
+    "description": "Sorğuları avtomatik olaraq təkrarlanan qaydada planlaşdırın",
+    "createSchedule": "Cədvəl yarat",
+    "editSchedule": "Cədvəli redaktə et",
+    "searchPlaceholder": "Təkrarlanan sorğularda axtar...",
+    "stats": {
+      "total": "Cəmi",
+      "active": "Aktiv",
+      "paused": "Dayandırılmış",
+      "totalRuns": "Cəmi icra"
+    },
+    "upcomingRuns": "Gələcək icra",
+    "soon": "Tezliklə",
+    "noUpcoming": "Planlaşdırılmış icra yoxdur",
+    "runNow": "İndi icra et",
+    "pause": "Dayandır",
+    "resume": "Davam et",
+    "viewHistory": "Tarixçəyə bax",
+    "runHistory": "İcra tarixçəsi",
+    "responsesCollected": "Toplanmış cavablar",
+    "deleteConfirm": {
+      "title": "Təkrarlanan sorğunu sil",
+      "description": "Bu təkrarlanan sorğunu silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz."
+    },
+    "triggerConfirm": {
+      "title": "Dərhal icra et",
+      "description": "Bu yeni sorğu icrası dərhal başlayacaq. Əminsiniz?"
+    },
+    "tabs": {
+      "all": "Hamısı",
+      "active": "Aktiv",
+      "paused": "Dayandırılmış"
+    },
+    "empty": {
+      "title": "Təkrarlanan sorğu yoxdur",
+      "description": "Sorğuları avtomatik göndərmək üçün təkrarlanan sorğu yaradın."
+    },
+    "loadError": "Təkrarlanan sorğular yüklənə bilmədi",
+    "loadErrorDesc": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "notRunYet": "Bu təkrarlanan sorğu hələ icra olunmayıb. Planlaşdırılmış tarixdə cavab toplamağa başlayacaq.",
+    "form": {
+      "selectSurvey": "Sorğu seçin",
+      "surveyRequired": "Zəhmət olmasa sorğu seçin",
+      "scheduleName": "Cədvəl adı",
+      "frequency": "Tezlik",
+      "startDate": "Başlama tarixi",
+      "endDate": "Bitmə tarixi (istəyə bağlı)",
+      "time": "Vaxt",
+      "timezone": "Vaxt zonası",
+      "daily": "Gündəlik",
+      "weekly": "Həftəlik",
+      "biWeekly": "İki həftəlik (hər 2 həftə)",
+      "monthly": "Aylıq",
+      "quarterly": "Rüblük (hər 3 ay)",
+      "custom": "Xüsusi (cron ifadəsi)",
+      "activeByDefault": "Defolt olaraq aktiv",
+      "activeByDefaultDesc": "İşarə qoyulmasa, cədvəl dayandırılmış vəziyyətdə yaradılacaq",
+      "daysOfWeek": {
+        "sun": "Baz",
+        "mon": "B.e",
+        "tue": "Ç.a",
+        "wed": "Çər",
+        "thu": "C.a",
+        "fri": "Cüm",
+        "sat": "Şən"
+      },
+      "audienceType": {
+        "staticList": "Statik e-poçt siyahısı",
+        "allContacts": "Bütün kontaktlar"
+      },
+      "timezones": {
+        "utc": "UTC",
+        "eastern": "Şərqi vaxt (ET)",
+        "central": "Mərkəzi vaxt (CT)",
+        "mountain": "Dağ vaxtı (MT)",
+        "pacific": "Sakit okean vaxtı (PT)",
+        "london": "London (GMT/BST)",
+        "paris": "Paris (CET/CEST)",
+        "berlin": "Berlin (CET/CEST)",
+        "tokyo": "Tokio (JST)",
+        "shanghai": "Şanxay (CST)",
+        "singapore": "Sinqapur (SGT)",
+        "sydney": "Sidney (AEST/AEDT)"
+      }
+    }
+  },
+  "surveyBuilder": {
+    "title": "Sorğu redaktoru",
+    "backToSurveys": "Sorğulara qayıt",
+    "questions": "Suallar",
+    "noQuestions": "Hələ sual yoxdur",
+    "addFirstQuestion": "İlk sualınızı əlavə etmək üçün + düyməsinə klikləyin",
+    "unsavedChanges": "Saxlanmamış dəyişikliklər",
+    "unsavedChangesDesc": "Saxlanmamış dəyişiklikləriniz var. Çıxmaq istədiyinizdən əminsiniz?",
+    "discardChanges": "Dəyişiklikləri ləğv et",
+    "keepEditing": "Redaktəyə davam et",
+    "saving": "Saxlanılır...",
+    "saved": "Saxlanıldı",
+    "unsaved": "Saxlanılmamış",
+    "settings": "Sorğu parametrləri",
+    "settingsAriaLabel": "Parametrlər",
+    "welcomeMessage": "Qarşılama mesajı",
+    "welcomeMessageDesc": "Sorğuya başlamazdan əvvəl cavab verənlərə göstərilir",
+    "thankYouMessage": "Təşəkkür mesajı",
+    "thankYouMessageDesc": "Göndərdikdən sonra cavab verənlərə göstərilir",
+    "preview": "Önbaxış",
+    "undo": "Geri al",
+    "redo": "Yenidən et",
+    "themes": "Mövzular",
+    "addQuestion": "Sual əlavə et",
+    "untitledSurvey": "Adsız sorğu",
+    "toggleThemePanel": "Mövzu panelini dəyişdir",
+    "readOnlyBanner": "Bu sorğu dərc olunub və redaktə edilə bilməz. Siz onu yalnız oxumaq rejimində baxırsınız.",
+    "viewOnly": "Yalnız baxış"
+  },
+  "surveyPreview": {
+    "title": "Önbaxış",
+    "backToEditor": "Redaktora qayıt",
+    "testMode": "Test rejimi",
+    "displayMode": "Görüntü rejimi",
+    "resetPreview": "Önbaxışı sıfırla",
+    "submitPreview": "Önbaxışı göndər",
+    "responsivePreview": "Responsiv önbaxış",
+    "desktop": "Kompüter",
+    "tablet": "Planşet",
+    "mobile": "Mobil",
+    "testSubmitSuccess": "Test göndərişi uğurlu oldu! Həqiqi sorğuda bu cavab saxlanılacaqdı.",
+    "testSubmitError": "Test göndərişi uğursuz oldu",
+    "loadingPreview": "Önbaxış yüklənir...",
+    "previewSettings": "Önbaxış parametrləri",
+    "oneByOne": "Tək-tək",
+    "allAtOnce": "Hamısı birdən",
+    "testModeLabel": "Test Rejimi",
+    "questionCount": "{{count}} sual",
+    "questionProgress": "Sual {{current}} / {{total}}",
+    "answeredCount": "{{count}} cavablandırılıb",
+    "responseRecorded": "Cavabınız qeydə alındı",
+    "testSubmissionMessage": "Bu test göndərişidir. Heç bir məlumat saxlanılmayıb.",
+    "previewAgain": "Yenidən Önbaxış",
+    "customDimensions": "Xüsusi ölçülər",
+    "toggleOrientation": "Oriyentasiyanı dəyişdir",
+    "zoomIn": "Böyüt",
+    "zoomOut": "Kiçilt",
+    "resetZoom": "Böyütməni sıfırla",
+    "lightMode": "Açıq rejim",
+    "darkMode": "Qaranlıq rejim",
+    "mode": "rejim",
+    "showQRCode": "QR kodu göstər",
+    "captureScreenshot": "Ekran şəkli çək",
+    "keyboardMode": "Klaviatura naviqasiya rejimi",
+    "keyboardHints": "Klaviatura ipuçlarını göstər",
+    "toggleResponses": "Cavab xülasəsini göstər/gizlət",
+    "toggleFullscreen": "Tam ekran rejimi",
+    "responseSummary": "Cavab xülasəsi",
+    "answered": "cavablandırılıb",
+    "notAnswered": "Hələ cavablandırılmayıb",
+    "noQuestions": "Bu sorğuda sual yoxdur",
+    "progress": "İrəliləyiş",
+    "qrCodeTitle": "Cihazda önbaxış",
+    "qrCodeDescription": "Sorğunu telefon və ya planşetdə test etmək üçün QR kodu skan edin",
+    "scanOrCopy": "Kodu skan edin və ya aşağıdakı linki kopyalayın",
+    "copyLink": "Linki kopyala",
+    "openInNewTab": "Yeni sekmədə aç",
+    "linkCopied": "Link kopyalandı",
+    "linkCopyError": "Link kopyalana bilmədi",
+    "screenshotInfo": "Ekran şəkli funksiyası",
+    "screenshotSuccess": "Ekran şəkli uğurla saxlanıldı",
+    "screenshotHint": "Tam ekran şəkli dəstəyi üçün html2canvas paketini quraşdırın",
+    "screenshotError": "Ekran şəkli çəkilə bilmədi",
+    "keyboardShortcuts": "Klaviatura qısayolları",
+    "nextField": "Növbəti sahə",
+    "submit": "Göndər",
+    "navigate": "Naviqasiya"
+  },
+  "questionEditor": {
+    "addQuestion": "Sual əlavə et",
+    "closeMenu": "Menyunu bağla",
+    "searchTypes": "Sual növlərini axtar...",
+    "noTypesFound": "Sual növü tapılmadı",
+    "tryDifferentSearch": "Fərqli axtarış termini sınayın",
+    "dragToReorder": "Sıralamaq üçün sürükləyin",
+    "toggleOptions": "Seçimləri aç/bağla",
+    "required": "Tələb olunur",
+    "conditionalLogic": "Şərti məntiqi",
+    "controlWhenAppears": "Bu sualın nə zaman görünəcəyini idarə edin",
+    "questionText": "Sual mətni",
+    "questionDescription": "Sual təsviri (istəyə bağlı)",
+    "placeholder": "Yer tutucu mətn",
+    "question": "Sual",
+    "questionNumber": "Sual {{number}}",
+    "duplicateQuestion": "Sualı dublikat et",
+    "deleteQuestion": "Sualı sil",
+    "edit": "Redaktə",
+    "preview": "Önbaxış",
+    "configure": "Konfiqurasiya",
+    "requiredQuestion": "Məcburi sual",
+    "requiredDescription": "Respondentlər bu suala cavab verməlidirlər",
+    "saveFirst": "Bu suala şərti məntiqi əlavə etmək üçün əvvəlcə sorğunu yadda saxlayın",
+    "unknownType": "Naməlum sual növü: {{type}}",
+    "helperText": {
+      "text": "Qısa cavab mətn daxiletməsi",
+      "textarea": "Uzun cavablar üçün çox sətirli mətn",
+      "number": "Yalnız rəqəm daxiletməsi",
+      "email": "Doğrulama ilə e-poçt ünvanı",
+      "phone": "Telefon nömrəsi daxiletməsi",
+      "date": "Tarix seçici",
+      "time": "Vaxt seçici",
+      "select": "Tək seçimli açılan siyahı",
+      "radio": "Seçimlərdən tək seçim",
+      "checkbox": "Çoxlu seçimə icazə verilir",
+      "rating": "Ulduz və ya rəqəm reytinqi",
+      "scale": "Xətti şkala seçimi",
+      "ranking": "Üstünlüyə görə sıralamaq üçün sürükləyin",
+      "matrix": "Eyni seçimlərlə sual şəbəkəsi",
+      "file": "Fayl yükləmə"
+    },
+    "common": {
+      "enterQuestion": "Sualınızı daxil edin",
+      "addHelpText": "Kömək mətni və ya kontekst əlavə edin",
+      "textBelowQuestion": "Bu mətn sualın altında görünür",
+      "placeholderLabel": "Yer tutucu mətn",
+      "enterPlaceholder": "Yer tutucu mətni daxil edin",
+      "shownInsideField": "Daxiletmə sahəsinin içində göstərilir",
+      "shownInsideTextArea": "Mətn sahəsinin içində göstərilir",
+      "maxCharacters": "Maksimum simvol",
+      "maxCharsAllowed": "İcazə verilən maksimum simvol sayı",
+      "descriptionOptional": "Təsvir (istəyə bağlı)"
+    },
+    "text": {
+      "placeholderDefault": "Yer tutucu mətni daxil edin"
+    },
+    "email": {
+      "placeholderDefault": "E-poçt ünvanını daxil edin",
+      "validationMessage": "Doğrulama mesajı",
+      "validationPlaceholder": "Düzgün e-poçt ünvanı daxil edin",
+      "validationHelper": "E-poçt doğrulaması uğursuz olduqda göstərilir"
+    },
+    "phone": {
+      "formatLabel": "Telefon nömrəsi formatı",
+      "validationMessage": "Doğrulama mesajı",
+      "validationPlaceholder": "Düzgün telefon nömrəsi daxil edin",
+      "validationHelper": "Telefon doğrulaması uğursuz olduqda göstərilir",
+      "customPatternHelper": "Seçilmiş preseti istifadə etmək üçün boş buraxın",
+      "formats": {
+        "international": "Beynəlxalq",
+        "internationalDesc": "Ölkə kodu ilə beynəlxalq format (məs., +1 234 567 8900)",
+        "usCanada": "ABŞ/Kanada",
+        "usCanadaDesc": "ABŞ/Kanada formatı (məs., (555) 123-4567)",
+        "uk": "Böyük Britaniya",
+        "ukDesc": "Böyük Britaniya formatı (məs., 07911 123456)",
+        "european": "Avropa",
+        "europeanDesc": "Ümumi Avropa formatı",
+        "digitsOnly": "Yalnız rəqəmlər",
+        "digitsOnlyDesc": "Yalnız rəqəmlər, 7-15 simvol (məs., 5551234567)",
+        "flexible": "Çevik",
+        "flexibleDesc": "İstəyə bağlı ölkə kodu ilə müxtəlif formatlara icazə verir",
+        "anyFormat": "İstənilən format"
+      }
+    },
+    "url": {
+      "placeholderDefault": "https://example.com",
+      "validationMessage": "Doğrulama mesajı",
+      "validationPlaceholder": "Düzgün URL daxil edin",
+      "validationHelper": "URL doğrulaması uğursuz olduqda göstərilir",
+      "customPatternHelper": "Seçilmiş preseti istifadə etmək üçün boş buraxın",
+      "formats": {
+        "standard": "Standart URL",
+        "standardDesc": "Protokol ilə tam URL (məs., https://example.com)",
+        "flexible": "Çevik URL",
+        "flexibleDesc": "İstəyə bağlı protokol ilə URL"
+      }
+    },
+    "number": {
+      "placeholderDefault": "Rəqəm daxil edin",
+      "minValue": "Minimum dəyər",
+      "maxValue": "Maksimum dəyər",
+      "noMinimum": "Minimum yoxdur",
+      "noMaximum": "Maksimum yoxdur",
+      "leaveEmptyMin": "Minimum olmamaq üçün boş buraxın",
+      "leaveEmptyMax": "Maksimum olmamaq üçün boş buraxın",
+      "formats": {
+        "integer": "Tam ədəd",
+        "integerDesc": "Yalnız tam ədədlər",
+        "decimal": "Onluq",
+        "decimalDesc": "İstəyə bağlı onluq hissəsi ilə rəqəmlər",
+        "positive": "Müsbət ədəd",
+        "positiveDesc": "Yalnız müsbət ədədlər"
+      }
+    },
+    "validation": {
+      "presets": {
+        "usZipCode": "ABŞ poçt indeksi",
+        "usZipCodeDesc": "5 rəqəmli və ya ZIP+4 formatı",
+        "ukPostcode": "Böyük Britaniya poçt kodu",
+        "ukPostcodeDesc": "Böyük Britaniya poçt kodu formatı",
+        "alphanumeric": "Hərf-rəqəm",
+        "alphanumericDesc": "Yalnız hərflər və rəqəmlər",
+        "lettersOnly": "Yalnız hərflər",
+        "lettersOnlyDesc": "Yalnız hərflər (rəqəmlər və ya xüsusi simvollar yoxdur)"
+      }
+    },
+    "rating": {
+      "lowLabel": "Aşağı reytinq etiketi",
+      "lowPlaceholder": "Pis",
+      "highLabel": "Yüksək reytinq etiketi",
+      "highPlaceholder": "Əla"
+    },
+    "scale": {
+      "minValue": "Minimum dəyər",
+      "maxValue": "Maksimum dəyər",
+      "lowLabel": "Aşağı son etiket",
+      "lowPlaceholder": "Ümumiyyətlə ehtimal deyil",
+      "highLabel": "Yuxarı son etiket",
+      "highPlaceholder": "Son dərəcə ehtimal"
+    },
+    "ranking": {
+      "randomize": "İlkin sıranı qarışdır",
+      "randomizeDesc": "Seçimləri təsadüfi sıra ilə başlat"
+    },
+    "choice": {
+      "randomize": "Seçimləri qarışdır",
+      "randomizeDesc": "Seçimləri təsadüfi sıra ilə göstər",
+      "addOther": "\"Digər\" seçimi əlavə et",
+      "addOtherDesc": "Respondentlərə öz cavablarını daxil etməyə icazə ver",
+      "otherLabel": "Digər seçim etiketi",
+      "otherPlaceholder": "Digər"
+    },
+    "file": {
+      "maxFiles": "Maksimum fayl",
+      "maxFilesHelper": "Cavab başına maksimum fayl sayı",
+      "maxSizeHelper": "Fayl başına limit"
+    },
+    "options": {
+      "addOption": "Seçim əlavə et",
+      "optionPlaceholder": "Seçim {{number}}",
+      "allowOther": "'Digər' seçiminə icazə ver",
+      "minValue": "Minimum dəyər",
+      "maxValue": "Maksimum dəyər",
+      "step": "Addım",
+      "minLabel": "Minimum etiket",
+      "maxLabel": "Maksimum etiket",
+      "maxRating": "Maksimum reytinq",
+      "ratingStyle": "Reytinq stili",
+      "stars": "Ulduzlar",
+      "numbers": "Rəqəmlər",
+      "hearts": "Ürəklər",
+      "rows": "Sətirlər",
+      "columns": "Sütunlar",
+      "addRow": "Sətir əlavə et",
+      "addColumn": "Sütun əlavə et"
+    }
+  },
+  "conditionalLogic": {
+    "title": "Şərti məntiqi",
+    "description": "Əvvəlki cavablara əsasən bu sualın nə zaman görünəcəyini idarə etmək üçün qaydalar əlavə edin",
+    "currentQuestion": "Cari Sual",
+    "unknownQuestion": "Naməlum Sual",
+    "enableLogic": "Şərti məntiqi aktivləşdir",
+    "logicRules": "Məntiqi qaydalar",
+    "noRules": "Məntiqi qayda təyin edilməyib",
+    "addRuleToStart": "Əvvəlki cavablara əsasən bu sualın nə zaman görünəcəyini idarə etmək üçün şərti məntiqi əlavə edin.",
+    "addFirstRule": "İlk Qaydanı Əlavə Et",
+    "dragToReorder": "Sıralamaq üçün qaydaları sürükləyin. Qaydalar sıra ilə qiymətləndirilir.",
+    "validationIssues": "Məntiqi doğrulama problemləri",
+    "addRule": "Qayda əlavə et",
+    "saveRule": "Qaydanı Saxla",
+    "deleteRule": "Qaydanı sil",
+    "editRule": "Qaydanı redaktə et",
+    "if": "Əgər",
+    "then": "Onda",
+    "and": "Və",
+    "or": "Və ya",
+    "show": "Göstər",
+    "hide": "Gizlət",
+    "skip": "Keç",
+    "jumpTo": "Keç",
+    "equals": "bərabərdir",
+    "notEquals": "bərabər deyil",
+    "contains": "ehtiva edir",
+    "greaterThan": "böyükdür",
+    "lessThan": "kiçikdir",
+    "isEmpty": "boşdur",
+    "isNotEmpty": "boş deyil",
+    "isAnswered": "cavablandırılıb",
+    "isNotAnswered": "cavablandırılmayıb",
+    "after": "Sonra",
+    "before": "Əvvəl",
+    "legend": "İzahat",
+    "operators": {
+      "isAnswered": "Cavablandırılıb",
+      "isNotAnswered": "Cavablandırılmayıb",
+      "equals": "Bərabərdir",
+      "notEquals": "Bərabər deyil",
+      "contains": "Ehtiva edir",
+      "greaterThan": "Böyükdür",
+      "lessThan": "Kiçikdir",
+      "after": "Sonra",
+      "before": "Əvvəl"
+    },
+    "actions": {
+      "show": "Bu sualı göstər",
+      "hide": "Bu sualı gizlət",
+      "skip": "Suala keç",
+      "endSurvey": "Sorğunu bitir"
+    },
+    "form": {
+      "ifAnswerTo": "Əgər cavab",
+      "condition": "Şərt",
+      "value": "Dəyər",
+      "action": "Əməliyyat",
+      "targetQuestion": "Hədəf Sual",
+      "skipTo": "Keç",
+      "selectQuestion": "Sual seçin...",
+      "selectCondition": "Şərt seçin...",
+      "selectValue": "Dəyər seçin...",
+      "enterValue": "Dəyər daxil edin...",
+      "selectAction": "Əməliyyat seçin...",
+      "selectTargetQuestion": "Sual seçin...",
+      "conditionSection": "Şərti müəyyən edin",
+      "actionSection": "Əməliyyatı müəyyən edin"
+    }
+  },
+  "apiKeys": {
+    "title": "API açarları",
+    "description": "Hesabınıza proqramlı giriş üçün API açarlarını idarə edin",
+    "createKey": "API açarı yarat",
+    "createNew": "Yeni açar yarat",
+    "createDesc": "Proqramatik giriş üçün yeni API açarı yaradın",
+    "createSuccess": "API açarı uğurla yaradıldı",
+    "deleteSuccess": "API açarı silindi",
+    "keyName": "Açar adı",
+    "keyNamePlaceholder": "Bu açar üçün ad daxil edin",
+    "permissions": "İcazələr",
+    "selectScopes": "Ən azı bir icazə seçin",
+    "noKeys": "API açarı yoxdur",
+    "noKeysDesc": "Xarici xidmətlərlə inteqrasiya üçün ilk API açarınızı yaradın",
+    "keyCreated": "API açarı yaradıldı",
+    "keyCreatedDesc": "API açarınızı indi kopyalayın. Bir daha görə bilməyəcəksiniz!",
+    "copyKey": "Açarı kopyala",
+    "keyCopied": "API açarı buferə kopyalandı",
+    "deleteKey": "API açarını sil",
+    "deleteKeyConfirm": "Bu API açarını silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz.",
+    "keyDeleted": "API açarı silindi",
+    "validation": {
+      "nameRequired": "API açarı üçün ad daxil edin",
+      "scopeRequired": "Ən azı bir icazə seçin"
+    },
+    "scopes": {
+      "surveys:read": "Sorğuları oxu",
+      "surveys:write": "Sorğu yarat və redaktə et",
+      "responses:read": "Cavabları oxu",
+      "responses:write": "Cavab göndər",
+      "analytics:read": "Analitikanı oxu"
+    },
+    "documentation": "API sənədləri",
+    "documentationDesc": "Sorğular yaratmaq, cavablar toplamaq və analitikaya proqramatik giriş üçün Survey API-dən necə istifadə edəcəyinizi öyrənin.",
+    "viewDocs": "Sənədlərə bax"
+  },
+  "twoFactor": {
+    "title": "İki faktorlu doğrulama",
+    "description": "Hesabınıza əlavə təhlükəsizlik qatı əlavə edin",
+    "enabled": "2FA aktiv edilib",
+    "disabled": "Deaktiv",
+    "notEnabled": "2FA aktiv deyil",
+    "recommendation": "Əlavə təhlükəsizlik üçün iki faktorlu doğrulamanı aktiv etməyi tövsiyə edirik",
+    "enable": "İki faktorlu doğrulamanı aktiv et",
+    "disable": "2FA-nı deaktiv et",
+    "enableTitle": "İki faktorlu doğrulamanı aktiv et",
+    "enableDesc": "İki faktorlu doğrulama üçün üstünlük verdiyiniz metodu seçin",
+    "disableTitle": "İki faktorlu doğrulamanı deaktiv et",
+    "disableDesc": "Bu hesabınızı daha az təhlükəsiz edəcək. 2FA-nı deaktiv etmək istədiyinizə əminsiniz?",
+    "authenticatorApp": "Autentifikator tətbiqi",
+    "authenticatorAppDesc": "Google Authenticator və ya oxşar tətbiqlər istifadə edin",
+    "sms": "SMS",
+    "smsDesc": "Kodları SMS ilə alın",
+    "emailMethod": "E-poçt",
+    "emailMethodDesc": "Kodları e-poçt ilə alın",
+    "enabledSuccess": "İki faktorlu doğrulama aktiv edildi",
+    "disabledSuccess": "İki faktorlu doğrulama deaktiv edildi",
+    "usingMethod": "{{method}} doğrulaması istifadə olunur",
+    "backupCodesRemaining": "{{count}} ehtiyat kod qalıb",
+    "regenerateBackupCodes": "Ehtiyat kodları yenilə"
+  },
+  "profile": {
+    "title": "Şəxsi məlumatlar",
+    "description": "Şəxsi məlumatlarınızı və e-poçt ünvanınızı yeniləyin",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "email": "E-poçt ünvanı",
+    "saveChanges": "Dəyişiklikləri yadda saxla",
+    "updateSuccess": "Profil uğurla yeniləndi",
+    "updateError": "Profil yenilənə bilmədi",
+    "toast": {
+      "updateSuccess": "Profil uğurla yeniləndi",
+      "updateFailed": "Profil yenilənə bilmədi",
+      "updateFailedTitle": "Profil Yenilənmədi",
+      "avatarUpdated": "Avatar uğurla yeniləndi",
+      "avatarRemoved": "Avatar uğurla silindi"
+    },
+    "emailChangeNotice": "E-poçtunuzu dəyişmək təsdiq tələb edəcək",
+    "editProfile": "Profili Redaktə Et",
+    "avatar": {
+      "change": "Avatarı dəyiş",
+      "remove": "Sil",
+      "dragDrop": "Şəklinizi bura sürükləyib buraxın",
+      "orClick": "və ya gözdən keçirmək üçün klikləyin",
+      "invalidType": "Zəhmət olmasa şəkil faylı seçin",
+      "tooLarge": "Şəkil 5MB-dan kiçik olmalıdır"
+    },
+    "accountInfo": "Hesab məlumatları",
+    "memberSince": "Üzv olduğu tarix",
+    "lastUpdated": "Son yenilənmə"
+  },
+  "passwordChange": {
+    "title": "Şifrəni dəyiş",
+    "description": "Böyük hərf, kiçik hərf və rəqəm daxil olmaqla ən azı 8 simvoldan ibarət güclü şifrə istifadə edin",
+    "currentPassword": "Cari şifrə",
+    "newPassword": "Yeni şifrə",
+    "confirmPassword": "Yeni şifrəni təsdiqlə",
+    "changeButton": "Şifrəni yenilə",
+    "success": "Şifrə uğurla dəyişdirildi",
+    "error": "Şifrə dəyişdirilə bilmədi",
+    "placeholders": {
+      "current": "Cari şifrəni daxil edin",
+      "new": "Yeni şifrəni daxil edin",
+      "confirm": "Yeni şifrəni təsdiqləyin"
+    },
+    "strength": {
+      "tooShort": "Çox qısadır",
+      "addMore": "Böyük hərf, kiçik hərf və rəqəm əlavə edin",
+      "good": "Yaxşı - əlavə təhlükəsizlik üçün xüsusi simvollar əlavə edin",
+      "strong": "Güclü şifrə"
+    },
+    "validation": {
+      "currentRequired": "Cari şifrə tələb olunur",
+      "newRequired": "Yeni şifrə tələb olunur",
+      "minLength": "Şifrə ən azı 8 simvol olmalıdır",
+      "complexity": "Şifrə böyük hərf, kiçik hərf və rəqəm ehtiva etməlidir",
+      "confirmRequired": "Zəhmət olmasa şifrənizi təsdiqləyin",
+      "mismatch": "Şifrələr uyğun gəlmir"
+    }
+  },
+  "password": {
+    "validation": {
+      "confirmRequired": "Zəhmət olmasa şifrənizi təsdiqləyin",
+      "mismatch": "Şifrələr uyğun gəlmir",
+      "currentRequired": "Cari şifrə tələb olunur",
+      "newRequired": "Yeni şifrə tələb olunur",
+      "requirements": "Şifrə böyük hərf, kiçik hərf və rəqəm daxil olmaqla ən azı 8 simvol olmalıdır"
+    },
+    "toast": {
+      "success": "Şifrə uğurla yeniləndi",
+      "failed": "Şifrə yenilənə bilmədi",
+      "failedTitle": "Şifrə Yenilənmədi"
+    },
+    "strength": {
+      "veryWeak": "Çox Zəif",
+      "weak": "Zəif",
+      "fair": "Orta",
+      "good": "Yaxşı",
+      "strong": "Güclü"
+    },
+    "title": "Şifrəni Dəyiş",
+    "description": "Hesabınızı qorumaq üçün şifrənizi yeniləyin",
+    "successMessage": "Şifrəniz uğurla dəyişdirildi!",
+    "currentPassword": "Cari Şifrə",
+    "newPassword": "Yeni Şifrə",
+    "confirmPassword": "Şifrəni Təsdiqlə",
+    "updating": "Yenilənir...",
+    "updatePassword": "Şifrəni Yenilə"
+  },
+  "notifications": {
+    "title": "Bildirişlər",
+    "description": "E-poçt bildiriş seçimlərinizi idarə edin",
+    "emailNotifications": "E-poçt bildirişləri",
+    "pushNotifications": "Ani bildirişlər",
+    "allDisabled": "Bütün e-poçt bildirişləri deaktiv edildi",
+    "aboutTitle": "Bildirişlər haqqında",
+    "aboutDescription": "Biz heç vaxt spam göndərməyəcəyik. İstənilən vaxt istənilən bildirişdən abunəlikdən çıxa bilərsiniz. Kritik təhlükəsizlik bildirişləri deaktiv edilə bilməz.",
+    "settings": {
+      "allEmails": {
+        "title": "Bütün e-poçt bildirişləri",
+        "description": "Bütün e-poçt bildirişləri üçün əsas açar"
+      },
+      "responseAlerts": {
+        "title": "Sorğu cavab xəbərdarlıqları",
+        "description": "Kimsə sorğunuza cavab verdikdə xəbərdar olun"
+      },
+      "completionAlerts": {
+        "title": "Sorğu tamamlanma xəbərdarlıqları",
+        "description": "Kimsə sorğunuzu tamamladıqda xəbərdar olun"
+      },
+      "newResponses": {
+        "title": "Yeni cavablar",
+        "description": "Kimsə sorğunuzu tamamladıqda xəbərdar olun"
+      },
+      "weeklyDigest": {
+        "title": "Həftəlik xülasə",
+        "description": "Sorğu performansınızın həftəlik xülasəsini alın"
+      },
+      "distributionReports": {
+        "title": "Paylanma hesabatları",
+        "description": "E-poçt paylanmaları üçün çatdırılma hesabatları alın"
+      },
+      "marketing": {
+        "title": "Marketinq və yeniliklər",
+        "description": "Tövsiyələr, məhsul yenilikləri və ara-sıra tanıtım məzmunu"
+      },
+      "surveyMilestones": {
+        "title": "Sorğu mərhələləri",
+        "description": "Sorğular cavab mərhələlərinə çatdıqda xəbərdar olun"
+      },
+      "teamActivity": {
+        "title": "Komanda fəaliyyəti",
+        "description": "Paylaşılan iş sahələrində komanda üzvü fəaliyyətləri haqqında yeniliklər"
+      },
+      "productUpdates": {
+        "title": "Məhsul yenilikləri",
+        "description": "Yeni xüsusiyyətlər və təkmilləşdirmələr haqqında məlumat alın"
+      },
+      "securityAlerts": {
+        "title": "Təhlükəsizlik xəbərdarlıqları",
+        "description": "Hesab təhlükəsizliyiniz haqqında vacib bildirişlər"
+      }
+    },
+    "saveSuccess": "Bildiriş seçimləri saxlanıldı"
+  },
+  "surveyLinks": {
+    "title": "Sorğu linkləri",
+    "createLink": "Sorğu linki yarat",
+    "generateLink": "Link yarat",
+    "bulkGenerate": "Toplu yarat",
+    "copyLink": "Linki kopyala",
+    "linkCopied": "Link buferə kopyalandı",
+    "linkCopyError": "Link kopyalana bilmədi",
+    "expirationDate": "Bitmə tarixi",
+    "noExpiration": "Bitmə tarixi yoxdur",
+    "responseLimit": "Cavab limiti",
+    "responseLimitDesc": "Bu link üçün maksimum cavab sayı",
+    "unlimited": "Limitsiz",
+    "passwordProtection": "Şifrə qoruması",
+    "passwordProtectionDesc": "Sorğuya giriş üçün şifrə tələb et",
+    "password": "Şifrə",
+    "trackCampaign": "Kampaniya performansını izlə",
+    "utmParameters": "UTM parametrləri",
+    "utmSource": "UTM mənbəyi",
+    "utmMedium": "UTM mühiti",
+    "utmCampaign": "UTM kampaniyası",
+    "bulkLinks": {
+      "title": "Toplu link yarat",
+      "description": "Birdəfəlik çoxlu unikal link yaradın",
+      "numberOfLinks": "Link sayı",
+      "prefix": "Link prefiksi (istəyə bağlı)",
+      "generate": "Linkləri yarat",
+      "download": "CSV yüklə"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Qeyri-aktiv",
+      "expired": "Müddəti bitmiş",
+      "limitReached": "Limitə çatıldı"
+    },
+    "deleteConfirm": {
+      "title": "Linki sil",
+      "description": "Bu linki silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz."
+    },
+    "deactivateConfirm": {
+      "title": "Linki deaktiv et",
+      "description": "Bu linki deaktiv etmək istədiyinizdən əminsiniz? Sonra yenidən aktivləşdirilə bilər."
+    }
+  },
+  "qrCode": {
+    "title": "QR kod",
+    "download": "QR kodu yüklə",
+    "print": "QR kodu çap et",
+    "style": {
+      "light": "İşıqlı",
+      "dark": "Qaranlıq",
+      "brand": "Brend"
+    },
+    "filename": "Fayl adı",
+    "filenamePlaceholder": "sorgu-qr-kod",
+    "downloadAs": "PNG olaraq yüklə",
+    "printQR": "Çap et",
+    "close": "Bağla",
+    "tips": {
+      "title": "Çap üçün məsləhətlər",
+      "tip1": "Ən yaxşı skan nəticələri üçün yüksək keyfiyyətli kağız istifadə edin",
+      "tip2": "QR kod və arxa fon arasında yaxşı kontrast təmin edin",
+      "tip3": "Paylamazdan əvvəl QR kodu test edin",
+      "tip4": "Minimum tövsiyə olunan ölçü: 2sm x 2sm"
+    }
+  },
+  "emailDistribution": {
+    "title": "E-poçt paylaşımı",
+    "createNew": "Yeni paylaşım",
+    "steps": {
+      "recipients": "Alıcılar",
+      "compose": "Yaz",
+      "schedule": "Planlaşdır",
+      "review": "Nəzərdən keçir"
+    },
+    "recipients": {
+      "title": "Alıcıları əlavə et",
+      "description": "Sorğunu göndərmək üçün e-poçt ünvanları əlavə edin",
+      "noRecipients": "Hələ alıcı yoxdur",
+      "addManually": "Əl ilə əlavə edin və ya CSV-dən idxal edin",
+      "importCsv": "CSV idxal et",
+      "dropCsv": "CSV faylınızı bura atın",
+      "orClickBrowse": "və ya gözdən keçirmək üçün klikləyin",
+      "alreadyInList": "Artıq siyahınızda",
+      "invalidEmail": "Yanlış e-poçt ünvanı",
+      "duplicateEmail": "Təkrar e-poçt"
+    },
+    "compose": {
+      "title": "E-poçt yaz",
+      "description": "E-poçt mesajınızı fərdiləşdirin",
+      "subject": "Mövzu",
+      "fromName": "Göndərən adı",
+      "fromNamePlaceholder": "Adınız və ya şirkət",
+      "replyTo": "Cavab e-poçtu",
+      "preview": "E-poçtu önbax"
+    },
+    "schedule": {
+      "title": "Çatdırılmanı planlaşdır",
+      "description": "Sorğunuzu nə zaman göndərəcəyinizi seçin",
+      "sendNow": "Dərhal göndər",
+      "sendLater": "Sonra üçün planlaşdır",
+      "scheduledFor": "Planlaşdırılıb"
+    }
+  },
+  "linkAnalytics": {
+    "title": "Link Analitikası",
+    "description": "Bu link üçün performans göstəriciləri",
+    "clicks": "Kliklər",
+    "responses": "Cavablar",
+    "conversion": "{{rate}}% çevrilmə",
+    "error": {
+      "title": "Analitika yüklənə bilmədi",
+      "description": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "uniqueClicks": "Unikal Kliklər",
+    "topCountries": "Ən Yaxşı Ölkələr",
+    "clicksOverTime": "Zamana Görə Kliklər",
+    "tabs": {
+      "geography": "Coğrafiya",
+      "device": "Cihaz",
+      "referrer": "Yönləndirici"
+    },
+    "geoDistribution": "Coğrafi Paylanma",
+    "noGeoData": "Hələ coğrafi məlumat yoxdur",
+    "deviceBreakdown": "Cihaz Bölgüsü",
+    "noDeviceData": "Hələ cihaz məlumatı yoxdur",
+    "noReferrerData": "Hələ yönləndirici məlumatı yoxdur",
+    "direct": "Birbaşa",
+    "details": {
+      "created": "Yaradılıb",
+      "type": "Növ",
+      "name": "Ad",
+      "status": "Status",
+      "active": "Aktiv",
+      "inactive": "Qeyri-aktiv",
+      "expires": "Bitmə",
+      "maxResponses": "Maksimum Cavablar",
+      "passwordProtected": "Şifrə Qorumalı",
+      "utmSource": "UTM Mənbəyi",
+      "utmMedium": "UTM Mühiti",
+      "utmCampaign": "UTM Kampaniyası"
+    },
+    "loading": "Analitika yüklənir...",
+    "geographic": "Coğrafi Paylanma",
+    "devices": "Cihaz Bölgüsü",
+    "trafficSources": "Trafik Mənbələri",
+    "linkDetails": "Link Detalları",
+    "created": "Yaradılıb",
+    "lastAccessed": "Son giriş",
+    "name": "Ad",
+    "noDataYet": "Hələ məlumat yoxdur"
+  },
+  "accessibility": {
+    "openMenu": "Menyunu aç",
+    "closeMenu": "Menyunu bağla",
+    "toggleSidebar": "Yan paneli aç/bağla",
+    "notifications": "Bildirişlər",
+    "userMenu": "İstifadəçi menyusu",
+    "search": "Axtar",
+    "gridView": "Şəbəkə görünüşü",
+    "listView": "Siyahı görünüşü",
+    "viewMode": "Görünüş rejimi",
+    "dragHandle": "Sürükləmə tutacağı",
+    "sortable": "Sıralana bilən",
+    "expandSection": "Bölməni genişlət",
+    "collapseSection": "Bölməni yığ",
+    "selectLanguage": "Dil seçin",
+    "changeLanguage": "Dili dəyiş"
+  },
+  "errorBoundary": {
+    "title": "Xəta baş verdi",
+    "description": "Gözlənilməz xəta baş verdi",
+    "viewStackTrace": "Stek izinə bax",
+    "refreshMessage": "Zəhmət olmasa səhifəni yeniləməyə çalışın. Problem davam edərsə, dəstəklə əlaqə saxlayın.",
+    "goHome": "Ana səhifəyə qayıt",
+    "tryAgain": "Yenidən cəhd et",
+    "message": "Mesaj",
+    "stack": "Stek"
+  },
+  "workspaceSettings": {
+    "title": "İş Sahəsi Parametrləri",
+    "back": "Geri",
+    "backToWorkspaces": "İş Sahələrinə Qayıt",
+    "errors": {
+      "loadFailed": "İş sahəsi parametrləri yüklənə bilmədi",
+      "loadFailedDescription": "İş sahəsini yükləyərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "tabs": {
+      "general": "Ümumi",
+      "members": "Üzvlər",
+      "integrations": "İnteqrasiyalar",
+      "billing": "Ödəniş"
+    },
+    "general": {
+      "title": "Ümumi Parametrlər",
+      "description": "İş sahəniz haqqında əsas məlumatlar",
+      "errors": {
+        "nameRequired": "Ad tələb olunur",
+        "nameMinLength": "Ad ən azı 2 simvol olmalıdır",
+        "invalidUrl": "Zəhmət olmasa düzgün URL daxil edin"
+      },
+      "logoAlt": "İş Sahəsi Logosu",
+      "logoHelperText": "Kvadrat şəkil tövsiyə olunur. Maksimum 256x256px.",
+      "url": "İş Sahəsi URL",
+      "urlHelperText": "Bu iş sahənizin identifikatoru kimi istifadə ediləcək",
+      "logo": "İş Sahəsi Logosu",
+      "logoHelper": "Logo şəklinizin URL-ini daxil edin. Tövsiyə olunan ölçü: 256×256px. PNG, JPG, SVG dəstəklənir.",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "name": "İş Sahəsi Adı",
+      "slug": "İş Sahəsi URL",
+      "slugHelper": "İş sahəsi URL-i yaradıldıqdan sonra dəyişdirilə bilməz",
+      "descriptionLabel": "Təsvir",
+      "descriptionPlaceholder": "İş sahəniz üçün təsvir əlavə edin...",
+      "saving": "Saxlanılır...",
+      "saveChanges": "Dəyişiklikləri Saxla",
+      "updateSuccess": "İş sahəsi parametrləri uğurla yeniləndi",
+      "updateError": "İş sahəsi parametrləri yenilənə bilmədi"
+    },
+    "validation": {
+      "nameRequired": "Ad tələb olunur",
+      "nameMinLength": "Ad ən azı 2 simvol olmalıdır",
+      "slugRequired": "Slug tələb olunur"
+    },
+    "billing": {
+      "title": "Cari Plan",
+      "description": "Abunəliyinizi və ödənişlərinizi idarə edin",
+      "currentPlan": "Cari Plan",
+      "upgradePlan": "Planı Yüksəlt (Tezliklə)",
+      "tiers": {
+        "free": {
+          "label": "Pulsuz",
+          "description": "Başlanğıc üçün fərdlər üçün",
+          "features": {
+            "surveys": "3-ə qədər sorğu",
+            "responses": "Ayda 100-ə qədər cavab",
+            "analytics": "Əsas analitika",
+            "teamMembers": "1 komanda üzvü"
+          }
+        },
+        "pro": {
+          "label": "Pro",
+          "description": "Böyüyən komandalar üçün",
+          "features": {
+            "surveys": "Limitsiz sorğu",
+            "responses": "Ayda 10,000-ə qədər cavab",
+            "analytics": "Qabaqcıl analitika",
+            "teamMembers": "10-a qədər komanda üzvü",
+            "branding": "Xüsusi brendinq",
+            "support": "Prioritet dəstək"
+          }
+        },
+        "enterprise": {
+          "label": "Müəssisə",
+          "description": "Böyük təşkilatlar üçün",
+          "features": {
+            "unlimited": "Limitsiz hər şey",
+            "integrations": "Xüsusi inteqrasiyalar",
+            "support": "Xüsusi dəstək",
+            "security": "SSO və qabaqcıl təhlükəsizlik",
+            "sla": "Xüsusi SLA"
+          }
+        }
+      },
+      "tierDescriptions": {
+        "free": "Başlanğıc üçün fərdi və kiçik komandalar üçün",
+        "pro": "Qabaqcıl ehtiyacları olan böyüyən komandalar üçün",
+        "enterprise": "Xüsusi tələbləri olan böyük təşkilatlar üçün"
+      },
+      "features": {
+        "surveys3": "3-ə qədər sorğu",
+        "responses100": "Ayda 100-ə qədər cavab",
+        "basicAnalytics": "Əsas analitika",
+        "teamMembers1": "1 komanda üzvü",
+        "unlimitedSurveys": "Limitsiz sorğu",
+        "responses10000": "Ayda 10,000-ə qədər cavab",
+        "advancedAnalytics": "Qabaqcıl analitika",
+        "teamMembers10": "10-a qədər komanda üzvü",
+        "customBranding": "Xüsusi brendinq",
+        "prioritySupport": "Prioritet dəstək",
+        "unlimitedEverything": "Limitsiz hər şey",
+        "customIntegrations": "Xüsusi inteqrasiyalar",
+        "dedicatedSupport": "Xüsusi dəstək",
+        "ssoSecurity": "SSO və qabaqcıl təhlükəsizlik",
+        "customSla": "Xüsusi SLA"
+      }
+    },
+    "integrations": {
+      "apiKeys": {
+        "title": "API Açarları",
+        "description": "İş sahənizə proqramatik giriş üçün API açarlarını idarə edin",
+        "createKey": "API Açarı Yarat",
+        "noKeys": "Hələ API açarı yoxdur",
+        "noKeysDesc": "Xarici xidmətlərlə inteqrasiya üçün API açarı yaradın",
+        "lastUsed": "Son istifadə:",
+        "never": "Heç vaxt",
+        "revoke": "Ləğv et",
+        "regenerate": "Yenilə",
+        "copied": "API açarı buferə kopyalandı",
+        "revoked": "API açarı ləğv edildi",
+        "comingSoon": "API açarı yaratma tezliklə",
+        "regenerateComingSoon": "Açarı yenilə (tezliklə)",
+        "createComingSoon": "Açar yarat (tezliklə)",
+        "emptyTitle": "API Açarı Yoxdur",
+        "emptyDescription": "Xarici xidmətlərlə inteqrasiya üçün API açarı yaradın"
+      },
+      "apps": {
+        "slack": "Slack kanallarınızda sorğu cavabları haqqında bildirişlər alın",
+        "zapier": "Sorğularınızı Zapier vasitəsilə 5,000+ tətbiqlə əlaqələndirin",
+        "googleSheets": "Sorğu cavablarını avtomatik olaraq Google Sheets-ə sinxronlaşdırın",
+        "salesforce": "Sorğu məlumatlarını Salesforce CRM ilə inteqrasiya edin"
+      },
+      "webhooks": {
+        "title": "Webhooklar",
+        "description": "Sorğu hadisələri baş verdikdə real vaxt bildirişləri alın",
+        "enabled": "Aktiv",
+        "disabled": "Deaktiv",
+        "endpointUrl": "Son nöqtə URL",
+        "endpointPlaceholder": "https://your-app.com/webhooks/surveys",
+        "testWebhook": "Webhook Test Et",
+        "events": "Hadisələr:",
+        "eventsList": "response.created, survey.published, survey.closed",
+        "disabledTitle": "Webhooklar Deaktivdir",
+        "disabledDescription": "Real vaxt hadisə bildirişləri almaq üçün webhookları aktiv edin",
+        "noWebhooks": "Webhook konfiqurasiya edilməyib",
+        "noWebhooksDesc": "Real vaxt hadisə bildirişləri almaq üçün yuxarıda webhookları aktiv edin"
+      },
+      "connectedApps": {
+        "title": "Bağlı Tətbiqlər",
+        "description": "İş sahənizi üçüncü tərəf xidmətləri ilə əlaqələndirin",
+        "comingSoon": "Tezliklə",
+        "connect": "Bağla",
+        "disconnect": "Ayır",
+        "apps": {
+          "slack": {
+            "name": "Slack",
+            "description": "Slack kanallarınızda sorğu cavabları haqqında bildirişlər alın"
+          },
+          "zapier": {
+            "name": "Zapier",
+            "description": "Sorğularınızı Zapier vasitəsilə 5,000+ tətbiqlə əlaqələndirin"
+          },
+          "googleSheets": {
+            "name": "Google Sheets",
+            "description": "Sorğu cavablarını avtomatik olaraq Google Sheets-ə sinxronlaşdırın"
+          },
+          "salesforce": {
+            "name": "Salesforce",
+            "description": "Sorğu məlumatlarını Salesforce CRM ilə inteqrasiya edin"
+          }
+        }
+      }
+    },
+    "dangerZone": {
+      "title": "Təhlükəli Zona",
+      "description": "Geri qaytarıla bilməyən və dağıdıcı əməliyyatlar",
+      "deleteTitle": "Bu iş sahəsini sil",
+      "deleteWarning": "Silindikdən sonra bütün məlumatlar həmişəlik silinəcək.",
+      "deleteConfirmation": "Silməni təsdiqləmək üçün iş sahəsinin adını yazın",
+      "deleteWorkspace": "İş Sahəsini Sil",
+      "deleting": "Silinir...",
+      "deleteButton": "İş Sahəsini Sil",
+      "deleteConfirm": {
+        "title": "İş Sahəsini Sil",
+        "description": "\"{{name}}\" iş sahəsini silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz və bütün məlumatlar həmişəlik silinəcək.",
+        "confirm": "İş Sahəsini Sil"
+      }
+    },
+    "loadError": {
+      "title": "İş sahəsi yüklənə bilmədi",
+      "description": "İş sahəsi parametrlərini yükləyərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+      "backButton": "İş Sahələrinə Qayıt"
+    }
+  },
+  "emailTemplates": {
+    "title": "E-poçt Şablonları",
+    "description": "Sorğu paylaşımları üçün təkrar istifadə edilə bilən e-poçt şablonları yaradın və idarə edin",
+    "newTemplate": "Yeni Şablon",
+    "searchPlaceholder": "Şablonlarda axtar...",
+    "retry": "Yenidən cəhd et",
+    "errors": {
+      "cannotDeleteDefault": "Defolt şablonu silmək olmaz",
+      "loadFailed": "E-poçt şablonları yüklənə bilmədi",
+      "loadFailedDescription": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "tabs": {
+      "all": "Hamısı",
+      "invitation": "Dəvət",
+      "reminder": "Xatırlatma",
+      "thankYou": "Təşəkkür",
+      "custom": "Xüsusi"
+    },
+    "empty": {
+      "title": "E-poçt şablonu yoxdur",
+      "description": "Sorğu paylaşımını sadələşdirmək və ardıcıl mesajlaşmanı təmin etmək üçün ilk e-poçt şablonunuzu yaradın.",
+      "createButton": "Şablon Yarat"
+    },
+    "loadError": {
+      "title": "Şablonlar yüklənə bilmədi",
+      "description": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "defaultBadge": "Defolt",
+    "form": {
+      "title": "E-poçt Şablonu Yarat",
+      "description": "Sorğu paylaşımlarınız üçün yeni e-poçt şablonu yaradın.",
+      "name": "Şablon Adı",
+      "namePlaceholder": "Şablon adını daxil edin",
+      "type": "Şablon Növü",
+      "defaultContentInfo": "Defolt məzmun əlavə ediləcək",
+      "defaultContentDesc": "Yaradıldıqdan sonra e-poçt məzmununu fərdiləşdirə bilərsiniz.",
+      "createButton": "Şablon Yarat"
+    },
+    "types": {
+      "invitation": "Dəvət",
+      "reminder": "Xatırlatma",
+      "thankYou": "Təşəkkür",
+      "custom": "Xüsusi"
+    },
+    "editor": {
+      "title": "Şablonu Redaktə Et",
+      "templateName": "Şablon Adı",
+      "templateNamePlaceholder": "Şablon adı",
+      "availablePlaceholders": "Mövcud Yer Tutucular",
+      "subject": "Mövzu",
+      "subjectPlaceholder": "E-poçt mövzu sətrləri",
+      "body": "Mətn",
+      "preview": "Önbaxış",
+      "split": "Bölünmüş",
+      "back": "Geri",
+      "saveChanges": "Dəyişiklikləri Saxla",
+      "saving": "Saxlanılır...",
+      "unsavedChanges": "Saxlanılmamış dəyişikliklər",
+      "viewModes": {
+        "edit": "Redaktə",
+        "preview": "Önbaxış",
+        "split": "Bölünmüş"
+      },
+      "contentModes": {
+        "html": "HTML",
+        "plainText": "Düz mətn"
+      },
+      "toolbar": {
+        "bold": "Qalın",
+        "italic": "Kursiv",
+        "underline": "Altı xətli",
+        "link": "Link",
+        "bulletList": "Nöqtəli siyahı",
+        "numberedList": "Nömrəli siyahı",
+        "undo": "Geri al",
+        "redo": "Yenidən et"
+      },
+      "placeholderInserted": "{{placeholder}} əlavə edildi",
+      "placeholderCopied": "\"{{placeholder}}\" buferə kopyalandı",
+      "plainTextFallback": "HTML olmayan müştərilər üçün isteğe bağlı ehtiyat",
+      "htmlPlaceholder": "HTML e-poçt məzmununuzu bura daxil edin...\n\nNümunə:\n<h1>Salam {{firstName}}!</h1>\n<p>Sorğumuza marağınız üçün təşəkkür edirik.</p>\n<p><a href='{{surveyLink}}'>Sorğunu doldurmaq üçün bura klikləyin</a></p>",
+      "plainTextPlaceholder": "E-poçtunuzun düz mətn versiyasını daxil edin...\n\nNümunə:\nSalam {{firstName}}!\n\nSorğumuza marağınız üçün təşəkkür edirik.\n\nSorğu: {{surveyLink}}",
+      "validation": {
+        "nameRequired": "Şablon adı tələb olunur",
+        "subjectRequired": "Mövzu tələb olunur",
+        "bodyRequired": "E-poçt mətni tələb olunur"
+      },
+      "saveSuccess": "Şablon uğurla saxlandı",
+      "saveError": "Şablon saxlanıla bilmədi"
+    },
+    "placeholders": {
+      "recipientName": "Alıcının adı",
+      "surveyTitle": "Sorğu başlığı",
+      "surveyLink": "Sorğu linki URL",
+      "companyName": "Şirkət adınız",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-poçt",
+      "senderName": "Göndərən Adı",
+      "unsubscribeLink": "Abunəlikdən Çıx Linki"
+    },
+    "preview": {
+      "from": "Kimdən",
+      "to": "Kimə",
+      "yourCompany": "Şirkətiniz",
+      "placeholderReference": "Yer tutucu Referansı"
+    },
+    "createSuccess": "Şablon uğurla yaradıldı",
+    "updateSuccess": "Şablon uğurla yeniləndi",
+    "deleteSuccess": "Şablon uğurla silindi",
+    "createError": "Şablon yaradıla bilmədi",
+    "updateError": "Şablon yenilənə bilmədi",
+    "deleteError": "Şablon silinə bilmədi"
+  },
+  "resetPassword": {
+    "title": "Şifrəni Sıfırla",
+    "subtitle": "Hesabınız üçün yeni şifrə yaradın",
+    "newPassword": "Yeni Şifrə",
+    "description": "Hesabınızı qorumaq üçün güclü şifrə seçin",
+    "newPasswordLabel": "Yeni Şifrə",
+    "newPasswordPlaceholder": "Yeni şifrəni daxil edin",
+    "confirmPasswordLabel": "Şifrəni Təsdiqlə",
+    "confirmPasswordPlaceholder": "Şifrənizi təsdiqləyin",
+    "submit": "Şifrəni Sıfırla",
+    "successTitle": "Şifrə uğurla sıfırlandı!",
+    "successDescription": "Şifrəniz sıfırlandı. İndi yeni şifrənizlə daxil ola bilərsiniz.",
+    "errors": {
+      "meetRequirements": "Zəhmət olmasa bütün şifrə tələblərini yerinə yetirin",
+      "failed": "Şifrə sıfırlama uğursuz oldu",
+      "resetFailed": "Şifrə sıfırlana bilmədi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "invalidLink": {
+      "title": "Etibarsız sıfırlama linki",
+      "description": "Bu şifrə sıfırlama linki etibarsızdır və ya müddəti bitib. Zəhmət olmasa yenisini tələb edin.",
+      "requestNew": "Yeni link tələb et",
+      "requestNewLink": "Yeni link tələb edin",
+      "backToLogin": "Girişə qayıt"
+    },
+    "form": {
+      "title": "Yeni şifrə yaradın",
+      "description": "Hesabınızı qorumaq üçün güclü şifrə seçin",
+      "newPassword": "Yeni Şifrə",
+      "newPasswordPlaceholder": "Yeni şifrəni daxil edin",
+      "confirmPassword": "Şifrəni Təsdiqlə",
+      "confirmPasswordPlaceholder": "Yeni şifrəni təsdiqləyin",
+      "submit": "Şifrəni Sıfırla",
+      "meetsRequirements": "Zəhmət olmasa bütün şifrə tələblərini yerinə yetirin"
+    },
+    "success": {
+      "title": "Şifrə uğurla sıfırlandı!",
+      "description": "Şifrəniz uğurla sıfırlandı. İndi yeni şifrənizlə daxil ola bilərsiniz.",
+      "goToLogin": "Girişə Keç"
+    },
+    "error": {
+      "title": "Sıfırlama uğursuz oldu",
+      "generic": "Şifrənizi sıfırlayarkən xəta baş verdi"
+    }
+  },
+  "forgotPassword": {
+    "title": "Şifrəni Unutdum",
+    "subtitle": "Sizə sıfırlama təlimatları göndərəcəyik",
+    "toast": {
+      "success": "Sıfırlama linki göndərildi",
+      "successDescription": "E-poçtunuza sıfırlama linki göndərildi",
+      "error": "Sorğu uğursuz oldu",
+      "requestFailed": "Sıfırlama linki göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin."
+    },
+    "emailSent": {
+      "title": "E-poçtunuzu yoxlayın",
+      "description": "E-poçtunuza şifrə sıfırlama linki göndərdik",
+      "expiry": "Link 24 saat ərzində etibarlıdır",
+      "tryAgain": "Almadınız? Yenidən cəhd edin"
+    },
+    "cardTitle": "Şifrənizi sıfırlayın",
+    "cardDescription": "E-poçtunuzu daxil edin və sizə sıfırlama linki göndərəcəyik",
+    "sendResetLink": "Sıfırlama Linki Göndər",
+    "form": {
+      "title": "Şifrənizi sıfırlayın",
+      "description": "E-poçt ünvanınızı daxil edin və şifrənizi sıfırlamaq üçün sizə link göndərəcəyik",
+      "email": "E-poçt",
+      "emailPlaceholder": "siz@numune.com",
+      "submit": "Sıfırlama linki göndər",
+      "backToLogin": "Girişə qayıt"
+    },
+    "success": {
+      "title": "Sıfırlama linki göndərildi",
+      "description": "{{email}} üçün gələnlər qutunuzu yoxlayın",
+      "instruction": "Link 24 saat ərzində etibarlıdır. E-poçtu görmürsünüzsə, spam qovluğunu yoxlayın.",
+      "tryAgain": "E-poçtu almadınız? Yenidən cəhd edin",
+      "backToLogin": "Girişə Qayıt"
+    },
+    "error": {
+      "title": "Sorğu uğursuz oldu",
+      "generic": "Sıfırlama linki göndərilə bilmədi"
+    }
+  },
+  "register": {
+    "firstName": "Ad",
+    "firstNamePlaceholder": "Adınızı daxil edin",
+    "lastName": "Soyad",
+    "lastNamePlaceholder": "Soyadınızı daxil edin",
+    "createPassword": "Şifrə yaradın",
+    "form": {
+      "firstName": "Ad",
+      "firstNamePlaceholder": "Əli",
+      "lastName": "Soyad",
+      "lastNamePlaceholder": "Əliyev",
+      "email": "E-poçt",
+      "emailPlaceholder": "siz@numune.com",
+      "password": "Şifrə",
+      "passwordPlaceholder": "Şifrə yaradın",
+      "meetsRequirements": "Zəhmət olmasa bütün şifrə tələblərini yerinə yetirin"
+    },
+    "validation": {
+      "firstNameRequired": "Ad tələb olunur",
+      "lastNameRequired": "Soyad tələb olunur"
+    }
+  },
+  "publicSurveyPage": {
+    "loading": "Sorğu yüklənir...",
+    "notAvailable": "Bu sorğu mövcud deyil.",
+    "submitError": "Göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin.",
+    "poweredBy": "Survey App tərəfindən",
+    "defaultTitle": "Sorğu"
+  },
+  "teamMembers": {
+    "title": "Komanda Üzvləri",
+    "description": "Bu iş sahəsinə kimin girişi olduğunu idarə edin",
+    "inviteMember": "Üzv Dəvət Et",
+    "you": "(Siz)",
+    "roles": {
+      "admin": "Admin",
+      "member": "Üzv",
+      "viewer": "Baxıcı"
+    },
+    "removeConfirm": {
+      "title": "Üzvü Sil",
+      "description": "{{name}} üzvünü bu iş sahəsindən silmək istədiyinizdən əminsiniz? Onlar bütün iş sahəsi resurslarına girişi itirəcəklər.",
+      "confirm": "Sil"
+    },
+    "inviteSuccess": "Dəvət uğurla göndərildi",
+    "removeSuccess": "Üzv uğurla silindi",
+    "inviteError": "Dəvət göndərilə bilmədi",
+    "removeError": "Üzv silinə bilmədi",
+    "loadError": "Komanda üzvləri yüklənə bilmədi",
+    "tryAgain": "Yenidən cəhd et",
+    "empty": {
+      "title": "Hələ komanda üzvü yoxdur",
+      "description": "Sorğularda əməkdaşlıq etmək üçün komanda üzvlərini dəvət edin"
+    },
+    "validation": {
+      "emailRequired": "E-poçt tələb olunur",
+      "emailInvalid": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin"
+    }
+  },
+  "workspaceForm": {
+    "title": "Yeni İş Sahəsi Yarat",
+    "description": "Sorğularınızı təşkil etmək və komandanızla əməkdaşlıq etmək üçün iş sahəsi yaradın.",
+    "name": "İş Sahəsi Adı",
+    "namePlaceholder": "Möhtəşəm İş Sahəm",
+    "slug": "İş Sahəsi URL",
+    "slugPlaceholder": "mohteshem-is-sahem",
+    "slugHelper": "Bu iş sahəsi URL-ində istifadə ediləcək",
+    "descriptionLabel": "Təsvir (İstəyə bağlı)",
+    "descriptionPlaceholder": "Bu iş sahəsi haqqında qısa təsvir...",
+    "proTip": "Məsləhət",
+    "proTipText": "Yaradıldıqdan sonra iş sahənizə komanda üzvlərini dəvət edə bilərsiniz.",
+    "createButton": "İş Sahəsi Yarat",
+    "creating": "Yaradılır...",
+    "createSuccess": "İş sahəsi uğurla yaradıldı!",
+    "createError": "İş sahəsi yaradıla bilmədi",
+    "validation": {
+      "nameRequired": "İş sahəsi adı tələb olunur",
+      "nameMinLength": "Ad ən azı 2 simvol olmalıdır",
+      "nameMaxLength": "Ad 100 simvoldan az olmalıdır",
+      "slugRequired": "İş sahəsi URL tələb olunur",
+      "slugFormat": "Slug yalnız kiçik hərflər, rəqəmlər və tire ehtiva edə bilər",
+      "slugMinLength": "Slug ən azı 2 simvol olmalıdır",
+      "slugMaxLength": "Slug 50 simvoldan az olmalıdır"
+    }
+  },
+  "responses": {
+    "title": "Cavablar",
+    "description": "Sorğu cavablarına baxın və idarə edin",
+    "noResponses": "Hələ cavab yoxdur",
+    "noResponsesDesc": "İştirakçılar sorğuları göndərdikdən sonra cavablar burada görünəcək",
+    "noFound": "Cavab tapılmadı",
+    "noFoundDesc": "Filtrləri və ya axtarış sorğusunu dəyişdirməyə çalışın",
+    "responseDetails": "Cavab Detalları",
+    "submittedAt": "Göndərilmə tarixi",
+    "submitted": "Göndərildi",
+    "respondent": "Cavab verən",
+    "anonymous": "Anonim",
+    "export": "İxrac et",
+    "exportAll": "Hamısını ixrac et",
+    "complete": "Tamamlandı",
+    "partial": "Qismən",
+    "incomplete": "Tamamlanmamış",
+    "allSurveys": "Bütün sorğular",
+    "selectSurvey": "Sorğu seçin...",
+    "selectSurveyTitle": "Sorğu seçin",
+    "selectSurveyDesc": "Cavablara baxmaq üçün açılan siyahıdan sorğu seçin",
+    "searchPlaceholder": "Cavablarda axtar...",
+    "responseCount": "{{count}} cavab",
+    "selected": "{{count}} seçildi",
+    "deleteSelected": "Seçilənləri sil",
+    "deleteResponses": "Cavabları sil",
+    "deleteConfirm": "{{count}} cavabı silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+    "duration": "Müddət",
+    "responseInfo": "Cavab Məlumatı",
+    "responseId": "Cavab ID",
+    "started": "Başladı",
+    "device": "Cihaz",
+    "location": "Məkan",
+    "answers": "Cavablar",
+    "noAnswers": "Cavab qeydə alınmayıb",
+    "deleteResponse": {
+      "title": "Cavabı Sil",
+      "description": "Bu cavabı silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+      "confirm": "Sil",
+      "cancel": "Ləğv et"
+    },
+    "deleteSuccess": "Cavab uğurla silindi",
+    "deleteError": "Cavab silinə bilmədi",
+    "na": "Yoxdur",
+    "direct": "Birbaşa",
+    "noFiles": "Fayl yüklənməyib",
+    "exportDialog": {
+      "title": "Cavabları İxrac Et",
+      "description": "Sorğu cavablarını istədiyiniz formatda ixrac edin",
+      "format": "İxrac Formatı",
+      "columns": "Sütunları Seç",
+      "filters": "Filtrlər",
+      "formats": {
+        "csv": "CSV",
+        "csvDesc": "Vergüllə ayrılmış dəyərlər, istənilən cədvəldə açılır",
+        "excel": "Excel",
+        "excelDesc": "Formatlaşdırma ilə Microsoft Excel formatı",
+        "pdf": "PDF",
+        "pdfDesc": "Paylaşmaq və çap etmək üçün portativ sənəd"
+      },
+      "selectColumns": "İxrac etmək üçün ən azı bir sütun seçin",
+      "exportSuccess": "Cavablar uğurla ixrac edildi",
+      "exportError": "Cavablar ixrac edilə bilmədi"
+    }
+  },
+  "questionCategories": {
+    "popular": "Populyar",
+    "text": "Mətn",
+    "textInput": "Mətn daxiletməsi",
+    "choice": "Seçim",
+    "input": "Daxiletmə",
+    "date": "Tarix və Vaxt",
+    "dateTime": "Tarix və Vaxt",
+    "ratingScale": "Reytinq və Şkala",
+    "advanced": "Qabaqcıl"
+  },
+  "questionDefaults": {
+    "rating": {
+      "minLabel": "Zəif",
+      "maxLabel": "Əla"
+    },
+    "scale": {
+      "minLabel": "Ehtimal yoxdur",
+      "maxLabel": "Çox ehtimaldır"
+    },
+    "nps": {
+      "minLabel": "Heç ehtimal yoxdur",
+      "maxLabel": "Çox ehtimaldır"
+    },
+    "matrix": {
+      "row": "Sətir {{number}}",
+      "column": "Sütun {{number}}"
+    },
+    "placeholders": {
+      "text": "Cavabınızı daxil edin...",
+      "email": "E-poçt ünvanınızı daxil edin...",
+      "number": "Rəqəm daxil edin...",
+      "longText": "Ətraflı cavabınızı daxil edin..."
+    },
+    "options": {
+      "option": "Seçim {{number}}",
+      "yes": "Bəli",
+      "no": "Xeyr"
+    }
+  },
+  "questionTypes": {
+    "text": {
+      "name": "Qısa Mətn",
+      "description": "Tək sətirli mətn daxiletməsi"
+    },
+    "textarea": {
+      "name": "Uzun Mətn",
+      "description": "Çox sətirli mətn sahəsi"
+    },
+    "number": {
+      "name": "Rəqəm",
+      "description": "Rəqəm daxiletməsi"
+    },
+    "email": {
+      "name": "E-poçt",
+      "description": "Doğrulama ilə e-poçt ünvanı"
+    },
+    "phone": {
+      "name": "Telefon",
+      "description": "Telefon nömrəsi daxiletməsi"
+    },
+    "date": {
+      "name": "Tarix",
+      "description": "Tarix seçici"
+    },
+    "time": {
+      "name": "Vaxt",
+      "description": "Vaxt seçici"
+    },
+    "select": {
+      "name": "Açılan Siyahı",
+      "description": "Tək seçimli açılan siyahı"
+    },
+    "radio": {
+      "name": "Çoxseçimli",
+      "description": "Seçimlərdən tək seçim"
+    },
+    "checkbox": {
+      "name": "İşarə Qutuları",
+      "description": "Çoxlu seçimə icazə verilir"
+    },
+    "rating": {
+      "name": "Reytinq",
+      "description": "Ulduz və ya rəqəm reytinqi"
+    },
+    "scale": {
+      "name": "Xətti Şkala",
+      "description": "Rəqəm şkalası seçimi",
+      "scaleType": "Şkala Növü",
+      "presets": {
+        "nps": "NPS (0-10)",
+        "1-5": "1-5 Şkalası",
+        "1-7": "1-7 Şkalası",
+        "1-10": "1-10 Şkalası"
+      }
+    },
+    "ranking": {
+      "name": "Sıralama",
+      "description": "Elementləri sıralamaq üçün sürükləyin",
+      "helper": "Üstünlüyə görə sıralamaq üçün sürükləyin",
+      "previewLabel": "Önizləmə - Yenidən sıralamaq üçün sürükləyin"
+    },
+    "matrix": {
+      "name": "Matris",
+      "description": "Sual şəbəkəsi"
+    },
+    "file": {
+      "name": "Fayl Yükləmə",
+      "description": "Faylları yükləyin"
+    },
+    "nps": {
+      "name": "NPS",
+      "description": "Net Promoter Score"
+    },
+    "options": {
+      "title": "Seçimlər",
+      "placeholder": "Seçim mətnini daxil edin",
+      "remove": "Bu seçimi sil",
+      "add": "Seçim Əlavə Et"
+    }
+  },
+  "editors": {
+    "common": {
+      "questionText": "Sual mətni",
+      "questionTextPlaceholder": "Sualınızı daxil edin",
+      "description": "Təsvir (istəyə bağlı)",
+      "descriptionPlaceholder": "Yardım mətni və ya kontekst əlavə edin",
+      "descriptionHelper": "Əlavə kontekst və ya təlimatlar təqdim edin",
+      "placeholder": "Yer tutucu mətn",
+      "placeholderInput": "Yer tutucu mətn daxil edin",
+      "placeholderHelper": "Sahə boş olduqda göstərilir",
+      "maxCharacters": "Maksimum simvol",
+      "maxCharactersHelper": "İcazə verilən maksimum simvol sayı",
+      "preview": "Önbaxış"
+    },
+    "text": {
+      "helper": "Qısa cavab mətn daxiletməsi"
+    },
+    "textarea": {
+      "helper": "Uzun cavablar üçün çox sətirli mətn",
+      "placeholderHelper": "Mətn sahəsinin içində göstərilir"
+    },
+    "number": {
+      "helper": "Yalnız rəqəm daxiletməsi",
+      "placeholderDefault": "Rəqəm daxil edin",
+      "minValue": "Minimum dəyər (istəyə bağlı)",
+      "minPlaceholder": "Minimum yoxdur",
+      "minHelper": "Minimum olmadan boş buraxın",
+      "maxValue": "Maksimum dəyər (istəyə bağlı)",
+      "maxPlaceholder": "Maksimum yoxdur",
+      "maxHelper": "Maksimum olmadan boş buraxın"
+    },
+    "email": {
+      "helper": "Doğrulama ilə e-poçt ünvanı",
+      "placeholderDefault": "siz@numune.com",
+      "errorMessage": "Xəta mesajı",
+      "errorPlaceholder": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+      "errorHelper": "E-poçt doğrulaması uğursuz olduqda göstərilir"
+    },
+    "phone": {
+      "helper": "Telefon nömrəsi daxiletməsi",
+      "format": "Telefon Nömrəsi Formatı",
+      "placeholderDefault": "Telefon nömrəsi daxil edin",
+      "advancedRegex": "Qabaqcıl: Xüsusi Regex Pattern",
+      "regexPattern": "Xüsusi Pattern",
+      "regexHelper": "Seçilmiş formatı istifadə etmək üçün boş buraxın",
+      "errorMessage": "Xəta mesajı",
+      "errorPlaceholder": "Zəhmət olmasa düzgün telefon nömrəsi daxil edin",
+      "errorHelper": "Telefon doğrulaması uğursuz olduqda göstərilir"
+    },
+    "url": {
+      "helper": "Doğrulama ilə URL",
+      "format": "URL Formatı",
+      "placeholderDefault": "https://numune.com",
+      "advancedRegex": "Qabaqcıl: Xüsusi Regex Pattern",
+      "regexPattern": "Xüsusi Pattern",
+      "regexHelper": "Seçilmiş formatı istifadə etmək üçün boş buraxın",
+      "errorMessage": "Xəta mesajı",
+      "errorPlaceholder": "Zəhmət olmasa düzgün URL daxil edin",
+      "errorHelper": "URL doğrulaması uğursuz olduqda göstərilir"
+    },
+    "date": {
+      "helper": "Tarix seçici"
+    },
+    "choice": {
+      "helper": "Seçimlərdən tək seçim",
+      "allowOther": "'Digər' seçiminə icazə ver",
+      "allowOtherDesc": "Cavab verənlərə xüsusi cavab daxil etməyə icazə verin"
+    },
+    "checkbox": {
+      "helper": "Çoxlu seçimə icazə verilir"
+    },
+    "rating": {
+      "helper": "Ulduz və ya rəqəm reytinqi",
+      "maxRating": "Maksimum reytinq",
+      "minLabel": "Minimum etiket",
+      "minPlaceholder": "Pis",
+      "maxLabel": "Maksimum etiket",
+      "maxPlaceholder": "Əla"
+    },
+    "scale": {
+      "helper": "Xətti şkala seçimi",
+      "presets": "Şkala Hazır Seçimləri",
+      "presetLabels": {
+        "1-5": "1-5",
+        "1-7": "1-7",
+        "1-10": "1-10"
+      },
+      "minValue": "Minimum dəyər",
+      "maxValue": "Maksimum dəyər",
+      "step": "Addım",
+      "minLabel": "Minimum etiket",
+      "minPlaceholder": "Heç ehtimal yoxdur",
+      "maxLabel": "Maksimum etiket",
+      "maxPlaceholder": "Çox ehtimaldır"
+    },
+    "ranking": {
+      "helper": "Üstünlüyə görə sıralamaq üçün elementləri sürükləyin",
+      "items": "Sıralama Elementləri",
+      "itemsDesc": "Cavab verənlərin sıralayacağı elementləri əlavə edin",
+      "previewLabel": "Önbaxış - Sıralamaq üçün sürükləyin"
+    },
+    "matrix": {
+      "rows": "Sətirlər (Suallar)",
+      "rowPlaceholder": "Sətir {{number}}",
+      "removeRow": "Sətri sil",
+      "addRow": "Sətir Əlavə Et",
+      "columns": "Sütunlar (Seçimlər)",
+      "columnPlaceholder": "Sütun {{number}}",
+      "removeColumn": "Sütunu sil",
+      "addColumn": "Sütun Əlavə Et"
+    },
+    "file": {
+      "allowedTypes": "İcazə Verilən Fayl Növləri",
+      "fileTypes": {
+        "images": "Şəkillər",
+        "documents": "Sənədlər",
+        "spreadsheets": "Cədvəllər",
+        "all": "Bütün Fayllar"
+      },
+      "maxFiles": "Maksimum fayl",
+      "maxFilesHelper": "İcazə verilən maksimum fayl sayı",
+      "maxSize": "Maksimum fayl ölçüsü (MB)",
+      "maxSizeHelper": "Hər fayl üçün limit",
+      "dropZone": "Faylları bura atın və ya yükləmək üçün klikləyin",
+      "maxSizeLabel": "Hər biri maksimum {{size}}MB"
+    },
+    "options": {
+      "title": "Seçimlər",
+      "placeholder": "Seçim {{number}}",
+      "remove": "Seçimi sil",
+      "add": "Seçim Əlavə Et",
+      "allowOther": "'Digər' seçiminə icazə ver",
+      "allowOtherDesc": "Cavab verənlərə xüsusi cavab daxil etməyə icazə verin",
+      "otherLabel": "Digər seçim etiketi",
+      "otherPlaceholder": "Digər"
+    },
+    "addQuestion": "Sual Əlavə Et",
+    "searchQuestionTypes": "Sual növlərini axtar...",
+    "noQuestionTypesFound": "Sual növləri tapılmadı",
+    "tryDifferentSearch": "Fərqli axtarış termini sınayın",
+    "resultsFound": "{{count}} nəticə tapıldı",
+    "typesCount": "{{count}} növ",
+    "pressEscToClose": "Bağlamaq üçün basın",
+    "untitledQuestion": "Adsız sual",
+    "required": "Tələb olunur"
+  },
+  "linksPanel": {
+    "title": "Sorğu Linkləri",
+    "description": "Cavab toplamaq üçün linkləri idarə edin və paylaşın",
+    "bulkGenerate": "Toplu Yarat",
+    "createLink": "Link Yarat",
+    "newLink": "Yeni Link",
+    "error": "Linklər yüklənə bilmədi",
+    "activeLinks": "Aktiv Linklər",
+    "inactiveLinks": "Qeyri-aktiv Linklər",
+    "passwordProtected": "Şifrə qorumalı",
+    "totalClicks": "Ümumi kliklər",
+    "responses": "cavablar",
+    "expiresAt": "Bitmə tarixi: {{date}}",
+    "showQRCode": "QR Kodu Göstər",
+    "openLink": "Linki Aç",
+    "viewAnalytics": "Analitikaya Bax",
+    "copyLink": "Linki Kopyala",
+    "deactivate": "Deaktiv Et",
+    "reactivate": "Yenidən Aktiv Et",
+    "emptyState": {
+      "title": "Hələ link yoxdur",
+      "description": "Cavab toplamağa başlamaq üçün ilk linkinizi yaradın"
+    },
+    "toast": {
+      "copied": "Link buferə kopyalandı",
+      "copyFailed": "Link kopyalana bilmədi",
+      "deactivated": "Link uğurla deaktiv edildi",
+      "deactivateFailed": "Link deaktiv edilə bilmədi",
+      "reactivated": "Link uğurla yenidən aktiv edildi",
+      "reactivateFailed": "Link yenidən aktiv edilə bilmədi"
+    },
+    "confirm": {
+      "deactivateTitle": "Linki Deaktiv Et",
+      "deactivateDescription": "Bu link artıq cavab qəbul etməyəcək. Sonra yenidən aktivləşdirə bilərsiniz.",
+      "reactivateTitle": "Linki Yenidən Aktiv Et",
+      "reactivateDescription": "Bu link yenidən cavab qəbul etməyə başlayacaq."
+    },
+    "types": {
+      "standard": "Standart Link",
+      "standardDescription": "Əsas paylaşıla bilən link",
+      "unique": "Unikal Link",
+      "uniqueDescription": "İzləmə üçün birdəfəlik istifadə linki",
+      "embedded": "Yerləşdirilmiş Link",
+      "embeddedDescription": "Vebsaytda və ya tətbiqdə yerləşdir",
+      "standardObj": {
+        "name": "Standart Link",
+        "description": "Əsas sorğu linki"
+      },
+      "anonymous": {
+        "name": "Anonim Link",
+        "description": "Cavab verən izlənmir"
+      },
+      "tracked": {
+        "name": "İzlənən Link",
+        "description": "Tam analitika izləməsi"
+      },
+      "passwordProtected": {
+        "name": "Şifrə Qorumalı",
+        "description": "Giriş üçün şifrə tələb edir"
+      }
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Qeyri-aktiv",
+      "expired": "Müddəti bitmiş",
+      "limitReached": "Limitə çatıldı"
+    },
+    "tooltips": {
+      "passwordProtected": "Şifrə qorumalı",
+      "copyLink": "Linki kopyala",
+      "responses": "Cavablar",
+      "expires": "Bitmə: {{date}}",
+      "expired": "Müddəti bitmiş",
+      "viewAnalytics": "Analitikaya bax",
+      "editLink": "Linki redaktə et"
+    },
+    "menu": {
+      "viewAnalytics": "Analitikaya Bax",
+      "copyLink": "Linki Kopyala",
+      "editLink": "Linki Redaktə Et",
+      "deactivate": "Deaktiv Et",
+      "reactivate": "Yenidən Aktiv Et"
+    },
+    "empty": {
+      "title": "Hələ link yoxdur",
+      "description": "Cavab toplamağa başlamaq üçün ilk linkinizi yaradın"
+    },
+    "linkCopied": "Link buferə kopyalandı",
+    "linkCopyError": "Link kopyalana bilmədi",
+    "deactivateConfirm": {
+      "title": "Linki Deaktiv Et",
+      "description": "Bu link artıq cavab qəbul etməyəcək. Sonra yenidən aktivləşdirə bilərsiniz.",
+      "confirm": "Deaktiv Et"
+    },
+    "reactivateConfirm": {
+      "title": "Linki Yenidən Aktiv Et",
+      "description": "Bu link yenidən cavab qəbul etməyə başlayacaq.",
+      "confirm": "Yenidən Aktiv Et"
+    },
+    "deactivateSuccess": "Link uğurla deaktiv edildi",
+    "deactivateError": "Link deaktiv edilə bilmədi",
+    "reactivateSuccess": "Link uğurla yenidən aktiv edildi",
+    "reactivateError": "Link yenidən aktiv edilə bilmədi",
+    "loadError": "Linklər yüklənə bilmədi"
+  },
+  "linkGenerator": {
+    "title": "Sorğu Linki Yarat",
+    "description": "\"{{surveyName}}\" üçün paylaşıla bilən link yaradın",
+    "linkName": "Link Adı",
+    "expiration": "Bitmə Tarixi",
+    "expirationDesc": "Link bu tarixdə bitəcək",
+    "responseLimit": "Cavab Limiti",
+    "responseLimitDesc": "İcazə verilən maksimum cavab sayı",
+    "responseLimitPlaceholder": "Maksimum cavab daxil edin",
+    "passwordProtection": "Şifrə Qoruması",
+    "passwordProtectionDesc": "Sorğuya giriş üçün şifrə tələb edin",
+    "passwordPlaceholder": "Şifrə daxil edin",
+    "createSuccess": "Link uğurla yaradıldı",
+    "createError": "Link yaradıla bilmədi"
+  },
+  "qrGenerator": {
+    "title": "QR Kod",
+    "description": "Sorğu linkiniz üçün QR kod yükləyin və ya çap edin",
+    "theme": "Mövzu",
+    "themes": {
+      "light": "İşıqlı",
+      "dark": "Qaranlıq",
+      "brand": "Brend"
+    },
+    "sizes": {
+      "small": "Kiçik (200px)",
+      "medium": "Orta (300px)",
+      "large": "Böyük (400px)",
+      "xlarge": "Çox Böyük (500px)"
+    },
+    "filename": "Fayl Adı",
+    "filenamePlaceholder": "sorgu-qr-kod",
+    "download": "PNG olaraq Yüklə",
+    "print": "Çap Et",
+    "printTips": {
+      "title": "Çap üçün məsləhətlər",
+      "tip1": "Böyük posterlər və bannerlər üçün Çox Böyük ölçü istifadə edin",
+      "tip2": "QR kod və arxa fon arasında yaxşı kontrast təmin edin",
+      "tip3": "Paylamazdan əvvəl QR kodu test edin",
+      "tip4": "Minimum tövsiyə olunan ölçü: 2sm x 2sm"
+    },
+    "downloadSuccess": "QR kod yükləndi",
+    "downloadError": "QR kod yüklənə bilmədi",
+    "printError": "QR kod çap edilə bilmədi"
+  },
+  "linkAnalyticsPanel": {
+    "title": "Link Analitikası",
+    "description": "Sorğu linkiniz üçün performans göstəriciləri",
+    "views": "baxış",
+    "unique": "unikal",
+    "geographic": "Coğrafi Paylanma",
+    "noGeographicData": "Hələ coğrafi məlumat yoxdur",
+    "devices": "Cihaz Bölgüsü",
+    "noDeviceData": "Hələ cihaz məlumatı yoxdur",
+    "trafficSources": "Trafik Mənbələri",
+    "noReferrerData": "Hələ yönləndirici məlumatı yoxdur",
+    "directTraffic": "Birbaşa",
+    "loadError": {
+      "title": "Analitika yüklənə bilmədi",
+      "description": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+      "retry": "Yenidən Cəhd Et"
+    }
+  },
+  "qrCodeDialog": {
+    "sizes": {
+      "small": "Kiçik (200px)",
+      "medium": "Orta (300px)",
+      "large": "Böyük (400px)",
+      "xlarge": "Çox Böyük (500px)"
+    },
+    "toast": {
+      "copied": "QR kod buferə kopyalandı",
+      "copyFailed": "QR kod kopyalana bilmədi",
+      "downloaded": "QR kod yükləndi",
+      "downloadFailed": "QR kod yüklənə bilmədi"
+    },
+    "title": "QR Kod",
+    "description": "Sorğunuz üçün QR kodu yükləyin və ya paylaşın",
+    "theme": "Mövzu",
+    "themes": {
+      "light": "İşıqlı",
+      "dark": "Qaranlıq",
+      "brand": "Brend"
+    },
+    "downloadSize": "Yükləmə Ölçüsü",
+    "selectSize": "Ölçü seçin",
+    "downloadPNG": "PNG Yüklə",
+    "openSurvey": "Sorğunu Aç",
+    "tips": {
+      "title": "QR Kodlar üçün Məsləhətlər",
+      "tip1": "Poster və bannerlər üçün Çox Böyük ölçü istifadə edin",
+      "tip2": "QR və arxa fon arasında yaxşı kontrast təmin edin",
+      "tip3": "Çapdan əvvəl kodu test edin",
+      "tip4": "Minimum tövsiyə olunan ölçü: 2sm x 2sm"
+    }
+  },
+  "createLinkDialog": {
+    "types": {
+      "standard": "Standart Link",
+      "standardDescription": "İstəyə bağlı parametrlərlə əsas paylaşıla bilən link",
+      "unique": "Unikal Link",
+      "uniqueDescription": "Fərdi izləmə üçün birdəfəlik istifadə linki",
+      "embedded": "Yerləşdirilmiş Link",
+      "embeddedDescription": "Sorğunu vebsaytınıza və ya tətbiqinizə yerləşdirin"
+    },
+    "toast": {
+      "success": "Link uğurla yaradıldı",
+      "error": "Link yaradıla bilmədi"
+    },
+    "title": "Sorğu Linki Yarat",
+    "descriptionWithTitle": "\"{{title}}\" üçün paylaşıla bilən link yaradın",
+    "description": "Cavab toplamaq üçün paylaşıla bilən link yaradın",
+    "linkType": "Link Növü",
+    "expirationDate": "Bitmə Tarixi",
+    "expirationDateDescription": "Link bu tarixdən sonra işləməyəcək",
+    "responseLimit": "Cavab Limiti",
+    "responseLimitDescription": "İcazə verilən maksimum cavab sayı",
+    "maxResponsesPlaceholder": "Maksimum cavab daxil edin",
+    "passwordProtection": "Şifrə Qoruması",
+    "passwordProtectionDescription": "Sorğuya giriş üçün şifrə tələb edin",
+    "passwordPlaceholder": "Şifrə daxil edin",
+    "advancedOptions": "Qabaqcıl Seçimlər",
+    "utmParameters": "UTM Parametrləri",
+    "utmTooltip": "UTM teqləri ilə link performansını izləyin",
+    "utmDescription": "Analitika üçün izləmə parametrləri əlavə edin",
+    "utmSourcePlaceholder": "məs., newsletter",
+    "utmSource": "UTM Mənbəyi",
+    "utmMediumPlaceholder": "məs., email",
+    "utmMedium": "UTM Mühiti",
+    "utmCampaignPlaceholder": "məs., yay-kampaniyası",
+    "utmCampaign": "UTM Kampaniyası",
+    "creating": "Yaradılır...",
+    "create": "Link Yarat"
+  },
+  "bulkLinkDialog": {
+    "toast": {
+      "copyFailed": "Linklər kopyalana bilmədi",
+      "allCopied": "Bütün linklər buferə kopyalandı",
+      "downloaded": "Linklər CSV olaraq yükləndi",
+      "invalidCount": "Zəhmət olmasa 1 ilə 1000 arasında say daxil edin",
+      "generated": "{{count}} link uğurla yaradıldı",
+      "error": "Linklər yaradıla bilmədi"
+    },
+    "generatedCount": "{{count}} link yaradıldı",
+    "copyAll": "Hamısını Kopyala",
+    "downloadCSV": "CSV Yüklə",
+    "title": "Toplu Link Yarat",
+    "descriptionWithTitle": "\"{{title}}\" üçün çoxlu unikal link yaradın",
+    "description": "Birdəfəlik çoxlu unikal link yaradın",
+    "numberOfLinks": "Link Sayı",
+    "numberOfLinksPlaceholder": "Say daxil edin (1-1000)",
+    "numberOfLinksHint": "Hər partiya maksimum 1000 link",
+    "namePrefix": "Ad Prefiksi",
+    "namePrefixPlaceholder": "məs., kampaniya-",
+    "namePrefixHint": "Linklər belə adlandırılacaq: prefiks-1, prefiks-2, və s.",
+    "expirationDate": "Bitmə Tarixi",
+    "expirationDateDescription": "Bütün linklər bu tarixdə bitəcək",
+    "advancedOptions": "Qabaqcıl Seçimlər",
+    "utmParameters": "UTM Parametrləri",
+    "utmTooltip": "Toplu link performansını izləyin",
+    "utmDescription": "Yaradılan bütün linklər üçün izləmə parametrləri əlavə edin",
+    "utmSourcePlaceholder": "məs., newsletter",
+    "utmSource": "UTM Mənbəyi",
+    "utmMediumPlaceholder": "məs., email",
+    "utmMedium": "UTM Mühiti",
+    "utmCampaignPlaceholder": "məs., yay-kampaniyası",
+    "utmCampaign": "UTM Kampaniyası",
+    "generating": "Yaradılır...",
+    "generate": "Linkləri Yarat"
+  },
+  "distributionAnalytics": {
+    "title": "Paylaşım Analitikası",
+    "refresh": "Yenilə",
+    "status": {
+      "draft": "Qaralama",
+      "scheduled": "Planlaşdırılıb",
+      "sending": "Göndərilir",
+      "sent": "Göndərildi",
+      "failed": "Uğursuz",
+      "cancelled": "Ləğv edildi",
+      "partiallyFailed": "Qismən Uğursuz"
+    },
+    "stats": {
+      "delivered": "Çatdırıldı",
+      "deliveryRate": "Çatdırılma Faizi",
+      "openRate": "Açılma Faizi",
+      "clickRate": "Klik Faizi"
+    }
+  },
+  "emailWizard": {
+    "title": "E-poçt Paylaşımı Yarat",
+    "description": "Cavab toplamaq üçün sorğunuzu e-poçtla göndərin",
+    "steps": {
+      "recipients": {
+        "title": "Alıcılar",
+        "description": "Kim sorğunu alacaq"
+      },
+      "content": {
+        "title": "Məzmun",
+        "description": "E-poçt mesajı"
+      },
+      "schedule": {
+        "title": "Cədvəl",
+        "description": "Nə vaxt göndəriləcək"
+      }
+    },
+    "scheduleSuccess": "Paylaşım uğurla planlaşdırıldı!",
+    "sendSuccess": "Paylaşım yaradıldı və göndərilir!",
+    "createError": "Paylaşım yaradıla bilmədi"
+  },
+  "recipientInput": {
+    "placeholder": "E-poçt ünvanı daxil edin...",
+    "errors": {
+      "empty": "Zəhmət olmasa e-poçt ünvanı daxil edin",
+      "invalid": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+      "duplicate": "Bu e-poçt artıq siyahıdadır",
+      "maxReached": "Maksimum {{max}} alıcıya icazə verilir"
+    }
+  },
+  "themeEditor": {
+    "validation": {
+      "nameRequired": "Mövzu adı tələb olunur",
+      "primaryColorRequired": "Əsas rəng tələb olunur",
+      "backgroundColorRequired": "Arxa fon rəngi tələb olunur"
+    },
+    "toast": {
+      "validationError": "Zəhmət olmasa doğrulama xətalarını düzəldin"
+    },
+    "editTitle": "Mövzunu Redaktə Et",
+    "createTitle": "Mövzu Yarat",
+    "editDescription": "Mövzu parametrlərini fərdiləşdirin",
+    "createDescription": "Yeni xüsusi mövzu yaradın",
+    "themeNamePlaceholder": "Mövzu adını daxil edin",
+    "fontFamily": "Şrift Ailəsi",
+    "baseFontSize": "Əsas Şrift Ölçüsü",
+    "buttonStyle": "Düymə Stili",
+    "logoUrl": "Logo URL",
+    "logoUrlHelperText": "Kvadrat şəkil tövsiyə olunur. Maks 256x256px.",
+    "backgroundImageUrl": "Arxa Fon Şəkli URL",
+    "backgroundImageUrlHelperText": "Yüksək ayırdetmə qabiliyyətli şəkil tövsiyə olunur.",
+    "customCss": "Xüsusi CSS",
+    "customCssPlaceholder": "/* Xüsusi CSS-inizi bura əlavə edin */",
+    "customCssHelperText": "Qabaqcıl: Defolt stilləri dəyişdirin",
+    "generatedCssPreview": "Yaradılmış CSS Önbaxışı",
+    "saveChanges": "Dəyişiklikləri Saxla",
+    "createTheme": "Mövzu Yarat",
+    "title": "Mövzunu Redaktə Et",
+    "themeName": "Mövzu Adı",
+    "namePlaceholder": "Xüsusi Mövzum",
+    "tabs": {
+      "colors": "Rənglər",
+      "typography": "Tipografiya",
+      "branding": "Brendinq",
+      "advanced": "Qabaqcıl"
+    },
+    "quickPresets": "Sürətli Hazır Seçimlər",
+    "presets": {
+      "violet": "Bənövşəyi",
+      "ocean": "Okean",
+      "forest": "Meşə",
+      "sunset": "Gün batımı",
+      "minimal": "Minimal",
+      "dark": "Qaranlıq"
+    },
+    "colors": {
+      "primary": "Əsas Rəng",
+      "secondary": "İkinci Rəng",
+      "background": "Arxa Fon Rəngi",
+      "text": "Mətn Rəngi"
+    },
+    "typography": {
+      "fontFamily": "Şrift Ailəsi",
+      "baseFontSize": "Əsas Şrift Ölçüsü",
+      "buttonStyle": "Düymə Stili",
+      "buttonStyles": {
+        "rounded": "Yuvarlaq",
+        "pill": "Həb",
+        "square": "Kvadrat"
+      },
+      "sizes": {
+        "small": "14px - Kiçik",
+        "default": "16px - Defolt",
+        "large": "18px - Böyük",
+        "xlarge": "20px - Çox Böyük"
+      }
+    },
+    "branding": {
+      "logoUrl": "Logo URL",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "logoHelper": "Kvadrat şəkil tövsiyə olunur. Maks 256x256px.",
+      "backgroundImage": "Arxa Fon Şəkli URL",
+      "backgroundPlaceholder": "https://example.com/background.jpg",
+      "backgroundHelper": "Yüksək ayırdetmə qabiliyyətli şəkil tövsiyə olunur. Sorğu arxa fonu olaraq istifadə ediləcək."
+    },
+    "advanced": {
+      "customCss": "Xüsusi CSS",
+      "cssPlaceholder": "/* Xüsusi CSS-inizi bura əlavə edin */",
+      "cssHelper": "Qabaqcıl: Defolt stilləri dəyişdirmək üçün xüsusi CSS əlavə edin",
+      "cssPreview": "Yaradılmış CSS Önbaxışı"
+    },
+    "livePreview": "Canlı Önbaxış",
+    "livePreviewHint": "Dəyişikliklər real vaxtda yenilənir",
+    "saveSuccess": "Mövzu uğurla saxlanıldı",
+    "saveError": "Mövzu saxlanıla bilmədi"
+  },
+  "themeCard": {
+    "default": "Defolt",
+    "selected": "Seçilmiş",
+    "buttons": "düymələr",
+    "outline": "Kontur",
+    "menu": {
+      "edit": "Redaktə et",
+      "duplicate": "Kopyala",
+      "setDefault": "Defolt Olaraq Təyin Et",
+      "delete": "Sil"
+    }
+  },
+  "themePreview": {
+    "surveyTitle": "Nümunə Sorğu",
+    "surveyDescription": "Sorğunuz belə görünəcək",
+    "progress": "{{current}} / {{total}}",
+    "sampleQuestion1": "Xidmətlərimizdən nə dərəcədə razısınız?",
+    "sampleQuestion2": "Bizi dostunuza tövsiyə edərdinizmi?",
+    "option1": "Çox Razıyam",
+    "option2": "Razıyam",
+    "option3": "Neytral",
+    "previous": "Əvvəlki",
+    "next": "Növbəti",
+    "primaryBtn": "Əsas Düymə",
+    "outlineBtn": "Kontur Düymə"
+  },
+  "createTemplate": {
+    "title": "Şablon Yarat",
+    "modes": {
+      "scratch": {
+        "name": "Sıfırdan",
+        "description": "Boş şablonla başla"
+      },
+      "survey": {
+        "name": "Sorğudan",
+        "description": "Mövcud sorğunu kopyala"
+      }
+    },
+    "selectSurvey": "Sorğu seçin",
+    "selectSurveyPlaceholder": "Kopyalamaq üçün sorğu seçin",
+    "templateName": "Şablon Adı",
+    "templateNamePlaceholder": "Şablon adını daxil edin",
+    "description": "Təsvir",
+    "descriptionPlaceholder": "Bu şablonun nə üçün olduğunu təsvir edin...",
+    "descriptionHelper": "Başqalarının bu şablonu nə zaman istifadə edəcəyini anlamalarına kömək edin",
+    "category": "Kateqoriya",
+    "visibility": {
+      "public": {
+        "name": "İctimai Şablon",
+        "description": "Hər kəs bu şablonu istifadə edə bilər"
+      },
+      "private": {
+        "name": "Özəl Şablon",
+        "description": "Yalnız siz bu şablonu istifadə edə bilərsiniz"
+      }
+    },
+    "createButton": "Şablon Yarat",
+    "createSuccess": "Şablon uğurla yaradıldı",
+    "createError": "Şablon yaradıla bilmədi"
+  },
+  "useTemplate": {
+    "title": "Şablonu İstifadə Et",
+    "description": "Bu şablondan yeni sorğu yaradın",
+    "explanation": "Bu, şablondakı bütün suallarla yeni sorğu yaradacaq. Yaradıldıqdan sonra fərdiləşdirə bilərsiniz.",
+    "surveyName": "Sorğu Adı",
+    "surveyNamePlaceholder": "Sorğu adını daxil edin",
+    "surveyDescription": "Təsvir (istəyə bağlı)",
+    "surveyDescriptionPlaceholder": "Sorğu təsvirini daxil edin",
+    "createButton": "Sorğu Yarat",
+    "info": "Yaradıldıqdan sonra sorğunu redaktə edə bilərsiniz",
+    "createSuccess": "Şablondan sorğu yaradıldı",
+    "createError": "Sorğu yaradıla bilmədi"
+  },
+  "templatePreview": {
+    "title": "Şablon Önbaxışı",
+    "uses": "istifadə",
+    "public": "İctimai",
+    "private": "Özəl",
+    "questions": "Suallar",
+    "questionTypes": {
+      "text": "Qısa Mətn",
+      "textarea": "Uzun Mətn",
+      "number": "Rəqəm",
+      "email": "E-poçt",
+      "phone": "Telefon",
+      "date": "Tarix",
+      "time": "Vaxt",
+      "select": "Açılan Siyahı",
+      "radio": "Çoxseçimli",
+      "checkbox": "İşarə Qutuları",
+      "rating": "Reytinq",
+      "scale": "Şkala",
+      "ranking": "Sıralama",
+      "matrix": "Matris",
+      "file": "Fayl Yükləmə",
+      "nps": "NPS"
+    },
+    "empty": {
+      "title": "Hələ sual yoxdur",
+      "description": "Suallar əlavə edildikdən sonra burada görünəcək"
+    },
+    "useButton": "Bu Şablonu İstifadə Et"
+  },
+  "avatarUpload": {
+    "change": "Dəyiş",
+    "remove": "Sil",
+    "maxSize": "Maks {{size}}MB.",
+    "title": "Avatar Yüklə",
+    "description": "Profil şəkliniz olaraq istifadə etmək üçün şəkil seçin",
+    "errors": {
+      "tooLarge": "Fayl çox böyükdür",
+      "invalidType": "Yanlış fayl növü",
+      "uploadFailed": "Avatar yüklənə bilmədi",
+      "removeFailed": "Avatar silinə bilmədi"
+    }
+  },
+  "avatar": {
+    "validation": {
+      "invalidType": "Zəhmət olmasa düzgün şəkil faylı seçin (PNG, JPG, GIF)",
+      "tooLarge": "Şəkil 5MB-dan kiçik olmalıdır"
+    },
+    "upload": "Yüklə",
+    "uploadError": "Avatar yüklənə bilmədi",
+    "remove": "Sil",
+    "removeError": "Avatar silinə bilmədi",
+    "change": "Avatarı Dəyiş",
+    "uploadBtn": "Yüklə",
+    "maxSize": "Maks 5MB",
+    "uploadDialog": {
+      "title": "Avatar Yüklə",
+      "description": "Profil şəkliniz olaraq istifadə etmək üçün şəkil seçin"
+    },
+    "dragDrop": "Şəklinizi bura sürükləyib buraxın",
+    "orBrowse": "və ya gözdən keçirmək üçün klikləyin",
+    "browseFiles": "Faylları Gözdən Keçir",
+    "uploading": "Yüklənir...",
+    "removeDialog": {
+      "title": "Avatarı Sil",
+      "description": "Avatarınızı silmək istədiyinizdən əminsiniz?"
+    },
+    "removing": "Silinir..."
+  },
+  "profileForm": {
+    "title": "Profil",
+    "description": "Şəxsi məlumatlarınızı və profil şəklinizi idarə edin",
+    "updateSuccess": "Profil uğurla yeniləndi",
+    "updateError": "Profil yenilənə bilmədi",
+    "removeAvatarSuccess": "Avatar uğurla silindi",
+    "removeAvatarError": "Avatar silinə bilmədi"
+  },
+  "passwordForm": {
+    "title": "Şifrəni Dəyiş",
+    "description": "Hesabınızı qorumaq üçün şifrənizi yeniləyin",
+    "successMessage": "Şifrəniz uğurla dəyişdirildi!",
+    "currentPassword": "Cari Şifrə",
+    "newPassword": "Yeni Şifrə",
+    "changeSuccess": "Şifrə uğurla dəyişdirildi",
+    "changeError": "Şifrə dəyişdirilə bilmədi",
+    "genericError": "Xəta baş verdi"
+  },
+  "questionTypeLabels": {
+    "singleChoice": "Tək Seçim",
+    "multipleChoice": "Çoxlu Seçim",
+    "shortText": "Qısa Mətn",
+    "longText": "Uzun Mətn",
+    "rating": "Reytinq",
+    "linearScale": "Xətti Şkala",
+    "matrix": "Matris",
+    "date": "Tarix",
+    "fileUpload": "Fayl Yükləmə",
+    "ranking": "Sıralama",
+    "dateTime": "Tarix və Vaxt",
+    "yesNo": "Bəli/Xeyr",
+    "dropdown": "Açılan Siyahı",
+    "nps": "Net Promoter Score",
+    "checkbox": "Qeyd qutusu",
+    "number": "Rəqəm",
+    "email": "Email",
+    "phone": "Telefon Nömrəsi",
+    "url": "Veb sayt URL",
+    "unknown": "Naməlum"
+  },
+  "questionTypeDescriptions": {
+    "singleChoice": "Siyahıdan bir seçim edin",
+    "multipleChoice": "Siyahıdan çoxlu seçim edin",
+    "shortText": "Tək sətirli mətn cavabı",
+    "longText": "Çox sətirli mətn cavabı",
+    "rating": "Ulduz reytinq şkalası",
+    "linearScale": "Rəqəmli şkala (məs., NPS)",
+    "matrix": "Sual və seçimlər şəbəkəsi",
+    "date": "Tarix seçici",
+    "fileUpload": "Fayl əlavə etməyə icazə verin",
+    "ranking": "Sıralamaq üçün sürükləyin",
+    "dateTime": "Tarix və vaxt seçici",
+    "yesNo": "Sadə bəli və ya xeyr sualı",
+    "dropdown": "Açılan siyahıdan seçin",
+    "nps": "0-10 NPS şkalası",
+    "checkbox": "Çoxlu qeyd qutusu seçimi",
+    "number": "Rəqəmli daxiletmə sahəsi",
+    "email": "Email ünvanı daxiletməsi",
+    "phone": "Format yoxlamalı telefon nömrəsi",
+    "url": "Yoxlamalı veb sayt URL",
+    "unknown": "Naməlum sual növü"
+  },
+  "logicVisualization": {
+    "loadError": "Məntiqi xəritə yüklənə bilmədi",
+    "noRules": "Məntiqi qayda təyin edilməyib",
+    "addLogicHint": "Axın diaqramını görmək üçün suallara şərti məntiqi əlavə edin",
+    "issuesFound": "Məntiqi problemlər tapıldı"
+  },
+  "analyticsSummary": {
+    "totalResponses": "Ümumi cavablar",
+    "completionRate": "Tamamlanma nisbəti",
+    "avgCompletionTime": "Orta tamamlanma vaxtı",
+    "partialResponses": "Qismən cavablar",
+    "completed": "{{count}} tamamlandı",
+    "excellent": "Əla",
+    "good": "Yaxşı",
+    "average": "Orta",
+    "needsImprovement": "Təkmilləşdirmə lazımdır",
+    "incompleteSubmissions": "Tamamlanmamış göndərişlər",
+    "none": "Yoxdur"
+  },
+  "welcomeScreen": {
+    "questions": "sual",
+    "questions_plural": "sual",
+    "minutes": "dəq",
+    "startSurvey": "Sorğuya başla"
+  },
+  "questionRenderers": {
+    "other": "Digər",
+    "pleaseSpecify": "Zəhmət olmasa göstərin...",
+    "dropFilesHere": "Faylları bura buraxın və ya yükləmək üçün klikləyin",
+    "maxFiles": "Maksimum {{count}} fayl • hər biri {{size}}MB",
+    "allowedTypes": "İcazə verilən",
+    "dragToReorder": "Üstünlüyə görə sıralamaq üçün sürükləyin"
+  },
+  "charts": {
+    "noResponsesYet": "Hələ cavab yoxdur",
+    "responseCount": "{{count}} cavab",
+    "responseCount_plural": "{{count}} cavab",
+    "averageRatingOutOf": "{{max}} üzərindən orta reytinq",
+    "moreOptions": "+{{count}} digər seçimlər"
+  },
+  "timePicker": {
+    "selectTime": "Vaxt seçin",
+    "enterTime": "Vaxt daxil edin",
+    "hour": "Saat",
+    "minute": "Dəqiqə",
+    "clearTime": "Vaxtı təmizləyin",
+    "switchToKeyboard": "Klaviatura daxilinə keçin",
+    "switchToDial": "Saat siferblatına keçin"
+  },
+  "datePicker": {
+    "selectDate": "Tarix seçin",
+    "selectDateRange": "Tarix aralığı seçin",
+    "noDate": "Tarix yoxdur",
+    "dateRange": "Tarix aralığı",
+    "backToCalendar": "Təqvimə qayıt",
+    "presets": "Hazır seçimlər",
+    "custom": "Xüsusi",
+    "year": "İl",
+    "clearDate": "Tarixi təmizlə",
+    "clearDateFilter": "Tarix filtrini təmizlə",
+    "previousMonth": "Əvvəlki ay",
+    "nextMonth": "Növbəti ay",
+    "switchToInput": "Mətn daxilinə keçin",
+    "switchToCalendar": "Təqvimə keçin",
+    "dateFormat": "Tarix (YYYY-MM-DD)",
+    "invalidDate": "Yanlış tarix formatı",
+    "presetLabels": {
+      "today": "Bu gün",
+      "yesterday": "Dünən",
+      "last7days": "Son 7 gün",
+      "last30days": "Son 30 gün",
+      "thisMonth": "Bu ay",
+      "lastMonth": "Keçən ay"
+    },
+    "weekDays": {
+      "sun": "B",
+      "mon": "B",
+      "tue": "Ç",
+      "wed": "Ç",
+      "thu": "C",
+      "fri": "C",
+      "sat": "Ş"
+    },
+    "weekDaysFull": {
+      "sun": "Baz",
+      "mon": "B.e",
+      "tue": "Ç.a",
+      "wed": "Çər",
+      "thu": "C.a",
+      "fri": "Cüm",
+      "sat": "Şən"
+    },
+    "months": {
+      "january": "Yanvar",
+      "february": "Fevral",
+      "march": "Mart",
+      "april": "Aprel",
+      "may": "May",
+      "june": "İyun",
+      "july": "İyul",
+      "august": "Avqust",
+      "september": "Sentyabr",
+      "october": "Oktyabr",
+      "november": "Noyabr",
+      "december": "Dekabr"
+    },
+    "monthsShort": {
+      "jan": "Yan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "İyn",
+      "jul": "İyl",
+      "aug": "Avq",
+      "sep": "Sen",
+      "oct": "Okt",
+      "nov": "Noy",
+      "dec": "Dek"
+    }
+  },
+  "enums": {
+    "subscriptionTier": {
+      "free": "Pulsuz",
+      "pro": "Pro",
+      "enterprise": "Korporativ"
+    },
+    "memberRole": {
+      "owner": "Sahibi",
+      "admin": "Administrator",
+      "member": "Üzv",
+      "viewer": "İzləyici",
+      "respondent": "Respondent"
+    },
+    "surveyStatus": {
+      "draft": "Qaralama",
+      "published": "Yayımlanıb",
+      "closed": "Bağlanıb",
+      "archived": "Arxivdə"
+    },
+    "questionType": {
+      "singleChoice": "Tək seçim",
+      "multipleChoice": "Çoxlu seçim",
+      "text": "Mətn",
+      "longText": "Uzun mətn",
+      "rating": "Reytinq",
+      "scale": "Şkala",
+      "matrix": "Matris",
+      "date": "Tarix",
+      "dateTime": "Tarix və vaxt",
+      "fileUpload": "Fayl yükləmə",
+      "yesNo": "Bəli/Xeyr",
+      "dropdown": "Açılan siyahı",
+      "nps": "NPS göstəricisi",
+      "checkbox": "Çekboks",
+      "number": "Rəqəm",
+      "shortText": "Qısa mətn",
+      "email": "E-poçt",
+      "phone": "Telefon",
+      "url": "URL",
+      "ranking": "Sıralama"
+    },
+    "ratingStyle": {
+      "stars": "Ulduzlar",
+      "hearts": "Ürəklər",
+      "thumbs": "Bəyənmə",
+      "smileys": "Smayllar",
+      "numbers": "Rəqəmlər"
+    },
+    "yesNoStyle": {
+      "text": "Mətn",
+      "thumbs": "Bəyənmə/Bəyənməmə",
+      "toggle": "Keçid",
+      "checkX": "Qeyd/Xaç"
+    },
+    "logicOperator": {
+      "equals": "Bərabərdir",
+      "notEquals": "Bərabər deyil",
+      "contains": "Ehtiva edir",
+      "notContains": "Ehtiva etmir",
+      "greaterThan": "Böyükdür",
+      "lessThan": "Kiçikdir",
+      "greaterThanOrEquals": "Böyük və ya bərabərdir",
+      "lessThanOrEquals": "Kiçik və ya bərabərdir",
+      "isEmpty": "Boşdur",
+      "isNotEmpty": "Boş deyil",
+      "isAnswered": "Cavablandırılıb",
+      "isNotAnswered": "Cavablandırılmayıb"
+    },
+    "logicAction": {
+      "show": "Göstər",
+      "hide": "Gizlət",
+      "skip": "Keç",
+      "jumpTo": "Keçid et",
+      "endSurvey": "Sorğunu bitir"
+    },
+    "linkType": {
+      "public": "Açıq",
+      "unique": "Unikal",
+      "campaign": "Kampaniya",
+      "embedded": "Daxil edilmiş",
+      "qrCode": "QR kod"
+    },
+    "distributionStatus": {
+      "draft": "Qaralama",
+      "scheduled": "Planlaşdırılıb",
+      "sending": "Göndərilir",
+      "sent": "Göndərildi",
+      "partiallyFailed": "Qismən uğursuz",
+      "failed": "Uğursuz",
+      "cancelled": "Ləğv edildi"
+    },
+    "recipientStatus": {
+      "pending": "Gözləyir",
+      "sent": "Göndərildi",
+      "delivered": "Çatdırıldı",
+      "opened": "Açıldı",
+      "clicked": "Klik edildi",
+      "bounced": "Geri qayıtdı",
+      "unsubscribed": "Abunədən çıxdı",
+      "failed": "Uğursuz"
+    },
+    "emailTemplateType": {
+      "surveyInvitation": "Sorğu dəvəti",
+      "surveyReminder": "Sorğu xatırlatması",
+      "thankYou": "Təşəkkür",
+      "custom": "Xüsusi"
+    },
+    "buttonStyle": {
+      "rounded": "Yuvarlaq",
+      "square": "Kvadrat",
+      "pill": "Oval"
+    },
+    "themeLayout": {
+      "classic": "Klassik",
+      "card": "Kart",
+      "conversational": "Dialoq",
+      "minimal": "Minimal"
+    },
+    "logoPosition": {
+      "topLeft": "Yuxarı sol",
+      "topCenter": "Yuxarı mərkəz",
+      "topRight": "Yuxarı sağ",
+      "bottomLeft": "Aşağı sol",
+      "bottomCenter": "Aşağı mərkəz",
+      "bottomRight": "Aşağı sağ"
+    },
+    "progressBarStyle": {
+      "none": "Heç biri",
+      "bar": "Çubuq",
+      "percentage": "Faiz",
+      "steps": "Addımlar",
+      "dots": "Nöqtələr"
+    },
+    "recurrencePattern": {
+      "daily": "Gündəlik",
+      "weekly": "Həftəlik",
+      "biWeekly": "İki həftədə bir",
+      "monthly": "Aylıq",
+      "quarterly": "Rüblük",
+      "custom": "Xüsusi"
+    },
+    "runStatus": {
+      "scheduled": "Planlaşdırılıb",
+      "running": "İcra olunur",
+      "completed": "Tamamlandı",
+      "partiallyCompleted": "Qismən tamamlandı",
+      "failed": "Uğursuz",
+      "cancelled": "Ləğv edildi"
+    },
+    "audienceType": {
+      "staticList": "Statik siyahı",
+      "dynamicList": "Dinamik siyahı",
+      "allContacts": "Bütün kontaktlar",
+      "previousRespondents": "Əvvəlki respondentlər"
+    },
+    "npsCategory": {
+      "needsImprovement": "Yaxşılaşdırma tələb edir",
+      "good": "Yaxşı",
+      "great": "Əla",
+      "excellent": "Mükəmməl"
+    },
+    "dayOfWeek": {
+      "sunday": "Bazar",
+      "monday": "Bazar ertəsi",
+      "tuesday": "Çərşənbə axşamı",
+      "wednesday": "Çərşənbə",
+      "thursday": "Cümə axşamı",
+      "friday": "Cümə",
+      "saturday": "Şənbə"
+    },
+    "backgroundImagePosition": {
+      "cover": "Örtmək",
+      "contain": "Yerləşdirmək",
+      "tile": "Plitka",
+      "center": "Mərkəz",
+      "topLeft": "Yuxarı sol",
+      "topRight": "Yuxarı sağ"
+    }
+  },
+  "onboarding": {
+    "skip": "Hələlik keç",
+    "getStarted": "Başla",
+    "defaultUser": "istifadəçi",
+    "welcome": {
+      "title": "Sorğu Tətbiqinə Xoş Gəldiniz",
+      "description": "Gəlin bir neçə addımda təcrübənizi fərdiləşdirək",
+      "greeting": "Salam {{name}}! 👋",
+      "message": "Sizi burada görmək çox xoşdur. Hesabınızı quraq ki, möhtəşəm sorğular yarada və dəyərli məlumatlar toplaya biləsiniz."
+    },
+    "profile": {
+      "title": "Profilinizi Tamamlayın",
+      "description": "Özünüz haqqında bir az məlumat verin",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "firstNamePlaceholder": "Adınızı daxil edin",
+      "lastNamePlaceholder": "Soyadınızı daxil edin",
+      "hint": "Adınız sorğularda və hesabatlarda göstəriləcək"
+    },
+    "appearance": {
+      "title": "Görünüşü Fərdiləşdirin",
+      "description": "Seçdiyiniz tema və rəngləri seçin",
+      "themeMode": "Tema Rejimi",
+      "light": "İşıqlı",
+      "dark": "Qaranlıq",
+      "system": "Sistem",
+      "colorPalette": "Rəng Palitrası",
+      "palette": {
+        "purple": "Bənövşəyi",
+        "blue": "Mavi",
+        "green": "Yaşıl",
+        "orange": "Narıncı",
+        "pink": "Çəhrayı",
+        "teal": "Firuzəyi"
+      }
+    },
+    "accessibility": {
+      "title": "Əlçatanlıq Parametrləri",
+      "description": "Rahatlığınız və ehtiyaclarınız üçün fərdiləşdirin",
+      "intro": "Daha yaxşı əlçatanlıq üçün təcrübənizi fərdiləşdirin",
+      "reducedMotion": "Hərəkəti Azalt",
+      "reducedMotionDesc": "Animasiyaları və keçidləri minimuma endirin",
+      "highContrast": "Yüksək Kontrast",
+      "highContrastDesc": "Daha yaxşı görünürlük üçün rəng kontrastını artırın",
+      "largeText": "Böyük Mətn",
+      "largeTextDesc": "Tətbiq boyunca şrift ölçüsünü artırın",
+      "dyslexiaFont": "Disleksiya Dostu Şrift",
+      "dyslexiaFontDesc": "Daha asan oxumaq üçün dizayn edilmiş şrift istifadə edin",
+      "hint": "Bu parametrləri istənilən vaxt Parametrlər → Əlçatanlıq bölməsində dəyişə bilərsiniz"
+    },
+    "language": {
+      "title": "Dilinizi Seçin",
+      "description": "Ən rahat olduğunuz dili seçin"
+    },
+    "notifications": {
+      "title": "Xəbərdar Olun",
+      "description": "Necə bildiriş almaq istədiyinizi seçin",
+      "email": "E-poçt Bildirişləri",
+      "emailDesc": "Vacib yenilikləri e-poçtla alın",
+      "responses": "Cavab Xəbərdarlıqları",
+      "responsesDesc": "Kimsə sorğunuza cavab verdikdə xəbərdarlıq alın",
+      "digest": "Həftəlik Xülasə",
+      "digestDesc": "Sorğu performansınızın həftəlik xülasəsini alın",
+      "hint": "Bu parametrləri istənilən vaxt hesab tənzimləmələrinizdə dəyişə bilərsiniz"
+    },
+    "complete": {
+      "title": "Hər şey Hazırdır!",
+      "description": "Hesabınız istifadəyə hazırdır",
+      "ready": "Əla, {{name}}!",
+      "message": "İş sahəniz hazırdır. Sorğular yaratmağa, cavabları təhlil etməyə və komandanızla məlumatları paylaşmağa başlayın.",
+      "createSurvey": "Sorğu Yarat",
+      "viewAnalytics": "Analitikaya Bax",
+      "distribute": "Paylaş"
+    },
+    "features": {
+      "customize": "Fərdiləşdir",
+      "language": "Dil",
+      "notifications": "Xəbərdarlıqlar"
+    },
+    "restartOnboarding": "Quraşdırma Sehrbazını Yenidən Başlat",
+    "restartOnboardingDescription": "İlkin quraşdırma prosesindən yenidən keçin",
+    "completedSuccessfully": "Quraşdırma uğurla tamamlandı!",
+    "skipAriaLabel": "Tanışlıq sehrbazını keç",
+    "stepNavigation": "Sehrbaz addımları",
+    "stepLabel": "Addım {{current}} / {{total}}",
+    "errors": {
+      "saveFailed": "Seçimlərinizi saxlamaq mümkün olmadı. Yenidən cəhd edin."
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export { NamespaceSettingsPage } from './NamespaceSettingsPage';
