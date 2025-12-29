@@ -12,9 +12,33 @@ interface WelcomeScreenProps {
   welcomeMessage?: string;
   questionCount: number;
   onStart: () => void;
+  /** Logo URL to display instead of the default icon */
+  logoUrl?: string;
+  /** Logo size: 0=small, 1=medium (default), 2=large, 3=extra-large */
+  logoSize?: number;
+  /** Whether to show a background behind the logo */
+  showLogoBackground?: boolean;
+  /** Background color for the logo */
+  logoBackgroundColor?: string;
+  /** Branding title displayed next to the logo */
+  brandingTitle?: string;
+  /** Branding subtitle displayed below the title */
+  brandingSubtitle?: string;
 }
 
-export function WelcomeScreen({ title, description, welcomeMessage, questionCount, onStart }: WelcomeScreenProps) {
+export function WelcomeScreen({
+  title,
+  description,
+  welcomeMessage,
+  questionCount,
+  onStart,
+  logoUrl,
+  logoSize,
+  showLogoBackground,
+  logoBackgroundColor,
+  brandingTitle,
+  brandingSubtitle,
+}: WelcomeScreenProps) {
   const { t } = useTranslation();
   const estimatedMinutes = Math.ceil(questionCount * 0.5);
 
@@ -41,11 +65,39 @@ export function WelcomeScreen({ title, description, welcomeMessage, questionCoun
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center max-w-2xl w-full">
         {/* Hero icon cluster - M3 Expressive shape variety */}
-        <div className="relative mb-6 @sm:mb-8 @md:mb-10">
+        <div className="relative mb-6 @sm:mb-8 @md:mb-10 flex flex-col items-center">
           {/* Main icon container - large squircle */}
-          <div className="w-16 h-16 @sm:w-20 @sm:h-20 @md:w-24 @md:h-24 rounded-2xl @sm:rounded-2xl @md:rounded-3xl bg-primary-container border-2 border-primary/20 flex items-center justify-center">
-            <Sparkles className="w-8 h-8 @sm:w-10 @sm:h-10 @md:w-12 @md:h-12 text-on-primary-container" strokeWidth={1.5} />
-          </div>
+          {logoUrl ? (
+            <>
+              <div
+                className={`rounded-2xl @sm:rounded-2xl @md:rounded-3xl flex items-center justify-center overflow-hidden ${
+                  showLogoBackground ? 'p-2 shadow-sm border-2 border-outline-variant/30' : ''
+                } ${
+                  logoSize === 0
+                    ? 'w-14 h-14 @sm:w-16 @sm:h-16 @md:w-18 @md:h-18'
+                    : logoSize === 2
+                    ? 'w-24 h-24 @sm:w-28 @sm:h-28 @md:w-32 @md:h-32'
+                    : logoSize === 3
+                    ? 'w-28 h-28 @sm:w-32 @sm:h-32 @md:w-40 @md:h-40'
+                    : 'w-20 h-20 @sm:w-24 @sm:h-24 @md:w-28 @md:h-28'
+                }`}
+                style={showLogoBackground ? { backgroundColor: logoBackgroundColor || '#ffffff' } : undefined}
+              >
+                <img src={logoUrl} alt="Survey logo" className="w-full h-full object-contain" />
+              </div>
+              {/* Branding title and subtitle */}
+              {(brandingTitle || brandingSubtitle) && (
+                <div className="mt-3 @sm:mt-4 text-center">
+                  {brandingTitle && <p className="text-base @sm:text-lg font-semibold text-on-surface">{brandingTitle}</p>}
+                  {brandingSubtitle && <p className="text-sm @sm:text-base text-on-surface-variant mt-0.5">{brandingSubtitle}</p>}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="w-16 h-16 @sm:w-20 @sm:h-20 @md:w-24 @md:h-24 rounded-2xl @sm:rounded-2xl @md:rounded-3xl bg-primary-container border-2 border-primary/20 flex items-center justify-center">
+              <Sparkles className="w-8 h-8 @sm:w-10 @sm:h-10 @md:w-12 @md:h-12 text-on-primary-container" strokeWidth={1.5} />
+            </div>
+          )}
         </div>
 
         {/* Title - Expressive typography */}

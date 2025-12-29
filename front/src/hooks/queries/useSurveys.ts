@@ -188,11 +188,12 @@ export function useDuplicateSurvey() {
     mutationFn: async (surveyId: string) => {
       // First get the survey details
       const original = await surveysApi.getById(surveyId);
-      // Create a copy with modified title
+      // Create a copy with modified title, using the original's default language
       return surveysApi.create(activeNamespace!.id, {
         title: `${original.title} (Copy)`,
         description: original.description,
         themeId: original.themeId,
+        languageCode: original.defaultLanguage,
       });
     },
     onSuccess: () => {

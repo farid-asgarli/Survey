@@ -265,6 +265,86 @@
     "closeSuccess": "Опрос успешно закрыт",
     "closeError": "Не удалось закрыть опрос"
   },
+  "createSurvey": {
+    "title": "Создать новый опрос",
+    "subtitle": "Выберите тип опроса для начала",
+    "selectType": "Тип опроса",
+    "selectMetric": "Выберите метрику",
+    "sampleQuestion": "Пример вопроса:",
+    "categories": {
+      "classic": {
+        "name": "Классический",
+        "description": "Традиционный опрос со всеми типами вопросов"
+      },
+      "customerExperience": {
+        "name": "Клиентский опыт",
+        "description": "Измеряйте лояльность и удовлетворенность клиентов"
+      },
+      "conversational": {
+        "name": "Диалоговый",
+        "description": "Опросы в стиле чата для высокой вовлеченности"
+      },
+      "research": {
+        "name": "Исследование",
+        "description": "Продвинутые методы исследования и анализа"
+      },
+      "assessment360": {
+        "name": "Оценка 360°",
+        "description": "Многосторонняя оценка сотрудников"
+      }
+    },
+    "cxMetrics": {
+      "nps": {
+        "name": "NPS",
+        "description": "Измеряет лояльность клиентов",
+        "question": "Насколько вероятно, что вы порекомендуете нас?",
+        "minLabel": "Совсем маловероятно",
+        "maxLabel": "Очень вероятно"
+      },
+      "ces": {
+        "name": "CES",
+        "description": "Измеряет простоту взаимодействия",
+        "question": "Насколько легко было решить ваш вопрос?",
+        "minLabel": "Очень сложно",
+        "maxLabel": "Очень легко"
+      },
+      "csat": {
+        "name": "CSAT",
+        "description": "Измеряет общую удовлетворенность",
+        "question": "Насколько вы довольны нашим сервисом?",
+        "minLabel": "Очень недоволен",
+        "maxLabel": "Очень доволен"
+      }
+    },
+    "actions": {
+      "createSurvey": "Создать опрос",
+      "startMetricSurvey": "Начать {{metric}} опрос",
+      "startBlank": "Начать с нуля",
+      "startNewMetricSurvey": "Начать новый {{metric}} опрос",
+      "startNewAssessment": "Начать новую оценку",
+      "createNew": "Создать",
+      "wingItWithAI": "Создать с ИИ",
+      "browseTemplates": "готовых шаблонов",
+      "chooseFrom": "Выберите из",
+      "or": "Или,",
+      "learnMore360": "Узнать больше о создании мощной оценки 360°.",
+      "quickStart": "Быстрый старт {{metric}}"
+    },
+    "cxSelection": {
+      "title": "Выберите метрику",
+      "description": "Выберите метрику клиентского опыта для измерения лояльности, усилий или удовлетворенности"
+    },
+    "defaults": {
+      "npsTitle": "Опрос Net Promoter Score",
+      "cesTitle": "Опрос Customer Effort Score",
+      "csatTitle": "Опрос удовлетворенности клиентов",
+      "untitledSurvey": "{{type}} опрос без названия"
+    },
+    "messages": {
+      "comingSoon": "Эта функция скоро появится!",
+      "comingSoonDescription": "Мы усердно работаем над этой функцией. Следите за обновлениями!"
+    }
+  },
   "analytics": {
     "title": "Аналитика",
     "description": "Статистика опросов и данные ответов",
@@ -3002,6 +3082,20 @@
       "logoUrl": "URL логотипа",
       "logoPlaceholder": "https://example.com/logo.png",
       "logoHelper": "Рекомендуется квадратное изображение. Макс 256x256px.",
+      "logoSize": "Размер логотипа",
+      "sizes": {
+        "small": "Маленький",
+        "medium": "Средний",
+        "large": "Большой",
+        "extraLarge": "Очень большой"
+      },
+      "showLogoBackground": "Показать фон логотипа",
+      "brandingTitle": "Заголовок бренда",
+      "brandingTitlePlaceholder": "Название компании",
+      "brandingTitleHelper": "Дополнительный текст заголовка рядом с логотипом",
+      "brandingSubtitle": "Подзаголовок бренда",
+      "brandingSubtitlePlaceholder": "Слоган или описание",
+      "brandingSubtitleHelper": "Дополнительный подзаголовок под заголовком",
       "backgroundImage": "URL фонового изображения",
       "backgroundPlaceholder": "https://example.com/background.jpg",
       "backgroundHelper": "Рекомендуется изображение высокого разрешения. Будет использоваться как фон опроса."

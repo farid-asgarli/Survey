@@ -97,8 +97,11 @@ export function PublicSurveyPage() {
   const totalQuestions = visibleQuestions.length;
   const combinedSubmitting = isSubmitting || isApiSubmitting;
 
+  // Show logo in header only when NOT on welcome screen (to avoid duplication)
+  const showLogoInHeader = viewMode !== 'welcome' && !!survey.theme?.logoUrl;
+
   return (
-    <PublicSurveyLayout title={survey.title}>
+    <PublicSurveyLayout title={survey.title} theme={survey.theme} showLogoInHeader={showLogoInHeader}>
       {/* Welcome Screen */}
       {viewMode === 'welcome' && <WelcomeSection survey={survey} totalQuestions={totalQuestions} onStart={startSurvey} />}
 

@@ -14,6 +14,7 @@ export const mockTemplates: EmailTemplateSummary[] = [
     type: EmailTemplateType.SurveyInvitation,
     isDefault: true,
     createdAt: '2024-12-01T10:00:00',
+    defaultLanguage: 'en',
   },
   {
     id: '2',
@@ -22,6 +23,7 @@ export const mockTemplates: EmailTemplateSummary[] = [
     type: EmailTemplateType.SurveyReminder,
     isDefault: false,
     createdAt: '2024-12-05T10:00:00',
+    defaultLanguage: 'en',
   },
   {
     id: '3',
@@ -30,6 +32,7 @@ export const mockTemplates: EmailTemplateSummary[] = [
     type: EmailTemplateType.ThankYou,
     isDefault: false,
     createdAt: '2024-12-08T10:00:00',
+    defaultLanguage: 'en',
   },
   {
     id: '4',
@@ -38,5 +41,6 @@ export const mockTemplates: EmailTemplateSummary[] = [
     type: EmailTemplateType.Custom,
     isDefault: false,
     createdAt: '2024-12-10T10:00:00',
+    defaultLanguage: 'en',
   },
 ];

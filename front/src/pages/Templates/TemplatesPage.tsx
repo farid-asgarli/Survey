@@ -125,6 +125,7 @@ export function TemplatesPage() {
           description: data.description,
           category: data.category,
           isPublic: data.isPublic,
+          languageCode: data.languageCode,
         });
       } else {
         await createTemplateMutation.mutateAsync({
@@ -132,6 +133,7 @@ export function TemplatesPage() {
           description: data.description,
           category: data.category,
           isPublic: data.isPublic,
+          languageCode: data.languageCode,
         });
       }
       createDialog.close();
@@ -155,7 +157,7 @@ export function TemplatesPage() {
     [useTemplateDialog, previewDrawer]
   );
 
-  const handleCreateSurveyFromTemplate = async (data: { title: string; description?: string }) => {
+  const handleCreateSurveyFromTemplate = async (data: { title: string; description?: string; languageCode: string }) => {
     if (!useTemplateDialog.selectedItem) return;
 
     try {

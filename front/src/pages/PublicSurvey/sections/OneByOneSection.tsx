@@ -33,6 +33,9 @@ export function OneByOneSection({
 }: OneByOneSectionProps) {
   const { t } = useTranslation();
 
+  // Translate error key if it looks like a translation key (contains a dot)
+  const translatedError = error && error.includes('.') ? t(error) : error;
+
   return (
     <div className="py-8 px-4">
       <div className="max-w-2xl mx-auto">
@@ -45,7 +48,7 @@ export function OneByOneSection({
           questionNumber={currentQuestionIndex + 1}
           totalQuestions={totalQuestions}
           value={answer}
-          error={error}
+          error={translatedError}
           onChange={(value) => onAnswerChange(currentQuestion.id, value)}
           disabled={isSubmitting}
         />

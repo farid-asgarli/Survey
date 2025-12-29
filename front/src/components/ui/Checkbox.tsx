@@ -14,6 +14,26 @@ function Checkbox({ className, label, description, ref, id, checked, defaultChec
 
   // Determine if controlled or uncontrolled
   const isControlled = checked !== undefined;
+  const isChecked = isControlled ? Boolean(checked) : false;
+
+  // Compute classes based on checked state
+  const inputClasses = cn(
+    'peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-2 transition-all duration-200',
+    'hover:border-primary/70 hover:bg-primary/5',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
+    'disabled:cursor-not-allowed disabled:opacity-50',
+    isControlled
+      ? isChecked
+        ? 'border-primary bg-primary'
+        : 'border-outline bg-transparent'
+      : 'border-outline checked:border-primary checked:bg-primary',
+    className
+  );
+
+  const checkIconClasses = cn(
+    'pointer-events-none absolute h-4 w-4 text-on-primary transition-opacity duration-200',
+    isControlled ? (isChecked ? 'opacity-100' : 'opacity-0') : 'opacity-0 peer-checked:opacity-100'
+  );
 
   return (
     <div className="flex items-start gap-3">
@@ -22,22 +42,13 @@ function Checkbox({ className, label, description, ref, id, checked, defaultChec
           type="checkbox"
           id={checkboxId}
           ref={ref}
-          {...(isControlled ? { checked } : { defaultChecked })}
+          checked={isControlled ? checked : undefined}
+          defaultChecked={!isControlled ? defaultChecked : undefined}
           onChange={onChange}
-          className={cn(
-            'peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-2 border-outline transition-all duration-200',
-            'checked:border-primary checked:bg-primary',
-            'hover:border-primary/70 hover:bg-primary/5',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            className
-          )}
+          className={inputClasses}
           {...props}
         />
-        <Check
-          className={cn('pointer-events-none absolute h-4 w-4 text-on-primary opacity-0 transition-opacity duration-200', 'peer-checked:opacity-100')}
-          strokeWidth={3}
-        />
+        <Check className={checkIconClasses} strokeWidth={3} />
       </div>
       {(label || description) && (
         <div className="flex flex-col pt-0.5">

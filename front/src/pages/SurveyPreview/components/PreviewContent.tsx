@@ -35,6 +35,12 @@ export function PreviewContent({
         welcomeMessage={survey.welcomeMessage}
         questionCount={totalQuestions}
         onStart={onStart}
+        logoUrl={survey.theme?.logoUrl}
+        logoSize={survey.theme?.logoSize}
+        showLogoBackground={survey.theme?.showLogoBackground}
+        logoBackgroundColor={survey.theme?.logoBackgroundColor}
+        brandingTitle={survey.theme?.brandingTitle}
+        brandingSubtitle={survey.theme?.brandingSubtitle}
       />
     );
   }

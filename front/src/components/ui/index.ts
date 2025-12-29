@@ -108,6 +108,10 @@ export type { ListEmptyStateConfig, ListEmptyStateProps, InlineListEmptyStatePro
 // Utility components
 export { Tooltip, Divider } from './Tooltip';
 
+// Media components
+export { ImageUploader } from './ImageUploader';
+export type { ImageUploaderProps, ImageUploadResult } from './ImageUploader';
+
 // Internationalization
 export { LanguageSwitcher } from './LanguageSwitcher';
 

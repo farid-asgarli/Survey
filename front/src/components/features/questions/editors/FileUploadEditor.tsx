@@ -4,6 +4,7 @@ import { Input } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
+import { EditorPreview } from '@/components/features/public-survey';
 
 interface FileUploadEditorProps {
   question: DraftQuestion;
@@ -34,7 +35,7 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
   };
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -52,9 +53,9 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
       />
 
       {/* File Type Presets */}
-      <div className='space-y-3'>
-        <label className='block text-sm font-medium text-on-surface-variant'>{t('editors.file.allowedTypes')}</label>
-        <div className='flex flex-wrap gap-2'>
+      <div className="space-y-3">
+        <label className="block text-sm font-medium text-on-surface-variant">{t('editors.file.allowedTypes')}</label>
+        <div className="flex flex-wrap gap-2">
           {commonFileTypes.map((preset) => (
             <button
               key={preset.key}
@@ -73,13 +74,13 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
 
         {/* Selected Types */}
         {allowedFileTypes.length > 0 && allowedFileTypes[0] !== '*' && (
-          <div className='flex flex-wrap gap-1.5 p-3 rounded-xl bg-surface-container/50'>
+          <div className="flex flex-wrap gap-1.5 p-3 rounded-xl bg-surface-container/50">
             {allowedFileTypes.map((ext) => (
-              <span key={ext} className='inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary'>
+              <span key={ext} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
                 {ext}
-                <button onClick={() => toggleFileType(ext)} className='ml-0.5 hover:bg-primary/20 rounded-full p-0.5'>
-                  <svg className='w-3 h-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                <button onClick={() => toggleFileType(ext)} className="ml-0.5 hover:bg-primary/20 rounded-full p-0.5">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </span>
@@ -89,16 +90,16 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
       </div>
 
       {/* File Limits */}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <Input
-          type='number'
+          type="number"
           label={t('editors.file.maxFiles')}
           value={maxFiles.toString()}
           onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, maxFiles: parseInt(e.target.value) || 1 } })}
           helperText={t('editors.file.maxFilesHelper')}
         />
         <Input
-          type='number'
+          type="number"
           label={t('editors.file.maxSize')}
           value={maxFileSize.toString()}
           onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, maxFileSize: parseInt(e.target.value) || 5 } })}
@@ -106,24 +107,8 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
         />
       </div>
 
-      {/* Preview */}
-      <div className='p-4 rounded-2xl bg-surface-container/50'>
-        <p className='text-sm text-on-surface-variant mb-3'>{t('questionEditor.preview')}</p>
-        <div className='flex flex-col items-center justify-center p-8 border-2 border-dashed border-outline-variant rounded-xl bg-surface'>
-          <div className='text-on-surface-variant/50 mb-2'>
-            <svg className='w-12 h-12' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={1.5}
-                d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
-              />
-            </svg>
-          </div>
-          <p className='text-sm text-on-surface-variant'>{t('editors.file.dropZone')}</p>
-          <p className='text-xs text-on-surface-variant/70 mt-1'>{t('editors.file.maxSizeLabel', { size: maxFileSize, count: maxFiles })}</p>
-        </div>
-      </div>
+      {/* Preview - Using unified preview component */}
+      <EditorPreview question={question} />
     </div>
   );
 }

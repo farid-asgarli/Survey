@@ -13,12 +13,14 @@ import {
   TabsContent,
   Textarea,
   toast,
+  ImageUploader,
 } from '@/components/ui';
 import { ThemeLivePreview } from './ThemeLivePreview';
 import { cn } from '@/lib/utils';
-import { Upload, Code, Palette, Type, Image, Sparkles, Eye, FileCode, X, Check, SquareIcon, Sliders } from 'lucide-react';
+import { Code, Palette, Type, Image, Sparkles, Eye, FileCode, Check, SquareIcon, Sliders } from 'lucide-react';
 import { ButtonStyle, ProgressBarStyle } from '@/types';
 import type { SurveyTheme } from '@/types';
+import { filesApi } from '@/services/api';
 
 // ============ Types ============
 export interface ThemeFormData {
@@ -47,6 +49,11 @@ export interface ThemeFormData {
   buttonStyle: ButtonStyle;
   // Branding
   logoUrl: string;
+  logoSize: number;
+  showLogoBackground: boolean;
+  logoBackgroundColor: string;
+  brandingTitle: string;
+  brandingSubtitle: string;
   backgroundImageUrl: string;
   // Advanced
   customCss: string;
@@ -81,6 +88,11 @@ const defaultFormData: ThemeFormData = {
   questionNumberStyle: 'badge',
   buttonStyle: ButtonStyle.Rounded,
   logoUrl: '',
+  logoSize: 1, // LogoSize.Medium
+  showLogoBackground: true,
+  logoBackgroundColor: '#ffffff',
+  brandingTitle: '',
+  brandingSubtitle: '',
   backgroundImageUrl: '',
   customCss: '',
 };
@@ -183,6 +195,11 @@ export function ThemeEditorDrawer({ open, onOpenChange, theme, onSave, isSaving 
         questionNumberStyle: defaultFormData.questionNumberStyle,
         buttonStyle: theme.button?.style || theme.buttonStyle || defaultFormData.buttonStyle,
         logoUrl: theme.branding?.logoUrl || theme.logoUrl || '',
+        logoSize: theme.branding?.logoSize ?? defaultFormData.logoSize,
+        showLogoBackground: theme.branding?.showLogoBackground ?? defaultFormData.showLogoBackground,
+        logoBackgroundColor: theme.branding?.logoBackgroundColor || defaultFormData.logoBackgroundColor,
+        brandingTitle: theme.branding?.brandingTitle || '',
+        brandingSubtitle: theme.branding?.brandingSubtitle || '',
         backgroundImageUrl: theme.layout?.backgroundImageUrl || theme.backgroundImageUrl || '',
         customCss: theme.customCss || '',
       };
@@ -676,20 +693,131 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
               {/* Branding Tab */}
               <TabsContent value="branding" className="space-y-6">
-                <ImageUrlInput
+                <ImageUploader
                   label={t('themeEditor.logoUrl')}
                   value={formData.logoUrl}
                   onChange={(v) => updateField('logoUrl', v)}
                   placeholder="https://example.com/logo.png"
                   helperText={t('themeEditor.logoUrlHelperText')}
+                  category="logo"
+                  onUpload={async (file) => {
+                    const result = await filesApi.uploadImage(file, 'logo');
+                    return {
+                      fileId: result.fileId,
+                      url: result.url,
+                      fileName: result.fileName,
+                      size: result.size,
+                    };
+                  }}
                 />
 
-                <ImageUrlInput
+                {/* Logo Size */}
+                <div>
+                  <label className="text-sm font-semibold text-on-surface mb-3 block">{t('themeEditor.branding.logoSize')}</label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      { name: t('themeEditor.branding.sizes.small'), value: 0 },
+                      { name: t('themeEditor.branding.sizes.medium'), value: 1 },
+                      { name: t('themeEditor.branding.sizes.large'), value: 2 },
+                      { name: t('themeEditor.branding.sizes.extraLarge'), value: 3 },
+                    ].map((size) => (
+                      <button
+                        key={size.value}
+                        type="button"
+                        onClick={() => updateField('logoSize', size.value)}
+                        className={cn(
+                          'flex items-center justify-center p-2.5 rounded-xl border-2 transition-all',
+                          formData.logoSize === size.value
+                            ? 'border-primary bg-primary/5 ring-1 ring-primary/20 text-primary font-medium'
+                            : 'border-outline-variant/30 hover:border-outline-variant text-on-surface-variant'
+                        )}
+                      >
+                        <span className="text-xs">{size.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Logo Background */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-semibold text-on-surface">{t('themeEditor.branding.showLogoBackground')}</label>
+                    <button
+                      type="button"
+                      onClick={() => updateField('showLogoBackground', !formData.showLogoBackground)}
+                      className={cn(
+                        'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
+                        formData.showLogoBackground ? 'bg-primary' : 'bg-outline-variant/50'
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                          formData.showLogoBackground ? 'translate-x-6' : 'translate-x-1'
+                        )}
+                      />
+                    </button>
+                  </div>
+                  {formData.showLogoBackground && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={formData.logoBackgroundColor}
+                        onChange={(e) => updateField('logoBackgroundColor', e.target.value)}
+                        className="h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer"
+                      />
+                      <Input
+                        value={formData.logoBackgroundColor}
+                        onChange={(e) => updateField('logoBackgroundColor', e.target.value)}
+                        className="flex-1"
+                        size="sm"
+                        placeholder="#ffffff"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Branding Title */}
+                <div>
+                  <label className="text-sm font-semibold text-on-surface mb-2 block">{t('themeEditor.branding.brandingTitle')}</label>
+                  <Input
+                    value={formData.brandingTitle}
+                    onChange={(e) => updateField('brandingTitle', e.target.value)}
+                    placeholder={t('themeEditor.branding.brandingTitlePlaceholder')}
+                    size="sm"
+                  />
+                  <p className="text-xs text-on-surface-variant mt-1">{t('themeEditor.branding.brandingTitleHelper')}</p>
+                </div>
+
+                {/* Branding Subtitle */}
+                <div>
+                  <label className="text-sm font-semibold text-on-surface mb-2 block">{t('themeEditor.branding.brandingSubtitle')}</label>
+                  <Input
+                    value={formData.brandingSubtitle}
+                    onChange={(e) => updateField('brandingSubtitle', e.target.value)}
+                    placeholder={t('themeEditor.branding.brandingSubtitlePlaceholder')}
+                    size="sm"
+                  />
+                  <p className="text-xs text-on-surface-variant mt-1">{t('themeEditor.branding.brandingSubtitleHelper')}</p>
+                </div>
+
+                <ImageUploader
                   label={t('themeEditor.backgroundImageUrl')}
                   value={formData.backgroundImageUrl}
                   onChange={(v) => updateField('backgroundImageUrl', v)}
                   placeholder="https://example.com/background.jpg"
                   helperText={t('themeEditor.backgroundImageUrlHelperText')}
+                  category="background"
+                  size="lg"
+                  onUpload={async (file) => {
+                    const result = await filesApi.uploadImage(file, 'background');
+                    return {
+                      fileId: result.fileId,
+                      url: result.url,
+                      fileName: result.fileName,
+                      size: result.size,
+                    };
+                  }}
                 />
               </TabsContent>
 
@@ -780,65 +908,6 @@ function ColorPicker({ label, value, onChange, error }: ColorPickerProps) {
           className="h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer"
         />
         <Input value={value} onChange={(e) => onChange(e.target.value)} className="flex-1" size="sm" error={error} />
-      </div>
-    </div>
-  );
-}
-
-interface ImageUrlInputProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  helperText?: string;
-}
-
-function ImageUrlInput({ label, value, onChange, placeholder, helperText }: ImageUrlInputProps) {
-  const [previewError, setPreviewError] = useState(false);
-
-  return (
-    <div>
-      <label className="block text-sm font-semibold mb-2 text-on-surface">{label}</label>
-      <div className="flex gap-3">
-        {/* Preview */}
-        <div className="h-16 w-16 rounded-xl border-2 border-outline-variant/30 bg-surface-container-low overflow-hidden flex items-center justify-center shrink-0">
-          {value && !previewError ? (
-            <img
-              src={value}
-              alt="Preview"
-              className="h-full w-full object-contain"
-              onError={() => setPreviewError(true)}
-              onLoad={() => setPreviewError(false)}
-            />
-          ) : (
-            <Upload className="h-5 w-5 text-on-surface-variant" />
-          )}
-        </div>
-
-        {/* Input */}
-        <div className="flex-1">
-          <div className="relative">
-            <Input
-              value={value}
-              onChange={(e) => {
-                onChange(e.target.value);
-                setPreviewError(false);
-              }}
-              placeholder={placeholder}
-              className="pr-10"
-            />
-            {value && (
-              <button
-                type="button"
-                onClick={() => onChange('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface-container-high transition-colors"
-              >
-                <X className="h-4 w-4 text-on-surface-variant" />
-              </button>
-            )}
-          </div>
-          {helperText && <p className="text-xs text-on-surface-variant mt-1">{helperText}</p>}
-        </div>
       </div>
     </div>
   );

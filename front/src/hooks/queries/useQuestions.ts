@@ -195,7 +195,8 @@ export interface DraftQuestionData {
 
 export function calculateQuestionChanges(
   originalQuestions: Question[],
-  draftQuestions: DraftQuestionData[]
+  draftQuestions: DraftQuestionData[],
+  languageCode: string
 ): {
   toCreate: QuestionSyncData['toCreate'];
   toUpdate: QuestionSyncData['toUpdate'];
@@ -216,6 +217,7 @@ export function calculateQuestionChanges(
         isRequired: q.isRequired,
         order: q.order + 1, // Backend expects 1-based order
         settings: q.settings as QuestionSettings,
+        languageCode,
       },
     }));
 
@@ -249,6 +251,7 @@ export function calculateQuestionChanges(
           isRequired: draft.isRequired,
           order: draft.order + 1, // Backend expects 1-based order
           settings: draft.settings as QuestionSettings,
+          languageCode,
         },
       });
     }

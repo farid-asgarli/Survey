@@ -61,6 +61,23 @@ export const NpsQuestionType = {
 } as const;
 export type NpsQuestionType = (typeof NpsQuestionType)[keyof typeof NpsQuestionType];
 
+// ============ Survey Type Enums ============
+export const SurveyType = {
+  Classic: 0,
+  CustomerExperience: 1,
+  Conversational: 2,
+  Research: 3,
+  Assessment360: 4,
+} as const;
+export type SurveyType = (typeof SurveyType)[keyof typeof SurveyType];
+
+export const CxMetricType = {
+  NPS: 0,
+  CES: 1,
+  CSAT: 2,
+} as const;
+export type CxMetricType = (typeof CxMetricType)[keyof typeof CxMetricType];
+
 // ============ Rating Style Enums ============
 export const RatingStyle = {
   Stars: 0,
@@ -173,6 +190,14 @@ export const LogoPosition = {
   BottomRight: 5,
 } as const;
 export type LogoPosition = (typeof LogoPosition)[keyof typeof LogoPosition];
+
+export const LogoSize = {
+  Small: 0,
+  Medium: 1,
+  Large: 2,
+  ExtraLarge: 3,
+} as const;
+export type LogoSize = (typeof LogoSize)[keyof typeof LogoSize];
 
 export const ProgressBarStyle = {
   None: 0,
@@ -599,6 +624,21 @@ export const LogoPositionLabels: Record<LogoPosition, string> = {
   [LogoPosition.BottomLeft]: 'Bottom Left',
   [LogoPosition.BottomCenter]: 'Bottom Center',
   [LogoPosition.BottomRight]: 'Bottom Right',
+};
+
+// Logo Size
+const logoSizeKeys: Record<LogoSize, string> = {
+  [LogoSize.Small]: 'small',
+  [LogoSize.Medium]: 'medium',
+  [LogoSize.Large]: 'large',
+  [LogoSize.ExtraLarge]: 'extraLarge',
+};
+export const getLogoSizeLabel = (value: LogoSize): string => getEnumLabel('enums.logoSize', logoSizeKeys, value);
+export const LogoSizeLabels: Record<LogoSize, string> = {
+  [LogoSize.Small]: 'Small',
+  [LogoSize.Medium]: 'Medium',
+  [LogoSize.Large]: 'Large',
+  [LogoSize.ExtraLarge]: 'Extra Large',
 };
 
 // Progress Bar Style

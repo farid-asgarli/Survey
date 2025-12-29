@@ -13,6 +13,9 @@ export function useSurveyBuilderSave() {
 
     setSaving(true);
     try {
+      // Use survey's default language for all updates
+      const languageCode = survey.defaultLanguage;
+
       // 1. Save survey metadata
       await updateSurveyMutation.mutateAsync({
         id: survey.id,
@@ -22,6 +25,7 @@ export function useSurveyBuilderSave() {
           description: survey.description,
           welcomeMessage: survey.welcomeMessage,
           thankYouMessage: survey.thankYouMessage,
+          languageCode,
         },
       });
 
@@ -41,7 +45,7 @@ export function useSurveyBuilderSave() {
         },
       }));
 
-      const changes = calculateQuestionChanges(originalQuestions || [], draftQuestions);
+      const changes = calculateQuestionChanges(originalQuestions || [], draftQuestions, languageCode);
 
       // Only sync if there are changes
       if (changes.toCreate.length > 0 || changes.toUpdate.length > 0 || changes.toDelete.length > 0) {

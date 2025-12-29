@@ -7,7 +7,7 @@ export function DecorativeBlobs() {
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Large tertiary blob */}
       <div
-        className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-gradient-to-br from-tertiary/30 to-primary/20 blur-3xl animate-pulse"
+        className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-linear-to-br from-tertiary/30 to-primary/20 blur-3xl animate-pulse"
         style={{ animationDuration: '4s' }}
       />
       {/* Secondary blob */}

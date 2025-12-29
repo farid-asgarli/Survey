@@ -148,6 +148,22 @@
     "emailPlaceholder": "you@example.com",
     "tagline": "Create and manage surveys with ease"
   },
+  "imageUploader": {
+    "upload": "Upload",
+    "url": "URL",
+    "apply": "Apply",
+    "remove": "Remove image",
+    "selectFile": "Select file",
+    "uploading": "Uploading...",
+    "dragDrop": "Drag & drop or click to upload",
+    "maxSize": "Max {{size}}MB",
+    "errors": {
+      "invalidType": "Invalid file type. Please upload an image.",
+      "tooLarge": "File is too large. Maximum size is {{maxSize}}MB.",
+      "uploadFailed": "Upload failed. Please try again.",
+      "noUploadFunction": "Upload is not available. Please enter a URL instead."
+    }
+  },
   "navigation": {
     "dashboard": "Dashboard",
     "surveys": "Surveys",
@@ -264,6 +280,86 @@
     "publishError": "Failed to publish survey",
     "closeSuccess": "Survey closed successfully",
     "closeError": "Failed to close survey"
+  },
+  "createSurvey": {
+    "title": "Create New Survey",
+    "subtitle": "Choose a survey type to get started",
+    "selectType": "Survey Type",
+    "selectMetric": "Choose Metric",
+    "sampleQuestion": "Sample question:",
+    "categories": {
+      "classic": {
+        "name": "Classic",
+        "description": "Traditional form-style survey with all question types"
+      },
+      "customerExperience": {
+        "name": "Customer Experience",
+        "description": "Measure customer loyalty and satisfaction"
+      },
+      "conversational": {
+        "name": "Conversational",
+        "description": "Chat-style surveys for higher engagement"
+      },
+      "research": {
+        "name": "Research",
+        "description": "Advanced research methods and analysis"
+      },
+      "assessment360": {
+        "name": "360 Assessment",
+        "description": "Multi-rater employee evaluations"
+      }
+    },
+    "cxMetrics": {
+      "nps": {
+        "name": "NPS",
+        "description": "Measures customer loyalty",
+        "question": "How likely are you to recommend us to a friend?",
+        "minLabel": "Not at all likely",
+        "maxLabel": "Extremely likely"
+      },
+      "ces": {
+        "name": "CES",
+        "description": "Measures ease of experience",
+        "question": "How easy was it to resolve your issue?",
+        "minLabel": "Very difficult",
+        "maxLabel": "Very easy"
+      },
+      "csat": {
+        "name": "CSAT",
+        "description": "Measures overall satisfaction",
+        "question": "How satisfied are you with our service?",
+        "minLabel": "Very dissatisfied",
+        "maxLabel": "Very satisfied"
+      }
+    },
+    "actions": {
+      "createSurvey": "Create Survey",
+      "startMetricSurvey": "Start {{metric}} Survey",
+      "startBlank": "Start Blank",
+      "startNewMetricSurvey": "Start New {{metric}} Survey",
+      "startNewAssessment": "Start New Assessment",
+      "createNew": "Create New",
+      "wingItWithAI": "Wing It With AI",
+      "browseTemplates": "curated templates",
+      "chooseFrom": "Choose from",
+      "or": "Or,",
+      "learnMore360": "Learn more about creating a powerful 360 Assessment.",
+      "quickStart": "Quick Start {{metric}}"
+    },
+    "cxSelection": {
+      "title": "Choose Your Metric",
+      "description": "Select a customer experience metric to measure loyalty, effort, or satisfaction"
+    },
+    "defaults": {
+      "npsTitle": "Net Promoter Score Survey",
+      "cesTitle": "Customer Effort Score Survey",
+      "csatTitle": "Customer Satisfaction Survey",
+      "untitledSurvey": "Untitled {{type}} Survey"
+    },
+    "messages": {
+      "comingSoon": "This feature is coming soon!",
+      "comingSoonDescription": "We're working hard to bring this feature to you. Stay tuned!"
+    }
   },
   "analytics": {
     "title": "Analytics",
@@ -3160,6 +3256,20 @@
       "logoUrl": "Logo URL",
       "logoPlaceholder": "https://example.com/logo.png",
       "logoHelper": "Square image recommended. Max 256x256px.",
+      "logoSize": "Logo Size",
+      "sizes": {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "extraLarge": "Extra Large"
+      },
+      "showLogoBackground": "Show Logo Background",
+      "brandingTitle": "Branding Title",
+      "brandingTitlePlaceholder": "Company Name",
+      "brandingTitleHelper": "Optional title text shown alongside the logo",
+      "brandingSubtitle": "Branding Subtitle",
+      "brandingSubtitlePlaceholder": "Tagline or description",
+      "brandingSubtitleHelper": "Optional subtitle shown below the title",
       "backgroundImage": "Background Image URL",
       "backgroundPlaceholder": "https://example.com/background.jpg",
       "backgroundHelper": "High resolution image recommended. Will be used as survey background."

@@ -5,6 +5,7 @@ import { getApiBaseUrl, API_ENDPOINTS } from '@/config/api';
 import { getAccessToken, useAuthStore, getActiveNamespaceId } from '@/stores';
 import { toast } from '@/components/ui';
 import { getErrorMessage, isProblemDetails, getCurrentISOTimestamp } from '@/utils';
+import { getCurrentLanguage } from '@/i18n';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -79,6 +80,11 @@ const createApiClient = (): AxiosInstance => {
       const namespaceId = getActiveNamespaceId();
       if (namespaceId && config.headers) {
         config.headers['X-Namespace-Id'] = namespaceId;
+      }
+
+      // Add Accept-Language header for localized responses
+      if (config.headers) {
+        config.headers['Accept-Language'] = getCurrentLanguage();
       }
 
       return config;
@@ -431,6 +437,56 @@ export const surveysApi = {
   },
 };
 
+// ============ Survey Translations API ============
+import type {
+  SurveyTranslationsResponse,
+  SurveyTranslationDto,
+  BulkUpdateSurveyTranslationsRequest,
+  UpdateSurveyTranslationRequest,
+  BulkTranslationResultDto,
+} from '@/types';
+
+export const translationsApi = {
+  /**
+   * Get all translations for a survey (including question translations)
+   */
+  getAll: async (surveyId: string): Promise<SurveyTranslationsResponse> => {
+    const response = await apiClient.get<SurveyTranslationsResponse>(API_ENDPOINTS.translations.survey(surveyId));
+    return response.data;
+  },
+
+  /**
+   * Bulk update all translations for a survey
+   */
+  bulkUpdate: async (surveyId: string, data: BulkUpdateSurveyTranslationsRequest): Promise<BulkTranslationResultDto> => {
+    const response = await apiClient.put<BulkTranslationResultDto>(API_ENDPOINTS.translations.survey(surveyId), data);
+    return response.data;
+  },
+
+  /**
+   * Update a single translation for a survey
+   */
+  updateByLanguage: async (surveyId: string, languageCode: string, data: UpdateSurveyTranslationRequest): Promise<SurveyTranslationDto> => {
+    const response = await apiClient.put<SurveyTranslationDto>(API_ENDPOINTS.translations.surveyByLang(surveyId, languageCode), data);
+    return response.data;
+  },
+
+  /**
+   * Add a new translation for a survey
+   */
+  add: async (surveyId: string, data: SurveyTranslationDto): Promise<SurveyTranslationDto> => {
+    const response = await apiClient.post<SurveyTranslationDto>(API_ENDPOINTS.translations.survey(surveyId), data);
+    return response.data;
+  },
+
+  /**
+   * Delete a translation for a survey
+   */
+  delete: async (surveyId: string, languageCode: string): Promise<void> => {
+    await apiClient.delete(API_ENDPOINTS.translations.surveyByLang(surveyId, languageCode));
+  },
+};
+
 // ============ Questions API ============
 export const questionsApi = {
   list: async (surveyId: string): Promise<Question[]> => {
@@ -661,6 +717,8 @@ export interface CreateThemeRequest {
   name: string;
   description?: string;
   isPublic?: boolean;
+  /** Language code for the initial translation */
+  languageCode?: string;
   colors?: Partial<ThemeColors>;
   typography?: Partial<ThemeTypography>;
   layout?: Partial<ThemeLayoutSettings>;
@@ -761,7 +819,7 @@ export const templatesApi = {
 
   create: async (
     namespaceId: string,
-    data: { name: string; description?: string; category: string; isPublic?: boolean; surveyData?: Record<string, unknown> }
+    data: { name: string; description?: string; category: string; isPublic?: boolean; languageCode: string; surveyData?: Record<string, unknown> }
   ): Promise<SurveyTemplate> => {
     // Backend returns SurveyTemplateDto directly
     const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.list, {
@@ -773,7 +831,7 @@ export const templatesApi = {
 
   createFromSurvey: async (
     namespaceId: string,
-    data: { surveyId: string; name: string; description?: string; category: string; isPublic?: boolean }
+    data: { surveyId: string; name: string; description?: string; category: string; isPublic?: boolean; languageCode?: string }
   ): Promise<SurveyTemplate> => {
     // Backend returns SurveyTemplateDto directly
     const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.fromSurvey, {
@@ -785,7 +843,7 @@ export const templatesApi = {
 
   update: async (
     id: string,
-    data: { name?: string; description?: string; category?: string; isPublic?: boolean; surveyData?: Record<string, unknown> }
+    data: { name?: string; description?: string; category?: string; isPublic?: boolean; languageCode?: string; surveyData?: Record<string, unknown> }
   ): Promise<SurveyTemplate> => {
     // Backend returns SurveyTemplateDto directly
     const response = await apiClient.put<SurveyTemplate>(API_ENDPOINTS.templates.byId(id), data);
@@ -796,7 +854,11 @@ export const templatesApi = {
     await apiClient.delete(API_ENDPOINTS.templates.byId(id));
   },
 
-  createSurveyFromTemplate: async (templateId: string, namespaceId: string, data: { title: string; description?: string }): Promise<Survey> => {
+  createSurveyFromTemplate: async (
+    templateId: string,
+    namespaceId: string,
+    data: { title: string; description?: string; languageCode: string }
+  ): Promise<Survey> => {
     // Backend returns SurveyDto directly
     const response = await apiClient.post<Survey>(API_ENDPOINTS.templates.createSurvey(templateId), {
       namespaceId,
@@ -975,14 +1037,16 @@ export const emailTemplatesApi = {
   duplicate: async (id: string, name: string): Promise<EmailTemplate> => {
     // First fetch the original template
     const original = await emailTemplatesApi.getById(id);
-    // Create a new one with the same content but new name
+    // Create a new one with the same content but new name, preserving language
     return emailTemplatesApi.create({
       name,
       subject: original.subject,
       htmlBody: original.htmlBody,
       plainTextBody: original.plainTextBody,
+      designJson: original.designJson,
       type: original.type,
       isDefault: false,
+      languageCode: original.defaultLanguage,
     });
   },
 };
@@ -1145,5 +1209,126 @@ export const analyticsApi = {
       responseType: 'blob',
     });
     return response.data;
+  },
+};
+
+// ============ Files API ============
+
+export interface FileUploadResponse {
+  fileId: string;
+  fileName: string;
+  url: string;
+  contentType: string;
+  size: number;
+  category?: string;
+}
+
+export interface BulkFileUploadResponse {
+  results: FileUploadResult[];
+  successCount: number;
+  failureCount: number;
+}
+
+export interface FileUploadResult {
+  fileName: string;
+  success: boolean;
+  fileId?: string;
+  url?: string;
+  size?: number;
+  error?: string;
+}
+
+export interface FileInfo {
+  id: string;
+  fileName: string;
+  contentType: string;
+  size: number;
+  createdAt: string;
+  url: string;
+}
+
+export const filesApi = {
+  /**
+   * Upload a single image file
+   */
+  uploadImage: async (file: File, category?: 'logo' | 'background' | 'question' | 'avatar'): Promise<FileUploadResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const params = category ? { category } : {};
+
+    const response = await apiClient.post<FileUploadResponse>(API_ENDPOINTS.files.uploadImage, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      params,
+    });
+
+    // Prepend API base URL to the file URL if it's a relative path
+    const data = response.data;
+    if (data.url && data.url.startsWith('/')) {
+      data.url = `${getApiBaseUrl()}${data.url}`;
+    }
+
+    return data;
+  },
+
+  /**
+   * Upload multiple image files at once
+   */
+  uploadImages: async (files: File[], category?: string): Promise<BulkFileUploadResponse> => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    const params = category ? { category } : {};
+
+    const response = await apiClient.post<BulkFileUploadResponse>(API_ENDPOINTS.files.uploadImagesBulk, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      params,
+    });
+
+    // Prepend API base URL to file URLs if they're relative paths
+    const data = response.data;
+    data.results = data.results.map((result) => {
+      if (result.url && result.url.startsWith('/')) {
+        return { ...result, url: `${getApiBaseUrl()}${result.url}` };
+      }
+      return result;
+    });
+
+    return data;
+  },
+
+  /**
+   * Get file information
+   */
+  getFileInfo: async (fileId: string): Promise<FileInfo> => {
+    const response = await apiClient.get<FileInfo>(API_ENDPOINTS.files.byId(fileId));
+    const data = response.data;
+
+    // Prepend API base URL to the file URL if it's a relative path
+    if (data.url && data.url.startsWith('/')) {
+      data.url = `${getApiBaseUrl()}${data.url}`;
+    }
+
+    return data;
+  },
+
+  /**
+   * Delete a file
+   */
+  deleteFile: async (fileId: string): Promise<void> => {
+    await apiClient.delete(API_ENDPOINTS.files.byId(fileId));
+  },
+
+  /**
+   * Get the download URL for a file
+   */
+  getDownloadUrl: (fileId: string): string => {
+    return `${getApiBaseUrl()}${API_ENDPOINTS.files.download(fileId)}`;
   },
 };

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
+import { EditorPreview } from '@/components/features/public-survey';
 
 interface ScaleEditorProps {
   question: DraftQuestion;
@@ -34,7 +35,7 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
   };
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -54,8 +55,8 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
 
       {/* Scale Presets */}
       <div>
-        <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionTypes.scale.scaleType')}</label>
-        <div className='flex flex-wrap gap-2'>
+        <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('questionTypes.scale.scaleType')}</label>
+        <div className="flex flex-wrap gap-2">
           {presets.map((preset) => (
             <button
               key={preset.label}
@@ -74,15 +75,15 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
       </div>
 
       {/* Custom Range */}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <Input
-          type='number'
+          type="number"
           label={t('questionEditor.scale.minValue')}
           value={minValue.toString()}
           onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, minValue: parseInt(e.target.value) || 0 } })}
         />
         <Input
-          type='number'
+          type="number"
           label={t('questionEditor.scale.maxValue')}
           value={maxValue.toString()}
           onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, maxValue: parseInt(e.target.value) || 10 } })}
@@ -90,7 +91,7 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
       </div>
 
       {/* Labels */}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <Input
           label={t('questionEditor.scale.lowLabel')}
           value={question.settings.minLabel || ''}
@@ -105,27 +106,8 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
         />
       </div>
 
-      {/* Preview */}
-      <div className='p-4 rounded-2xl bg-surface-container/50'>
-        <p className='text-sm text-on-surface-variant mb-3'>{t('questionEditor.preview')}</p>
-        <div className='space-y-2'>
-          <div className='flex justify-between text-xs text-on-surface-variant'>
-            <span>{question.settings.minLabel || minValue}</span>
-            <span>{question.settings.maxLabel || maxValue}</span>
-          </div>
-          <div className='flex gap-1'>
-            {Array.from({ length: maxValue - minValue + 1 }, (_, i) => (
-              <button
-                key={i}
-                disabled
-                className='flex-1 py-3 rounded-xl border border-outline-variant bg-surface text-on-surface-variant text-sm hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors'
-              >
-                {minValue + i}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Preview - Using unified preview component */}
+      <EditorPreview question={question} />
     </div>
   );
 }

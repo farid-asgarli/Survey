@@ -265,6 +265,86 @@
     "closeSuccess": "Sorğu uğurla bağlandı",
     "closeError": "Sorğu bağlana bilmədi"
   },
+  "createSurvey": {
+    "title": "Yeni Sorğu Yarat",
+    "subtitle": "Başlamaq üçün sorğu növü seçin",
+    "selectType": "Sorğu növü",
+    "selectMetric": "Metrika seçin",
+    "sampleQuestion": "Nümunə sual:",
+    "categories": {
+      "classic": {
+        "name": "Klassik",
+        "description": "Bütün sual növləri ilə ənənəvi sorğu"
+      },
+      "customerExperience": {
+        "name": "Müştəri Təcrübəsi",
+        "description": "Müştəri loyallığını və məmnuniyyətini ölçün"
+      },
+      "conversational": {
+        "name": "Söhbət",
+        "description": "Yüksək cəlbetmə üçün söhbət tipli sorğular"
+      },
+      "research": {
+        "name": "Araşdırma",
+        "description": "Qabaqcıl araşdırma metodları və təhlil"
+      },
+      "assessment360": {
+        "name": "360 Qiymətləndirmə",
+        "description": "Çoxcəhətli işçi qiymətləndirmələri"
+      }
+    },
+    "cxMetrics": {
+      "nps": {
+        "name": "NPS",
+        "description": "Müştəri loyallığını ölçür",
+        "question": "Bizi başqalarına tövsiyə etmə ehtimalınız nə qədərdir?",
+        "minLabel": "Heç ehtimal yoxdur",
+        "maxLabel": "Çox ehtimallı"
+      },
+      "ces": {
+        "name": "CES",
+        "description": "Təcrübənin asanlığını ölçür",
+        "question": "Probleminizi həll etmək nə qədər asan oldu?",
+        "minLabel": "Çox çətin",
+        "maxLabel": "Çox asan"
+      },
+      "csat": {
+        "name": "CSAT",
+        "description": "Ümumi məmnuniyyəti ölçür",
+        "question": "Xidmətlərimizdən nə qədər razısınız?",
+        "minLabel": "Çox narazı",
+        "maxLabel": "Çox razı"
+      }
+    },
+    "actions": {
+      "createSurvey": "Sorğu Yarat",
+      "startMetricSurvey": "{{metric}} Sorğusu Başlat",
+      "startBlank": "Boş başla",
+      "startNewMetricSurvey": "Yeni {{metric}} Sorğusu Başlat",
+      "startNewAssessment": "Yeni Qiymətləndirmə Başlat",
+      "createNew": "Yarat",
+      "wingItWithAI": "AI ilə Yarat",
+      "browseTemplates": "hazır şablon",
+      "chooseFrom": "Seçin",
+      "or": "Və ya,",
+      "learnMore360": "Güclü 360 Qiymətləndirmə yaratmaq haqqında daha çox öyrənin.",
+      "quickStart": "Sürətli Başlanğıc {{metric}}"
+    },
+    "cxSelection": {
+      "title": "Metrikanızı Seçin",
+      "description": "Loyallıq, səy və ya məmnuniyyəti ölçmək üçün müştəri təcrübəsi metrikası seçin"
+    },
+    "defaults": {
+      "npsTitle": "Net Promoter Score Sorğusu",
+      "cesTitle": "Customer Effort Score Sorğusu",
+      "csatTitle": "Müştəri Məmnuniyyəti Sorğusu",
+      "untitledSurvey": "Adsız {{type}} Sorğusu"
+    },
+    "messages": {
+      "comingSoon": "Bu funksiya tezliklə gələcək!",
+      "comingSoonDescription": "Bu funksiyanı sizə çatdırmaq üçün çalışırıq. Gözləyin!"
+    }
+  },
   "analytics": {
     "title": "Analitika",
     "description": "Sorğu performansı və cavab məlumatları",

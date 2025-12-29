@@ -8,7 +8,7 @@
  * - Section-based component organization for maintainability
  */
 
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { ListPageLayout } from '@/components/layout';
 import {
@@ -19,6 +19,7 @@ import {
   useDeleteTheme,
   useDuplicateTheme,
   useSetDefaultTheme,
+  useThemeDetail,
   useListPageState,
   useEntityActions,
   useDrawerState,
@@ -28,6 +29,7 @@ import {
 import { ThemeEditorDrawer, type ThemeFormData } from '@/components/features/themes';
 import type { SurveyTheme } from '@/types';
 import { ThemesHeader, ThemesToolbar, ThemesContent, ThemesEmptyState } from './sections';
+import { getCurrentLanguage } from '@/i18n';
 
 type ThemeFilter = 'all' | 'system' | 'custom';
 
@@ -51,6 +53,9 @@ export function ThemesPage() {
   // Editor drawer state using reusable hook
   const editorDrawer = useDrawerState<SurveyTheme>();
 
+  // Track the ID of theme being edited to fetch full details
+  const [editingThemeId, setEditingThemeId] = useState<string | undefined>(undefined);
+
   // API hooks
   const { data: themesData, isLoading: isLoadingThemes } = useThemes();
   const { data: publicThemesData, isLoading: isLoadingPublic } = usePublicThemes();
@@ -59,6 +64,19 @@ export function ThemesPage() {
   const deleteTheme = useDeleteTheme();
   const duplicateTheme = useDuplicateTheme();
   const setDefaultTheme = useSetDefaultTheme();
+
+  // Fetch full theme details when editing (includes branding, logo, etc.)
+  const { data: fullThemeData, isLoading: isLoadingFullTheme } = useThemeDetail(editingThemeId);
+
+  // Use full theme data when available, otherwise fall back to drawer state
+  const themeForEditor = editingThemeId && fullThemeData ? fullThemeData : editorDrawer.editingItem;
+
+  // Reset editingThemeId when drawer closes
+  useEffect(() => {
+    if (!editorDrawer.isOpen) {
+      setEditingThemeId(undefined);
+    }
+  }, [editorDrawer.isOpen]);
 
   // Combine themes - namespace themes take priority, public themes as fallback
   const allThemes = useMemo(() => {
@@ -120,11 +138,13 @@ export function ThemesPage() {
 
   // Handlers
   const handleCreateTheme = useCallback(() => {
+    setEditingThemeId(undefined);
     editorDrawer.openCreate();
   }, [editorDrawer]);
 
   const handleEditTheme = useCallback(
     (theme: SurveyTheme) => {
+      setEditingThemeId(theme.id);
       editorDrawer.openEdit(theme);
     },
     [editorDrawer]
@@ -140,27 +160,63 @@ export function ThemesPage() {
   const handleSaveTheme = useCallback(
     async (data: ThemeFormData) => {
       try {
+        // Build nested structure matching backend CreateThemeDto/UpdateThemeDto
         const themeData = {
           name: data.name,
-          primaryColor: data.primaryColor,
-          secondaryColor: data.secondaryColor,
-          accentColor: data.accentColor || undefined,
-          backgroundColor: data.backgroundColor,
-          surfaceColor: data.surfaceColor || undefined,
-          textColor: data.textColor || undefined,
-          fontFamily: data.fontFamily,
-          headingFontFamily: data.headingFontFamily || undefined,
-          fontSize: data.fontSize,
-          cornerRadius: data.cornerRadius || undefined,
-          spacing: data.spacing || undefined,
-          containerWidth: data.containerWidth || undefined,
-          progressBarStyle: data.progressBarStyle || undefined,
-          showProgressBar: data.showProgressBar,
-          showQuestionNumbers: data.showQuestionNumbers,
-          questionNumberStyle: data.questionNumberStyle || undefined,
-          logoUrl: data.logoUrl || undefined,
-          backgroundImageUrl: data.backgroundImageUrl || undefined,
-          buttonStyle: data.buttonStyle,
+          isPublic: true,
+          languageCode: editorDrawer.editingItem?.id ? editorDrawer.editingItem.defaultLanguage : getCurrentLanguage(),
+          colors: {
+            primary: data.primaryColor,
+            secondary: data.secondaryColor,
+            background: data.backgroundColor,
+            surface: data.surfaceColor,
+            text: data.textColor,
+            accent: data.accentColor,
+            // Provide defaults for required Material Design 3 colors
+            onPrimary: '#FFFFFF',
+            primaryContainer: data.accentColor || '#EADDFF',
+            onPrimaryContainer: '#21005D',
+            onSecondary: '#FFFFFF',
+            secondaryContainer: '#E8DEF8',
+            onSecondaryContainer: '#1D192B',
+            surfaceContainerLowest: '#FFFFFF',
+            surfaceContainerLow: '#F7F2FA',
+            surfaceContainer: '#F3EDF7',
+            surfaceContainerHigh: '#ECE6F0',
+            surfaceContainerHighest: '#E6E0E9',
+            onSurface: data.textColor,
+            onSurfaceVariant: '#49454F',
+            outline: '#79747E',
+            outlineVariant: '#CAC4D0',
+            error: '#B3261E',
+            success: '#2AA86A',
+          },
+          typography: {
+            fontFamily: data.fontFamily,
+            headingFontFamily: data.headingFontFamily || data.fontFamily,
+            baseFontSize: data.fontSize,
+          },
+          layout: {
+            layout: 0, // ThemeLayout.Classic
+            backgroundImageUrl: data.backgroundImageUrl || undefined,
+            backgroundPosition: 0, // BackgroundImagePosition.Cover
+            showProgressBar: data.showProgressBar,
+            progressBarStyle: data.progressBarStyle,
+          },
+          branding: {
+            logoUrl: data.logoUrl || undefined,
+            logoPosition: 0, // LogoPosition.TopLeft
+            logoSize: data.logoSize,
+            showLogoBackground: data.showLogoBackground,
+            logoBackgroundColor: data.showLogoBackground ? data.logoBackgroundColor : undefined,
+            brandingTitle: data.brandingTitle || undefined,
+            brandingSubtitle: data.brandingSubtitle || undefined,
+            showPoweredBy: true,
+          },
+          button: {
+            style: data.buttonStyle,
+            textColor: '#FFFFFF',
+          },
           customCss: data.customCss || undefined,
         };
 
@@ -223,9 +279,9 @@ export function ThemesPage() {
       <ThemeEditorDrawer
         open={editorDrawer.isOpen}
         onOpenChange={editorDrawer.setOpen}
-        theme={editorDrawer.editingItem}
+        theme={themeForEditor}
         onSave={handleSaveTheme}
-        isSaving={createTheme.isPending || updateTheme.isPending}
+        isSaving={createTheme.isPending || updateTheme.isPending || isLoadingFullTheme}
       />
 
       {/* Confirm Dialog */}

@@ -7,6 +7,7 @@ import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { createTemplateSchema, type CreateTemplateFormData } from '@/lib/validations';
 import { getCategoryOptions } from './templateUtils';
 import { cn } from '@/lib/utils';
+import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
 import type { TemplateCategory, Survey } from '@/types';
 
 interface CreateTemplateDialogProps {
@@ -23,6 +24,8 @@ export interface CreateTemplateData {
   isPublic: boolean;
   // Either surveyId (from existing) or null (from scratch)
   surveyId?: string;
+  /** Language code for the initial translation */
+  languageCode: string;
 }
 
 type CreateMode = 'scratch' | 'survey';
@@ -95,6 +98,7 @@ function CreateTemplateForm({
       category: 'feedback',
       isPublic: false,
       surveyId: '',
+      languageCode: getCurrentLanguage(),
     },
     mode: 'onChange',
   });
@@ -103,6 +107,7 @@ function CreateTemplateForm({
   const category = watch('category');
   const isPublic = watch('isPublic');
   const surveyId = watch('surveyId');
+  const languageCode = watch('languageCode');
 
   // Fetch surveys for "from existing survey" mode
   const { data: surveysData, isLoading: isSurveysLoading } = useSurveysList();
@@ -115,6 +120,7 @@ function CreateTemplateForm({
       category: data.category as TemplateCategory,
       isPublic: data.isPublic,
       surveyId: mode === 'survey' ? data.surveyId : undefined,
+      languageCode: data.languageCode,
     });
   };
 
@@ -228,6 +234,25 @@ function CreateTemplateForm({
       </DialogBody>
 
       <DialogFooter>
+        {/* Language Selector */}
+        <div className="flex items-center gap-2 mr-auto">
+          <label htmlFor="template-language" className="text-sm text-on-surface-variant">
+            {t('templates.form.language', 'Language')}:
+          </label>
+          <select
+            id="template-language"
+            value={languageCode}
+            onChange={(e) => setValue('languageCode', e.target.value as LanguageCode, { shouldValidate: true })}
+            className="h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
+            disabled={isLoading}
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.flag} {lang.nativeName}
+              </option>
+            ))}
+          </select>
+        </div>
         <Button type="button" variant="text" onClick={onCancel} disabled={isLoading}>
           {t('common.cancel')}
         </Button>

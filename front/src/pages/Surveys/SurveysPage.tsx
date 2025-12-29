@@ -15,7 +15,7 @@ import { Plus, FileText } from 'lucide-react';
 import { useViewTransitionNavigate } from '@/hooks';
 import { toast, EmptyState } from '@/components/ui';
 import { ListPageLayout } from '@/components/layout';
-import { CreateSurveyDialog } from '@/components/features/surveys';
+import { CreateSurveyDialog, type CreateSurveyFormData } from '@/components/features/surveys';
 import {
   useSurveysInfinite,
   useCreateSurvey,
@@ -189,8 +189,14 @@ export function SurveysPage() {
   }, [activeFilters, fromDate, toDate]);
 
   // Handlers
-  const handleCreateSurvey = async (data: { title: string; description?: string }) => {
-    const newSurvey = await createSurvey.mutateAsync(data);
+  const handleCreateSurvey = async (data: CreateSurveyFormData) => {
+    const newSurvey = await createSurvey.mutateAsync({
+      title: data.title,
+      description: data.description,
+      type: data.surveyType,
+      cxMetricType: data.cxMetricType,
+      languageCode: data.languageCode,
+    });
     createDialog.close();
     navigate(`/surveys/${newSurvey.id}/edit`);
   };

@@ -251,6 +251,65 @@ import type { NpsScore, NpsTrend, SurveyNpsSummary, ResponseTrend, NpsTrendGroup
 
 export type { NpsScore, NpsTrend, SurveyNpsSummary, ResponseTrend, NpsTrendGroupBy };
 
+// ============ Translation API Types ============
+// Types for the bulk translation management API
+
+/** DTO for a single survey translation */
+export interface SurveyTranslationDto {
+  languageCode: string;
+  title: string;
+  description?: string;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  isDefault: boolean;
+}
+
+/** DTO for a single question translation */
+export interface QuestionTranslationItemDto {
+  languageCode: string;
+  text: string;
+  description?: string;
+  isDefault: boolean;
+}
+
+/** DTO containing all translations for a question */
+export interface QuestionTranslationsDto {
+  questionId: string;
+  order: number;
+  defaultLanguage: string;
+  translations: QuestionTranslationItemDto[];
+}
+
+/** Response DTO containing all translations for a survey */
+export interface SurveyTranslationsResponse {
+  surveyId: string;
+  defaultLanguage: string;
+  translations: SurveyTranslationDto[];
+  questions: QuestionTranslationsDto[];
+}
+
+/** Request to bulk update all translations for a survey */
+export interface BulkUpdateSurveyTranslationsRequest {
+  translations: SurveyTranslationDto[];
+}
+
+/** Request to update a single translation for a survey */
+export interface UpdateSurveyTranslationRequest {
+  title: string;
+  description?: string;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+}
+
+/** Result DTO for bulk translation operations */
+export interface BulkTranslationResultDto {
+  totalProcessed: number;
+  successCount: number;
+  failureCount: number;
+  errors: string[];
+  languages: string[];
+}
+
 export interface NpsTrendParams {
   fromDate?: string;
   toDate?: string;

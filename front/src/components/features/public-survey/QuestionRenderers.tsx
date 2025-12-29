@@ -503,80 +503,216 @@ export function NumberRenderer({ question, value, onChange, error, disabled }: Q
 export function RatingRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
   const maxValue = question.settings?.maxValue || 5;
   const ratingStyle = (question.settings?.ratingStyle ?? RatingStyle.Stars) as RatingStyle;
+  const minLabel = question.settings?.minLabel;
+  const maxLabel = question.settings?.maxLabel;
   const [hoverValue, setHoverValue] = useState<number | null>(null);
   const selectedValue = value ? parseInt(value as string, 10) : null;
 
-  // Get color based on rating style
-  const getColor = (isActive: boolean) => {
-    if (!isActive) return 'text-on-surface-variant/30';
-    switch (ratingStyle) {
-      case RatingStyle.Hearts:
-        return 'text-red-500 fill-red-500';
-      case RatingStyle.Thumbs:
-        return 'text-primary fill-primary';
-      case RatingStyle.Smileys:
-        return 'text-amber-500';
-      case RatingStyle.Numbers:
-        return '';
-      case RatingStyle.Stars:
-      default:
-        return 'text-warning fill-warning';
-    }
-  };
-
-  // Render icon based on style
-  const renderIcon = (index: number, isActive: boolean) => {
-    const iconClass = 'w-10 h-10 transition-colors duration-200';
-    switch (ratingStyle) {
-      case RatingStyle.Hearts:
-        return <Heart className={cn(iconClass, getColor(isActive))} />;
-      case RatingStyle.Thumbs:
-        return <ThumbsUp className={cn(iconClass, getColor(isActive))} />;
-      case RatingStyle.Smileys: {
-        const ratio = index / (maxValue - 1);
-        const SmileyIcon = ratio <= 0.33 ? Frown : ratio <= 0.66 ? Meh : Smile;
-        return <SmileyIcon className={cn(iconClass, getColor(isActive))} />;
-      }
-      case RatingStyle.Numbers:
-        return (
-          <span
-            className={cn(
-              'w-10 h-10 flex items-center justify-center rounded-xl text-lg font-bold transition-all',
-              isActive ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant'
-            )}
-          >
-            {index + 1}
-          </span>
-        );
-      case RatingStyle.Stars:
-      default:
-        return <Star className={cn(iconClass, getColor(isActive))} />;
-    }
-  };
-
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
-          const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
-          return (
-            <button
-              key={rating}
-              type="button"
-              disabled={disabled}
-              onClick={() => onChange(rating.toString())}
-              onMouseEnter={() => setHoverValue(rating)}
-              onMouseLeave={() => setHoverValue(null)}
-              className={cn('p-1 transition-all duration-200 transform hover:scale-110', disabled && 'cursor-not-allowed opacity-50')}
-            >
-              {renderIcon(rating - 1, isActive)}
-            </button>
-          );
-        })}
+  // Common labels element
+  const labelsElement =
+    minLabel || maxLabel ? (
+      <div className="flex justify-between text-sm text-on-surface-variant px-1">
+        <span>{minLabel || ''}</span>
+        <span>{maxLabel || ''}</span>
       </div>
-      {error && <p className="text-error text-sm">{error}</p>}
-    </div>
-  );
+    ) : null;
+
+  // Render based on style
+  switch (ratingStyle) {
+    case RatingStyle.Stars:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  onMouseEnter={() => setHoverValue(rating)}
+                  onMouseLeave={() => setHoverValue(null)}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isActive
+                      ? 'bg-warning-container text-warning'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  <Star className={cn('w-7 h-7', isActive && 'fill-current')} />
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+
+    case RatingStyle.Hearts:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  onMouseEnter={() => setHoverValue(rating)}
+                  onMouseLeave={() => setHoverValue(null)}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isActive ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  <Heart className={cn('w-7 h-7', isActive && 'fill-current')} />
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+
+    case RatingStyle.Thumbs:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  onMouseEnter={() => setHoverValue(rating)}
+                  onMouseLeave={() => setHoverValue(null)}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isActive
+                      ? 'bg-primary-container text-primary'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  <ThumbsUp className={cn('w-7 h-7', isActive && 'fill-current')} />
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+
+    case RatingStyle.Smileys:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isSelected = selectedValue === rating;
+              const isHovered = hoverValue === rating;
+              // Determine smiley based on position
+              const ratio = (rating - 1) / (maxValue - 1);
+              const SmileyIcon = ratio <= 0.33 ? Frown : ratio <= 0.66 ? Meh : Smile;
+              // Color based on position
+              const bgColor = ratio <= 0.33 ? 'bg-error-container' : ratio <= 0.66 ? 'bg-warning-container' : 'bg-success-container';
+              const textColor = ratio <= 0.33 ? 'text-error' : ratio <= 0.66 ? 'text-warning' : 'text-success';
+
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  onMouseEnter={() => setHoverValue(rating)}
+                  onMouseLeave={() => setHoverValue(null)}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isSelected || isHovered
+                      ? cn(bgColor, textColor)
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  <SmileyIcon className="w-7 h-7" />
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+
+    case RatingStyle.Numbers:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isSelected = selectedValue === rating;
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center text-lg font-bold transition-colors',
+                    isSelected ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  {rating}
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+
+    default:
+      return (
+        <div className="space-y-3">
+          {labelsElement}
+          <div className="flex justify-center gap-2">
+            {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => onChange(rating.toString())}
+                  onMouseEnter={() => setHoverValue(rating)}
+                  onMouseLeave={() => setHoverValue(null)}
+                  className={cn(
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isActive
+                      ? 'bg-warning-container text-warning'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
+                  )}
+                >
+                  <Star className={cn('w-7 h-7', isActive && 'fill-current')} />
+                </button>
+              );
+            })}
+          </div>
+          {error && <p className="text-error text-sm text-center">{error}</p>}
+        </div>
+      );
+  }
 }
 
 // ============ Scale (NPS-style) ============
@@ -890,99 +1026,68 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
     case YesNoStyle.Thumbs:
       return (
         <div className="space-y-3">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center gap-4">
+            {/* Thumbs Up - Yes */}
             <button
               type="button"
               disabled={disabled}
               onClick={() => onChange(options[0] || 'Yes')}
               className={cn(
-                'group relative flex flex-col items-center gap-3 p-8 rounded-3xl border-2 transition-all duration-300',
-                'hover:shadow-lg hover:-translate-y-1',
+                'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
                 selectedValue === (options[0] || 'Yes')
-                  ? 'border-green-500 bg-linear-to-br from-green-50 to-emerald-50 shadow-md shadow-green-200/50'
-                  : 'border-outline-variant/40 bg-surface-container-lowest hover:border-green-400 hover:bg-green-50/50',
-                disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-none'
+                  ? 'border-success bg-success-container'
+                  : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
+                disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               <div
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-300',
-                  selectedValue === (options[0] || 'Yes')
-                    ? 'bg-linear-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-300/50'
-                    : 'bg-green-100 group-hover:bg-green-200'
+                  'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
+                  selectedValue === (options[0] || 'Yes') ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
-                <ThumbsUp
-                  className={cn(
-                    'w-8 h-8 transition-all duration-300',
-                    selectedValue === (options[0] || 'Yes') ? 'text-white' : 'text-green-600 group-hover:scale-110'
-                  )}
-                  strokeWidth={2}
-                />
+                <ThumbsUp className="w-7 h-7" />
               </div>
-              <span
-                className={cn(
-                  'text-base font-semibold transition-colors',
-                  selectedValue === (options[0] || 'Yes') ? 'text-green-700' : 'text-on-surface'
-                )}
-              >
+              <span className={cn('text-sm font-medium', selectedValue === (options[0] || 'Yes') ? 'text-on-success-container' : 'text-on-surface')}>
                 {options[0] || 'Yes'}
               </span>
             </button>
+
+            {/* Thumbs Down - No */}
             <button
               type="button"
               disabled={disabled}
               onClick={() => onChange(options[1] || 'No')}
               className={cn(
-                'group relative flex flex-col items-center gap-3 p-8 rounded-3xl border-2 transition-all duration-300',
-                'hover:shadow-lg hover:-translate-y-1',
+                'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
                 selectedValue === (options[1] || 'No')
-                  ? 'border-red-500 bg-linear-to-br from-red-50 to-rose-50 shadow-md shadow-red-200/50'
-                  : 'border-outline-variant/40 bg-surface-container-lowest hover:border-red-400 hover:bg-red-50/50',
-                disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-none'
+                  ? 'border-error bg-error-container'
+                  : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
+                disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               <div
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-300',
-                  selectedValue === (options[1] || 'No')
-                    ? 'bg-linear-to-br from-red-500 to-rose-600 shadow-lg shadow-red-300/50'
-                    : 'bg-red-100 group-hover:bg-red-200'
+                  'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
+                  selectedValue === (options[1] || 'No') ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
-                <ThumbsDown
-                  className={cn(
-                    'w-8 h-8 transition-all duration-300',
-                    selectedValue === (options[1] || 'No') ? 'text-white' : 'text-red-600 group-hover:scale-110'
-                  )}
-                  strokeWidth={2}
-                />
+                <ThumbsDown className="w-7 h-7" />
               </div>
-              <span
-                className={cn(
-                  'text-base font-semibold transition-colors',
-                  selectedValue === (options[1] || 'No') ? 'text-red-700' : 'text-on-surface'
-                )}
-              >
+              <span className={cn('text-sm font-medium', selectedValue === (options[1] || 'No') ? 'text-on-error-container' : 'text-on-surface')}>
                 {options[1] || 'No'}
               </span>
             </button>
           </div>
-          {error && <p className="text-error text-sm">{error}</p>}
+          {error && <p className="text-error text-sm text-center">{error}</p>}
         </div>
       );
 
     case YesNoStyle.Toggle:
       return (
         <div className="space-y-3">
-          <div className="flex items-center gap-4">
-            <span
-              className={cn(
-                'text-lg transition-colors',
-                !isYes && hasSelection && 'text-on-surface font-medium',
-                !hasSelection && 'text-on-surface-variant'
-              )}
-            >
+          <div className="flex items-center justify-center gap-4">
+            <span className={cn('text-base font-medium transition-colors', !isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
               {options[1] || 'No'}
             </span>
             <button
@@ -990,109 +1095,87 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               disabled={disabled}
               onClick={() => onChange(isYes ? options[1] || 'No' : options[0] || 'Yes')}
               className={cn(
-                'w-16 h-10 rounded-full relative transition-all',
-                hasSelection ? (isYes ? 'bg-primary' : 'bg-surface-container') : 'bg-surface-container',
-                hasSelection ? 'border-2 border-primary' : 'border-2 border-outline-variant',
+                'w-16 h-9 rounded-full relative transition-colors border-2',
+                hasSelection
+                  ? isYes
+                    ? 'bg-primary border-primary'
+                    : 'bg-surface-container-high border-outline-variant'
+                  : 'bg-surface-container border-outline-variant',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               <div
                 className={cn(
-                  'absolute top-1.5 w-7 h-7 rounded-full transition-all duration-200',
-                  isYes ? 'left-7 bg-on-primary' : 'left-1.5 bg-on-surface-variant/50'
+                  'absolute top-1 w-6 h-6 rounded-full transition-all',
+                  isYes ? 'left-8 bg-on-primary' : 'left-1 bg-on-surface-variant/60'
                 )}
               />
             </button>
-            <span className={cn('text-lg transition-colors', isYes && 'text-on-surface font-medium', !hasSelection && 'text-on-surface-variant')}>
+            <span className={cn('text-base font-medium transition-colors', isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
               {options[0] || 'Yes'}
             </span>
           </div>
-          {error && <p className="text-error text-sm">{error}</p>}
+          {error && <p className="text-error text-sm text-center">{error}</p>}
         </div>
       );
 
     case YesNoStyle.CheckX:
       return (
         <div className="space-y-3">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center gap-4">
+            {/* Check - Yes */}
             <button
               type="button"
               disabled={disabled}
               onClick={() => onChange(options[0] || 'Yes')}
               className={cn(
-                'group relative flex flex-col items-center gap-3 p-8 rounded-3xl border-2 transition-all duration-300',
-                'hover:shadow-lg hover:-translate-y-1',
+                'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
                 selectedValue === (options[0] || 'Yes')
-                  ? 'border-green-500 bg-linear-to-br from-green-50 to-teal-50 shadow-md shadow-green-200/50'
-                  : 'border-outline-variant/40 bg-surface-container-lowest hover:border-green-400 hover:bg-green-50/50',
-                disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-none'
+                  ? 'border-success bg-success-container'
+                  : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
+                disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               <div
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300',
-                  selectedValue === (options[0] || 'Yes')
-                    ? 'bg-linear-to-br from-green-500 to-teal-600 shadow-lg shadow-green-300/50 ring-4 ring-green-200'
-                    : 'bg-green-100 group-hover:bg-green-200 group-hover:ring-2 group-hover:ring-green-300'
+                  'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
+                  selectedValue === (options[0] || 'Yes') ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
-                <Check
-                  className={cn(
-                    'w-8 h-8 transition-all duration-300',
-                    selectedValue === (options[0] || 'Yes') ? 'text-white' : 'text-green-600 group-hover:scale-110'
-                  )}
-                  strokeWidth={2.5}
-                />
+                <Check className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span
-                className={cn(
-                  'text-base font-semibold transition-colors',
-                  selectedValue === (options[0] || 'Yes') ? 'text-green-700' : 'text-on-surface'
-                )}
-              >
+              <span className={cn('text-sm font-medium', selectedValue === (options[0] || 'Yes') ? 'text-on-success-container' : 'text-on-surface')}>
                 {options[0] || 'Yes'}
               </span>
             </button>
+
+            {/* X - No */}
             <button
               type="button"
               disabled={disabled}
               onClick={() => onChange(options[1] || 'No')}
               className={cn(
-                'group relative flex flex-col items-center gap-3 p-8 rounded-3xl border-2 transition-all duration-300',
-                'hover:shadow-lg hover:-translate-y-1',
+                'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
                 selectedValue === (options[1] || 'No')
-                  ? 'border-red-500 bg-linear-to-br from-red-50 to-orange-50 shadow-md shadow-red-200/50'
-                  : 'border-outline-variant/40 bg-surface-container-lowest hover:border-red-400 hover:bg-red-50/50',
-                disabled && 'cursor-not-allowed opacity-50 hover:translate-y-0 hover:shadow-none'
+                  ? 'border-error bg-error-container'
+                  : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
+                disabled && 'cursor-not-allowed opacity-50'
               )}
             >
               <div
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-full transition-all duration-300',
-                  selectedValue === (options[1] || 'No')
-                    ? 'bg-linear-to-br from-red-500 to-orange-600 shadow-lg shadow-red-300/50 ring-4 ring-red-200'
-                    : 'bg-red-100 group-hover:bg-red-200 group-hover:ring-2 group-hover:ring-red-300'
+                  'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
+                  selectedValue === (options[1] || 'No') ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
-                <X
-                  className={cn(
-                    'w-8 h-8 transition-all duration-300',
-                    selectedValue === (options[1] || 'No') ? 'text-white' : 'text-red-600 group-hover:scale-110'
-                  )}
-                  strokeWidth={2.5}
-                />
+                <X className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span
-                className={cn(
-                  'text-base font-semibold transition-colors',
-                  selectedValue === (options[1] || 'No') ? 'text-red-700' : 'text-on-surface'
-                )}
-              >
+              <span className={cn('text-sm font-medium', selectedValue === (options[1] || 'No') ? 'text-on-error-container' : 'text-on-surface')}>
                 {options[1] || 'No'}
               </span>
             </button>
           </div>
-          {error && <p className="text-error text-sm">{error}</p>}
+          {error && <p className="text-error text-sm text-center">{error}</p>}
         </div>
       );
 
@@ -1106,7 +1189,7 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               key={index}
               onClick={() => !disabled && onChange(option)}
               className={cn(
-                'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200',
+                'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-colors',
                 selectedValue === option
                   ? 'border-primary bg-primary-container/30'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container-low',
@@ -1116,7 +1199,7 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             >
               <div
                 className={cn(
-                  'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200',
+                  'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors',
                   selectedValue === option ? 'border-primary bg-primary' : 'border-outline-variant'
                 )}
               >

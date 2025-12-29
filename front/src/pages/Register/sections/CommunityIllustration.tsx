@@ -10,7 +10,7 @@ export function CommunityIllustration() {
     <div className="relative w-full max-w-md mx-auto">
       <div className="relative h-80">
         {/* Central circle with users */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-gradient-to-br from-primary-container to-tertiary-container/50 flex items-center justify-center shadow-xl">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-linear-to-br from-primary-container to-tertiary-container/50 flex items-center justify-center shadow-xl">
           <Users className="w-16 h-16 text-primary" />
         </div>
 

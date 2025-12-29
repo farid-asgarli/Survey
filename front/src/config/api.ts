@@ -132,6 +132,13 @@ export const API_ENDPOINTS = {
     questionNps: (surveyId: string, questionId: string) => `/api/surveys/${surveyId}/questions/${questionId}/nps`,
     export: (surveyId: string) => `/api/surveys/${surveyId}/analytics/export`,
   },
+  // File upload endpoints
+  files: {
+    uploadImage: '/api/files/images',
+    uploadImagesBulk: '/api/files/images/bulk',
+    byId: (fileId: string) => `/api/files/${fileId}`,
+    download: (fileId: string) => `/api/files/${fileId}/download`,
+  },
   // Recurring surveys endpoints
   recurringSurveys: {
     list: '/api/recurring-surveys',
@@ -141,5 +148,10 @@ export const API_ENDPOINTS = {
     resume: (id: string) => `/api/recurring-surveys/${id}/resume`,
     trigger: (id: string) => `/api/recurring-surveys/${id}/trigger`,
     runs: (id: string) => `/api/recurring-surveys/${id}/runs`,
+  },
+  // Translation management endpoints
+  translations: {
+    survey: (surveyId: string) => `/api/surveys/${surveyId}/translations`,
+    surveyByLang: (surveyId: string, languageCode: string) => `/api/surveys/${surveyId}/translations/${languageCode}`,
   },
 } as const;

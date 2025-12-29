@@ -17,13 +17,18 @@ export const recurringSurveyKeys = {
     [...recurringSurveyKeys.all, 'runs', 'infinite', id, params] as const,
 };
 
+import { useNamespaceStore } from '@/stores';
+
 /**
  * Hook to fetch all recurring surveys
  */
 export function useRecurringSurveys(params?: RecurringSurveysListParams) {
+  const { activeNamespace } = useNamespaceStore();
+
   return useQuery({
     queryKey: recurringSurveyKeys.list(params),
     queryFn: () => recurringSurveysApi.list(params),
+    enabled: !!activeNamespace?.id,
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
@@ -32,9 +37,12 @@ export function useRecurringSurveys(params?: RecurringSurveysListParams) {
  * Hook to fetch upcoming runs across all recurring surveys
  */
 export function useUpcomingRuns(count?: number) {
+  const { activeNamespace } = useNamespaceStore();
+
   return useQuery({
     queryKey: recurringSurveyKeys.upcoming(count),
     queryFn: () => recurringSurveysApi.getUpcoming(count),
+    enabled: !!activeNamespace?.id,
     staleTime: 1 * 60 * 1000, // 1 minute
     refetchInterval: 60 * 1000, // Auto-refresh every minute
   });

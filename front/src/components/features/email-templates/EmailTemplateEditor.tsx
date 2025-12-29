@@ -257,6 +257,7 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
         htmlBody: htmlBody.trim(),
         plainTextBody: plainTextBody.trim() || undefined,
         type,
+        languageCode: template.defaultLanguage,
       };
 
       await updateTemplate.mutateAsync({ id: template.id, data });
@@ -266,7 +267,7 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
       console.error('Failed to save template:', error);
       toast.error('Failed to save template');
     }
-  }, [name, subject, htmlBody, plainTextBody, type, template.id, updateTemplate, onSaved]);
+  }, [name, subject, htmlBody, plainTextBody, type, template.id, template.defaultLanguage, updateTemplate, onSaved]);
 
   // Keyboard shortcuts
   useEffect(() => {

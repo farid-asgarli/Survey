@@ -1,12 +1,13 @@
 // CreateEmailTemplateDialog - Dialog for creating new email templates
 
-import { useCallback } from 'react';
-import { Mail, FileText, Type } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import { Mail, FileText, Type, Globe } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Select, toast } from '@/components/ui';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { createEmailTemplateSchema, type CreateEmailTemplateFormData } from '@/lib/validations';
 import { useCreateEmailTemplate } from '@/hooks/queries/useEmailTemplates';
 import { EmailTemplateType } from '@/types/enums';
+import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
 import type { CreateEmailTemplateRequest } from '@/types';
 
 interface CreateEmailTemplateDialogProps {
@@ -83,6 +84,9 @@ const defaultTemplateContent: Record<EmailTemplateTypeString, { subject: string;
 };
 
 export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: CreateEmailTemplateDialogProps) {
+  // Language state for localization
+  const [languageCode, setLanguageCode] = useState<LanguageCode>(getCurrentLanguage());
+
   const {
     register,
     handleSubmit,
@@ -113,6 +117,7 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
           type: templateTypeStringToEnum[formType],
           subject: defaultContent.subject,
           htmlBody: defaultContent.htmlBody,
+          languageCode,
         };
 
         const newTemplate = await createTemplate.mutateAsync(requestData);
@@ -125,13 +130,14 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
         toast.error('Failed to create template');
       }
     },
-    [createTemplate, onSuccess, onOpenChange, reset]
+    [createTemplate, onSuccess, onOpenChange, reset, languageCode]
   );
 
   const handleClose = useCallback(() => {
     if (!isSubmitting) {
       onOpenChange(false);
       reset();
+      setLanguageCode(getCurrentLanguage());
     }
   }, [isSubmitting, onOpenChange, reset]);
 
@@ -190,6 +196,19 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
           </DialogBody>
 
           <DialogFooter>
+            {/* Language selector */}
+            <div className="flex-1 flex items-center gap-2">
+              <Globe className="h-4 w-4 text-on-surface-variant" />
+              <Select
+                value={languageCode}
+                onChange={(value) => setLanguageCode(value as LanguageCode)}
+                options={LANGUAGES.map((lang) => ({
+                  value: lang.code,
+                  label: lang.nativeName,
+                }))}
+                className="w-40"
+              />
+            </div>
             <Button type="button" variant="text" onClick={handleClose} disabled={isSubmitting}>
               Cancel
             </Button>

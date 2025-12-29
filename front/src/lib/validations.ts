@@ -175,6 +175,7 @@ export const createTemplateSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   isPublic: z.boolean(),
   surveyId: z.string().optional(),
+  languageCode: z.string().min(2).max(10),
 });
 
 export type CreateTemplateFormData = z.infer<typeof createTemplateSchema>;

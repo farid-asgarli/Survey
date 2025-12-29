@@ -53,6 +53,7 @@ export function useTemplatesList(filters?: TemplateFilters) {
       // Return items from paginated response, default to empty array
       return response.items ?? [];
     },
+    enabled: !!activeNamespace?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
@@ -82,6 +83,7 @@ export function useCreateTemplate() {
       description?: string;
       category: TemplateCategory;
       isPublic?: boolean;
+      languageCode: string;
       surveyData?: Record<string, unknown>;
     }) => templatesApi.create(activeNamespace!.id, data),
     onSuccess: () => {
@@ -100,8 +102,14 @@ export function useCreateTemplateFromSurvey() {
   const { activeNamespace } = useNamespaceStore();
 
   return useMutation({
-    mutationFn: (data: { surveyId: string; name: string; description?: string; category: TemplateCategory; isPublic?: boolean }) =>
-      templatesApi.createFromSurvey(activeNamespace!.id, data),
+    mutationFn: (data: {
+      surveyId: string;
+      name: string;
+      description?: string;
+      category: TemplateCategory;
+      isPublic?: boolean;
+      languageCode?: string;
+    }) => templatesApi.createFromSurvey(activeNamespace!.id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: templateKeys.lists(),
@@ -127,6 +135,7 @@ export function useUpdateTemplate() {
         description?: string;
         category?: TemplateCategory;
         isPublic?: boolean;
+        languageCode?: string;
         surveyData?: Record<string, unknown>;
       };
     }) => templatesApi.update(id, data),
@@ -164,7 +173,7 @@ export function useCreateSurveyFromTemplate() {
   const { activeNamespace } = useNamespaceStore();
 
   return useMutation({
-    mutationFn: ({ templateId, data }: { templateId: string; data: { title: string; description?: string } }) =>
+    mutationFn: ({ templateId, data }: { templateId: string; data: { title: string; description?: string; languageCode: string } }) =>
       templatesApi.createSurveyFromTemplate(templateId, activeNamespace!.id, data),
     onSuccess: (newSurvey) => {
       // Invalidate surveys list

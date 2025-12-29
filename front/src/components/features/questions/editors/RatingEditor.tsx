@@ -1,11 +1,12 @@
 // Rating Question Editor (Star Rating with multiple styles)
 
 import { Input } from '@/components/ui';
-import { Star, Heart, ThumbsUp, Smile, Meh, Frown, Hash } from 'lucide-react';
+import { Star, Heart, ThumbsUp, Smile, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
 import { RatingStyle } from '@/types/enums';
+import { EditorPreview } from '@/components/features/public-survey';
 
 interface RatingEditorProps {
   question: DraftQuestion;
@@ -20,46 +21,6 @@ const ratingStyles = [
   { value: RatingStyle.Smileys, label: 'Smileys', icon: Smile },
   { value: RatingStyle.Numbers, label: 'Numbers', icon: Hash },
 ] as const;
-
-// Get the icon component for rendering preview
-function getRatingIcon(style: RatingStyle, index: number, maxValue: number) {
-  const iconClass = 'w-8 h-8';
-
-  switch (style) {
-    case RatingStyle.Hearts:
-      return <Heart className={iconClass} fill="currentColor" />;
-    case RatingStyle.Thumbs:
-      return <ThumbsUp className={iconClass} fill="currentColor" />;
-    case RatingStyle.Smileys:
-      // Show gradient from sad to happy based on position
-      const ratio = index / (maxValue - 1);
-      if (ratio <= 0.33) return <Frown className={iconClass} />;
-      if (ratio <= 0.66) return <Meh className={iconClass} />;
-      return <Smile className={iconClass} />;
-    case RatingStyle.Numbers:
-      return <span className="text-2xl font-bold">{index + 1}</span>;
-    case RatingStyle.Stars:
-    default:
-      return <Star className={iconClass} fill="currentColor" />;
-  }
-}
-
-// Get the color class for the rating style
-function getRatingColor(style: RatingStyle) {
-  switch (style) {
-    case RatingStyle.Hearts:
-      return 'text-red-500';
-    case RatingStyle.Thumbs:
-      return 'text-primary';
-    case RatingStyle.Smileys:
-      return 'text-amber-500';
-    case RatingStyle.Numbers:
-      return 'text-primary';
-    case RatingStyle.Stars:
-    default:
-      return 'text-warning';
-  }
-}
 
 export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) {
   const { t } = useTranslation();
@@ -131,17 +92,8 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
         </div>
       </div>
 
-      {/* Preview */}
-      <div className="p-4 rounded-2xl bg-surface-container/50">
-        <p className="text-sm text-on-surface-variant mb-3">{t('questionEditor.preview')}</p>
-        <div className="flex items-center gap-1">
-          {Array.from({ length: maxValue }, (_, i) => (
-            <div key={i} className={cn('transition-colors cursor-pointer opacity-30 hover:opacity-100', getRatingColor(ratingStyle))}>
-              {getRatingIcon(ratingStyle, i, maxValue)}
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Preview - Using unified preview component */}
+      <EditorPreview question={question} />
 
       {/* Labels */}
       <div className="grid grid-cols-2 gap-4">

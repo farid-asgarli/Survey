@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Controller } from 'react-hook-form';
 import { Input, Button, Checkbox } from '@/components/ui';
 import { Eye, EyeOff, AlertCircle, Sparkles, ArrowRight } from 'lucide-react';
 import { useFormContext } from '@/lib/form';
@@ -25,10 +26,8 @@ export function LoginForm({ isLoading, error, onSubmit }: LoginFormProps) {
   const {
     register,
     formState: { errors, touchedFields },
-    watch,
-    setValue,
+    control,
   } = useFormContext<LoginFormData>();
-  const rememberMe = watch('rememberMe');
 
   return (
     <div className="w-full max-w-md">
@@ -87,10 +86,12 @@ export function LoginForm({ isLoading, error, onSubmit }: LoginFormProps) {
 
         {/* Remember & Forgot */}
         <div className="flex items-center justify-between">
-          <Checkbox
-            label={t('auth.rememberMe')}
-            checked={rememberMe ?? false}
-            onChange={(e) => setValue('rememberMe', e.target.checked, { shouldDirty: true })}
+          <Controller
+            name="rememberMe"
+            control={control}
+            render={({ field }) => (
+              <Checkbox label={t('auth.rememberMe')} checked={field.value ?? false} onChange={(e) => field.onChange(e.target.checked)} />
+            )}
           />
           <Link to="/forgot-password" className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
             {t('auth.forgotPassword')}

@@ -67,8 +67,10 @@ export function SurveyBuilderPage() {
   const { data: surveyData, isLoading, error } = useSurveyDetail(id);
 
   // Custom hooks for save, autosave, and keyboard shortcuts
+  // Custom hooks for save, autosave, and keyboard shortcuts
   const { handleSave } = useSurveyBuilderSave();
-  useAutosave(isDirty, survey, handleSave, AUTOSAVE_DELAY);
+  // Pause autosave when unsaved changes dialog is open to prevent conflicts
+  useAutosave(isDirty, survey, handleSave, AUTOSAVE_DELAY, { isPaused: showUnsavedDialog || isSaving });
   useKeyboardShortcuts({
     onSave: handleSave,
     onUndo: undo,
@@ -77,23 +79,36 @@ export function SurveyBuilderPage() {
     canRedo,
   });
 
-  // Initialize builder when survey data loads (only once per survey ID)
+  // Initialize builder when survey data loads
   // We track initialization to prevent re-initialization when surveyData updates after save
+  // Using survey ID from store to detect if we need to reinitialize (e.g., after returning from preview)
+  const storeSurveyId = survey?.id;
   const initializedSurveyIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Only initialize if we have data and haven't initialized this survey yet
-    if (surveyData && initializedSurveyIdRef.current !== surveyData.id) {
-      initializedSurveyIdRef.current = surveyData.id;
-      initializeSurvey(surveyData);
-    }
-  }, [surveyData, initializeSurvey]);
+    // Initialize if:
+    // 1. We have survey data from the API
+    // 2. Either we haven't initialized yet OR the store was reset (survey is null/different)
+    if (surveyData) {
+      const needsInit = !storeSurveyId || storeSurveyId !== surveyData.id;
+      const notInitializedYet = initializedSurveyIdRef.current !== surveyData.id;
 
-  // Cleanup on unmount only
+      if (needsInit || notInitializedYet) {
+        initializedSurveyIdRef.current = surveyData.id;
+        initializeSurvey(surveyData);
+      }
+    }
+  }, [surveyData, storeSurveyId, initializeSurvey]);
+
+  // Cleanup on unmount only - reset the ref but keep store state until component mounts again
+  // This allows the store to be properly reinitialized when returning from preview
   useEffect(() => {
     return () => {
-      resetBuilder();
+      // Reset ref so we reinitialize on next mount
       initializedSurveyIdRef.current = null;
+      // Only reset builder when actually leaving the survey (not just going to preview)
+      // The blocker will handle unsaved changes warning
+      resetBuilder();
     };
   }, [resetBuilder]);
 
@@ -128,6 +143,7 @@ export function SurveyBuilderPage() {
   };
 
   const handleDiscardAndLeave = () => {
+    // Cancel any pending autosave by marking as not dirty before proceeding
     setShowUnsavedDialog(false);
     if (blocker.state === 'blocked') {
       blocker.proceed();
@@ -137,12 +153,20 @@ export function SurveyBuilderPage() {
   };
 
   const handleSaveAndLeave = async () => {
-    await handleSave();
-    setShowUnsavedDialog(false);
-    if (blocker.state === 'blocked') {
-      blocker.proceed();
-    } else {
-      navigate('/surveys');
+    // Prevent double-save if already saving
+    if (isSaving) return;
+
+    try {
+      await handleSave();
+      setShowUnsavedDialog(false);
+      if (blocker.state === 'blocked') {
+        blocker.proceed();
+      } else {
+        navigate('/surveys');
+      }
+    } catch (error) {
+      // Don't close dialog or navigate on save error
+      console.error('Save failed:', error);
     }
   };
 
@@ -287,6 +311,7 @@ export function SurveyBuilderPage() {
       {!isReadOnly && (
         <UnsavedChangesDialog
           isOpen={showUnsavedDialog}
+          isSaving={isSaving}
           onOpenChange={setShowUnsavedDialog}
           onDiscard={handleDiscardAndLeave}
           onSave={handleSaveAndLeave}

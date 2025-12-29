@@ -5,6 +5,8 @@ export {
   SubscriptionTier,
   MemberRole,
   SurveyStatus,
+  SurveyType,
+  CxMetricType,
   QuestionType,
   NpsQuestionType,
   RatingStyle,
@@ -18,6 +20,7 @@ export {
   ButtonStyle,
   ThemeLayout,
   LogoPosition,
+  LogoSize,
   ProgressBarStyle,
   BackgroundImagePosition,
   RecurrencePattern,
@@ -215,6 +218,8 @@ export interface Survey {
   namespaceId: string;
   title: string;
   description?: string;
+  type: SurveyType;
+  cxMetricType?: CxMetricType;
   status: SurveyStatus;
   // Backend fields
   welcomeMessage?: string;
@@ -241,12 +246,23 @@ export interface Survey {
   responseCount: number;
   // Questions array - only populated in detail views (SurveyDetailsDto)
   questions?: Question[];
+  // Localization - added for translation-only architecture
+  /** The default language code for this survey */
+  defaultLanguage: string;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this survey */
+  availableLanguages: string[];
 }
 
 export interface CreateSurveyRequest {
   title: string;
   description?: string;
+  type?: SurveyType;
+  cxMetricType?: CxMetricType;
   themeId?: string;
+  /** Language code for the initial translation */
+  languageCode: string;
 }
 
 export interface UpdateSurveyRequest {
@@ -260,6 +276,8 @@ export interface UpdateSurveyRequest {
   maxResponses?: number;
   startsAt?: string;
   endsAt?: string;
+  /** Language code for the translation to update */
+  languageCode: string;
 }
 
 // ============ Question ============
@@ -328,6 +346,8 @@ export interface CreateQuestionRequest {
   isRequired?: boolean;
   order?: number;
   settings?: QuestionSettings;
+  /** Language code for the initial translation */
+  languageCode: string;
 }
 
 export interface UpdateQuestionRequest {
@@ -337,6 +357,8 @@ export interface UpdateQuestionRequest {
   isRequired?: boolean;
   order?: number;
   settings?: QuestionSettings;
+  /** Language code for the translation to update */
+  languageCode: string;
 }
 
 // ============ Question Logic ============
@@ -480,6 +502,14 @@ export interface EmailTemplate {
   availablePlaceholders?: string[];
   createdAt: string;
   updatedAt?: string;
+
+  // Localization - added for translation-only architecture
+  /** The default language code for this email template */
+  defaultLanguage: string;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this email template */
+  availableLanguages: string[];
 }
 
 export interface EmailTemplateSummary {
@@ -489,6 +519,10 @@ export interface EmailTemplateSummary {
   subject: string;
   isDefault: boolean;
   createdAt: string;
+
+  // Localization - added for translation-only architecture
+  /** The default language code for this email template */
+  defaultLanguage: string;
 }
 
 export interface CreateEmailTemplateRequest {
@@ -500,6 +534,8 @@ export interface CreateEmailTemplateRequest {
   designJson?: string;
   type: EmailTemplateType;
   isDefault?: boolean;
+  /** Language code for the initial translation */
+  languageCode?: string;
 }
 
 export interface UpdateEmailTemplateRequest {
@@ -511,6 +547,8 @@ export interface UpdateEmailTemplateRequest {
   designJson?: string;
   type?: EmailTemplateType;
   isDefault?: boolean;
+  /** Language code for the translation to update */
+  languageCode?: string;
 }
 
 // ============ Survey Themes ============
@@ -568,6 +606,11 @@ export interface ThemeLayoutSettings {
 export interface ThemeBranding {
   logoUrl?: string;
   logoPosition: LogoPosition;
+  logoSize: LogoSize;
+  showLogoBackground: boolean;
+  logoBackgroundColor?: string;
+  brandingTitle?: string;
+  brandingSubtitle?: string;
   showPoweredBy: boolean;
 }
 
@@ -604,6 +647,14 @@ export interface SurveyTheme {
   logoUrl?: string;
   backgroundImageUrl?: string;
   buttonStyle?: ButtonStyle;
+
+  // Localization - added for translation-only architecture
+  /** The default language code for this theme */
+  defaultLanguage: string;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this theme */
+  availableLanguages: string[];
 }
 
 // ============ Survey Templates ============
@@ -617,6 +668,10 @@ export interface TemplateQuestion {
   isRequired: boolean;
   description?: string;
   settings?: QuestionSettings;
+
+  // Localization - added for translation-only architecture
+  /** The default language code for this template question */
+  defaultLanguage: string;
 }
 
 export interface SurveyTemplate {
@@ -636,6 +691,14 @@ export interface SurveyTemplate {
   createdBy?: string;
   questions: TemplateQuestion[];
   updatedAt?: string;
+
+  // Localization - added for translation-only architecture
+  /** The default language code for this template */
+  defaultLanguage: string;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this template */
+  availableLanguages: string[];
 }
 
 export interface CreateTemplateRequest {
@@ -643,6 +706,8 @@ export interface CreateTemplateRequest {
   description?: string;
   category: TemplateCategory;
   isPublic?: boolean;
+  /** Language code for the initial translation */
+  languageCode: string;
 }
 
 export interface CreateTemplateFromSurveyRequest {
@@ -651,6 +716,8 @@ export interface CreateTemplateFromSurveyRequest {
   description?: string;
   category: TemplateCategory;
   isPublic?: boolean;
+  /** Language code for the initial translation */
+  languageCode?: string;
 }
 
 export interface UpdateTemplateRequest {
@@ -658,11 +725,15 @@ export interface UpdateTemplateRequest {
   description?: string;
   category?: TemplateCategory;
   isPublic?: boolean;
+  /** Language code for the translation to update */
+  languageCode?: string;
 }
 
 export interface CreateSurveyFromTemplateRequest {
   title: string;
   description?: string;
+  /** Language code for the survey's default language */
+  languageCode: string;
 }
 
 // ============ Responses ============

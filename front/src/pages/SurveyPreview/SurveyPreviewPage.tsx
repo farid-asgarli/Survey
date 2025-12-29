@@ -124,6 +124,16 @@ export function SurveyPreviewPage() {
         textColor: themeData.colors.text || themeData.colors.onSurface,
         // Typography
         fontFamily: themeData.typography?.fontFamily,
+        // Branding
+        logoUrl: themeData.branding?.logoUrl || themeData.logoUrl,
+        logoSize: themeData.branding?.logoSize,
+        showLogoBackground: themeData.branding?.showLogoBackground,
+        logoBackgroundColor: themeData.branding?.logoBackgroundColor,
+        brandingTitle: themeData.branding?.brandingTitle,
+        brandingSubtitle: themeData.branding?.brandingSubtitle,
+        // Layout
+        backgroundImageUrl: themeData.layout?.backgroundImageUrl || themeData.backgroundImageUrl,
+        backgroundPosition: themeData.layout?.backgroundPosition,
       } as PublicSurveyTheme;
 
       // Apply theme customizations if they exist
@@ -158,6 +168,14 @@ export function SurveyPreviewPage() {
         backgroundColor: themeData.backgroundColor,
         textColor: themeData.textColor,
         fontFamily: themeData.fontFamily,
+        logoUrl: themeData.branding?.logoUrl || themeData.logoUrl,
+        logoSize: themeData.branding?.logoSize,
+        showLogoBackground: themeData.branding?.showLogoBackground,
+        logoBackgroundColor: themeData.branding?.logoBackgroundColor,
+        brandingTitle: themeData.branding?.brandingTitle,
+        brandingSubtitle: themeData.branding?.brandingSubtitle,
+        backgroundImageUrl: themeData.layout?.backgroundImageUrl || themeData.backgroundImageUrl,
+        backgroundPosition: themeData.layout?.backgroundPosition,
       } as PublicSurveyTheme;
 
       // Apply theme customizations even for old structure
@@ -311,13 +329,13 @@ export function SurveyPreviewPage() {
   // Validate current question
   const validateCurrentQuestion = useCallback((): boolean => {
     if (!currentQuestion) return true;
-    const error = validateQuestion(currentQuestion, answers[currentQuestion.id]);
-    if (error) {
-      setErrors((prev) => ({ ...prev, [currentQuestion.id]: error }));
+    const errorKey = validateQuestion(currentQuestion, answers[currentQuestion.id]);
+    if (errorKey) {
+      setErrors((prev) => ({ ...prev, [currentQuestion.id]: t(errorKey) }));
       return false;
     }
     return true;
-  }, [currentQuestion, answers]);
+  }, [currentQuestion, answers, t]);
 
   // Validate all questions (only visible ones due to conditional logic)
   const validateAllQuestions = useCallback((): boolean => {
@@ -325,16 +343,16 @@ export function SurveyPreviewPage() {
     let isValid = true;
 
     visibleQuestions.forEach((question) => {
-      const error = validateQuestion(question, answers[question.id]);
-      if (error) {
-        newErrors[question.id] = error;
+      const errorKey = validateQuestion(question, answers[question.id]);
+      if (errorKey) {
+        newErrors[question.id] = t(errorKey);
         isValid = false;
       }
     });
 
     setErrors(newErrors);
     return isValid;
-  }, [visibleQuestions, answers]);
+  }, [visibleQuestions, answers, t]);
 
   // Navigate to next question
   const handleNext = useCallback(() => {

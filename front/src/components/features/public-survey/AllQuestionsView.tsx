@@ -22,6 +22,12 @@ export function AllQuestionsView({ questions, answers, errors, onAnswerChange, o
   const { t } = useTranslation();
   const hasErrors = Object.keys(errors).length > 0;
 
+  // Helper to translate error keys
+  const translateError = (error: string | undefined): string | undefined => {
+    if (!error) return undefined;
+    return error.includes('.') ? t(error) : error;
+  };
+
   const answeredCount = Object.keys(answers).filter((k) => {
     const v = answers[k];
     if (v === null || v === undefined) return false;
@@ -78,7 +84,7 @@ export function AllQuestionsView({ questions, answers, errors, onAnswerChange, o
                 question={question}
                 value={answers[question.id]}
                 onChange={(value) => onAnswerChange(question.id, value)}
-                error={errors[question.id]}
+                error={translateError(errors[question.id])}
                 disabled={isSubmitting}
               />
             </div>

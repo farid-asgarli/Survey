@@ -1,15 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { Button, Dialog, DialogContent, DialogHeader } from '@/components/ui';
 
 interface UnsavedChangesDialogProps {
   isOpen: boolean;
+  isSaving?: boolean;
   onOpenChange: (open: boolean) => void;
   onDiscard: () => void;
   onSave: () => void;
 }
 
-export function UnsavedChangesDialog({ isOpen, onOpenChange, onDiscard, onSave }: UnsavedChangesDialogProps) {
+export function UnsavedChangesDialog({ isOpen, isSaving = false, onOpenChange, onDiscard, onSave }: UnsavedChangesDialogProps) {
   const { t } = useTranslation();
 
   return (
@@ -25,14 +26,21 @@ export function UnsavedChangesDialog({ isOpen, onOpenChange, onDiscard, onSave }
         />
         <div className="p-4">
           <div className="flex justify-end gap-3">
-            <Button variant="text" onClick={onDiscard}>
+            <Button variant="text" onClick={onDiscard} disabled={isSaving}>
               {t('surveyBuilder.discardChanges')}
             </Button>
-            <Button variant="tonal" onClick={() => onOpenChange(false)}>
+            {/* <Button variant="tonal" onClick={() => onOpenChange(false)}>
               {t('common.cancel')}
-            </Button>
-            <Button variant="filled" onClick={onSave}>
-              {t('common.save')}
+            </Button> */}
+            <Button variant="filled" onClick={onSave} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  {t('surveyBuilder.saving')}
+                </>
+              ) : (
+                t('common.save')
+              )}
             </Button>
           </div>
         </div>

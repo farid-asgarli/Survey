@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthStore, usePreferencesStore } from '@/stores';
+import { useAuthStore, usePreferencesStore, useNamespaceStore } from '@/stores';
+import { useNamespacesList } from '@/hooks';
 import { AppLoadingScreen, OnboardingWizard } from '@/components/ui';
 
 interface ProtectedRouteProps {
@@ -13,6 +14,13 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const isLoading = useAuthStore((s) => s.isLoading);
   const hasHydrated = useAuthStore((s) => s._hasHydrated);
+
+  // Namespace state - wait for namespaces to load before rendering protected content
+  const namespaceHydrated = useNamespaceStore((s) => s._hasHydrated);
+  const activeNamespace = useNamespaceStore((s) => s.activeNamespace);
+
+  // Fetch namespaces when authenticated - this will auto-select the first one if none is active
+  const { isLoading: namespacesLoading, isFetched: namespacesFetched } = useNamespacesList();
 
   // Onboarding state - use optional chaining to handle undefined during hydration
   const onboardingStatus = usePreferencesStore((s) => s.preferences?.onboarding?.status);
@@ -45,6 +53,12 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
   if (!isAuthenticated) {
     // Save the attempted URL for redirecting after login
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
+  }
+
+  // Wait for namespaces to be loaded and an active namespace to be set
+  // This prevents API calls from failing due to missing namespace context
+  if (!namespaceHydrated || (namespacesLoading && !namespacesFetched) || (!activeNamespace && namespacesLoading)) {
+    return <AppLoadingScreen message="Loading workspace" />;
   }
 
   return (

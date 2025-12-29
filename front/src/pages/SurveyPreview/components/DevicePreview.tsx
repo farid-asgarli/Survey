@@ -66,7 +66,7 @@ export function DevicePreview({
         {/* Preview content - theme applied only to this container */}
         <div
           className={cn(
-            '@container flex-1 overflow-y-auto overflow-x-hidden',
+            '@container flex-1 overflow-y-auto overflow-x-hidden relative',
             selectedPreset.category !== 'desktop' && !isResponsive && !isFullscreen && 'pb-4',
             'scrollbar-thin scrollbar-thumb-outline-variant/30 scrollbar-track-transparent',
             themeMode === 'dark' && 'dark'
@@ -76,9 +76,52 @@ export function DevicePreview({
             backgroundColor: themeMode === 'dark' ? '#141218' : survey.theme?.backgroundColor,
             color: themeMode === 'dark' ? '#e6e0e9' : survey.theme?.textColor,
             fontFamily: survey.theme?.fontFamily,
+            ...(survey.theme?.backgroundImageUrl &&
+              themeMode !== 'dark' && {
+                backgroundImage: `url(${survey.theme.backgroundImageUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }),
           }}
           data-theme={themeMode === 'dark' ? 'dark' : undefined}
         >
+          {/* Logo header if present - only show when NOT on welcome screen to avoid duplication */}
+          {survey.theme?.logoUrl && previewContentProps.viewMode !== 'welcome' && (
+            <div className="sticky top-0 z-10 px-4 py-3 @sm:px-6 @sm:py-4 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/20">
+              <div className="flex items-center gap-3">
+                {/* Logo with optional background */}
+                <div
+                  className={cn('shrink-0 flex items-center justify-center rounded-lg', survey.theme.showLogoBackground && 'p-1.5 shadow-sm')}
+                  style={survey.theme.showLogoBackground ? { backgroundColor: survey.theme.logoBackgroundColor || '#ffffff' } : undefined}
+                >
+                  <img
+                    src={survey.theme.logoUrl}
+                    alt="Survey logo"
+                    className={cn(
+                      'w-auto object-contain rounded',
+                      // Logo size classes
+                      survey.theme.logoSize === 0 && 'h-6 @sm:h-7 max-w-20 @sm:max-w-24', // Small
+                      survey.theme.logoSize === 1 && 'h-8 @sm:h-10 max-w-24 @sm:max-w-32', // Medium (default)
+                      survey.theme.logoSize === 2 && 'h-10 @sm:h-12 max-w-32 @sm:max-w-40', // Large
+                      survey.theme.logoSize === 3 && 'h-12 @sm:h-14 max-w-40 @sm:max-w-48' // Extra Large
+                    )}
+                  />
+                </div>
+                {/* Branding title and subtitle */}
+                {(survey.theme.brandingTitle || survey.theme.brandingSubtitle) && (
+                  <div className="min-w-0 flex-1">
+                    {survey.theme.brandingTitle && (
+                      <p className="text-sm @sm:text-base font-semibold text-on-surface truncate">{survey.theme.brandingTitle}</p>
+                    )}
+                    {survey.theme.brandingSubtitle && (
+                      <p className="text-xs @sm:text-sm text-on-surface-variant truncate">{survey.theme.brandingSubtitle}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <PreviewContent survey={survey} visibleQuestions={visibleQuestions} {...previewContentProps} />
         </div>
 

@@ -5,12 +5,13 @@ import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { useTemplateSchema, type UseTemplateFormData } from '@/lib/validations';
 import { getCategoryInfo } from './templateUtils';
 import type { SurveyTemplate, TemplateCategory } from '@/types';
+import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
 
 interface UseTemplateDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   template: SurveyTemplate | null;
-  onSubmit: (data: { title: string; description?: string }) => void | Promise<void>;
+  onSubmit: (data: { title: string; description?: string; languageCode: string }) => void | Promise<void>;
   isLoading?: boolean;
 }
 
@@ -21,11 +22,12 @@ function UseTemplateForm({
   isLoading,
 }: {
   template: SurveyTemplate;
-  onSubmit: (data: { title: string; description?: string }) => void | Promise<void>;
+  onSubmit: (data: { title: string; description?: string; languageCode: string }) => void | Promise<void>;
   onCancel: () => void;
   isLoading: boolean;
 }) {
   const [showDescription, setShowDescription] = useState(!!template.description);
+  const [languageCode, setLanguageCode] = useState<LanguageCode>(getCurrentLanguage());
 
   const {
     register,
@@ -44,6 +46,7 @@ function UseTemplateForm({
     await onSubmit({
       title: data.title.trim(),
       description: data.description?.trim() || undefined,
+      languageCode,
     });
   };
 
@@ -98,6 +101,26 @@ function UseTemplateForm({
             Add description
           </button>
         )}
+
+        {/* Language selector */}
+        <div className="flex items-center gap-2">
+          <label htmlFor="survey-language" className="text-sm text-on-surface-variant">
+            Language:
+          </label>
+          <select
+            id="survey-language"
+            value={languageCode}
+            onChange={(e) => setLanguageCode(e.target.value as LanguageCode)}
+            className="h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
+            disabled={isLoading}
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.flag} {lang.nativeName}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <p className="text-xs text-on-surface-variant text-center">
           A new survey will be created with all questions from this template. You can customize it after creation.

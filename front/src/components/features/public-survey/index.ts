@@ -3,6 +3,9 @@
 export { QuestionRenderer } from './QuestionRenderers';
 export type { QuestionRendererProps } from './QuestionRenderers';
 
+// Unified Preview - Single source of truth for question previews
+export { UnifiedQuestionPreview, EditorPreview, draftToPublicQuestion, usePreviewState } from './UnifiedQuestionPreview';
+
 export { WelcomeScreen } from './WelcomeScreen';
 export { ThankYouScreen } from './ThankYouScreen';
 export { ErrorScreen } from './ErrorScreen';

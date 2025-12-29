@@ -1,9 +1,9 @@
 // Date Question Editor
 
 import { Input } from '@/components/ui';
-import { DatePicker } from '@/components/ui/DatePicker';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
+import { EditorPreview } from '@/components/features/public-survey';
 
 interface DateEditorProps {
   question: DraftQuestion;
@@ -32,11 +32,8 @@ export function DateEditor({ question, onUpdateQuestion }: DateEditorProps) {
         helperText={t('questionEditor.common.textBelowQuestion')}
       />
 
-      {/* Preview */}
-      <div className="p-4 rounded-2xl bg-surface-container/50">
-        <p className="text-sm text-on-surface-variant mb-3">{t('questionEditor.preview')}</p>
-        <DatePicker value={undefined} onChange={() => {}} disabled placeholder="Select date" />
-      </div>
+      {/* Preview - Using unified preview component */}
+      <EditorPreview question={question} />
     </div>
   );
 }

@@ -433,6 +433,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
         plainTextBody: generatedPlainText,
         designJson: currentDesignJson, // Save the design state for resume editing
         type,
+        languageCode: template.defaultLanguage,
       };
 
       await updateTemplate.mutateAsync({ id: template.id, data });
@@ -442,7 +443,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
       console.error('Failed to save template:', error);
       toast.error(t('emailEditor.errors.saveFailed', 'Failed to save template'));
     }
-  }, [name, subject, generatedHtml, generatedPlainText, currentDesignJson, type, template.id, updateTemplate, onSaved, t]);
+  }, [name, subject, generatedHtml, generatedPlainText, currentDesignJson, type, template.id, template.defaultLanguage, updateTemplate, onSaved, t]);
 
   // Copy HTML to clipboard
   const copyHtmlToClipboard = useCallback(async () => {

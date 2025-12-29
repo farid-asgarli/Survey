@@ -46,6 +46,10 @@ export interface PublicSurvey {
   allowAnonymousResponses?: boolean;
   questions: PublicQuestion[];
   theme?: PublicSurveyTheme;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this survey */
+  availableLanguages: string[];
 }
 
 export interface PublicSurveyTheme {
@@ -82,7 +86,13 @@ export interface PublicSurveyTheme {
   // Other
   fontFamily?: string;
   logoUrl?: string;
-  headerImageUrl?: string;
+  logoSize?: number;
+  showLogoBackground?: boolean;
+  logoBackgroundColor?: string;
+  brandingTitle?: string;
+  brandingSubtitle?: string;
+  backgroundImageUrl?: string;
+  backgroundPosition?: string;
 }
 
 // ============ Response Submission Types ============
