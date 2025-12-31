@@ -512,10 +512,7 @@ export const translationsApi = {
    * Uses PUT for idempotent add/update operation
    */
   add: async (surveyId: string, data: SurveyTranslationDto): Promise<SurveyTranslationDto> => {
-    const response = await apiClient.put<SurveyTranslationDto>(
-      API_ENDPOINTS.translations.surveyByLang(surveyId, data.languageCode),
-      data
-    );
+    const response = await apiClient.put<SurveyTranslationDto>(API_ENDPOINTS.translations.surveyByLang(surveyId, data.languageCode), data);
     return response.data;
   },
 

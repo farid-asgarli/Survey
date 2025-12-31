@@ -187,7 +187,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     {
         if (Status != DistributionStatus.Draft && Status != DistributionStatus.Scheduled)
             throw new InvalidOperationException(
-                "Cannot add recipients after distribution has started."
+                "Domain.EmailDistribution.CannotAddRecipientsAfterStarted"
             );
 
         var recipient = EmailRecipient.Create(Id, email, name);
@@ -214,7 +214,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     {
         if (Status != DistributionStatus.Draft && Status != DistributionStatus.Scheduled)
             throw new InvalidOperationException(
-                "Cannot remove recipients after distribution has started."
+                "Domain.EmailDistribution.CannotRemoveRecipientsAfterStarted"
             );
 
         var recipient = _recipients.FirstOrDefault(r => r.Id == recipientId);
@@ -232,13 +232,13 @@ public class EmailDistribution : AggregateRoot<Guid>
     {
         if (scheduledAt <= DateTime.UtcNow)
             throw new ArgumentException(
-                "Scheduled time must be in the future.",
+                "Domain.EmailDistribution.ScheduledTimeMustBeFuture",
                 nameof(scheduledAt)
             );
 
         if (_recipients.Count == 0)
             throw new InvalidOperationException(
-                "Cannot schedule a distribution without recipients."
+                "Domain.EmailDistribution.CannotScheduleWithoutRecipients"
             );
 
         ScheduledAt = scheduledAt;
@@ -288,7 +288,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     {
         if (Status == DistributionStatus.Sent || Status == DistributionStatus.Sending)
             throw new InvalidOperationException(
-                "Cannot cancel a distribution that has already started sending."
+                "Domain.EmailDistribution.CannotCancelAfterSending"
             );
 
         Status = DistributionStatus.Cancelled;

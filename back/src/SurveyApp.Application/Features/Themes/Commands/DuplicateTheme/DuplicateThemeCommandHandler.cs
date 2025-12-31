@@ -74,9 +74,7 @@ public class DuplicateThemeCommandHandler(
                 )
             )
             {
-                return Result<SurveyThemeDto>.Failure(
-                    $"A theme with the name '{newName}' already exists."
-                );
+                return Result<SurveyThemeDto>.Failure($"Errors.ThemeNameExists|{newName}");
             }
         }
 

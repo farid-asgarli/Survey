@@ -41,9 +41,7 @@ public class CreateThemeCommandHandler(
             )
         )
         {
-            return Result<SurveyThemeDto>.Failure(
-                $"A theme with the name '{request.Name}' already exists."
-            );
+            return Result<SurveyThemeDto>.Failure($"Errors.ThemeNameExists|{request.Name}");
         }
 
         // Create theme with localization support

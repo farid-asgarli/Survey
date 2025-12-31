@@ -40,24 +40,16 @@ public class FilesController(
     [ProducesResponseType(typeof(FileUploadResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status413PayloadTooLarge)]
-    [RequestSizeLimit(5 * 1024 * 1024)] // 5 MB
+    [DisableRequestSizeLimit] // Limit is enforced via options
     public async Task<IActionResult> UploadImage(
         IFormFile file,
         [FromQuery] string? category = null,
         CancellationToken cancellationToken = default
     )
     {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.InvalidFile"],
-                    Detail = _localizer["Errors.FileEmptyOrNotProvided"],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
+        var validationError = ValidateFile(file);
+        if (validationError != null)
+            return validationError;
 
         await using var stream = file.OpenReadStream();
 
@@ -82,24 +74,16 @@ public class FilesController(
     [HttpPost("images/bulk")]
     [ProducesResponseType(typeof(BulkFileUploadResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [RequestSizeLimit(50 * 1024 * 1024)] // Allow up to 10 files at 5MB each
+    [DisableRequestSizeLimit] // Limit is enforced via options
     public async Task<IActionResult> UploadImages(
         IFormFileCollection files,
         [FromQuery] string? category = null,
         CancellationToken cancellationToken = default
     )
     {
-        if (files == null || files.Count == 0)
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.NoFilesProvided"],
-                    Detail = _localizer["Errors.AtLeastOneFileRequired"],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
+        var validationError = ValidateFiles(files);
+        if (validationError != null)
+            return validationError;
 
         // Create file upload items from form files
         var uploadItems = new List<FileUploadItem>();
@@ -198,4 +182,108 @@ public class FilesController(
 
         return HandleNoContentResult(result);
     }
+
+    #region Private Validation Methods
+
+    private IActionResult? ValidateFile(IFormFile? file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.InvalidFile"],
+                    Detail = _localizer["Errors.FileEmptyOrNotProvided"],
+                    Status = StatusCodes.Status400BadRequest,
+                }
+            );
+        }
+
+        if (file.Length > _options.MaxFileSizeBytes)
+        {
+            return StatusCode(
+                StatusCodes.Status413PayloadTooLarge,
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.FileTooLarge"],
+                    Detail = _localizer[
+                        "Errors.FileTooLargeDetail",
+                        _options.MaxFileSizeBytes / (1024 * 1024)
+                    ],
+                    Status = StatusCodes.Status413PayloadTooLarge,
+                }
+            );
+        }
+
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        if (!_options.AllowedImageExtensions.Contains(extension))
+        {
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.InvalidFileType"],
+                    Detail = _localizer[
+                        "Errors.AllowedExtensions",
+                        string.Join(", ", _options.AllowedImageExtensions)
+                    ],
+                    Status = StatusCodes.Status400BadRequest,
+                }
+            );
+        }
+
+        if (!_options.AllowedImageTypes.Contains(file.ContentType))
+        {
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.InvalidContentType"],
+                    Detail = _localizer[
+                        "Errors.AllowedContentTypes",
+                        string.Join(", ", _options.AllowedImageTypes)
+                    ],
+                    Status = StatusCodes.Status400BadRequest,
+                }
+            );
+        }
+
+        return null;
+    }
+
+    private IActionResult? ValidateFiles(IFormFileCollection? files)
+    {
+        if (files == null || files.Count == 0)
+        {
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.NoFilesProvided"],
+                    Detail = _localizer["Errors.AtLeastOneFileRequired"],
+                    Status = StatusCodes.Status400BadRequest,
+                }
+            );
+        }
+
+        if (files.Count > _options.MaxBulkUploadFiles)
+        {
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Title = _localizer["Errors.TooManyFiles"],
+                    Detail = _localizer["Errors.MaxFilesAllowed", _options.MaxBulkUploadFiles],
+                    Status = StatusCodes.Status400BadRequest,
+                }
+            );
+        }
+
+        foreach (var file in files)
+        {
+            var validationError = ValidateFile(file);
+            if (validationError != null)
+                return validationError;
+        }
+
+        return null;
+    }
+
+    #endregion
 }

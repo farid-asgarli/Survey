@@ -149,7 +149,7 @@ public static class ResultExtensions
         var problemDetails = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "Resource not found.",
+            Title = LocalizeError(context, "Errors.ResourceNotFound"),
             Status = StatusCodes.Status404NotFound,
             Detail = LocalizeError(context, result.Error),
             Instance = context.Request.Path,
@@ -163,7 +163,7 @@ public static class ResultExtensions
         var problemDetails = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "Resource not found.",
+            Title = LocalizeError(context, "Errors.ResourceNotFound"),
             Status = StatusCodes.Status404NotFound,
             Detail = LocalizeError(context, result.Error),
             Instance = context.Request.Path,
@@ -240,8 +240,7 @@ public static class ResultExtensions
     )
     {
         var problemDetails = new ValidationProblemDetails(
-            result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value)
-                ?? new Dictionary<string, string[]>()
+            result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value) ?? []
         )
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
@@ -260,8 +259,7 @@ public static class ResultExtensions
     )
     {
         var problemDetails = new ValidationProblemDetails(
-            result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value)
-                ?? new Dictionary<string, string[]>()
+            result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value) ?? []
         )
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",

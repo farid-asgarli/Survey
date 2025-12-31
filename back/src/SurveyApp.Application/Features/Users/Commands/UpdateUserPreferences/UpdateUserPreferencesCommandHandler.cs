@@ -36,9 +36,7 @@ public class UpdateUserPreferencesCommandHandler(
         // If preferences is null, the user doesn't exist in the domain Users table
         if (preferences == null)
         {
-            return Result<UserPreferencesDto>.Failure(
-                "User profile not found. Please ensure your account is properly set up."
-            );
+            return Result<UserPreferencesDto>.Failure("Errors.UserProfileNotFound");
         }
 
         try

@@ -497,7 +497,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
         if (newOrder < 1 || newOrder > _questions.Count)
             throw new ArgumentOutOfRangeException(
                 nameof(newOrder),
-                "Order must be between 1 and the number of questions."
+                "Domain.SurveyTemplate.OrderOutOfRange"
             );
 
         var currentOrder = question.Order;

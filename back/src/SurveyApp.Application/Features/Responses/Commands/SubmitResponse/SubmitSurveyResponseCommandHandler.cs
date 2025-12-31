@@ -83,7 +83,7 @@ public class SubmitSurveyResponseCommandHandler(
                 .Questions.Where(q => missingRequired.Contains(q.Id))
                 .Select(q => q.Text);
             return Result<SurveyResponseDto>.Failure(
-                $"Required questions not answered: {string.Join(", ", missingQuestions)}"
+                $"Application.Response.RequiredQuestionsNotAnswered|{string.Join(", ", missingQuestions)}"
             );
         }
 

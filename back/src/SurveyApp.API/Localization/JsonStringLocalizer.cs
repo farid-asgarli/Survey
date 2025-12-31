@@ -8,18 +8,13 @@ namespace SurveyApp.API.Localization;
 /// <summary>
 /// JSON-based string localizer that reads translations from JSON resource files.
 /// </summary>
-public class JsonStringLocalizer : IStringLocalizer
+public class JsonStringLocalizer(string resourcesPath, ILogger<JsonStringLocalizer> logger)
+    : IStringLocalizer
 {
-    private readonly ConcurrentDictionary<string, Dictionary<string, string>> _resourcesCache;
-    private readonly string _resourcesPath;
-    private readonly ILogger<JsonStringLocalizer> _logger;
-
-    public JsonStringLocalizer(string resourcesPath, ILogger<JsonStringLocalizer> logger)
-    {
-        _resourcesPath = resourcesPath;
-        _logger = logger;
-        _resourcesCache = new ConcurrentDictionary<string, Dictionary<string, string>>();
-    }
+    private readonly ConcurrentDictionary<string, Dictionary<string, string>> _resourcesCache =
+        new();
+    private readonly string _resourcesPath = resourcesPath;
+    private readonly ILogger<JsonStringLocalizer> _logger = logger;
 
     public LocalizedString this[string name]
     {
@@ -86,19 +81,19 @@ public class JsonStringLocalizer : IStringLocalizer
         if (!File.Exists(filePath))
         {
             _logger.LogWarning("Localization file not found: {FilePath}", filePath);
-            return new Dictionary<string, string>();
+            return [];
         }
 
         try
         {
             var json = File.ReadAllText(filePath);
             var resources = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-            return resources ?? new Dictionary<string, string>();
+            return resources ?? [];
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error loading localization file: {FilePath}", filePath);
-            return new Dictionary<string, string>();
+            return [];
         }
     }
 }

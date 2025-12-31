@@ -94,7 +94,7 @@ public sealed class LanguageCode : ValueObject
 
         if (!SupportedLanguages.Contains(primaryCode))
             throw new ArgumentException(
-                $"Unsupported language code: '{value}'. Use ISO 639-1 codes.",
+                "Domain.ValueObjects.LanguageCode.UnsupportedCode",
                 nameof(value)
             );
 

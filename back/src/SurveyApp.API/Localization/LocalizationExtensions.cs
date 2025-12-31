@@ -42,24 +42,22 @@ public static class LocalizationExtensions
 
         services.Configure<RequestLocalizationOptions>(options =>
         {
-            var supportedCultures = SupportedCultures
-                .Select(c => new CultureInfo(c))
-                .ToList();
+            var supportedCultures = SupportedCultures.Select(c => new CultureInfo(c)).ToList();
 
             options.DefaultRequestCulture = new RequestCulture(DefaultCulture);
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
 
             // Culture providers in order of priority
-            options.RequestCultureProviders = new List<IRequestCultureProvider>
-            {
+            options.RequestCultureProviders =
+            [
                 // 1. Accept-Language header (most common for APIs)
                 new AcceptLanguageHeaderRequestCultureProvider(),
                 // 2. Query string (?culture=az)
                 new QueryStringRequestCultureProvider(),
                 // 3. Custom header (X-Language)
                 new CustomHeaderRequestCultureProvider(),
-            };
+            ];
         });
 
         return services;
@@ -80,7 +78,9 @@ public static class LocalizationExtensions
 /// </summary>
 public class CustomHeaderRequestCultureProvider : RequestCultureProvider
 {
-    public override Task<ProviderCultureResult?> DetermineProviderCultureResult(HttpContext httpContext)
+    public override Task<ProviderCultureResult?> DetermineProviderCultureResult(
+        HttpContext httpContext
+    )
     {
         var languageHeader = httpContext.Request.Headers["X-Language"].FirstOrDefault();
 
@@ -90,12 +90,16 @@ public class CustomHeaderRequestCultureProvider : RequestCultureProvider
         }
 
         // Validate that the culture is supported
-        if (!LocalizationExtensions.SupportedCultures.Contains(languageHeader, StringComparer.OrdinalIgnoreCase))
+        if (
+            !LocalizationExtensions.SupportedCultures.Contains(
+                languageHeader,
+                StringComparer.OrdinalIgnoreCase
+            )
+        )
         {
             return NullProviderCultureResult;
         }
 
-        return Task.FromResult<ProviderCultureResult?>(
-            new ProviderCultureResult(languageHeader));
+        return Task.FromResult<ProviderCultureResult?>(new ProviderCultureResult(languageHeader));
     }
 }

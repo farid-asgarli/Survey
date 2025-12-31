@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
@@ -21,7 +22,8 @@ public class CreateSurveyCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext,
     IQuestionSettingsMapper questionSettingsMapper,
-    IMapper mapper
+    IMapper mapper,
+    IStringLocalizer<CreateSurveyCommandHandler> localizer
 ) : IRequestHandler<CreateSurveyCommand, Result<SurveyDto>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
@@ -30,6 +32,7 @@ public class CreateSurveyCommandHandler(
     private readonly INamespaceCommandContext _commandContext = commandContext;
     private readonly IQuestionSettingsMapper _questionSettingsMapper = questionSettingsMapper;
     private readonly IMapper _mapper = mapper;
+    private readonly IStringLocalizer<CreateSurveyCommandHandler> _localizer = localizer;
 
     public async Task<Result<SurveyDto>> Handle(
         CreateSurveyCommand request,
@@ -48,9 +51,7 @@ public class CreateSurveyCommandHandler(
         // Check survey limits
         if (@namespace != null && !@namespace.CanCreateSurvey())
         {
-            return Result<SurveyDto>.Failure(
-                $"Survey limit reached for this namespace. Maximum allowed: {@namespace.MaxSurveys}"
-            );
+            return Result<SurveyDto>.Failure($"Errors.SurveyLimitReached|{@namespace.MaxSurveys}");
         }
 
         // Create survey with type and localized content
@@ -127,45 +128,41 @@ public class CreateSurveyCommandHandler(
     /// Adds the appropriate CX metric question based on the metric type.
     /// Also adds a follow-up open-ended question for qualitative feedback.
     /// </summary>
-    private static void AddCxMetricQuestion(
-        Survey survey,
-        CxMetricType metricType,
-        string languageCode
-    )
+    private void AddCxMetricQuestion(Survey survey, CxMetricType metricType, string languageCode)
     {
         var (questionText, minValue, maxValue, minLabel, maxLabel, followUpText) = metricType switch
         {
             CxMetricType.NPS => (
-                "How likely are you to recommend us to a friend or colleague?",
+                _localizer["CxMetric.NPS.Question"].Value,
                 0,
                 10,
-                "Not at all likely",
-                "Extremely likely",
-                "What is the primary reason for your score?"
+                _localizer["CxMetric.NPS.MinLabel"].Value,
+                _localizer["CxMetric.NPS.MaxLabel"].Value,
+                _localizer["CxMetric.NPS.FollowUp"].Value
             ),
             CxMetricType.CES => (
-                "How easy was it to interact with our company?",
+                _localizer["CxMetric.CES.Question"].Value,
                 1,
                 7,
-                "Very difficult",
-                "Very easy",
-                "What could we do to make your experience easier?"
+                _localizer["CxMetric.CES.MinLabel"].Value,
+                _localizer["CxMetric.CES.MaxLabel"].Value,
+                _localizer["CxMetric.CES.FollowUp"].Value
             ),
             CxMetricType.CSAT => (
-                "How satisfied are you with your experience?",
+                _localizer["CxMetric.CSAT.Question"].Value,
                 1,
                 5,
-                "Very dissatisfied",
-                "Very satisfied",
-                "What could we improve to better serve you?"
+                _localizer["CxMetric.CSAT.MinLabel"].Value,
+                _localizer["CxMetric.CSAT.MaxLabel"].Value,
+                _localizer["CxMetric.CSAT.FollowUp"].Value
             ),
             _ => (
-                "How likely are you to recommend us?",
+                _localizer["CxMetric.NPS.Question"].Value,
                 0,
                 10,
-                "Not at all likely",
-                "Extremely likely",
-                "What is the primary reason for your score?"
+                _localizer["CxMetric.NPS.MinLabel"].Value,
+                _localizer["CxMetric.NPS.MaxLabel"].Value,
+                _localizer["CxMetric.NPS.FollowUp"].Value
             ),
         };
 
@@ -186,8 +183,14 @@ public class CreateSurveyCommandHandler(
             isRequired: false,
             languageCode: languageCode
         );
-        followUpQuestion.UpdateDescription("Please share your thoughts", languageCode);
-        var textSettings = QuestionSettings.CreateTextSettings("Share your feedback here...", 2000);
+        followUpQuestion.UpdateDescription(
+            _localizer["CxMetric.FollowUp.Description"].Value,
+            languageCode
+        );
+        var textSettings = QuestionSettings.CreateTextSettings(
+            _localizer["CxMetric.FollowUp.Placeholder"].Value,
+            2000
+        );
         followUpQuestion.UpdateSettings(textSettings);
     }
 }

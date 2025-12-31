@@ -9,28 +9,20 @@ namespace SurveyApp.API.Middleware;
 /// Global exception handling middleware.
 /// Provides consistent error responses across all endpoints.
 /// </summary>
-public class GlobalExceptionMiddleware
+/// <remarks>
+/// Initializes a new instance of the middleware.
+/// </remarks>
+public class GlobalExceptionMiddleware(
+    RequestDelegate next,
+    ILogger<GlobalExceptionMiddleware> logger,
+    IHostEnvironment environment,
+    IStringLocalizer<GlobalExceptionMiddleware> localizer
+)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<GlobalExceptionMiddleware> _logger;
-    private readonly IHostEnvironment _environment;
-    private readonly IStringLocalizer<GlobalExceptionMiddleware> _localizer;
-
-    /// <summary>
-    /// Initializes a new instance of the middleware.
-    /// </summary>
-    public GlobalExceptionMiddleware(
-        RequestDelegate next,
-        ILogger<GlobalExceptionMiddleware> logger,
-        IHostEnvironment environment,
-        IStringLocalizer<GlobalExceptionMiddleware> localizer
-    )
-    {
-        _next = next;
-        _logger = logger;
-        _environment = environment;
-        _localizer = localizer;
-    }
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<GlobalExceptionMiddleware> _logger = logger;
+    private readonly IHostEnvironment _environment = environment;
+    private readonly IStringLocalizer<GlobalExceptionMiddleware> _localizer = localizer;
 
     /// <summary>
     /// Invokes the middleware.
@@ -132,12 +124,12 @@ public class GlobalExceptionMiddleware
     private string GetTitle(int statusCode) =>
         statusCode switch
         {
-            400 => "Bad Request",
-            401 => "Unauthorized",
-            403 => "Forbidden",
-            404 => "Not Found",
-            409 => "Conflict",
-            500 => "Internal Server Error",
+            400 => _localizer["HttpStatus.BadRequest"],
+            401 => _localizer["HttpStatus.Unauthorized"],
+            403 => _localizer["HttpStatus.Forbidden"],
+            404 => _localizer["HttpStatus.NotFound"],
+            409 => _localizer["HttpStatus.Conflict"],
+            500 => _localizer["HttpStatus.InternalServerError"],
             _ => _localizer["Errors.ErrorOccurred"],
         };
 }

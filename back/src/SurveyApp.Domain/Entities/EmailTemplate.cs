@@ -184,7 +184,7 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateSubject(string subject, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject cannot be empty.", nameof(subject));
+            throw new ArgumentException("Domain.EmailTemplate.SubjectEmpty", nameof(subject));
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -207,7 +207,7 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateHtmlBody(string htmlBody, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(htmlBody))
-            throw new ArgumentException("HTML body cannot be empty.", nameof(htmlBody));
+            throw new ArgumentException("Domain.EmailTemplate.HtmlBodyEmpty", nameof(htmlBody));
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -342,7 +342,10 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void SetDefaultLanguage(string languageCode)
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new ArgumentException(
+                "Domain.EmailTemplate.LanguageCodeRequired",
+                nameof(languageCode)
+            );
 
         DefaultLanguage = languageCode.ToLowerInvariant();
     }

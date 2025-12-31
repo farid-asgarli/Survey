@@ -82,7 +82,9 @@ public class ExportService(
         var exportData = PrepareExportData(survey, responses, request);
 
         using var workbook = new XLWorkbook();
-        var worksheet = workbook.Worksheets.Add("Responses");
+        var worksheet = workbook.Worksheets.Add(
+            _localizer["Infrastructure.ExportService.Responses"].Value
+        );
 
         // Write headers
         for (int i = 0; i < exportData.Columns.Count; i++)
@@ -130,14 +132,22 @@ public class ExportService(
         worksheet.Columns().AdjustToContents();
 
         // Add summary worksheet
-        var summarySheet = workbook.Worksheets.Add("Summary");
-        summarySheet.Cell(1, 1).Value = "Survey Title";
+        var summarySheet = workbook.Worksheets.Add(
+            _localizer["Infrastructure.ExportService.Summary"].Value
+        );
+        summarySheet.Cell(1, 1).Value = _localizer[
+            "Infrastructure.ExportService.SurveyTitle"
+        ].Value;
         summarySheet.Cell(1, 2).Value = survey.Title;
-        summarySheet.Cell(2, 1).Value = "Export Date";
+        summarySheet.Cell(2, 1).Value = _localizer["Infrastructure.ExportService.ExportDate"].Value;
         summarySheet.Cell(2, 2).Value = _dateTimeService.UtcNow;
-        summarySheet.Cell(3, 1).Value = "Total Responses";
+        summarySheet.Cell(3, 1).Value = _localizer[
+            "Infrastructure.ExportService.TotalResponses"
+        ].Value;
         summarySheet.Cell(3, 2).Value = exportData.Rows.Count;
-        summarySheet.Cell(4, 1).Value = "Total Questions";
+        summarySheet.Cell(4, 1).Value = _localizer[
+            "Infrastructure.ExportService.TotalQuestions"
+        ].Value;
         summarySheet.Cell(4, 2).Value = survey.Questions.Count;
 
         summarySheet.Column(1).Style.Font.Bold = true;
@@ -190,10 +200,10 @@ public class ExportService(
                             questionId = a.QuestionId,
                             questionText = questionMap.TryGetValue(a.QuestionId, out var q)
                                 ? q.Text
-                                : "Unknown",
+                                : _localizer["Infrastructure.ExportService.Unknown"].Value,
                             questionType = questionMap.TryGetValue(a.QuestionId, out var qt)
                                 ? qt.Type.ToString()
-                                : "Unknown",
+                                : _localizer["Infrastructure.ExportService.Unknown"].Value,
                             value = a.AnswerValue,
                             answeredAt = a.AnsweredAt,
                         })

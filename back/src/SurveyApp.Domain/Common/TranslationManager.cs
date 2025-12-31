@@ -5,23 +5,21 @@ namespace SurveyApp.Domain.Common;
 /// Encapsulates common translation operations to avoid code duplication across entities.
 /// </summary>
 /// <typeparam name="TTranslation">The translation entity type.</typeparam>
-public class TranslationManager<TTranslation>
+/// <remarks>
+/// Creates a new translation manager.
+/// </remarks>
+/// <param name="translations">The backing list of translations (must be the entity's private field).</param>
+/// <param name="setDefaultLanguage">Action to update the entity's DefaultLanguage property.</param>
+public class TranslationManager<TTranslation>(
+    List<TTranslation> translations,
+    Action<string> setDefaultLanguage
+)
     where TTranslation : Translation
 {
-    private readonly List<TTranslation> _translations;
-    private readonly Action<string> _setDefaultLanguage;
-
-    /// <summary>
-    /// Creates a new translation manager.
-    /// </summary>
-    /// <param name="translations">The backing list of translations (must be the entity's private field).</param>
-    /// <param name="setDefaultLanguage">Action to update the entity's DefaultLanguage property.</param>
-    public TranslationManager(List<TTranslation> translations, Action<string> setDefaultLanguage)
-    {
-        _translations = translations ?? throw new ArgumentNullException(nameof(translations));
-        _setDefaultLanguage =
-            setDefaultLanguage ?? throw new ArgumentNullException(nameof(setDefaultLanguage));
-    }
+    private readonly List<TTranslation> _translations =
+        translations ?? throw new ArgumentNullException(nameof(translations));
+    private readonly Action<string> _setDefaultLanguage =
+        setDefaultLanguage ?? throw new ArgumentNullException(nameof(setDefaultLanguage));
 
     /// <summary>
     /// Gets the translations collection (read-only).
@@ -111,10 +109,7 @@ public class TranslationManager<TTranslation>
 
         if (translation.IsDefault && _translations.Count > 1)
         {
-            throw new InvalidOperationException(
-                "Cannot remove the default translation while other translations exist. "
-                    + "Set another translation as default first."
-            );
+            throw new InvalidOperationException("Domain.Translation.CannotRemoveDefaultWithOthers");
         }
 
         _translations.Remove(translation);

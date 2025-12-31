@@ -73,9 +73,7 @@ public class DuplicateSurveyCommandHandler(
         // Check survey limits
         if (@namespace != null && !@namespace.CanCreateSurvey())
         {
-            return Result<SurveyDto>.Failure(
-                $"Survey limit reached for this namespace. Maximum allowed: {@namespace.MaxSurveys}"
-            );
+            return Result<SurveyDto>.Failure($"Errors.SurveyLimitReached|{@namespace.MaxSurveys}");
         }
 
         // Generate the new title

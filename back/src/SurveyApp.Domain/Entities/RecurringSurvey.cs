@@ -231,25 +231,25 @@ public class RecurringSurvey : AggregateRoot<Guid>
 
         if (pattern == RecurrencePattern.Weekly && (daysOfWeek == null || daysOfWeek.Length == 0))
             throw new ArgumentException(
-                "Days of week are required for weekly pattern.",
+                "Domain.RecurringSurvey.DaysOfWeekRequiredWeekly",
                 nameof(daysOfWeek)
             );
 
         if (pattern == RecurrencePattern.Monthly && !dayOfMonth.HasValue)
             throw new ArgumentException(
-                "Day of month is required for monthly pattern.",
+                "Domain.RecurringSurvey.DayOfMonthRequiredMonthly",
                 nameof(dayOfMonth)
             );
 
         if (pattern == RecurrencePattern.Custom && string.IsNullOrWhiteSpace(cronExpression))
             throw new ArgumentException(
-                "Cron expression is required for custom pattern.",
+                "Domain.RecurringSurvey.CronExpressionRequiredCustom",
                 nameof(cronExpression)
             );
 
         if (dayOfMonth.HasValue && (dayOfMonth.Value < 1 || dayOfMonth.Value > 31))
             throw new ArgumentException(
-                "Day of month must be between 1 and 31.",
+                "Domain.RecurringSurvey.DayOfMonthRange",
                 nameof(dayOfMonth)
             );
 
@@ -277,13 +277,13 @@ public class RecurringSurvey : AggregateRoot<Guid>
             && (recipientEmails == null || recipientEmails.Length == 0)
         )
             throw new ArgumentException(
-                "Recipient emails are required for static list audience.",
+                "Domain.RecurringSurvey.RecipientEmailsRequiredStatic",
                 nameof(recipientEmails)
             );
 
         if (audienceType == AudienceType.DynamicList && !audienceListId.HasValue)
             throw new ArgumentException(
-                "Audience list ID is required for dynamic list audience.",
+                "Domain.RecurringSurvey.AudienceListIdRequiredDynamic",
                 nameof(audienceListId)
             );
 

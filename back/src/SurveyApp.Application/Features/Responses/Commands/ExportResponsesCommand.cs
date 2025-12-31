@@ -76,7 +76,7 @@ public class ExportResponsesCommandHandler(
         if (survey.NamespaceId != _namespaceContext.CurrentNamespaceId)
         {
             return Result<ExportResult>.Failure(
-                "Survey not found in current namespace.",
+                "Application.Export.SurveyNotFoundInNamespace",
                 "SURVEY_NOT_FOUND"
             );
         }
@@ -110,7 +110,7 @@ public class ExportResponsesCommandHandler(
                 ),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(request.Format),
-                    "Unsupported export format."
+                    "Application.Export.UnsupportedExportFormat"
                 ),
             };
 

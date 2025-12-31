@@ -38,7 +38,7 @@ public sealed partial class Email : ValueObject
 
         if (email.Length > MaxLength)
             throw new ArgumentException(
-                $"Email cannot exceed {MaxLength} characters.",
+                "Domain.ValueObjects.Email.MaxLengthExceeded",
                 nameof(email)
             );
 

@@ -6,14 +6,10 @@ namespace SurveyApp.Infrastructure.Services;
 /// <summary>
 /// Service for generating survey link URLs.
 /// </summary>
-public class LinkUrlService : ILinkUrlService
+public class LinkUrlService(IConfiguration configuration) : ILinkUrlService
 {
-    private readonly string _baseUrl;
-
-    public LinkUrlService(IConfiguration configuration)
-    {
-        _baseUrl = configuration["Application:BaseUrl"] ?? "https://localhost:5001";
-    }
+    private readonly string _baseUrl =
+        configuration["Application:BaseUrl"] ?? "https://localhost:5001";
 
     public string BaseUrl => _baseUrl;
 

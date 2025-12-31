@@ -91,7 +91,7 @@ public class EmailRecipient : Entity<Guid>
     public static EmailRecipient Create(Guid distributionId, string email, string? name = null)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email cannot be empty.", nameof(email));
+            throw new ArgumentException("Domain.EmailRecipient.EmailEmpty", nameof(email));
 
         return new EmailRecipient(distributionId, email, name);
     }

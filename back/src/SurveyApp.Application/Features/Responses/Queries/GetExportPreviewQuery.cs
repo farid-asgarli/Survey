@@ -46,7 +46,7 @@ public class GetExportPreviewQueryHandler(
         if (survey.NamespaceId != _namespaceContext.CurrentNamespaceId)
         {
             return Result<ExportPreviewDto>.Failure(
-                "Survey not found in current namespace.",
+                "Application.Export.SurveyNotFoundInNamespace",
                 "SURVEY_NOT_FOUND"
             );
         }
@@ -62,7 +62,7 @@ public class GetExportPreviewQueryHandler(
         catch (Exception ex)
         {
             return Result<ExportPreviewDto>.Failure(
-                $"Failed to get export preview: {ex.Message}",
+                $"Application.Export.ExportFailed:{ex.Message}",
                 "PREVIEW_FAILED"
             );
         }

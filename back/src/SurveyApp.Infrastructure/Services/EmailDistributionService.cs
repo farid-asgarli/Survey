@@ -385,18 +385,18 @@ public class EmailDistributionService(
         };
     }
 
-    private static Dictionary<string, string> BuildSamplePlaceholderValues()
+    private Dictionary<string, string> BuildSamplePlaceholderValues()
     {
         return new Dictionary<string, string>
         {
-            ["{{respondent.name}}"] = "John Doe",
+            ["{{respondent.name}}"] = _localizer["Sample.RespondentName"],
             ["{{respondent.email}}"] = "john.doe@example.com",
-            ["{{survey.title}}"] = "Sample Survey",
-            ["{{survey.description}}"] = "This is a sample survey description.",
+            ["{{survey.title}}"] = _localizer["Sample.SurveyTitle"],
+            ["{{survey.description}}"] = _localizer["Sample.SurveyDescription"],
             ["{{survey.link}}"] = "https://example.com/survey/sample",
             ["{{survey.deadline}}"] = DateTime.UtcNow.AddDays(7).ToString("MMMM d, yyyy"),
-            ["{{sender.name}}"] = "Survey Team",
-            ["{{namespace.name}}"] = "Sample Organization",
+            ["{{sender.name}}"] = _localizer["Sample.SenderName"],
+            ["{{namespace.name}}"] = _localizer["Sample.OrganizationName"],
             ["{{unsubscribe.link}}"] = "https://example.com/unsubscribe",
         };
     }

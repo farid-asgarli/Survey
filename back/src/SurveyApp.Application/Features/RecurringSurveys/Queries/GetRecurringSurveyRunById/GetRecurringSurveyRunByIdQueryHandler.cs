@@ -45,9 +45,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)
         {
-            return Result<RecurringSurveyRunDto>.Failure(
-                "Recurring survey does not belong to this namespace."
-            );
+            return Result<RecurringSurveyRunDto>.Failure("Errors.RecurringSurveyNotInNamespace");
         }
 
         var run = await _recurringSurveyRepository.GetRunByIdAsync(
@@ -61,9 +59,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
 
         if (run.RecurringSurveyId != request.RecurringSurveyId)
         {
-            return Result<RecurringSurveyRunDto>.Failure(
-                "Run does not belong to this recurring survey."
-            );
+            return Result<RecurringSurveyRunDto>.Failure("Errors.RunNotBelongToRecurringSurvey");
         }
 
         var dto = _mapper.Map<RecurringSurveyRunDto>(run);

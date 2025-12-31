@@ -10,7 +10,7 @@ public class PerformanceBehavior<TRequest, TResponse>(
     where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger = logger;
-    private readonly Stopwatch _timer = new Stopwatch();
+    private readonly Stopwatch _timer = new();
 
     // Threshold in milliseconds for logging slow requests
     private const int SlowRequestThreshold = 500;

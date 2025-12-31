@@ -57,7 +57,7 @@ public class GenerateBulkLinksCommandHandler(
         if (request.Count > MaxBulkLinks)
         {
             return Result<BulkLinkGenerationResultDto>.Failure(
-                $"Cannot generate more than {MaxBulkLinks} links at once."
+                $"Errors.MaxBulkLinksExceeded|{MaxBulkLinks}"
             );
         }
 
@@ -70,9 +70,7 @@ public class GenerateBulkLinksCommandHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure(
-                "Survey does not belong to this namespace."
-            );
+            return Result<BulkLinkGenerationResultDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         var links = new List<SurveyLink>();

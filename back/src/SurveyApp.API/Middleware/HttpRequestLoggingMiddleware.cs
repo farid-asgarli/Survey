@@ -6,22 +6,16 @@ namespace SurveyApp.API.Middleware;
 /// Middleware for logging HTTP request and response information.
 /// Provides consistent request/response logging across all endpoints.
 /// </summary>
-public class HttpRequestLoggingMiddleware
+/// <remarks>
+/// Initializes a new instance of the middleware.
+/// </remarks>
+public class HttpRequestLoggingMiddleware(
+    RequestDelegate next,
+    ILogger<HttpRequestLoggingMiddleware> logger
+)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<HttpRequestLoggingMiddleware> _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the middleware.
-    /// </summary>
-    public HttpRequestLoggingMiddleware(
-        RequestDelegate next,
-        ILogger<HttpRequestLoggingMiddleware> logger
-    )
-    {
-        _next = next;
-        _logger = logger;
-    }
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<HttpRequestLoggingMiddleware> _logger = logger;
 
     /// <summary>
     /// Invokes the middleware.

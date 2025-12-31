@@ -7,9 +7,10 @@ namespace SurveyApp.Infrastructure.Services;
 /// <summary>
 /// Service for validating file uploads with security checks.
 /// </summary>
-public partial class FileValidationService : IFileValidationService
+public partial class FileValidationService(IOptions<FileValidationOptions> options)
+    : IFileValidationService
 {
-    private readonly FileValidationOptions _options;
+    private readonly FileValidationOptions _options = options.Value;
 
     // File signature (magic bytes) validation to prevent polyglot attacks
     private static readonly Dictionary<string, byte[][]> FileSignatures = new(
@@ -19,15 +20,8 @@ public partial class FileValidationService : IFileValidationService
         { ".jpg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
         { ".jpeg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
         { ".png", [new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }] },
-        {
-            ".gif",
-
-            [
-                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x37, 0x61 },
-                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 },
-            ]
-        }, // GIF87a and GIF89a
-        { ".webp", [new byte[] { 0x52, 0x49, 0x46, 0x46 }] }, // RIFF header (WebP also has WEBP at offset 8)
+        { ".gif", ["GIF87a"u8.ToArray(), "GIF89a"u8.ToArray()] }, // GIF87a and GIF89a
+        { ".webp", ["RIFF"u8.ToArray()] }, // RIFF header (WebP also has WEBP at offset 8)
     };
 
     // Dangerous SVG patterns that could be used for XSS attacks
@@ -40,11 +34,6 @@ public partial class FileValidationService : IFileValidationService
         "<foreignObject",
         "data:text/html",
     ];
-
-    public FileValidationService(IOptions<FileValidationOptions> options)
-    {
-        _options = options.Value;
-    }
 
     /// <inheritdoc />
     public async Task<FileValidationResult> ValidateImageFileAsync(
@@ -158,7 +147,7 @@ public partial class FileValidationService : IFileValidationService
             return FileValidationResult.Failure(
                 FileValidationErrorType.InvalidFileContent,
                 "Errors.InvalidFileContent",
-                "File is too small to be a valid image"
+                "Errors.FileTooSmallForImage"
             );
         }
 
@@ -172,7 +161,7 @@ public partial class FileValidationService : IFileValidationService
                 {
                     if (bytesRead >= 12)
                     {
-                        var webpIdentifier = new byte[] { 0x57, 0x45, 0x42, 0x50 }; // "WEBP"
+                        var webpIdentifier = "WEBP"u8.ToArray(); // "WEBP"
                         if (headerBytes.Skip(8).Take(4).SequenceEqual(webpIdentifier))
                         {
                             return FileValidationResult.Success();
@@ -232,7 +221,7 @@ public partial class FileValidationService : IFileValidationService
             return FileValidationResult.Failure(
                 FileValidationErrorType.InvalidSvgFormat,
                 "Errors.InvalidFileContent",
-                "File does not appear to be a valid SVG"
+                "Errors.InvalidSvgFormat"
             );
         }
 

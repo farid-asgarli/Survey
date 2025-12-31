@@ -58,9 +58,7 @@ public class UpdateThemeCommandHandler(
             )
         )
         {
-            return Result<SurveyThemeDto>.Failure(
-                $"A theme with the name '{request.Name}' already exists."
-            );
+            return Result<SurveyThemeDto>.Failure($"Errors.ThemeNameExists|{request.Name}");
         }
 
         // Update theme properties with localization support

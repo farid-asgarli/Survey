@@ -70,7 +70,7 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
                 // Validate language code
                 if (!LanguageCode.IsSupported(translation.LanguageCode))
                 {
-                    errors.Add($"Unsupported language code: '{translation.LanguageCode}'");
+                    errors.Add($"Validation.LanguageCode.Unsupported:{translation.LanguageCode}");
                     continue;
                 }
 

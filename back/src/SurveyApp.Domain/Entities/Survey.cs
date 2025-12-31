@@ -628,9 +628,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     private void EnsureDraft()
     {
         if (Status != SurveyStatus.Draft)
-            throw new InvalidOperationException(
-                "Survey cannot be modified after it has been published."
-            );
+            throw new InvalidOperationException("Domain.Survey.CannotModifyAfterPublish");
     }
 
     private void ReorderQuestions()
@@ -806,9 +804,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     {
         if (languageCode.Equals(DefaultLanguage, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException(
-                "Cannot remove the default language. Set a different default language first."
-            );
+            throw new InvalidOperationException("Domain.Survey.CannotRemoveDefaultLanguage");
         }
 
         // Remove from survey
