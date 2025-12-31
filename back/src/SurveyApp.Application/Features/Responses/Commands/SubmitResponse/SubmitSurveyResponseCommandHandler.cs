@@ -41,9 +41,7 @@ public class SubmitSurveyResponseCommandHandler(
         // Validate survey is accepting responses
         if (!survey.IsAcceptingResponses)
         {
-            return Result<SurveyResponseDto>.Failure(
-                "This survey is not currently accepting responses."
-            );
+            return Result<SurveyResponseDto>.Failure("Application.Survey.NotAcceptingResponses");
         }
 
         // Check if response limit reached
@@ -55,9 +53,7 @@ public class SubmitSurveyResponseCommandHandler(
             );
             if (responseCount >= survey.MaxResponses.Value)
             {
-                return Result<SurveyResponseDto>.Failure(
-                    "This survey has reached its maximum number of responses."
-                );
+                return Result<SurveyResponseDto>.Failure("Application.Survey.MaxResponsesReached");
             }
         }
 
@@ -139,7 +135,7 @@ public class SubmitSurveyResponseCommandHandler(
         if (string.IsNullOrEmpty(value))
         {
             return question.IsRequired
-                ? Result.Failure("This question requires an answer.")
+                ? Result.Failure("Application.Response.RequiresAnswer")
                 : Result.Success();
         }
 
@@ -175,7 +171,7 @@ public class SubmitSurveyResponseCommandHandler(
 
         if (!settings.Options.Contains(value))
         {
-            return Result.Failure("Invalid option selected.");
+            return Result.Failure("Application.Response.InvalidOptionSelected");
         }
 
         return Result.Success();
@@ -200,13 +196,15 @@ public class SubmitSurveyResponseCommandHandler(
         {
             if (!settings.Options.Contains(option))
             {
-                return Result.Failure($"Invalid option: {option}");
+                return Result.Failure($"Application.Response.InvalidOption:{option}");
             }
         }
 
         if (settings.MaxSelections.HasValue && selectedOptions.Count > settings.MaxSelections.Value)
         {
-            return Result.Failure($"Maximum {settings.MaxSelections.Value} selections allowed.");
+            return Result.Failure(
+                $"Application.Response.MaxSelectionsAllowed:{settings.MaxSelections.Value}"
+            );
         }
 
         return Result.Success();
@@ -219,17 +217,21 @@ public class SubmitSurveyResponseCommandHandler(
     {
         if (!int.TryParse(value, out var numValue))
         {
-            return Result.Failure("Invalid numeric value.");
+            return Result.Failure("Application.Response.InvalidNumericValue");
         }
 
         if (settings?.MinValue.HasValue == true && numValue < settings.MinValue.Value)
         {
-            return Result.Failure($"Value must be at least {settings.MinValue.Value}.");
+            return Result.Failure(
+                $"Application.Response.ValueMustBeAtLeast:{settings.MinValue.Value}"
+            );
         }
 
         if (settings?.MaxValue.HasValue == true && numValue > settings.MaxValue.Value)
         {
-            return Result.Failure($"Value must be at most {settings.MaxValue.Value}.");
+            return Result.Failure(
+                $"Application.Response.ValueMustBeAtMost:{settings.MaxValue.Value}"
+            );
         }
 
         return Result.Success();
@@ -242,7 +244,7 @@ public class SubmitSurveyResponseCommandHandler(
     {
         if (!decimal.TryParse(value, out _))
         {
-            return Result.Failure("Invalid number format.");
+            return Result.Failure("Application.Response.InvalidNumberFormat");
         }
 
         return ValidateNumericAnswer(value, settings);
@@ -253,13 +255,15 @@ public class SubmitSurveyResponseCommandHandler(
         if (settings?.MinLength.HasValue == true && value.Length < settings.MinLength.Value)
         {
             return Result.Failure(
-                $"Answer must be at least {settings.MinLength.Value} characters."
+                $"Application.Response.AnswerMinLength:{settings.MinLength.Value}"
             );
         }
 
         if (settings?.MaxLength.HasValue == true && value.Length > settings.MaxLength.Value)
         {
-            return Result.Failure($"Answer must be at most {settings.MaxLength.Value} characters.");
+            return Result.Failure(
+                $"Application.Response.AnswerMaxLength:{settings.MaxLength.Value}"
+            );
         }
 
         return Result.Success();
@@ -268,7 +272,9 @@ public class SubmitSurveyResponseCommandHandler(
     private Result ValidateEmailAnswer(string value)
     {
         var isValid = Domain.ValueObjects.Email.TryCreate(value, out _);
-        return isValid ? Result.Success() : Result.Failure("Invalid email address.");
+        return isValid
+            ? Result.Success()
+            : Result.Failure("Application.Response.InvalidEmailAddress");
     }
 
     private Result ValidatePhoneAnswer(string value, Domain.ValueObjects.QuestionSettings? settings)
@@ -282,7 +288,7 @@ public class SubmitSurveyResponseCommandHandler(
                 if (!regex.IsMatch(value))
                 {
                     return Result.Failure(
-                        settings.ValidationMessage ?? "Invalid phone number format."
+                        settings.ValidationMessage ?? "Application.Response.InvalidPhoneNumber"
                     );
                 }
                 return Result.Success();
@@ -306,7 +312,7 @@ public class SubmitSurveyResponseCommandHandler(
                     if (!regex.IsMatch(value))
                     {
                         return Result.Failure(
-                            settings.ValidationMessage ?? "Invalid phone number format."
+                            settings.ValidationMessage ?? "Application.Response.InvalidPhoneNumber"
                         );
                     }
                     return Result.Success();
@@ -323,7 +329,9 @@ public class SubmitSurveyResponseCommandHandler(
         var flexiblePattern = @"^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$";
         if (!System.Text.RegularExpressions.Regex.IsMatch(value, flexiblePattern))
         {
-            return Result.Failure(settings?.ValidationMessage ?? "Invalid phone number format.");
+            return Result.Failure(
+                settings?.ValidationMessage ?? "Application.Response.InvalidPhoneNumber"
+            );
         }
 
         return Result.Success();
@@ -339,7 +347,9 @@ public class SubmitSurveyResponseCommandHandler(
                 var regex = new System.Text.RegularExpressions.Regex(settings.ValidationPattern);
                 if (!regex.IsMatch(value))
                 {
-                    return Result.Failure(settings.ValidationMessage ?? "Invalid URL format.");
+                    return Result.Failure(
+                        settings.ValidationMessage ?? "Application.Response.InvalidUrlFormat"
+                    );
                 }
                 return Result.Success();
             }
@@ -360,7 +370,9 @@ public class SubmitSurveyResponseCommandHandler(
             )
         )
         {
-            return Result.Failure(settings?.ValidationMessage ?? "Invalid URL format.");
+            return Result.Failure(
+                settings?.ValidationMessage ?? "Application.Response.InvalidUrlFormat"
+            );
         }
 
         return Result.Success();
@@ -384,7 +396,7 @@ public class SubmitSurveyResponseCommandHandler(
     {
         if (!DateTime.TryParse(value, out _))
         {
-            return Result.Failure("Invalid date format.");
+            return Result.Failure("Application.Response.InvalidDateFormat");
         }
 
         return Result.Success();

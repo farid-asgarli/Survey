@@ -35,13 +35,13 @@ public class IdentityService(
         var existingUser = await _userManager.FindByEmailAsync(email);
         if (existingUser != null)
         {
-            return AuthenticationResult.Failure("User with this email already exists.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.UserAlreadyExists");
         }
 
         // Validate email
         if (!Email.TryCreate(email, out var emailVo) || emailVo == null)
         {
-            return AuthenticationResult.Failure("Invalid email address.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.InvalidEmailAddress");
         }
 
         // Create domain user (User.Create expects email string, firstName, lastName, and password hash)
@@ -75,7 +75,7 @@ public class IdentityService(
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            return AuthenticationResult.Failure("Invalid email or password.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.InvalidEmailOrPassword");
         }
 
         var result = await _signInManager.CheckPasswordSignInAsync(
@@ -87,9 +87,9 @@ public class IdentityService(
         {
             if (result.IsLockedOut)
             {
-                return AuthenticationResult.Failure("Account is locked. Please try again later.");
+                return AuthenticationResult.Failure("Infrastructure.Identity.AccountLocked");
             }
-            return AuthenticationResult.Failure("Invalid email or password.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.InvalidEmailOrPassword");
         }
 
         return await GenerateAuthenticationResultAsync(user);
@@ -100,7 +100,7 @@ public class IdentityService(
         var principal = GetPrincipalFromExpiredToken(token);
         if (principal == null)
         {
-            return AuthenticationResult.Failure("Invalid token.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.InvalidToken");
         }
 
         var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -112,7 +112,7 @@ public class IdentityService(
             || user.RefreshTokenExpiryTime <= DateTime.UtcNow
         )
         {
-            return AuthenticationResult.Failure("Invalid refresh token.");
+            return AuthenticationResult.Failure("Infrastructure.Identity.InvalidRefreshToken");
         }
 
         return await GenerateAuthenticationResultAsync(user);

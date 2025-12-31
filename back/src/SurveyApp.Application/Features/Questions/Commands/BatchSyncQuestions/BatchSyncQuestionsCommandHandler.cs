@@ -40,13 +40,15 @@ public class BatchSyncQuestionsCommandHandler(
 
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<BatchSyncQuestionsResult>.Failure("Survey not found.");
+            return Result<BatchSyncQuestionsResult>.Failure("Handler.SurveyNotFound");
         }
 
         // Check if survey can be edited
         if (survey.Status != SurveyStatus.Draft)
         {
-            return Result<BatchSyncQuestionsResult>.Failure("Only draft surveys can be edited.");
+            return Result<BatchSyncQuestionsResult>.Failure(
+                "Application.Survey.OnlyDraftCanBeEdited"
+            );
         }
 
         var created = new List<CreatedQuestionResult>();
@@ -66,7 +68,7 @@ public class BatchSyncQuestionsCommandHandler(
                     {
                         Operation = "Delete",
                         QuestionId = questionId.ToString(),
-                        Message = "Question not found.",
+                        Message = "Errors.QuestionNotFound",
                     }
                 );
                 continue;
@@ -157,7 +159,7 @@ public class BatchSyncQuestionsCommandHandler(
                     {
                         Operation = "Update",
                         QuestionId = updateData.QuestionId.ToString(),
-                        Message = "Question not found.",
+                        Message = "Errors.QuestionNotFound",
                     }
                 );
                 continue;
