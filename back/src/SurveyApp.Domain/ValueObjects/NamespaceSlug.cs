@@ -46,19 +46,19 @@ public sealed partial class NamespaceSlug : ValueObject
 
         if (slug.Length < MinLength)
             throw new ArgumentException(
-                $"Slug must be at least {MinLength} characters.",
+                "Domain.ValueObjects.NamespaceSlug.MinLength",
                 nameof(slug)
             );
 
         if (slug.Length > MaxLength)
             throw new ArgumentException(
-                $"Slug cannot exceed {MaxLength} characters.",
+                "Domain.ValueObjects.NamespaceSlug.MaxLength",
                 nameof(slug)
             );
 
         if (!SlugRegex().IsMatch(slug))
             throw new ArgumentException(
-                "Slug can only contain lowercase letters, numbers, and hyphens.",
+                "Domain.ValueObjects.NamespaceSlug.InvalidFormat",
                 nameof(slug)
             );
 

@@ -1,7 +1,7 @@
 using MediatR;
 using SurveyApp.Application.Common;
+using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
-using SurveyApp.Infrastructure.Identity;
 
 namespace SurveyApp.Application.Features.Auth.Commands.RefreshToken;
 

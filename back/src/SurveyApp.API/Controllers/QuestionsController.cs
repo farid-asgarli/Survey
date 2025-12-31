@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.Questions.Commands.BatchSyncQuestions;
 using SurveyApp.Application.Features.Questions.Commands.CreateQuestion;
@@ -20,7 +19,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}/questions")]
 [Authorize]
-public class QuestionsController(IMediator mediator) : ControllerBase
+public class QuestionsController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -36,10 +35,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new GetQuestionsQuery { SurveyId = surveyId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -57,10 +53,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
             new GetQuestionByIdQuery { SurveyId = surveyId, QuestionId = questionId }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -93,13 +86,10 @@ public class QuestionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
+        return HandleCreatedResult(
+            result,
             nameof(GetQuestion),
-            new { surveyId, questionId = result.Value!.Id },
-            result.Value
+            v => new { surveyId, questionId = v.Id }
         );
     }
 
@@ -136,10 +126,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -157,10 +144,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
             new DeleteQuestionCommand { SurveyId = surveyId, QuestionId = questionId }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -181,10 +165,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
             new ReorderQuestionsCommand { SurveyId = surveyId, QuestionIds = request.QuestionIds }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -245,10 +226,7 @@ public class QuestionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }
 

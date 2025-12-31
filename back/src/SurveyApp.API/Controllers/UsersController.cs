@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Users.Commands.UpdateProfile;
 using SurveyApp.Application.Features.Users.Commands.UpdateUserPreferences;
 using SurveyApp.Application.Features.Users.Queries.GetCurrentUser;
@@ -12,7 +11,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class UsersController(IMediator mediator) : ControllerBase
+public class UsersController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -25,11 +24,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetCurrentUser()
     {
         var result = await _mediator.Send(new GetCurrentUserQuery());
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -41,11 +36,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
     {
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -57,11 +48,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetUserPreferences()
     {
         var result = await _mediator.Send(new GetUserPreferencesQuery());
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -75,10 +62,6 @@ public class UsersController(IMediator mediator) : ControllerBase
     )
     {
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }

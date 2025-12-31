@@ -492,7 +492,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question == null)
-            throw new InvalidOperationException("Question not found in template.");
+            throw new InvalidOperationException("Domain.SurveyTemplate.QuestionNotFound");
 
         if (newOrder < 1 || newOrder > _questions.Count)
             throw new ArgumentOutOfRangeException(

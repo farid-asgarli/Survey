@@ -25,7 +25,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}/distributions")]
 [Authorize]
-public class EmailDistributionsController(IMediator mediator) : ControllerBase
+public class EmailDistributionsController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -57,10 +57,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(query);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -76,10 +73,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new GetDistributionByIdQuery(surveyId, distId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -109,13 +103,10 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
+        return HandleCreatedResult(
+            result,
             nameof(GetDistributionById),
-            new { surveyId, distId = result.Value!.Id },
-            result.Value
+            v => new { surveyId, distId = v.Id }
         );
     }
 
@@ -145,10 +136,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -165,10 +153,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new SendDistributionCommand(surveyId, distId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -185,10 +170,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new CancelDistributionCommand(surveyId, distId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -204,10 +186,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new DeleteDistributionCommand(surveyId, distId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -223,10 +202,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new GetDistributionStatsQuery(surveyId, distId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -260,10 +236,7 @@ public class EmailDistributionsController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(query);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }
 

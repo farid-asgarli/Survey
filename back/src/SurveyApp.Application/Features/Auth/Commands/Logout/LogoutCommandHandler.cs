@@ -1,7 +1,6 @@
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
-using SurveyApp.Infrastructure.Identity;
 
 namespace SurveyApp.Application.Features.Auth.Commands.Logout;
 
@@ -17,12 +16,12 @@ public class LogoutCommandHandler(IIdentityService identityService, ICurrentUser
     )
     {
         var userId = _currentUser.UserId;
-        if (string.IsNullOrEmpty(userId))
+        if (!userId.HasValue)
         {
             return Result<Unit>.Failure("Errors.NotAuthenticated", "UNAUTHORIZED");
         }
 
-        await _identityService.RevokeTokenAsync(userId);
+        await _identityService.RevokeTokenAsync(userId.Value.ToString());
         return Result<Unit>.Success(Unit.Value);
     }
 }

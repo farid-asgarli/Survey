@@ -1,8 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
 using SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 using SurveyApp.Application.Features.Namespaces.Commands.RemoveMember;
@@ -18,13 +16,9 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class NamespacesController(
-    IMediator mediator,
-    IStringLocalizer<NamespacesController> localizer
-) : ControllerBase
+public class NamespacesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<NamespacesController> _localizer = localizer;
 
     /// <summary>
     /// Get all namespaces for the current user
@@ -34,11 +28,7 @@ public class NamespacesController(
     public async Task<IActionResult> GetUserNamespaces()
     {
         var result = await _mediator.Send(new GetUserNamespacesQuery());
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -50,11 +40,7 @@ public class NamespacesController(
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetNamespaceByIdQuery { NamespaceId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -66,11 +52,7 @@ public class NamespacesController(
     public async Task<IActionResult> GetBySlug(string slug)
     {
         var result = await _mediator.Send(new GetNamespaceBySlugQuery { Slug = slug });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -82,11 +64,7 @@ public class NamespacesController(
     public async Task<IActionResult> Create([FromBody] CreateNamespaceCommand command)
     {
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -98,15 +76,11 @@ public class NamespacesController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNamespaceCommand command)
     {
-        if (id != command.NamespaceId)
-            return HttpContext.IdMismatchProblem();
+        if (ValidateIdMatch(id, command.NamespaceId) is { } mismatchResult)
+            return mismatchResult;
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -118,11 +92,7 @@ public class NamespacesController(
     public async Task<IActionResult> GetMembers(Guid id)
     {
         var result = await _mediator.Send(new GetNamespaceMembersQuery { NamespaceId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -136,24 +106,11 @@ public class NamespacesController(
         [FromBody] InviteUserToNamespaceCommand command
     )
     {
-        if (id != command.NamespaceId)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.BadRequest"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.IdMismatch"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
+        if (ValidateIdMatch(id, command.NamespaceId) is { } mismatchResult)
+            return mismatchResult;
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetMembers), new { id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetMembers), new { id });
     }
 
     /// <summary>
@@ -168,11 +125,7 @@ public class NamespacesController(
         var result = await _mediator.Send(
             new RemoveMemberCommand { NamespaceId = namespaceId, MembershipId = membershipId }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -188,23 +141,12 @@ public class NamespacesController(
         [FromBody] UpdateMemberRoleCommand command
     )
     {
-        if (namespaceId != command.NamespaceId || membershipId != command.MembershipId)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Bad request.",
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.IdMismatch"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
+        if (ValidateIdMatch(namespaceId, command.NamespaceId) is { } nsMismatch)
+            return nsMismatch;
+        if (ValidateIdMatch(membershipId, command.MembershipId) is { } memberMismatch)
+            return memberMismatch;
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }

@@ -22,7 +22,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class ThemesController(IMediator mediator) : ControllerBase
+public class ThemesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -50,11 +50,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
         };
 
         var result = await _mediator.Send(query);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -66,11 +62,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetPublicThemes()
     {
         var result = await _mediator.Send(new GetPublicThemesQuery());
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -84,11 +76,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetThemeById(Guid id)
     {
         var result = await _mediator.Send(new GetThemeByIdQuery(id));
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -102,11 +90,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetThemePreview(Guid id)
     {
         var result = await _mediator.Send(new GetThemePreviewQuery(id));
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -151,11 +135,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
         };
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetThemeById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetThemeById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -185,11 +165,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
         };
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -204,11 +180,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteTheme(Guid id)
     {
         var result = await _mediator.Send(new DeleteThemeCommand { ThemeId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -229,11 +201,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
         var result = await _mediator.Send(
             new DuplicateThemeCommand { ThemeId = id, NewName = request.NewName }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetThemeById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetThemeById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -248,11 +216,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> SetDefaultTheme(Guid id)
     {
         var result = await _mediator.Send(new SetDefaultThemeCommand { ThemeId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -270,11 +234,7 @@ public class ThemesController(IMediator mediator) : ControllerBase
         var result = await _mediator.Send(
             new ApplyThemeToSurveyCommand { ThemeId = id, SurveyId = request.SurveyId }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 }
 

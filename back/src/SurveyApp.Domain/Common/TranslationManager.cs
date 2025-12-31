@@ -138,9 +138,7 @@ public class TranslationManager<TTranslation>
         var translation = Find(languageCode);
         if (translation == null)
         {
-            throw new InvalidOperationException(
-                $"Translation for language '{languageCode}' not found."
-            );
+            throw new InvalidOperationException("Domain.Translation.NotFoundForLanguage");
         }
 
         // Remove default from all translations

@@ -1,6 +1,6 @@
 using MediatR;
 using SurveyApp.Application.Common;
-using SurveyApp.Infrastructure.Identity;
+using SurveyApp.Application.Common.Interfaces;
 
 namespace SurveyApp.Application.Features.Auth.Commands.ResetPassword;
 

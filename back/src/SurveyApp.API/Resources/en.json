@@ -161,6 +161,18 @@
   "Domain.UserPreferences.InvalidOnboardingStatus": "Invalid onboarding status. Must be 'not_started', 'in_progress', 'completed', or 'skipped'.",
   "Domain.UserPreferences.InvalidLanguageCode": "Invalid language code.",
   "Domain.UserPreferences.ItemsPerPageRange": "Items per page must be between 6 and 50.",
+  "Domain.UserPreferences.InvalidColorPalette": "Invalid color palette.",
+  "Domain.UserPreferences.TimezoneRequired": "Timezone cannot be empty.",
+  "Domain.UserPreferences.InvalidSortField": "Invalid sort field.",
+  "Domain.UserPreferences.InvalidPageBreakBehavior": "Invalid page break behavior.",
+  "Domain.UserPreferences.OnboardingStepOutOfRange": "Onboarding step must be between 0 and 10.",
+
+  "Domain.Translation.NotFoundForLanguage": "Translation for the specified language not found.",
+  "Domain.Translation.NotFoundCreateFirst": "Translation not found. Create a translation first.",
+
+  "Domain.Membership.RoleMustBeHigher": "New role must be higher than the current role.",
+
+  "Domain.RecurringSurvey.UnknownPattern": "Unknown recurrence pattern.",
 
   "Domain.Response.CannotSubmitCompleted": "Cannot submit answers to a completed response.",
   "Domain.Response.AlreadyComplete": "Response is already complete.",
@@ -191,6 +203,7 @@
   "Domain.ValueObjects.DisplayText.MaxLengthExceeded": "Display text exceeds maximum length {0} for language {1}.",
   "Domain.ValueObjects.Email.InvalidFormat": "Email has an invalid format.",
   "Domain.ValueObjects.LanguageCode.LanguageCodeEmpty": "Language code cannot be empty.",
+  "Domain.ValueObjects.LanguageCode.InvalidFormat": "Invalid language code format.",
   "Domain.ValueObjects.Color.InvalidFormat": "Invalid color format. Use hex format #RRGGBB.",
 
   "Domain.RecurringSurvey.StartTimeMustBeInFuture": "Start time must be in the future.",

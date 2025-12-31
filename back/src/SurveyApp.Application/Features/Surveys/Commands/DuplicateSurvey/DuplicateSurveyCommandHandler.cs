@@ -50,7 +50,7 @@ public class DuplicateSurveyCommandHandler(
         var original = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (original == null)
         {
-            return Result<SurveyDto>.NotFound($"Survey with ID {request.SurveyId} not found.");
+            return Result<SurveyDto>.NotFound($"Errors.EntityNotFound|Survey|{request.SurveyId}");
         }
 
         // Verify the survey belongs to the current namespace

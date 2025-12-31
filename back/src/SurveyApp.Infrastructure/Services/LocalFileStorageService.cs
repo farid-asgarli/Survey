@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SurveyApp.Application.Common.Exceptions;
 using SurveyApp.Application.Services;
 
 namespace SurveyApp.Infrastructure.Services;
@@ -81,7 +82,7 @@ public class LocalFileStorageService : IFileStorageService
         var files = Directory.GetFiles(_basePath, $"{fileId}.*");
         if (files.Length == 0)
         {
-            throw new FileNotFoundException($"File not found: {fileId}");
+            throw new NotFoundException($"Errors.FileNotFoundDetail|{fileId}");
         }
 
         var stream = new MemoryStream();
@@ -116,7 +117,7 @@ public class LocalFileStorageService : IFileStorageService
         var files = Directory.GetFiles(_basePath, $"{fileId}.*");
         if (files.Length == 0)
         {
-            throw new FileNotFoundException($"File not found: {fileId}");
+            throw new NotFoundException($"Errors.FileNotFoundDetail|{fileId}");
         }
 
         var filePath = files[0];

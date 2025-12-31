@@ -1,8 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.CreateRecurringSurvey;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.DeleteRecurringSurvey;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.PauseRecurringSurvey;
@@ -23,13 +21,9 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/recurring-surveys")]
 [Authorize]
-public class RecurringSurveysController(
-    IMediator mediator,
-    IStringLocalizer<RecurringSurveysController> localizer
-) : ControllerBase
+public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<RecurringSurveysController> _localizer = localizer;
 
     /// <summary>
     /// Get all recurring surveys in the current namespace.
@@ -53,10 +47,7 @@ public class RecurringSurveysController(
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -68,10 +59,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new GetUpcomingRunsQuery { Count = count });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -84,10 +72,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new GetRecurringSurveyByIdQuery { Id = id });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -100,10 +85,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -119,23 +101,11 @@ public class RecurringSurveysController(
     )
     {
         if (id != command.Id)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.BadRequest"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.IdMismatch"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
+            return IdMismatchError();
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -148,10 +118,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new DeleteRecurringSurveyCommand { Id = id });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -164,10 +131,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new PauseRecurringSurveyCommand { Id = id });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -180,10 +144,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new ResumeRecurringSurveyCommand { Id = id });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -196,10 +157,7 @@ public class RecurringSurveysController(
     {
         var result = await _mediator.Send(new TriggerRecurringSurveyCommand { Id = id });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -223,10 +181,7 @@ public class RecurringSurveysController(
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -241,9 +196,6 @@ public class RecurringSurveysController(
             new GetRecurringSurveyRunByIdQuery { RecurringSurveyId = id, RunId = runId }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }

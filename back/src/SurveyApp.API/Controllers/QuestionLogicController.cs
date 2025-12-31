@@ -20,7 +20,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}")]
 [Authorize]
-public class QuestionLogicController(IMediator mediator) : ControllerBase
+public class QuestionLogicController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 

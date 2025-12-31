@@ -30,9 +30,7 @@ public class GetThemeByIdQueryHandler(
 
         if (theme is null)
         {
-            return Result<SurveyThemeDto>.Failure(
-                $"Theme with ID '{request.ThemeId}' was not found."
-            );
+            return Result<SurveyThemeDto>.Failure($"Errors.EntityNotFound|Theme|{request.ThemeId}");
         }
 
         // Check namespace access - allow if same namespace or if theme is public

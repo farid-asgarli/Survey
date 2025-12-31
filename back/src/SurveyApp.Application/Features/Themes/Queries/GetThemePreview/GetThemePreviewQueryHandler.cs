@@ -30,7 +30,7 @@ public class GetThemePreviewQueryHandler(
         if (theme is null)
         {
             return Result<ThemePreviewDto>.Failure(
-                $"Theme with ID '{request.ThemeId}' was not found."
+                $"Errors.EntityNotFound|Theme|{request.ThemeId}"
             );
         }
 

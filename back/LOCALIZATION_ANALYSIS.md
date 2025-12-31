@@ -1,141 +1,110 @@
-### 🔴 HIGH PRIORITY - Domain Layer Exception Messages
+### 🔴 **HIGH PRIORITY - User-Facing Error Messages**
 
-| File                        | Line    | Current Text                                       | Category | Suggested Key                   | Priority |
-| --------------------------- | ------- | -------------------------------------------------- | -------- | ------------------------------- | -------- |
-| Question.cs                 | 237     | `"Matrix columns cannot be null."`                 | Error    | `Errors.MatrixColumnsNull`      | High     |
-| Question.cs                 | 256     | `"Matrix rows cannot be empty."`                   | Error    | `Errors.MatrixRowsEmpty`        | High     |
-| Question.cs                 | 259     | `"Matrix columns cannot be empty."`                | Error    | `Errors.MatrixColumnsEmpty`     | High     |
-| Question.cs                 | 108     | `"Scale start value is required..."`               | Error    | `Errors.ScaleStartRequired`     | High     |
-| Question.cs                 | 202     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
-| RecurringSurvey.cs          | 182     | `"Cron expression is required."`                   | Error    | `Errors.CronExpressionRequired` | High     |
-| RecurringSurvey.cs          | 185     | `"Timezone ID is required."`                       | Error    | `Errors.TimezoneIdRequired`     | High     |
-| RecurringSurvey.cs          | 212     | `"Cron expression is required."`                   | Error    | `Errors.CronExpressionRequired` | High     |
-| RecurringSurvey.cs          | 230     | `"Timezone ID is required."`                       | Error    | `Errors.TimezoneIdRequired`     | High     |
-| RecurringSurvey.cs          | 311     | `"Max reminders must be at least 1."`              | Error    | `Errors.MaxRemindersMinimum`    | High     |
-| RecurringSurvey.cs          | 333     | `"End date must be in the future."`                | Error    | `Errors.EndDateMustBeFuture`    | High     |
-| RecurringSurvey.cs          | 336     | `"Max runs must be at least 1."`                   | Error    | `Errors.MaxRunsMinimum`         | High     |
-| User.cs                     | 91      | `"New role must be higher than the current role."` | Error    | `Errors.RoleMustBeHigher`       | High     |
-| User.cs                     | 114     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
-| User.cs                     | 130     | `"Password hash cannot be empty."`                 | Error    | `Errors.PasswordHashEmpty`      | High     |
-| User.cs                     | 160     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
-| Namespace.cs                | 120     | `"Namespace name cannot be empty."`                | Error    | `Errors.NamespaceNameEmpty`     | High     |
-| QuestionLogic.cs            | 69      | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
-| QuestionLogic.cs            | 72      | `"Invalid language code format."`                  | Error    | `Errors.LanguageCodeInvalid`    | High     |
-| QuestionLogic.cs            | 96      | `"Translation not found..."`                       | Error    | `Errors.TranslationNotFound`    | High     |
-| SurveyLink.cs               | 121     | `"Access token cannot be empty."`                  | Error    | `Errors.AccessTokenEmpty`       | High     |
-| SurveyLink.cs               | 173     | `"Max uses must be greater than 0."`               | Error    | `Errors.MaxUsesPositive`        | High     |
-| Response.cs                 | 83-86   | `"Language code is required/invalid."`             | Error    | `Errors.LanguageCodeRequired`   | High     |
-| Survey.cs                   | 355     | `"Theme name cannot be empty."`                    | Error    | `Errors.ThemeNameEmpty`         | High     |
-| Survey.cs                   | 372     | `"Theme name cannot be empty."`                    | Error    | `Errors.ThemeNameEmpty`         | High     |
-| Survey.cs                   | 530     | `"Page index out of range."`                       | Error    | `Errors.PageIndexOutOfRange`    | High     |
-| Survey.cs                   | 785     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
-| SurveyTranslation.cs        | 59-80   | Language code validation messages                  | Error    | `Errors.LanguageCodeRequired`   | High     |
-| Template.cs                 | 137     | `"Template name cannot be empty."`                 | Error    | `Errors.TemplateNameEmpty`      | High     |
-| Template.cs                 | 174     | `"Template name cannot be empty."`                 | Error    | `Errors.TemplateNameEmpty`      | High     |
-| Template.cs                 | 250-318 | Language code/template messages                    | Error    | `Errors.LanguageCode*`          | High     |
-| TemplateTranslation.cs      | 75-125  | Language code validation                           | Error    | `Errors.LanguageCode*`          | High     |
-| QuestionTranslation.cs      | 69-118  | Language code validation                           | Error    | `Errors.LanguageCode*`          | High     |
-| EmailDistribution.cs        | 94-169  | Email/name validation                              | Error    | `Errors.EmailDistribution*`     | High     |
-| EmailTemplate.cs            | 83-126  | Template validation messages                       | Error    | `Errors.EmailTemplate*`         | High     |
-| EmailTemplateTranslation.cs | 124-212 | Translation validation                             | Error    | `Errors.EmailTemplate*`         | High     |
+| File | Line | Current Text | Category | Suggested Key | Priority |
+|------|------|--------------|----------|---------------|----------|
+| GlobalExceptionMiddleware.cs | 109 | `"An internal server error occurred. Please try again later."` | Error | `Errors.InternalServerError` | High |
+| GlobalExceptionMiddleware.cs | 139 | `"An error occurred"` | Error | `Errors.GenericError` | High |
+| FilesController.cs | 51 | `"Invalid file"` | Error | `Errors.File.Invalid` | High |
+| FilesController.cs | 52 | `"File is empty or not provided"` | Validation | `Validation.File.EmptyOrMissing` | High |
+| FilesController.cs | 93 | `"No files provided"` | Error | `Errors.File.NoFilesProvided` | High |
+| FilesController.cs | 94 | `"At least one file is required"` | Validation | `Validation.File.AtLeastOneRequired` | High |
 
 ---
 
-### 🔴 HIGH PRIORITY - API Middleware Problem Details
+### 🔴 **HIGH PRIORITY - Service Exception Messages**
 
-| File                           | Line    | Current Text                                               | Category | Suggested Key                  | Priority |
-| ------------------------------ | ------- | ---------------------------------------------------------- | -------- | ------------------------------ | -------- |
-| GlobalExceptionMiddleware.cs   | 49      | `"Business rule violation."`                               | Error    | `Errors.BusinessRuleViolation` | High     |
-| GlobalExceptionMiddleware.cs   | 74      | `"Resource not found."`                                    | Error    | `Errors.ResourceNotFound`      | High     |
-| GlobalExceptionMiddleware.cs   | 83      | `"Access denied."`                                         | Error    | `Errors.AccessDenied`          | High     |
-| GlobalExceptionMiddleware.cs   | 92      | `"Namespace error."`                                       | Error    | `Errors.NamespaceError`        | High     |
-| GlobalExceptionMiddleware.cs   | 109     | `"An internal server error occurred..."`                   | Error    | `Errors.InternalServerError`   | High     |
-| ExceptionHandlingMiddleware.cs | 133-139 | `"Validation Error"`, `"Not Found"`, `"An error occurred"` | Error    | `Errors.*`                     | High     |
-| ExceptionHandlingMiddleware.cs | 205     | `"Validation error"`                                       | Error    | `Errors.ValidationError`       | High     |
+| File | Line | Current Text | Category | Suggested Key | Priority |
+|------|------|--------------|----------|---------------|----------|
+| NpsService.cs | 33, 116, 222 | `$"Survey with ID {surveyId} not found."` | Error | `Errors.Survey.NotFoundWithId` | High |
+| ExportService.cs | 231, 314 | `$"Survey with ID {surveyId} not found."` | Error | `Errors.Survey.NotFoundWithId` | High |
+| LocalFileStorageService.cs | 84, 119 | `$"File not found: {fileId}"` | Error | `Errors.File.NotFoundWithId` | High |
+| EmailDistributionService.cs | 205 | `$"Reminder: {distribution.Subject}"` | Email | `Email.ReminderPrefix` | High |
 
 ---
 
-### 🔴 HIGH PRIORITY - Survey Link Status Messages
+### 🔴 **HIGH PRIORITY - Application Handler Messages**
 
-| File                         | Line | Current Text                                                  | Category | Suggested Key                | Priority |
-| ---------------------------- | ---- | ------------------------------------------------------------- | -------- | ---------------------------- | -------- |
-| ValidateSurveyLinkHandler.cs | 44   | `"This survey link has been deactivated."`                    | Status   | `SurveyLink.Deactivated`     | High     |
-| ValidateSurveyLinkHandler.cs | 49   | `"This survey link has expired."`                             | Status   | `SurveyLink.Expired`         | High     |
-| ValidateSurveyLinkHandler.cs | 54   | `"This survey link has reached its maximum usage limit."`     | Status   | `SurveyLink.MaxUsageReached` | High     |
-| ValidateSurveyLinkHandler.cs | 59   | `"The survey associated with this link is no longer active."` | Status   | `SurveyLink.SurveyInactive`  | High     |
-
----
-
-### 🔴 HIGH PRIORITY - Email Templates (User-Facing)
-
-| File                        | Line    | Current Text                                           | Category | Suggested Key                                  | Priority |
-| --------------------------- | ------- | ------------------------------------------------------ | -------- | ---------------------------------------------- | -------- |
-| EmailNotificationService.cs | 45      | `"You've been invited to take a survey"`               | Email    | `Email.SurveyInvitationSubject`                | High     |
-| EmailNotificationService.cs | 53      | `"Please click the button below to start the survey."` | Email    | `Email.SurveyInvitationBody`                   | High     |
-| EmailNotificationService.cs | 68      | `"Reminder: Complete your survey"`                     | Email    | `Email.SurveyReminderSubject`                  | High     |
-| EmailNotificationService.cs | 86-93   | Invitation email content                               | Email    | `Email.InvitationContent*`                     | High     |
-| EmailNotificationService.cs | 116-119 | Invitation heading/button                              | Email    | `Email.InvitationHeader`, `Email.AcceptButton` | High     |
-| EmailNotificationService.cs | 135-138 | Response notification content                          | Email    | `Email.ResponseNotification*`                  | High     |
+| File | Line | Current Text | Category | Suggested Key | Priority |
+|------|------|--------------|----------|---------------|----------|
+| GetQuestionLogicQueryHandler.cs | 50 | `"Survey not found in this namespace."` | Error | `Errors.Survey.NotFoundInNamespace` | High |
+| GetQuestionLogicQueryHandler.cs | 58 | `"Question not found in this survey."` | Error | `Errors.Question.NotFoundInSurvey` | High |
+| GetThemePreviewQueryHandler.cs | 33 | `$"Theme with ID '{request.ThemeId}' was not found."` | Error | `Errors.Theme.NotFoundWithId` | High |
+| GetThemeByIdQueryHandler.cs | 34 | `$"Theme with ID '{request.ThemeId}' was not found."` | Error | `Errors.Theme.NotFoundWithId` | High |
+| DuplicateSurveyCommandHandler.cs | 53 | `$"Survey with ID {request.SurveyId} not found."` | Error | `Errors.Survey.NotFoundWithId` | High |
+| BulkUpdateSurveyTranslationsCommandHandler.cs | 129 | `$"Question not found: '{qt.QuestionId}'"` | Error | `Errors.Question.NotFoundWithId` | High |
+| SubmitSurveyResponseCommandHandler.cs | 107 | `$"Invalid answer for '{question.Text}': {validationResult.Error}"` | Validation | `Validation.Response.InvalidAnswer` | High |
 
 ---
 
-### 🟡 MEDIUM PRIORITY - Export Column Headers
+### 🟠 **MEDIUM PRIORITY - Domain Validation Messages**
 
-| File                     | Line | Current Text           | Category | Suggested Key                   | Priority |
-| ------------------------ | ---- | ---------------------- | -------- | ------------------------------- | -------- |
-| ResponseExportService.cs | 248  | `"Response ID"`        | Export   | `Export.Column.ResponseId`      | Medium   |
-| ResponseExportService.cs | 255  | `"Respondent Email"`   | Export   | `Export.Column.RespondentEmail` | Medium   |
-| ResponseExportService.cs | 262  | `"Started At"`         | Export   | `Export.Column.StartedAt`       | Medium   |
-| ResponseExportService.cs | 269  | `"Submitted At"`       | Export   | `Export.Column.SubmittedAt`     | Medium   |
-| ResponseExportService.cs | 276  | `"Duration (seconds)"` | Export   | `Export.Column.Duration`        | Medium   |
-
----
-
-### 🟡 MEDIUM PRIORITY - Infrastructure Identity Messages
-
-| File                | Line | Current Text                             | Category | Suggested Key               | Priority |
-| ------------------- | ---- | ---------------------------------------- | -------- | --------------------------- | -------- |
-| IdentityService.cs  | 33   | `"User with this email already exists."` | Error    | `Auth.EmailExists`          | High     |
-| IdentityService.cs  | 116  | `"Invalid credentials."`                 | Error    | `Auth.InvalidCredentials`   | High     |
-| IdentityService.cs  | 222  | `"Token is required."`                   | Error    | `Auth.TokenRequired`        | High     |
-| IdentityService.cs  | 228  | `"Invalid token."`                       | Error    | `Auth.InvalidToken`         | High     |
-| IdentityService.cs  | 311  | `"User not found."`                      | Error    | `Auth.UserNotFound`         | High     |
-| NamespaceService.cs | 84   | `"User not found."`                      | Error    | `Errors.UserNotFound`       | High     |
-| NamespaceService.cs | 119  | `"User not found in namespace."`         | Error    | `Errors.UserNotInNamespace` | High     |
+| File | Line | Current Text | Category | Suggested Key | Priority |
+|------|------|--------------|----------|---------------|----------|
+| NamespaceSlug.cs | 49 | `$"Slug must be at least {MinLength} characters."` | Validation | `Validation.Slug.MinLength` | Medium |
+| NamespaceSlug.cs | 55 | `$"Slug cannot exceed {MaxLength} characters."` | Validation | `Validation.Slug.MaxLength` | Medium |
+| NamespaceSlug.cs | 61 | `"Slug can only contain lowercase letters, numbers, and hyphens."` | Validation | `Validation.Slug.InvalidFormat` | Medium |
+| LanguageCode.cs | 87 | `$"Invalid language code format: '{value}'."` | Validation | `Validation.LanguageCode.InvalidFormat` | Medium |
+| TranslationManager.cs | 142 | `$"Translation for language '{languageCode}' not found."` | Error | `Errors.Translation.NotFoundForLanguage` | Medium |
+| EmailTemplate.cs | 155 | `"Name cannot be empty."` | Validation | `Validation.Name.Required` | Medium |
+| EmailTemplate.cs | 162 | `$"Translation for language '{lang}' not found. Create a translation first."` | Error | `Errors.Translation.NotFoundCreateFirst` | Medium |
+| SurveyTemplate.cs | 495 | `"Question not found in template."` | Error | `Errors.Question.NotFoundInTemplate` | Medium |
+| RecurringSurvey.cs | 453 | `$"Unknown recurrence pattern: {Pattern}"` | Error | `Errors.RecurringSurvey.UnknownPattern` | Medium |
+| NamespaceMembership.cs | 91 | `"New role must be higher than the current role."` | Error | `Errors.Membership.RoleMustBeHigher` | Medium |
 
 ---
 
-## Summary Statistics
+### 🟠 **MEDIUM PRIORITY - UserPreferences Validation Messages**
 
-| Category                  | Count   | Priority  |
-| ------------------------- | ------- | --------- |
-| Domain Exception Messages | ~55     | 🔴 High   |
-| API Middleware Titles     | ~10     | 🔴 High   |
-| Survey Link Status        | 4       | 🔴 High   |
-| Email Templates           | ~15     | 🔴 High   |
-| Identity/Auth Messages    | ~7      | 🔴 High   |
-| Export Column Headers     | 5       | 🟡 Medium |
-| **Total**                 | **~96** |           |
-
----
-
-## ✅ Already Properly Localized
-
-Good news - many parts of your codebase already use localization correctly:
-
-- ✅ FluentValidation messages in validators use `_localizer["key"]`
-- ✅ Most `Result.Failure()` calls use resource keys
-- ✅ Controllers use `IStringLocalizer` for responses
-- ✅ Some domain exceptions use resource keys
+| File | Line | Current Text | Category | Suggested Key | Priority |
+|------|------|--------------|----------|---------------|----------|
+| UserPreferences.cs | 273 | `"Invalid theme mode. Must be 'light', 'dark', or 'system'."` | Validation | `Validation.ThemeMode.Invalid` | Medium |
+| UserPreferences.cs | 286 | `"Invalid color palette."` | Validation | `Validation.ColorPalette.Invalid` | Medium |
+| UserPreferences.cs | 326 | `"Invalid font size scale. Must be 'small', 'medium', 'large', or 'extra-large'."` | Validation | `Validation.FontSizeScale.Invalid` | Medium |
+| UserPreferences.cs | 362 | `"Invalid date format."` | Validation | `Validation.DateFormat.Invalid` | Medium |
+| UserPreferences.cs | 374 | `"Invalid time format. Must be '12h' or '24h'."` | Validation | `Validation.TimeFormat.Invalid` | Medium |
+| UserPreferences.cs | 387 | `"Timezone cannot be empty."` | Validation | `Validation.Timezone.Required` | Medium |
+| UserPreferences.cs | 399 | `"Invalid decimal separator. Must be 'dot' or 'comma'."` | Validation | `Validation.DecimalSeparator.Invalid` | Medium |
+| UserPreferences.cs | 413 | `"Invalid thousands separator..."` | Validation | `Validation.ThousandsSeparator.Invalid` | Medium |
+| UserPreferences.cs | 591 | `"Invalid view mode. Must be 'grid' or 'list'."` | Validation | `Validation.ViewMode.Invalid` | Medium |
+| UserPreferences.cs | 621 | `"Invalid sort field."` | Validation | `Validation.SortField.Invalid` | Medium |
+| UserPreferences.cs | 632 | `"Invalid sort order. Must be 'asc' or 'desc'."` | Validation | `Validation.SortOrder.Invalid` | Medium |
+| UserPreferences.cs | 732 | `"Invalid numbering style..."` | Validation | `Validation.NumberingStyle.Invalid` | Medium |
+| UserPreferences.cs | 752 | `"Invalid page break behavior."` | Validation | `Validation.PageBreakBehavior.Invalid` | Medium |
+| UserPreferences.cs | 808 | `"Onboarding step must be between 0 and 10."` | Validation | `Validation.OnboardingStep.OutOfRange` | Medium |
+| UserPreferences.cs | 791 | `"Invalid onboarding status..."` | Validation | `Validation.OnboardingStatus.Invalid` | Medium |
 
 ---
 
-## Recommended Next Steps
+### 🟡 **LOW PRIORITY - CommonValidationRules (Consider Centralizing)**
 
-1. **Start with API Middleware** - These are the most visible to all users
-2. **Fix Email Templates** - Critical for user communication
-3. **Address Survey Link messages** - User-facing status messages
-4. **Batch update Domain exceptions** - Many are similar patterns (language code validation)
-5. **Add Export column headers** - Lower priority but affects exports
+The CommonValidationRules.cs file has **~30 hardcoded validation messages** using template patterns like:
+- `$"{fieldName} is required."`
+- `$"{fieldName} must be at least {minLength} characters."`
+- `$"{fieldName} cannot exceed {maxLength} characters."`
 
-Would you like me to help fix any specific category of these hardcoded strings?
+**Recommendation:** Create generic localization keys with parameters:
+- `Validation.Required` → `"{0} is required."`
+- `Validation.MinLength` → `"{0} must be at least {1} characters."`
+- `Validation.MaxLength` → `"{0} cannot exceed {1} characters."`
+
+---
+
+### ✅ **Already Properly Localized (Good Examples)**
+
+Your codebase has many well-localized patterns to follow:
+- Domain exceptions use keys: `throw new DomainException("Domain.Survey.TitleRequired")`
+- Validators use localizer: `.WithMessage(localizer["Validation.Theme.NameRequired"])`
+- Email subjects use localizer: `_localizer["Email.SurveyInvitationSubject"]`
+- Result failures use keys: `Result.Failure("Errors.SurveyNotFound")`
+
+---
+
+### 📋 **Summary**
+
+| Priority | Count | Action |
+|----------|-------|--------|
+| 🔴 High | ~18 | Fix immediately - visible to end users |
+| 🟠 Medium | ~25 | Fix soon - domain/business rule messages |
+| 🟡 Low | ~30 | Centralize validation rule messages |
+
+**Total hardcoded strings needing localization: ~73**

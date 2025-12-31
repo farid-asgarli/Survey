@@ -151,16 +151,14 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateName(string name, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name cannot be empty.", nameof(name));
+            throw new ArgumentException("Domain.EmailTemplate.NameEmpty", nameof(name));
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
         if (translation == null)
         {
-            throw new InvalidOperationException(
-                $"Translation for language '{lang}' not found. Create a translation first."
-            );
+            throw new InvalidOperationException("Domain.Translation.NotFoundCreateFirst");
         }
 
         translation.Update(

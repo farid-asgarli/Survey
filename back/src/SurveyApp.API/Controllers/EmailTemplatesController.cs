@@ -19,7 +19,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/email-templates")]
 [Authorize]
-public class EmailTemplatesController(IMediator mediator) : ControllerBase
+public class EmailTemplatesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -51,10 +51,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(query);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -69,10 +66,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new GetEmailTemplateByIdQuery(id));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -89,14 +83,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(request);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
-            nameof(GetEmailTemplateById),
-            new { id = result.Value!.Id },
-            result.Value
-        );
+        return HandleCreatedResult(result, nameof(GetEmailTemplateById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -128,10 +115,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -146,10 +130,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
     {
         var result = await _mediator.Send(new DeleteEmailTemplateCommand(id));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -170,14 +151,7 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
         var command = new DuplicateEmailTemplateCommand(id, request?.NewName);
         var result = await _mediator.Send(command);
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
-            nameof(GetEmailTemplateById),
-            new { id = result.Value!.Id },
-            result.Value
-        );
+        return HandleCreatedResult(result, nameof(GetEmailTemplateById), v => new { id = v.Id });
     }
 
     /// <summary>

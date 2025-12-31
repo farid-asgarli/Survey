@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using Microsoft.Extensions.Localization;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.Nps.Queries.GetNpsTrend;
@@ -29,11 +28,9 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class SurveysController(IMediator mediator, IStringLocalizer<SurveysController> localizer)
-    : ControllerBase
+public class SurveysController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<SurveysController> _localizer = localizer;
 
     /// <summary>
     /// Get all surveys in the current namespace
@@ -61,10 +58,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -76,11 +70,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetSurveyByIdQuery { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -94,11 +84,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> GetPublicSurvey(string shareToken)
     {
         var result = await _mediator.Send(new GetPublicSurveyQuery { ShareToken = shareToken });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -110,11 +96,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> Create([FromBody] CreateSurveyCommand command)
     {
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -126,15 +108,11 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSurveyCommand command)
     {
-        if (id != command.SurveyId)
-            return HttpContext.IdMismatchProblem("Errors.IdMismatchUrlBody");
+        if (ValidateIdMatch(id, command.SurveyId) is { } mismatchResult)
+            return mismatchResult;
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -146,11 +124,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> Publish(Guid id)
     {
         var result = await _mediator.Send(new PublishSurveyCommand { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -168,11 +142,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
         var result = await _mediator.Send(
             new DuplicateSurveyCommand { SurveyId = id, NewTitle = request?.NewTitle }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -184,11 +154,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> Close(Guid id)
     {
         var result = await _mediator.Send(new CloseSurveyCommand { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -201,11 +167,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _mediator.Send(new DeleteSurveyCommand { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -218,11 +180,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> GetAnalytics(Guid id)
     {
         var result = await _mediator.Send(new GetSurveyAnalyticsQuery { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -249,11 +207,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
         };
 
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return File(result.Value!.Data, result.Value.ContentType, result.Value.FileName);
+        return HandleFileResult(result, v => v.Data, v => v.ContentType, v => v.FileName);
     }
 
     /// <summary>
@@ -268,11 +222,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> GetExportPreview(Guid id)
     {
         var result = await _mediator.Send(new GetExportPreviewQuery { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -295,11 +245,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
                 ThemeCustomizations = request.ThemeCustomizations,
             }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -314,11 +260,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> GetNps(Guid id)
     {
         var result = await _mediator.Send(new GetSurveyNpsQuery { SurveyId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -342,11 +284,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
                 GroupBy = request.GroupBy ?? NpsTrendGroupBy.Week,
             }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -363,11 +301,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
         var result = await _mediator.Send(
             new GetQuestionNpsQuery { SurveyId = id, QuestionId = questionId }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 }
 

@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Responses.Commands.DeleteResponse;
 using SurveyApp.Application.Features.Responses.Commands.SubmitResponse;
 using SurveyApp.Application.Features.Responses.Queries.GetResponseById;
@@ -12,7 +11,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize] // Class-level authorization - individual endpoints can override with [AllowAnonymous]
-public class ResponsesController(IMediator mediator) : ControllerBase
+public class ResponsesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -41,11 +40,7 @@ public class ResponsesController(IMediator mediator) : ControllerBase
                 ToDate = toDate,
             }
         );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -57,11 +52,7 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetResponseByIdQuery { ResponseId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -74,11 +65,7 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Submit([FromBody] SubmitSurveyResponseCommand command)
     {
         var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+        return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
 
     /// <summary>
@@ -91,10 +78,6 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _mediator.Send(new DeleteResponseCommand { ResponseId = id });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 }

@@ -73,7 +73,7 @@ public class ExceptionHandlingMiddleware(
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = _localizer["Errors.ResourceNotFound"],
                 Status = (int)HttpStatusCode.NotFound,
-                Detail = notFoundException.Message,
+                Detail = LocalizeMessage(notFoundException.Message),
                 Instance = context.Request.Path,
             },
 
@@ -91,7 +91,7 @@ public class ExceptionHandlingMiddleware(
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 Title = _localizer["Errors.NamespaceError"],
                 Status = (int)HttpStatusCode.BadRequest,
-                Detail = namespaceException.Message,
+                Detail = LocalizeMessage(namespaceException.Message),
                 Instance = context.Request.Path,
             },
 
@@ -106,6 +106,56 @@ public class ExceptionHandlingMiddleware(
 
             _ => CreateInternalServerError(context, exception),
         };
+    }
+
+    private string LocalizeMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return message;
+        }
+
+        var (key, args) = ParseLocalizationKey(message);
+
+        // Localize nested args if they themselves look like keys.
+        var localizedArgs = args.Select(a =>
+                a is string s ? (object)LocalizeKeyOrText(s) : a ?? string.Empty
+            )
+            .ToArray();
+
+        var localized =
+            localizedArgs.Length > 0 ? _localizer[key, localizedArgs!] : _localizer[key];
+        return localized.ResourceNotFound ? message : localized.Value;
+    }
+
+    private string LocalizeKeyOrText(string text)
+    {
+        var (key, args) = ParseLocalizationKey(text);
+        var localized = args.Length > 0 ? _localizer[key, args!] : _localizer[key];
+        return localized.ResourceNotFound ? text : localized.Value;
+    }
+
+    private static (string Key, object[] Args) ParseLocalizationKey(string text)
+    {
+        var parts = text.Split('|', StringSplitOptions.None);
+        if (parts.Length <= 1)
+        {
+            return (text, []);
+        }
+
+        var key = parts[0];
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return (text, []);
+        }
+
+        var args = new object[parts.Length - 1];
+        for (var i = 1; i < parts.Length; i++)
+        {
+            args[i - 1] = parts[i];
+        }
+
+        return (key, args);
     }
 
     private ProblemDetails CreateInternalServerError(HttpContext context, Exception exception)

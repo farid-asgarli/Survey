@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Templates.Commands.CreateSurveyFromTemplate;
 using SurveyApp.Application.Features.Templates.Commands.CreateTemplate;
@@ -19,13 +18,9 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class TemplatesController(
-    IMediator mediator,
-    IStringLocalizer<TemplatesController> localizer
-) : ControllerBase
+public class TemplatesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<TemplatesController> _localizer = localizer;
 
     /// <summary>
     /// Get all templates in the current namespace

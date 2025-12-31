@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
@@ -15,6 +16,7 @@ public class EmailDistributionService(
     ISurveyRepository surveyRepository,
     INamespaceRepository namespaceRepository,
     IUnitOfWork unitOfWork,
+    IStringLocalizer<EmailDistributionService> localizer,
     ILogger<EmailDistributionService> logger
 ) : IEmailDistributionService
 {
@@ -23,6 +25,7 @@ public class EmailDistributionService(
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IStringLocalizer<EmailDistributionService> _localizer = localizer;
     private readonly ILogger<EmailDistributionService> _logger = logger;
 
     public async Task SendDistributionAsync(
@@ -202,7 +205,10 @@ public class EmailDistributionService(
         {
             try
             {
-                var reminderSubject = $"Reminder: {distribution.Subject}";
+                var reminderSubject = _localizer[
+                    "Infrastructure.EmailDistribution.ReminderPrefix",
+                    distribution.Subject
+                ].Value;
                 await SendEmailAsync(
                     recipient.Email,
                     reminderSubject,

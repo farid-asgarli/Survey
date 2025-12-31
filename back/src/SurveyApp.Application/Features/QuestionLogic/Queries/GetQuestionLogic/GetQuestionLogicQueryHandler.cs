@@ -45,18 +45,14 @@ public class GetQuestionLogicQueryHandler(
         // Verify survey belongs to namespace
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<IReadOnlyList<QuestionLogicDto>>.Failure(
-                "Survey not found in this namespace."
-            );
+            return Result<IReadOnlyList<QuestionLogicDto>>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Verify question exists in survey
         var question = survey.Questions.FirstOrDefault(q => q.Id == request.QuestionId);
         if (question == null)
         {
-            return Result<IReadOnlyList<QuestionLogicDto>>.Failure(
-                "Question not found in this survey."
-            );
+            return Result<IReadOnlyList<QuestionLogicDto>>.Failure("Errors.QuestionNotInSurvey");
         }
 
         // Get logic rules

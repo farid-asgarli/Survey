@@ -1,3 +1,4 @@
+using SurveyApp.Application.Common.Exceptions;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Services;
@@ -30,7 +31,7 @@ public class NpsService(
         var survey = await _surveyRepository.GetByIdWithQuestionsAsync(surveyId, cancellationToken);
         if (survey == null)
         {
-            throw new InvalidOperationException($"Survey with ID {surveyId} not found.");
+            throw new NotFoundException($"Errors.EntityNotFound|Survey|{surveyId}");
         }
 
         var responses = await _responseRepository.GetCompletedBySurveyIdAsync(
@@ -113,7 +114,7 @@ public class NpsService(
         var survey = await _surveyRepository.GetByIdWithQuestionsAsync(surveyId, cancellationToken);
         if (survey == null)
         {
-            throw new InvalidOperationException($"Survey with ID {surveyId} not found.");
+            throw new NotFoundException($"Errors.EntityNotFound|Survey|{surveyId}");
         }
 
         var responses = await _responseRepository.GetBySurveyIdAsync(surveyId, cancellationToken);
@@ -219,7 +220,7 @@ public class NpsService(
         var survey = await _surveyRepository.GetByIdWithQuestionsAsync(surveyId, cancellationToken);
         if (survey == null)
         {
-            throw new InvalidOperationException($"Survey with ID {surveyId} not found.");
+            throw new NotFoundException($"Errors.EntityNotFound|Survey|{surveyId}");
         }
 
         var analyticsData = await _responseRepository.GetAnalyticsDataAsync(

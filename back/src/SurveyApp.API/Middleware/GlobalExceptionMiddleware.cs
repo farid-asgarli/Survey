@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace SurveyApp.API.Middleware;
 
@@ -13,6 +14,7 @@ public class GlobalExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger<GlobalExceptionMiddleware> _logger;
     private readonly IHostEnvironment _environment;
+    private readonly IStringLocalizer<GlobalExceptionMiddleware> _localizer;
 
     /// <summary>
     /// Initializes a new instance of the middleware.
@@ -20,12 +22,14 @@ public class GlobalExceptionMiddleware
     public GlobalExceptionMiddleware(
         RequestDelegate next,
         ILogger<GlobalExceptionMiddleware> logger,
-        IHostEnvironment environment
+        IHostEnvironment environment,
+        IStringLocalizer<GlobalExceptionMiddleware> localizer
     )
     {
         _next = next;
         _logger = logger;
         _environment = environment;
+        _localizer = localizer;
     }
 
     /// <summary>
@@ -105,9 +109,7 @@ public class GlobalExceptionMiddleware
         else
         {
             problemDetails.Detail =
-                statusCode >= 500
-                    ? "An internal server error occurred. Please try again later."
-                    : exception.Message;
+                statusCode >= 500 ? _localizer["Errors.InternalServerError"] : exception.Message;
         }
 
         problemDetails.Extensions["traceId"] = context.TraceIdentifier;
@@ -127,7 +129,7 @@ public class GlobalExceptionMiddleware
             _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
         };
 
-    private static string GetTitle(int statusCode) =>
+    private string GetTitle(int statusCode) =>
         statusCode switch
         {
             400 => "Bad Request",
@@ -136,7 +138,7 @@ public class GlobalExceptionMiddleware
             404 => "Not Found",
             409 => "Conflict",
             500 => "Internal Server Error",
-            _ => "An error occurred",
+            _ => _localizer["Errors.ErrorOccurred"],
         };
 }
 

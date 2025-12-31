@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 using SurveyApp.Domain.ValueObjects;

@@ -1,4 +1,5 @@
 using FluentValidation;
+using SurveyApp.Application.Common;
 
 namespace SurveyApp.Application.Validators.Common;
 
@@ -20,11 +21,13 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage($"{fieldName} is required.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.Required, fieldName))
             .MinimumLength(3)
-            .WithMessage($"{fieldName} must be at least 3 characters.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.MinLength, fieldName, 3))
             .MaximumLength(200)
-            .WithMessage($"{fieldName} cannot exceed 200 characters.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MaxLength, fieldName, 200)
+            );
     }
 
     /// <summary>
@@ -50,11 +53,15 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage($"{fieldName} is required.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.Required, fieldName))
             .MinimumLength(minLength)
-            .WithMessage($"{fieldName} must be at least {minLength} characters.")
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MinLength, fieldName, minLength)
+            )
             .MaximumLength(maxLength)
-            .WithMessage($"{fieldName} cannot exceed {maxLength} characters.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MaxLength, fieldName, maxLength)
+            );
     }
 
     #endregion
@@ -71,7 +78,13 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .MaximumLength(maxLength)
-            .WithMessage($"Description cannot exceed {maxLength} characters.")
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Common.MaxLength,
+                    "Description",
+                    maxLength
+                )
+            )
             .When(
                 x => !string.IsNullOrEmpty((x as dynamic)?.Description),
                 ApplyConditionTo.CurrentValidator
@@ -88,7 +101,13 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .MaximumLength(maxLength)
-            .WithMessage($"Description cannot exceed {maxLength} characters.");
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Common.MaxLength,
+                    "Description",
+                    maxLength
+                )
+            );
     }
 
     #endregion
@@ -106,7 +125,9 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .MaximumLength(maxLength)
-            .WithMessage($"{fieldName} cannot exceed {maxLength} characters.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MaxLength, fieldName, maxLength)
+            );
     }
 
     /// <summary>
@@ -143,9 +164,9 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .Must(BeAValidUrl)
-            .WithMessage($"{fieldName} must be a valid HTTP or HTTPS URL.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Url.MustBeValid, fieldName))
             .MaximumLength(2000)
-            .WithMessage($"{fieldName} cannot exceed 2000 characters.");
+            .WithMessage(string.Format(LocalizationKeys.Validation.Url.MaxLength, fieldName));
     }
 
     /// <summary>
@@ -158,11 +179,11 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage($"{fieldName} is required.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Url.Required, fieldName))
             .Must(BeAValidRequiredUrl!)
-            .WithMessage($"{fieldName} must be a valid HTTP or HTTPS URL.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Url.MustBeValid, fieldName))
             .MaximumLength(2000)
-            .WithMessage($"{fieldName} cannot exceed 2000 characters.");
+            .WithMessage(string.Format(LocalizationKeys.Validation.Url.MaxLength, fieldName));
     }
 
     private static bool BeAValidUrl(string? url)
@@ -194,11 +215,13 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage($"{fieldName} is required.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.Required, fieldName))
             .EmailAddress()
-            .WithMessage($"{fieldName} must be a valid email address.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Email.MustBeValid, fieldName))
             .MaximumLength(254)
-            .WithMessage($"{fieldName} cannot exceed 254 characters.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MaxLength, fieldName, 254)
+            );
     }
 
     /// <summary>
@@ -211,9 +234,11 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .EmailAddress()
-            .WithMessage($"{fieldName} must be a valid email address.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Email.MustBeValid, fieldName))
             .MaximumLength(254)
-            .WithMessage($"{fieldName} cannot exceed 254 characters.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.MaxLength, fieldName, 254)
+            );
     }
 
     #endregion
@@ -228,7 +253,11 @@ public static class CommonValidationRules
         string fieldName = "Value"
     )
     {
-        return ruleBuilder.GreaterThan(0).WithMessage($"{fieldName} must be greater than 0.");
+        return ruleBuilder
+            .GreaterThan(0)
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.GreaterThanZero, fieldName)
+            );
     }
 
     /// <summary>
@@ -241,7 +270,9 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .GreaterThan(0)
-            .WithMessage($"{fieldName} must be greater than 0.")
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.GreaterThanZero, fieldName)
+            )
             .When(x => (x as dynamic) != null, ApplyConditionTo.CurrentValidator);
     }
 
@@ -255,7 +286,7 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .GreaterThanOrEqualTo(0)
-            .WithMessage($"{fieldName} must be non-negative.");
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.NonNegative, fieldName));
     }
 
     /// <summary>
@@ -270,7 +301,9 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .InclusiveBetween(min, max)
-            .WithMessage($"{fieldName} must be between {min} and {max}.");
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.Range, fieldName, min, max)
+            );
     }
 
     #endregion
@@ -287,7 +320,7 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .GreaterThan(DateTime.UtcNow)
-            .WithMessage($"{fieldName} must be in the future.");
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.FutureDate, fieldName));
     }
 
     /// <summary>
@@ -300,7 +333,7 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .GreaterThan(DateTime.UtcNow)
-            .WithMessage($"{fieldName} must be in the future.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.FutureDate, fieldName))
             .When(x => (x as dynamic) != null, ApplyConditionTo.CurrentValidator);
     }
 
@@ -326,7 +359,13 @@ public static class CommonValidationRules
                     return startDate.Value < endDate.Value;
                 }
             )
-            .WithMessage($"{startFieldName} must be before {endFieldName}.");
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Common.DateRangeInvalid,
+                    startFieldName,
+                    endFieldName
+                )
+            );
     }
 
     #endregion
@@ -341,7 +380,9 @@ public static class CommonValidationRules
         string fieldName = "ID"
     )
     {
-        return ruleBuilder.NotEmpty().WithMessage($"{fieldName} is required.");
+        return ruleBuilder
+            .NotEmpty()
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.IdRequired, fieldName));
     }
 
     /// <summary>
@@ -354,7 +395,7 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .NotEqual(Guid.Empty)
-            .WithMessage($"{fieldName} cannot be empty.")
+            .WithMessage(string.Format(LocalizationKeys.Validation.Common.IdNotEmpty, fieldName))
             .When(x => (x as dynamic) != null, ApplyConditionTo.CurrentValidator);
     }
 
@@ -370,7 +411,11 @@ public static class CommonValidationRules
         string fieldName = "Collection"
     )
     {
-        return ruleBuilder.NotEmpty().WithMessage($"{fieldName} must contain at least one item.");
+        return ruleBuilder
+            .NotEmpty()
+            .WithMessage(
+                string.Format(LocalizationKeys.Validation.Common.NotEmptyCollection, fieldName)
+            );
     }
 
     /// <summary>
@@ -384,7 +429,13 @@ public static class CommonValidationRules
     {
         return ruleBuilder
             .Must(x => x == null || x.Count <= maxCount)
-            .WithMessage($"{fieldName} cannot contain more than {maxCount} items.");
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Common.MaxCollectionCount,
+                    fieldName,
+                    maxCount
+                )
+            );
     }
 
     #endregion
@@ -402,7 +453,7 @@ public static class CommonValidationRules
         return ruleBuilder
             .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$")
             .WithMessage(
-                $"{fieldName} must be a valid hex color code (e.g., #RRGGBB or #RRGGBBAA)."
+                string.Format(LocalizationKeys.Validation.Color.InvalidHexFormat, fieldName)
             );
     }
 

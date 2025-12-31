@@ -126,7 +126,7 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
                 {
                     if (!questionsDict.TryGetValue(qt.QuestionId, out var question))
                     {
-                        errors.Add($"Question not found: '{qt.QuestionId}'");
+                        errors.Add($"Errors.EntityNotFound|Question|{qt.QuestionId}");
                         continue;
                     }
 

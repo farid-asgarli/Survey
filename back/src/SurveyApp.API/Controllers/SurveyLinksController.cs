@@ -21,7 +21,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}/links")]
 [Authorize]
-public class SurveyLinksController(IMediator mediator) : ControllerBase
+public class SurveyLinksController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 

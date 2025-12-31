@@ -228,7 +228,9 @@ public class ExportService(
     {
         var survey =
             await _surveyRepository.GetByIdWithQuestionsAsync(surveyId, cancellationToken)
-            ?? throw new InvalidOperationException($"Survey with ID {surveyId} not found.");
+            ?? throw new InvalidOperationException(
+                _localizer["Errors.EntityNotFound", "Survey", surveyId]
+            );
 
         var totalResponses = await _responseRepository.GetCountBySurveyIdAsync(
             surveyId,
@@ -311,7 +313,9 @@ public class ExportService(
     {
         var survey =
             await _surveyRepository.GetByIdWithQuestionsAsync(request.SurveyId, cancellationToken)
-            ?? throw new InvalidOperationException($"Survey with ID {request.SurveyId} not found.");
+            ?? throw new InvalidOperationException(
+                _localizer["Errors.EntityNotFound", "Survey", request.SurveyId]
+            );
 
         // Use database-level filtering for better performance
         var responses = await _responseRepository.GetFilteredForExportAsync(

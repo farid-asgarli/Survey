@@ -21,25 +21,11 @@ public class FileValidationOptions
     /// Allowed image MIME types.
     /// </summary>
     public HashSet<string> AllowedImageTypes { get; set; } =
-    [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/gif",
-        "image/webp",
-        "image/svg+xml",
-    ];
+        ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
 
     /// <summary>
     /// Allowed image file extensions.
     /// </summary>
     public HashSet<string> AllowedImageExtensions { get; set; } =
-    [
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".gif",
-        ".webp",
-        ".svg",
-    ];
+        [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"];
 }

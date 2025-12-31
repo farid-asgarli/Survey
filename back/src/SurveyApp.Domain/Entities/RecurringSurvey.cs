@@ -450,7 +450,7 @@ public class RecurringSurvey : AggregateRoot<Guid>
                 RecurrencePattern.Monthly => CalculateMonthlyNextRun(localBaseDate),
                 RecurrencePattern.Quarterly => CalculateQuarterlyNextRun(localBaseDate),
                 RecurrencePattern.Custom => CalculateCustomNextRun(localBaseDate),
-                _ => throw new InvalidOperationException($"Unknown recurrence pattern: {Pattern}"),
+                _ => throw new InvalidOperationException("Domain.RecurringSurvey.UnknownPattern"),
             };
 
             return TimeZoneInfo.ConvertTimeToUtc(nextLocalRun, timeZone);

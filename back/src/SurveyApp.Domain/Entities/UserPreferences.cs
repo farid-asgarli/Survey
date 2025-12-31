@@ -270,7 +270,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidThemeMode(themeMode))
             throw new ArgumentException(
-                "Invalid theme mode. Must be 'light', 'dark', or 'system'.",
+                "Domain.UserPreferences.InvalidThemeMode",
                 nameof(themeMode)
             );
 
@@ -283,7 +283,10 @@ public class UserPreferences : Entity<Guid>
     public void UpdateColorPalette(string colorPalette)
     {
         if (!IsValidColorPalette(colorPalette))
-            throw new ArgumentException("Invalid color palette.", nameof(colorPalette));
+            throw new ArgumentException(
+                "Domain.UserPreferences.InvalidColorPalette",
+                nameof(colorPalette)
+            );
 
         ColorPalette = colorPalette;
     }
@@ -323,7 +326,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidFontSizeScale(scale))
             throw new ArgumentException(
-                "Invalid font size scale. Must be 'small', 'medium', 'large', or 'extra-large'.",
+                "Domain.UserPreferences.InvalidFontSizeScale",
                 nameof(scale)
             );
 
@@ -359,7 +362,10 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDateFormat(string dateFormat)
     {
         if (!IsValidDateFormat(dateFormat))
-            throw new ArgumentException("Invalid date format.", nameof(dateFormat));
+            throw new ArgumentException(
+                "Domain.UserPreferences.InvalidDateFormat",
+                nameof(dateFormat)
+            );
 
         DateFormat = dateFormat;
     }
@@ -371,7 +377,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidTimeFormat(timeFormat))
             throw new ArgumentException(
-                "Invalid time format. Must be '12h' or '24h'.",
+                "Domain.UserPreferences.InvalidTimeFormat",
                 nameof(timeFormat)
             );
 
@@ -384,7 +390,10 @@ public class UserPreferences : Entity<Guid>
     public void UpdateTimezone(string timezone)
     {
         if (string.IsNullOrWhiteSpace(timezone))
-            throw new ArgumentException("Timezone cannot be empty.", nameof(timezone));
+            throw new ArgumentException(
+                "Domain.UserPreferences.TimezoneRequired",
+                nameof(timezone)
+            );
 
         Timezone = timezone;
     }
@@ -396,7 +405,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidDecimalSeparator(separator))
             throw new ArgumentException(
-                "Invalid decimal separator. Must be 'dot' or 'comma'.",
+                "Domain.UserPreferences.InvalidDecimalSeparator",
                 nameof(separator)
             );
 
@@ -410,7 +419,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidThousandsSeparator(separator))
             throw new ArgumentException(
-                "Invalid thousands separator. Must be 'comma', 'dot', 'space', or 'none'.",
+                "Domain.UserPreferences.InvalidThousandsSeparator",
                 nameof(separator)
             );
 
@@ -587,10 +596,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultViewMode(string viewMode)
     {
         if (!IsValidViewMode(viewMode))
-            throw new ArgumentException(
-                "Invalid view mode. Must be 'grid' or 'list'.",
-                nameof(viewMode)
-            );
+            throw new ArgumentException("Domain.UserPreferences.InvalidViewMode", nameof(viewMode));
         DefaultViewMode = viewMode;
     }
 
@@ -618,7 +624,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultSortField(string field)
     {
         if (!IsValidSortField(field))
-            throw new ArgumentException("Invalid sort field.", nameof(field));
+            throw new ArgumentException("Domain.UserPreferences.InvalidSortField", nameof(field));
         DefaultSortField = field;
     }
 
@@ -628,10 +634,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultSortOrder(string order)
     {
         if (!IsValidSortOrder(order))
-            throw new ArgumentException(
-                "Invalid sort order. Must be 'asc' or 'desc'.",
-                nameof(order)
-            );
+            throw new ArgumentException("Domain.UserPreferences.InvalidSortOrder", nameof(order));
         DefaultSortOrder = order;
     }
 
@@ -729,7 +732,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidQuestionNumberingStyle(style))
             throw new ArgumentException(
-                "Invalid numbering style. Must be 'numbers', 'letters', or 'none'.",
+                "Domain.UserPreferences.InvalidNumberingStyle",
                 nameof(style)
             );
         QuestionNumberingStyle = style;
@@ -749,7 +752,10 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultPageBreakBehavior(string behavior)
     {
         if (!IsValidPageBreakBehavior(behavior))
-            throw new ArgumentException("Invalid page break behavior.", nameof(behavior));
+            throw new ArgumentException(
+                "Domain.UserPreferences.InvalidPageBreakBehavior",
+                nameof(behavior)
+            );
         DefaultPageBreakBehavior = behavior;
     }
 
@@ -788,7 +794,7 @@ public class UserPreferences : Entity<Guid>
     {
         if (!IsValidOnboardingStatus(status))
             throw new ArgumentException(
-                "Invalid onboarding status. Must be 'not_started', 'in_progress', 'completed', or 'skipped'.",
+                "Domain.UserPreferences.InvalidOnboardingStatus",
                 nameof(status)
             );
         OnboardingStatus = status;
@@ -805,7 +811,10 @@ public class UserPreferences : Entity<Guid>
     public void UpdateOnboardingCurrentStep(int step)
     {
         if (step < 0 || step > 10)
-            throw new ArgumentException("Onboarding step must be between 0 and 10.", nameof(step));
+            throw new ArgumentException(
+                "Domain.UserPreferences.OnboardingStepOutOfRange",
+                nameof(step)
+            );
         OnboardingCurrentStep = step;
 
         if (OnboardingStatus == "not_started" && step > 0)

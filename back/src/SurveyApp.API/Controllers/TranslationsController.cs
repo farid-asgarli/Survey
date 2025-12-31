@@ -14,7 +14,7 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}/translations")]
 [Authorize]
-public class TranslationsController(IMediator mediator) : ControllerBase
+public class TranslationsController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 

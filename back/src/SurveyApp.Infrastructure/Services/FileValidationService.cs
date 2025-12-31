@@ -1,7 +1,8 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
+using SurveyApp.Application.Services.Files;
 
-namespace SurveyApp.Application.Services.Files;
+namespace SurveyApp.Infrastructure.Services;
 
 /// <summary>
 /// Service for validating file uploads with security checks.
@@ -11,24 +12,23 @@ public partial class FileValidationService : IFileValidationService
     private readonly FileValidationOptions _options;
 
     // File signature (magic bytes) validation to prevent polyglot attacks
-    private static readonly Dictionary<string, byte[][]> FileSignatures =
-        new(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<string, byte[][]> FileSignatures = new(
+        StringComparer.OrdinalIgnoreCase
+    )
+    {
+        { ".jpg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
+        { ".jpeg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
+        { ".png", [new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }] },
         {
-            { ".jpg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
-            { ".jpeg", [new byte[] { 0xFF, 0xD8, 0xFF }] },
-            {
-                ".png",
-                [new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }]
-            },
-            {
-                ".gif",
-                [
-                    new byte[] { 0x47, 0x49, 0x46, 0x38, 0x37, 0x61 },
-                    new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 },
-                ]
-            }, // GIF87a and GIF89a
-            { ".webp", [new byte[] { 0x52, 0x49, 0x46, 0x46 }] }, // RIFF header (WebP also has WEBP at offset 8)
-        };
+            ".gif",
+
+            [
+                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x37, 0x61 },
+                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 },
+            ]
+        }, // GIF87a and GIF89a
+        { ".webp", [new byte[] { 0x52, 0x49, 0x46, 0x46 }] }, // RIFF header (WebP also has WEBP at offset 8)
+    };
 
     // Dangerous SVG patterns that could be used for XSS attacks
     private static readonly string[] DangerousSvgPatterns =

@@ -1,5 +1,8 @@
-namespace SurveyApp.Infrastructure.Identity;
+namespace SurveyApp.Application.Common.Interfaces;
 
+/// <summary>
+/// Service for handling user identity operations (authentication, registration, etc.)
+/// </summary>
 public interface IIdentityService
 {
     Task<AuthenticationResult> RegisterAsync(
@@ -18,6 +21,9 @@ public interface IIdentityService
     Task<string> GenerateEmailConfirmationTokenAsync(string userId);
 }
 
+/// <summary>
+/// Represents the result of an authentication operation.
+/// </summary>
 public record AuthenticationResult
 {
     public bool Succeeded { get; init; }

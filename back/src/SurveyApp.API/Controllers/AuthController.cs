@@ -1,182 +1,103 @@
-using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using SurveyApp.Application.DTOs;
-using SurveyApp.Infrastructure.Identity;
+using SurveyApp.Application.Features.Auth.Commands.ForgotPassword;
+using SurveyApp.Application.Features.Auth.Commands.Login;
+using SurveyApp.Application.Features.Auth.Commands.Logout;
+using SurveyApp.Application.Features.Auth.Commands.RefreshToken;
+using SurveyApp.Application.Features.Auth.Commands.Register;
+using SurveyApp.Application.Features.Auth.Commands.ResetPassword;
 
 namespace SurveyApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(
-    IIdentityService identityService,
-    IStringLocalizer<AuthController> localizer
-) : ControllerBase
+public class AuthController(IMediator mediator) : ApiControllerBase
 {
-    private readonly IIdentityService _identityService = identityService;
-    private readonly IStringLocalizer<AuthController> _localizer = localizer;
+    private readonly IMediator _mediator = mediator;
 
     /// <summary>
     /// Register a new user
     /// </summary>
     [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var result = await _identityService.RegisterAsync(
-            request.Email,
-            request.Password,
-            request.FirstName,
-            request.LastName
-        );
-
-        if (!result.Succeeded)
-            return BadRequest(
-                new ValidationProblemDetails(
-                    new Dictionary<string, string[]> { { "", result.Errors.ToArray() } }
-                )
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.RegistrationFailed"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-
-        return Ok(
-            new AuthResponseDto
+        var result = await _mediator.Send(
+            new RegisterCommand
             {
-                Token = result.Token!,
-                RefreshToken = result.RefreshToken!,
-                ExpiresAt = result.ExpiresAt!.Value,
-                User = new AuthUserDto
-                {
-                    Id = result.UserId!,
-                    Email = result.Email!,
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                },
+                Email = request.Email,
+                Password = request.Password,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
             }
         );
+
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Login with email and password
     /// </summary>
     [HttpPost("login")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var result = await _identityService.LoginAsync(request.Email, request.Password);
-
-        if (!result.Succeeded)
-            return Unauthorized(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.AuthenticationFailed"],
-                    Status = StatusCodes.Status401Unauthorized,
-                    Detail =
-                        result.Errors.FirstOrDefault() ?? _localizer["Errors.InvalidCredentials"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-
-        return Ok(
-            new AuthResponseDto
-            {
-                Token = result.Token!,
-                RefreshToken = result.RefreshToken!,
-                ExpiresAt = result.ExpiresAt!.Value,
-                User = new AuthUserDto
-                {
-                    Id = result.UserId!,
-                    Email = result.Email!,
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                },
-            }
+        var result = await _mediator.Send(
+            new LoginCommand { Email = request.Email, Password = request.Password }
         );
+
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Refresh an expired token
     /// </summary>
     [HttpPost("refresh")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenRefreshResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
     {
-        var result = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
-
-        if (!result.Succeeded)
-            return Unauthorized(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.TokenRefreshFailed"],
-                    Status = StatusCodes.Status401Unauthorized,
-                    Detail =
-                        result.Errors.FirstOrDefault()
-                        ?? _localizer["Errors.InvalidOrExpiredToken"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-
-        return Ok(
-            new TokenRefreshResponseDto
-            {
-                Token = result.Token!,
-                RefreshToken = result.RefreshToken!,
-                ExpiresAt = result.ExpiresAt!.Value,
-            }
+        var result = await _mediator.Send(
+            new RefreshTokenCommand { Token = request.Token, RefreshToken = request.RefreshToken }
         );
+
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Request a password reset
     /// </summary>
     [HttpPost("forgot-password")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
-        var token = await _identityService.GeneratePasswordResetTokenAsync(request.Email);
+        var result = await _mediator.Send(new ForgotPasswordCommand { Email = request.Email });
 
-        // In production, send this token via email
-        // For now, we just return success (204 No Content is more appropriate)
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
     /// Reset password with token
     /// </summary>
     [HttpPost("reset-password")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
     {
-        var result = await _identityService.ResetPasswordAsync(
-            request.Email,
-            request.Token,
-            request.NewPassword
+        var result = await _mediator.Send(
+            new ResetPasswordCommand
+            {
+                Email = request.Email,
+                Token = request.Token,
+                NewPassword = request.NewPassword,
+            }
         );
 
-        if (!result)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.PasswordResetFailed"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.InvalidTokenOrEmail"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -188,14 +109,9 @@ public class AuthController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Logout()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
+        var result = await _mediator.Send(new LogoutCommand());
 
-        await _identityService.RevokeTokenAsync(userId);
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 }
 

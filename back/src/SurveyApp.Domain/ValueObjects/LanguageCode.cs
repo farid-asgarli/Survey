@@ -84,7 +84,10 @@ public sealed class LanguageCode : ValueObject
         var normalized = value.Trim().ToLowerInvariant();
 
         if (normalized.Length < 2 || normalized.Length > 5)
-            throw new ArgumentException($"Invalid language code format: '{value}'.", nameof(value));
+            throw new ArgumentException(
+                "Domain.ValueObjects.LanguageCode.InvalidFormat",
+                nameof(value)
+            );
 
         // Allow codes like "en", "en-US", "zh-CN"
         var primaryCode = normalized.Split('-')[0];

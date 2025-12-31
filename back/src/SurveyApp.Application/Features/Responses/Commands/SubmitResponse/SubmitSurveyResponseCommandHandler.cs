@@ -104,7 +104,7 @@ public class SubmitSurveyResponseCommandHandler(
             if (!validationResult.IsSuccess)
             {
                 return Result<SurveyResponseDto>.Failure(
-                    $"Invalid answer for '{question.Text}': {validationResult.Error}"
+                    $"Application.Response.InvalidAnswerForQuestion|{question.Text}|{validationResult.Error}"
                 );
             }
 

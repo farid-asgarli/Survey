@@ -108,6 +108,15 @@ public static class DependencyInjection
         );
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
+        // File validation configuration
+        services.Configure<Application.Services.Files.FileValidationOptions>(
+            configuration.GetSection(Application.Services.Files.FileValidationOptions.SectionName)
+        );
+        services.AddScoped<
+            Application.Services.Files.IFileValidationService,
+            FileValidationService
+        >();
+
         services.AddScoped<ILogicEvaluationService, LogicEvaluationService>();
         services.AddScoped<IExportService, ExportService>();
         services.AddScoped<INpsService, NpsService>();
