@@ -18,7 +18,8 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     )
     {
         return await _context
-            .SurveyLinks.Include(l => l.Survey)
+            .SurveyLinks.AsNoTracking()
+            .Include(l => l.Survey)
             .ThenInclude(s => s.Translations)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
@@ -29,7 +30,8 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     )
     {
         return await _context
-            .SurveyLinks.Include(l => l.Survey)
+            .SurveyLinks.AsNoTracking()
+            .Include(l => l.Survey)
             .ThenInclude(s => s.Translations)
             .Include(l => l.Clicks)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
@@ -41,7 +43,8 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     )
     {
         return await _context
-            .SurveyLinks.Include(l => l.Survey)
+            .SurveyLinks.AsNoTracking()
+            .Include(l => l.Survey)
             .ThenInclude(s => s.Translations)
             .FirstOrDefaultAsync(l => l.Token == token, cancellationToken);
     }
@@ -52,7 +55,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.SurveyLinks.Where(l => l.SurveyId == surveyId);
+        var query = _context.SurveyLinks.AsNoTracking().Where(l => l.SurveyId == surveyId);
 
         if (isActive.HasValue)
         {
@@ -97,7 +100,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.LinkClicks.Where(c => c.SurveyLinkId == surveyLinkId);
+        var query = _context.LinkClicks.AsNoTracking().Where(c => c.SurveyLinkId == surveyLinkId);
 
         if (startDate.HasValue)
         {

@@ -15,7 +15,8 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
     )
     {
         return await _context
-            .Namespaces.Include(n => n.Memberships)
+            .Namespaces.AsNoTracking()
+            .Include(n => n.Memberships)
             .ThenInclude(m => m.User)
             .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
@@ -26,7 +27,8 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
     )
     {
         return await _context
-            .Namespaces.Include(n => n.Memberships)
+            .Namespaces.AsNoTracking()
+            .Include(n => n.Memberships)
             .ThenInclude(m => m.User)
             .FirstOrDefaultAsync(n => n.Slug == slug, cancellationToken);
     }
@@ -37,7 +39,8 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
     )
     {
         return await _context
-            .Namespaces.Include(n => n.Memberships)
+            .Namespaces.AsNoTracking()
+            .Include(n => n.Memberships)
             .ThenInclude(m => m.User)
             .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
@@ -46,7 +49,10 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.Namespaces.Include(n => n.Memberships).ToListAsync(cancellationToken);
+        return await _context
+            .Namespaces.AsNoTracking()
+            .Include(n => n.Memberships)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyList<Namespace>> GetByUserIdAsync(
@@ -55,7 +61,8 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
     )
     {
         return await _context
-            .Namespaces.Include(n => n.Memberships)
+            .Namespaces.AsNoTracking()
+            .Include(n => n.Memberships)
             .Where(n => n.Memberships.Any(m => m.UserId == userId))
             .ToListAsync(cancellationToken);
     }

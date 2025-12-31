@@ -290,7 +290,7 @@ export function GlobalSearch() {
               <span>{t('search.toClose')}</span>
             </div>
             <div className="ml-auto flex items-center gap-1.5 text-xs text-on-surface-variant">
-              <span>Open with</span>
+              <span>{t('emptyState.search.openWith')}</span>
               <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">{formatShortcutKeys(['Mod', 'K'])}</kbd>
             </div>
           </div>

@@ -105,7 +105,7 @@ export function NPSGauge({ data, isLoading, className, showBreakdown = true, siz
           {/* Score display */}
           <div className="text-center -mt-2">
             <p className={cn('font-bold', sizeClasses[size].score, categoryColors[data.category])}>{score}</p>
-            <p className={cn('text-on-surface-variant', sizeClasses[size].label)}>NPS Score</p>
+            <p className={cn('text-on-surface-variant', sizeClasses[size].label)}>{t('analytics.npsScoreLabel')}</p>
           </div>
         </div>
 
@@ -153,9 +153,7 @@ export function NPSGauge({ data, isLoading, className, showBreakdown = true, siz
               </div>
 
               {/* Total responses */}
-              <p className="text-center text-xs text-on-surface-variant mt-2">
-                Based on {data.totalResponses} response{data.totalResponses !== 1 ? 's' : ''}
-              </p>
+              <p className="text-center text-xs text-on-surface-variant mt-2">{t('analytics.basedOnResponses', { count: data.totalResponses })}</p>
             </div>
           </>
         )}

@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type Ref } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
@@ -15,7 +16,8 @@ const chipVariants = cva('inline-flex items-center gap-2 font-medium transition-
       // Input chip - for entered values
       input: 'bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high',
       // Suggestion chip
-      suggestion: 'bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container',
+      suggestion:
+        'bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container',
       // Success chip - for status like "Complete"
       success: 'bg-success-container/60 text-on-success-container border border-success/20',
       // Warning chip
@@ -44,6 +46,7 @@ interface ChipProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof 
 }
 
 function Chip({ className, variant, size, icon, onRemove, removeAriaLabel, selected, ref, children, onClick, ...props }: ChipProps) {
+  const { t } = useTranslation();
   const actualVariant = selected && variant === 'filter' ? 'filter-selected' : variant;
   const isClickable = !!onClick;
 
@@ -62,19 +65,19 @@ function Chip({ className, variant, size, icon, onRemove, removeAriaLabel, selec
       }
       {...props}
     >
-      {icon && <span className='shrink-0 -ml-0.5'>{icon}</span>}
-      <span className='truncate flex justify-center items-center'>{children}</span>
+      {icon && <span className="shrink-0 -ml-0.5">{icon}</span>}
+      <span className="truncate flex justify-center items-center">{children}</span>
       {onRemove && (
         <button
-          type='button'
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onRemove();
           }}
-          className='shrink-0 p-0.5 rounded-full hover:bg-on-surface/10 -mr-1 transition-colors'
-          aria-label={removeAriaLabel || 'Remove'}
+          className="shrink-0 p-0.5 rounded-full hover:bg-on-surface/10 -mr-1 transition-colors"
+          aria-label={removeAriaLabel || t('a11y.remove')}
         >
-          <X className='h-3.5 w-3.5' />
+          <X className="h-3.5 w-3.5" />
         </button>
       )}
     </div>

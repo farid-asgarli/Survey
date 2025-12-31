@@ -8,6 +8,7 @@ public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 {
     private readonly ApplicationDbContext _context = context;
     private IDbContextTransaction? _transaction;
+    private bool _disposed;
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -39,9 +40,31 @@ public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
         }
     }
 
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+            return;
+
+        if (_transaction != null)
+        {
+            await _transaction.DisposeAsync();
+            _transaction = null;
+        }
+
+        await _context.DisposeAsync();
+        _disposed = true;
+        GC.SuppressFinalize(this);
+    }
+
     public void Dispose()
     {
+        if (_disposed)
+            return;
+
         _transaction?.Dispose();
+        _transaction = null;
         _context.Dispose();
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }

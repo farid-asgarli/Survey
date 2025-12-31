@@ -106,7 +106,7 @@ public static class DependencyInjection
         services.Configure<FileStorageOptions>(
             configuration.GetSection(FileStorageOptions.SectionName)
         );
-        services.AddSingleton<IFileStorageService, LocalFileStorageService>();
+        services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
         services.AddScoped<ILogicEvaluationService, LogicEvaluationService>();
         services.AddScoped<IExportService, ExportService>();

@@ -127,9 +127,7 @@ export function RecurringSurveyCard({
         {recurringSurvey.recipientCount > 0 && (
           <div className="mt-3 flex items-center gap-2 text-sm text-on-surface-variant">
             <Users className="h-4 w-4" />
-            <span>
-              {recurringSurvey.recipientCount} recipient{recurringSurvey.recipientCount !== 1 ? 's' : ''}
-            </span>
+            <span>{t('recurringSurveys.recipientCount', { count: recurringSurvey.recipientCount })}</span>
           </div>
         )}
 
@@ -137,7 +135,7 @@ export function RecurringSurveyCard({
         <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-outline-variant/30">
           {/* Next run */}
           <div className="text-center">
-            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Next Run</p>
+            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">{t('recurringSurveys.nextRun')}</p>
             <Tooltip content={formatDateTime(recurringSurvey.nextRunAt)}>
               <p className="text-sm font-medium text-on-surface truncate">{isActive ? formatRelativeTime(recurringSurvey.nextRunAt) : '—'}</p>
             </Tooltip>
@@ -145,7 +143,7 @@ export function RecurringSurveyCard({
 
           {/* Last run */}
           <div className="text-center border-x border-outline-variant/30">
-            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Last Run</p>
+            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">{t('recurringSurveys.lastRun')}</p>
             <Tooltip content={formatDateTime(recurringSurvey.lastRunAt)}>
               <p className="text-sm font-medium text-on-surface truncate">{formatRelativeTime(recurringSurvey.lastRunAt)}</p>
             </Tooltip>
@@ -153,7 +151,7 @@ export function RecurringSurveyCard({
 
           {/* Total runs */}
           <div className="text-center">
-            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Total Runs</p>
+            <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">{t('recurringSurveys.totalRuns')}</p>
             <p className="text-sm font-medium text-on-surface">{recurringSurvey.totalRuns}</p>
           </div>
         </div>
@@ -161,7 +159,7 @@ export function RecurringSurveyCard({
         {/* Quick action buttons */}
         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-outline-variant/30">
           {canPause && onPause && (
-            <Tooltip content="Pause recurring survey">
+            <Tooltip content={t('recurringSurveys.pauseTooltip')}>
               <IconButton
                 variant="filled-tonal"
                 size="sm"
@@ -174,7 +172,7 @@ export function RecurringSurveyCard({
             </Tooltip>
           )}
           {canResume && onResume && (
-            <Tooltip content="Resume recurring survey">
+            <Tooltip content={t('recurringSurveys.resumeTooltip')}>
               <IconButton
                 variant="filled-tonal"
                 size="sm"
@@ -187,7 +185,7 @@ export function RecurringSurveyCard({
             </Tooltip>
           )}
           {canTrigger && onTrigger && (
-            <Tooltip content="Trigger immediate run">
+            <Tooltip content={t('recurringSurveys.triggerTooltip')}>
               <IconButton variant="filled-tonal" size="sm" aria-label={t('a11y.triggerRun')} onClick={() => onTrigger(recurringSurvey.id)}>
                 <Zap className="h-4 w-4" />
               </IconButton>
@@ -195,7 +193,7 @@ export function RecurringSurveyCard({
           )}
           <div className="flex-1" />
           {onViewHistory && (
-            <Tooltip content="View run history">
+            <Tooltip content={t('recurringSurveys.viewHistoryTooltip')}>
               <IconButton variant="standard" size="sm" aria-label={t('a11y.viewHistory')} onClick={() => onViewHistory(recurringSurvey.id)}>
                 <History className="h-4 w-4" />
               </IconButton>

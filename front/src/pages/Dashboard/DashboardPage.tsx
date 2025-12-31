@@ -31,7 +31,7 @@ export function DashboardPage() {
     return [...surveys].sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime()).slice(0, 5);
   }, [surveys]);
 
-  const firstName = user?.firstName || 'there';
+  const firstName = user?.firstName || t('common.greetingFallback');
   const greeting = useMemo(() => {
     const hour = getCurrentHour();
     if (hour < 12) return t('dashboard.greeting.morning');

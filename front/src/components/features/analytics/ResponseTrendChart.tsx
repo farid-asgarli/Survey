@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 
@@ -10,13 +11,10 @@ export interface ResponseTrendChartProps {
   description?: string;
 }
 
-export function ResponseTrendChart({
-  data,
-  isLoading,
-  className,
-  title = 'Response Trend',
-  description = 'Daily responses over time',
-}: ResponseTrendChartProps) {
+export function ResponseTrendChart({ data, isLoading, className, title, description }: ResponseTrendChartProps) {
+  const { t } = useTranslation();
+  const resolvedTitle = title ?? t('analytics.responseTrend');
+  const resolvedDescription = description ?? t('analytics.responseTrendDesc');
   // Transform the data into an array sorted by date
   const chartData = useMemo(() => {
     if (!data) return [];
@@ -53,11 +51,11 @@ export function ResponseTrendChart({
     return (
       <Card variant="elevated" className={className}>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
+          <CardTitle>{resolvedTitle}</CardTitle>
+          <CardDescription>{resolvedDescription}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-40 items-center justify-center text-on-surface-variant">No response data available</div>
+          <div className="flex h-40 items-center justify-center text-on-surface-variant">{t('analytics.noResponseData')}</div>
         </CardContent>
       </Card>
     );
@@ -68,12 +66,12 @@ export function ResponseTrendChart({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
+            <CardTitle>{resolvedTitle}</CardTitle>
+            <CardDescription>{resolvedDescription}</CardDescription>
           </div>
           <div className="text-right">
             <p className="text-2xl font-bold text-on-surface">{totalResponses}</p>
-            <p className="text-xs text-on-surface-variant">Total responses</p>
+            <p className="text-xs text-on-surface-variant">{t('analytics.totalResponses')}</p>
           </div>
         </div>
       </CardHeader>
@@ -93,7 +91,7 @@ export function ResponseTrendChart({
                 {/* Tooltip */}
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                   <div className="bg-surface-container-highest text-on-surface text-xs rounded-lg px-2 py-1 whitespace-nowrap border-2 border-outline-variant">
-                    <p className="font-medium">{item.count} responses</p>
+                    <p className="font-medium">{t('analytics.responsesCount', { count: item.count })}</p>
                     <p className="text-on-surface-variant">{item.label}</p>
                   </div>
                 </div>

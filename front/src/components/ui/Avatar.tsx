@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type Ref } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -44,9 +45,15 @@ function Avatar({ className, src, alt, fallback, variant, size, ref, ...props }:
         .slice(0, 2)
     : '?';
 
+  const { t } = useTranslation();
+
   return (
     <div ref={ref} className={cn(avatarVariants({ variant, size, className }))} {...props}>
-      {src ? <img src={src} alt={alt || 'Avatar'} className="h-full w-full object-cover" /> : <span className="select-none">{initials}</span>}
+      {src ? (
+        <img src={src} alt={alt || t('a11y.avatarAlt')} className="h-full w-full object-cover" />
+      ) : (
+        <span className="select-none">{initials}</span>
+      )}
     </div>
   );
 }

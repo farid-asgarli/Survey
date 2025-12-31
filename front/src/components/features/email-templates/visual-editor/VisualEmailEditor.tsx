@@ -837,7 +837,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                 >
                   <iframe
                     srcDoc={replacePlaceholders(generatedHtml, previewWithSampleData)}
-                    title="Email Preview"
+                    title={t('emailEditor.previewTitle')}
                     className="w-full border-0"
                     style={{ height: devicePreview === 'mobile' ? '667px' : '800px' }}
                   />

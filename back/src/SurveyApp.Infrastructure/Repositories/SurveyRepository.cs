@@ -13,7 +13,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     public async Task<Survey?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context
-            .Surveys.Include(s => s.Namespace)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Namespace)
             .Include(s => s.Translations)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
@@ -24,7 +25,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Namespace)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Namespace)
             .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
@@ -37,7 +39,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Namespace)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Namespace)
             .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
@@ -50,7 +53,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(s => s.AccessToken == accessToken, cancellationToken);
@@ -62,7 +66,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
             .Include(s => s.Theme)
@@ -76,7 +81,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions)
             .ThenInclude(q => q.Translations)
             .Include(s => s.Responses)
@@ -92,7 +98,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions)
             .ThenInclude(q => q.Translations)
             .Where(s => s.NamespaceId == namespaceId && s.Status == status)
@@ -107,7 +114,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         return await _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions)
             .ThenInclude(q => q.Translations)
             .Where(s => s.NamespaceId == namespaceId && s.CreatedBy == creatorId)
@@ -127,7 +135,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         var query = _context
-            .Surveys.Include(s => s.Translations)
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
             .Include(s => s.Questions)
             .ThenInclude(q => q.Translations)
             .Include(s => s.Responses)
@@ -138,19 +147,16 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
             query = query.Where(s => s.Status == status.Value);
         }
 
+        // Use efficient single-query search through translations using Any()
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
-            // Query through translations table since Title/Description are computed properties
-            var matchingSurveyIds = await _context
-                .SurveyTranslations.Where(t =>
-                    t.Title.Contains(searchTerm)
-                    || (t.Description != null && t.Description.Contains(searchTerm))
+            var searchPattern = $"%{searchTerm}%";
+            query = query.Where(s =>
+                s.Translations.Any(t =>
+                    EF.Functions.ILike(t.Title, searchPattern)
+                    || (t.Description != null && EF.Functions.ILike(t.Description, searchPattern))
                 )
-                .Select(t => t.SurveyId)
-                .Distinct()
-                .ToListAsync(cancellationToken);
-
-            query = query.Where(s => matchingSurveyIds.Contains(s.Id));
+            );
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -174,9 +180,18 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     {
         return sortBy?.ToLowerInvariant() switch
         {
+            // Use OrderBy with subquery to avoid potential issues with First()
             "title" => sortDescending
-                ? query.OrderByDescending(s => s.Translations.First().Title)
-                : query.OrderBy(s => s.Translations.First().Title),
+                ? query.OrderByDescending(s =>
+                    s.Translations.OrderBy(t => t.LanguageCode)
+                        .Select(t => t.Title)
+                        .FirstOrDefault()
+                )
+                : query.OrderBy(s =>
+                    s.Translations.OrderBy(t => t.LanguageCode)
+                        .Select(t => t.Title)
+                        .FirstOrDefault()
+                ),
             "updatedat" => sortDescending
                 ? query.OrderByDescending(s => s.UpdatedAt ?? s.CreatedAt)
                 : query.OrderBy(s => s.UpdatedAt ?? s.CreatedAt),

@@ -14,10 +14,9 @@ public class UserPreferencesRepository(ApplicationDbContext context) : IUserPref
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.UserPreferences.FirstOrDefaultAsync(
-            up => up.UserId == userId,
-            cancellationToken
-        );
+        return await _context
+            .UserPreferences.AsNoTracking()
+            .FirstOrDefaultAsync(up => up.UserId == userId, cancellationToken);
     }
 
     public async Task<UserPreferences?> GetByIdAsync(
@@ -25,10 +24,9 @@ public class UserPreferencesRepository(ApplicationDbContext context) : IUserPref
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.UserPreferences.FirstOrDefaultAsync(
-            up => up.Id == id,
-            cancellationToken
-        );
+        return await _context
+            .UserPreferences.AsNoTracking()
+            .FirstOrDefaultAsync(up => up.Id == id, cancellationToken);
     }
 
     public async Task<UserPreferences?> AddAsync(

@@ -212,7 +212,7 @@ export function PreviewToolbar({
                     type="number"
                     value={customWidth}
                     onChange={(e) => onCustomWidthChange(e.target.value)}
-                    placeholder="Width"
+                    placeholder={t('surveyPreview.width')}
                     className="h-8 text-xs pr-7 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     size="sm"
                   />
@@ -224,7 +224,7 @@ export function PreviewToolbar({
                     type="number"
                     value={customHeight}
                     onChange={(e) => onCustomHeightChange(e.target.value)}
-                    placeholder="Height"
+                    placeholder={t('surveyPreview.height')}
                     className="h-8 text-xs pr-7 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     size="sm"
                   />

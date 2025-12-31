@@ -99,6 +99,26 @@ public interface ISurveyResponseRepository
     );
 
     /// <summary>
+    /// Gets filtered responses for export with database-level filtering.
+    /// </summary>
+    /// <param name="surveyId">The survey ID.</param>
+    /// <param name="includeIncomplete">Whether to include incomplete responses.</param>
+    /// <param name="startDate">Optional start date filter.</param>
+    /// <param name="endDate">Optional end date filter.</param>
+    /// <param name="respondentEmail">Optional respondent email filter.</param>
+    /// <param name="isComplete">Optional completion status filter.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    Task<IReadOnlyList<SurveyResponse>> GetFilteredForExportAsync(
+        Guid surveyId,
+        bool includeIncomplete = false,
+        DateTime? startDate = null,
+        DateTime? endDate = null,
+        string? respondentEmail = null,
+        bool? isComplete = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Gets analytics data for a survey.
     /// </summary>
     Task<SurveyAnalyticsData> GetAnalyticsDataAsync(

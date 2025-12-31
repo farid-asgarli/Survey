@@ -15,7 +15,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
@@ -25,7 +26,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)
             .ThenInclude(q => q.Translations)
@@ -38,7 +40,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)
             .ThenInclude(q => q.Translations)
@@ -51,7 +54,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId)
             .OrderByDescending(r => r.SubmittedAt)
@@ -64,7 +68,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId && r.IsComplete)
             .OrderByDescending(r => r.SubmittedAt)
@@ -83,7 +88,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         var query = _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId);
 
@@ -112,7 +118,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         var query = _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId);
 
@@ -166,7 +173,8 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     )
     {
         return await _context
-            .SurveyResponses.Include(r => r.Respondent)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId && r.RespondentEmail == email)
             .OrderByDescending(r => r.SubmittedAt)
@@ -185,13 +193,63 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
         );
     }
 
+    public async Task<IReadOnlyList<SurveyResponse>> GetFilteredForExportAsync(
+        Guid surveyId,
+        bool includeIncomplete = false,
+        DateTime? startDate = null,
+        DateTime? endDate = null,
+        string? respondentEmail = null,
+        bool? isComplete = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = _context
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Respondent)
+            .Include(r => r.Answers)
+            .Where(r => r.SurveyId == surveyId);
+
+        // Apply completion filter
+        if (!includeIncomplete)
+        {
+            query = query.Where(r => r.IsComplete);
+        }
+        else if (isComplete.HasValue)
+        {
+            query = query.Where(r => r.IsComplete == isComplete.Value);
+        }
+
+        // Apply date range filter
+        if (startDate.HasValue)
+        {
+            query = query.Where(r => r.StartedAt >= startDate.Value);
+        }
+
+        if (endDate.HasValue)
+        {
+            query = query.Where(r => r.StartedAt <= endDate.Value);
+        }
+
+        // Apply email filter with case-insensitive search
+        if (!string.IsNullOrEmpty(respondentEmail))
+        {
+            query = query.Where(r =>
+                r.RespondentEmail != null
+                && EF.Functions.ILike(r.RespondentEmail, $"%{respondentEmail}%")
+            );
+        }
+
+        return await query.OrderByDescending(r => r.SubmittedAt).ToListAsync(cancellationToken);
+    }
+
     public async Task<SurveyAnalyticsData> GetAnalyticsDataAsync(
         Guid surveyId,
         CancellationToken cancellationToken = default
     )
     {
         var responses = await _context
-            .SurveyResponses.Include(r => r.Answers)
+            .SurveyResponses.AsNoTracking()
+            .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId)
             .ToListAsync(cancellationToken);
 

@@ -15,7 +15,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         return await _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
@@ -25,7 +26,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         return await _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Include(t => t.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
@@ -37,7 +39,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         return await _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Include(t => t.Questions)
             .ThenInclude(q => q.Translations)
             .Where(t => t.NamespaceId == namespaceId)
@@ -51,7 +54,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         return await _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Include(t => t.Questions)
             .ThenInclude(q => q.Translations)
             .Where(t => t.NamespaceId == namespaceId && t.IsPublic)
@@ -91,7 +95,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         return await _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Include(t => t.Questions)
             .ThenInclude(q => q.Translations)
             .Where(t => t.NamespaceId == namespaceId && t.CreatedBy == creatorId)
@@ -110,7 +115,8 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
     )
     {
         var query = _context
-            .SurveyTemplates.Include(t => t.Translations)
+            .SurveyTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Include(t => t.Questions)
             .ThenInclude(q => q.Translations)
             .Where(t => t.NamespaceId == namespaceId);

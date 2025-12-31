@@ -235,8 +235,7 @@ function CalendarGrid({
     const isRangeEndDay = safeSameDay(date, rangeEnd || hoverDate);
 
     const effectiveEnd = rangeEnd || hoverDate;
-    const inRange =
-      isRangeMode && rangeStart && effectiveEnd && !isRangeStartDay && !isRangeEndDay && isDateInRange(date, rangeStart, effectiveEnd);
+    const inRange = isRangeMode && rangeStart && effectiveEnd && !isRangeStartDay && !isRangeEndDay && isDateInRange(date, rangeStart, effectiveEnd);
 
     return cn(
       'relative z-10 h-10 w-10 flex items-center justify-center rounded-full text-sm transition-colors',
@@ -472,8 +471,9 @@ interface DatePickerDialogProps {
   title?: string;
 }
 
-function DatePickerDialog({ open, onClose, value, onChange, minDate, maxDate, title = 'Select date' }: DatePickerDialogProps) {
+function DatePickerDialog({ open, onClose, value, onChange, minDate, maxDate, title }: DatePickerDialogProps) {
   const { t } = useTranslation();
+  const resolvedTitle = title ?? t('datePicker.selectDate');
   const [viewMode, setViewMode] = useState<'calendar' | 'monthYear' | 'input'>('calendar');
   const [currentMonth, setCurrentMonth] = useState(() => {
     const date = value ? parseISO(value) : new Date();
@@ -617,7 +617,7 @@ function DatePickerDialog({ open, onClose, value, onChange, minDate, maxDate, ti
       >
         {/* Header - M3 style with supporting text and headline + edit icon */}
         <div className="px-6 pt-5 pb-6 border-b border-outline-variant/20">
-          <p className="text-sm text-on-surface-variant mb-3">{title}</p>
+          <p className="text-sm text-on-surface-variant mb-3">{resolvedTitle}</p>
           <div className="flex items-center justify-between">
             <h2 className="text-3xl leading-10 font-normal text-on-surface">
               {selectedDate ? formatM3HeaderDate(formatDateISO(selectedDate), t) : t('datePicker.noDate')}
@@ -744,21 +744,13 @@ export function DatePicker({
           {displayValue || placeholder || t('datePicker.selectDate')}
         </span>
         {value && !disabled && (
-          <IconButton
-            variant="standard"
-            size="sm"
-            className="h-6 w-6 shrink-0"
-            onClick={handleClear}
-            aria-label={t('datePicker.clearDate')}
-          >
+          <IconButton variant="standard" size="sm" className="h-6 w-6 shrink-0" onClick={handleClear} aria-label={t('datePicker.clearDate')}>
             <X className="h-3.5 w-3.5" />
           </IconButton>
         )}
       </button>
 
-      {(helperText || error) && (
-        <p className={cn('mt-2 text-sm', hasError ? 'text-error' : 'text-on-surface-variant/70')}>{error || helperText}</p>
-      )}
+      {(helperText || error) && <p className={cn('mt-2 text-sm', hasError ? 'text-error' : 'text-on-surface-variant/70')}>{error || helperText}</p>}
 
       <DatePickerDialog
         open={isOpen}
@@ -1002,13 +994,7 @@ function DateRangePickerDialog({
           <p className="text-sm text-on-surface-variant mb-3">{t('datePicker.selectDateRange')}</p>
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-normal text-on-surface truncate pr-2">{displayRange}</h2>
-            <IconButton
-              variant="standard"
-              size="sm"
-              onClick={onClose}
-              className="text-on-surface-variant shrink-0"
-              aria-label={t('common.close')}
-            >
+            <IconButton variant="standard" size="sm" onClick={onClose} className="text-on-surface-variant shrink-0" aria-label={t('common.close')}>
               <X className="h-5 w-5" />
             </IconButton>
           </div>
@@ -1022,9 +1008,7 @@ function DateRangePickerDialog({
               onClick={() => setActiveTab('presets')}
               className={cn(
                 'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-colors',
-                activeTab === 'presets'
-                  ? 'bg-secondary-container text-on-secondary-container'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                activeTab === 'presets' ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant hover:text-on-surface'
               )}
             >
               {t('datePicker.presets')}
@@ -1034,9 +1018,7 @@ function DateRangePickerDialog({
               onClick={() => setActiveTab('custom')}
               className={cn(
                 'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-colors',
-                activeTab === 'custom'
-                  ? 'bg-secondary-container text-on-secondary-container'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                activeTab === 'custom' ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant hover:text-on-surface'
               )}
             >
               {t('datePicker.custom')}
@@ -1155,13 +1137,7 @@ export function DateRangePicker({
         <Calendar className="h-4 w-4" />
         <span className="hidden sm:inline">{displayValue || t('datePicker.dateRange')}</span>
         {hasValue ? (
-          <IconButton
-            variant="standard"
-            size="sm"
-            className="h-6 w-6 ml-1"
-            onClick={handleClear}
-            aria-label={t('datePicker.clearDateFilter')}
-          >
+          <IconButton variant="standard" size="sm" className="h-6 w-6 ml-1" onClick={handleClear} aria-label={t('datePicker.clearDateFilter')}>
             <X className="h-3.5 w-3.5" />
           </IconButton>
         ) : (

@@ -32,9 +32,9 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setOpen(false);
-    logout();
+    await logout();
     onLogoutClick?.();
   };
 

@@ -197,7 +197,7 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
           {block.content.logoUrl && (
             <img
               src={block.content.logoUrl}
-              alt={block.content.logoAlt || 'Logo'}
+              alt={block.content.logoAlt || t('a11y.logoAlt')}
               style={{ maxWidth: block.content.logoWidth || 150, margin: '0 auto 10px' }}
             />
           )}

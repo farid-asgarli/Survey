@@ -46,7 +46,7 @@ export function LogicVisualization({ surveyId, className, compact = false }: Log
         id: q.id,
         text: q.text,
         order: q.order,
-        questionType: question?.type || 'Unknown',
+        questionType: question?.type || t('common.unknown'),
         rules: q.logicRules || [],
         hasIncomingLogic: allRules.some((r) => r.targetQuestionId === q.id && (r.action === LogicAction.Show || r.action === LogicAction.Skip)),
         hasOutgoingLogic: (q.logicRules || []).length > 0,

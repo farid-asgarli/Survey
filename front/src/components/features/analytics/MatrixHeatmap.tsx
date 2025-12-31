@@ -170,7 +170,7 @@ export function MatrixHeatmap({ questionText, data, totalAnswers, isLoading, cla
 
         {/* Legend */}
         <div className="flex items-center justify-end gap-4 mt-4 pt-3 border-t border-outline-variant/30">
-          <span className="text-xs text-on-surface-variant">Response intensity:</span>
+          <span className="text-xs text-on-surface-variant">{t('analytics.responseIntensity')}</span>
           <div className="flex items-center gap-1">
             <div className="w-4 h-4 rounded bg-primary/20" />
             <div className="w-4 h-4 rounded bg-primary/40" />

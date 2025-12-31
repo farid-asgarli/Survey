@@ -144,7 +144,7 @@ export function Layout({ children }: LayoutProps) {
       addRecentItem({
         id: surveyMatch[1],
         type: 'survey',
-        title: title || 'Survey',
+        title: title || t('common.surveyFallback'),
         url: path,
       });
     }
@@ -155,7 +155,7 @@ export function Layout({ children }: LayoutProps) {
       addRecentItem({
         id: templateMatch[1],
         type: 'template',
-        title: document.title.replace(' - Survey App', '') || 'Template',
+        title: document.title.replace(' - Survey App', '') || t('common.templateFallback'),
         url: path,
       });
     }
@@ -166,11 +166,11 @@ export function Layout({ children }: LayoutProps) {
       addRecentItem({
         id: themeMatch[1],
         type: 'theme',
-        title: document.title.replace(' - Survey App', '') || 'Theme',
+        title: document.title.replace(' - Survey App', '') || t('common.themeFallback'),
         url: path,
       });
     }
-  }, [location.pathname, addRecentItem]);
+  }, [location.pathname, addRecentItem, t]);
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';

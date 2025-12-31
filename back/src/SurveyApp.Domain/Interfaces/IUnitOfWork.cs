@@ -2,8 +2,9 @@ namespace SurveyApp.Domain.Interfaces;
 
 /// <summary>
 /// Unit of Work interface for managing database transactions.
+/// Implements both IDisposable and IAsyncDisposable for proper resource cleanup.
 /// </summary>
-public interface IUnitOfWork
+public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
     /// <summary>
     /// Saves all changes made in this unit of work.

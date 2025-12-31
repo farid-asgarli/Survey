@@ -12,7 +12,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context
-            .Users.Include(u => u.Memberships)
+            .Users.AsNoTracking()
+            .Include(u => u.Memberships)
             .ThenInclude(m => m.Namespace)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
@@ -23,7 +24,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     )
     {
         return await _context
-            .Users.Include(u => u.Memberships)
+            .Users.AsNoTracking()
+            .Include(u => u.Memberships)
             .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
 
@@ -33,7 +35,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     )
     {
         return await _context
-            .Users.Include(u => u.Memberships)
+            .Users.AsNoTracking()
+            .Include(u => u.Memberships)
             .ThenInclude(m => m.Namespace)
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
@@ -44,7 +47,8 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     )
     {
         return await _context
-            .Users.Include(u => u.Memberships)
+            .Users.AsNoTracking()
+            .Include(u => u.Memberships)
             .Where(u => u.Memberships.Any(m => m.NamespaceId == namespaceId))
             .ToListAsync(cancellationToken);
     }

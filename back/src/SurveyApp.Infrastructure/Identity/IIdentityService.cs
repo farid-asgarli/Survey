@@ -10,6 +10,7 @@ public interface IIdentityService
     );
     Task<AuthenticationResult> LoginAsync(string email, string password);
     Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
+    Task<bool> RevokeTokenAsync(string userId);
     Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
     Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
     Task<string> GeneratePasswordResetTokenAsync(string email);
@@ -47,7 +48,7 @@ public record AuthenticationResult
             UserId = userId,
             Email = email,
             FirstName = firstName,
-            LastName = lastName
+            LastName = lastName,
         };
 
     public static AuthenticationResult Failure(params string[] errors) =>

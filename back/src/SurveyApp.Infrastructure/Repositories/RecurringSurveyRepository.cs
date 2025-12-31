@@ -18,7 +18,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         return await _context
-            .RecurringSurveys.Include(r => r.Survey)
+            .RecurringSurveys.AsNoTracking()
+            .Include(r => r.Survey)
             .ThenInclude(s => s.Translations)
             .Include(r => r.Namespace)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
@@ -30,7 +31,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         return await _context
-            .RecurringSurveys.Include(r => r.Survey)
+            .RecurringSurveys.AsNoTracking()
+            .Include(r => r.Survey)
             .ThenInclude(s => s.Translations)
             .Include(r => r.Namespace)
             .Include(r => r.Runs.OrderByDescending(run => run.ScheduledAt))
@@ -43,7 +45,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         return await _context
-            .RecurringSurveys.Include(r => r.Survey)
+            .RecurringSurveys.AsNoTracking()
+            .Include(r => r.Survey)
             .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId)
             .OrderByDescending(r => r.CreatedAt)
@@ -56,7 +59,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         return await _context
-            .RecurringSurveys.Where(r => r.SurveyId == surveyId)
+            .RecurringSurveys.AsNoTracking()
+            .Where(r => r.SurveyId == surveyId)
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync(cancellationToken);
     }
@@ -83,7 +87,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         var query = _context
-            .RecurringSurveys.Include(r => r.Survey)
+            .RecurringSurveys.AsNoTracking()
+            .Include(r => r.Survey)
             .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId);
 
@@ -124,7 +129,8 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
     )
     {
         return await _context
-            .RecurringSurveys.Include(r => r.Survey)
+            .RecurringSurveys.AsNoTracking()
+            .Include(r => r.Survey)
             .ThenInclude(s => s.Translations)
             .Where(r => r.NamespaceId == namespaceId && r.IsActive && r.NextRunAt.HasValue)
             .OrderBy(r => r.NextRunAt)
@@ -139,9 +145,9 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.RecurringSurveyRuns.Where(r =>
-            r.RecurringSurveyId == recurringSurveyId
-        );
+        var query = _context
+            .RecurringSurveyRuns.AsNoTracking()
+            .Where(r => r.RecurringSurveyId == recurringSurveyId);
 
         var totalCount = await query.CountAsync(cancellationToken);
 

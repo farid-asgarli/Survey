@@ -359,13 +359,13 @@ function RecurringScheduleForm({
           {showCronExpression && (
             <div>
               <Input
-                label="Cron Expression"
+                label={t('recurringSurveys.cronExpression')}
                 placeholder="e.g., 0 9 * * MON-FRI"
                 value={cronExpression}
                 onChange={(e) => setCronExpression(e.target.value)}
                 error={errors.cronExpression}
               />
-              <p className="mt-1 text-xs text-on-surface-variant">Use standard cron format: minute hour day-of-month month day-of-week</p>
+              <p className="mt-1 text-xs text-on-surface-variant">{t('recurringSurveys.cronHelp')}</p>
             </div>
           )}
         </div>
@@ -374,7 +374,7 @@ function RecurringScheduleForm({
         <div className="p-4 bg-surface-container-low rounded-2xl space-y-4">
           <h4 className="text-sm font-semibold text-on-surface flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            Time Settings
+            {t('recurringSurveys.timeSettings')}
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -383,12 +383,12 @@ function RecurringScheduleForm({
               <Input type="time" value={sendTime} onChange={(e) => setSendTime(e.target.value)} error={errors.sendTime} />
             </div>
 
-            <Select label="Timezone" options={timezoneOptions} value={timezoneId} onChange={setTimezoneId} searchable />
+            <Select label={t('common.timezone')} options={timezoneOptions} value={timezoneId} onChange={setTimezoneId} searchable />
           </div>
 
           <p className="text-xs text-on-surface-variant flex items-start gap-1.5">
             <Info className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-            The survey will be sent at {sendTime} in the {timezoneId} timezone.
+            {t('recurringSurveys.sendTimeInfo', { time: sendTime, timezone: timezoneId })}
           </p>
         </div>
 
@@ -396,7 +396,7 @@ function RecurringScheduleForm({
         <div className="p-4 bg-surface-container-low rounded-2xl space-y-4">
           <h4 className="text-sm font-semibold text-on-surface flex items-center gap-2">
             <Users className="h-4 w-4" />
-            Audience
+            {t('recurringSurveys.audience')}
           </h4>
 
           <Select
@@ -517,7 +517,7 @@ function RecurringScheduleForm({
         {!isEditMode && (
           <Checkbox
             label="Activate immediately after creation"
-            description="If unchecked, the schedule will be created in a paused state"
+            description={t('recurringSurveys.pausedStateHint')}
             checked={activateImmediately}
             onChange={(e) => setActivateImmediately(e.target.checked)}
           />

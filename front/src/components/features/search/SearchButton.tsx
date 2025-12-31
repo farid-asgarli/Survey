@@ -70,7 +70,7 @@ export function SearchButton({ className, variant = 'full' }: SearchButtonProps)
       aria-label={t('a11y.search')}
     >
       <Search className="h-5 w-5 shrink-0 group-hover:text-on-surface transition-colors" />
-      <span className="flex-1 text-left text-sm">Search surveys, templates...</span>
+      <span className="flex-1 text-left text-sm">{t('emptyState.search.placeholder')}</span>
       <kbd className="hidden sm:inline-flex px-2 py-1 rounded-lg bg-surface-container-high text-xs font-mono">{formatShortcutKeys(['Mod', 'K'])}</kbd>
     </button>
   );

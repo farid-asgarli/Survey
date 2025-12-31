@@ -15,7 +15,8 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Include(t => t.Translations)
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
@@ -25,7 +26,8 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Include(t => t.Translations)
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId)
             .OrderByDescending(t => t.IsDefault)
             .ThenByDescending(t => t.CreatedAt)
@@ -38,7 +40,8 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Include(t => t.Translations)
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
             .FirstOrDefaultAsync(
                 t => t.NamespaceId == namespaceId && t.IsDefault,
                 cancellationToken
@@ -51,7 +54,8 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         return await _context
-            .SurveyThemes.Include(t => t.Translations)
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId && t.IsPublic)
             .OrderByDescending(t => t.IsDefault)
             .ThenByDescending(t => t.CreatedAt)
@@ -87,7 +91,8 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
     )
     {
         var query = _context
-            .SurveyThemes.Include(t => t.Translations)
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))

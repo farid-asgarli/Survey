@@ -16,7 +16,8 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Include(t => t.Translations)
+            .EmailTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
@@ -26,7 +27,8 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Include(t => t.Translations)
+            .EmailTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId)
             .OrderByDescending(t => t.IsDefault)
             .ThenByDescending(t => t.CreatedAt)
@@ -40,7 +42,8 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Include(t => t.Translations)
+            .EmailTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .FirstOrDefaultAsync(
                 t => t.NamespaceId == namespaceId && t.Type == type && t.IsDefault,
                 cancellationToken
@@ -54,7 +57,8 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         return await _context
-            .EmailTemplates.Include(t => t.Translations)
+            .EmailTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId && t.Type == type)
             .OrderByDescending(t => t.IsDefault)
             .ThenByDescending(t => t.CreatedAt)
@@ -91,7 +95,8 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
     )
     {
         var query = _context
-            .EmailTemplates.Include(t => t.Translations)
+            .EmailTemplates.AsNoTracking()
+            .Include(t => t.Translations)
             .Where(t => t.NamespaceId == namespaceId);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))

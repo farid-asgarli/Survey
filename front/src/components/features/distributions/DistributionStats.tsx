@@ -461,7 +461,7 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
               ) : (
                 <div className="py-8 text-center">
                   <Mail className="w-8 h-8 mx-auto text-on-surface-variant mb-2" />
-                  <p className="text-sm text-on-surface-variant">{searchQuery ? t('distributions.noRecipients') : 'No recipients found'}</p>
+                  <p className="text-sm text-on-surface-variant">{t('distributions.noRecipients')}</p>
                 </div>
               )}
             </div>

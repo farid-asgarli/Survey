@@ -112,7 +112,7 @@ export function KeyboardShortcutsHelp() {
                   <Keyboard className="h-8 w-8 text-on-surface-variant/50" />
                 </div>
                 <p className="text-on-surface font-medium">{t('shortcuts.noShortcuts')}</p>
-                <p className="text-on-surface-variant text-sm mt-1">Shortcuts will appear as you navigate the app</p>
+                <p className="text-on-surface-variant text-sm mt-1">{t('shortcuts.willAppear')}</p>
               </div>
             )}
           </div>

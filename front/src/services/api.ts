@@ -289,6 +289,28 @@ export const authApi = {
     };
   },
 
+  /**
+   * Logout and revoke the refresh token on the server.
+   * This should be called before clearing local auth state.
+   * Fails silently if the request fails (user will still be logged out locally).
+   */
+  logout: async (): Promise<void> => {
+    try {
+      await apiClient.post(
+        API_ENDPOINTS.auth.logout,
+        {},
+        {
+          headers: {
+            'X-Suppress-Toast': 'true', // Don't show success toast for logout
+          },
+        }
+      );
+    } catch {
+      // Fail silently - user will still be logged out locally
+      console.warn('[Auth] Failed to revoke token on server');
+    }
+  },
+
   forgotPassword: async (data: ForgotPasswordRequest): Promise<void> => {
     await apiClient.post(API_ENDPOINTS.auth.forgotPassword, data);
   },

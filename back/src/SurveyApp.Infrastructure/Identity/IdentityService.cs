@@ -118,6 +118,22 @@ public class IdentityService(
         return await GenerateAuthenticationResultAsync(user);
     }
 
+    public async Task<bool> RevokeTokenAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return false;
+        }
+
+        // Invalidate the refresh token
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = DateTime.MinValue;
+
+        var result = await _userManager.UpdateAsync(user);
+        return result.Succeeded;
+    }
+
     public async Task<bool> ChangePasswordAsync(
         string userId,
         string currentPassword,

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChoiceChart } from './ChoiceChart';
 import { RatingChart } from './RatingChart';
 import { TextResponsesList } from './TextResponsesList';
@@ -57,6 +58,8 @@ function getDisplayType(questionType: QuestionType): AnalyticsDisplayType {
 }
 
 export function QuestionAnalyticsCard({ question, isLoading, className }: QuestionAnalyticsCardProps) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <Card variant="outlined" className={className}>
@@ -121,7 +124,7 @@ export function QuestionAnalyticsCard({ question, isLoading, className }: Questi
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-medium line-clamp-2">{question.questionText}</CardTitle>
             <p className="text-xs text-on-surface-variant">
-              {question.totalAnswers} response{question.totalAnswers !== 1 ? 's' : ''} • Matrix question
+              {question.totalAnswers} response{question.totalAnswers !== 1 ? 's' : ''} • {t('analytics.matrixQuestion')}
             </p>
           </CardHeader>
           <CardContent>
@@ -135,9 +138,10 @@ export function QuestionAnalyticsCard({ question, isLoading, className }: Questi
                     </span>
                   </div>
                 ))}
+                n{' '}
               </div>
             ) : (
-              <p className="text-sm text-on-surface-variant">No data available</p>
+              <p className="text-sm text-on-surface-variant">{t('analytics.noData')}</p>
             )}
           </CardContent>
         </Card>
@@ -153,7 +157,7 @@ export function QuestionAnalyticsCard({ question, isLoading, className }: Questi
             </p>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-on-surface-variant">Analytics visualization not available for this question type</p>
+            <p className="text-sm text-on-surface-variant">{t('analytics.visualizationNotAvailable')}</p>
           </CardContent>
         </Card>
       );

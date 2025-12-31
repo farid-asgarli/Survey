@@ -16,10 +16,9 @@ public class EmailDistributionRepository(ApplicationDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.EmailDistributions.FirstOrDefaultAsync(
-            d => d.Id == id,
-            cancellationToken
-        );
+        return await _context
+            .EmailDistributions.AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
     public async Task<EmailDistribution?> GetByIdWithRecipientsAsync(
@@ -28,7 +27,8 @@ public class EmailDistributionRepository(ApplicationDbContext context)
     )
     {
         return await _context
-            .EmailDistributions.Include(d => d.Recipients)
+            .EmailDistributions.AsNoTracking()
+            .Include(d => d.Recipients)
             .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
@@ -38,7 +38,8 @@ public class EmailDistributionRepository(ApplicationDbContext context)
     )
     {
         return await _context
-            .EmailDistributions.Where(d => d.SurveyId == surveyId)
+            .EmailDistributions.AsNoTracking()
+            .Where(d => d.SurveyId == surveyId)
             .OrderByDescending(d => d.CreatedAt)
             .ToListAsync(cancellationToken);
     }
@@ -53,7 +54,7 @@ public class EmailDistributionRepository(ApplicationDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.EmailDistributions.Where(d => d.SurveyId == surveyId);
+        var query = _context.EmailDistributions.AsNoTracking().Where(d => d.SurveyId == surveyId);
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -72,7 +73,8 @@ public class EmailDistributionRepository(ApplicationDbContext context)
     )
     {
         return await _context
-            .EmailDistributions.Where(d => d.NamespaceId == namespaceId)
+            .EmailDistributions.AsNoTracking()
+            .Where(d => d.NamespaceId == namespaceId)
             .OrderByDescending(d => d.CreatedAt)
             .ToListAsync(cancellationToken);
     }
@@ -97,7 +99,8 @@ public class EmailDistributionRepository(ApplicationDbContext context)
     )
     {
         return await _context
-            .EmailDistributions.Where(d => d.NamespaceId == namespaceId && d.Status == status)
+            .EmailDistributions.AsNoTracking()
+            .Where(d => d.NamespaceId == namespaceId && d.Status == status)
             .OrderByDescending(d => d.CreatedAt)
             .ToListAsync(cancellationToken);
     }
@@ -119,7 +122,8 @@ public class EmailDistributionRepository(ApplicationDbContext context)
     )
     {
         return await _context
-            .EmailRecipients.Where(r => r.DistributionId == distributionId)
+            .EmailRecipients.AsNoTracking()
+            .Where(r => r.DistributionId == distributionId)
             .OrderBy(r => r.Email)
             .ToListAsync(cancellationToken);
     }
@@ -135,7 +139,9 @@ public class EmailDistributionRepository(ApplicationDbContext context)
         CancellationToken cancellationToken = default
     )
     {
-        var query = _context.EmailRecipients.Where(r => r.DistributionId == distributionId);
+        var query = _context
+            .EmailRecipients.AsNoTracking()
+            .Where(r => r.DistributionId == distributionId);
 
         if (status.HasValue)
         {

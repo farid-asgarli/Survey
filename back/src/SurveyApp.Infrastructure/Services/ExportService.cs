@@ -310,62 +310,16 @@ public class ExportService(
             await _surveyRepository.GetByIdWithQuestionsAsync(request.SurveyId, cancellationToken)
             ?? throw new InvalidOperationException($"Survey with ID {request.SurveyId} not found.");
 
-        IReadOnlyList<SurveyResponse> responses;
-
-        if (request.IncludeIncomplete)
-        {
-            responses = await _responseRepository.GetBySurveyIdAsync(
-                request.SurveyId,
-                cancellationToken
-            );
-        }
-        else
-        {
-            responses = await _responseRepository.GetCompletedBySurveyIdAsync(
-                request.SurveyId,
-                cancellationToken
-            );
-        }
-
-        // Apply filters
-        if (request.Filter != null)
-        {
-            var filteredResponses = responses.AsEnumerable();
-
-            if (request.Filter.DateRange?.StartDate.HasValue == true)
-            {
-                filteredResponses = filteredResponses.Where(r =>
-                    r.StartedAt >= request.Filter.DateRange.StartDate
-                );
-            }
-
-            if (request.Filter.DateRange?.EndDate.HasValue == true)
-            {
-                filteredResponses = filteredResponses.Where(r =>
-                    r.StartedAt <= request.Filter.DateRange.EndDate
-                );
-            }
-
-            if (!string.IsNullOrEmpty(request.Filter.RespondentEmail))
-            {
-                filteredResponses = filteredResponses.Where(r =>
-                    r.RespondentEmail != null
-                    && r.RespondentEmail.Contains(
-                        request.Filter.RespondentEmail,
-                        StringComparison.OrdinalIgnoreCase
-                    )
-                );
-            }
-
-            if (request.Filter.IsComplete.HasValue)
-            {
-                filteredResponses = filteredResponses.Where(r =>
-                    r.IsComplete == request.Filter.IsComplete
-                );
-            }
-
-            responses = [.. filteredResponses];
-        }
+        // Use database-level filtering for better performance
+        var responses = await _responseRepository.GetFilteredForExportAsync(
+            request.SurveyId,
+            includeIncomplete: request.IncludeIncomplete,
+            startDate: request.Filter?.DateRange?.StartDate,
+            endDate: request.Filter?.DateRange?.EndDate,
+            respondentEmail: request.Filter?.RespondentEmail,
+            isComplete: request.Filter?.IsComplete,
+            cancellationToken: cancellationToken
+        );
 
         return (survey, responses);
     }

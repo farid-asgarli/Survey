@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Localization;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
@@ -87,6 +88,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     /// </summary>
     [HttpGet("public/{shareToken}")]
     [AllowAnonymous]
+    [OutputCache(PolicyName = "PublicSurvey")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPublicSurvey(string shareToken)
@@ -219,6 +221,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     /// Get survey analytics
     /// </summary>
     [HttpGet("{id:guid}/analytics")]
+    [OutputCache(PolicyName = "Analytics")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAnalytics(Guid id)
@@ -268,6 +271,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     /// <param name="id">The survey ID.</param>
     /// <returns>Export preview with available columns and statistics.</returns>
     [HttpGet("{id:guid}/export/preview")]
+    [OutputCache(PolicyName = "ExportPreview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetExportPreview(Guid id)
@@ -313,6 +317,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     /// <param name="id">The survey ID.</param>
     /// <returns>NPS summary including scores for all NPS questions.</returns>
     [HttpGet("{id:guid}/nps")]
+    [OutputCache(PolicyName = "Nps")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetNps(Guid id)

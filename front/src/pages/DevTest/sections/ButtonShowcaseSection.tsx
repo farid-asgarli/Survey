@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, IconButton } from '@/components/ui';
 import { Sparkles, Plus, Download, Upload, Trash2, Heart, Star, Bell, Settings } from 'lucide-react';
 
 export function ButtonShowcaseSection() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const handleLoadingDemo = () => {
@@ -87,16 +89,16 @@ export function ButtonShowcaseSection() {
         <div className="space-y-3">
           <h3 className="text-sm font-medium text-on-surface">Icon Buttons</h3>
           <div className="flex flex-wrap gap-3">
-            <IconButton variant="standard" aria-label="Like">
+            <IconButton variant="standard" aria-label={t('devTest.like')}>
               <Heart className="h-5 w-5" />
             </IconButton>
-            <IconButton variant="filled" aria-label="Favorite">
+            <IconButton variant="filled" aria-label={t('devTest.favorite')}>
               <Star className="h-5 w-5" />
             </IconButton>
-            <IconButton variant="filled-tonal" aria-label="Notifications">
+            <IconButton variant="filled-tonal" aria-label={t('devTest.notifications')}>
               <Bell className="h-5 w-5" />
             </IconButton>
-            <IconButton variant="outlined" aria-label="Settings">
+            <IconButton variant="outlined" aria-label={t('devTest.settings')}>
               <Settings className="h-5 w-5" />
             </IconButton>
           </div>

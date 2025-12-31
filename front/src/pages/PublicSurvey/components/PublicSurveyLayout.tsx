@@ -17,14 +17,14 @@ export function PublicSurveyLayout({ children, title, theme, showLogoInHeader = 
   // Update page title
   useEffect(() => {
     if (title) {
-      document.title = `${title} | Survey`;
+      document.title = `${title} | ${t('common.surveyFallback')}`;
     } else {
-      document.title = 'Survey';
+      document.title = t('common.surveyFallback');
     }
     return () => {
-      document.title = 'Survey App';
+      document.title = t('common.appTitle');
     };
-  }, [title]);
+  }, [title, t]);
 
   const hasBackgroundImage = !!theme?.backgroundImageUrl;
 

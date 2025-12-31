@@ -1589,7 +1589,9 @@
     "nextField": "Next field",
     "submit": "Submit",
     "navigate": "Navigate",
-    "completeRequired": "Please complete all required questions"
+    "completeRequired": "Please complete all required questions",
+    "width": "Width",
+    "height": "Height"
   },
   "questionPreview": {
     "interactiveMode": "Interactive preview - try it out!"
@@ -2274,6 +2276,12 @@
     "collapseSection": "Collapse section",
     "selectLanguage": "Select language",
     "changeLanguage": "Change language"
+  },
+  "devTest": {
+    "like": "Like",
+    "favorite": "Favorite",
+    "notifications": "Notifications",
+    "settings": "Settings"
   },
   "errorBoundary": {
     "title": "Something went wrong",

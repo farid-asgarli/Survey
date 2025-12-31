@@ -173,7 +173,7 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
 
   const hasChanges = user && (firstName !== (user.firstName || '') || lastName !== (user.lastName || '') || email !== user.email);
 
-  const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'User';
+  const fullName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || t('common.userFallback');
   const initials = fullName
     .split(' ')
     .map((n) => n[0])
