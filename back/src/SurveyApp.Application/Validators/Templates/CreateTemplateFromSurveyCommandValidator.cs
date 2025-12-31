@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Templates.Commands.CreateTemplateFromSurvey;
 
 namespace SurveyApp.Application.Validators.Templates;
@@ -6,26 +7,28 @@ namespace SurveyApp.Application.Validators.Templates;
 public class CreateTemplateFromSurveyCommandValidator
     : AbstractValidator<CreateTemplateFromSurveyCommand>
 {
-    public CreateTemplateFromSurveyCommandValidator()
+    public CreateTemplateFromSurveyCommandValidator(
+        IStringLocalizer<CreateTemplateFromSurveyCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Survey ID is required.");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
         RuleFor(x => x.TemplateName)
             .NotEmpty()
-            .WithMessage("Template name is required.")
+            .WithMessage(localizer["Validation.Template.NameRequired"])
             .MinimumLength(3)
-            .WithMessage("Template name must be at least 3 characters.")
+            .WithMessage(localizer["Validation.Template.NameMinLength"])
             .MaximumLength(200)
-            .WithMessage("Template name cannot exceed 200 characters.");
+            .WithMessage(localizer["Validation.Template.NameMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(2000)
-            .WithMessage("Description cannot exceed 2000 characters.")
+            .WithMessage(localizer["Validation.Description.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.Category)
             .MaximumLength(100)
-            .WithMessage("Category cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.Category.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Category));
     }
 }

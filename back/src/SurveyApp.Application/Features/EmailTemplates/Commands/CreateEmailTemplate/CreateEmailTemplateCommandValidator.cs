@@ -1,25 +1,30 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace SurveyApp.Application.Features.EmailTemplates.Commands.CreateEmailTemplate;
 
 public class CreateEmailTemplateCommandValidator : AbstractValidator<CreateEmailTemplateCommand>
 {
-    public CreateEmailTemplateCommandValidator()
+    public CreateEmailTemplateCommandValidator(
+        IStringLocalizer<CreateEmailTemplateCommandValidator> localizer
+    )
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Validation.NameRequired")
+            .WithMessage(localizer["Validation.Name.Required"])
             .MaximumLength(200)
-            .WithMessage("Validation.NameMaxLength");
+            .WithMessage(localizer["Validation.Name.MaxLength"]);
 
         RuleFor(x => x.Subject)
             .NotEmpty()
-            .WithMessage("Validation.SubjectRequired")
+            .WithMessage(localizer["Validation.SubjectRequired"])
             .MaximumLength(500)
-            .WithMessage("Validation.SubjectMaxLength");
+            .WithMessage(localizer["Validation.SubjectMaxLength"]);
 
-        RuleFor(x => x.HtmlBody).NotEmpty().WithMessage("Validation.HtmlBodyRequired");
+        RuleFor(x => x.HtmlBody).NotEmpty().WithMessage(localizer["Validation.HtmlBodyRequired"]);
 
-        RuleFor(x => x.Type).IsInEnum().WithMessage("Validation.InvalidEmailTemplateType");
+        RuleFor(x => x.Type)
+            .IsInEnum()
+            .WithMessage(localizer["Validation.InvalidEmailTemplateType"]);
     }
 }

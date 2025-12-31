@@ -1,26 +1,29 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace SurveyApp.Application.Features.EmailTemplates.Commands.UpdateEmailTemplate;
 
 public class UpdateEmailTemplateCommandValidator : AbstractValidator<UpdateEmailTemplateCommand>
 {
-    public UpdateEmailTemplateCommandValidator()
+    public UpdateEmailTemplateCommandValidator(
+        IStringLocalizer<UpdateEmailTemplateCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.Id).NotEmpty().WithMessage("Validation.TemplateIdRequired");
+        RuleFor(x => x.Id).NotEmpty().WithMessage(localizer["Validation.TemplateIdRequired"]);
 
         RuleFor(x => x.Name)
             .MaximumLength(200)
-            .WithMessage("Validation.NameMaxLength")
+            .WithMessage(localizer["Validation.Name.MaxLength"])
             .When(x => !string.IsNullOrWhiteSpace(x.Name));
 
         RuleFor(x => x.Subject)
             .MaximumLength(500)
-            .WithMessage("Validation.SubjectMaxLength")
+            .WithMessage(localizer["Validation.SubjectMaxLength"])
             .When(x => !string.IsNullOrWhiteSpace(x.Subject));
 
         RuleFor(x => x.Type)
             .IsInEnum()
-            .WithMessage("Validation.InvalidEmailTemplateType")
+            .WithMessage(localizer["Validation.InvalidEmailTemplateType"])
             .When(x => x.Type.HasValue);
     }
 }

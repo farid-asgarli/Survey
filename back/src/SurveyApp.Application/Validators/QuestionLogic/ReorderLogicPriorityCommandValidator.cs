@@ -1,18 +1,27 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.QuestionLogic.Commands.ReorderLogicPriority;
 
 namespace SurveyApp.Application.Validators.QuestionLogic;
 
 public class ReorderLogicPriorityCommandValidator : AbstractValidator<ReorderLogicPriorityCommand>
 {
-    public ReorderLogicPriorityCommandValidator()
+    public ReorderLogicPriorityCommandValidator(
+        IStringLocalizer<ReorderLogicPriorityCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Survey ID is required.");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
-        RuleFor(x => x.QuestionId).NotEmpty().WithMessage("Question ID is required.");
+        RuleFor(x => x.QuestionId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.QuestionIdRequired"]);
 
-        RuleFor(x => x.LogicIds).NotEmpty().WithMessage("Logic IDs are required.");
+        RuleFor(x => x.LogicIds)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.QuestionLogic.LogicIdsRequired"]);
 
-        RuleForEach(x => x.LogicIds).NotEmpty().WithMessage("Logic ID cannot be empty.");
+        RuleForEach(x => x.LogicIds)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.QuestionLogic.LogicIdNotEmpty"]);
     }
 }

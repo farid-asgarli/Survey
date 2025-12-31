@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.Surveys.Commands.CreateSurvey;
 
@@ -13,27 +14,27 @@ public class QuestionDtoValidator : AbstractValidator<CreateQuestionDto>
     /// <summary>
     /// Initializes a new instance of the question validator.
     /// </summary>
-    public QuestionDtoValidator()
+    public QuestionDtoValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x.Text)
             .NotEmpty()
-            .WithMessage("Question text is required.")
+            .WithMessage(localizer["Validation.Question.TextRequired"])
             .MaximumLength(500)
-            .WithMessage("Question text cannot exceed 500 characters.");
+            .WithMessage(localizer["Validation.Question.TextMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(1000)
-            .WithMessage("Question description cannot exceed 1000 characters.")
+            .WithMessage(localizer["Validation.Question.DescriptionMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
-        RuleFor(x => x.Type).IsInEnum().WithMessage("Invalid question type.");
+        RuleFor(x => x.Type).IsInEnum().WithMessage(localizer["Validation.Question.InvalidType"]);
 
         RuleFor(x => x.Order)
             .GreaterThanOrEqualTo(0)
-            .WithMessage("Question order must be non-negative.");
+            .WithMessage(localizer["Validation.Question.OrderNonNegative"]);
 
         RuleFor(x => x.Settings)
-            .SetValidator(new QuestionSettingsValidator()!)
+            .SetValidator(new QuestionSettingsValidator(localizer)!)
             .When(x => x.Settings != null);
     }
 }
@@ -51,42 +52,42 @@ public class QuestionSettingsValidator : AbstractValidator<QuestionSettingsDto>
     /// <summary>
     /// Initializes a new instance of the question settings validator.
     /// </summary>
-    public QuestionSettingsValidator()
+    public QuestionSettingsValidator(IStringLocalizer localizer)
     {
         // Options validation
         RuleFor(x => x.Options)
             .Must(options => options == null || options.Count > 0)
-            .WithMessage("Options list cannot be empty if provided.");
+            .WithMessage(localizer["Validation.QuestionSettings.OptionsNotEmpty"]);
 
         // Numeric range validation
         RuleFor(x => x.MinValue)
             .LessThanOrEqualTo(x => x.MaxValue)
-            .WithMessage("Minimum value must be less than or equal to maximum value.")
+            .WithMessage(localizer["Validation.QuestionSettings.MinValueLessThanMax"])
             .When(x => x.MinValue.HasValue && x.MaxValue.HasValue);
 
         // Length validation
         RuleFor(x => x.MinLength)
             .GreaterThanOrEqualTo(0)
-            .WithMessage("Minimum length must be non-negative.")
+            .WithMessage(localizer["Validation.QuestionSettings.MinLengthNonNegative"])
             .When(x => x.MinLength.HasValue);
 
         RuleFor(x => x.MaxLength)
             .GreaterThanOrEqualTo(x => x.MinLength ?? 0)
-            .WithMessage("Maximum length must be greater than or equal to minimum length.")
+            .WithMessage(localizer["Validation.QuestionSettings.MaxLengthGreaterThanMin"])
             .When(x => x.MaxLength.HasValue);
 
         // Selection limits
         RuleFor(x => x.MaxSelections)
             .GreaterThan(0)
-            .WithMessage("Maximum selections must be greater than 0.")
+            .WithMessage(localizer["Validation.QuestionSettings.MaxSelectionsGreaterThanZero"])
             .When(x => x.MaxSelections.HasValue);
 
         // File upload settings
         RuleFor(x => x.MaxFileSize)
             .GreaterThan(0)
-            .WithMessage("Maximum file size must be greater than 0.")
+            .WithMessage(localizer["Validation.QuestionSettings.MaxFileSizeGreaterThanZero"])
             .LessThanOrEqualTo(MaxFileSizeBytes)
-            .WithMessage("Maximum file size cannot exceed 50MB.")
+            .WithMessage(localizer["Validation.QuestionSettings.MaxFileSizeLimit"])
             .When(x => x.MaxFileSize.HasValue);
     }
 }

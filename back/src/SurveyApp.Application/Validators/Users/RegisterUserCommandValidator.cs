@@ -1,44 +1,45 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Users.Commands.RegisterUser;
 
 namespace SurveyApp.Application.Validators.Users;
 
 public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
-    public RegisterUserCommandValidator()
+    public RegisterUserCommandValidator(IStringLocalizer<RegisterUserCommandValidator> localizer)
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .WithMessage("Email is required.")
+            .WithMessage(localizer["Validation.Email.Required"])
             .EmailAddress()
-            .WithMessage("Invalid email address format.");
+            .WithMessage(localizer["Validation.Email.NotValid"]);
 
         RuleFor(x => x.Password)
             .NotEmpty()
-            .WithMessage("Password is required.")
+            .WithMessage(localizer["Validation.Password.Required"])
             .MinimumLength(8)
-            .WithMessage("Password must be at least 8 characters.")
+            .WithMessage(localizer["Validation.Password.MinLength"])
             .MaximumLength(100)
-            .WithMessage("Password cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.Password.MaxLength"])
             .Matches(@"[A-Z]")
-            .WithMessage("Password must contain at least one uppercase letter.")
+            .WithMessage(localizer["Validation.Password.UppercaseRequired"])
             .Matches(@"[a-z]")
-            .WithMessage("Password must contain at least one lowercase letter.")
+            .WithMessage(localizer["Validation.Password.LowercaseRequired"])
             .Matches(@"[0-9]")
-            .WithMessage("Password must contain at least one digit.")
+            .WithMessage(localizer["Validation.Password.DigitRequired"])
             .Matches(@"[^a-zA-Z0-9]")
-            .WithMessage("Password must contain at least one special character.");
+            .WithMessage(localizer["Validation.Password.SpecialCharRequired"]);
 
         RuleFor(x => x.FirstName)
             .NotEmpty()
-            .WithMessage("First name is required.")
+            .WithMessage(localizer["Validation.FirstName.Required"])
             .MaximumLength(50)
-            .WithMessage("First name cannot exceed 50 characters.");
+            .WithMessage(localizer["Validation.FirstName.MaxLength"]);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-            .WithMessage("Last name is required.")
+            .WithMessage(localizer["Validation.LastName.Required"])
             .MaximumLength(50)
-            .WithMessage("Last name cannot exceed 50 characters.");
+            .WithMessage(localizer["Validation.LastName.MaxLength"]);
     }
 }

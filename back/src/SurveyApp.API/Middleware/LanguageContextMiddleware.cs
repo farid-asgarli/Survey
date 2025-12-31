@@ -1,4 +1,5 @@
 using SurveyApp.Application.Common.Interfaces;
+using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.API.Middleware;
 
@@ -9,28 +10,6 @@ namespace SurveyApp.API.Middleware;
 public class LanguageContextMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;
-
-    // Supported language codes
-    private static readonly HashSet<string> SupportedLanguages = new(
-        StringComparer.OrdinalIgnoreCase
-    )
-    {
-        "en",
-        "es",
-        "fr",
-        "de",
-        "it",
-        "pt",
-        "nl",
-        "pl",
-        "ru",
-        "zh",
-        "ja",
-        "ko",
-        "ar",
-        "hi",
-        "tr",
-    };
 
     private const string LanguageHeader = "X-Language";
     private const string LanguageQueryParam = "lang";
@@ -82,15 +61,7 @@ public class LanguageContextMiddleware(RequestDelegate next)
         return null;
     }
 
-    private static bool IsSupported(string? languageCode)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-            return false;
-
-        // Extract base language from codes like "en-US" -> "en"
-        var baseLang = languageCode.Split('-', '_')[0];
-        return SupportedLanguages.Contains(baseLang);
-    }
+    private static bool IsSupported(string? languageCode) => LanguageCode.IsSupported(languageCode);
 
     /// <summary>
     /// Parses the Accept-Language header and returns the highest priority supported language.

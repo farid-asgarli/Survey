@@ -1,40 +1,41 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
 
 namespace SurveyApp.Application.Validators.Namespaces;
 
 public class CreateNamespaceCommandValidator : AbstractValidator<CreateNamespaceCommand>
 {
-    public CreateNamespaceCommandValidator()
+    public CreateNamespaceCommandValidator(
+        IStringLocalizer<CreateNamespaceCommandValidator> localizer
+    )
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Namespace name is required.")
+            .WithMessage(localizer["Validation.Namespace.NameRequired"])
             .MinimumLength(3)
-            .WithMessage("Namespace name must be at least 3 characters.")
+            .WithMessage(localizer["Validation.Namespace.NameMinLength"])
             .MaximumLength(100)
-            .WithMessage("Namespace name cannot exceed 100 characters.");
+            .WithMessage(localizer["Validation.Namespace.NameMaxLength"]);
 
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage("Namespace slug is required.")
+            .WithMessage(localizer["Validation.Namespace.SlugRequired"])
             .MinimumLength(3)
-            .WithMessage("Slug must be at least 3 characters.")
+            .WithMessage(localizer["Validation.Namespace.SlugMinLength"])
             .MaximumLength(50)
-            .WithMessage("Slug cannot exceed 50 characters.")
+            .WithMessage(localizer["Validation.Namespace.SlugMaxLength"])
             .Matches(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-            .WithMessage(
-                "Slug must contain only lowercase letters, numbers, and hyphens. Cannot start or end with a hyphen."
-            );
+            .WithMessage(localizer["Validation.Namespace.SlugInvalidFormat"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(500)
-            .WithMessage("Description cannot exceed 500 characters.")
+            .WithMessage(localizer["Validation.Description.MaxLength500"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.LogoUrl)
             .Must(BeAValidUrl)
-            .WithMessage("Logo URL must be a valid URL.")
+            .WithMessage(localizer["Validation.Url.MustBeValid", "Logo URL"])
             .When(x => !string.IsNullOrEmpty(x.LogoUrl));
     }
 

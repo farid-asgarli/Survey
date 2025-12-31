@@ -1,27 +1,28 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Users.Commands.UpdateProfile;
 
 namespace SurveyApp.Application.Validators.Users;
 
 public class UpdateProfileCommandValidator : AbstractValidator<UpdateProfileCommand>
 {
-    public UpdateProfileCommandValidator()
+    public UpdateProfileCommandValidator(IStringLocalizer<UpdateProfileCommandValidator> localizer)
     {
         RuleFor(x => x.FirstName)
             .NotEmpty()
-            .WithMessage("First name is required.")
+            .WithMessage(localizer["Validation.FirstName.Required"])
             .MaximumLength(50)
-            .WithMessage("First name cannot exceed 50 characters.");
+            .WithMessage(localizer["Validation.FirstName.MaxLength"]);
 
         RuleFor(x => x.LastName)
             .NotEmpty()
-            .WithMessage("Last name is required.")
+            .WithMessage(localizer["Validation.LastName.Required"])
             .MaximumLength(50)
-            .WithMessage("Last name cannot exceed 50 characters.");
+            .WithMessage(localizer["Validation.LastName.MaxLength"]);
 
         RuleFor(x => x.AvatarUrl)
             .Must(BeAValidUrl)
-            .WithMessage("Avatar URL must be a valid URL.")
+            .WithMessage(localizer["Validation.AvatarUrl.InvalidUrl"])
             .When(x => !string.IsNullOrEmpty(x.AvatarUrl));
     }
 

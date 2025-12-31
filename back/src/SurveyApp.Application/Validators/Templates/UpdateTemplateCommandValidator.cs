@@ -1,65 +1,71 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Templates.Commands.UpdateTemplate;
 
 namespace SurveyApp.Application.Validators.Templates;
 
 public class UpdateTemplateCommandValidator : AbstractValidator<UpdateTemplateCommand>
 {
-    public UpdateTemplateCommandValidator()
+    public UpdateTemplateCommandValidator(
+        IStringLocalizer<UpdateTemplateCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.TemplateId).NotEmpty().WithMessage("Template ID is required.");
+        RuleFor(x => x.TemplateId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Template.IdRequired"]);
 
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Template name is required.")
+            .WithMessage(localizer["Validation.Template.NameRequired"])
             .MinimumLength(3)
-            .WithMessage("Template name must be at least 3 characters.")
+            .WithMessage(localizer["Validation.Template.NameMinLength"])
             .MaximumLength(200)
-            .WithMessage("Template name cannot exceed 200 characters.");
+            .WithMessage(localizer["Validation.Template.NameMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(2000)
-            .WithMessage("Description cannot exceed 2000 characters.")
+            .WithMessage(localizer["Validation.Description.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.Category)
             .MaximumLength(100)
-            .WithMessage("Category cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.Category.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Category));
 
         RuleFor(x => x.WelcomeMessage)
             .MaximumLength(1000)
-            .WithMessage("Welcome message cannot exceed 1000 characters.")
+            .WithMessage(localizer["Validation.WelcomeMessage.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.WelcomeMessage));
 
         RuleFor(x => x.ThankYouMessage)
             .MaximumLength(1000)
-            .WithMessage("Thank you message cannot exceed 1000 characters.")
+            .WithMessage(localizer["Validation.ThankYouMessage.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.ThankYouMessage));
 
-        RuleForEach(x => x.Questions).SetValidator(new UpdateTemplateQuestionDtoValidator());
+        RuleForEach(x => x.Questions)
+            .SetValidator(new UpdateTemplateQuestionDtoValidator(localizer));
     }
 }
 
 public class UpdateTemplateQuestionDtoValidator : AbstractValidator<UpdateTemplateQuestionDto>
 {
-    public UpdateTemplateQuestionDtoValidator()
+    public UpdateTemplateQuestionDtoValidator(IStringLocalizer localizer)
     {
         RuleFor(x => x.Text)
             .NotEmpty()
-            .WithMessage("Question text is required.")
+            .WithMessage(localizer["Validation.Question.TextRequired"])
             .MaximumLength(500)
-            .WithMessage("Question text cannot exceed 500 characters.");
+            .WithMessage(localizer["Validation.Question.TextMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(1000)
-            .WithMessage("Question description cannot exceed 1000 characters.")
+            .WithMessage(localizer["Validation.Question.DescriptionMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
-        RuleFor(x => x.Type).IsInEnum().WithMessage("Invalid question type.");
+        RuleFor(x => x.Type).IsInEnum().WithMessage(localizer["Validation.Question.InvalidType"]);
 
         RuleFor(x => x.Order)
             .GreaterThanOrEqualTo(0)
-            .WithMessage("Question order must be non-negative.");
+            .WithMessage(localizer["Validation.Question.OrderNonNegative"]);
     }
 }

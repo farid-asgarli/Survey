@@ -1,29 +1,36 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Responses.Commands.SubmitResponse;
 
 namespace SurveyApp.Application.Validators.Responses;
 
 public class SubmitSurveyResponseCommandValidator : AbstractValidator<SubmitSurveyResponseCommand>
 {
-    public SubmitSurveyResponseCommandValidator()
+    public SubmitSurveyResponseCommandValidator(
+        IStringLocalizer<SubmitSurveyResponseCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Survey ID is required.");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
-        RuleFor(x => x.Answers).NotNull().WithMessage("Answers are required.");
+        RuleFor(x => x.Answers)
+            .NotNull()
+            .WithMessage(localizer["Validation.Response.AnswersRequired"]);
 
-        RuleForEach(x => x.Answers).SetValidator(new SubmitAnswerDtoValidator());
+        RuleForEach(x => x.Answers).SetValidator(new SubmitAnswerDtoValidator(localizer));
     }
 }
 
 public class SubmitAnswerDtoValidator : AbstractValidator<SubmitAnswerDto>
 {
-    public SubmitAnswerDtoValidator()
+    public SubmitAnswerDtoValidator(IStringLocalizer localizer)
     {
-        RuleFor(x => x.QuestionId).NotEmpty().WithMessage("Question ID is required.");
+        RuleFor(x => x.QuestionId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Answer.QuestionIdRequired"]);
 
         RuleFor(x => x.Value)
             .MaximumLength(10000)
-            .WithMessage("Answer value cannot exceed 10000 characters.")
+            .WithMessage(localizer["Validation.Answer.ValueMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Value));
     }
 }

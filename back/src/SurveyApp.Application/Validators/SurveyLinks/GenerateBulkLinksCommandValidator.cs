@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.SurveyLinks.Commands.GenerateBulkLinks;
 
 namespace SurveyApp.Application.Validators.SurveyLinks;
@@ -10,39 +11,41 @@ public class GenerateBulkLinksCommandValidator : AbstractValidator<GenerateBulkL
 {
     private const int MaxBulkLinks = 1000;
 
-    public GenerateBulkLinksCommandValidator()
+    public GenerateBulkLinksCommandValidator(
+        IStringLocalizer<GenerateBulkLinksCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Survey ID is required.");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
         RuleFor(x => x.Count)
             .GreaterThan(0)
-            .WithMessage("Count must be greater than 0.")
+            .WithMessage(localizer["Validation.BulkLinks.CountGreaterThanZero"])
             .LessThanOrEqualTo(MaxBulkLinks)
-            .WithMessage($"Cannot generate more than {MaxBulkLinks} links at once.");
+            .WithMessage(localizer["Validation.BulkLinks.MaxCountExceeded", MaxBulkLinks]);
 
         RuleFor(x => x.NamePrefix)
             .MaximumLength(90)
-            .WithMessage("Name prefix cannot exceed 90 characters (10 reserved for numbering).")
+            .WithMessage(localizer["Validation.BulkLinks.NamePrefixMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.NamePrefix));
 
         RuleFor(x => x.Source)
             .MaximumLength(100)
-            .WithMessage("Source cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.SurveyLink.SourceMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Source));
 
         RuleFor(x => x.Medium)
             .MaximumLength(100)
-            .WithMessage("Medium cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.SurveyLink.MediumMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Medium));
 
         RuleFor(x => x.Campaign)
             .MaximumLength(100)
-            .WithMessage("Campaign cannot exceed 100 characters.")
+            .WithMessage(localizer["Validation.SurveyLink.CampaignMaxLength"])
             .When(x => !string.IsNullOrEmpty(x.Campaign));
 
         RuleFor(x => x.ExpiresAt)
             .GreaterThan(DateTime.UtcNow)
-            .WithMessage("Expiration date must be in the future.")
+            .WithMessage(localizer["Validation.ExpiresAt.FutureDate"])
             .When(x => x.ExpiresAt.HasValue);
     }
 }

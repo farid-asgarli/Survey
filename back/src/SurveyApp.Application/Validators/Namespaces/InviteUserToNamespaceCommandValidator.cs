@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 using SurveyApp.Domain.Enums;
 
@@ -6,20 +7,24 @@ namespace SurveyApp.Application.Validators.Namespaces;
 
 public class InviteUserToNamespaceCommandValidator : AbstractValidator<InviteUserToNamespaceCommand>
 {
-    public InviteUserToNamespaceCommandValidator()
+    public InviteUserToNamespaceCommandValidator(
+        IStringLocalizer<InviteUserToNamespaceCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.NamespaceId).NotEmpty().WithMessage("Namespace ID is required.");
+        RuleFor(x => x.NamespaceId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Namespace.IdRequired"]);
 
         RuleFor(x => x.Email)
             .NotEmpty()
-            .WithMessage("Email is required.")
+            .WithMessage(localizer["Validation.Email.Required"])
             .EmailAddress()
-            .WithMessage("Invalid email address format.");
+            .WithMessage(localizer["Validation.Email.NotValid"]);
 
         RuleFor(x => x.Role)
             .IsInEnum()
-            .WithMessage("Invalid role specified.")
+            .WithMessage(localizer["Validation.Namespace.InvalidRole"])
             .Must(role => role != NamespaceRole.Owner)
-            .WithMessage("Cannot invite users as Owner. Ownership must be transferred.");
+            .WithMessage(localizer["Validation.Namespace.CannotInviteOwner"]);
     }
 }

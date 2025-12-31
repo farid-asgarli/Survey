@@ -1,30 +1,35 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Namespaces.Commands.UpdateNamespace;
 
 namespace SurveyApp.Application.Validators.Namespaces;
 
 public class UpdateNamespaceCommandValidator : AbstractValidator<UpdateNamespaceCommand>
 {
-    public UpdateNamespaceCommandValidator()
+    public UpdateNamespaceCommandValidator(
+        IStringLocalizer<UpdateNamespaceCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.NamespaceId).NotEmpty().WithMessage("Namespace ID is required.");
+        RuleFor(x => x.NamespaceId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Namespace.IdRequired"]);
 
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Namespace name is required.")
+            .WithMessage(localizer["Validation.Namespace.NameRequired"])
             .MinimumLength(3)
-            .WithMessage("Namespace name must be at least 3 characters.")
+            .WithMessage(localizer["Validation.Namespace.NameMinLength"])
             .MaximumLength(100)
-            .WithMessage("Namespace name cannot exceed 100 characters.");
+            .WithMessage(localizer["Validation.Namespace.NameMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(500)
-            .WithMessage("Description cannot exceed 500 characters.")
+            .WithMessage(localizer["Validation.Description.MaxLength500"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.LogoUrl)
             .Must(BeAValidUrl)
-            .WithMessage("Logo URL must be a valid URL.")
+            .WithMessage(localizer["Validation.Url.MustBeValid", "Logo URL"])
             .When(x => !string.IsNullOrEmpty(x.LogoUrl));
     }
 

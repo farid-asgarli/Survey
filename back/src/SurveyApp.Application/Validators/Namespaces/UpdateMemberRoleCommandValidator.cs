@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Namespaces.Commands.UpdateMemberRole;
 using SurveyApp.Domain.Enums;
 
@@ -9,18 +10,22 @@ namespace SurveyApp.Application.Validators.Namespaces;
 /// </summary>
 public class UpdateMemberRoleCommandValidator : AbstractValidator<UpdateMemberRoleCommand>
 {
-    public UpdateMemberRoleCommandValidator()
+    public UpdateMemberRoleCommandValidator(
+        IStringLocalizer<UpdateMemberRoleCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.NamespaceId).NotEmpty().WithMessage("Namespace ID is required.");
+        RuleFor(x => x.NamespaceId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Namespace.IdRequired"]);
 
-        RuleFor(x => x.MembershipId).NotEmpty().WithMessage("Membership ID is required.");
+        RuleFor(x => x.MembershipId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Namespace.MembershipIdRequired"]);
 
         RuleFor(x => x.Role)
             .IsInEnum()
-            .WithMessage("Invalid role specified.")
+            .WithMessage(localizer["Validation.Namespace.InvalidRole"])
             .Must(role => role != NamespaceRole.Owner)
-            .WithMessage(
-                "Cannot assign Owner role. Ownership must be transferred through a separate process."
-            );
+            .WithMessage(localizer["Validation.Namespace.CannotAssignOwner"]);
     }
 }

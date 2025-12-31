@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.Responses.Commands;
 
@@ -9,13 +10,13 @@ namespace SurveyApp.Application.Validators.Responses;
 /// </summary>
 public class ExportResponsesCommandValidator : AbstractValidator<ExportResponsesCommand>
 {
-    public ExportResponsesCommandValidator()
+    public ExportResponsesCommandValidator(
+        IStringLocalizer<ExportResponsesCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Survey ID is required.");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
-        RuleFor(x => x.Format)
-            .IsInEnum()
-            .WithMessage("Invalid export format. Valid formats are: Csv, Excel, Json.");
+        RuleFor(x => x.Format).IsInEnum().WithMessage(localizer["Validation.Export.InvalidFormat"]);
 
         When(
             x => x.Filter != null,
@@ -24,24 +25,24 @@ public class ExportResponsesCommandValidator : AbstractValidator<ExportResponses
                 RuleFor(x => x.Filter!.DateRange)
                     .Must(BeValidDateRange!)
                     .When(x => x.Filter!.DateRange != null)
-                    .WithMessage("End date must be greater than or equal to start date.");
+                    .WithMessage(localizer["Validation.Export.InvalidDateRange"]);
 
                 RuleFor(x => x.Filter!.RespondentEmail)
                     .MaximumLength(256)
                     .When(x => !string.IsNullOrEmpty(x.Filter!.RespondentEmail))
-                    .WithMessage("Respondent email filter cannot exceed 256 characters.");
+                    .WithMessage(localizer["Validation.Export.RespondentEmailMaxLength"]);
             }
         );
 
         RuleFor(x => x.TimezoneId)
             .Must(BeValidTimezone!)
             .When(x => !string.IsNullOrEmpty(x.TimezoneId))
-            .WithMessage("Invalid timezone ID.");
+            .WithMessage(localizer["Validation.Export.InvalidTimezone"]);
 
         RuleForEach(x => x.QuestionIds)
             .NotEmpty()
             .When(x => x.QuestionIds != null && x.QuestionIds.Count != 0)
-            .WithMessage("Question IDs must be valid GUIDs.");
+            .WithMessage(localizer["Validation.Export.QuestionIdsInvalid"]);
     }
 
     private static bool BeValidDateRange(DateRange dateRange)

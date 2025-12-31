@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace SurveyApp.Application.Features.Nps.Queries.GetSurveyNps;
 
@@ -7,8 +8,8 @@ namespace SurveyApp.Application.Features.Nps.Queries.GetSurveyNps;
 /// </summary>
 public class GetSurveyNpsQueryValidator : AbstractValidator<GetSurveyNpsQuery>
 {
-    public GetSurveyNpsQueryValidator()
+    public GetSurveyNpsQueryValidator(IStringLocalizer<GetSurveyNpsQueryValidator> localizer)
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Validation.SurveyIdRequired");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
     }
 }

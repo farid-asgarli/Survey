@@ -1,27 +1,28 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Features.Themes.Commands.UpdateTheme;
 
 namespace SurveyApp.Application.Validators.Themes;
 
 public class UpdateThemeCommandValidator : AbstractValidator<UpdateThemeCommand>
 {
-    public UpdateThemeCommandValidator()
+    public UpdateThemeCommandValidator(IStringLocalizer<UpdateThemeCommandValidator> localizer)
     {
-        RuleFor(x => x.ThemeId).NotEmpty().WithMessage("Theme ID is required.");
+        RuleFor(x => x.ThemeId).NotEmpty().WithMessage(localizer["Validation.Theme.IdRequired"]);
 
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Theme name is required.")
+            .WithMessage(localizer["Validation.Theme.NameRequired"])
             .MaximumLength(100)
-            .WithMessage("Theme name must not exceed 100 characters.");
+            .WithMessage(localizer["Validation.Theme.NameMaxLength"]);
 
         RuleFor(x => x.Description)
             .MaximumLength(500)
-            .WithMessage("Description must not exceed 500 characters.")
+            .WithMessage(localizer["Validation.Description.MaxLength500"])
             .When(x => !string.IsNullOrEmpty(x.Description));
 
         // Colors validation
-        RuleFor(x => x.Colors).NotNull().WithMessage("Colors are required.");
+        RuleFor(x => x.Colors).NotNull().WithMessage(localizer["Validation.Colors.Required"]);
 
         When(
             x => x.Colors != null,
@@ -29,44 +30,46 @@ public class UpdateThemeCommandValidator : AbstractValidator<UpdateThemeCommand>
             {
                 RuleFor(x => x.Colors.Primary)
                     .NotEmpty()
-                    .WithMessage("Primary color is required.")
+                    .WithMessage(localizer["Validation.Color.PrimaryRequired"])
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Primary color must be a valid hex color code (e.g., #FF5733).");
+                    .WithMessage(localizer["Validation.Color.PrimaryInvalidFormat"]);
 
                 RuleFor(x => x.Colors.Secondary)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Secondary color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.SecondaryInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Secondary));
 
                 RuleFor(x => x.Colors.Background)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Background color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.BackgroundInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Background));
 
                 RuleFor(x => x.Colors.Text)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Text color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.TextInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Text));
 
                 RuleFor(x => x.Colors.Accent)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Accent color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.AccentInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Accent));
 
                 RuleFor(x => x.Colors.Error)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Error color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.ErrorInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Error));
 
                 RuleFor(x => x.Colors.Success)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Success color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.SuccessInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Colors?.Success));
             }
         );
 
         // Typography validation
-        RuleFor(x => x.Typography).NotNull().WithMessage("Typography settings are required.");
+        RuleFor(x => x.Typography)
+            .NotNull()
+            .WithMessage(localizer["Validation.Typography.Required"]);
 
         When(
             x => x.Typography != null,
@@ -74,48 +77,50 @@ public class UpdateThemeCommandValidator : AbstractValidator<UpdateThemeCommand>
             {
                 RuleFor(x => x.Typography.FontFamily)
                     .MaximumLength(100)
-                    .WithMessage("Font family must not exceed 100 characters.")
+                    .WithMessage(localizer["Validation.Typography.FontFamilyMaxLength"])
                     .When(x => !string.IsNullOrEmpty(x.Typography?.FontFamily));
 
                 RuleFor(x => x.Typography.HeadingFontFamily)
                     .MaximumLength(100)
-                    .WithMessage("Heading font family must not exceed 100 characters.")
+                    .WithMessage(localizer["Validation.Typography.HeadingFontFamilyMaxLength"])
                     .When(x => !string.IsNullOrEmpty(x.Typography?.HeadingFontFamily));
 
                 RuleFor(x => x.Typography.BaseFontSize)
                     .InclusiveBetween(10, 32)
-                    .WithMessage("Base font size must be between 10 and 32 pixels.");
+                    .WithMessage(localizer["Validation.Typography.BaseFontSizeRange"]);
             }
         );
 
         // Layout validation
-        RuleFor(x => x.Layout).NotNull().WithMessage("Layout settings are required.");
+        RuleFor(x => x.Layout).NotNull().WithMessage(localizer["Validation.Layout.Required"]);
 
         When(
             x => x.Layout != null,
             () =>
             {
-                RuleFor(x => x.Layout.Layout).IsInEnum().WithMessage("Invalid layout value.");
+                RuleFor(x => x.Layout.Layout)
+                    .IsInEnum()
+                    .WithMessage(localizer["Validation.Layout.InvalidValue"]);
 
                 RuleFor(x => x.Layout.BackgroundPosition)
                     .IsInEnum()
-                    .WithMessage("Invalid background position value.");
+                    .WithMessage(localizer["Validation.Layout.InvalidBackgroundPosition"]);
 
                 RuleFor(x => x.Layout.ProgressBarStyle)
                     .IsInEnum()
-                    .WithMessage("Invalid progress bar style value.");
+                    .WithMessage(localizer["Validation.Layout.InvalidProgressBarStyle"]);
 
                 RuleFor(x => x.Layout.BackgroundImageUrl)
                     .MaximumLength(500)
-                    .WithMessage("Background image URL must not exceed 500 characters.")
+                    .WithMessage(localizer["Validation.Layout.BackgroundImageUrlMaxLength"])
                     .Must(BeAValidUrl)
-                    .WithMessage("Background image URL must be a valid URL.")
+                    .WithMessage(localizer["Validation.Layout.BackgroundImageUrlInvalid"])
                     .When(x => !string.IsNullOrEmpty(x.Layout?.BackgroundImageUrl));
             }
         );
 
         // Branding validation
-        RuleFor(x => x.Branding).NotNull().WithMessage("Branding settings are required.");
+        RuleFor(x => x.Branding).NotNull().WithMessage(localizer["Validation.Branding.Required"]);
 
         When(
             x => x.Branding != null,
@@ -123,29 +128,31 @@ public class UpdateThemeCommandValidator : AbstractValidator<UpdateThemeCommand>
             {
                 RuleFor(x => x.Branding.LogoUrl)
                     .MaximumLength(500)
-                    .WithMessage("Logo URL must not exceed 500 characters.")
+                    .WithMessage(localizer["Validation.Branding.LogoUrlMaxLength"])
                     .Must(BeAValidUrl)
-                    .WithMessage("Logo URL must be a valid URL.")
+                    .WithMessage(localizer["Validation.Branding.LogoUrlInvalid"])
                     .When(x => !string.IsNullOrEmpty(x.Branding?.LogoUrl));
 
                 RuleFor(x => x.Branding.LogoPosition)
                     .IsInEnum()
-                    .WithMessage("Invalid logo position value.");
+                    .WithMessage(localizer["Validation.Branding.InvalidLogoPosition"]);
             }
         );
 
         // Button validation
-        RuleFor(x => x.Button).NotNull().WithMessage("Button settings are required.");
+        RuleFor(x => x.Button).NotNull().WithMessage(localizer["Validation.Button.Required"]);
 
         When(
             x => x.Button != null,
             () =>
             {
-                RuleFor(x => x.Button.Style).IsInEnum().WithMessage("Invalid button style value.");
+                RuleFor(x => x.Button.Style)
+                    .IsInEnum()
+                    .WithMessage(localizer["Validation.Button.InvalidStyle"]);
 
                 RuleFor(x => x.Button.TextColor)
                     .Matches(@"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
-                    .WithMessage("Button text color must be a valid hex color code.")
+                    .WithMessage(localizer["Validation.Color.ButtonTextInvalidFormat"])
                     .When(x => !string.IsNullOrEmpty(x.Button?.TextColor));
             }
         );
@@ -153,7 +160,7 @@ public class UpdateThemeCommandValidator : AbstractValidator<UpdateThemeCommand>
         // Custom CSS validation
         RuleFor(x => x.CustomCss)
             .MaximumLength(50000)
-            .WithMessage("Custom CSS must not exceed 50,000 characters.")
+            .WithMessage(localizer["Validation.CustomCss.MaxLength"])
             .When(x => !string.IsNullOrEmpty(x.CustomCss));
     }
 

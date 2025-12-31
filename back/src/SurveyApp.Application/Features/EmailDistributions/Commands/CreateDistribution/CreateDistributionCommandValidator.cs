@@ -1,22 +1,27 @@
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace SurveyApp.Application.Features.EmailDistributions.Commands.CreateDistribution;
 
 public class CreateDistributionCommandValidator : AbstractValidator<CreateDistributionCommand>
 {
-    public CreateDistributionCommandValidator()
+    public CreateDistributionCommandValidator(
+        IStringLocalizer<CreateDistributionCommandValidator> localizer
+    )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage("Validation.SurveyIdRequired");
+        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
 
         RuleFor(x => x.Subject)
             .NotEmpty()
-            .WithMessage("Validation.SubjectRequired")
+            .WithMessage(localizer["Validation.SubjectRequired"])
             .MaximumLength(500)
-            .WithMessage("Validation.SubjectMaxLength");
+            .WithMessage(localizer["Validation.SubjectMaxLength"]);
 
-        RuleFor(x => x.Body).NotEmpty().WithMessage("Validation.BodyRequired");
+        RuleFor(x => x.Body).NotEmpty().WithMessage(localizer["Validation.BodyRequired"]);
 
-        RuleFor(x => x.Recipients).NotEmpty().WithMessage("Validation.RecipientRequired");
+        RuleFor(x => x.Recipients)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.RecipientRequired"]);
 
         RuleForEach(x => x.Recipients)
             .ChildRules(recipient =>
@@ -24,14 +29,14 @@ public class CreateDistributionCommandValidator : AbstractValidator<CreateDistri
                 recipient
                     .RuleFor(r => r.Email)
                     .NotEmpty()
-                    .WithMessage("Validation.RecipientEmailRequired")
+                    .WithMessage(localizer["Validation.RecipientEmailRequired"])
                     .EmailAddress()
-                    .WithMessage("Validation.InvalidEmailFormat");
+                    .WithMessage(localizer["Validation.InvalidEmailFormat"]);
             });
 
         RuleFor(x => x.SenderEmail)
             .EmailAddress()
             .When(x => !string.IsNullOrWhiteSpace(x.SenderEmail))
-            .WithMessage("Validation.InvalidSenderEmailFormat");
+            .WithMessage(localizer["Validation.InvalidSenderEmailFormat"]);
     }
 }
