@@ -69,7 +69,7 @@ export function LoginForm({ isLoading, error, onSubmit }: LoginFormProps) {
           type={showPassword ? 'text' : 'password'}
           variant="filled"
           size="lg"
-          placeholder="••••••••"
+          placeholder={t('auth.passwordPlaceholder')}
           {...register('password')}
           error={touchedFields.password ? errors.password?.message : undefined}
           autoComplete="current-password"

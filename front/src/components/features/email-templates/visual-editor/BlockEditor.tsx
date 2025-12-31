@@ -85,13 +85,13 @@ export function BlockEditor({
       <div
         className={cn(
           'relative border-2 rounded-lg transition-all duration-200',
-          isSelected ? 'border-primary shadow-md' : 'border-transparent hover:border-outline-variant/50'
+          isSelected ? 'border-primary ring-2 ring-primary/30' : 'border-transparent hover:border-outline-variant/50'
         )}
       >
         {/* Block toolbar */}
         <div
           className={cn(
-            'absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 bg-surface rounded-lg shadow-lg border border-outline-variant/30 transition-all duration-200',
+            'absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 bg-surface rounded-lg border-2 border-outline-variant transition-all duration-200',
             isSelected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
           )}
           role="toolbar"

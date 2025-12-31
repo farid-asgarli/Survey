@@ -152,9 +152,9 @@ function TabsList({ className, ref, children, ...props }: TabsListProps) {
         <div
           className={cn(
             'absolute top-1 left-0 rounded-full pointer-events-none',
-            isReady ? 'transition-all duration-300 ease-out' : 'opacity-0',
-            variant === 'pills' && 'bg-primary shadow-md',
-            variant === 'segmented' && 'bg-surface-container-lowest shadow-sm'
+            isReady ? 'transition-all duration-200 ease-out' : 'opacity-0',
+            variant === 'pills' && 'bg-primary ring-2 ring-primary/30',
+            variant === 'segmented' && 'bg-surface-container-lowest border-2 border-outline-variant/50'
           )}
           style={indicatorStyle}
         />

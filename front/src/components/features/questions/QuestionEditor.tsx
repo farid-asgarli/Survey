@@ -1,8 +1,8 @@
 // Question Editor - Main editor component that renders the appropriate editor for each question type
 // Design: Clean, Email Editor-inspired styling with card-based layout and smooth transitions
 
-import { useState } from 'react';
 import { useSurveyBuilderStore } from '@/stores';
+import { useDialogState, useQuestionEditorTranslation } from '@/hooks';
 import { QuestionTypeIcon, getQuestionTypeLabel } from './QuestionTypeInfo';
 import { QuestionPreview } from './QuestionPreview';
 import { LogicBuilderDialog } from './LogicBuilderDialog';
@@ -24,8 +24,8 @@ import {
   NumberEditor,
   YesNoEditor,
 } from './editors';
-import { Switch, IconButton, Tabs, TabsList, TabsTrigger, TabsContent, Button, Tooltip } from '@/components/ui';
-import { Trash2, Copy, Eye, GitBranch, Pencil } from 'lucide-react';
+import { Switch, IconButton, Tabs, TabsList, TabsTrigger, TabsContent, Button, Tooltip, Badge } from '@/components/ui';
+import { Trash2, Copy, Eye, GitBranch, Pencil, Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { QuestionType } from '@/types';
 import { cn } from '@/lib/utils';
@@ -39,12 +39,87 @@ interface QuestionEditorProps {
 
 export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorProps) {
   const { t } = useTranslation();
-  const [isLogicDialogOpen, setIsLogicDialogOpen] = useState(false);
+  const logicDialog = useDialogState();
   const { survey, updateQuestion, deleteQuestion, duplicateQuestion, addOption, updateOption, deleteOption, reorderOptions } =
     useSurveyBuilderStore();
 
+  // Get translation-aware data and handlers
+  const translationData = useQuestionEditorTranslation(question);
+  const { translated, handlers } = translationData ?? { translated: null, handlers: null };
+
+  // Translatable settings fields that should be routed through translation API
+  const translatableSettingFields = [
+    'minLabel',
+    'maxLabel',
+    'placeholder',
+    'validationMessage',
+    'otherLabel',
+    'matrixRows',
+    'matrixColumns',
+  ] as const;
+
   const handleUpdateQuestion = (updates: Partial<DraftQuestion>) => {
-    updateQuestion(question.id, updates);
+    // For text/description, use translation-aware handlers
+    if ('text' in updates && updates.text !== undefined && handlers) {
+      handlers.updateText(updates.text);
+      // Remove text from updates to avoid double-update
+      const { text, ...rest } = updates;
+      if (Object.keys(rest).length > 0) {
+        handlers.updateSettings(rest);
+      }
+      return;
+    }
+    if ('description' in updates && updates.description !== undefined && handlers) {
+      handlers.updateDescription(updates.description);
+      // Remove description from updates to avoid double-update
+      const { description, ...rest } = updates;
+      if (Object.keys(rest).length > 0) {
+        handlers.updateSettings(rest);
+      }
+      return;
+    }
+
+    // Check if settings contain translatable fields
+    // Only route through translation handler when actually editing a translation (non-default language)
+    if ('settings' in updates && updates.settings && handlers && translated?.isEditingTranslation) {
+      const settingsUpdate = updates.settings;
+
+      // Separate translatable and non-translatable settings
+      const translatableUpdates: Record<string, unknown> = {};
+      const nonTranslatableSettings: Record<string, unknown> = {};
+
+      for (const [key, value] of Object.entries(settingsUpdate)) {
+        if (translatableSettingFields.includes(key as (typeof translatableSettingFields)[number])) {
+          translatableUpdates[key] = value;
+        } else {
+          nonTranslatableSettings[key] = value;
+        }
+      }
+
+      // Route translatable settings through translation handler
+      for (const [field, value] of Object.entries(translatableUpdates)) {
+        handlers.updateTranslatableSetting(field as (typeof translatableSettingFields)[number], value as string | string[]);
+      }
+
+      // Update non-translatable settings directly
+      if (Object.keys(nonTranslatableSettings).length > 0) {
+        updateQuestion(question.id, { settings: { ...question.settings, ...nonTranslatableSettings } });
+      }
+      return;
+    }
+
+    // When editing default language or no translation context, update store directly
+    if ('settings' in updates && updates.settings) {
+      updateQuestion(question.id, { settings: { ...question.settings, ...updates.settings } });
+      return;
+    }
+
+    // For other updates (settings), use direct store update
+    if (handlers) {
+      handlers.updateSettings(updates);
+    } else {
+      updateQuestion(question.id, updates);
+    }
   };
 
   const handleAddOption = () => {
@@ -52,6 +127,16 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
   };
 
   const handleUpdateOption = (optionId: string, updates: { text?: string; value?: string }) => {
+    // For text updates, use translation-aware handler
+    if ('text' in updates && updates.text !== undefined && handlers) {
+      handlers.updateOptionText(optionId, updates.text);
+      // Handle value separately if present
+      if ('value' in updates && updates.value !== undefined) {
+        updateOption(question.id, optionId, { value: updates.value });
+      }
+      return;
+    }
+    // For other updates, use direct store update
     updateOption(question.id, optionId, updates);
   };
 
@@ -63,9 +148,33 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
     reorderOptions(question.id, startIndex, endIndex);
   };
 
+  // Build question with display values for editors
+  const displayQuestion: DraftQuestion = translated
+    ? {
+        ...question,
+        text: translated.displayText,
+        description: translated.displayDescription,
+        options: translated.displayOptions.map((opt) => ({
+          ...question.options.find((o) => o.id === opt.id)!,
+          text: opt.displayText,
+        })),
+        settings: {
+          ...question.settings,
+          // Override with translated settings if available
+          minLabel: translated.displaySettings.minLabel ?? question.settings?.minLabel,
+          maxLabel: translated.displaySettings.maxLabel ?? question.settings?.maxLabel,
+          placeholder: translated.displaySettings.placeholder ?? question.settings?.placeholder,
+          validationMessage: translated.displaySettings.validationMessage ?? question.settings?.validationMessage,
+          otherLabel: translated.displaySettings.otherLabel ?? question.settings?.otherLabel,
+          matrixRows: translated.displaySettings.matrixRows ?? question.settings?.matrixRows,
+          matrixColumns: translated.displaySettings.matrixColumns ?? question.settings?.matrixColumns,
+        },
+      }
+    : question;
+
   // Editor props for option-based questions
   const optionEditorProps = {
-    question,
+    question: displayQuestion,
     isReadOnly,
     onUpdateQuestion: handleUpdateQuestion,
     onAddOption: handleAddOption,
@@ -76,7 +185,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
   // Simple editor props
   const simpleEditorProps = {
-    question,
+    question: displayQuestion,
     isReadOnly,
     onUpdateQuestion: handleUpdateQuestion,
   };
@@ -138,7 +247,18 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
               <QuestionTypeIcon type={question.type} className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-on-surface">{getQuestionTypeLabel(question.type)}</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-on-surface">{getQuestionTypeLabel(question.type)}</h3>
+                {/* Translation indicator */}
+                {translated?.isEditingTranslation && (
+                  <Badge variant={translated.isUsingFallback ? 'warning' : 'info'} size="sm" className="gap-1">
+                    <Languages className="w-3 h-3" />
+                    {translated.isUsingFallback
+                      ? t('localization.editingFallback', 'Editing (fallback)')
+                      : t('localization.editingTranslation', 'Editing {{lang}}', { lang: translated.editingLanguage.toUpperCase() })}
+                  </Badge>
+                )}
+              </div>
               <p className="text-xs text-on-surface-variant">
                 {t('questionEditor.questionNumber', 'Question {{number}}', { number: question.order + 1 })}
                 {question.isRequired && <span className="text-error ml-1">*</span>}
@@ -181,7 +301,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
             {!isReadOnly && (
               <TabsTrigger
                 value="edit"
-                className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:shadow-sm"
+                className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:ring-2 data-[state=active]:ring-primary/30"
               >
                 <Pencil className="w-4 h-4" />
                 {t('questionEditor.edit')}
@@ -189,7 +309,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
             )}
             <TabsTrigger
               value="preview"
-              className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:shadow-sm"
+              className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:ring-2 data-[state=active]:ring-primary/30"
             >
               <Eye className="w-4 h-4" />
               {t('questionEditor.preview')}
@@ -203,7 +323,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
         <TabsContent value="edit" className="flex-1 overflow-auto">
           {/* Editor Card */}
           <div className="p-4">
-            <div className="bg-surface rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden">
+            <div className="bg-surface rounded-xl border-2 border-outline-variant/40 overflow-hidden">
               <div className="p-5">{renderEditor()}</div>
 
               {/* Settings Section */}
@@ -231,7 +351,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
                       </div>
                       <div className="flex items-center gap-2">
                         <LogicSummaryBadge questionId={question.id} surveyId={survey.id} />
-                        <Button variant="tonal" size="sm" onClick={() => setIsLogicDialogOpen(true)} className="rounded-lg">
+                        <Button variant="tonal" size="sm" onClick={() => logicDialog.open()}>
                           <GitBranch className="w-4 h-4 mr-1.5" />
                           {t('questionEditor.configure')}
                         </Button>
@@ -255,15 +375,15 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
       <TabsContent value="preview" className="flex-1 overflow-auto p-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-surface rounded-xl border border-outline-variant/30 shadow-sm p-6">
-            <QuestionPreview question={question} />
+          <div className="bg-surface rounded-xl border-2 border-outline-variant/40 p-6">
+            <QuestionPreview question={displayQuestion} />
           </div>
         </div>
       </TabsContent>
 
       {/* Logic Builder Dialog - only in edit mode */}
       {!isReadOnly && survey?.id && !question.id.startsWith('temp_') && (
-        <LogicBuilderDialog open={isLogicDialogOpen} onOpenChange={setIsLogicDialogOpen} questionId={question.id} surveyId={survey.id} />
+        <LogicBuilderDialog open={logicDialog.isOpen} onOpenChange={logicDialog.setOpen} questionId={question.id} surveyId={survey.id} />
       )}
     </Tabs>
   );

@@ -1,16 +1,17 @@
 // React Query hooks for User Preferences operations
 
+import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { preferencesApi } from '@/services';
 import { usePreferencesStore, defaultDashboard, defaultSurveyBuilder } from '@/stores';
 import { toast } from '@/components/ui';
 import type { UserPreferences, UpdateUserPreferencesRequest } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const preferencesKeys = {
-  all: ['preferences'] as const,
-  current: () => [...preferencesKeys.all, 'current'] as const,
-};
+// Query keys - preferences only has a current key (no list/detail pattern)
+export const preferencesKeys = createExtendedQueryKeys('preferences', (base) => ({
+  current: () => [...base.all, 'current'] as const,
+}));
 
 /**
  * Hook to fetch current user preferences
@@ -38,8 +39,8 @@ export function useUserPreferences() {
         setLoading(false);
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 30 * 60 * 1000, // 30 minutes
+    staleTime: STALE_TIMES.LONG,
+    gcTime: STALE_TIMES.STATIC,
   });
 }
 
@@ -121,14 +122,18 @@ export function useUpdatePreferences() {
     },
     onSettled: () => {
       setSaving(false);
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: preferencesKeys.current() });
     },
   });
 }
 
 /**
- * Hook to sync preferences when user logs in
+ * Hook that returns a callback to sync preferences after login.
+ * Returns an async function that can be called imperatively.
+ *
+ * @example
+ * const syncPreferences = useSyncPreferencesOnLogin();
+ * // After successful login:
+ * await syncPreferences();
  */
 export function useSyncPreferencesOnLogin() {
   const queryClient = useQueryClient();
@@ -152,26 +157,28 @@ export function useSyncPreferencesOnLogin() {
 }
 
 /**
- * Convenience hook to update a single preference value
+ * Convenience hook to update a single preference value.
+ * Provides stable method references via useMemo.
  */
 export function useUpdateSinglePreference() {
   const updatePreferences = useUpdatePreferences();
+  const { mutate, isPending } = updatePreferences;
+
+  const methods = useMemo(
+    () => ({
+      updateThemeMode: (themeMode: UserPreferences['themeMode']) => mutate({ themeMode }),
+      updateColorPalette: (colorPalette: UserPreferences['colorPalette']) => mutate({ colorPalette }),
+      updateAccessibility: (accessibility: Partial<UserPreferences['accessibility']>) => mutate({ accessibility }),
+      updateRegional: (regional: Partial<UserPreferences['regional']>) => mutate({ regional }),
+      updateNotifications: (notifications: Partial<UserPreferences['notifications']>) => mutate({ notifications }),
+      updateDashboard: (dashboard: Partial<UserPreferences['dashboard']>) => mutate({ dashboard }),
+      updateSurveyBuilder: (surveyBuilder: Partial<UserPreferences['surveyBuilder']>) => mutate({ surveyBuilder }),
+    }),
+    [mutate]
+  );
 
   return {
-    updateThemeMode: (themeMode: UserPreferences['themeMode']) => updatePreferences.mutate({ themeMode }),
-
-    updateColorPalette: (colorPalette: UserPreferences['colorPalette']) => updatePreferences.mutate({ colorPalette }),
-
-    updateAccessibility: (accessibility: Partial<UserPreferences['accessibility']>) => updatePreferences.mutate({ accessibility }),
-
-    updateRegional: (regional: Partial<UserPreferences['regional']>) => updatePreferences.mutate({ regional }),
-
-    updateNotifications: (notifications: Partial<UserPreferences['notifications']>) => updatePreferences.mutate({ notifications }),
-
-    updateDashboard: (dashboard: Partial<UserPreferences['dashboard']>) => updatePreferences.mutate({ dashboard }),
-
-    updateSurveyBuilder: (surveyBuilder: Partial<UserPreferences['surveyBuilder']>) => updatePreferences.mutate({ surveyBuilder }),
-
-    isPending: updatePreferences.isPending,
+    ...methods,
+    isPending,
   };
 }

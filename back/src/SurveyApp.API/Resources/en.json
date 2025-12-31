@@ -3,6 +3,8 @@
   "Errors.InvalidOrExpiredToken": "Invalid or expired token.",
   "Errors.InvalidTokenOrEmail": "Invalid token or email address.",
   "Errors.DistributionNotFound": "Distribution not found.",
+  "Errors.CannotCancelDistribution": "Cannot cancel a distribution that has already started sending or has been completed.",
+  "Errors.CannotDeleteDistribution": "Cannot delete a distribution that is currently sending or has been sent. Only draft, scheduled, cancelled, or failed distributions can be deleted.",
   "Errors.InvalidTrackingToken": "Invalid tracking token.",
   "Errors.IdMismatch": "ID mismatch.",
   "Errors.IdMismatchUrlBody": "ID mismatch between URL and request body.",

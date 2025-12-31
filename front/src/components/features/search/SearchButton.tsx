@@ -1,5 +1,6 @@
 // SearchButton - Trigger button for global search
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useSearchStore } from '@/stores/searchStore';
 import { formatShortcutKeys } from '@/stores/shortcutsStore';
@@ -11,6 +12,7 @@ interface SearchButtonProps {
 }
 
 export function SearchButton({ className, variant = 'full' }: SearchButtonProps) {
+  const { t } = useTranslation();
   const { openSearch } = useSearchStore();
 
   if (variant === 'icon') {
@@ -23,7 +25,7 @@ export function SearchButton({ className, variant = 'full' }: SearchButtonProps)
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
           className
         )}
-        aria-label="Search"
+        aria-label={t('a11y.search')}
       >
         <Search className="h-5 w-5 text-on-surface-variant" />
       </button>
@@ -41,10 +43,10 @@ export function SearchButton({ className, variant = 'full' }: SearchButtonProps)
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
           className
         )}
-        aria-label="Search"
+        aria-label={t('a11y.search')}
       >
         <Search className="h-4 w-4" />
-        <span className="text-sm">Search</span>
+        <span className="text-sm">{t('common.search')}</span>
         <kbd className="hidden sm:inline-flex px-1.5 py-0.5 rounded bg-surface-container-high text-xs font-mono ml-1">
           {formatShortcutKeys(['Mod', 'K'])}
         </kbd>
@@ -65,7 +67,7 @@ export function SearchButton({ className, variant = 'full' }: SearchButtonProps)
         'group',
         className
       )}
-      aria-label="Search"
+      aria-label={t('a11y.search')}
     >
       <Search className="h-5 w-5 shrink-0 group-hover:text-on-surface transition-colors" />
       <span className="flex-1 text-left text-sm">Search surveys, templates...</span>

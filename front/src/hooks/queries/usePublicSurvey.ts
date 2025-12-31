@@ -3,12 +3,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { publicSurveyApi } from '@/services/api';
 import type { SubmitResponseRequest } from '@/types/public-survey';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const publicSurveyKeys = {
-  all: ['public-survey'] as const,
-  byToken: (shareToken: string) => [...publicSurveyKeys.all, shareToken] as const,
-};
+// Query keys - public survey uses token-based lookup instead of standard list/detail
+export const publicSurveyKeys = createExtendedQueryKeys('public-survey', (base) => ({
+  byToken: (shareToken: string) => [...base.all, shareToken] as const,
+}));
 
 /**
  * Hook to fetch a public survey by share token
@@ -18,7 +18,7 @@ export function usePublicSurvey(shareToken: string | undefined) {
     queryKey: publicSurveyKeys.byToken(shareToken || ''),
     queryFn: () => publicSurveyApi.getSurvey(shareToken!),
     enabled: !!shareToken,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
     retry: (failureCount, error) => {
       // Don't retry on 404 (survey not found)
       if ((error as { response?: { status?: number } })?.response?.status === 404) {

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { validateEmail, validateName, getPasswordRequirements, validateConfirmPassword } from '@/utils/validators';
+import { validateEmail, validateName, getPasswordRequirements, validateConfirmPassword } from '@/lib/validations';
 import type { FormErrors, RegisterFormData } from './types';
 
 /**

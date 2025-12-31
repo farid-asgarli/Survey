@@ -2,7 +2,15 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Button, LoadingIndicator, toast } from '@/components/ui';
-import { useSurveyDetail, useViewTransitionNavigate, useThemeDetail } from '@/hooks';
+import {
+  useSurveyDetail,
+  useViewTransitionNavigate,
+  useThemeDetail,
+  useDialogState,
+  useCopyToClipboard,
+  useEscapeKey,
+  useSurveyTranslations,
+} from '@/hooks';
 import { useLogicMap } from '@/hooks/queries/useQuestionLogic';
 import { useNamespaceStore } from '@/stores';
 import type { AnswerValue, PublicSurveyViewMode, PublicSurveyTheme } from '@/types/public-survey';
@@ -19,6 +27,7 @@ export function SurveyPreviewPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useViewTransitionNavigate();
   const { t } = useTranslation();
+  const { copy } = useCopyToClipboard();
 
   // Namespace context
   const activeNamespace = useNamespaceStore((s) => s.activeNamespace);
@@ -31,6 +40,19 @@ export function SurveyPreviewPage() {
 
   // Fetch logic map for conditional logic
   const { data: logicMap } = useLogicMap(id);
+
+  // Preview language state
+  const [previewLanguage, setPreviewLanguage] = useState<string>('');
+
+  // Set initial preview language when survey loads
+  useEffect(() => {
+    if (surveyData && !previewLanguage) {
+      setPreviewLanguage(surveyData.defaultLanguage || surveyData.language || 'en');
+    }
+  }, [surveyData, previewLanguage]);
+
+  // Fetch translations for preview
+  const { data: translationsData } = useSurveyTranslations(previewLanguage !== (surveyData?.defaultLanguage || 'en') ? id : undefined);
 
   // Device/viewport state
   const [selectedPreset, setSelectedPreset] = useState<DevicePreset>(DEVICE_PRESETS[0]);
@@ -45,7 +67,7 @@ export function SurveyPreviewPage() {
 
   // UI panels state
   const [showResponseDrawer, setShowResponseDrawer] = useState(false);
-  const [showQRDialog, setShowQRDialog] = useState(false);
+  const qrDialog = useDialogState();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showKeyboardHints, setShowKeyboardHints] = useState(false);
 
@@ -194,8 +216,51 @@ export function SurveyPreviewPage() {
       }
     }
 
+    // Apply translations if previewing a non-default language
+    if (translationsData && previewLanguage !== surveyData.defaultLanguage) {
+      // Find survey translation for the preview language
+      const surveyTranslation = translationsData.translations?.find((t) => t.languageCode === previewLanguage);
+      if (surveyTranslation) {
+        survey.title = surveyTranslation.title || survey.title;
+        survey.description = surveyTranslation.description || survey.description;
+        survey.welcomeMessage = surveyTranslation.welcomeMessage || survey.welcomeMessage;
+        survey.thankYouMessage = surveyTranslation.thankYouMessage || survey.thankYouMessage;
+      }
+
+      // Apply question translations
+      if (translationsData.questions) {
+        survey.questions = survey.questions.map((question) => {
+          const questionTranslations = translationsData.questions?.find((qt) => qt.questionId === question.id);
+          const translation = questionTranslations?.translations?.find((t) => t.languageCode === previewLanguage);
+
+          if (translation) {
+            return {
+              ...question,
+              text: translation.text || question.text,
+              description: translation.description || question.description,
+              settings: {
+                ...question.settings,
+                // Apply translated settings if available
+                options: translation.translatedSettings?.options || question.settings?.options,
+                minLabel: translation.translatedSettings?.minLabel || question.settings?.minLabel,
+                maxLabel: translation.translatedSettings?.maxLabel || question.settings?.maxLabel,
+                placeholder: translation.translatedSettings?.placeholder || question.settings?.placeholder,
+                matrixRows: translation.translatedSettings?.matrixRows || question.settings?.matrixRows,
+                matrixColumns: translation.translatedSettings?.matrixColumns || question.settings?.matrixColumns,
+                validationMessage: translation.translatedSettings?.validationMessage || question.settings?.validationMessage,
+              },
+            };
+          }
+          return question;
+        });
+      }
+    }
+
+    // Update the language in the survey
+    survey.language = previewLanguage || surveyData.defaultLanguage || 'en';
+
     return survey;
-  }, [surveyData, themeData]);
+  }, [surveyData, themeData, translationsData, previewLanguage]);
 
   // Merge questions with logic rules from the logic map
   const questionsWithLogic = useMemo(() => {
@@ -252,15 +317,7 @@ export function SurveyPreviewPage() {
   }, []);
 
   // Escape key to exit fullscreen
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isFullscreen) {
-        setIsFullscreen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen]);
+  useEscapeKey(() => setIsFullscreen(false), isFullscreen);
 
   // Screenshot capture - copies preview to clipboard or downloads
   const captureScreenshot = useCallback(async () => {
@@ -293,14 +350,12 @@ export function SurveyPreviewPage() {
   }, [t, surveyData?.title]);
 
   // Copy preview link
-  const copyPreviewLink = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(previewUrl);
-      toast.success(t('surveyPreview.linkCopied'));
-    } catch {
-      toast.error(t('surveyPreview.linkCopyError'));
-    }
-  }, [previewUrl, t]);
+  const copyPreviewLink = useCallback(() => {
+    copy(previewUrl, {
+      successMessage: t('surveyPreview.linkCopied'),
+      errorMessage: t('surveyPreview.linkCopyError'),
+    });
+  }, [previewUrl, copy, t]);
 
   // Reset preview state
   const handleReset = useCallback(() => {
@@ -374,7 +429,7 @@ export function SurveyPreviewPage() {
   const handleSubmit = useCallback(() => {
     if (displayMode === 'all-at-once') {
       if (!validateAllQuestions()) {
-        toast.error('Please complete all required questions');
+        toast.error(t('surveyPreview.completeRequired'));
         return;
       }
     } else {
@@ -468,6 +523,10 @@ export function SurveyPreviewPage() {
         customWidth={customWidth}
         customHeight={customHeight}
         previewUrl={previewUrl}
+        previewLanguage={previewLanguage || surveyData.defaultLanguage || 'en'}
+        availableLanguages={surveyData.availableLanguages || ['en']}
+        defaultLanguage={surveyData.defaultLanguage || 'en'}
+        onLanguageChange={setPreviewLanguage}
         onBack={handleBack}
         onSelectPreset={handleSelectPreset}
         onToggleOrientation={toggleOrientation}
@@ -480,7 +539,7 @@ export function SurveyPreviewPage() {
         onToggleResponseDrawer={() => setShowResponseDrawer(!showResponseDrawer)}
         onToggleKeyboardHints={() => setShowKeyboardHints(!showKeyboardHints)}
         onToggleFullscreen={toggleFullscreen}
-        onShowQRCode={() => setShowQRDialog(true)}
+        onShowQRCode={() => qrDialog.open()}
         onCaptureScreenshot={captureScreenshot}
         onReset={handleReset}
         onCopyLink={copyPreviewLink}
@@ -540,7 +599,7 @@ export function SurveyPreviewPage() {
       />
 
       {/* QR Code Dialog */}
-      <QRCodeDialog open={showQRDialog} previewUrl={previewUrl} onOpenChange={setShowQRDialog} onCopyLink={copyPreviewLink} />
+      <QRCodeDialog open={qrDialog.isOpen} previewUrl={previewUrl} onOpenChange={qrDialog.setOpen} onCopyLink={copyPreviewLink} />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Save, Eye, Undo2, Redo2, Settings, Check, Loader2, Palette, Lock } from 'lucide-react';
 import { Button, Tooltip } from '@/components/ui';
 import { SurveyStatusBadge } from '@/components/features/surveys';
+import { SurveyLanguageSwitcher, type LanguageStatus } from '@/components/features/localization';
 import { cn } from '@/lib/utils';
 import { SurveyStatus } from '@/types';
 
@@ -16,6 +17,10 @@ interface SurveyBuilderHeaderProps {
   canUndo: boolean;
   canRedo: boolean;
   showThemePanel: boolean;
+  // Localization props
+  editingLanguage: string;
+  defaultLanguage: string;
+  availableLanguages: string[];
   onBack: () => void;
   onTitleChange: (title: string) => void;
   onUndo: () => void;
@@ -24,6 +29,9 @@ interface SurveyBuilderHeaderProps {
   onToggleThemePanel: () => void;
   onOpenSettings: () => void;
   onPreview: () => void;
+  onLanguageChange: (languageCode: string) => void;
+  onAddLanguage: () => void;
+  onEditTranslation?: () => void;
 }
 
 export function SurveyBuilderHeader({
@@ -36,6 +44,9 @@ export function SurveyBuilderHeader({
   canUndo,
   canRedo,
   showThemePanel,
+  editingLanguage,
+  defaultLanguage,
+  availableLanguages,
   onBack,
   onTitleChange,
   onUndo,
@@ -44,8 +55,19 @@ export function SurveyBuilderHeader({
   onToggleThemePanel,
   onOpenSettings,
   onPreview,
+  onLanguageChange,
+  onAddLanguage,
+  onEditTranslation,
 }: SurveyBuilderHeaderProps) {
   const { t } = useTranslation();
+
+  // Convert available languages to LanguageStatus format
+  const languageStatuses: LanguageStatus[] = availableLanguages.map((code) => ({
+    code,
+    isDefault: code === defaultLanguage,
+    // TODO: Calculate actual completion percentage from translations
+    completionPercent: code === defaultLanguage ? 100 : undefined,
+  }));
 
   return (
     <div className="shrink-0 flex flex-col">
@@ -167,6 +189,18 @@ export function SurveyBuilderHeader({
               <div className="h-5 w-px bg-outline-variant/30" />
             </>
           )}
+
+          {/* Language Switcher */}
+          <SurveyLanguageSwitcher
+            currentLanguage={editingLanguage}
+            availableLanguages={languageStatuses}
+            onLanguageSelect={onLanguageChange}
+            onAddLanguage={onAddLanguage}
+            onManageLanguages={editingLanguage !== defaultLanguage ? onEditTranslation : undefined}
+            isReadOnly={isReadOnly}
+          />
+
+          <div className="h-5 w-px bg-outline-variant/30" />
 
           {/* Theme Panel Toggle */}
           <Tooltip content={t('surveyBuilder.toggleThemePanel')}>

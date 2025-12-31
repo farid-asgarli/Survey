@@ -74,7 +74,7 @@ export function PublicSurveyLayout({ children, title, theme, showLogoInHeader = 
                 className={cn('shrink-0 flex items-center justify-center rounded-lg', theme.showLogoBackground && 'p-1.5 shadow-sm')}
                 style={theme.showLogoBackground ? { backgroundColor: theme.logoBackgroundColor || '#ffffff' } : undefined}
               >
-                <img src={theme.logoUrl} alt="Survey logo" className={cn('w-auto object-contain rounded', getLogoSizeClass())} />
+                <img src={theme.logoUrl} alt={t('a11y.surveyLogo')} className={cn('w-auto object-contain rounded', getLogoSizeClass())} />
               </div>
               {/* Branding title and subtitle */}
               {(theme.brandingTitle || theme.brandingSubtitle) && (

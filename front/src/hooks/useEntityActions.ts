@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from '@/components/ui';
 import { useConfirmDialog } from './useConfirmDialog';
 import { getErrorMessage } from '@/utils';
@@ -50,7 +51,9 @@ export interface ConfirmableActionConfig<TEntity, TResult = void> extends Entity
  * ```
  */
 export function useEntityAction<TEntity, TResult = void>(config: EntityActionConfig<TEntity, TResult>) {
-  const { action, successMessage, errorMessage = 'Operation failed', onSuccess, onError } = config;
+  const { t } = useTranslation();
+  const { action, successMessage, errorMessage, onSuccess, onError } = config;
+  const defaultErrorMessage = errorMessage ?? t('common.operationFailed', 'Operation failed');
 
   return useCallback(
     async (entity: TEntity): Promise<TResult | undefined> => {
@@ -63,14 +66,14 @@ export function useEntityAction<TEntity, TResult = void>(config: EntityActionCon
         onSuccess?.(entity, result);
         return result;
       } catch (error) {
-        const fallbackMessage = typeof errorMessage === 'function' ? errorMessage(entity, error) : errorMessage;
+        const fallbackMessage = typeof defaultErrorMessage === 'function' ? defaultErrorMessage(entity, error) : defaultErrorMessage;
         toast.error(getErrorMessage(error, fallbackMessage));
 
         onError?.(entity, error);
         return undefined;
       }
     },
-    [action, successMessage, errorMessage, onSuccess, onError]
+    [action, successMessage, defaultErrorMessage, onSuccess, onError]
   );
 }
 
@@ -98,17 +101,20 @@ export function useEntityAction<TEntity, TResult = void>(config: EntityActionCon
  * ```
  */
 export function useConfirmableAction<TEntity, TResult = void>(config: ConfirmableActionConfig<TEntity, TResult>) {
+  const { t } = useTranslation();
   const {
     action,
     confirmTitle,
     confirmDescription,
-    confirmText = 'Confirm',
+    confirmText,
     confirmVariant = 'default',
     successMessage,
-    errorMessage = 'Operation failed',
+    errorMessage,
     onSuccess,
     onError,
   } = config;
+  const resolvedConfirmText = confirmText ?? t('common.confirm', 'Confirm');
+  const defaultErrorMessage = errorMessage ?? t('common.operationFailed', 'Operation failed');
 
   const { confirm, ConfirmDialog } = useConfirmDialog();
 
@@ -120,7 +126,7 @@ export function useConfirmableAction<TEntity, TResult = void>(config: Confirmabl
       const confirmed = await confirm({
         title,
         description,
-        confirmText,
+        confirmText: resolvedConfirmText,
         variant: confirmVariant,
       });
 
@@ -135,14 +141,14 @@ export function useConfirmableAction<TEntity, TResult = void>(config: Confirmabl
         onSuccess?.(entity, result);
         return result;
       } catch (error) {
-        const fallbackMessage = typeof errorMessage === 'function' ? errorMessage(entity, error) : errorMessage;
+        const fallbackMessage = typeof defaultErrorMessage === 'function' ? defaultErrorMessage(entity, error) : defaultErrorMessage;
         toast.error(getErrorMessage(error, fallbackMessage));
 
         onError?.(entity, error);
         return undefined;
       }
     },
-    [action, confirm, confirmTitle, confirmDescription, confirmText, confirmVariant, successMessage, errorMessage, onSuccess, onError]
+    [action, confirm, confirmTitle, confirmDescription, resolvedConfirmText, confirmVariant, successMessage, defaultErrorMessage, onSuccess, onError]
   );
 
   return { handleAction, ConfirmDialog };
@@ -199,9 +205,13 @@ export interface EntityActionsConfig<TEntity> {
  * ```
  */
 export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) {
+  const { t } = useTranslation();
   const { entityName, getDisplayName, delete: deleteConfig, duplicate: duplicateConfig, custom } = config;
 
   const { confirm, ConfirmDialog } = useConfirmDialog();
+
+  // Capitalize entity name helper
+  const capitalizedEntityName = entityName.charAt(0).toUpperCase() + entityName.slice(1);
 
   // Delete handler with confirmation
   const handleDelete = useCallback(
@@ -210,9 +220,12 @@ export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) 
 
       const displayName = getDisplayName ? getDisplayName(entity) : entityName;
       const confirmed = await confirm({
-        title: `Delete ${entityName.charAt(0).toUpperCase() + entityName.slice(1)}`,
-        description: `Are you sure you want to delete "${displayName}"? This action cannot be undone.`,
-        confirmText: 'Delete',
+        title: t('dialogs.deleteEntityTitle', { entity: capitalizedEntityName, defaultValue: `Delete ${capitalizedEntityName}` }),
+        description: t('dialogs.deleteEntityDescription', {
+          name: displayName,
+          defaultValue: `Are you sure you want to delete "${displayName}"? This action cannot be undone.`,
+        }),
+        confirmText: t('common.delete', 'Delete'),
         variant: 'destructive',
       });
 
@@ -220,15 +233,17 @@ export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) 
 
       try {
         await deleteConfig.action(entity);
-        toast.success(`${entityName.charAt(0).toUpperCase() + entityName.slice(1)} deleted successfully`);
+        toast.success(
+          t('common.entityDeletedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} deleted successfully` })
+        );
         deleteConfig.onSuccess?.(entity);
         return true;
       } catch {
-        toast.error(`Failed to delete ${entityName}`);
+        toast.error(t('common.entityDeleteFailed', { entity: entityName, defaultValue: `Failed to delete ${entityName}` }));
         return false;
       }
     },
-    [confirm, deleteConfig, entityName, getDisplayName]
+    [confirm, deleteConfig, entityName, getDisplayName, capitalizedEntityName, t]
   );
 
   // Duplicate handler (no confirmation needed)
@@ -238,19 +253,21 @@ export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) 
 
       try {
         const result = await duplicateConfig.action(entity);
-        toast.success(`${entityName.charAt(0).toUpperCase() + entityName.slice(1)} duplicated successfully`);
+        toast.success(
+          t('common.entityDuplicatedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} duplicated successfully` })
+        );
         duplicateConfig.onSuccess?.(entity, result);
         return true;
       } catch {
-        toast.error(`Failed to duplicate ${entityName}`);
+        toast.error(t('common.entityDuplicateFailed', { entity: entityName, defaultValue: `Failed to duplicate ${entityName}` }));
         return false;
       }
     },
-    [duplicateConfig, entityName]
+    [duplicateConfig, entityName, capitalizedEntityName, t]
   );
 
-  // Custom action handlers
-  const customHandlers = useCallback(() => {
+  // Custom action handlers - use useMemo to avoid stale closure
+  const customHandlers = useMemo(() => {
     if (!custom) return {};
 
     const handlers: Record<string, (entity: TEntity) => Promise<boolean>> = {};
@@ -261,10 +278,10 @@ export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) 
           const description =
             typeof actionConfig.confirmDescription === 'function'
               ? actionConfig.confirmDescription(entity)
-              : actionConfig.confirmDescription || 'Are you sure?';
+              : actionConfig.confirmDescription || t('dialogs.confirmDescription', 'Are you sure?');
 
           const confirmed = await confirm({
-            title: actionConfig.confirmTitle || 'Confirm Action',
+            title: actionConfig.confirmTitle || t('dialogs.confirmAction', 'Confirm Action'),
             description,
           });
 
@@ -276,14 +293,14 @@ export function useEntityActions<TEntity>(config: EntityActionsConfig<TEntity>) 
           toast.success(actionConfig.successMessage);
           return true;
         } catch {
-          toast.error(actionConfig.errorMessage || 'Operation failed');
+          toast.error(actionConfig.errorMessage || t('common.operationFailed', 'Operation failed'));
           return false;
         }
       };
     }
 
     return handlers;
-  }, [custom, confirm])();
+  }, [custom, confirm, t]);
 
   return {
     handleDelete: deleteConfig ? handleDelete : undefined,

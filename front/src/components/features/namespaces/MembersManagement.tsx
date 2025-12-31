@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -6,6 +5,7 @@ import {
   CardDescription,
   CardContent,
   Button,
+  IconButton,
   Input,
   Select,
   Avatar,
@@ -19,7 +19,7 @@ import {
   DialogFooter,
 } from '@/components/ui';
 import { UserPlus, MoreVertical, Mail, Shield, Crown, User, Trash2 } from 'lucide-react';
-import { useNamespaceMembers, useInviteMember, useRemoveMember } from '@/hooks';
+import { useNamespaceMembers, useInviteMember, useRemoveMember, useDialogState } from '@/hooks';
 import { useConfirmDialog } from '@/hooks';
 import { toast } from '@/components/ui';
 import { cn } from '@/lib/utils';
@@ -62,7 +62,6 @@ const roleColors: Record<MemberRoleKey, string> = {
 
 export function MembersManagement({ namespaceId, currentUserId, isOwner }: MembersManagementProps) {
   const { t } = useTranslation();
-  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
 
   const roleOptions: { value: InviteMemberFormData['role']; label: string }[] = [
     { value: 'Admin', label: t('workspaces.roles.admin') },
@@ -92,14 +91,12 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
     mode: 'onBlur',
   });
 
-  const watchedRole = watch('role');
+  // Dialog state with form reset on close
+  const inviteDialog = useDialogState({
+    onClose: () => reset(),
+  });
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      reset();
-    }
-    setInviteDialogOpen(open);
-  };
+  const watchedRole = watch('role');
 
   const onSubmit: SubmitHandler<InviteMemberFormData> = async (data) => {
     try {
@@ -108,7 +105,7 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
         data: { email: data.email.trim(), role: MemberRole[data.role] },
       });
       toast.success(t('workspaces.team.invitationSent', { email: data.email }));
-      handleOpenChange(false);
+      inviteDialog.close();
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };
       const message = err?.response?.data?.message || t('workspaces.team.inviteError');
@@ -167,7 +164,7 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
               <CardDescription>{t('workspaces.team.description')}</CardDescription>
             </div>
             {isOwner && (
-              <Button onClick={() => setInviteDialogOpen(true)} className="gap-2">
+              <Button onClick={() => inviteDialog.open()} className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 {t('workspaces.team.invite')}
               </Button>
@@ -221,14 +218,19 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
                     {canManageMember(member) && (
                       <Menu
                         trigger={
-                          <button className="p-2 rounded-full hover:bg-on-surface/5 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <MoreVertical className="h-5 w-5 text-on-surface-variant" />
-                          </button>
+                          <IconButton
+                            variant="ghost"
+                            size="sm"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity"
+                            aria-label={t('a11y.memberActions')}
+                          >
+                            <MoreVertical className="h-5 w-5" />
+                          </IconButton>
                         }
                         align="end"
                       >
                         <MenuItem onClick={() => handleRemoveMember(member)} destructive icon={<Trash2 className="h-4 w-4" />}>
-                          Remove from workspace
+                          {t('workspaces.team.removeFromWorkspace')}
                         </MenuItem>
                       </Menu>
                     )}
@@ -243,12 +245,12 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
                   <UserPlus className="h-8 w-8 text-on-surface-variant" />
                 </div>
               </div>
-              <p className="text-on-surface font-medium">No team members yet</p>
-              <p className="text-sm text-on-surface-variant mt-1">Invite team members to collaborate on this workspace</p>
+              <p className="text-on-surface font-medium">{t('workspaces.team.noMembers')}</p>
+              <p className="text-sm text-on-surface-variant mt-1">{t('workspaces.team.noMembersDesc')}</p>
               {isOwner && (
-                <Button className="mt-4" onClick={() => setInviteDialogOpen(true)}>
+                <Button className="mt-4" onClick={() => inviteDialog.open()}>
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Invite your first member
+                  {t('workspaces.team.inviteFirst')}
                 </Button>
               )}
             </div>
@@ -257,22 +259,22 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
       </Card>
 
       {/* Invite Member Dialog */}
-      <Dialog open={inviteDialogOpen} onOpenChange={handleOpenChange}>
+      <Dialog open={inviteDialog.isOpen} onOpenChange={inviteDialog.setOpen}>
         <DialogContent size="sm" showClose={false}>
           <DialogHeader
             hero
             icon={<UserPlus className="h-7 w-7" />}
-            title="Invite Team Member"
-            description="Send an invitation to join this workspace"
+            title={t('workspaces.team.inviteTitle')}
+            description={t('workspaces.team.inviteDescription')}
             showClose
           />
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogBody className="space-y-4">
               <Input
-                label="Email Address"
+                label={t('workspaces.team.emailLabel')}
                 type="email"
-                placeholder="colleague@example.com"
+                placeholder={t('workspaces.team.emailPlaceholder')}
                 {...register('email')}
                 error={touchedFields.email ? errors.email?.message : undefined}
                 startIcon={<Mail className="h-5 w-5" />}
@@ -280,27 +282,27 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
               />
 
               <div>
-                <label className="block text-sm font-medium text-on-surface-variant mb-1.5">Role</label>
+                <label className="block text-sm font-medium text-on-surface-variant mb-1.5">{t('workspaces.team.roleLabel')}</label>
                 <Select
                   value={watchedRole}
                   onChange={(value) => setValue('role', value as InviteMemberFormData['role'])}
                   options={roleOptions}
-                  placeholder="Select a role"
+                  placeholder={t('workspaces.team.selectRole')}
                 />
                 <p className="mt-1.5 text-xs text-on-surface-variant">
-                  {watchedRole === 'Admin' && 'Admins can manage surveys and view all responses'}
-                  {watchedRole === 'Member' && 'Members can create and manage their own surveys'}
-                  {watchedRole === 'Viewer' && 'Viewers can only view surveys and responses'}
+                  {watchedRole === 'Admin' && t('workspaces.team.roleDescriptions.admin')}
+                  {watchedRole === 'Member' && t('workspaces.team.roleDescriptions.member')}
+                  {watchedRole === 'Viewer' && t('workspaces.team.roleDescriptions.viewer')}
                 </p>
               </div>
             </DialogBody>
 
             <DialogFooter>
-              <Button type="button" variant="text" onClick={() => handleOpenChange(false)} disabled={inviteMember.isPending}>
-                Cancel
+              <Button type="button" variant="text" onClick={inviteDialog.close} disabled={inviteMember.isPending}>
+                {t('common.cancel')}
               </Button>
               <Button type="submit" disabled={inviteMember.isPending}>
-                {inviteMember.isPending ? 'Sending...' : 'Send Invitation'}
+                {inviteMember.isPending ? t('workspaces.team.sending') : t('workspaces.team.sendInvitation')}
               </Button>
             </DialogFooter>
           </form>

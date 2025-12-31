@@ -4,15 +4,18 @@ import { useQuery } from '@tanstack/react-query';
 import { analyticsApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import type { NpsTrendParams } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const analyticsKeys = {
-  all: ['analytics'] as const,
-  survey: (surveyId: string) => [...analyticsKeys.all, 'survey', surveyId] as const,
-  nps: (surveyId: string) => [...analyticsKeys.all, 'nps', surveyId] as const,
-  npsTrend: (surveyId: string, params?: NpsTrendParams) => [...analyticsKeys.all, 'nps-trend', surveyId, params] as const,
-  questionNps: (surveyId: string, questionId: string) => [...analyticsKeys.all, 'question-nps', surveyId, questionId] as const,
-};
+// Query keys - analytics has all custom keys (no standard list/detail pattern)
+export const analyticsKeys = createExtendedQueryKeys('analytics', (base) => ({
+  survey: (surveyId: string) => [...base.all, 'survey', surveyId] as const,
+  nps: (surveyId: string) => [...base.all, 'nps', surveyId] as const,
+  npsTrend: (surveyId: string, params?: NpsTrendParams) => [...base.all, 'nps-trend', surveyId, params] as const,
+  questionNps: (surveyId: string, questionId: string) => [...base.all, 'question-nps', surveyId, questionId] as const,
+}));
+
+// Very short stale time for analytics data that changes frequently
+const ANALYTICS_STALE_TIME = 30 * 1000; // 30 seconds
 
 /**
  * Hook to fetch survey analytics summary
@@ -25,7 +28,7 @@ export function useSurveyAnalytics(surveyId: string | undefined) {
     queryKey: analyticsKeys.survey(surveyId!),
     queryFn: () => analyticsApi.getSurveyAnalytics(surveyId!),
     enabled: !!surveyId && !!namespaceId,
-    staleTime: 30 * 1000, // 30 seconds - analytics data can change frequently
+    staleTime: ANALYTICS_STALE_TIME,
   });
 }
 
@@ -40,7 +43,7 @@ export function useSurveyNps(surveyId: string | undefined) {
     queryKey: analyticsKeys.nps(surveyId!),
     queryFn: () => analyticsApi.getSurveyNps(surveyId!),
     enabled: !!surveyId && !!namespaceId,
-    staleTime: 30 * 1000,
+    staleTime: ANALYTICS_STALE_TIME,
   });
 }
 
@@ -55,7 +58,7 @@ export function useNpsTrend(surveyId: string | undefined, params?: NpsTrendParam
     queryKey: analyticsKeys.npsTrend(surveyId!, params),
     queryFn: () => analyticsApi.getNpsTrend(surveyId!, params),
     enabled: !!surveyId && !!namespaceId,
-    staleTime: 60 * 1000, // 1 minute for trend data
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 
@@ -70,6 +73,6 @@ export function useQuestionNps(surveyId: string | undefined, questionId: string 
     queryKey: analyticsKeys.questionNps(surveyId!, questionId!),
     queryFn: () => analyticsApi.getQuestionNps(surveyId!, questionId!),
     enabled: !!surveyId && !!questionId && !!namespaceId,
-    staleTime: 30 * 1000,
+    staleTime: ANALYTICS_STALE_TIME,
   });
 }

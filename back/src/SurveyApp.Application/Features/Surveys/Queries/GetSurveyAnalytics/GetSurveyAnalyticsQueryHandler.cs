@@ -82,15 +82,17 @@ public class GetSurveyAnalyticsQueryHandler(
             FirstResponseAt = analyticsData.FirstResponseAt,
             LastResponseAt = analyticsData.LastResponseAt,
             ResponsesByDate = analyticsData.ResponsesByDate,
-            Questions = survey
-                .Questions.OrderBy(q => q.Order)
-                .Select(q =>
-                    BuildQuestionAnalytics(
-                        q,
-                        analyticsData.AnswersByQuestion.GetValueOrDefault(q.Id, [])
-                    )
-                )
-                .ToList(),
+            Questions =
+            [
+                .. survey
+                    .Questions.OrderBy(q => q.Order)
+                    .Select(q =>
+                        BuildQuestionAnalytics(
+                            q,
+                            analyticsData.AnswersByQuestion.GetValueOrDefault(q.Id, [])
+                        )
+                    ),
+            ],
         };
 
         return Result<SurveyAnalyticsDto>.Success(analytics);
@@ -118,16 +120,18 @@ public class GetSurveyAnalyticsQueryHandler(
                 {
                     var allAnswers =
                         question.Type == QuestionType.Checkbox
-                            ? answers
-                                .SelectMany(a =>
+                            ?
+                            [
+                                .. answers.SelectMany(a =>
                                     a.Split(',', StringSplitOptions.RemoveEmptyEntries)
                                         .Select(s => s.Trim())
-                                )
-                                .ToList()
+                                ),
+                            ]
                             : answers;
 
-                    analytics.AnswerOptions = settings
-                        .Options.Select(option => new AnswerOptionStatsDto
+                    analytics.AnswerOptions =
+                    [
+                        .. settings.Options.Select(option => new AnswerOptionStatsDto
                         {
                             Option = option,
                             Count = allAnswers.Count(a =>
@@ -142,8 +146,8 @@ public class GetSurveyAnalyticsQueryHandler(
                                         / answers.Count
                                         * 100
                                     : 0,
-                        })
-                        .ToList();
+                        }),
+                    ];
                 }
                 break;
 
@@ -163,27 +167,29 @@ public class GetSurveyAnalyticsQueryHandler(
                     // Distribution
                     var min = settings?.MinValue ?? 1;
                     var max = settings?.MaxValue ?? 5;
-                    analytics.AnswerOptions = Enumerable
-                        .Range(min, max - min + 1)
-                        .Select(value => new AnswerOptionStatsDto
-                        {
-                            Option = value.ToString(),
-                            Count = numericAnswers.Count(a => a == value),
-                            Percentage =
-                                numericAnswers.Count > 0
-                                    ? (decimal)numericAnswers.Count(a => a == value)
-                                        / numericAnswers.Count
-                                        * 100
-                                    : 0,
-                        })
-                        .ToList();
+                    analytics.AnswerOptions =
+                    [
+                        .. Enumerable
+                            .Range(min, max - min + 1)
+                            .Select(value => new AnswerOptionStatsDto
+                            {
+                                Option = value.ToString(),
+                                Count = numericAnswers.Count(a => a == value),
+                                Percentage =
+                                    numericAnswers.Count > 0
+                                        ? (decimal)numericAnswers.Count(a => a == value)
+                                            / numericAnswers.Count
+                                            * 100
+                                        : 0,
+                            }),
+                    ];
                 }
                 break;
 
             case QuestionType.ShortText:
             case QuestionType.LongText:
                 // For text questions, just return sample answers
-                analytics.SampleAnswers = answers.Take(10).ToList();
+                analytics.SampleAnswers = [.. answers.Take(10)];
                 break;
 
             case QuestionType.Number:

@@ -763,5 +763,102 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public IReadOnlyList<string> GetAvailableLanguages() =>
         TranslationHelper.GetAvailableLanguages();
 
+    /// <summary>
+    /// Ensures all questions have translations for all languages available in the survey.
+    /// Creates empty placeholder translations for any missing languages.
+    /// </summary>
+    /// <param name="placeholderText">The placeholder text to use for missing translations.</param>
+    public void SyncQuestionLanguages(string placeholderText = "[Translation needed]")
+    {
+        var surveyLanguages = GetAvailableLanguages();
+
+        foreach (var question in _questions)
+        {
+            var questionLanguages = question
+                .Translations.Select(t => t.LanguageCode)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var language in surveyLanguages)
+            {
+                if (!questionLanguages.Contains(language))
+                {
+                    // Copy from default translation if available, otherwise use placeholder
+                    var defaultTranslation = question.GetDefaultTranslation();
+                    var text = defaultTranslation?.Text ?? placeholderText;
+
+                    question.AddOrUpdateTranslation(
+                        language,
+                        text,
+                        defaultTranslation?.Description,
+                        defaultTranslation?.GetTranslatedSettings()
+                    );
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Removes translations for the specified language from the survey and all its questions.
+    /// </summary>
+    /// <param name="languageCode">The language code to remove.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when trying to remove the default language.
+    /// </exception>
+    public void RemoveLanguageFromAll(string languageCode)
+    {
+        if (languageCode.Equals(DefaultLanguage, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                "Cannot remove the default language. Set a different default language first."
+            );
+        }
+
+        // Remove from survey
+        TranslationHelper.Remove(languageCode);
+
+        // Remove from all questions
+        foreach (var question in _questions)
+        {
+            var translation = question.Translations.FirstOrDefault(t =>
+                t.LanguageCode.Equals(languageCode, StringComparison.OrdinalIgnoreCase)
+            );
+
+            if (translation != null)
+            {
+                question.RemoveTranslation(languageCode);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the translation completion status for each language.
+    /// </summary>
+    /// <returns>Dictionary of language codes to completion percentages (0-100).</returns>
+    public IDictionary<string, int> GetTranslationCompletionStatus()
+    {
+        var languages = GetAvailableLanguages();
+        var result = new Dictionary<string, int>();
+
+        foreach (var language in languages)
+        {
+            var completedQuestions = _questions.Count(q =>
+                q.Translations.Any(t =>
+                    t.LanguageCode.Equals(language, StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrWhiteSpace(t.Text)
+                )
+            );
+
+            var totalQuestions = _questions.Count;
+            var percentage =
+                totalQuestions > 0
+                    ? (int)Math.Round((double)completedQuestions / totalQuestions * 100)
+                    : 100;
+
+            result[language] = percentage;
+        }
+
+        return result;
+    }
+
     #endregion
 }

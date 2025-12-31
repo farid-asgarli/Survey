@@ -3,19 +3,14 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { recurringSurveysApi, type RecurringSurveysListParams } from '@/services';
 import type { CreateRecurringSurveyRequest, UpdateRecurringSurveyRequest, RecurringRunsParams } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const recurringSurveyKeys = {
-  all: ['recurringSurveys'] as const,
-  lists: () => [...recurringSurveyKeys.all, 'list'] as const,
-  list: (params?: RecurringSurveysListParams) => [...recurringSurveyKeys.lists(), params] as const,
-  upcoming: (count?: number) => [...recurringSurveyKeys.all, 'upcoming', count] as const,
-  details: () => [...recurringSurveyKeys.all, 'detail'] as const,
-  detail: (id: string) => [...recurringSurveyKeys.details(), id] as const,
-  runs: (id: string, params?: RecurringRunsParams) => [...recurringSurveyKeys.all, 'runs', id, params] as const,
-  runsInfinite: (id: string, params?: Omit<RecurringRunsParams, 'pageNumber'>) =>
-    [...recurringSurveyKeys.all, 'runs', 'infinite', id, params] as const,
-};
+// Query keys - recurring surveys have upcoming, runs, and runsInfinite custom keys
+export const recurringSurveyKeys = createExtendedQueryKeys('recurringSurveys', (base) => ({
+  upcoming: (count?: number) => [...base.all, 'upcoming', count] as const,
+  runs: (id: string, params?: RecurringRunsParams) => [...base.all, 'runs', id, params] as const,
+  runsInfinite: (id: string, params?: Omit<RecurringRunsParams, 'pageNumber'>) => [...base.all, 'runs', 'infinite', id, params] as const,
+}));
 
 import { useNamespaceStore } from '@/stores';
 
@@ -29,7 +24,7 @@ export function useRecurringSurveys(params?: RecurringSurveysListParams) {
     queryKey: recurringSurveyKeys.list(params),
     queryFn: () => recurringSurveysApi.list(params),
     enabled: !!activeNamespace?.id,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -43,7 +38,7 @@ export function useUpcomingRuns(count?: number) {
     queryKey: recurringSurveyKeys.upcoming(count),
     queryFn: () => recurringSurveysApi.getUpcoming(count),
     enabled: !!activeNamespace?.id,
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: STALE_TIMES.SHORT,
     refetchInterval: 60 * 1000, // Auto-refresh every minute
   });
 }
@@ -56,7 +51,7 @@ export function useRecurringSurveyDetail(id: string | undefined) {
     queryKey: recurringSurveyKeys.detail(id!),
     queryFn: () => recurringSurveysApi.getById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -176,7 +171,7 @@ export function useRecurringRuns(id: string | undefined, params?: RecurringRunsP
     queryKey: recurringSurveyKeys.runs(id!, params),
     queryFn: () => recurringSurveysApi.getRuns(id!, params),
     enabled: !!id,
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 
@@ -203,6 +198,6 @@ export function useRecurringRunsInfinite(id: string | undefined, params?: Omit<R
       }
       return undefined;
     },
-    staleTime: 1 * 60 * 1000,
+    staleTime: STALE_TIMES.SHORT,
   });
 }

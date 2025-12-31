@@ -200,11 +200,6 @@ export function formatNumber(num: number): string {
 }
 
 /**
- * Alias for formatRelativeTime for semantic clarity
- */
-export const formatTimeAgo = formatRelativeTime;
-
-/**
  * Format a date string to YYYY-MM-DD format for date inputs
  */
 export function formatDateForInput(dateStr: string | undefined | null): string {

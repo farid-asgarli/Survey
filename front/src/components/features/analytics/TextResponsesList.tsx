@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, Button, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
@@ -13,6 +14,7 @@ export interface TextResponsesListProps {
 }
 
 export function TextResponsesList({ questionText, responses, totalAnswers, isLoading, className, initialDisplayCount = 5 }: TextResponsesListProps) {
+  const { t } = useTranslation();
   const [showAll, setShowAll] = useState(false);
 
   if (isLoading) {
@@ -39,7 +41,7 @@ export function TextResponsesList({ questionText, responses, totalAnswers, isLoa
         <CardContent>
           <div className="flex flex-col items-center justify-center py-6 text-on-surface-variant">
             <MessageSquare className="h-8 w-8 mb-2 opacity-50" />
-            <p className="text-sm">No text responses yet</p>
+            <p className="text-sm">{t('analytics.noTextResponses')}</p>
           </div>
         </CardContent>
       </Card>
@@ -85,12 +87,12 @@ export function TextResponsesList({ questionText, responses, totalAnswers, isLoa
             {showAll ? (
               <>
                 <ChevronUp className="h-4 w-4 mr-1" />
-                Show less
+                {t('common.showLess')}
               </>
             ) : (
               <>
                 <ChevronDown className="h-4 w-4 mr-1" />
-                Show {responses.length - initialDisplayCount} more
+                {t('common.showMore', { count: responses.length - initialDisplayCount })}
               </>
             )}
           </Button>

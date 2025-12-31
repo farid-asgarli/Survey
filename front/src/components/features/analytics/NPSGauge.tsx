@@ -1,4 +1,5 @@
 import { Smile, Meh, Frown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { NpsCategory } from '@/types/enums';
@@ -27,6 +28,7 @@ const categoryBgColors: Record<NpsCategory, string> = {
 };
 
 export function NPSGauge({ data, isLoading, className, showBreakdown = true, size = 'md' }: NPSGaugeProps) {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: { gauge: 'w-32 h-16', score: 'text-xl', label: 'text-xs' },
     md: { gauge: 'w-48 h-24', score: 'text-3xl', label: 'text-sm' },
@@ -51,11 +53,11 @@ export function NPSGauge({ data, isLoading, className, showBreakdown = true, siz
     return (
       <Card variant="elevated" className={className}>
         <CardHeader>
-          <CardTitle>NPS Score</CardTitle>
-          <CardDescription>Net Promoter Score breakdown</CardDescription>
+          <CardTitle>{t('analytics.npsScore')}</CardTitle>
+          <CardDescription>{t('analytics.npsDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-40 items-center justify-center text-on-surface-variant">No NPS data available</div>
+          <div className="flex h-40 items-center justify-center text-on-surface-variant">{t('analytics.noNpsData')}</div>
         </CardContent>
       </Card>
     );
@@ -71,8 +73,8 @@ export function NPSGauge({ data, isLoading, className, showBreakdown = true, siz
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>NPS Score</CardTitle>
-            <CardDescription>Net Promoter Score breakdown</CardDescription>
+            <CardTitle>{t('analytics.npsScore')}</CardTitle>
+            <CardDescription>{t('analytics.npsDescription')}</CardDescription>
           </div>
           {data.category && (
             <span className={cn('px-2 py-1 rounded-lg text-xs font-medium', categoryBgColors[data.category])}>
@@ -113,15 +115,15 @@ export function NPSGauge({ data, isLoading, className, showBreakdown = true, siz
             <div className="flex justify-between w-full mt-6 text-xs text-on-surface-variant">
               <div className="flex items-center gap-1">
                 <Frown className="h-4 w-4 text-error" />
-                <span>Detractors</span>
+                <span>{t('analytics.detractors')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Meh className="h-4 w-4 text-warning" />
-                <span>Passives</span>
+                <span>{t('analytics.passives')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Smile className="h-4 w-4 text-success" />
-                <span>Promoters</span>
+                <span>{t('analytics.promoters')}</span>
               </div>
             </div>
 

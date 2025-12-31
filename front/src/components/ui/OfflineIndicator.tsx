@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { WifiOff, Wifi, RefreshCw, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './Button';
@@ -25,13 +26,14 @@ interface OfflineIndicatorProps {
 function OfflineIndicator({
   position = 'bottom',
   showReconnectButton = true,
-  offlineMessage = "You're offline. Some features may be unavailable.",
-  onlineMessage = "You're back online!",
+  offlineMessage,
+  onlineMessage,
   onlineDuration = 3000,
   dismissible = false,
   onStatusChange,
   className,
 }: OfflineIndicatorProps) {
+  const { t } = useTranslation();
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
   const [showOnlineToast, setShowOnlineToast] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -123,7 +125,9 @@ function OfflineIndicator({
 
         {/* Message */}
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">{isShowingOnline ? onlineMessage : offlineMessage}</p>
+          <p className="text-sm font-medium truncate">
+            {isShowingOnline ? onlineMessage || t('offline.backOnline') : offlineMessage || t('offline.message')}
+          </p>
         </div>
 
         {/* Actions */}
@@ -137,13 +141,13 @@ function OfflineIndicator({
               className="text-on-warning-container hover:bg-warning/20"
             >
               <RefreshCw className={cn('h-4 w-4', isChecking && 'animate-spin')} />
-              <span className="sr-only sm:not-sr-only sm:ml-1">Retry</span>
+              <span className="sr-only sm:not-sr-only sm:ml-1">{t('offline.retry')}</span>
             </Button>
           )}
           {dismissible && !isShowingOnline && (
             <Button variant="text" size="icon-sm" onClick={handleDismiss} className="text-on-warning-container hover:bg-warning/20">
               <X className="h-4 w-4" />
-              <span className="sr-only">Dismiss</span>
+              <span className="sr-only">{t('offline.dismiss')}</span>
             </Button>
           )}
         </div>

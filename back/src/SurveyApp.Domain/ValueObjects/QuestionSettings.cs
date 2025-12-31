@@ -465,11 +465,13 @@ public sealed class QuestionSettings : ValueObject
             && element.ValueKind == JsonValueKind.Array
         )
         {
-            return element
-                .EnumerateArray()
-                .Where(e => e.ValueKind == JsonValueKind.String)
-                .Select(e => e.GetString()!)
-                .ToList();
+            return
+            [
+                .. element
+                    .EnumerateArray()
+                    .Where(e => e.ValueKind == JsonValueKind.String)
+                    .Select(e => e.GetString()!),
+            ];
         }
         return null;
     }

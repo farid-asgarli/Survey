@@ -4,7 +4,7 @@ import { Eye, EyeOff, Check, X, Loader2, AlertCircle, CheckCircle } from 'lucide
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button } from '@/components/ui';
 import { useChangePassword } from '@/hooks';
 import { toast } from '@/components/ui/Toast';
-import { getPasswordRequirements, calculatePasswordStrength } from '@/utils/validators';
+import { getPasswordRequirements, calculatePasswordStrength } from '@/lib/validations';
 import { cn } from '@/lib/utils';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { changePasswordSchema, type ChangePasswordFormData } from '@/lib/validations';

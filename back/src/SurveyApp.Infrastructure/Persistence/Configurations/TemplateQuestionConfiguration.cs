@@ -16,12 +16,8 @@ public class TemplateQuestionConfiguration : IEntityTypeConfiguration<TemplateQu
         builder.Ignore(q => q.Text);
         builder.Ignore(q => q.Description);
 
-        // Default language for translations
-        builder
-            .Property(q => q.DefaultLanguage)
-            .IsRequired()
-            .HasMaxLength(10)
-            .HasDefaultValue("en");
+        // DefaultLanguage is now a computed property inherited from Template, not stored
+        builder.Ignore(q => q.DefaultLanguage);
 
         builder.Property(q => q.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
 

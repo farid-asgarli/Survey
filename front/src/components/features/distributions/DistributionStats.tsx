@@ -1,6 +1,7 @@
 // DistributionStats component - Shows email distribution analytics and recipient status
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Send,
   Mail,
@@ -184,6 +185,7 @@ function RecipientRow({ recipient }: { recipient: DistributionRecipient }) {
 }
 
 export function DistributionStats({ surveyId, distributionId, className }: DistributionStatsProps) {
+  const { t } = useTranslation();
   const {
     data: stats,
     isLoading: statsLoading,
@@ -284,38 +286,38 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
     <div className={cn('space-y-6', className)}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-on-surface">Distribution Analytics</h3>
+        <h3 className="text-lg font-semibold text-on-surface">{t('distributions.analytics')}</h3>
         <Button variant="tonal" size="sm" onClick={handleRefresh} disabled={isRefetchingStats}>
           <RefreshCw className={cn('w-4 h-4 mr-2', isRefetchingStats && 'animate-spin')} />
-          Refresh
+          {t('common.refresh')}
         </Button>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Sent"
+          label={t('distributions.sent')}
           value={displayStats.sent}
           icon={<Send className="w-5 h-5" />}
           color="bg-primary text-on-primary"
           percentage={displayStats.totalRecipients > 0 ? (displayStats.sent / displayStats.totalRecipients) * 100 : 0}
         />
         <StatCard
-          label="Delivered"
+          label={t('distributions.delivered')}
           value={displayStats.delivered}
           icon={<CheckCircle2 className="w-5 h-5" />}
           color="bg-secondary text-on-secondary"
           percentage={displayStats.deliveryRate}
         />
         <StatCard
-          label="Opened"
+          label={t('distributions.statusOpened')}
           value={displayStats.opened}
           icon={<Eye className="w-5 h-5" />}
           color="bg-tertiary text-on-tertiary"
           percentage={displayStats.openRate}
         />
         <StatCard
-          label="Clicked"
+          label={t('distributions.statusClicked')}
           value={displayStats.clicked}
           icon={<MousePointerClick className="w-5 h-5" />}
           color="bg-success text-on-success"
@@ -330,9 +332,9 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-primary" />
-              Delivery Funnel
+              {t('distributions.deliveryFunnel')}
             </CardTitle>
-            <CardDescription>Email performance breakdown</CardDescription>
+            <CardDescription>{t('distributions.performanceBreakdown')}</CardDescription>
           </CardHeader>
           <CardContent>
             <SimpleBarChart data={barChartData} maxValue={displayStats.totalRecipients} />
@@ -344,28 +346,28 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-primary" />
-              Performance Rates
+              {t('distributions.performanceRates')}
             </CardTitle>
-            <CardDescription>Key metrics comparison</CardDescription>
+            <CardDescription>{t('distributions.metricsComparison')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">Delivery Rate</span>
+                <span className="text-on-surface-variant">{t('distributions.deliveryRate')}</span>
                 <span className="font-semibold text-on-surface">{displayStats.deliveryRate.toFixed(1)}%</span>
               </div>
               <LinearProgress value={displayStats.deliveryRate} size="default" className="bg-primary" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">Open Rate</span>
+                <span className="text-on-surface-variant">{t('distributions.openRate')}</span>
                 <span className="font-semibold text-on-surface">{displayStats.openRate.toFixed(1)}%</span>
               </div>
               <LinearProgress value={displayStats.openRate} size="default" className="bg-tertiary" />
             </div>
             <div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">Click Rate</span>
+                <span className="text-on-surface-variant">{t('distributions.clickRate')}</span>
                 <span className="font-semibold text-on-surface">{displayStats.clickRate.toFixed(1)}%</span>
               </div>
               <LinearProgress value={displayStats.clickRate} size="default" className="bg-success" />
@@ -373,10 +375,10 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
 
             <div className="pt-2 border-t border-outline-variant/30 flex justify-between text-sm">
               <span className="text-on-surface-variant">
-                Bounced: <span className="font-medium text-warning">{displayStats.bounced}</span>
+                {t('distributions.bounced')}: <span className="font-medium text-warning">{displayStats.bounced}</span>
               </span>
               <span className="text-on-surface-variant">
-                Failed: <span className="font-medium text-error">{displayStats.failed}</span>
+                {t('distributions.failed')}: <span className="font-medium text-error">{displayStats.failed}</span>
               </span>
             </div>
           </CardContent>
@@ -390,15 +392,15 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
             <div>
               <CardTitle className="text-base flex items-center gap-2">
                 <Users className="w-4 h-4 text-primary" />
-                Recipients
+                {t('distributions.recipients')}
               </CardTitle>
-              <CardDescription>{totalRecipients} total recipients</CardDescription>
+              <CardDescription>{t('distributions.totalRecipients', { count: totalRecipients })}</CardDescription>
             </div>
 
             {/* Search Filter */}
             <div className="flex items-center gap-2">
               <Input
-                placeholder="Search email..."
+                placeholder={t('distributions.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 startIcon={<Search className="w-4 h-4" />}
@@ -413,25 +415,25 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
             <Tabs value={statusFilter === 'all' ? 'all' : String(statusFilter)} onValueChange={(v) => handleStatusFilterChange(v)}>
               <TabsList className="flex-wrap">
                 <TabsTrigger value="all" className="text-xs">
-                  All
+                  {t('distributions.statusAll')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Sent)} className="text-xs">
-                  Sent
+                  {t('distributions.statusSent')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Delivered)} className="text-xs">
-                  Delivered
+                  {t('distributions.statusDelivered')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Opened)} className="text-xs">
-                  Opened
+                  {t('distributions.statusOpened')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Clicked)} className="text-xs">
-                  Clicked
+                  {t('distributions.statusClicked')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Bounced)} className="text-xs">
-                  Bounced
+                  {t('distributions.statusBounced')}
                 </TabsTrigger>
                 <TabsTrigger value={String(RecipientStatus.Failed)} className="text-xs">
-                  Failed
+                  {t('distributions.statusFailed')}
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -459,7 +461,7 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
               ) : (
                 <div className="py-8 text-center">
                   <Mail className="w-8 h-8 mx-auto text-on-surface-variant mb-2" />
-                  <p className="text-sm text-on-surface-variant">{searchQuery ? 'No recipients match your search' : 'No recipients found'}</p>
+                  <p className="text-sm text-on-surface-variant">{searchQuery ? t('distributions.noRecipients') : 'No recipients found'}</p>
                 </div>
               )}
             </div>
@@ -477,7 +479,7 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4 mr-2" />
-                    Load More
+                    {t('common.loadMore')}
                   </>
                 )}
               </Button>

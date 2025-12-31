@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { PublicSurvey, PublicQuestion, AnswerValue, PublicSurveyViewMode, ValidationResult } from '@/types/public-survey';
 import { evaluateQuestionVisibility, shouldEndSurvey, type LogicRule } from '@/utils/logicEvaluator';
-import { loadProgress, clearProgress, createAutoSaver } from '@/utils/autoSave';
+import { loadProgress, clearProgress, createAutoSaver, type AutoSaver } from '@/utils/autoSave';
 import { QuestionType } from '@/types';
 
 // Display mode for questions
@@ -39,7 +39,7 @@ interface PublicSurveyState {
   visibleQuestions: PublicQuestion[];
 
   // Auto-save instance
-  autoSaver: ReturnType<typeof createAutoSaver> | null;
+  autoSaver: AutoSaver | null;
 }
 
 interface PublicSurveyActions {

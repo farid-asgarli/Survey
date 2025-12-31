@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Info } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, Button } from '@/components/ui';
 
@@ -18,43 +19,47 @@ interface ConfirmDialogState extends ConfirmDialogOptions {
 }
 
 export function useConfirmDialog() {
+  const { t } = useTranslation();
   const [state, setState] = useState<ConfirmDialogState>({
     open: false,
     isLoading: false,
     title: '',
     description: '',
-    confirmText: 'Confirm',
-    cancelText: 'Cancel',
+    confirmText: t('common.confirm'),
+    cancelText: t('common.cancel'),
     variant: 'default',
   });
 
-  const confirm = useCallback((options: ConfirmDialogOptions): Promise<boolean> => {
-    return new Promise((resolve) => {
-      setState({
-        open: true,
-        isLoading: false,
-        title: options.title,
-        description: options.description ?? '',
-        confirmText: options.confirmText ?? 'Confirm',
-        cancelText: options.cancelText ?? 'Cancel',
-        variant: options.variant ?? 'default',
-        onConfirm: async () => {
-          setState((prev) => ({ ...prev, isLoading: true }));
-          try {
-            await options.onConfirm?.();
-            resolve(true);
-          } finally {
-            setState((prev) => ({ ...prev, open: false, isLoading: false }));
-          }
-        },
-        onCancel: () => {
-          options.onCancel?.();
-          resolve(false);
-          setState((prev) => ({ ...prev, open: false }));
-        },
+  const confirm = useCallback(
+    (options: ConfirmDialogOptions): Promise<boolean> => {
+      return new Promise((resolve) => {
+        setState({
+          open: true,
+          isLoading: false,
+          title: options.title,
+          description: options.description ?? '',
+          confirmText: options.confirmText ?? t('common.confirm'),
+          cancelText: options.cancelText ?? t('common.cancel'),
+          variant: options.variant ?? 'default',
+          onConfirm: async () => {
+            setState((prev) => ({ ...prev, isLoading: true }));
+            try {
+              await options.onConfirm?.();
+              resolve(true);
+            } finally {
+              setState((prev) => ({ ...prev, open: false, isLoading: false }));
+            }
+          },
+          onCancel: () => {
+            options.onCancel?.();
+            resolve(false);
+            setState((prev) => ({ ...prev, open: false }));
+          },
+        });
       });
-    });
-  }, []);
+    },
+    [t]
+  );
 
   const ConfirmDialog = useCallback(() => {
     const getVariantConfig = () => {
@@ -93,11 +98,7 @@ export function useConfirmDialog() {
               <Button variant="text" onClick={state.onCancel} disabled={state.isLoading}>
                 {state.cancelText}
               </Button>
-              <Button
-                variant={state.variant === 'destructive' ? 'destructive' : 'filled'}
-                onClick={state.onConfirm}
-                loading={state.isLoading}
-              >
+              <Button variant={state.variant === 'destructive' ? 'destructive' : 'filled'} onClick={state.onConfirm} loading={state.isLoading}>
                 {state.confirmText}
               </Button>
             </div>
@@ -112,20 +113,21 @@ export function useConfirmDialog() {
 
 // Hook for simple delete confirmation
 export function useDeleteConfirm() {
+  const { t } = useTranslation();
   const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const confirmDelete = useCallback(
     (itemName: string, onConfirm: () => void | Promise<void>) => {
       return confirm({
-        title: `Delete ${itemName}?`,
-        description: `This action cannot be undone. Are you sure you want to delete this ${itemName.toLowerCase()}?`,
-        confirmText: 'Delete',
-        cancelText: 'Cancel',
+        title: t('dialogs.deleteTitle', { itemName }),
+        description: t('dialogs.deleteDescription', { itemName: itemName.toLowerCase() }),
+        confirmText: t('common.delete'),
+        cancelText: t('common.cancel'),
         variant: 'destructive',
         onConfirm,
       });
     },
-    [confirm]
+    [confirm, t]
   );
 
   return { confirmDelete, ConfirmDialog };

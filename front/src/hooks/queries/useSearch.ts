@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { surveysApi, templatesApi, themesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import type { SearchResult, SearchResultType } from '@/stores/searchStore';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query key for global search
-export const searchKeys = {
-  all: ['search'] as const,
-  global: (namespaceId: string, query: string) => [...searchKeys.all, 'global', namespaceId, query] as const,
-};
+export const searchKeys = createExtendedQueryKeys('search', (base) => ({
+  global: (namespaceId: string, query: string) => [...base.all, 'global', namespaceId, query] as const,
+}));
 
 interface SearchParams {
   query: string;
@@ -48,9 +48,9 @@ export function useGlobalSearch(params: SearchParams, options: UseGlobalSearchOp
           (async () => {
             try {
               const response = await surveysApi.list(namespaceId, {
-                search: searchTerm,
+                searchTerm: searchTerm, // Backend expects searchTerm parameter
                 pageNumber: 1,
-                pageSize: 50, // Fetch more for client-side filtering
+                pageSize: limitPerType + 5, // Fetch slightly more for relevance sorting
               });
               // Client-side filtering in case backend doesn't support search
               const filtered = response.items.filter(
@@ -81,9 +81,9 @@ export function useGlobalSearch(params: SearchParams, options: UseGlobalSearchOp
             try {
               const response = await templatesApi.list({
                 namespaceId,
-                search: searchTerm,
+                searchTerm: searchTerm, // Backend expects searchTerm parameter
                 pageNumber: 1,
-                pageSize: 50, // Fetch more for client-side filtering
+                pageSize: limitPerType + 5, // Fetch slightly more for relevance sorting
               });
               // Client-side filtering in case backend doesn't support search
               const filtered = response.items.filter(
@@ -111,7 +111,7 @@ export function useGlobalSearch(params: SearchParams, options: UseGlobalSearchOp
         promises.push(
           (async () => {
             try {
-              const response = await themesApi.list({ searchTerm: namespaceId });
+              const response = await themesApi.list({ searchTerm: searchTerm, pageSize: limitPerType + 5 });
               const themes = response.items || [];
               const filtered = themes.filter((theme: { name: string }) => theme.name.toLowerCase().includes(searchTerm));
               filtered.slice(0, limitPerType).forEach((theme: { id: string; name: string; updatedAt?: string }) => {
@@ -151,7 +151,7 @@ export function useGlobalSearch(params: SearchParams, options: UseGlobalSearchOp
         .slice(0, limit);
     },
     enabled: enabled && !!namespaceId && query.trim().length >= 2,
-    staleTime: 30 * 1000, // 30 seconds
-    gcTime: 60 * 1000, // 1 minute
+    staleTime: 30 * 1000, // Search results should stay fresh
+    gcTime: STALE_TIMES.SHORT,
   });
 }

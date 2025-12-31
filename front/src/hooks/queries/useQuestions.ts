@@ -3,16 +3,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { questionsApi } from '@/services';
 import { surveyKeys } from './useSurveys';
-import type { CreateQuestionRequest, UpdateQuestionRequest, Question, QuestionSettings, QuestionType } from '@/types';
+import type { CreateQuestionRequest, UpdateQuestionRequest, Question, QuestionSettings, QuestionType, BatchSyncQuestionsRequest } from '@/types';
+import { createExtendedQueryKeys } from './queryUtils';
 
-// Query keys
-export const questionKeys = {
-  all: ['questions'] as const,
-  lists: () => [...questionKeys.all, 'list'] as const,
-  list: (surveyId: string) => [...questionKeys.lists(), surveyId] as const,
-  details: () => [...questionKeys.all, 'detail'] as const,
-  detail: (surveyId: string, questionId: string) => [...questionKeys.details(), surveyId, questionId] as const,
-};
+// Query keys - questions use parent-scoped pattern (surveyId)
+export const questionKeys = createExtendedQueryKeys('questions', (base) => ({
+  /** Questions list scoped to a specific survey */
+  list: (surveyId: string) => [...base.lists(), surveyId] as const,
+  /** Single question detail */
+  detail: (surveyId: string, questionId: string) => [...base.details(), surveyId, questionId] as const,
+}));
 
 /**
  * Hook to create a new question
@@ -83,6 +83,7 @@ export interface QuestionSyncResult {
   updated: Question[];
   deleted: string[];
   reordered: boolean;
+  errors: Array<{ operation: string; questionId?: string; message: string }>;
 }
 
 export interface QuestionSyncData {
@@ -105,7 +106,26 @@ export interface QuestionSyncData {
 
 /**
  * Hook to sync all questions in a batch operation
- * Handles creates, updates, deletes, and reordering
+ * Uses the backend batch sync endpoint for atomic operations and better performance.
+ *
+ * @example
+ * ```tsx
+ * const syncMutation = useSyncQuestions();
+ *
+ * const handleSave = () => {
+ *   const changes = calculateQuestionChanges(original, draft, 'en');
+ *   syncMutation.mutate({
+ *     surveyId,
+ *     ...changes,
+ *   }, {
+ *     onSuccess: (result) => {
+ *       if (result.errors.length > 0) {
+ *         console.warn('Some operations failed:', result.errors);
+ *       }
+ *     },
+ *   });
+ * };
+ * ```
  */
 export function useSyncQuestions() {
   const queryClient = useQueryClient();
@@ -113,64 +133,44 @@ export function useSyncQuestions() {
   return useMutation({
     mutationFn: async (syncData: QuestionSyncData): Promise<QuestionSyncResult> => {
       const { surveyId, toCreate, toUpdate, toDelete, finalOrder } = syncData;
-      const result: QuestionSyncResult = {
-        created: [],
-        updated: [],
-        deleted: [],
-        reordered: false,
+
+      // Transform to backend request format
+      const request: BatchSyncQuestionsRequest = {
+        toCreate: toCreate.map(({ tempId, data }) => ({
+          tempId,
+          text: data.text,
+          description: data.description,
+          type: data.type,
+          isRequired: data.isRequired ?? false,
+          order: data.order,
+          settings: data.settings,
+          languageCode: data.languageCode,
+        })),
+        toUpdate: toUpdate.map(({ questionId, data }) => ({
+          questionId,
+          text: data.text ?? '',
+          description: data.description,
+          type: data.type!,
+          isRequired: data.isRequired ?? false,
+          order: data.order,
+          settings: data.settings,
+          languageCode: data.languageCode,
+        })),
+        toDelete,
+        finalOrder,
       };
 
-      // Map of temp IDs to real IDs (filled as we create)
-      const idMap = new Map<string, string>();
+      // Single API call - backend handles atomicity
+      const result = await questionsApi.batchSync(surveyId, request);
 
-      // 1. Delete questions first (to avoid conflicts)
-      for (const questionId of toDelete) {
-        try {
-          await questionsApi.delete(surveyId, questionId);
-          result.deleted.push(questionId);
-        } catch (error) {
-          console.error(`Failed to delete question ${questionId}:`, error);
-          // Continue with other operations
-        }
-      }
-
-      // 2. Create new questions
-      for (const { tempId, data } of toCreate) {
-        try {
-          const created = await questionsApi.create(surveyId, data);
-          idMap.set(tempId, created.id);
-          result.created.push({ tempId, realId: created.id, question: created });
-        } catch (error) {
-          console.error(`Failed to create question (temp ID: ${tempId}):`, error);
-          throw error; // Fail the whole operation if create fails
-        }
-      }
-
-      // 3. Update existing questions
-      for (const { questionId, data } of toUpdate) {
-        try {
-          const updated = await questionsApi.update(surveyId, questionId, data);
-          result.updated.push(updated);
-        } catch (error) {
-          console.error(`Failed to update question ${questionId}:`, error);
-          // Continue with other operations
-        }
-      }
-
-      // 4. Reorder questions (map temp IDs to real IDs)
-      const mappedOrder = finalOrder.map((id) => (id.startsWith('temp_') ? idMap.get(id) : id)).filter((id): id is string => id !== undefined);
-
-      if (mappedOrder.length > 0) {
-        try {
-          await questionsApi.reorder(surveyId, mappedOrder);
-          result.reordered = true;
-        } catch (error) {
-          console.error('Failed to reorder questions:', error);
-          // Non-critical, continue
-        }
-      }
-
-      return result;
+      // Transform backend response to match our interface
+      return {
+        created: result.created,
+        updated: result.updated,
+        deleted: result.deleted,
+        reordered: result.reordered,
+        errors: result.errors,
+      };
     },
     onSuccess: (_result, { surveyId }) => {
       // Invalidate survey detail to get fresh data

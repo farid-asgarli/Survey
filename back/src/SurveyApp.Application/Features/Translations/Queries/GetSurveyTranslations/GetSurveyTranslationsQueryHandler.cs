@@ -64,19 +64,22 @@ public class GetSurveyTranslationsQueryHandler(
             {
                 QuestionId = q.Id,
                 Order = q.Order,
-                DefaultLanguage = q.DefaultLanguage,
-                Translations = q
-                    .Translations.Select(t => new QuestionTranslationItemDto
+                Translations =
+                [
+                    .. q.Translations.Select(t => new QuestionTranslationItemDto
                     {
                         LanguageCode = t.LanguageCode,
                         Text = t.Text,
                         Description = t.Description,
                         IsDefault = t.LanguageCode.Equals(
-                            q.DefaultLanguage,
+                            survey.DefaultLanguage,
                             StringComparison.OrdinalIgnoreCase
                         ),
-                    })
-                    .ToList(),
+                        TranslatedSettings = TranslatedQuestionSettingsDto.FromDomain(
+                            t.GetTranslatedSettings()
+                        ),
+                    }),
+                ],
             })
             .ToList();
 

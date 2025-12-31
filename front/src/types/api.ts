@@ -81,9 +81,17 @@ export interface MembersResponse {
 // ============ Survey API Types ============
 export interface SurveyListParams extends PaginationParams {
   status?: string;
-  search?: string;
+  searchTerm?: string; // Backend expects searchTerm parameter
   fromDate?: string;
   toDate?: string;
+  sortBy?: 'title' | 'createdAt' | 'updatedAt' | 'status' | 'responseCount' | 'questionCount';
+  sortDescending?: boolean;
+}
+
+/** Request body for duplicating a survey */
+export interface DuplicateSurveyRequest {
+  /** Optional new title for the duplicated survey. If not provided, appends "(Copy)" to original. */
+  newTitle?: string;
 }
 
 export type SurveysResponse = PaginatedResponse<Survey>;
@@ -191,7 +199,7 @@ export interface SurveyTemplateResponse {
 
 export interface SurveyTemplateListParams extends PaginationParams {
   category?: string;
-  search?: string;
+  searchTerm?: string; // Backend expects searchTerm parameter
   isPublic?: boolean;
 }
 
@@ -264,12 +272,34 @@ export interface SurveyTranslationDto {
   isDefault: boolean;
 }
 
+/** DTO for translated question settings (options, labels, etc.) */
+export interface TranslatedQuestionSettingsDto {
+  /** Translated options for choice-based questions */
+  options?: string[];
+  /** Translated minimum label for scale/rating questions */
+  minLabel?: string;
+  /** Translated maximum label for scale/rating questions */
+  maxLabel?: string;
+  /** Translated rows for matrix questions */
+  matrixRows?: string[];
+  /** Translated columns for matrix questions */
+  matrixColumns?: string[];
+  /** Translated placeholder text for text questions */
+  placeholder?: string;
+  /** Translated validation error message */
+  validationMessage?: string;
+  /** Translated "Other" option label */
+  otherLabel?: string;
+}
+
 /** DTO for a single question translation */
 export interface QuestionTranslationItemDto {
   languageCode: string;
   text: string;
   description?: string;
   isDefault: boolean;
+  /** Translated question settings (options, labels, matrix rows/columns, etc.) */
+  translatedSettings?: TranslatedQuestionSettingsDto;
 }
 
 /** DTO containing all translations for a question */
@@ -288,9 +318,20 @@ export interface SurveyTranslationsResponse {
   questions: QuestionTranslationsDto[];
 }
 
+/** DTO for updating a single question's translation */
+export interface QuestionTranslationUpdateDto {
+  questionId: string;
+  languageCode: string;
+  text: string;
+  description?: string;
+  /** Translated question settings (options, labels, matrix rows/columns, etc.) */
+  translatedSettings?: TranslatedQuestionSettingsDto;
+}
+
 /** Request to bulk update all translations for a survey */
 export interface BulkUpdateSurveyTranslationsRequest {
   translations: SurveyTranslationDto[];
+  questionTranslations?: QuestionTranslationUpdateDto[];
 }
 
 /** Request to update a single translation for a survey */

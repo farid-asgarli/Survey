@@ -125,6 +125,7 @@ function RecurringScheduleForm({
   isLoading?: boolean;
   onCancel: () => void;
 }) {
+  const { t } = useTranslation();
   const isEditMode = !!recurringSurvey;
 
   // Get localized options
@@ -197,15 +198,15 @@ function RecurringScheduleForm({
     const newErrors: Record<string, string> = {};
 
     if (!isEditMode && !surveyId) {
-      newErrors.surveyId = 'Please select a survey';
+      newErrors.surveyId = t('recurringSurveys.form.validation.selectSurvey');
     }
 
     if (!name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('recurringSurveys.form.nameRequired');
     }
 
     if (!isValidTime(sendTime)) {
-      newErrors.sendTime = 'Please enter a valid time (HH:mm)';
+      newErrors.sendTime = t('recurringSurveys.form.validation.validTime');
     }
 
     if (pattern === RecurrencePattern.Custom && !cronExpression.trim()) {
@@ -280,8 +281,8 @@ function RecurringScheduleForm({
       <DialogHeader
         hero
         icon={<CalendarClock className="h-7 w-7" />}
-        title={isEditMode ? 'Edit Recurring Schedule' : 'Create Recurring Survey'}
-        description={isEditMode ? 'Update the schedule settings for this recurring survey.' : 'Set up a survey to run automatically on a schedule.'}
+        title={isEditMode ? t('recurringSurveys.editTitle') : t('recurringSurveys.createTitle')}
+        description={isEditMode ? t('recurringSurveys.editDescription') : t('recurringSurveys.createDescription')}
         showClose
       />
 
@@ -309,8 +310,8 @@ function RecurringScheduleForm({
 
         {/* Name */}
         <Input
-          label="Schedule Name"
-          placeholder="e.g., Weekly Customer Feedback"
+          label={t('recurringSurveys.form.scheduleName')}
+          placeholder={t('recurringSurveys.form.scheduleNamePlaceholder')}
           value={name}
           onChange={(e) => setName(e.target.value)}
           error={errors.name}
@@ -328,7 +329,7 @@ function RecurringScheduleForm({
           {/* Days of week (for weekly/bi-weekly) */}
           {showDaysOfWeek && (
             <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">Days of Week</label>
+              <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.daysOfWeek')}</label>
               <div className="flex flex-wrap gap-2">
                 {dayOfWeekOptions.map(({ value, label }) => (
                   <button
@@ -345,7 +346,7 @@ function RecurringScheduleForm({
                   </button>
                 ))}
               </div>
-              <p className="mt-2 text-xs text-on-surface-variant">Select one or more days</p>
+              <p className="mt-2 text-xs text-on-surface-variant">{t('recurringSurveys.form.daysOfWeekHelper')}</p>
             </div>
           )}
 
@@ -378,7 +379,7 @@ function RecurringScheduleForm({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">Send Time</label>
+              <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.sendTime')}</label>
               <Input type="time" value={sendTime} onChange={(e) => setSendTime(e.target.value)} error={errors.sendTime} />
             </div>
 
@@ -470,11 +471,11 @@ function RecurringScheduleForm({
           {sendReminders && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-6">
               <div>
-                <label className="block text-sm font-semibold text-on-surface mb-2">Days After Initial Send</label>
+                <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.daysAfterSend')}</label>
                 <Input type="number" min={1} max={30} value={reminderDaysAfter} onChange={(e) => setReminderDaysAfter(Number(e.target.value))} />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-on-surface mb-2">Max Reminders</label>
+                <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.maxReminders')}</label>
                 <Input type="number" min={1} max={5} value={maxReminders} onChange={(e) => setMaxReminders(Number(e.target.value))} />
               </div>
             </div>
@@ -490,16 +491,16 @@ function RecurringScheduleForm({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">End Date</label>
+              <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.endDate')}</label>
               <DatePicker value={endsAt || undefined} onChange={(date) => setEndsAt(date || '')} minDate={getToday()} error={errors.endsAt} />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-on-surface mb-2">Max Runs</label>
+              <label className="block text-sm font-semibold text-on-surface mb-2">{t('recurringSurveys.form.maxRuns')}</label>
               <Input
                 type="number"
                 min={1}
-                placeholder="Unlimited"
+                placeholder={t('recurringSurveys.form.maxRunsPlaceholder')}
                 value={maxRuns ?? ''}
                 onChange={(e) => setMaxRuns(e.target.value ? Number(e.target.value) : undefined)}
               />
@@ -525,10 +526,10 @@ function RecurringScheduleForm({
 
       <DialogFooter className="gap-2">
         <Button variant="text" onClick={onCancel} disabled={isLoading}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button variant="filled" onClick={handleSubmit} disabled={isLoading || (!isEditMode && surveyOptions.length === 0)} loading={isLoading}>
-          {isEditMode ? 'Save Changes' : 'Create Schedule'}
+          {isEditMode ? t('common.saveChanges') : t('recurringSurveys.createSchedule')}
         </Button>
       </DialogFooter>
     </>

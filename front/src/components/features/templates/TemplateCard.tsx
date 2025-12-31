@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MoreVertical, Eye, Copy, Edit, Trash2, FileText, Users, Globe, Lock, FolderOpen } from 'lucide-react';
 import { Card, CardHeader, CardContent, Chip, Menu, MenuItem, MenuSeparator, IconButton } from '@/components/ui';
 import { getCategoryInfo, formatQuestionCount, formatUsageCount } from './templateUtils';
@@ -14,6 +15,7 @@ interface TemplateCardProps {
 }
 
 export function TemplateCard({ template, onUse, onPreview, onEdit, onDelete, isOwner = false }: TemplateCardProps) {
+  const { t } = useTranslation();
   const categoryInfo = getCategoryInfo((template.category || 'other') as TemplateCategory);
   const canModify = isOwner;
 
@@ -32,7 +34,7 @@ export function TemplateCard({ template, onUse, onPreview, onEdit, onDelete, isO
           <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" aria-label="More options" className="h-8 w-8">
+                <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')} className="h-8 w-8">
                   <MoreVertical className="h-4 w-4" />
                 </IconButton>
               }

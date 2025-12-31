@@ -84,7 +84,7 @@ export function EmailTemplatesPage() {
       action: (template) =>
         duplicateTemplate.mutateAsync({
           id: template.id,
-          name: `${template.name} (${t('common.copy')})`,
+          newName: `${template.name} (${t('common.copy')})`,
         }),
     },
   });

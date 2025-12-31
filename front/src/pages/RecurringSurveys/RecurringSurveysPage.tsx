@@ -1,6 +1,6 @@
 // RecurringSurveysPage - Manage recurring surveys and schedules
 
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, AlertCircle } from 'lucide-react';
 import { Button, EmptyState, Tabs, TabsList, TabsTrigger, ListContainer, GridSkeleton } from '@/components/ui';
@@ -39,8 +39,8 @@ export function RecurringSurveysPage() {
 
   // Dialog state using reusable hooks
   const createDialog = useDialogState();
-  const [editingRecurringSurveyId, setEditingRecurringSurveyId] = useState<string | null>(null);
-  const [historyRecurringSurveyId, setHistoryRecurringSurveyId] = useState<string | null>(null);
+  const editDialog = useDialogState<string>();
+  const historyDrawer = useDialogState<string>();
 
   // Shorthand for current filter value
   const statusFilter = filters.status;
@@ -58,8 +58,8 @@ export function RecurringSurveysPage() {
   const { data: surveysData } = useSurveysList({ status: SurveyStatus.Published });
 
   // Fetch full data for editing/viewing history
-  const { data: editingRecurringSurvey } = useRecurringSurveyDetail(editingRecurringSurveyId ?? undefined);
-  const { data: historyRecurringSurvey } = useRecurringSurveyDetail(historyRecurringSurveyId ?? undefined);
+  const { data: editingRecurringSurvey } = useRecurringSurveyDetail(editDialog.selectedItem ?? undefined);
+  const { data: historyRecurringSurvey } = useRecurringSurveyDetail(historyDrawer.selectedItem ?? undefined);
 
   // Extract items from response
   const recurringSurveys = useMemo(() => recurringSurveysResponse?.items ?? [], [recurringSurveysResponse?.items]);
@@ -86,11 +86,11 @@ export function RecurringSurveysPage() {
 
   const handleUpdate = useCallback(
     async (data: CreateRecurringSurveyRequest | UpdateRecurringSurveyRequest) => {
-      if (!editingRecurringSurveyId) return;
-      await updateMutation.mutateAsync({ id: editingRecurringSurveyId, data: data as UpdateRecurringSurveyRequest });
-      setEditingRecurringSurveyId(null);
+      if (!editDialog.selectedItem) return;
+      await updateMutation.mutateAsync({ id: editDialog.selectedItem, data: data as UpdateRecurringSurveyRequest });
+      editDialog.close();
     },
-    [updateMutation, editingRecurringSurveyId]
+    [updateMutation, editDialog]
   );
 
   const handleDelete = useCallback(
@@ -138,13 +138,19 @@ export function RecurringSurveysPage() {
     [triggerMutation, confirm, t]
   );
 
-  const handleEdit = useCallback((id: string) => {
-    setEditingRecurringSurveyId(id);
-  }, []);
+  const handleEdit = useCallback(
+    (id: string) => {
+      editDialog.open(id);
+    },
+    [editDialog]
+  );
 
-  const handleViewHistory = useCallback((id: string) => {
-    setHistoryRecurringSurveyId(id);
-  }, []);
+  const handleViewHistory = useCallback(
+    (id: string) => {
+      historyDrawer.open(id);
+    },
+    [historyDrawer]
+  );
 
   // Check for active filters
   const hasActiveFilters = searchQuery !== '' || statusFilter !== 'all';
@@ -255,18 +261,14 @@ export function RecurringSurveysPage() {
         />
 
         <RecurringScheduleEditor
-          open={!!editingRecurringSurveyId}
-          onOpenChange={(isOpen: boolean) => !isOpen && setEditingRecurringSurveyId(null)}
+          open={editDialog.isOpen}
+          onOpenChange={editDialog.setOpen}
           recurringSurvey={editingRecurringSurvey || undefined}
           onSubmit={handleUpdate}
           isLoading={updateMutation.isPending}
         />
 
-        <RunHistoryDrawer
-          open={!!historyRecurringSurveyId}
-          onOpenChange={(isOpen: boolean) => !isOpen && setHistoryRecurringSurveyId(null)}
-          recurringSurvey={historyRecurringSurvey || undefined}
-        />
+        <RunHistoryDrawer open={historyDrawer.isOpen} onOpenChange={historyDrawer.setOpen} recurringSurvey={historyRecurringSurvey || undefined} />
 
         <ConfirmDialog />
       </ListPageLayout.Dialogs>

@@ -5,15 +5,10 @@ import { templatesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import { surveyKeys } from './useSurveys';
 import type { TemplateCategory } from '@/types';
+import { createQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys
-export const templateKeys = {
-  all: ['templates'] as const,
-  lists: () => [...templateKeys.all, 'list'] as const,
-  list: (filters?: TemplateFilters) => [...templateKeys.lists(), filters] as const,
-  details: () => [...templateKeys.all, 'detail'] as const,
-  detail: (id: string) => [...templateKeys.details(), id] as const,
-};
+export const templateKeys = createQueryKeys('templates');
 
 export interface TemplateFilters {
   namespaceId?: string;
@@ -38,7 +33,7 @@ export function useTemplatesList(filters?: TemplateFilters) {
     params.category = filters.category;
   }
   if (filters?.search) {
-    params.search = filters.search;
+    params.searchTerm = filters.search; // Map search filter to searchTerm API param
   }
   if (filters?.visibility === 'public') {
     params.isPublic = true;
@@ -54,7 +49,7 @@ export function useTemplatesList(filters?: TemplateFilters) {
       return response.items ?? [];
     },
     enabled: !!activeNamespace?.id,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -66,7 +61,7 @@ export function useTemplateDetail(id: string | undefined) {
     queryKey: templateKeys.detail(id!),
     queryFn: () => templatesApi.getById(id!),
     enabled: !!id,
-    staleTime: 10 * 60 * 1000,
+    staleTime: STALE_TIMES.VERY_LONG,
   });
 }
 

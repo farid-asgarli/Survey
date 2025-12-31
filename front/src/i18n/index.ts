@@ -65,4 +65,12 @@ export const getLanguageInfo = (code: LanguageCode) => {
   return LANGUAGES.find((lang) => lang.code === code);
 };
 
+// Expose i18n to window for class components that can't use hooks
+declare global {
+  interface Window {
+    __i18n?: typeof i18n;
+  }
+}
+window.__i18n = i18n;
+
 export default i18n;

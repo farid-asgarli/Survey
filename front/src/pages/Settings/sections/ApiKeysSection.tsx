@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/utils';
 import {
@@ -24,13 +23,15 @@ import type { ApiKeyScope } from '@/stores/settingsStore';
 import { cn } from '@/lib/utils';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { createApiKeySchema, type CreateApiKeyFormData } from '@/lib/validations';
+import { useDialogState, useCopyToClipboard } from '@/hooks';
 
 export function ApiKeysSection() {
   const { t } = useTranslation();
   const { apiKeys, addApiKey, removeApiKey } = useSettingsStore();
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [showKeyDialog, setShowKeyDialog] = useState<string | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const createDialog = useDialogState({ onClose: () => reset() });
+  const keyDialog = useDialogState<string>();
+  const deleteDialog = useDialogState<string>();
+  const { copy } = useCopyToClipboard();
 
   const {
     register,
@@ -50,32 +51,24 @@ export function ApiKeysSection() {
 
   const watchedScopes = watch('scopes') as ApiKeyScope[];
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      reset();
-    }
-    setShowCreateDialog(open);
-  };
-
   const onSubmit: SubmitHandler<CreateApiKeyFormData> = (data) => {
     const fullKey = addApiKey({
       name: data.name.trim(),
       scopes: data.scopes as ApiKeyScope[],
     });
 
-    setShowKeyDialog(fullKey);
-    handleOpenChange(false);
+    keyDialog.open(fullKey);
+    createDialog.close();
     toast.success(t('apiKeys.createSuccess'));
   };
 
   const handleCopyKey = (key: string) => {
-    navigator.clipboard.writeText(key);
-    toast.success(t('settings.security.keyCopied'));
+    copy(key, { successMessage: t('settings.security.keyCopied') });
   };
 
   const handleDeleteKey = (id: string) => {
     removeApiKey(id);
-    setDeleteConfirm(null);
+    deleteDialog.close();
     toast.success(t('apiKeys.deleteSuccess'));
   };
 
@@ -97,7 +90,7 @@ export function ApiKeysSection() {
               </CardTitle>
               <CardDescription>{t('settings.security.apiKeysDesc')}</CardDescription>
             </div>
-            <Button onClick={() => setShowCreateDialog(true)} size="sm">
+            <Button onClick={() => createDialog.open()} size="sm">
               <Plus className="h-4 w-4" />
               {t('settings.security.createApiKey')}
             </Button>
@@ -112,7 +105,7 @@ export function ApiKeysSection() {
               iconVariant="primary"
               action={{
                 label: t('settings.security.createApiKey'),
-                onClick: () => setShowCreateDialog(true),
+                onClick: () => createDialog.open(),
                 icon: <Plus className="h-4 w-4" />,
               }}
             />
@@ -157,7 +150,7 @@ export function ApiKeysSection() {
                     <Button variant="text" size="sm" onClick={() => handleCopyKey(key.key)}>
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button variant="text" size="sm" onClick={() => setDeleteConfirm(key.id)}>
+                    <Button variant="text" size="sm" onClick={() => deleteDialog.open(key.id)}>
                       <Trash2 className="h-4 w-4 text-error" />
                     </Button>
                   </div>
@@ -186,7 +179,7 @@ export function ApiKeysSection() {
       </Card>
 
       {/* Create API Key Dialog */}
-      <Dialog open={showCreateDialog} onOpenChange={handleOpenChange}>
+      <Dialog open={createDialog.isOpen} onOpenChange={createDialog.setOpen}>
         <DialogContent className="sm:max-w-md" showClose={false}>
           <DialogHeader
             hero
@@ -228,7 +221,7 @@ export function ApiKeysSection() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
+              <Button type="button" variant="outline" onClick={() => createDialog.close()}>
                 {t('common.cancel')}
               </Button>
               <Button type="submit">{t('settings.security.createKey')}</Button>
@@ -238,7 +231,7 @@ export function ApiKeysSection() {
       </Dialog>
 
       {/* Show New Key Dialog */}
-      <Dialog open={!!showKeyDialog} onOpenChange={() => setShowKeyDialog(null)}>
+      <Dialog open={keyDialog.isOpen} onOpenChange={keyDialog.setOpen}>
         <DialogContent className="sm:max-w-lg" showClose={false}>
           <DialogHeader
             hero
@@ -250,7 +243,7 @@ export function ApiKeysSection() {
           />
           <div className="py-4">
             <div className="p-4 rounded-xl bg-surface-container-highest border border-outline-variant/30">
-              <code className="text-sm font-mono break-all text-on-surface">{showKeyDialog}</code>
+              <code className="text-sm font-mono break-all text-on-surface">{keyDialog.selectedItem}</code>
             </div>
             <p className="text-xs text-warning mt-3 flex items-center gap-1">
               <AlertTriangle className="h-3 w-3" />
@@ -258,11 +251,11 @@ export function ApiKeysSection() {
             </p>
           </div>
           <DialogFooter>
-            <Button onClick={() => handleCopyKey(showKeyDialog || '')}>
+            <Button onClick={() => handleCopyKey(keyDialog.selectedItem || '')}>
               <Copy className="h-4 w-4" />
               {t('settings.security.copyKey')}
             </Button>
-            <Button variant="outline" onClick={() => setShowKeyDialog(null)}>
+            <Button variant="outline" onClick={() => keyDialog.close()}>
               {t('common.close')}
             </Button>
           </DialogFooter>
@@ -270,7 +263,7 @@ export function ApiKeysSection() {
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
+      <Dialog open={deleteDialog.isOpen} onOpenChange={deleteDialog.setOpen}>
         <DialogContent className="sm:max-w-md" showClose={false}>
           <DialogHeader
             hero
@@ -282,10 +275,10 @@ export function ApiKeysSection() {
           />
           <div className="p-4">
             <div className="flex justify-end gap-3">
-              <Button variant="text" onClick={() => setDeleteConfirm(null)}>
+              <Button variant="text" onClick={() => deleteDialog.close()}>
                 {t('common.cancel')}
               </Button>
-              <Button variant="destructive" onClick={() => deleteConfirm && handleDeleteKey(deleteConfirm)}>
+              <Button variant="destructive" onClick={() => deleteDialog.selectedItem && handleDeleteKey(deleteDialog.selectedItem)}>
                 {t('common.delete')}
               </Button>
             </div>

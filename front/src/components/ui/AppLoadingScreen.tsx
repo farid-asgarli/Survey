@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -51,7 +52,7 @@ function AnimatedLogo() {
       </div>
 
       {/* Main logo container */}
-      <div className="relative w-20 h-20 rounded-3xl bg-linear-to-br from-primary via-primary to-primary/80 shadow-2xl shadow-primary/30 flex items-center justify-center animate-logo-breathe">
+      <div className="relative w-20 h-20 rounded-3xl bg-linear-to-br from-primary via-primary to-primary/80 ring-4 ring-primary/20 flex items-center justify-center animate-logo-breathe">
         <Sparkles className="w-10 h-10 text-on-primary" />
 
         {/* Shine effect */}
@@ -87,12 +88,13 @@ function ProgressBar({ progress }: { progress: number }) {
 }
 
 export function AppLoadingScreen({ message, showProgress = true }: AppLoadingScreenProps) {
+  const { t } = useTranslation();
   const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState('Initializing');
+  const [loadingText, setLoadingText] = useState(t('common.initializing'));
 
   // Simulate loading progress
   useEffect(() => {
-    const texts = ['Initializing', 'Loading resources', 'Preparing your workspace', 'Almost ready'];
+    const texts = [t('common.initializing'), t('common.loadingResources'), t('common.preparingWorkspace'), t('common.almostReady')];
     let currentIndex = 0;
 
     const progressInterval = setInterval(() => {
@@ -126,7 +128,7 @@ export function AppLoadingScreen({ message, showProgress = true }: AppLoadingScr
         <AnimatedLogo />
 
         {/* App name */}
-        <h1 className="mt-8 text-2xl font-bold text-on-surface">SurveyApp</h1>
+        <h1 className="mt-8 text-2xl font-bold text-on-surface">{t('common.appName')}</h1>
 
         {/* Loading message */}
         <div className="mt-4 flex items-center gap-2 text-on-surface-variant">
@@ -232,7 +234,7 @@ export function PageTransitionLoader() {
           {/* Pulsing background */}
           <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-primary/10 animate-ping" />
           {/* Logo */}
-          <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
+          <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-primary to-primary/80 flex items-center justify-center ring-2 ring-primary/20">
             <Sparkles className="w-8 h-8 text-on-primary" />
           </div>
         </div>

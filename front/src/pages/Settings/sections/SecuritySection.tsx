@@ -17,7 +17,7 @@ import {
 } from '@/components/ui';
 import { Shield, Lock, Eye, EyeOff, ShieldCheck, ShieldOff, RefreshCw, AlertTriangle, Smartphone, Mail, ChevronRight } from 'lucide-react';
 import { useSettingsStore } from '@/stores';
-import { useChangePassword } from '@/hooks';
+import { useChangePassword, useDialogState } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { changePasswordSchema, type ChangePasswordFormData } from '@/lib/validations';
@@ -32,8 +32,8 @@ export function SecuritySection() {
     new: false,
     confirm: false,
   });
-  const [show2FADialog, setShow2FADialog] = useState(false);
-  const [showDisable2FADialog, setShowDisable2FADialog] = useState(false);
+  const enable2FADialog = useDialogState();
+  const disable2FADialog = useDialogState();
 
   const {
     register,
@@ -71,13 +71,13 @@ export function SecuritySection() {
 
   const handleEnable2FA = (method: 'authenticator' | 'sms' | 'email') => {
     enableTwoFactor(method);
-    setShow2FADialog(false);
+    enable2FADialog.close();
     toast.success(t('twoFactor.enabledSuccess'));
   };
 
   const handleDisable2FA = () => {
     disableTwoFactor();
-    setShowDisable2FADialog(false);
+    disable2FADialog.close();
     toast.success(t('twoFactor.disabledSuccess'));
   };
 
@@ -127,7 +127,7 @@ export function SecuritySection() {
                   <RefreshCw className="h-4 w-4" />
                   {t('twoFactor.regenerateBackupCodes')}
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => setShowDisable2FADialog(true)}>
+                <Button variant="outline" size="sm" onClick={() => disable2FADialog.open()}>
                   <ShieldOff className="h-4 w-4" />
                   {t('twoFactor.disable')}
                 </Button>
@@ -147,7 +147,7 @@ export function SecuritySection() {
               </div>
 
               {/* Enable Button */}
-              <Button onClick={() => setShow2FADialog(true)}>
+              <Button onClick={() => enable2FADialog.open()}>
                 <ShieldCheck className="h-4 w-4" />
                 {t('twoFactor.enable')}
               </Button>
@@ -246,7 +246,7 @@ export function SecuritySection() {
       </Card>
 
       {/* Enable 2FA Dialog */}
-      <Dialog open={show2FADialog} onOpenChange={setShow2FADialog}>
+      <Dialog open={enable2FADialog.isOpen} onOpenChange={enable2FADialog.setOpen}>
         <DialogContent className="sm:max-w-md" showClose={false}>
           <DialogHeader
             hero
@@ -289,7 +289,7 @@ export function SecuritySection() {
       </Dialog>
 
       {/* Disable 2FA Dialog */}
-      <Dialog open={showDisable2FADialog} onOpenChange={setShowDisable2FADialog}>
+      <Dialog open={disable2FADialog.isOpen} onOpenChange={disable2FADialog.setOpen}>
         <DialogContent className="sm:max-w-md" showClose={false}>
           <DialogHeader
             hero
@@ -301,7 +301,7 @@ export function SecuritySection() {
           />
           <div className="p-4">
             <div className="flex justify-end gap-3">
-              <Button variant="text" onClick={() => setShowDisable2FADialog(false)}>
+              <Button variant="text" onClick={() => disable2FADialog.close()}>
                 {t('common.cancel')}
               </Button>
               <Button variant="destructive" onClick={handleDisable2FA}>

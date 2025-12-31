@@ -4,17 +4,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { namespacesApi } from '@/services';
 import { useNamespaceStore, useAuthStore } from '@/stores';
 import type { Namespace, CreateNamespaceRequest, InviteMemberRequest, MemberRole } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const namespaceKeys = {
-  all: ['namespaces'] as const,
-  lists: () => [...namespaceKeys.all, 'list'] as const,
-  list: (filters?: Record<string, unknown>) => [...namespaceKeys.lists(), filters] as const,
-  details: () => [...namespaceKeys.all, 'detail'] as const,
-  detail: (id: string) => [...namespaceKeys.details(), id] as const,
-  bySlug: (slug: string) => [...namespaceKeys.all, 'slug', slug] as const,
-  members: (namespaceId: string) => [...namespaceKeys.all, namespaceId, 'members'] as const,
-};
+// Query keys - namespaces have bySlug and members custom keys
+export const namespaceKeys = createExtendedQueryKeys('namespaces', (base) => ({
+  bySlug: (slug: string) => [...base.all, 'slug', slug] as const,
+  members: (namespaceId: string) => [...base.all, namespaceId, 'members'] as const,
+}));
 
 /**
  * Hook to fetch all namespaces for the current user
@@ -31,7 +27,7 @@ export function useNamespacesList() {
       return namespaces;
     },
     enabled: isAuthenticated,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -43,7 +39,7 @@ export function useNamespaceDetail(id: string | undefined) {
     queryKey: namespaceKeys.detail(id!),
     queryFn: () => namespacesApi.getById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -55,7 +51,7 @@ export function useNamespaceBySlug(slug: string | undefined) {
     queryKey: namespaceKeys.bySlug(slug!),
     queryFn: () => namespacesApi.getBySlug(slug!),
     enabled: !!slug,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -125,7 +121,7 @@ export function useNamespaceMembers(namespaceId: string | undefined) {
     queryKey: namespaceKeys.members(namespaceId!),
     queryFn: () => namespacesApi.getMembers(namespaceId!),
     enabled: !!namespaceId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -159,19 +155,14 @@ export function useRemoveMember() {
 }
 
 /**
- * Hook to update a member's role
- * Note: This requires a backend endpoint that may need to be implemented
+ * Hook to update a member's role in a namespace
  */
 export function useUpdateMemberRole() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { namespaceId: string; membershipId: string; role: MemberRole }) => {
-      // This would call an API endpoint to update member role
-      // For now, we'll need to check if this endpoint exists in the backend
-      void params; // Acknowledge params to avoid unused warning
-      throw new Error('Update member role endpoint not implemented');
-    },
+    mutationFn: ({ namespaceId, membershipId, role }: { namespaceId: string; membershipId: string; role: MemberRole }) =>
+      namespacesApi.updateMemberRole(namespaceId, membershipId, { namespaceId, membershipId, role }),
     onSuccess: (_, { namespaceId }) => {
       queryClient.invalidateQueries({ queryKey: namespaceKeys.members(namespaceId) });
     },

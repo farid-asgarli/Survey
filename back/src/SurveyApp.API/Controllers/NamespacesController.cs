@@ -6,6 +6,7 @@ using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
 using SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 using SurveyApp.Application.Features.Namespaces.Commands.RemoveMember;
+using SurveyApp.Application.Features.Namespaces.Commands.UpdateMemberRole;
 using SurveyApp.Application.Features.Namespaces.Commands.UpdateNamespace;
 using SurveyApp.Application.Features.Namespaces.Queries.GetNamespaceById;
 using SurveyApp.Application.Features.Namespaces.Queries.GetNamespaceBySlug;
@@ -181,5 +182,38 @@ public class NamespacesController(
             return result.ToProblemDetails(HttpContext);
 
         return NoContent();
+    }
+
+    /// <summary>
+    /// Update a member's role in a namespace
+    /// </summary>
+    [HttpPut("{namespaceId:guid}/members/{membershipId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateMemberRole(
+        Guid namespaceId,
+        Guid membershipId,
+        [FromBody] UpdateMemberRoleCommand command
+    )
+    {
+        if (namespaceId != command.NamespaceId || membershipId != command.MembershipId)
+            return BadRequest(
+                new ProblemDetails
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                    Title = "Bad request.",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = _localizer["Errors.IdMismatch"],
+                    Instance = HttpContext.Request.Path,
+                }
+            );
+
+        var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
+
+        return Ok(result.Value);
     }
 }

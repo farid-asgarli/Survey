@@ -27,7 +27,7 @@ export function QRCodeDialog({ open, previewUrl, onOpenChange, onCopyLink }: QRC
           {/* QR Code */}
           <div className="flex justify-center">
             <div className="p-4 bg-white rounded-2xl border border-outline-variant/20">
-              <img src={generateQRCodeUrl(previewUrl, 180)} alt="QR Code" className="w-44 h-44" />
+              <img src={generateQRCodeUrl(previewUrl, 180)} alt={t('a11y.qrCode')} className="w-44 h-44" />
             </div>
           </div>
 

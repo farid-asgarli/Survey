@@ -1,4 +1,3 @@
-using System.Dynamic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
@@ -365,7 +364,7 @@ public class ExportService(
                 );
             }
 
-            responses = filteredResponses.ToList();
+            responses = [.. filteredResponses];
         }
 
         return (survey, responses);

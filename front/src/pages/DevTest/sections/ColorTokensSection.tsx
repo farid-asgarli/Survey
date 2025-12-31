@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, toast } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui';
+import { useCopyToClipboard } from '@/hooks';
 import { Layers, Check } from 'lucide-react';
 
 export function ColorTokensSection() {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
+  const { copy } = useCopyToClipboard();
 
   const copyColor = (name: string) => {
-    navigator.clipboard.writeText(name);
+    copy(name, { successMessage: `Copied: ${name}` });
     setCopiedColor(name);
-    toast.success(`Copied: ${name}`);
     setTimeout(() => setCopiedColor(null), 2000);
   };
 

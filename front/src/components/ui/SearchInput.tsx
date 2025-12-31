@@ -35,7 +35,7 @@ interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, '
  * ```
  */
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ value, onChange, onClear, showClear = true, searchIcon, placeholder = 'Search...', className, ...props }, ref) => {
+  ({ value, onChange, onClear, showClear = true, searchIcon, placeholder, className, ...props }, ref) => {
     const { t } = useTranslation();
     const handleClear = () => {
       if (onClear) {
@@ -48,20 +48,20 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     return (
       <Input
         ref={ref}
-        type='search'
+        type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        startIcon={searchIcon || <Search className='h-4 w-4' />}
+        placeholder={placeholder || t('common.searchDots')}
+        startIcon={searchIcon || <Search className="h-4 w-4" />}
         endIcon={
           showClear && value ? (
             <button
-              type='button'
+              type="button"
               onClick={handleClear}
-              className='hover:text-on-surface transition-colors p-0.5 rounded-full hover:bg-on-surface/5'
+              className="hover:text-on-surface transition-colors p-0.5 rounded-full hover:bg-on-surface/5"
               aria-label={t('common.clearSearch')}
             >
-              <X className='h-4 w-4' />
+              <X className="h-4 w-4" />
             </button>
           ) : undefined
         }

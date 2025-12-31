@@ -1,14 +1,32 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FileStack, FileText, Globe, Lock, Sparkles } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Textarea, Select, Switch } from '@/components/ui';
+import { FileStack, FileText, Globe, Lock, Sparkles, ChevronDown, Check } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
+  Input,
+  Textarea,
+  Select,
+  Switch,
+  Menu,
+  MenuItem,
+} from '@/components/ui';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { createTemplateSchema, type CreateTemplateFormData } from '@/lib/validations';
 import { getCategoryOptions } from './templateUtils';
 import { cn } from '@/lib/utils';
-import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
+import { getCurrentLanguage } from '@/i18n';
+import { LANGUAGE_INFO } from '@/components/features/localization';
 import type { TemplateCategory, Survey } from '@/types';
+
+// Template language codes - these are the languages templates can be created in
+const TEMPLATE_LANGUAGES = ['en', 'az', 'ru', 'es', 'fr', 'de', 'tr', 'it', 'pt', 'nl', 'pl', 'zh', 'ja', 'ko', 'ar', 'hi'] as const;
+type TemplateLanguageCode = (typeof TEMPLATE_LANGUAGES)[number];
 
 interface CreateTemplateDialogProps {
   open: boolean;
@@ -72,6 +90,12 @@ function ModeCard({
   );
 }
 
+// Get initial language - use current UI language if it's a valid template language, otherwise 'en'
+const getInitialLanguage = (): TemplateLanguageCode => {
+  const currentLang = getCurrentLanguage();
+  return TEMPLATE_LANGUAGES.includes(currentLang as TemplateLanguageCode) ? (currentLang as TemplateLanguageCode) : 'en';
+};
+
 function CreateTemplateForm({
   onSubmit,
   onCancel,
@@ -83,6 +107,7 @@ function CreateTemplateForm({
 }) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<CreateMode>('scratch');
+  const [languageCode, setLanguageCode] = useState<TemplateLanguageCode>(getInitialLanguage());
 
   const {
     register,
@@ -98,7 +123,6 @@ function CreateTemplateForm({
       category: 'feedback',
       isPublic: false,
       surveyId: '',
-      languageCode: getCurrentLanguage(),
     },
     mode: 'onChange',
   });
@@ -107,7 +131,6 @@ function CreateTemplateForm({
   const category = watch('category');
   const isPublic = watch('isPublic');
   const surveyId = watch('surveyId');
-  const languageCode = watch('languageCode');
 
   // Fetch surveys for "from existing survey" mode
   const { data: surveysData, isLoading: isSurveysLoading } = useSurveysList();
@@ -120,7 +143,7 @@ function CreateTemplateForm({
       category: data.category as TemplateCategory,
       isPublic: data.isPublic,
       surveyId: mode === 'survey' ? data.surveyId : undefined,
-      languageCode: data.languageCode,
+      languageCode,
     });
   };
 
@@ -137,7 +160,7 @@ function CreateTemplateForm({
   }));
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)}>
+    <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col flex-1 min-h-0 overflow-hidden">
       <DialogBody className="space-y-5">
         {/* Mode selector - card style */}
         <div className="flex gap-3">
@@ -234,24 +257,41 @@ function CreateTemplateForm({
       </DialogBody>
 
       <DialogFooter>
-        {/* Language Selector */}
+        {/* Language Selector - Dropdown Menu */}
         <div className="flex items-center gap-2 mr-auto">
-          <label htmlFor="template-language" className="text-sm text-on-surface-variant">
-            {t('templates.form.language', 'Language')}:
-          </label>
-          <select
-            id="template-language"
-            value={languageCode}
-            onChange={(e) => setValue('languageCode', e.target.value as LanguageCode, { shouldValidate: true })}
-            className="h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
-            disabled={isLoading}
+          <Globe className="h-4 w-4 text-on-surface-variant" />
+          <span className="text-sm text-on-surface-variant">{t('templates.form.language', 'Language')}:</span>
+          <Menu
+            align="start"
+            trigger={
+              <button
+                type="button"
+                disabled={isLoading}
+                className={cn(
+                  'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+                  'bg-surface-container hover:bg-surface-container-high border border-outline-variant/40',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
+                  isLoading && 'opacity-50 cursor-not-allowed'
+                )}
+              >
+                <span>{LANGUAGE_INFO[languageCode]?.flag || '🌐'}</span>
+                <span>{LANGUAGE_INFO[languageCode]?.nativeName || languageCode}</span>
+                <ChevronDown className="h-3.5 w-3.5 text-on-surface-variant" />
+              </button>
+            }
           >
-            {LANGUAGES.map((lang) => (
-              <option key={lang.code} value={lang.code}>
-                {lang.flag} {lang.nativeName}
-              </option>
-            ))}
-          </select>
+            {TEMPLATE_LANGUAGES.map((code) => {
+              const lang = LANGUAGE_INFO[code];
+              const isSelected = languageCode === code;
+              return (
+                <MenuItem key={code} onClick={() => setLanguageCode(code)} className={cn(isSelected && 'bg-primary/8')}>
+                  <span className="mr-2">{lang?.flag || '🌐'}</span>
+                  <span className="flex-1">{lang?.nativeName || code}</span>
+                  {isSelected && <Check className="h-4 w-4 text-primary" />}
+                </MenuItem>
+              );
+            })}
+          </Menu>
         </div>
         <Button type="button" variant="text" onClick={onCancel} disabled={isLoading}>
           {t('common.cancel')}
@@ -268,7 +308,7 @@ export function CreateTemplateDialog({ open, onOpenChange, onSubmit, isLoading =
   const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent size="default" showClose={false}>
+      <DialogContent size="lg" showClose={false}>
         <DialogHeader
           hero
           icon={<FileStack className="h-7 w-7" />}

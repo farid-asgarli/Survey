@@ -250,17 +250,8 @@ interface TimeDisplayProps {
   onMinuteChange?: (minute: number) => void;
 }
 
-function TimeDisplay({
-  hour,
-  minute,
-  period,
-  mode,
-  onModeChange,
-  onPeriodChange,
-  inputMode,
-  onHourChange,
-  onMinuteChange,
-}: TimeDisplayProps) {
+function TimeDisplay({ hour, minute, period, mode, onModeChange, onPeriodChange, inputMode, onHourChange, onMinuteChange }: TimeDisplayProps) {
+  const { t } = useTranslation();
   const hourInputRef = useRef<HTMLInputElement>(null);
   const minuteInputRef = useRef<HTMLInputElement>(null);
 
@@ -306,7 +297,7 @@ function TimeDisplay({
             )}
             maxLength={2}
           />
-          <span className="text-xs text-on-surface-variant mt-1.5">Hour</span>
+          <span className="text-xs text-on-surface-variant mt-1.5">{t('common.hour')}</span>
         </div>
       ) : (
         <button
@@ -340,7 +331,7 @@ function TimeDisplay({
             )}
             maxLength={2}
           />
-          <span className="text-xs text-on-surface-variant mt-1.5">Minute</span>
+          <span className="text-xs text-on-surface-variant mt-1.5">{t('common.minute')}</span>
         </div>
       ) : (
         <button
@@ -566,29 +557,15 @@ export function TimePicker({
           {displayValue || placeholder || t('timePicker.selectTime')}
         </span>
         {value && !disabled && (
-          <IconButton
-            variant="standard"
-            size="sm"
-            className="h-6 w-6 shrink-0"
-            onClick={handleClear}
-            aria-label={t('timePicker.clearTime')}
-          >
+          <IconButton variant="standard" size="sm" className="h-6 w-6 shrink-0" onClick={handleClear} aria-label={t('timePicker.clearTime')}>
             <span className="text-xs">✕</span>
           </IconButton>
         )}
       </button>
 
-      {(helperText || error) && (
-        <p className={cn('mt-2 text-sm', hasError ? 'text-error' : 'text-on-surface-variant/70')}>{error || helperText}</p>
-      )}
+      {(helperText || error) && <p className={cn('mt-2 text-sm', hasError ? 'text-error' : 'text-on-surface-variant/70')}>{error || helperText}</p>}
 
-      <TimePickerDialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        value={value}
-        onChange={onChange}
-        title={t('timePicker.selectTime')}
-      />
+      <TimePickerDialog open={isOpen} onClose={() => setIsOpen(false)} value={value} onChange={onChange} title={t('timePicker.selectTime')} />
     </div>
   );
 }

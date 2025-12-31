@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { getIsolatedThemeVariables } from '@/utils/themeApplication';
 import type { PublicSurvey, PublicQuestion } from '@/types/public-survey';
@@ -27,6 +28,7 @@ export function DevicePreview({
   isFullscreen,
   ...previewContentProps
 }: DevicePreviewProps) {
+  const { t } = useTranslation();
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const isResponsive = selectedPreset.id === 'responsive';
 
@@ -97,7 +99,7 @@ export function DevicePreview({
                 >
                   <img
                     src={survey.theme.logoUrl}
-                    alt="Survey logo"
+                    alt={t('a11y.surveyLogo')}
                     className={cn(
                       'w-auto object-contain rounded',
                       // Logo size classes

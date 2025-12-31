@@ -19,7 +19,7 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     private TranslationManager<TemplateQuestionTranslation> TranslationHelper =>
         _translationManager ??= new TranslationManager<TemplateQuestionTranslation>(
             _translations,
-            lang => DefaultLanguage = lang
+            _ => { } // DefaultLanguage is inherited from Template, no-op callback
         );
 
     /// <summary>
@@ -28,9 +28,12 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     public Guid TemplateId { get; private set; }
 
     /// <summary>
-    /// Gets the default language code (ISO 639-1) for this question.
+    /// Gets the default language code inherited from the parent template.
+    /// Falls back to default translation's language if template is not loaded,
+    /// or "en" as ultimate fallback.
     /// </summary>
-    public string DefaultLanguage { get; private set; } = "en";
+    public string DefaultLanguage =>
+        Template?.DefaultLanguage ?? GetDefaultTranslation()?.LanguageCode ?? "en";
 
     /// <summary>
     /// Gets the translations for this question.
@@ -141,7 +144,7 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
         );
 
         question._translations.Add(translation);
-        question.DefaultLanguage = languageCode.ToLowerInvariant();
+        // Note: DefaultLanguage is now inherited from Template, not stored on Question
 
         return question;
     }

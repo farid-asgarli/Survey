@@ -226,7 +226,9 @@ ImageUploaderProps) {
             disabled={disabled}
             className={cn(
               'flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all',
-              mode === 'upload' ? 'bg-surface text-on-surface shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+              mode === 'upload'
+                ? 'bg-surface-container-lowest text-on-surface border-2 border-primary/30'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
             )}
           >
             <Upload className="h-4 w-4" />
@@ -238,7 +240,9 @@ ImageUploaderProps) {
             disabled={disabled}
             className={cn(
               'flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all',
-              mode === 'url' ? 'bg-surface text-on-surface shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+              mode === 'url'
+                ? 'bg-surface-container-lowest text-on-surface border-2 border-primary/30'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
             )}
           >
             <LinkIcon className="h-4 w-4" />
@@ -259,7 +263,7 @@ ImageUploaderProps) {
           {value && !previewError ? (
             <img
               src={value}
-              alt="Preview"
+              alt={t('a11y.preview')}
               className="h-full w-full object-contain"
               onError={() => setPreviewError(true)}
               onLoad={() => setPreviewError(false)}

@@ -1,70 +1,105 @@
 // React Query hooks for Survey operations
 
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { surveysApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import type { CreateSurveyRequest, UpdateSurveyRequest, SurveyListParams, SurveyStatus } from '@/types';
+import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const surveyKeys = {
-  all: ['surveys'] as const,
-  lists: () => [...surveyKeys.all, 'list'] as const,
-  list: (namespaceId: string, filters?: SurveyListParams) => [...surveyKeys.lists(), namespaceId, filters] as const,
-  infiniteList: (namespaceId: string, filters?: Omit<SurveyListParams, 'pageNumber'>) =>
-    [...surveyKeys.lists(), 'infinite', namespaceId, filters] as const,
-  details: () => [...surveyKeys.all, 'detail'] as const,
-  detail: (id: string) => [...surveyKeys.details(), id] as const,
-};
+// Query keys - using utility with custom infiniteList key
+export const surveyKeys = createExtendedQueryKeys('surveys', (base) => ({
+  infiniteList: (namespaceId: string, filters?: Omit<SurveyListParams, 'pageNumber'>) => [...base.lists(), 'infinite', namespaceId, filters] as const,
+}));
 
+/**
+ * Filter options for survey list queries.
+ * Maps to backend SurveyListParams with frontend-friendly naming.
+ */
 export interface SurveyFilters {
+  /** Filter by survey status, or 'all' for no filtering */
   status?: SurveyStatus | 'all';
+  /** Search term for title/description */
   search?: string;
+  /** Filter surveys created on or after this date (ISO string) */
   fromDate?: string;
+  /** Filter surveys created on or before this date (ISO string) */
   toDate?: string;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  /** Sort field: 'title', 'createdAt', 'updatedAt', 'status', 'responseCount', 'questionCount' */
+  sortBy?: SurveyListParams['sortBy'];
+  /** Sort direction: true for descending (default), false for ascending */
+  sortDescending?: boolean;
 }
 
 /**
- * Hook to fetch paginated surveys list
+ * Converts frontend SurveyFilters to backend SurveyListParams.
+ * Handles field mapping and removes undefined/empty values.
+ */
+function buildSurveyListParams(filters?: SurveyFilters, pageNumber?: number): SurveyListParams {
+  return {
+    ...(pageNumber !== undefined ? { pageNumber } : {}),
+    pageSize: 20,
+    ...(filters?.status && filters.status !== 'all' ? { status: String(filters.status) } : {}),
+    ...(filters?.search ? { searchTerm: filters.search } : {}),
+    ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
+    ...(filters?.toDate ? { toDate: filters.toDate } : {}),
+    ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
+    ...(filters?.sortDescending !== undefined ? { sortDescending: filters.sortDescending } : {}),
+  };
+}
+
+/**
+ * Hook to fetch paginated surveys list with filtering and sorting.
+ *
+ * @param filters - Optional filters for status, search, dates, and sorting
+ * @returns React Query result with paginated survey data
+ *
+ * @example
+ * ```tsx
+ * const { data, isLoading } = useSurveysList({
+ *   status: SurveyStatus.Published,
+ *   search: 'customer feedback',
+ *   sortBy: 'createdAt',
+ *   sortDescending: true,
+ * });
+ * ```
  */
 export function useSurveysList(filters?: SurveyFilters) {
   const { activeNamespace } = useNamespaceStore();
   const namespaceId = activeNamespace?.id;
 
-  const params: SurveyListParams = {
-    pageNumber: 1,
-    pageSize: 20,
-    ...(filters?.status && filters.status !== 'all' ? { status: String(filters.status) } : {}),
-    ...(filters?.search ? { search: filters.search } : {}),
-    ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
-    ...(filters?.toDate ? { toDate: filters.toDate } : {}),
-  };
+  const params = buildSurveyListParams(filters, 1);
 
   return useQuery({
     queryKey: surveyKeys.list(namespaceId || '', params),
     queryFn: () => surveysApi.list(namespaceId!, params),
     enabled: !!namespaceId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
 /**
- * Hook to fetch infinite scrolling surveys list
+ * Hook to fetch infinite scrolling surveys list with filtering and sorting.
+ *
+ * @param filters - Optional filters for status, search, dates, and sorting
+ * @returns React Query infinite query result with paginated survey data
+ *
+ * @example
+ * ```tsx
+ * const { data, fetchNextPage, hasNextPage } = useSurveysInfinite({
+ *   status: 'all',
+ *   sortBy: 'responseCount',
+ *   sortDescending: true,
+ * });
+ *
+ * // Flatten pages for rendering
+ * const surveys = data?.pages.flatMap(page => page.items) ?? [];
+ * ```
  */
 export function useSurveysInfinite(filters?: SurveyFilters) {
   const { activeNamespace } = useNamespaceStore();
   const namespaceId = activeNamespace?.id;
 
-  const baseParams: Omit<SurveyListParams, 'pageNumber'> = {
-    pageSize: 20,
-    ...(filters?.status && filters.status !== 'all' ? { status: String(filters.status) } : {}),
-    ...(filters?.search ? { search: filters.search } : {}),
-    ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
-    ...(filters?.toDate ? { toDate: filters.toDate } : {}),
-    ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
-    ...(filters?.sortOrder ? { sortOrder: filters.sortOrder } : {}),
-  };
+  const baseParams = buildSurveyListParams(filters);
 
   return useInfiniteQuery({
     queryKey: surveyKeys.infiniteList(namespaceId || '', baseParams),
@@ -72,7 +107,7 @@ export function useSurveysInfinite(filters?: SurveyFilters) {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.pageNumber + 1 : undefined),
     enabled: !!namespaceId,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -87,7 +122,7 @@ export function useSurveyDetail(id: string | undefined) {
     queryKey: surveyKeys.detail(id!),
     queryFn: () => surveysApi.getById(id!),
     enabled: !!id && !!namespaceId,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -95,109 +130,70 @@ export function useSurveyDetail(id: string | undefined) {
  * Hook to create a new survey
  */
 export function useCreateSurvey() {
-  const queryClient = useQueryClient();
   const { activeNamespace } = useNamespaceStore();
 
-  return useMutation({
-    mutationFn: (data: CreateSurveyRequest) => surveysApi.create(activeNamespace!.id, data),
-    onSuccess: () => {
-      // Invalidate all survey lists for this namespace
-      queryClient.invalidateQueries({
-        queryKey: surveyKeys.lists(),
-      });
-    },
-  });
+  return useInvalidatingMutation(surveyKeys, (data: CreateSurveyRequest) => surveysApi.create(activeNamespace!.id, data));
 }
 
 /**
  * Hook to update a survey
  */
 export function useUpdateSurvey() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateSurveyRequest }) => surveysApi.update(id, data),
-    onSuccess: (updatedSurvey, { id }) => {
-      // Update detail cache
-      queryClient.setQueryData(surveyKeys.detail(id), updatedSurvey);
-      // Invalidate lists
-      queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-    },
-  });
+  return useUpdatingMutation(
+    surveyKeys,
+    ({ id, data }: { id: string; data: UpdateSurveyRequest }) => surveysApi.update(id, data),
+    ({ id }) => id
+  );
 }
 
 /**
  * Hook to delete a survey
  */
 export function useDeleteSurvey() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => surveysApi.delete(id),
-    onSuccess: (_, deletedId) => {
-      // Remove from detail cache
-      queryClient.removeQueries({ queryKey: surveyKeys.detail(deletedId) });
-      // Invalidate lists
-      queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(surveyKeys, (id: string) => surveysApi.delete(id), { removeDetail: (id) => id });
 }
 
 /**
  * Hook to publish a survey
  */
 export function usePublishSurvey() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => surveysApi.publish(id),
-    onSuccess: (updatedSurvey, id) => {
-      // Update detail cache
-      queryClient.setQueryData(surveyKeys.detail(id), updatedSurvey);
-      // Invalidate lists
-      queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-    },
-  });
+  return useUpdatingMutation(
+    surveyKeys,
+    (id: string) => surveysApi.publish(id),
+    (id) => id
+  );
 }
 
 /**
  * Hook to close a survey
  */
 export function useCloseSurvey() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => surveysApi.close(id),
-    onSuccess: (updatedSurvey, id) => {
-      // Update detail cache
-      queryClient.setQueryData(surveyKeys.detail(id), updatedSurvey);
-      // Invalidate lists
-      queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-    },
-  });
+  return useUpdatingMutation(
+    surveyKeys,
+    (id: string) => surveysApi.close(id),
+    (id) => id
+  );
 }
 
 /**
- * Hook to duplicate a survey (create a copy)
+ * Hook to duplicate a survey, creating a new draft copy with all questions and settings.
+ * Uses the backend duplicate endpoint for atomic operation.
+ *
+ * @returns Mutation hook for duplicating surveys
+ *
+ * @example
+ * ```tsx
+ * const duplicateSurvey = useDuplicateSurvey();
+ *
+ * // Duplicate with auto-generated title ("Original (Copy)")
+ * duplicateSurvey.mutate({ surveyId: 'abc-123' });
+ *
+ * // Duplicate with custom title
+ * duplicateSurvey.mutate({ surveyId: 'abc-123', newTitle: 'My New Survey' });
+ * ```
  */
 export function useDuplicateSurvey() {
-  const queryClient = useQueryClient();
-  const { activeNamespace } = useNamespaceStore();
-
-  return useMutation({
-    mutationFn: async (surveyId: string) => {
-      // First get the survey details
-      const original = await surveysApi.getById(surveyId);
-      // Create a copy with modified title, using the original's default language
-      return surveysApi.create(activeNamespace!.id, {
-        title: `${original.title} (Copy)`,
-        description: original.description,
-        themeId: original.themeId,
-        languageCode: original.defaultLanguage,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(surveyKeys, ({ surveyId, newTitle }: { surveyId: string; newTitle?: string }) =>
+    surveysApi.duplicate(surveyId, newTitle)
+  );
 }

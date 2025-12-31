@@ -20,6 +20,8 @@ import type {
   UpdateSurveyRequest,
   CreateQuestionRequest,
   UpdateQuestionRequest,
+  BatchSyncQuestionsRequest,
+  BatchSyncQuestionsResult,
   CreateLogicRequest,
   CreateLinkRequest,
   UpdateLinkRequest,
@@ -57,6 +59,8 @@ import type {
   SurveyTemplate,
   ExportFormat,
   RecipientStatus,
+  UpdateMemberRoleRequest,
+  UpdateMemberRoleResponse,
 } from '@/types';
 
 // Create axios instance with base configuration
@@ -390,6 +394,11 @@ export const namespacesApi = {
   removeMember: async (namespaceId: string, membershipId: string): Promise<void> => {
     await apiClient.delete(API_ENDPOINTS.namespaces.removeMember(namespaceId, membershipId));
   },
+
+  updateMemberRole: async (namespaceId: string, membershipId: string, data: UpdateMemberRoleRequest): Promise<UpdateMemberRoleResponse> => {
+    const response = await apiClient.put<UpdateMemberRoleResponse>(API_ENDPOINTS.namespaces.updateMemberRole(namespaceId, membershipId), data);
+    return response.data;
+  },
 };
 
 // ============ Surveys API ============
@@ -433,6 +442,11 @@ export const surveysApi = {
 
   close: async (id: string): Promise<Survey> => {
     const response = await apiClient.post<Survey>(API_ENDPOINTS.surveys.close(id));
+    return response.data;
+  },
+
+  duplicate: async (id: string, newTitle?: string): Promise<Survey> => {
+    const response = await apiClient.post<Survey>(API_ENDPOINTS.surveys.duplicate(id), newTitle ? { newTitle } : undefined);
     return response.data;
   },
 };
@@ -516,6 +530,15 @@ export const questionsApi = {
   reorder: async (surveyId: string, questionIds: string[]): Promise<void> => {
     await apiClient.put(`${API_ENDPOINTS.surveys.questions(surveyId)}/reorder`, { questionIds });
   },
+
+  /**
+   * Batch sync questions - handles create, update, delete, and reorder in a single atomic operation.
+   * This is more efficient than making multiple individual API calls.
+   */
+  batchSync: async (surveyId: string, data: BatchSyncQuestionsRequest): Promise<BatchSyncQuestionsResult> => {
+    const response = await apiClient.post<BatchSyncQuestionsResult>(API_ENDPOINTS.surveys.questionsSync(surveyId), data);
+    return response.data;
+  },
 };
 
 // ============ Question Logic API ============
@@ -563,6 +586,29 @@ export const logicApi = {
 
   reorder: async (surveyId: string, questionId: string, logicIds: string[]): Promise<void> => {
     await apiClient.put(API_ENDPOINTS.surveys.questionLogicReorder(surveyId, questionId), { logicIds });
+  },
+
+  /**
+   * Evaluate logic on the server for validation, preview, or analytics
+   * @param surveyId - Survey ID
+   * @param answers - Array of {questionId, value} pairs
+   * @param currentQuestionId - Optional current question for next-question calculation
+   */
+  evaluateLogic: async (
+    surveyId: string,
+    answers: { questionId: string; value: string }[],
+    currentQuestionId?: string
+  ): Promise<{
+    visibleQuestionIds: string[];
+    hiddenQuestionIds: string[];
+    nextQuestionId?: string;
+    shouldEndSurvey: boolean;
+  }> => {
+    const response = await apiClient.post(API_ENDPOINTS.surveys.evaluateLogic(surveyId), {
+      currentQuestionId,
+      answers,
+    });
+    return response.data;
   },
 };
 
@@ -797,7 +843,7 @@ export const templatesApi = {
   list: async (params?: {
     namespaceId?: string;
     category?: string;
-    search?: string;
+    searchTerm?: string; // Backend expects searchTerm parameter
     isPublic?: boolean;
     pageNumber?: number;
     pageSize?: number;
@@ -1015,13 +1061,13 @@ export const emailTemplatesApi = {
    * Backend returns: string[]
    */
   getPlaceholders: async (): Promise<string[]> => {
-    const response = await apiClient.get<string[]>(`${API_ENDPOINTS.emailTemplates.list}/placeholders`);
+    const response = await apiClient.get<string[]>(API_ENDPOINTS.emailTemplates.placeholders);
     return response.data;
   },
 
   /**
    * Set a template as default (via update with isDefault: true)
-   * Note: Backend doesn't have a dedicated endpoint, use update
+   * Backend automatically unsets the previous default for the same type
    */
   setDefault: async (id: string): Promise<EmailTemplate> => {
     const response = await apiClient.put<EmailTemplate>(API_ENDPOINTS.emailTemplates.byId(id), {
@@ -1031,23 +1077,14 @@ export const emailTemplatesApi = {
   },
 
   /**
-   * Duplicate a template (create a copy with new name)
-   * Note: Backend doesn't have dedicated endpoint - we fetch and create new
+   * Duplicate a template (creates a copy with all content and translations)
+   * Backend returns: EmailTemplate (the new duplicate)
    */
-  duplicate: async (id: string, name: string): Promise<EmailTemplate> => {
-    // First fetch the original template
-    const original = await emailTemplatesApi.getById(id);
-    // Create a new one with the same content but new name, preserving language
-    return emailTemplatesApi.create({
-      name,
-      subject: original.subject,
-      htmlBody: original.htmlBody,
-      plainTextBody: original.plainTextBody,
-      designJson: original.designJson,
-      type: original.type,
-      isDefault: false,
-      languageCode: original.defaultLanguage,
+  duplicate: async (id: string, newName?: string): Promise<EmailTemplate> => {
+    const response = await apiClient.post<EmailTemplate>(API_ENDPOINTS.emailTemplates.duplicate(id), {
+      newName,
     });
+    return response.data;
   },
 };
 

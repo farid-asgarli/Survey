@@ -1,20 +1,33 @@
-// React Query hooks for Email Distribution operations
+/**
+ * React Query hooks for Email Distribution operations
+ *
+ * Provides type-safe data fetching and mutations for:
+ * - Listing distributions for a survey
+ * - Fetching distribution details and stats
+ * - Creating, scheduling, sending, canceling, and deleting distributions
+ * - Paginated recipient lists
+ *
+ * @example
+ * ```tsx
+ * const { data: distributions } = useDistributions(surveyId);
+ * const sendMutation = useSendDistribution(surveyId);
+ * await sendMutation.mutateAsync(distId);
+ * ```
+ */
 
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { distributionsApi } from '@/services';
+import { DistributionStatus } from '@/types';
 import type { CreateDistributionRequest, EmailDistribution, DistributionStatsResponse, DistributionRecipient, RecipientStatus } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const distributionKeys = {
-  all: ['distributions'] as const,
-  lists: () => [...distributionKeys.all, 'list'] as const,
-  list: (surveyId: string) => [...distributionKeys.lists(), surveyId] as const,
-  details: () => [...distributionKeys.all, 'detail'] as const,
-  detail: (surveyId: string, distId: string) => [...distributionKeys.details(), surveyId, distId] as const,
-  stats: (surveyId: string, distId: string) => [...distributionKeys.all, 'stats', surveyId, distId] as const,
+// Query keys - distributions have custom detail (surveyId + distId), stats, and recipients
+export const distributionKeys = createExtendedQueryKeys('distributions', (base) => ({
+  detail: (surveyId: string, distId: string) => [...base.details(), surveyId, distId] as const,
+  stats: (surveyId: string, distId: string) => [...base.all, 'stats', surveyId, distId] as const,
   recipients: (surveyId: string, distId: string, params?: { status?: RecipientStatus }) =>
-    [...distributionKeys.all, 'recipients', surveyId, distId, params] as const,
-};
+    [...base.all, 'recipients', surveyId, distId, params] as const,
+}));
 
 /**
  * Hook to fetch all distributions for a survey
@@ -24,7 +37,7 @@ export function useDistributions(surveyId: string | undefined) {
     queryKey: distributionKeys.list(surveyId!),
     queryFn: () => distributionsApi.list(surveyId!),
     enabled: !!surveyId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -36,7 +49,7 @@ export function useDistributionDetail(surveyId: string | undefined, distId: stri
     queryKey: distributionKeys.detail(surveyId!, distId!),
     queryFn: () => distributionsApi.getById(surveyId!, distId!),
     enabled: !!surveyId && !!distId,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -48,7 +61,7 @@ export function useDistributionStats(surveyId: string | undefined, distId: strin
     queryKey: distributionKeys.stats(surveyId!, distId!),
     queryFn: () => distributionsApi.getStats(surveyId!, distId!),
     enabled: !!surveyId && !!distId,
-    staleTime: 1 * 60 * 1000, // 1 minute - refresh more often for stats
+    staleTime: STALE_TIMES.SHORT,
     refetchInterval: 30 * 1000, // Auto-refresh every 30 seconds when active
   });
 }
@@ -114,36 +127,93 @@ export function useSendDistribution(surveyId: string) {
 }
 
 /**
- * Hook to cancel a distribution
+ * Hook to cancel a distribution.
+ * Optimistically updates the distribution status to Cancelled.
  */
 export function useCancelDistribution(surveyId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (distId: string) => distributionsApi.cancel(surveyId, distId),
-    onSuccess: (_, distId) => {
-      // Remove from detail cache
-      queryClient.removeQueries({ queryKey: distributionKeys.detail(surveyId, distId) });
-      // Invalidate list
+    onMutate: async (distId) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: distributionKeys.list(surveyId) });
+      await queryClient.cancelQueries({ queryKey: distributionKeys.detail(surveyId, distId) });
+
+      // Snapshot current values for rollback
+      const previousList = queryClient.getQueryData<EmailDistribution[]>(distributionKeys.list(surveyId));
+      const previousDetail = queryClient.getQueryData<EmailDistribution>(distributionKeys.detail(surveyId, distId));
+
+      // Optimistically update to cancelled status
+      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
+        if (!old) return old;
+        return old.map((dist) => (dist.id === distId ? { ...dist, status: DistributionStatus.Cancelled } : dist));
+      });
+
+      queryClient.setQueryData<EmailDistribution>(distributionKeys.detail(surveyId, distId), (old) => {
+        if (!old) return old;
+        return { ...old, status: DistributionStatus.Cancelled };
+      });
+
+      return { previousList, previousDetail };
+    },
+    onError: (_error, distId, context) => {
+      // Rollback on error
+      if (context?.previousList) {
+        queryClient.setQueryData(distributionKeys.list(surveyId), context.previousList);
+      }
+      if (context?.previousDetail) {
+        queryClient.setQueryData(distributionKeys.detail(surveyId, distId), context.previousDetail);
+      }
+    },
+    onSettled: (_, __, distId) => {
+      // Always refetch after mutation settles
       queryClient.invalidateQueries({ queryKey: distributionKeys.list(surveyId) });
+      queryClient.invalidateQueries({ queryKey: distributionKeys.detail(surveyId, distId) });
     },
   });
 }
 
 /**
- * Hook to delete a distribution permanently
+ * Hook to delete a distribution permanently.
+ * Optimistically removes the distribution from the list.
  */
 export function useDeleteDistribution(surveyId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (distId: string) => distributionsApi.delete(surveyId, distId),
+    onMutate: async (distId) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: distributionKeys.list(surveyId) });
+
+      // Snapshot current value for rollback
+      const previousList = queryClient.getQueryData<EmailDistribution[]>(distributionKeys.list(surveyId));
+
+      // Optimistically remove from list
+      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
+        if (!old) return old;
+        return old.filter((dist) => dist.id !== distId);
+      });
+
+      return { previousList };
+    },
+    onError: (_error, _distId, context) => {
+      // Rollback on error
+      if (context?.previousList) {
+        queryClient.setQueryData(distributionKeys.list(surveyId), context.previousList);
+      }
+    },
     onSuccess: (_, distId) => {
       // Remove from detail cache
       queryClient.removeQueries({ queryKey: distributionKeys.detail(surveyId, distId) });
       // Remove from stats cache
       queryClient.removeQueries({ queryKey: distributionKeys.stats(surveyId, distId) });
-      // Invalidate list to refetch
+      // Remove recipients cache
+      queryClient.removeQueries({ queryKey: distributionKeys.recipients(surveyId, distId) });
+    },
+    onSettled: () => {
+      // Always refetch after mutation settles
       queryClient.invalidateQueries({ queryKey: distributionKeys.list(surveyId) });
     },
   });
@@ -173,7 +243,7 @@ export function useDistributionRecipients(
       return hasMore ? lastPage.pageNumber + 1 : undefined;
     },
     enabled: !!surveyId && !!distId,
-    staleTime: 1 * 60 * 1000,
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 

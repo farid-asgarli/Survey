@@ -3,6 +3,8 @@
   "Errors.InvalidOrExpiredToken": "Yanlış və ya vaxtı keçmiş token.",
   "Errors.InvalidTokenOrEmail": "Yanlış token və ya e-poçt ünvanı.",
   "Errors.DistributionNotFound": "Paylanma tapılmadı.",
+  "Errors.CannotCancelDistribution": "Göndərilməyə başlamış və ya tamamlanmış paylanmanı ləğv etmək mümkün deyil.",
+  "Errors.CannotDeleteDistribution": "Hazırda göndərilən və ya göndərilmiş paylanmanı silmək mümkün deyil. Yalnız qaralama, planlaşdırılmış, ləğv edilmiş və ya uğursuz paylanmaları silmək olar.",
   "Errors.InvalidTrackingToken": "Yanlış izləmə tokeni.",
   "Errors.IdMismatch": "ID uyğunsuzluğu.",
   "Errors.IdMismatchUrlBody": "URL və sorğu gövdəsi arasında ID uyğunsuzluğu.",

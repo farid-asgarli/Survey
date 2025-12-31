@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Pause, Play, MoreVertical, Trash2, History, Settings, Zap, Users } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -40,6 +41,7 @@ export function RecurringSurveyCard({
   onViewHistory,
   isLoading,
 }: RecurringSurveyCardProps) {
+  const { t } = useTranslation();
   // Derive status from isActive
   const isActive = recurringSurvey.isActive;
   const statusLabel = isActive ? 'Active' : 'Paused';
@@ -79,7 +81,7 @@ export function RecurringSurveyCard({
 
           <Menu
             trigger={
-              <IconButton variant="standard" size="sm" aria-label="More options">
+              <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')}>
                 <MoreVertical className="h-4 w-4" />
               </IconButton>
             }
@@ -163,7 +165,7 @@ export function RecurringSurveyCard({
               <IconButton
                 variant="filled-tonal"
                 size="sm"
-                aria-label="Pause recurring survey"
+                aria-label={t('a11y.pauseRecurring')}
                 onClick={() => onPause(recurringSurvey.id)}
                 className="bg-warning-container/50 text-on-warning-container hover:bg-warning-container"
               >
@@ -176,7 +178,7 @@ export function RecurringSurveyCard({
               <IconButton
                 variant="filled-tonal"
                 size="sm"
-                aria-label="Resume recurring survey"
+                aria-label={t('a11y.resumeRecurring')}
                 onClick={() => onResume(recurringSurvey.id)}
                 className="bg-success-container/50 text-on-success-container hover:bg-success-container"
               >
@@ -186,7 +188,7 @@ export function RecurringSurveyCard({
           )}
           {canTrigger && onTrigger && (
             <Tooltip content="Trigger immediate run">
-              <IconButton variant="filled-tonal" size="sm" aria-label="Trigger immediate run" onClick={() => onTrigger(recurringSurvey.id)}>
+              <IconButton variant="filled-tonal" size="sm" aria-label={t('a11y.triggerRun')} onClick={() => onTrigger(recurringSurvey.id)}>
                 <Zap className="h-4 w-4" />
               </IconButton>
             </Tooltip>
@@ -194,7 +196,7 @@ export function RecurringSurveyCard({
           <div className="flex-1" />
           {onViewHistory && (
             <Tooltip content="View run history">
-              <IconButton variant="standard" size="sm" aria-label="View run history" onClick={() => onViewHistory(recurringSurvey.id)}>
+              <IconButton variant="standard" size="sm" aria-label={t('a11y.viewHistory')} onClick={() => onViewHistory(recurringSurvey.id)}>
                 <History className="h-4 w-4" />
               </IconButton>
             </Tooltip>

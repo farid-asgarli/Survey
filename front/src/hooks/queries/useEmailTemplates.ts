@@ -1,19 +1,15 @@
 // React Query hooks for Email Template operations
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { emailTemplatesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import type { CreateEmailTemplateRequest, UpdateEmailTemplateRequest } from '@/types';
+import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES, GC_TIMES } from './queryUtils';
 
-// Query keys
-export const emailTemplateKeys = {
-  all: ['emailTemplates'] as const,
-  lists: () => [...emailTemplateKeys.all, 'list'] as const,
-  list: (namespaceId?: string, filters?: Record<string, unknown>) => [...emailTemplateKeys.lists(), namespaceId, filters] as const,
-  details: () => [...emailTemplateKeys.all, 'detail'] as const,
-  detail: (id: string) => [...emailTemplateKeys.details(), id] as const,
-  placeholders: () => [...emailTemplateKeys.all, 'placeholders'] as const,
-};
+// Query keys - email templates have a custom placeholders key
+export const emailTemplateKeys = createExtendedQueryKeys('emailTemplates', (base) => ({
+  placeholders: () => [...base.all, 'placeholders'] as const,
+}));
 
 /**
  * Hook to fetch all email templates for the current namespace
@@ -27,7 +23,8 @@ export function useEmailTemplates(params?: { pageNumber?: number; pageSize?: num
     queryKey: emailTemplateKeys.list(namespaceId, params),
     queryFn: () => emailTemplatesApi.list(params),
     enabled: !!namespaceId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
+    gcTime: GC_TIMES.DEFAULT,
   });
 }
 
@@ -40,18 +37,21 @@ export function useEmailTemplate(id: string | undefined) {
     queryKey: emailTemplateKeys.detail(id!),
     queryFn: () => emailTemplatesApi.getById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
+    gcTime: GC_TIMES.LONG,
   });
 }
 
 /**
  * Hook to fetch available email template placeholders
+ * Static data that rarely changes
  */
 export function useEmailTemplatePlaceholders() {
   return useQuery({
     queryKey: emailTemplateKeys.placeholders(),
     queryFn: () => emailTemplatesApi.getPlaceholders(),
-    staleTime: 30 * 60 * 1000, // 30 minutes - placeholders don't change often
+    staleTime: STALE_TIMES.STATIC,
+    gcTime: GC_TIMES.STATIC,
   });
 }
 
@@ -59,85 +59,45 @@ export function useEmailTemplatePlaceholders() {
  * Hook to create a new email template
  */
 export function useCreateEmailTemplate() {
-  const queryClient = useQueryClient();
-  const { activeNamespace } = useNamespaceStore();
-
-  return useMutation({
-    mutationFn: (data: CreateEmailTemplateRequest) => {
-      if (!activeNamespace?.id) {
-        throw new Error('No active namespace');
-      }
-      return emailTemplatesApi.create(data);
-    },
-    onSuccess: () => {
-      // Invalidate list to refetch with new template
-      queryClient.invalidateQueries({ queryKey: emailTemplateKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(emailTemplateKeys, (data: CreateEmailTemplateRequest) => emailTemplatesApi.create(data));
 }
 
 /**
  * Hook to update an email template
+ * Updates the detail cache immediately and invalidates lists
  */
 export function useUpdateEmailTemplate() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateEmailTemplateRequest }) => emailTemplatesApi.update(id, data),
-    onSuccess: (updatedTemplate, { id }) => {
-      // Update detail cache
-      queryClient.setQueryData(emailTemplateKeys.detail(id), updatedTemplate);
-      // Invalidate list since summary data might have changed
-      queryClient.invalidateQueries({ queryKey: emailTemplateKeys.lists() });
-    },
-  });
+  return useUpdatingMutation(
+    emailTemplateKeys,
+    ({ id, data }: { id: string; data: UpdateEmailTemplateRequest }) => emailTemplatesApi.update(id, data),
+    ({ id }) => id
+  );
 }
 
 /**
  * Hook to delete an email template
+ * Removes from detail cache and invalidates lists
  */
 export function useDeleteEmailTemplate() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => emailTemplatesApi.delete(id),
-    onSuccess: (_, deletedId) => {
-      // Remove from detail cache
-      queryClient.removeQueries({ queryKey: emailTemplateKeys.detail(deletedId) });
-      // Invalidate list
-      queryClient.invalidateQueries({ queryKey: emailTemplateKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(emailTemplateKeys, (id: string) => emailTemplatesApi.delete(id), { removeDetail: (id) => id });
 }
 
 /**
  * Hook to set a template as default
+ * Updates detail cache and invalidates lists (since another template may have lost default status)
  */
 export function useSetDefaultEmailTemplate() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => emailTemplatesApi.setDefault(id),
-    onSuccess: (updatedTemplate) => {
-      // Update detail cache
-      queryClient.setQueryData(emailTemplateKeys.detail(updatedTemplate.id), updatedTemplate);
-      // Invalidate list to refetch with updated defaults
-      queryClient.invalidateQueries({ queryKey: emailTemplateKeys.lists() });
-    },
-  });
+  return useUpdatingMutation(
+    emailTemplateKeys,
+    (id: string) => emailTemplatesApi.setDefault(id),
+    (id) => id
+  );
 }
 
 /**
  * Hook to duplicate an email template
+ * Uses dedicated backend endpoint for atomic operation with full translation support
  */
 export function useDuplicateEmailTemplate() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, name }: { id: string; name: string }) => emailTemplatesApi.duplicate(id, name),
-    onSuccess: () => {
-      // Invalidate list to show the new template
-      queryClient.invalidateQueries({ queryKey: emailTemplateKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(emailTemplateKeys, ({ id, newName }: { id: string; newName?: string }) => emailTemplatesApi.duplicate(id, newName));
 }

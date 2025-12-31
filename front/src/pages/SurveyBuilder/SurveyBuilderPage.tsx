@@ -5,6 +5,7 @@
 // - Question list with drag-and-drop reordering
 // - Question type editors for all 10 question types
 // - Theme preview panel
+// - Languages tab for translation management
 // - Autosave functionality (2-second debounce)
 // - Undo/Redo support (Ctrl+Z / Ctrl+Y)
 // - Question persistence to backend API (create, update, delete, reorder)
@@ -17,11 +18,20 @@ import { Loader2, AlertTriangle, Plus } from 'lucide-react';
 import { Button, EmptyState } from '@/components/ui';
 import { QuestionEditor, AddQuestionMenu } from '@/components/features/questions';
 import { ThemePreviewPanel } from '@/components/features/surveys';
+import { AddLanguageDialog, TranslationEditorDialog, LanguagesTab } from '@/components/features/localization';
 import { useSurveyBuilderStore, useSelectedQuestion, useNamespaceStore } from '@/stores';
-import { useSurveyDetail, useViewTransitionNavigate } from '@/hooks';
+import { useSurveyDetail, useViewTransitionNavigate, useAddSurveyTranslation, useDialogState } from '@/hooks';
 import type { QuestionType } from '@/types';
-import { SurveyBuilderHeader, QuestionListSidebar, SurveySettingsDialog, UnsavedChangesDialog } from './components';
-import { useSurveyBuilderSave, useAutosave, useKeyboardShortcuts } from './hooks';
+import {
+  SurveyBuilderHeader,
+  QuestionListSidebar,
+  SurveySettingsDialog,
+  UnsavedChangesDialog,
+  SurveyBuilderTabs,
+  type BuilderTab,
+} from './components';
+import { useSurveyBuilderSave } from './hooks';
+import { useEditorShortcuts, useEditorAutoSave } from '@/hooks';
 import { AUTOSAVE_DELAY } from './constants';
 
 export function SurveyBuilderPage() {
@@ -34,9 +44,12 @@ export function SurveyBuilderPage() {
 
   // Local state
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-  const [showSettingsDialog, setShowSettingsDialog] = useState(false);
-  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const settingsDialog = useDialogState();
+  const unsavedDialog = useDialogState();
   const [showThemePanel, setShowThemePanel] = useState(false);
+  const addLanguageDialog = useDialogState();
+  const translationEditorDialog = useDialogState();
+  const [activeBuilderTab, setActiveBuilderTab] = useState<BuilderTab>('questions');
 
   // Store
   const {
@@ -46,6 +59,7 @@ export function SurveyBuilderPage() {
     isDirty,
     isSaving,
     isReadOnly,
+    editingLanguage,
     initializeSurvey,
     resetBuilder,
     updateSurveyMetadata,
@@ -59,6 +73,8 @@ export function SurveyBuilderPage() {
     redo,
     canUndo,
     canRedo,
+    setEditingLanguage,
+    addLanguage,
   } = useSurveyBuilderStore();
 
   const selectedQuestion = useSelectedQuestion();
@@ -66,12 +82,15 @@ export function SurveyBuilderPage() {
   // Fetch survey data (requires namespace context)
   const { data: surveyData, isLoading, error } = useSurveyDetail(id);
 
+  // Translation mutation for adding new languages
+  const addTranslationMutation = useAddSurveyTranslation();
+
   // Custom hooks for save, autosave, and keyboard shortcuts
   // Custom hooks for save, autosave, and keyboard shortcuts
   const { handleSave } = useSurveyBuilderSave();
   // Pause autosave when unsaved changes dialog is open to prevent conflicts
-  useAutosave(isDirty, survey, handleSave, AUTOSAVE_DELAY, { isPaused: showUnsavedDialog || isSaving });
-  useKeyboardShortcuts({
+  useEditorAutoSave(survey, isDirty, handleSave, AUTOSAVE_DELAY, { isPaused: unsavedDialog.isOpen || isSaving });
+  useEditorShortcuts({
     onSave: handleSave,
     onUndo: undo,
     onRedo: redo,
@@ -121,11 +140,11 @@ export function SurveyBuilderPage() {
   const isBlockerActive = blocker.state === 'blocked';
 
   useEffect(() => {
-    if (isBlockerActive && !showUnsavedDialog) {
+    if (isBlockerActive && !unsavedDialog.isOpen) {
       // Use queueMicrotask to defer state update to avoid sync setState in effect
-      queueMicrotask(() => setShowUnsavedDialog(true));
+      queueMicrotask(() => unsavedDialog.open());
     }
-  }, [isBlockerActive, showUnsavedDialog]);
+  }, [isBlockerActive, unsavedDialog]);
 
   // Add question handler
   const handleAddQuestion = (type: QuestionType) => {
@@ -136,7 +155,7 @@ export function SurveyBuilderPage() {
   // Navigation handlers
   const handleBack = () => {
     if (isDirty) {
-      setShowUnsavedDialog(true);
+      unsavedDialog.open();
     } else {
       navigate('/surveys');
     }
@@ -144,7 +163,7 @@ export function SurveyBuilderPage() {
 
   const handleDiscardAndLeave = () => {
     // Cancel any pending autosave by marking as not dirty before proceeding
-    setShowUnsavedDialog(false);
+    unsavedDialog.close();
     if (blocker.state === 'blocked') {
       blocker.proceed();
     } else {
@@ -158,7 +177,7 @@ export function SurveyBuilderPage() {
 
     try {
       await handleSave();
-      setShowUnsavedDialog(false);
+      unsavedDialog.close();
       if (blocker.state === 'blocked') {
         blocker.proceed();
       } else {
@@ -229,66 +248,120 @@ export function SurveyBuilderPage() {
         canUndo={canUndo()}
         canRedo={canRedo()}
         showThemePanel={showThemePanel}
+        editingLanguage={editingLanguage}
+        defaultLanguage={survey?.defaultLanguage || 'en'}
+        availableLanguages={survey?.availableLanguages || ['en']}
         onBack={handleBack}
         onTitleChange={(title) => updateSurveyMetadata({ title })}
         onUndo={undo}
         onRedo={redo}
         onSave={handleSave}
         onToggleThemePanel={() => setShowThemePanel(!showThemePanel)}
-        onOpenSettings={() => setShowSettingsDialog(true)}
+        onOpenSettings={() => settingsDialog.open()}
         onPreview={() => navigate(`/surveys/${id}/preview`)}
+        onLanguageChange={setEditingLanguage}
+        onAddLanguage={() => addLanguageDialog.open()}
+        onEditTranslation={() => translationEditorDialog.open()}
       />
 
-      {/* Main Content - 3-panel layout */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Question List */}
-        <QuestionListSidebar
-          questions={questions}
-          selectedQuestionId={selectedQuestionId}
-          isReadOnly={isReadOnly}
-          onQuestionSelect={selectQuestion}
-          onQuestionDuplicate={duplicateQuestion}
-          onQuestionDelete={deleteQuestion}
-          onQuestionRequiredChange={(id, required) => updateQuestion(id, { isRequired: required })}
-          onAddQuestion={() => setIsAddMenuOpen(true)}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        />
+      {/* Tab Navigation */}
+      <SurveyBuilderTabs
+        activeTab={activeBuilderTab}
+        onTabChange={setActiveBuilderTab}
+        questionCount={questions.length}
+        languageCount={survey?.availableLanguages?.length || 1}
+        hasIncompleteTranslations={(survey?.availableLanguages?.length || 1) > 1}
+      />
 
-        {/* Center Panel - Question Editor */}
-        <main className="flex-1 flex flex-col overflow-hidden">
-          {selectedQuestion ? (
-            <QuestionEditor question={selectedQuestion} isReadOnly={isReadOnly} />
-          ) : (
-            <div className="flex-1 flex items-center justify-center p-8">
-              <EmptyState
-                icon={<Plus className="h-6 w-6" />}
-                title={questions.length === 0 ? t('surveyBuilder.noQuestions') : t('surveyBuilder.selectQuestion', 'Select a question')}
-                description={
-                  questions.length === 0
-                    ? t('surveyBuilder.addFirstQuestion')
-                    : t('surveyBuilder.selectQuestionDesc', 'Choose a question from the list to edit, or add a new one')
+      {/* Main Content - Conditional based on active tab */}
+      {activeBuilderTab === 'questions' ? (
+        /* Questions Tab - 3-panel layout */
+        <div className="flex-1 flex overflow-hidden">
+          {/* Left Panel - Question List */}
+          <QuestionListSidebar
+            questions={questions}
+            selectedQuestionId={selectedQuestionId}
+            isReadOnly={isReadOnly}
+            onQuestionSelect={selectQuestion}
+            onQuestionDuplicate={duplicateQuestion}
+            onQuestionDelete={deleteQuestion}
+            onQuestionRequiredChange={(id, required) => updateQuestion(id, { isRequired: required })}
+            onAddQuestion={() => setIsAddMenuOpen(true)}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          />
+
+          {/* Center Panel - Question Editor */}
+          <main className="flex-1 flex flex-col overflow-hidden">
+            {selectedQuestion ? (
+              <QuestionEditor question={selectedQuestion} isReadOnly={isReadOnly} />
+            ) : (
+              <div className="flex-1 flex items-center justify-center p-8">
+                <EmptyState
+                  icon={<Plus className="h-6 w-6" />}
+                  title={questions.length === 0 ? t('surveyBuilder.noQuestions') : t('surveyBuilder.selectQuestion', 'Select a question')}
+                  description={
+                    questions.length === 0
+                      ? t('surveyBuilder.addFirstQuestion')
+                      : t('surveyBuilder.selectQuestionDesc', 'Choose a question from the list to edit, or add a new one')
+                  }
+                  iconVariant={questions.length === 0 ? 'primary' : 'default'}
+                  size="default"
+                  action={
+                    !isReadOnly
+                      ? {
+                          label: t('surveyBuilder.addQuestion'),
+                          onClick: () => setIsAddMenuOpen(true),
+                          icon: <Plus className="h-4 w-4" />,
+                        }
+                      : undefined
+                  }
+                />
+              </div>
+            )}
+          </main>
+
+          {/* Right Panel - Theme Preview */}
+          {showThemePanel && <ThemePreviewPanel isReadOnly={isReadOnly} />}
+        </div>
+      ) : (
+        /* Languages Tab - Full-width language management */
+        <div className="flex-1 overflow-hidden">
+          {survey?.id && (
+            <LanguagesTab
+              surveyId={survey.id}
+              defaultLanguage={survey.defaultLanguage || 'en'}
+              availableLanguages={survey.availableLanguages || ['en']}
+              questions={questions}
+              isReadOnly={isReadOnly}
+              onAddLanguage={async (languageCode, autoTranslate) => {
+                try {
+                  await addTranslationMutation.mutateAsync({
+                    surveyId: survey.id,
+                    translation: {
+                      languageCode,
+                      title: survey.title,
+                      description: autoTranslate ? survey.description : undefined,
+                      welcomeMessage: autoTranslate ? survey.welcomeMessage : undefined,
+                      thankYouMessage: autoTranslate ? survey.thankYouMessage : undefined,
+                      isDefault: false,
+                    },
+                  });
+                  addLanguage(languageCode);
+                } catch (error) {
+                  console.error('Failed to add language:', error);
+                  throw error;
                 }
-                iconVariant={questions.length === 0 ? 'primary' : 'default'}
-                size="default"
-                action={
-                  !isReadOnly
-                    ? {
-                        label: t('surveyBuilder.addQuestion'),
-                        onClick: () => setIsAddMenuOpen(true),
-                        icon: <Plus className="h-4 w-4" />,
-                      }
-                    : undefined
-                }
-              />
-            </div>
+              }}
+              onDeleteLanguage={() => {
+                // Update local store when language is deleted
+                // The actual deletion is handled by LanguagesTab
+              }}
+            />
           )}
-        </main>
-
-        {/* Right Panel - Theme Preview */}
-        {showThemePanel && <ThemePreviewPanel isReadOnly={isReadOnly} />}
-      </div>
+        </div>
+      )}
 
       {/* Add Question Menu - only show in edit mode */}
       {!isReadOnly && <AddQuestionMenu isOpen={isAddMenuOpen} onOpenChange={setIsAddMenuOpen} onSelectType={handleAddQuestion} />}
@@ -296,11 +369,11 @@ export function SurveyBuilderPage() {
       {/* Settings Dialog - only show in edit mode */}
       {!isReadOnly && (
         <SurveySettingsDialog
-          isOpen={showSettingsDialog}
+          isOpen={settingsDialog.isOpen}
           description={survey?.description || ''}
           thankYouMessage={survey?.thankYouMessage || ''}
           welcomeMessage={survey?.welcomeMessage || ''}
-          onOpenChange={setShowSettingsDialog}
+          onOpenChange={settingsDialog.setOpen}
           onDescriptionChange={(value) => updateSurveyMetadata({ description: value })}
           onThankYouMessageChange={(value) => updateSurveyMetadata({ thankYouMessage: value })}
           onWelcomeMessageChange={(value) => updateSurveyMetadata({ welcomeMessage: value })}
@@ -310,11 +383,61 @@ export function SurveyBuilderPage() {
       {/* Unsaved Changes Dialog - only relevant in edit mode */}
       {!isReadOnly && (
         <UnsavedChangesDialog
-          isOpen={showUnsavedDialog}
+          isOpen={unsavedDialog.isOpen}
           isSaving={isSaving}
-          onOpenChange={setShowUnsavedDialog}
+          onOpenChange={unsavedDialog.setOpen}
           onDiscard={handleDiscardAndLeave}
           onSave={handleSaveAndLeave}
+        />
+      )}
+
+      {/* Add Language Dialog */}
+      <AddLanguageDialog
+        open={addLanguageDialog.isOpen}
+        onOpenChange={addLanguageDialog.setOpen}
+        existingLanguages={survey?.availableLanguages || ['en']}
+        defaultLanguage={survey?.defaultLanguage || 'en'}
+        isLoading={addTranslationMutation.isPending}
+        onAddLanguage={async (languageCode, autoTranslate) => {
+          if (!survey?.id) return;
+
+          try {
+            // Create a new translation
+            // Title is always required by the backend, so we copy from the default language
+            // When autoTranslate is true, we copy all content; otherwise only title is copied
+            await addTranslationMutation.mutateAsync({
+              surveyId: survey.id,
+              translation: {
+                languageCode,
+                title: survey.title, // Title is always required
+                description: autoTranslate ? survey.description : undefined,
+                welcomeMessage: autoTranslate ? survey.welcomeMessage : undefined,
+                thankYouMessage: autoTranslate ? survey.thankYouMessage : undefined,
+                isDefault: false,
+              },
+            });
+
+            // Update local store with new language
+            addLanguage(languageCode);
+            addLanguageDialog.close();
+            // Switch to the new language for editing
+            setEditingLanguage(languageCode);
+          } catch (error) {
+            console.error('Failed to add language:', error);
+            // Error toast is handled by API interceptor
+          }
+        }}
+      />
+
+      {/* Translation Editor Dialog */}
+      {survey?.id && (
+        <TranslationEditorDialog
+          open={translationEditorDialog.isOpen}
+          onOpenChange={translationEditorDialog.setOpen}
+          surveyId={survey.id}
+          defaultLanguage={survey.defaultLanguage || 'en'}
+          targetLanguage={editingLanguage}
+          isReadOnly={isReadOnly}
         />
       )}
     </div>

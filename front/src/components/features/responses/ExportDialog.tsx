@@ -1,6 +1,7 @@
 // ExportDialog - Dialog for exporting survey responses
 
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Download, FileSpreadsheet, FileText, Calendar, CheckSquare, Loader2, AlertCircle, Filter, FileOutput, ClipboardList } from 'lucide-react';
 import {
   Dialog,
@@ -47,6 +48,7 @@ const FORMAT_OPTIONS: { value: ExportFormat; label: string; icon: React.ReactNod
 ];
 
 export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: ExportDialogProps) {
+  const { t } = useTranslation();
   const [format, setFormat] = useState<ExportFormat>(ExportFormat.Csv);
   const [fromDate, setFromDate] = useState<string | undefined>();
   const [toDate, setToDate] = useState<string | undefined>();
@@ -121,7 +123,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
 
   const handleExport = async () => {
     if (activeColumns.size === 0) {
-      toast.error('Please select at least one column to export');
+      toast.error(t('responses.exportDialog.selectColumns'));
       return;
     }
 
@@ -150,10 +152,10 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      toast.success(`Export downloaded as ${fileName}`);
+      toast.success(t('responses.exportDialog.exportSuccess', { fileName }));
       onOpenChange(false);
     } catch {
-      toast.error('Failed to export responses');
+      toast.error(t('responses.exportDialog.exportError'));
     }
   };
 
@@ -165,8 +167,10 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
         <DialogHeader
           hero
           icon={<Download className="h-7 w-7" />}
-          title="Export Responses"
-          description={`Export ${surveyTitle ? `"${surveyTitle}"` : 'survey'} responses in your preferred format`}
+          title={t('responses.exportDialog.title')}
+          description={
+            surveyTitle ? t('responses.exportDialog.descriptionWithTitle', { title: surveyTitle }) : t('responses.exportDialog.description')
+          }
           showClose
         />
 
@@ -175,7 +179,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
           <div>
             <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
               <FileOutput className="h-4 w-4" />
-              Export Format
+              {t('responses.exportDialog.format')}
             </h4>
             <Tabs value={String(format)} onValueChange={(v) => setFormat(Number(v) as ExportFormat)} variant="segmented">
               <TabsList className="grid grid-cols-3">
@@ -194,7 +198,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
           <div>
             <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              Date Range
+              {t('responses.exportDialog.dateRange')}
             </h4>
             <DateRangePicker
               fromDate={fromDate}
@@ -210,20 +214,20 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
           <div>
             <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Filters
+              {t('responses.exportDialog.filters')}
             </h4>
             <div className="space-y-3">
               <Checkbox
                 checked={includeIncomplete}
                 onChange={(e) => setIncludeIncomplete(e.target.checked)}
-                label="Include incomplete responses"
-                description="Export responses that weren't fully completed"
+                label={t('responses.exportDialog.includeIncomplete')}
+                description={t('responses.exportDialog.includeIncompleteDesc')}
               />
               <Checkbox
                 checked={includeMetadata}
                 onChange={(e) => setIncludeMetadata(e.target.checked)}
-                label="Include metadata"
-                description="Include submission time, duration, device info, etc."
+                label={t('responses.exportDialog.includeMetadata')}
+                description={t('responses.exportDialog.includeMetadataDesc')}
               />
             </div>
           </div>
@@ -233,9 +237,9 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-sm font-semibold text-on-surface flex items-center gap-2">
                 <CheckSquare className="h-4 w-4" />
-                Columns to Export
+                {t('responses.exportDialog.columnsToExport')}
               </h4>
-              <span className="text-xs text-on-surface-variant">{activeColumns.size} selected</span>
+              <span className="text-xs text-on-surface-variant">{t('responses.exportDialog.selectedCount', { count: activeColumns.size })}</span>
             </div>
 
             {previewLoading ? (
@@ -247,14 +251,14 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
             ) : previewError ? (
               <div className="flex items-center gap-2 p-4 bg-error-container rounded-2xl text-on-error-container">
                 <AlertCircle className="h-5 w-5" />
-                <span>Failed to load column options</span>
+                <span>{t('responses.exportDialog.loadColumnsError')}</span>
               </div>
             ) : (
               <div className="space-y-4">
                 {/* Questions */}
                 {groupedColumns.questions.length > 0 && (
                   <ColumnGroup
-                    title="Questions"
+                    title={t('responses.exportDialog.questions')}
                     columns={groupedColumns.questions}
                     selectedColumns={activeColumns}
                     onToggle={toggleColumn}
@@ -268,7 +272,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
                 {/* System fields */}
                 {groupedColumns.system.length > 0 && (
                   <ColumnGroup
-                    title="System Fields"
+                    title={t('responses.exportDialog.systemFields')}
                     columns={groupedColumns.system}
                     selectedColumns={activeColumns}
                     onToggle={toggleColumn}
@@ -282,7 +286,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
                 {/* Metadata fields */}
                 {groupedColumns.metadata.length > 0 && includeMetadata && (
                   <ColumnGroup
-                    title="Metadata"
+                    title={t('responses.exportDialog.metadata')}
                     columns={groupedColumns.metadata}
                     selectedColumns={activeColumns}
                     onToggle={toggleColumn}
@@ -300,17 +304,17 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
           <div className="bg-surface-container rounded-2xl p-4">
             <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
               <ClipboardList className="h-4 w-4" />
-              Export Summary
+              {t('responses.exportDialog.exportSummary')}
             </h4>
             <div className="flex flex-wrap gap-2">
               <Chip variant="filter-selected" size="sm">
-                {responseCount} responses
+                {t('responses.exportDialog.responsesCount', { count: responseCount })}
               </Chip>
               <Chip variant="assist" size="sm">
-                {activeColumns.size} columns
+                {t('responses.exportDialog.columnsCount', { count: activeColumns.size })}
               </Chip>
               <Chip variant="assist" size="sm">
-                {ExportFormatLabels[format]} format
+                {t('responses.exportDialog.formatLabel', { format: ExportFormatLabels[format] })}
               </Chip>
               {(fromDate || toDate) && (
                 <Chip variant="assist" size="sm">
@@ -323,18 +327,18 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button onClick={handleExport} disabled={exportMutation.isPending || activeColumns.size === 0}>
             {exportMutation.isPending ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Exporting...
+                {t('responses.exportDialog.exporting')}
               </>
             ) : (
               <>
                 <Download className="h-4 w-4 mr-2" />
-                Export {responseCount} Responses
+                {t('responses.exportDialog.exportButton', { count: responseCount })}
               </>
             )}
           </Button>

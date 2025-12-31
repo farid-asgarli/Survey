@@ -6,7 +6,7 @@ import { AvatarUpload } from './AvatarUpload';
 import { useAuthStore } from '@/stores';
 import { useUpdateProfile, useUploadAvatar, useDeleteAvatar } from '@/hooks';
 import { toast } from '@/components/ui/Toast';
-import { validateEmail, validateName } from '@/utils/validators';
+import { validateEmail, validateName } from '@/lib/validations';
 import { formatDateLong } from '@/utils';
 
 interface ProfileSettingsProps {

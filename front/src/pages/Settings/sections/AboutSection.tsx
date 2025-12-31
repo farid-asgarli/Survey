@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Onbo
 import { Info, Sparkles, RefreshCw, ExternalLink, Heart, Rocket } from 'lucide-react';
 import { usePreferencesStore } from '@/stores';
 import { preferencesApi } from '@/services/api';
+import { useDialogState } from '@/hooks';
 
 export function AboutSection() {
   const { t } = useTranslation();
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [showGettingStarted, setShowGettingStarted] = useState(false);
+  const onboardingWizard = useDialogState();
+  const gettingStartedWizard = useDialogState();
   const [isResetting, setIsResetting] = useState(false);
   const [isResettingGuide, setIsResettingGuide] = useState(false);
   const resetOnboarding = usePreferencesStore((s) => s.resetOnboarding);
@@ -33,7 +34,7 @@ export function AboutSection() {
       // Reset in local store
       resetOnboarding();
       // Show the wizard
-      setShowOnboarding(true);
+      onboardingWizard.open();
     } catch (error) {
       console.error('Failed to reset onboarding:', error);
     } finally {
@@ -42,11 +43,11 @@ export function AboutSection() {
   };
 
   const handleOnboardingComplete = () => {
-    setShowOnboarding(false);
+    onboardingWizard.close();
   };
 
   const handleOnboardingSkip = () => {
-    setShowOnboarding(false);
+    onboardingWizard.close();
   };
 
   const handleRestartGettingStarted = async () => {
@@ -63,7 +64,7 @@ export function AboutSection() {
       // Reset in local store
       resetGettingStarted();
       // Show the wizard
-      setShowGettingStarted(true);
+      gettingStartedWizard.open();
     } catch (error) {
       console.error('Failed to reset getting started guide:', error);
     } finally {
@@ -72,11 +73,11 @@ export function AboutSection() {
   };
 
   const handleGettingStartedComplete = () => {
-    setShowGettingStarted(false);
+    gettingStartedWizard.close();
   };
 
   const handleGettingStartedSkip = () => {
-    setShowGettingStarted(false);
+    gettingStartedWizard.close();
   };
 
   return (
@@ -221,10 +222,10 @@ export function AboutSection() {
       </div>
 
       {/* Onboarding Wizard Modal */}
-      {showOnboarding && <OnboardingWizard onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
+      {onboardingWizard.isOpen && <OnboardingWizard onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
 
       {/* Getting Started Wizard Modal */}
-      {showGettingStarted && <GettingStartedWizard onComplete={handleGettingStartedComplete} onSkip={handleGettingStartedSkip} />}
+      {gettingStartedWizard.isOpen && <GettingStartedWizard onComplete={handleGettingStartedComplete} onSkip={handleGettingStartedSkip} />}
     </>
   );
 }

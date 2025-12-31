@@ -1,4 +1,5 @@
 import { type ReactNode, type HTMLAttributes, createContext, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Layout, PageHeader, type PageHeaderProps } from '../layout';
 import { FAB } from '../ui/FAB';
@@ -136,28 +137,18 @@ export interface ListPageToolbarProps extends HTMLAttributes<HTMLDivElement> {
   actions?: ReactNode;
 }
 
-function Toolbar({
-  children,
-  showSearch = true,
-  searchPlaceholder = 'Search...',
-  showViewModeToggle = true,
-  actions,
-  className,
-  ...props
-}: ListPageToolbarProps) {
+function Toolbar({ children, showSearch = true, searchPlaceholder, showViewModeToggle = true, actions, className, ...props }: ListPageToolbarProps) {
+  const { t } = useTranslation();
   const { viewMode, setViewMode, searchQuery, setSearchQuery } = useListPageContext();
 
   return (
-    <div
-      className={cn('px-4 md:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-4 border-b border-outline-variant/30', className)}
-      {...props}
-    >
+    <div className={cn('px-4 md:px-6 py-3 flex flex-col sm:flex-row sm:items-center gap-4 border-b border-outline-variant/30', className)} {...props}>
       {/* Primary content (tabs, filter buttons, etc.) */}
       {children}
 
       {/* Right side: search, view toggle, actions */}
       <div className="flex items-center gap-3 sm:ml-auto">
-        {showSearch && <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder={searchPlaceholder} />}
+        {showSearch && <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder={searchPlaceholder ?? t('common.searchDots')} />}
 
         {showViewModeToggle && (
           <div className="hidden md:block">

@@ -1,6 +1,7 @@
 // Question Card - Container for individual questions
 // Uses container queries (@sm:, @md:) for proper preview responsiveness
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
 import { QuestionRenderer } from './QuestionRenderers';
@@ -17,6 +18,8 @@ interface QuestionCardProps {
 }
 
 export function QuestionCard({ question, questionNumber, totalQuestions, value, error, onChange, disabled, className }: QuestionCardProps) {
+  const { t } = useTranslation();
+
   return (
     <div className={cn('animate-fade-in', className)}>
       {/* Question header */}
@@ -24,9 +27,11 @@ export function QuestionCard({ question, questionNumber, totalQuestions, value, 
         {/* Question number badge */}
         <div className="flex flex-wrap items-center gap-2 @md:gap-3 mb-3 @md:mb-4">
           <span className="px-2.5 @md:px-3 py-1 rounded-full bg-primary-container/50 text-on-primary-container text-xs @md:text-sm font-medium">
-            Question {questionNumber} of {totalQuestions}
+            {t('publicSurvey.questionOfTotal', { current: questionNumber, total: totalQuestions })}
           </span>
-          {question.isRequired && <span className="px-2 py-0.5 rounded-lg bg-error-container/50 text-error text-xs font-medium">Required</span>}
+          {question.isRequired && (
+            <span className="px-2 py-0.5 rounded-lg bg-error-container/50 text-error text-xs font-medium">{t('publicSurvey.required')}</span>
+          )}
         </div>
 
         {/* Question text */}

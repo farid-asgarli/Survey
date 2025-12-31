@@ -50,13 +50,10 @@ export function DistributionsPage() {
     activeTab,
     statusFilter,
     searchQuery,
-    showCreateDialog,
-    selectedDistribution,
-    showStatsDrawer,
+    createDialog,
+    statsDrawer,
     setStatusFilter,
     setSearchQuery,
-    setShowCreateDialog,
-    setShowStatsDrawer,
     handleTabChange,
     handleViewDistribution,
     handleSendDistribution,
@@ -172,7 +169,7 @@ export function DistributionsPage() {
                       className="w-44"
                     />
 
-                    <Button onClick={() => setShowCreateDialog(true)} className="hidden sm:flex">
+                    <Button onClick={() => createDialog.open()} className="hidden sm:flex">
                       <Plus className="h-4 w-4 mr-2" />
                       {t('distributions.newDistribution')}
                     </Button>
@@ -208,7 +205,7 @@ export function DistributionsPage() {
                     !searchQuery && statusFilter === 'all'
                       ? {
                           label: t('distributions.newDistribution'),
-                          onClick: () => setShowCreateDialog(true),
+                          onClick: () => createDialog.open(),
                           icon: <Plus className="h-4 w-4" />,
                         }
                       : undefined
@@ -232,7 +229,7 @@ export function DistributionsPage() {
             </div>
 
             {/* FAB for mobile */}
-            {selectedSurveyId && <FAB icon={<Plus className="h-6 w-6" />} className="sm:hidden" onClick={() => setShowCreateDialog(true)} />}
+            {selectedSurveyId && <FAB icon={<Plus className="h-6 w-6" />} className="sm:hidden" onClick={() => createDialog.open()} />}
           </>
         )}
       </div>
@@ -241,12 +238,12 @@ export function DistributionsPage() {
       <CreateDistributionDialog
         surveyId={selectedSurveyId}
         surveyTitle={selectedSurvey?.title}
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
+        open={createDialog.isOpen}
+        onOpenChange={createDialog.setOpen}
       />
 
       {/* Distribution Stats Drawer */}
-      <Drawer open={showStatsDrawer} onOpenChange={setShowStatsDrawer} side="right">
+      <Drawer open={statsDrawer.isOpen} onOpenChange={statsDrawer.setOpen} side="right">
         <DrawerContent className="max-w-2xl!">
           <DrawerHeader>
             <DrawerTitle className="flex items-center gap-2">
@@ -255,7 +252,9 @@ export function DistributionsPage() {
             </DrawerTitle>
           </DrawerHeader>
           <DrawerBody>
-            {selectedDistribution && selectedSurveyId && <DistributionStats surveyId={selectedSurveyId} distributionId={selectedDistribution.id} />}
+            {statsDrawer.selectedItem && selectedSurveyId && (
+              <DistributionStats surveyId={selectedSurveyId} distributionId={statsDrawer.selectedItem.id} />
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

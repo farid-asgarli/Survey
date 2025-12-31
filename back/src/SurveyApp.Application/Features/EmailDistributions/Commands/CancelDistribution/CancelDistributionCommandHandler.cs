@@ -1,6 +1,7 @@
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
+using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.EmailDistributions.Commands.CancelDistribution;
@@ -16,6 +17,16 @@ public class CancelDistributionCommandHandler(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
+
+    /// <summary>
+    /// Statuses that allow distribution cancellation.
+    /// Only Draft and Scheduled distributions can be cancelled.
+    /// </summary>
+    private static readonly DistributionStatus[] CancellableStatuses =
+    [
+        DistributionStatus.Draft,
+        DistributionStatus.Scheduled,
+    ];
 
     public async Task<Result<bool>> Handle(
         CancelDistributionCommand request,
@@ -45,14 +56,13 @@ public class CancelDistributionCommandHandler(
             return Result<bool>.Failure("Errors.DistributionNotFound");
         }
 
-        try
+        // Validate status - return localized error key instead of domain exception
+        if (!CancellableStatuses.Contains(distribution.Status))
         {
-            distribution.Cancel();
+            return Result<bool>.Failure("Errors.CannotCancelDistribution");
         }
-        catch (InvalidOperationException ex)
-        {
-            return Result<bool>.Failure(ex.Message);
-        }
+
+        distribution.Cancel();
 
         _distributionRepository.Update(distribution);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

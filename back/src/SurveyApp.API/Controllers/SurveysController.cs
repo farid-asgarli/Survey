@@ -12,6 +12,7 @@ using SurveyApp.Application.Features.Responses.Queries;
 using SurveyApp.Application.Features.Surveys.Commands.CloseSurvey;
 using SurveyApp.Application.Features.Surveys.Commands.CreateSurvey;
 using SurveyApp.Application.Features.Surveys.Commands.DeleteSurvey;
+using SurveyApp.Application.Features.Surveys.Commands.DuplicateSurvey;
 using SurveyApp.Application.Features.Surveys.Commands.PublishSurvey;
 using SurveyApp.Application.Features.Surveys.Commands.UpdateSurvey;
 using SurveyApp.Application.Features.Surveys.Queries.GetPublicSurvey;
@@ -42,7 +43,9 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] SurveyStatus? status = null,
-        [FromQuery] string? searchTerm = null
+        [FromQuery] string? searchTerm = null,
+        [FromQuery] string? sortBy = null,
+        [FromQuery] bool sortDescending = true
     )
     {
         var result = await _mediator.Send(
@@ -52,6 +55,8 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
                 PageSize = pageSize,
                 Status = status,
                 SearchTerm = searchTerm,
+                SortBy = sortBy,
+                SortDescending = sortDescending,
             }
         );
 
@@ -153,6 +158,28 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
             return result.ToProblemDetails(HttpContext);
 
         return Ok(result.Value);
+    }
+
+    /// <summary>
+    /// Duplicate a survey (create a copy as draft)
+    /// </summary>
+    [HttpPost("{id:guid}/duplicate")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Duplicate(
+        Guid id,
+        [FromBody] DuplicateSurveyRequest? request = null
+    )
+    {
+        var result = await _mediator.Send(
+            new DuplicateSurveyCommand { SurveyId = id, NewTitle = request?.NewTitle }
+        );
+
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
+
+        return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
     }
 
     /// <summary>
@@ -424,4 +451,16 @@ public class NpsTrendRequest
     /// How to group the trend data (Day, Week, Month). Defaults to Week.
     /// </summary>
     public NpsTrendGroupBy? GroupBy { get; set; }
+}
+
+/// <summary>
+/// Request parameters for duplicating a survey.
+/// </summary>
+public class DuplicateSurveyRequest
+{
+    /// <summary>
+    /// Optional new title for the duplicated survey.
+    /// If not provided, will append "(Copy)" to the original title.
+    /// </summary>
+    public string? NewTitle { get; set; }
 }

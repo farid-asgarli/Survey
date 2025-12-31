@@ -27,6 +27,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button, Input, Textarea, Select, Chip, Tooltip, toast, Tabs, TabsList, TabsTrigger } from '@/components/ui';
 import { useUpdateEmailTemplate, useEmailTemplatePlaceholders } from '@/hooks/queries/useEmailTemplates';
+import { useCopyToClipboard, useEditorShortcuts } from '@/hooks';
 import { EmailTemplateType } from '@/types/enums';
 import type { EmailTemplate, UpdateEmailTemplateRequest } from '@/types';
 
@@ -104,6 +105,7 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
   const [history, setHistory] = useState<{ html: string; plain: string }[]>([{ html: template.htmlBody || '', plain: template.plainTextBody || '' }]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [copiedPlaceholder, setCopiedPlaceholder] = useState<string | null>(null);
+  const { copy } = useCopyToClipboard();
 
   const htmlTextareaRef = useRef<HTMLTextAreaElement>(null);
   const plainTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -214,13 +216,13 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
         toast.success(`Inserted ${placeholder}`);
       } else {
         // Fallback: copy to clipboard
-        navigator.clipboard.writeText(placeholder);
+        copy(placeholder, { showToast: false });
         setCopiedPlaceholder(placeholder);
         setTimeout(() => setCopiedPlaceholder(null), 2000);
         toast.info(`Copied "${placeholder}" to clipboard`);
       }
     },
-    [editorMode]
+    [editorMode, copy]
   );
 
   // HTML formatting helpers
@@ -238,15 +240,15 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
   // Save handler
   const handleSave = useCallback(async () => {
     if (!name.trim()) {
-      toast.error('Template name is required');
+      toast.error(t('emailTemplates.editor.validation.nameRequired'));
       return;
     }
     if (!subject.trim()) {
-      toast.error('Subject is required');
+      toast.error(t('emailTemplates.editor.validation.subjectRequired'));
       return;
     }
     if (!htmlBody.trim()) {
-      toast.error('Email body is required');
+      toast.error(t('emailTemplates.editor.validation.bodyRequired'));
       return;
     }
 
@@ -261,34 +263,22 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
       };
 
       await updateTemplate.mutateAsync({ id: template.id, data });
-      toast.success('Template saved successfully');
+      toast.success(t('emailTemplates.editor.saveSuccess'));
       onSaved?.();
     } catch (error) {
       console.error('Failed to save template:', error);
-      toast.error('Failed to save template');
+      toast.error(t('emailTemplates.editor.saveError'));
     }
-  }, [name, subject, htmlBody, plainTextBody, type, template.id, template.defaultLanguage, updateTemplate, onSaved]);
+  }, [name, subject, htmlBody, plainTextBody, type, template.id, template.defaultLanguage, updateTemplate, onSaved, t]);
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-        e.preventDefault();
-        handleSave();
-      }
-      if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
-        e.preventDefault();
-        if (e.shiftKey) {
-          handleRedo();
-        } else {
-          handleUndo();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleSave, handleUndo, handleRedo]);
+  // Keyboard shortcuts (save, undo, redo)
+  useEditorShortcuts({
+    onSave: handleSave,
+    onUndo: handleUndo,
+    onRedo: handleRedo,
+    canUndo,
+    canRedo,
+  });
 
   // Determine which content to preview
   const previewContent = editorMode === 'html' ? htmlBody : plainTextBody;

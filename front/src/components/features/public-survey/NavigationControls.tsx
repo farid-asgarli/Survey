@@ -1,6 +1,7 @@
 // Navigation Controls - Prev/Next/Submit buttons
 // Uses container queries (@sm:, @md:) for proper preview responsiveness
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui';
 import { ArrowLeft, ArrowRight, Send, Loader2 } from 'lucide-react';
@@ -26,6 +27,7 @@ export function NavigationControls({
   onSubmit,
   className,
 }: NavigationControlsProps) {
+  const { t } = useTranslation();
   const isLastQuestion = currentIndex === totalQuestions - 1;
 
   return (
@@ -39,7 +41,7 @@ export function NavigationControls({
         className={cn('gap-2 min-w-20 @sm:min-w-24 text-sm', !canGoPrevious && 'opacity-0 pointer-events-none')}
       >
         <ArrowLeft className="w-4 h-4" />
-        <span className="hidden @sm:inline">Back</span>
+        <span className="hidden @sm:inline">{t('publicSurvey.back')}</span>
       </Button>
 
       {/* Next or Submit button */}
@@ -48,19 +50,19 @@ export function NavigationControls({
           {isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="hidden @sm:inline">Submitting...</span>
+              <span className="hidden @sm:inline">{t('publicSurvey.submitting')}</span>
               <span className="@sm:hidden">...</span>
             </>
           ) : (
             <>
-              Submit
+              {t('publicSurvey.submit')}
               <Send className="w-4 h-4" />
             </>
           )}
         </Button>
       ) : (
         <Button size="default" onClick={onNext} disabled={isSubmitting} className="gap-2 min-w-20 @sm:min-w-24 text-sm">
-          Next
+          {t('publicSurvey.next')}
           <ArrowRight className="w-4 h-4" />
         </Button>
       )}

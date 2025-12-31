@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SurveyApp.Domain.Entities;
 
@@ -37,7 +38,14 @@ public class RecurringSurveyConfiguration : IEntityTypeConfiguration<RecurringSu
                         .Select(s => (DayOfWeek)int.Parse(s))
                         .ToArray()
             )
-            .HasMaxLength(50);
+            .HasMaxLength(50)
+            .Metadata.SetValueComparer(
+                new ValueComparer<DayOfWeek[]>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToArray()
+                )
+            );
 
         builder.Property(r => r.DayOfMonth);
 
@@ -54,7 +62,14 @@ public class RecurringSurveyConfiguration : IEntityTypeConfiguration<RecurringSu
                 v => string.Join(";", v),
                 v => v.Split(";", StringSplitOptions.RemoveEmptyEntries)
             )
-            .HasMaxLength(10000);
+            .HasMaxLength(10000)
+            .Metadata.SetValueComparer(
+                new ValueComparer<string[]>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToArray()
+                )
+            );
 
         builder.Property(r => r.AudienceListId);
 

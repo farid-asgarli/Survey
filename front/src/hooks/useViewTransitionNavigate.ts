@@ -10,7 +10,6 @@ export function useViewTransitionNavigate() {
 
   const navigateWithTransition = useCallback(
     (to: To, options?: NavigateOptions) => {
-      // Check if View Transitions API is supported
       if (document.startViewTransition) {
         document.startViewTransition(() => {
           navigate(to, options);

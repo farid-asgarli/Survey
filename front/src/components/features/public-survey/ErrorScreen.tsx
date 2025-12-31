@@ -1,6 +1,7 @@
 // Error Screen - Shown when survey cannot be loaded
 // Uses container queries (@sm:, @md:) for proper preview responsiveness
 
+import { useTranslation } from 'react-i18next';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui';
 
@@ -11,6 +12,8 @@ interface ErrorScreenProps {
 }
 
 export function ErrorScreen({ title, message, onRetry }: ErrorScreenProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center justify-center text-center px-4 py-8 @sm:py-10 @md:py-16 min-h-full">
       {/* Error icon */}
@@ -19,11 +22,11 @@ export function ErrorScreen({ title, message, onRetry }: ErrorScreenProps) {
       </div>
 
       {/* Title */}
-      <h1 className="text-lg @sm:text-xl @md:text-2xl font-bold text-on-surface mb-3 @md:mb-4 px-2">{title || 'Survey Not Available'}</h1>
+      <h1 className="text-lg @sm:text-xl @md:text-2xl font-bold text-on-surface mb-3 @md:mb-4 px-2">{title || t('publicSurvey.errorTitle')}</h1>
 
       {/* Message */}
       <p className="text-sm @sm:text-base @md:text-lg text-on-surface-variant mb-5 @sm:mb-6 @md:mb-8 max-w-md px-2">
-        {message || 'This survey is either not found, has expired, or is no longer accepting responses.'}
+        {message || t('publicSurvey.errorMessage')}
       </p>
 
       {/* Actions */}
@@ -31,7 +34,7 @@ export function ErrorScreen({ title, message, onRetry }: ErrorScreenProps) {
         {onRetry && (
           <Button variant="tonal" onClick={onRetry} className="gap-2">
             <RefreshCw className="w-4 h-4" />
-            Try Again
+            {t('common.tryAgain')}
           </Button>
         )}
       </div>

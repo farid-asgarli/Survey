@@ -63,15 +63,15 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     public NpsQuestionType? NpsType { get; private set; }
 
     /// <summary>
-    /// Gets the default language code for this question (ISO 639-1).
-    /// Usually inherited from the parent survey.
-    /// </summary>
-    public string DefaultLanguage { get; private set; } = "en";
-
-    /// <summary>
     /// Gets the translations for this question.
     /// </summary>
     public IReadOnlyCollection<QuestionTranslation> Translations => _translations.AsReadOnly();
+
+    /// <summary>
+    /// Gets the default language for this question (inherited from survey, or first translation if detached).
+    /// </summary>
+    public string DefaultLanguage =>
+        Survey?.DefaultLanguage ?? GetDefaultTranslation()?.LanguageCode ?? "en";
 
     /// <summary>
     /// Gets the survey navigation property.
@@ -113,10 +113,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
         if (string.IsNullOrWhiteSpace(text))
             throw new ArgumentException("Question text cannot be empty.", nameof(text));
 
-        var question = new Question(Guid.NewGuid(), surveyId, type, order, isRequired)
-        {
-            DefaultLanguage = languageCode.ToLowerInvariant(),
-        };
+        var question = new Question(Guid.NewGuid(), surveyId, type, order, isRequired);
 
         // Create the default translation
         question.AddOrUpdateTranslation(languageCode, text, description);
@@ -239,19 +236,8 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     private TranslationManager<QuestionTranslation> TranslationHelper =>
         _translationManager ??= new TranslationManager<QuestionTranslation>(
             _translations,
-            lang => DefaultLanguage = lang
+            _ => { } // Question inherits DefaultLanguage from Survey, no-op here
         );
-
-    /// <summary>
-    /// Sets the default language for this question.
-    /// </summary>
-    public void SetDefaultLanguage(string languageCode)
-    {
-        if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
-
-        DefaultLanguage = languageCode.ToLowerInvariant();
-    }
 
     /// <summary>
     /// Adds or updates a translation for this question.
@@ -282,11 +268,6 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
         );
 
         _translations.Add(translation);
-
-        if (isDefault)
-        {
-            DefaultLanguage = languageCode.ToLowerInvariant();
-        }
 
         return translation;
     }

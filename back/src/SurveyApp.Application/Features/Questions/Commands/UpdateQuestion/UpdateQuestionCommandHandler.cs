@@ -54,8 +54,8 @@ public class UpdateQuestionCommandHandler(
             return Result<QuestionDto>.Failure("Question not found.");
         }
 
-        // Determine the language to update
-        var languageCode = request.LanguageCode ?? question.DefaultLanguage;
+        // Determine the language to update (use survey's default if not specified)
+        var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
 
         // Update localized content via translation
         question.AddOrUpdateTranslation(languageCode, request.Text, request.Description);

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateTime, formatRelativeTime, isPast } from '@/utils';
 import {
@@ -35,10 +34,10 @@ import {
   Skeleton,
   Tooltip,
   EmptyState,
+  toast,
 } from '@/components/ui';
 import { useSurveyLinks, useDeactivateLink, useUpdateLink } from '@/hooks/queries/useLinks';
-import { useConfirmDialog } from '@/hooks/useConfirmDialog';
-import { toast } from '@/components/ui';
+import { useConfirmDialog, useDialogState, useCopyToClipboard } from '@/hooks';
 import { LinkType } from '@/types';
 import type { SurveyLink } from '@/types';
 import { CreateLinkDialog } from './CreateLinkDialog';
@@ -55,21 +54,19 @@ interface LinksPanelProps {
 
 function LinkCard({
   link,
-  onCopy,
   onShowQR,
   onViewAnalytics,
   onDeactivate,
   onReactivate,
 }: {
   link: SurveyLink;
-  onCopy: (url: string) => void;
   onShowQR: (link: SurveyLink) => void;
   onViewAnalytics: (link: SurveyLink) => void;
   onDeactivate: (linkId: string) => void;
   onReactivate: (linkId: string) => void;
 }) {
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
 
   const linkTypeConfig: Record<LinkType, { label: string; icon: typeof Globe; color: string; description: string }> = {
     [LinkType.Public]: {
@@ -111,10 +108,11 @@ function LinkCard({
   const isMaxedOut = link.maxUses ? link.responseCount >= link.maxUses : false;
   const isDisabled = !link.isActive || isExpired || isMaxedOut;
 
-  const handleCopy = async () => {
-    await onCopy(link.fullUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = () => {
+    copy(link.fullUrl, {
+      successMessage: t('linksPanel.toast.copied'),
+      errorMessage: t('linksPanel.toast.copyFailed'),
+    });
   };
 
   const getStatusInfo = () => {
@@ -285,24 +283,15 @@ function LinksEmptyState({ onCreateLink }: { onCreateLink: () => void }) {
 
 export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
   const { t } = useTranslation();
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  const [bulkDialogOpen, setBulkDialogOpen] = useState(false);
-  const [qrDialogLink, setQrDialogLink] = useState<SurveyLink | null>(null);
-  const [analyticsLink, setAnalyticsLink] = useState<SurveyLink | null>(null);
+  const createDialog = useDialogState();
+  const bulkDialog = useDialogState();
+  const qrDialog = useDialogState<SurveyLink>();
+  const analyticsDrawer = useDialogState<SurveyLink>();
 
   const { data: links, isLoading, error } = useSurveyLinks(surveyId);
   const deactivateMutation = useDeactivateLink(surveyId);
   const updateLinkMutation = useUpdateLink(surveyId);
   const { confirm, ConfirmDialog } = useConfirmDialog();
-
-  const handleCopyLink = async (url: string) => {
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success(t('linksPanel.toast.copied'));
-    } catch {
-      toast.error(t('linksPanel.toast.copyFailed'));
-    }
-  };
 
   const handleDeactivate = async (linkId: string) => {
     const confirmed = await confirm({
@@ -355,11 +344,11 @@ export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
               <CardDescription>{t('linksPanel.description')}</CardDescription>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="tonal" onClick={() => setBulkDialogOpen(true)}>
+              <Button variant="tonal" onClick={() => bulkDialog.open()}>
                 <Layers className="w-4 h-4 mr-2" />
                 {t('linksPanel.bulkGenerate')}
               </Button>
-              <Button onClick={() => setCreateDialogOpen(true)}>
+              <Button onClick={() => createDialog.open()}>
                 <Plus className="w-4 h-4 mr-2" />
                 {t('linksPanel.newLink')}
               </Button>
@@ -375,7 +364,7 @@ export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
               <p>{t('linksPanel.error')}</p>
             </div>
           ) : !links || links.length === 0 ? (
-            <LinksEmptyState onCreateLink={() => setCreateDialogOpen(true)} />
+            <LinksEmptyState onCreateLink={() => createDialog.open()} />
           ) : (
             <>
               {/* Active Links */}
@@ -388,9 +377,8 @@ export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
                     <LinkCard
                       key={link.id}
                       link={link}
-                      onCopy={handleCopyLink}
-                      onShowQR={setQrDialogLink}
-                      onViewAnalytics={setAnalyticsLink}
+                      onShowQR={qrDialog.open}
+                      onViewAnalytics={analyticsDrawer.open}
                       onDeactivate={handleDeactivate}
                       onReactivate={handleReactivate}
                     />
@@ -408,9 +396,8 @@ export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
                     <LinkCard
                       key={link.id}
                       link={link}
-                      onCopy={handleCopyLink}
-                      onShowQR={setQrDialogLink}
-                      onViewAnalytics={setAnalyticsLink}
+                      onShowQR={qrDialog.open}
+                      onViewAnalytics={analyticsDrawer.open}
                       onDeactivate={handleDeactivate}
                       onReactivate={handleReactivate}
                     />
@@ -423,13 +410,13 @@ export function LinksPanel({ surveyId, surveyTitle }: LinksPanelProps) {
       </Card>
 
       {/* Dialogs */}
-      <CreateLinkDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} surveyId={surveyId} surveyTitle={surveyTitle} />
+      <CreateLinkDialog open={createDialog.isOpen} onOpenChange={createDialog.setOpen} surveyId={surveyId} surveyTitle={surveyTitle} />
 
-      <BulkLinkGenerationDialog open={bulkDialogOpen} onOpenChange={setBulkDialogOpen} surveyId={surveyId} surveyTitle={surveyTitle} />
+      <BulkLinkGenerationDialog open={bulkDialog.isOpen} onOpenChange={bulkDialog.setOpen} surveyId={surveyId} surveyTitle={surveyTitle} />
 
-      <QRCodeDialog link={qrDialogLink} onClose={() => setQrDialogLink(null)} />
+      <QRCodeDialog link={qrDialog.selectedItem} onClose={qrDialog.close} />
 
-      <LinkAnalyticsDrawer link={analyticsLink} surveyId={surveyId} onClose={() => setAnalyticsLink(null)} />
+      <LinkAnalyticsDrawer link={analyticsDrawer.selectedItem} surveyId={surveyId} onClose={analyticsDrawer.close} />
 
       <ConfirmDialog />
     </>

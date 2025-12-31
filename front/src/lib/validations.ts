@@ -1,28 +1,38 @@
 import { z } from 'zod';
+import i18n from '@/i18n';
+
+// Helper function to get translation with current language
+const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
 
 // ============ Base Schemas ============
 
-export const emailSchema = z.string().min(1, 'Email is required').email('Please enter a valid email address');
+export const emailSchema = z
+  .string()
+  .min(1, { message: t('validation.emailRequired') })
+  .email({ message: t('validation.email') });
 
-export const passwordSchema = z.string().min(1, 'Password is required').min(8, 'Password must be at least 8 characters');
+export const passwordSchema = z
+  .string()
+  .min(1, { message: t('validation.passwordRequired') })
+  .min(8, { message: t('validation.passwordMinLength') });
 
 export const strongPasswordSchema = z
   .string()
-  .min(1, 'Password is required')
-  .min(8, 'Password must be at least 8 characters')
-  .regex(/[A-Z]/, 'Password must contain an uppercase letter')
-  .regex(/[a-z]/, 'Password must contain a lowercase letter')
-  .regex(/[0-9]/, 'Password must contain a number')
-  .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain a special character');
+  .min(1, { message: t('validation.passwordRequired') })
+  .min(8, { message: t('validation.passwordMinLength') })
+  .regex(/[A-Z]/, { message: t('validation.passwordUppercase') })
+  .regex(/[a-z]/, { message: t('validation.passwordLowercase') })
+  .regex(/[0-9]/, { message: t('validation.passwordNumber') })
+  .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: t('validation.passwordSpecial') });
 
 export const nameSchema = (fieldName = 'Name') =>
   z
     .string()
-    .min(1, `${fieldName} is required`)
-    .min(2, `${fieldName} must be at least 2 characters`)
-    .max(50, `${fieldName} must be less than 50 characters`);
+    .min(1, { message: t('validation.fieldRequired', { field: fieldName }) })
+    .min(2, { message: t('validation.minLength', { count: 2 }) })
+    .max(50, { message: t('validation.nameMaxLength', { max: 50 }) });
 
-export const requiredStringSchema = (fieldName = 'This field') => z.string().min(1, `${fieldName} is required`);
+export const requiredStringSchema = (fieldName = 'This field') => z.string().min(1, { message: t('validation.fieldRequired', { field: fieldName }) });
 
 // ============ Auth Schemas ============
 
@@ -40,10 +50,10 @@ export const registerSchema = z
     lastName: nameSchema('Last name'),
     email: emailSchema,
     password: strongPasswordSchema,
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+    confirmPassword: z.string().min(1, { message: t('validation.confirmPasswordRequired') }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: t('validation.passwordMismatch'),
     path: ['confirmPassword'],
   });
 
@@ -52,10 +62,10 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 export const resetPasswordSchema = z
   .object({
     password: strongPasswordSchema,
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+    confirmPassword: z.string().min(1, { message: t('validation.confirmPasswordRequired') }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: t('validation.passwordMismatch'),
     path: ['confirmPassword'],
   });
 
@@ -66,10 +76,10 @@ export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 export const themeEditorSchema = z.object({
   name: requiredStringSchema('Theme name'),
   // Colors
-  primaryColor: z.string().min(1, 'Primary color is required'),
+  primaryColor: z.string().min(1, { message: t('validation.primaryColorRequired') }),
   secondaryColor: z.string(),
   accentColor: z.string(),
-  backgroundColor: z.string().min(1, 'Background color is required'),
+  backgroundColor: z.string().min(1, { message: t('validation.backgroundColorRequired') }),
   surfaceColor: z.string(),
   textColor: z.string(),
   // Typography
@@ -100,9 +110,9 @@ export type ThemeEditorFormData = z.infer<typeof themeEditorSchema>;
 
 export const logicRuleSchema = z.object({
   sourceQuestionId: requiredStringSchema('Source question'),
-  operator: z.string().min(1, 'Operator is required'),
+  operator: z.string().min(1, { message: t('validation.operatorRequired') }),
   conditionValue: z.string().optional(),
-  action: z.string().min(1, 'Action is required'),
+  action: z.string().min(1, { message: t('validation.actionRequired') }),
   targetQuestionId: z.string().optional(),
 });
 
@@ -117,7 +127,7 @@ export const recurringSurveySchema = z.object({
   cronExpression: z.string().optional(),
   daysOfWeek: z.array(z.number()).optional(),
   dayOfMonth: z.number().optional(),
-  sendTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  sendTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, { message: t('validation.invalidTimeFormat') }),
   timezoneId: z.string(),
   endsAt: z.string().optional(),
   maxRuns: z.number().optional(),
@@ -142,15 +152,17 @@ export type RecurringSurveyFormData = z.infer<typeof recurringSurveySchema>;
 export interface PasswordRequirement {
   label: string;
   met: boolean;
+  /** @deprecated Use `met` property instead - validator function is redundant */
+  validator?: (password: string) => boolean;
 }
 
 export function getPasswordRequirements(password: string): PasswordRequirement[] {
   return [
-    { label: 'At least 8 characters', met: password.length >= 8 },
-    { label: 'Contains uppercase letter', met: /[A-Z]/.test(password) },
-    { label: 'Contains lowercase letter', met: /[a-z]/.test(password) },
-    { label: 'Contains number', met: /[0-9]/.test(password) },
-    { label: 'Contains special character (!@#$%^&*)', met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+    { label: t('password.requirements.minChars'), met: password.length >= 8 },
+    { label: t('password.requirements.uppercase'), met: /[A-Z]/.test(password) },
+    { label: t('password.requirements.lowercase'), met: /[a-z]/.test(password) },
+    { label: t('password.requirements.number'), met: /[0-9]/.test(password) },
+    { label: t('password.requirements.specialChar'), met: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
   ];
 }
 
@@ -158,10 +170,118 @@ export function areAllRequirementsMet(password: string): boolean {
   return getPasswordRequirements(password).every((r) => r.met);
 }
 
+/** @alias areAllRequirementsMet - for backwards compatibility */
+export const isStrongPassword = areAllRequirementsMet;
+
+export interface PasswordStrength {
+  score: number; // 0-4
+  label: string;
+  color: string;
+}
+
+export function calculatePasswordStrength(password: string): PasswordStrength {
+  const requirements = getPasswordRequirements(password);
+  const metCount = requirements.filter((r) => r.met).length;
+
+  const strengthMap: PasswordStrength[] = [
+    { score: 0, label: t('password.strength.veryWeak'), color: 'bg-error' },
+    { score: 1, label: t('password.strength.weak'), color: 'bg-error' },
+    { score: 2, label: t('password.strength.fair'), color: 'bg-warning' },
+    { score: 3, label: t('password.strength.good'), color: 'bg-tertiary' },
+    { score: 4, label: t('password.strength.strong'), color: 'bg-success' },
+  ];
+
+  // Additional checks for stronger passwords
+  let score = metCount;
+
+  // Bonus for length
+  if (password.length >= 12) {
+    score = Math.min(score + 1, 5);
+  }
+
+  // Map to 0-4 range
+  const normalizedScore = Math.min(Math.floor((score * 4) / 5), 4);
+
+  return strengthMap[normalizedScore];
+}
+
+// ============ Validation Helper Functions ============
+// These provide simple string | null returns for manual validation
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function isValidEmail(email: string): boolean {
+  return EMAIL_REGEX.test(email);
+}
+
+export function validateEmail(email: string): string | null {
+  if (!email) {
+    return t('validation.emailRequired');
+  }
+  if (!isValidEmail(email)) {
+    return t('validation.email');
+  }
+  return null;
+}
+
+export function validatePassword(password: string): string | null {
+  if (!password) {
+    return t('validation.passwordRequired');
+  }
+  if (password.length < 8) {
+    return t('validation.passwordMinLength');
+  }
+  return null;
+}
+
+export function validateConfirmPassword(password: string, confirmPassword: string): string | null {
+  if (!confirmPassword) {
+    return t('validation.confirmPasswordRequired');
+  }
+  if (password !== confirmPassword) {
+    return t('validation.passwordMismatch');
+  }
+  return null;
+}
+
+export function validateName(name: string, fieldName = 'Name'): string | null {
+  if (!name) {
+    return t('validation.fieldRequired', { field: fieldName });
+  }
+  if (name.length < 2) {
+    return t('validation.minLength', { count: 2 });
+  }
+  if (name.length > 50) {
+    return t('validation.nameMaxLength', { max: 50 });
+  }
+  return null;
+}
+
+export function validateRequired(value: string, fieldName = 'This field'): string | null {
+  if (!value || !value.trim()) {
+    return t('validation.fieldRequired', { field: fieldName });
+  }
+  return null;
+}
+
+export function validateMinLength(value: string, minLength: number): string | null {
+  if (value && value.length < minLength) {
+    return t('validation.minLength', { count: minLength });
+  }
+  return null;
+}
+
+export function validateMaxLength(value: string, maxLength: number): string | null {
+  if (value && value.length > maxLength) {
+    return t('validation.maxLength', { count: maxLength });
+  }
+  return null;
+}
+
 // ============ Survey Schemas ============
 
 export const createSurveySchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().min(1, { message: t('validation.titleRequired') }),
   description: z.string().optional(),
 });
 
@@ -170,9 +290,9 @@ export type CreateSurveyFormData = z.infer<typeof createSurveySchema>;
 // ============ Template Schemas ============
 
 export const createTemplateSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, { message: t('validation.nameRequired') }),
   description: z.string().optional(),
-  category: z.string().min(1, 'Category is required'),
+  category: z.string().min(1, { message: t('validation.categoryRequired') }),
   isPublic: z.boolean(),
   surveyId: z.string().optional(),
   languageCode: z.string().min(2).max(10),
@@ -181,7 +301,7 @@ export const createTemplateSchema = z.object({
 export type CreateTemplateFormData = z.infer<typeof createTemplateSchema>;
 
 export const useTemplateSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().min(1, { message: t('validation.titleRequired') }),
   description: z.string().optional(),
 });
 
@@ -190,7 +310,7 @@ export type UseTemplateFormData = z.infer<typeof useTemplateSchema>;
 // ============ Email Template Schemas ============
 
 export const createEmailTemplateSchema = z.object({
-  name: z.string().min(1, 'Template name is required'),
+  name: z.string().min(1, { message: t('validation.templateNameRequired') }),
   type: z.enum(['SurveyInvitation', 'SurveyReminder', 'ThankYou', 'Custom']),
 });
 
@@ -221,13 +341,13 @@ export type CreateLinkFormData = z.infer<typeof createLinkSchema>;
 export const bulkLinkSchema = z.object({
   count: z
     .string()
-    .min(1, 'Number of links is required')
+    .min(1, { message: t('validation.linksRequired') })
     .refine(
       (val) => {
         const num = parseInt(val, 10);
         return !isNaN(num) && num >= 1 && num <= 1000;
       },
-      { message: 'Must be between 1 and 1000' }
+      { message: t('validation.mustBeBetween', { min: 1, max: 1000 }) }
     ),
   namePrefix: z.string().optional(),
   expiresAt: z.string().optional(),
@@ -241,20 +361,27 @@ export type BulkLinkFormData = z.infer<typeof bulkLinkSchema>;
 // ============ Namespace Schemas ============
 
 export const createNamespaceSchema = z.object({
-  name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
+  name: z
+    .string()
+    .min(1, { message: t('validation.nameRequired') })
+    .min(2, { message: t('validation.nameMinLength') })
+    .max(100, { message: t('validation.nameMaxLength', { max: 100 }) }),
   slug: z
     .string()
-    .min(1, 'URL slug is required')
-    .min(2, 'Slug must be at least 2 characters')
-    .max(50, 'Slug must be less than 50 characters')
-    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
+    .min(1, { message: t('validation.slugRequired') })
+    .min(2, { message: t('validation.slugMinLength') })
+    .max(50, { message: t('validation.slugMaxLength', { max: 50 }) })
+    .regex(/^[a-z0-9-]+$/, { message: t('validation.slugFormat') }),
   description: z.string().optional(),
 });
 
 export type CreateNamespaceFormData = z.infer<typeof createNamespaceSchema>;
 
 export const namespaceSettingsSchema = z.object({
-  name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
+  name: z
+    .string()
+    .min(1, { message: t('validation.nameRequired') })
+    .min(2, { message: t('validation.nameMinLength') }),
   description: z.string().optional(),
   logoUrl: z
     .string()
@@ -269,7 +396,7 @@ export const namespaceSettingsSchema = z.object({
           return false;
         }
       },
-      { message: 'Please enter a valid URL' }
+      { message: t('validation.url') }
     ),
 });
 
@@ -287,8 +414,8 @@ export type InviteMemberFormData = z.infer<typeof inviteMemberSchema>;
 // ============ API Key Schemas ============
 
 export const createApiKeySchema = z.object({
-  name: z.string().min(1, 'Key name is required'),
-  scopes: z.array(z.string()).min(1, 'At least one scope is required'),
+  name: z.string().min(1, { message: t('validation.keyNameRequired') }),
+  scopes: z.array(z.string()).min(1, { message: t('validation.scopeRequired') }),
 });
 
 export type CreateApiKeyFormData = z.infer<typeof createApiKeySchema>;
@@ -305,12 +432,12 @@ export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, 'Current password is required'),
+    currentPassword: z.string().min(1, { message: t('validation.currentPasswordRequired') }),
     newPassword: strongPasswordSchema,
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+    confirmPassword: z.string().min(1, { message: t('validation.confirmPasswordRequired') }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: t('validation.passwordMismatch'),
     path: ['confirmPassword'],
   });
 

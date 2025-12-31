@@ -201,7 +201,8 @@ export function MultipleChoiceRenderer({ question, value, onChange, error, disab
 
 // ============ Text Input ============
 export function TextRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
-  const placeholder = question.settings?.placeholder || 'Your answer';
+  const { t } = useTranslation();
+  const placeholder = question.settings?.placeholder || t('publicSurvey.placeholders.yourAnswer');
   const maxLength = question.settings?.maxLength;
 
   return (
@@ -235,7 +236,8 @@ export function TextRenderer({ question, value, onChange, error, disabled }: Que
 
 // ============ Long Text ============
 export function LongTextRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
-  const placeholder = question.settings?.placeholder || 'Your answer';
+  const { t } = useTranslation();
+  const placeholder = question.settings?.placeholder || t('publicSurvey.placeholders.yourAnswer');
   const maxLength = question.settings?.maxLength;
 
   return (
@@ -269,7 +271,8 @@ export function LongTextRenderer({ question, value, onChange, error, disabled }:
 
 // ============ Email Input ============
 export function EmailRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
-  const placeholder = question.settings?.placeholder || 'email@example.com';
+  const { t } = useTranslation();
+  const placeholder = question.settings?.placeholder || t('questionDefaults.placeholders.emailExample');
   const maxLength = question.settings?.maxLength || 256;
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -286,7 +289,7 @@ export function EmailRenderer({ question, value, onChange, error, disabled }: Qu
     if (stringValue) {
       const result = validateQuestionValue(stringValue, 'Email', question.settings);
       if (!result.isValid) {
-        setLocalError(result.errorMessage || 'Invalid email');
+        setLocalError(result.errorMessage || t('validation.invalidEmail'));
       }
     }
   };
@@ -323,8 +326,9 @@ export function EmailRenderer({ question, value, onChange, error, disabled }: Qu
 
 // ============ Phone Input ============
 export function PhoneRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
+  const { t } = useTranslation();
   const preset = question.settings?.validationPreset ? getPresetById(question.settings.validationPreset) : null;
-  const placeholder = question.settings?.placeholder || preset?.placeholder || 'Enter phone number';
+  const placeholder = question.settings?.placeholder || preset?.placeholder || t('questionDefaults.placeholders.enterPhone');
   const maxLength = question.settings?.maxLength || 50;
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -341,7 +345,7 @@ export function PhoneRenderer({ question, value, onChange, error, disabled }: Qu
     if (stringValue) {
       const result = validateQuestionValue(stringValue, 'Phone', question.settings);
       if (!result.isValid) {
-        setLocalError(result.errorMessage || 'Invalid phone number');
+        setLocalError(result.errorMessage || t('validation.invalidPhone'));
       }
     }
   };
@@ -379,6 +383,7 @@ export function PhoneRenderer({ question, value, onChange, error, disabled }: Qu
 
 // ============ URL Input ============
 export function UrlRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
+  const { t } = useTranslation();
   const preset = question.settings?.validationPreset ? getPresetById(question.settings.validationPreset) : null;
   const placeholder = question.settings?.placeholder || preset?.placeholder || 'https://example.com';
   const maxLength = question.settings?.maxLength || 2048;
@@ -397,7 +402,7 @@ export function UrlRenderer({ question, value, onChange, error, disabled }: Ques
     if (stringValue) {
       const result = validateQuestionValue(stringValue, 'Url', question.settings);
       if (!result.isValid) {
-        setLocalError(result.errorMessage || 'Invalid URL');
+        setLocalError(result.errorMessage || t('validation.invalidUrl'));
       }
     }
   };
@@ -434,7 +439,8 @@ export function UrlRenderer({ question, value, onChange, error, disabled }: Ques
 
 // ============ Number Input ============
 export function NumberRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
-  const placeholder = question.settings?.placeholder || 'Enter a number';
+  const { t } = useTranslation();
+  const placeholder = question.settings?.placeholder || t('questionDefaults.placeholders.enterNumber');
   const minValue = question.settings?.minValue;
   const maxValue = question.settings?.maxValue;
   const [localError, setLocalError] = useState<string | null>(null);
@@ -453,11 +459,11 @@ export function NumberRenderer({ question, value, onChange, error, disabled }: Q
     if (stringValue) {
       const numValue = parseFloat(stringValue);
       if (isNaN(numValue)) {
-        setLocalError('Please enter a valid number');
+        setLocalError(t('validation.number'));
       } else if (minValue !== undefined && numValue < minValue) {
-        setLocalError(`Value must be at least ${minValue}`);
+        setLocalError(t('validation.minValue', { min: minValue }));
       } else if (maxValue !== undefined && numValue > maxValue) {
-        setLocalError(`Value must be at most ${maxValue}`);
+        setLocalError(t('validation.maxValue', { max: maxValue }));
       }
     }
   };
@@ -1014,12 +1020,15 @@ export function RankingRenderer({ question, value, onChange, error, disabled }: 
 
 // ============ Yes/No ============
 export function YesNoRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
+  const { t } = useTranslation();
   const yesNoStyle = (question.settings?.yesNoStyle ?? YesNoStyle.Text) as YesNoStyle;
-  const options = question.settings?.options || ['Yes', 'No'];
+  const yesLabel = t('common.yes');
+  const noLabel = t('common.no');
+  const options = question.settings?.options || [yesLabel, noLabel];
   const selectedValue = value as string | null;
 
   // Pre-compute values for Toggle case to avoid lexical declarations in case block
-  const isYes = selectedValue === (options[0] || 'Yes');
+  const isYes = selectedValue === (options[0] || yesLabel);
   const hasSelection = selectedValue !== null;
 
   switch (yesNoStyle) {
@@ -1031,10 +1040,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[0] || 'Yes')}
+              onClick={() => onChange(options[0] || yesLabel)}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[0] || 'Yes')
+                selectedValue === (options[0] || yesLabel)
                   ? 'border-success bg-success-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1043,13 +1052,15 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
-                  selectedValue === (options[0] || 'Yes') ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === (options[0] || yesLabel) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <ThumbsUp className="w-7 h-7" />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[0] || 'Yes') ? 'text-on-success-container' : 'text-on-surface')}>
-                {options[0] || 'Yes'}
+              <span
+                className={cn('text-sm font-medium', selectedValue === (options[0] || yesLabel) ? 'text-on-success-container' : 'text-on-surface')}
+              >
+                {options[0] || yesLabel}
               </span>
             </button>
 
@@ -1057,10 +1068,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[1] || 'No')}
+              onClick={() => onChange(options[1] || noLabel)}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[1] || 'No')
+                selectedValue === (options[1] || noLabel)
                   ? 'border-error bg-error-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1069,13 +1080,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
-                  selectedValue === (options[1] || 'No') ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === (options[1] || noLabel) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <ThumbsDown className="w-7 h-7" />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[1] || 'No') ? 'text-on-error-container' : 'text-on-surface')}>
-                {options[1] || 'No'}
+              <span className={cn('text-sm font-medium', selectedValue === (options[1] || noLabel) ? 'text-on-error-container' : 'text-on-surface')}>
+                {options[1] || noLabel}
               </span>
             </button>
           </div>
@@ -1088,12 +1099,12 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
         <div className="space-y-3">
           <div className="flex items-center justify-center gap-4">
             <span className={cn('text-base font-medium transition-colors', !isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
-              {options[1] || 'No'}
+              {options[1] || noLabel}
             </span>
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(isYes ? options[1] || 'No' : options[0] || 'Yes')}
+              onClick={() => onChange(isYes ? options[1] || noLabel : options[0] || yesLabel)}
               className={cn(
                 'w-16 h-9 rounded-full relative transition-colors border-2',
                 hasSelection
@@ -1112,7 +1123,7 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               />
             </button>
             <span className={cn('text-base font-medium transition-colors', isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
-              {options[0] || 'Yes'}
+              {options[0] || yesLabel}
             </span>
           </div>
           {error && <p className="text-error text-sm text-center">{error}</p>}
@@ -1127,10 +1138,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[0] || 'Yes')}
+              onClick={() => onChange(options[0] || yesLabel)}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[0] || 'Yes')
+                selectedValue === (options[0] || yesLabel)
                   ? 'border-success bg-success-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1139,13 +1150,15 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
-                  selectedValue === (options[0] || 'Yes') ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === (options[0] || yesLabel) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <Check className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[0] || 'Yes') ? 'text-on-success-container' : 'text-on-surface')}>
-                {options[0] || 'Yes'}
+              <span
+                className={cn('text-sm font-medium', selectedValue === (options[0] || yesLabel) ? 'text-on-success-container' : 'text-on-surface')}
+              >
+                {options[0] || yesLabel}
               </span>
             </button>
 
@@ -1153,10 +1166,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[1] || 'No')}
+              onClick={() => onChange(options[1] || noLabel)}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[1] || 'No')
+                selectedValue === (options[1] || noLabel)
                   ? 'border-error bg-error-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1165,13 +1178,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
-                  selectedValue === (options[1] || 'No') ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === (options[1] || noLabel) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <X className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[1] || 'No') ? 'text-on-error-container' : 'text-on-surface')}>
-                {options[1] || 'No'}
+              <span className={cn('text-sm font-medium', selectedValue === (options[1] || noLabel) ? 'text-on-error-container' : 'text-on-surface')}>
+                {options[1] || noLabel}
               </span>
             </button>
           </div>
@@ -1216,6 +1229,7 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
 
 // ============ Question Renderer Factory ============
 export function QuestionRenderer(props: QuestionRendererProps) {
+  const { t } = useTranslation();
   const { question } = props;
 
   switch (question.type) {
@@ -1255,6 +1269,10 @@ export function QuestionRenderer(props: QuestionRendererProps) {
     case QuestionType.Ranking:
       return <RankingRenderer {...props} />;
     default:
-      return <div className="p-4 rounded-xl bg-warning-container/50 text-on-warning-container">Unsupported question type: {question.type}</div>;
+      return (
+        <div className="p-4 rounded-xl bg-warning-container/50 text-on-warning-container">
+          {t('errors.unsupportedQuestionType', { type: question.type })}
+        </div>
+      );
   }
 }

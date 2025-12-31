@@ -1,38 +1,8 @@
 import { useMemo } from 'react';
+import type { FilterFieldConfig, SearchConfig, SortConfig } from '@/types/list-page';
 
-/**
- * Configuration for a filter field in useFilteredList.
- */
-export interface FilterFieldConfig<TItem, TValue> {
-  /** The key identifying this filter */
-  key: string;
-  /** Function to extract the filterable value from an item */
-  getValue: (item: TItem) => TValue;
-  /** Function to check if item matches the filter value */
-  matches: (itemValue: TValue, filterValue: TValue) => boolean;
-  /** The "all" or default value that means no filtering */
-  defaultValue?: TValue;
-}
-
-/**
- * Configuration for text search in useFilteredList.
- */
-export interface SearchConfig<TItem> {
-  /** Fields to search in */
-  fields: Array<keyof TItem | ((item: TItem) => string | undefined)>;
-  /** Whether to match case-sensitively (default: false) */
-  caseSensitive?: boolean;
-}
-
-/**
- * Configuration for sorting in useFilteredList.
- */
-export interface SortConfig<TItem> {
-  /** Sort key */
-  key: string;
-  /** Sort function */
-  compare: (a: TItem, b: TItem) => number;
-}
+// Re-export for backwards compatibility
+export type { FilterFieldConfig, SearchConfig, SortConfig } from '@/types/list-page';
 
 /**
  * Options for the useFilteredList hook.

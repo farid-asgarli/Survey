@@ -1,4 +1,5 @@
 import { Drawer, DrawerContent, DrawerBody, DrawerFooter, Button, Chip, Skeleton, OverlayHeader } from '@/components/ui';
+import { useTranslation } from 'react-i18next';
 import {
   FileText,
   Users,
@@ -118,6 +119,7 @@ function QuestionPreviewItem({
 }
 
 function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template: SurveyTemplate; onUseTemplate: () => void; onClose: () => void }) {
+  const { t } = useTranslation();
   const categoryInfo = getCategoryInfo((template.category || 'other') as TemplateCategory);
   const CategoryIcon = categoryInfo.icon;
   const questions = template.questions || [];
@@ -145,7 +147,7 @@ function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template
             )}
           >
             {template.isPublic ? <Globe className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
-            {template.isPublic ? 'Public' : 'Private'}
+            {template.isPublic ? t('common.public') : t('common.private')}
           </div>
           <div className="flex items-center gap-1.5 text-xs text-on-surface-variant ml-auto">
             <Calendar className="h-3.5 w-3.5" />
@@ -164,7 +166,7 @@ function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template
                   key={q.id}
                   question={{
                     type: q.type,
-                    text: q.text || 'Untitled question',
+                    text: q.text || t('templates.untitledQuestion'),
                     isRequired: q.isRequired || false,
                     optionCount: q.settings?.options?.length ?? 0,
                   }}
@@ -177,8 +179,8 @@ function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-container-high mb-3">
                 <FileText className="h-6 w-6 text-on-surface-variant/50" />
               </div>
-              <p className="text-sm font-medium text-on-surface">No questions yet</p>
-              <p className="text-xs text-on-surface-variant mt-1">Questions will appear here once added</p>
+              <p className="text-sm font-medium text-on-surface">{t('templates.noQuestions')}</p>
+              <p className="text-xs text-on-surface-variant mt-1">{t('templates.questionsWillAppear')}</p>
             </div>
           )}
         </div>
@@ -187,7 +189,7 @@ function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template
       <DrawerFooter className="border-t border-outline-variant/30">
         <Button variant="filled" onClick={onUseTemplate} size="lg" className="w-full">
           <Copy className="h-5 w-5 mr-2" />
-          Use This Template
+          {t('templates.useThis')}
         </Button>
       </DrawerFooter>
     </>
@@ -239,6 +241,7 @@ function TemplatePreviewSkeleton() {
 }
 
 export function TemplatePreviewDrawer({ open, onOpenChange, templateId, onUseTemplate }: TemplatePreviewDrawerProps) {
+  const { t } = useTranslation();
   const { data: template, isLoading, error } = useTemplateDetail(templateId || undefined);
 
   const handleUseTemplate = () => {
@@ -253,7 +256,7 @@ export function TemplatePreviewDrawer({ open, onOpenChange, templateId, onUseTem
         {isLoading && <TemplatePreviewSkeleton />}
         {error && (
           <div className="p-6 text-center">
-            <p className="text-error">Failed to load template</p>
+            <p className="text-error">{t('templates.loadError')}</p>
           </div>
         )}
         {template && !isLoading && (

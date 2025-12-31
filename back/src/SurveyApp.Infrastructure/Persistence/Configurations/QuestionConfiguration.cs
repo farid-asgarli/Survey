@@ -29,12 +29,8 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
         builder.Property(q => q.NpsType).HasConversion<string>().HasMaxLength(30);
 
-        // Localization
-        builder
-            .Property(q => q.DefaultLanguage)
-            .IsRequired()
-            .HasMaxLength(10)
-            .HasDefaultValue("en");
+        // DefaultLanguage is computed from Survey, ignore it
+        builder.Ignore(q => q.DefaultLanguage);
 
         // Translations relationship
         builder

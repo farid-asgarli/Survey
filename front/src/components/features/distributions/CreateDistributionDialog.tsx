@@ -228,11 +228,10 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
     senderName,
     senderEmail,
     sendOption,
-    scheduleDate,
-    scheduleTime,
     createDistribution,
     handleClose,
     onSuccess,
+    t,
   ]);
 
   const isStep1Valid = recipients.length > 0;

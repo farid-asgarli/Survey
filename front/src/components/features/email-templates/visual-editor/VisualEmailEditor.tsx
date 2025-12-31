@@ -24,6 +24,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button, Input, Tooltip, toast, Chip, Select, Switch } from '@/components/ui';
 import { useUpdateEmailTemplate } from '@/hooks/queries/useEmailTemplates';
+import { useCopyToClipboard } from '@/hooks';
 import { EmailTemplateType } from '@/types/enums';
 import type { EmailTemplate, UpdateEmailTemplateRequest } from '@/types';
 import { BlockPalette } from './BlockPalette';
@@ -207,6 +208,7 @@ function loadDesignState(template: EmailTemplate): { blocks: EmailBlock[]; globa
 
 export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEditorProps) {
   const { t } = useTranslation();
+  const { copied: copiedCode, copy: copyToClipboard } = useCopyToClipboard();
 
   // Load initial design state
   const initialDesignState = useMemo(() => loadDesignState(template), [template]);
@@ -227,7 +229,6 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
   const [viewMode, setViewMode] = useState<ViewMode>('edit');
   const [devicePreview, setDevicePreview] = useState<DevicePreview>('desktop');
   const [activePanel, setActivePanel] = useState<'blocks' | 'styles' | 'placeholders'>('blocks');
-  const [copiedCode, setCopiedCode] = useState(false);
   const [previewWithSampleData, setPreviewWithSampleData] = useState(true);
   const [showRightSidebar, setShowRightSidebar] = useState(true);
 
@@ -446,12 +447,11 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
   }, [name, subject, generatedHtml, generatedPlainText, currentDesignJson, type, template.id, template.defaultLanguage, updateTemplate, onSaved, t]);
 
   // Copy HTML to clipboard
-  const copyHtmlToClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(generatedHtml);
-    setCopiedCode(true);
-    toast.success(t('emailEditor.htmlCopied', 'HTML copied to clipboard'));
-    setTimeout(() => setCopiedCode(false), 2000);
-  }, [generatedHtml, t]);
+  const copyHtmlToClipboard = useCallback(() => {
+    copyToClipboard(generatedHtml, {
+      successMessage: t('emailEditor.htmlCopied', 'HTML copied to clipboard'),
+    });
+  }, [generatedHtml, copyToClipboard, t]);
 
   // Download HTML file
   const downloadHtml = useCallback(() => {
@@ -771,7 +771,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
             {viewMode === 'edit' && (
               <div ref={canvasRef} className="max-w-2xl mx-auto min-h-full" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
                 <div
-                  className="rounded-lg overflow-hidden shadow-lg"
+                  className="rounded-lg overflow-hidden border-2 border-outline-variant"
                   style={{
                     backgroundColor: globalStyles.contentBackgroundColor,
                     maxWidth: globalStyles.contentWidth,
@@ -831,7 +831,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                 {/* Email preview */}
                 <div
                   className={cn(
-                    'transition-all duration-300 bg-white rounded-lg shadow-lg overflow-hidden',
+                    'transition-all duration-300 bg-white rounded-lg border-2 border-outline-variant overflow-hidden',
                     devicePreview === 'mobile' ? 'w-96' : 'w-full max-w-2xl'
                   )}
                 >
@@ -887,7 +887,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
             <Button
               variant="tonal"
               size="icon-sm"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 shadow-md"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 ring-2 ring-primary/20"
               onClick={() => setShowRightSidebar(!showRightSidebar)}
               style={{ right: showRightSidebar ? '336px' : '16px' }}
             >
@@ -1005,11 +1005,11 @@ function GlobalStylesPanel({ styles, onChange }: { styles: EmailGlobalStyles; on
 function PlaceholdersPanel() {
   const { t } = useTranslation();
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const { copy } = useCopyToClipboard();
 
-  const copyPlaceholder = async (key: string) => {
-    await navigator.clipboard.writeText(key);
+  const copyPlaceholder = (key: string) => {
+    copy(key, { successMessage: t('emailEditor.placeholderCopied', { key, defaultValue: `Copied ${key}` }) });
     setCopiedKey(key);
-    toast.success(`Copied ${key}`);
     setTimeout(() => setCopiedKey(null), 2000);
   };
 

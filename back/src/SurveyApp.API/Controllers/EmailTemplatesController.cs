@@ -5,6 +5,7 @@ using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.EmailTemplates.Commands.CreateEmailTemplate;
 using SurveyApp.Application.Features.EmailTemplates.Commands.DeleteEmailTemplate;
+using SurveyApp.Application.Features.EmailTemplates.Commands.DuplicateEmailTemplate;
 using SurveyApp.Application.Features.EmailTemplates.Commands.UpdateEmailTemplate;
 using SurveyApp.Application.Features.EmailTemplates.Queries.GetEmailTemplateById;
 using SurveyApp.Application.Features.EmailTemplates.Queries.GetEmailTemplates;
@@ -152,6 +153,34 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Duplicates an existing email template.
+    /// Creates a copy with all content and translations, but as a non-default template.
+    /// </summary>
+    /// <param name="id">The template ID to duplicate.</param>
+    /// <param name="request">Optional new name for the duplicate.</param>
+    /// <returns>The duplicated template.</returns>
+    [HttpPost("{id:guid}/duplicate")]
+    [ProducesResponseType(typeof(EmailTemplateDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DuplicateEmailTemplate(
+        Guid id,
+        [FromBody] DuplicateEmailTemplateRequest? request
+    )
+    {
+        var command = new DuplicateEmailTemplateCommand(id, request?.NewName);
+        var result = await _mediator.Send(command);
+
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
+
+        return CreatedAtAction(
+            nameof(GetEmailTemplateById),
+            new { id = result.Value!.Id },
+            result.Value
+        );
+    }
+
+    /// <summary>
     /// Gets the available placeholders for email templates.
     /// </summary>
     /// <returns>List of available placeholders.</returns>
@@ -161,4 +190,15 @@ public class EmailTemplatesController(IMediator mediator) : ControllerBase
     {
         return Ok(Domain.Entities.EmailTemplate.StandardPlaceholders);
     }
+}
+
+/// <summary>
+/// Request body for duplicating an email template.
+/// </summary>
+public class DuplicateEmailTemplateRequest
+{
+    /// <summary>
+    /// Optional new name for the duplicate. If not provided, "(Copy)" will be appended.
+    /// </summary>
+    public string? NewName { get; set; }
 }

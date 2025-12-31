@@ -22,6 +22,12 @@ public abstract class Translation
     public bool IsDefault { get; protected set; }
 
     /// <summary>
+    /// Gets the concurrency token for optimistic concurrency control.
+    /// Uses PostgreSQL's xmin system column which is automatically updated on each row modification.
+    /// </summary>
+    public uint Version { get; protected set; }
+
+    /// <summary>
     /// Gets the date and time when this translation was last modified.
     /// </summary>
     public DateTime? LastModifiedAt { get; protected set; }

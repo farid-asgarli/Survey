@@ -1,5 +1,4 @@
 using SurveyApp.Domain.Entities;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.Application.Services;
 

@@ -1,7 +1,9 @@
 // KeyboardShortcutsHelp - Dialog showing all available keyboard shortcuts
 
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { IconButton } from '@/components/ui/IconButton';
 import { useShortcutsStore, formatShortcutKeys, type KeyboardShortcut } from '@/stores/shortcutsStore';
 import { X, Keyboard } from 'lucide-react';
 
@@ -56,6 +58,7 @@ const categoryTitles: Record<KeyboardShortcut['category'], string> = {
 const categoryOrder: KeyboardShortcut['category'][] = ['general', 'navigation', 'actions', 'editor'];
 
 export function KeyboardShortcutsHelp() {
+  const { t } = useTranslation();
   const { isHelpOpen, closeHelp, shortcuts } = useShortcutsStore();
 
   if (!isHelpOpen) return null;
@@ -88,12 +91,12 @@ export function KeyboardShortcutsHelp() {
               <Keyboard className="h-5 w-5 text-on-primary-container" />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-on-surface">Keyboard Shortcuts</h2>
-              <p className="text-sm text-on-surface-variant">Quick actions for power users</p>
+              <h2 className="text-lg font-bold text-on-surface">{t('shortcuts.title')}</h2>
+              <p className="text-sm text-on-surface-variant">{t('shortcuts.description')}</p>
             </div>
-            <button onClick={closeHelp} className="p-2 rounded-xl hover:bg-surface-container-high transition-colors" aria-label="Close">
-              <X className="h-5 w-5 text-on-surface-variant" />
-            </button>
+            <IconButton variant="ghost" size="sm" onClick={closeHelp} aria-label={t('a11y.close')}>
+              <X className="h-5 w-5" />
+            </IconButton>
           </div>
 
           {/* Content */}
@@ -108,7 +111,7 @@ export function KeyboardShortcutsHelp() {
                 <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container mb-4">
                   <Keyboard className="h-8 w-8 text-on-surface-variant/50" />
                 </div>
-                <p className="text-on-surface font-medium">No shortcuts registered</p>
+                <p className="text-on-surface font-medium">{t('shortcuts.noShortcuts')}</p>
                 <p className="text-on-surface-variant text-sm mt-1">Shortcuts will appear as you navigate the app</p>
               </div>
             )}
@@ -116,9 +119,7 @@ export function KeyboardShortcutsHelp() {
 
           {/* Footer */}
           <div className="px-5 py-3 border-t border-outline-variant/20 bg-surface-container/50">
-            <p className="text-xs text-on-surface-variant text-center">
-              Press <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono mx-1">Esc</kbd> to close
-            </p>
+            <p className="text-xs text-on-surface-variant text-center">{t('shortcuts.pressEscToClose')}</p>
           </div>
         </div>
       </div>

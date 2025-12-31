@@ -1,10 +1,11 @@
 // Question List Sidebar - Enhanced drag-and-drop with framer-motion
 import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { Plus, Layout, Eye, GripVertical, Sparkles } from 'lucide-react';
-import { QuestionCard, AddQuestionButton, QuestionTypeIcon } from '@/components/features/questions';
+import { QuestionCard, AddQuestionButton } from '@/components/features/questions';
 import { cn } from '@/lib/utils';
+import { useTranslatedQuestions } from '@/hooks';
 import type { DraftQuestion } from '@/stores';
 import type { QuestionType } from '@/types';
 
@@ -51,6 +52,8 @@ function DraggableQuestionItem({
   isReadOnly,
   isDragging,
   dropIndicator,
+  displayText,
+  isUsingFallback,
   onSelect,
   onDuplicate,
   onDelete,
@@ -66,6 +69,8 @@ function DraggableQuestionItem({
   isReadOnly: boolean;
   isDragging: boolean;
   dropIndicator: 'top' | 'bottom' | null;
+  displayText?: string;
+  isUsingFallback?: boolean;
   onSelect: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
@@ -78,21 +83,7 @@ function DraggableQuestionItem({
   const dragControls = useDragControls();
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{
-        opacity: isDragging ? 0.5 : 1,
-        y: 0,
-        scale: isDragging ? 1.02 : 1,
-        boxShadow: isDragging ? '0 10px 40px rgba(0,0,0,0.15)' : 'none',
-      }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{
-        layout: { duration: 0.2, ease: [0.2, 0, 0, 1] },
-        opacity: { duration: 0.15 },
-        scale: { duration: 0.15 },
-      }}
+    <div
       className="relative"
       draggable={!isReadOnly}
       onDragStart={!isReadOnly ? onDragStart : undefined}
@@ -100,26 +91,45 @@ function DraggableQuestionItem({
       onDragOver={!isReadOnly ? onDragOver : undefined}
       onDrop={!isReadOnly ? onDrop : undefined}
     >
-      {/* Drop zone indicators */}
-      <DropZoneIndicator isActive={dropIndicator === 'top'} position="top" />
-      <DropZoneIndicator isActive={dropIndicator === 'bottom'} position="bottom" />
-
-      <QuestionCard
-        question={question}
-        index={index}
-        isSelected={isSelected}
-        isReadOnly={isReadOnly}
-        onSelect={onSelect}
-        onDuplicate={onDuplicate}
-        onDelete={onDelete}
-        onRequiredChange={onRequiredChange}
-        isDragging={isDragging}
-        dragHandleProps={{
-          onPointerDown: (e: React.PointerEvent) => dragControls.start(e),
-          style: { touchAction: 'none' },
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{
+          opacity: isDragging ? 0.5 : 1,
+          y: 0,
+          scale: isDragging ? 1.02 : 1,
+          boxShadow: isDragging ? '0 10px 40px rgba(0,0,0,0.15)' : 'none',
         }}
-      />
-    </motion.div>
+        exit={{ opacity: 0, y: -20 }}
+        transition={{
+          layout: { duration: 0.2, ease: [0.2, 0, 0, 1] },
+          opacity: { duration: 0.15 },
+          scale: { duration: 0.15 },
+        }}
+      >
+        {/* Drop zone indicators */}
+        <DropZoneIndicator isActive={dropIndicator === 'top'} position="top" />
+        <DropZoneIndicator isActive={dropIndicator === 'bottom'} position="bottom" />
+
+        <QuestionCard
+          question={question}
+          index={index}
+          isSelected={isSelected}
+          isReadOnly={isReadOnly}
+          displayText={displayText}
+          isUsingFallback={isUsingFallback}
+          onSelect={onSelect}
+          onDuplicate={onDuplicate}
+          onDelete={onDelete}
+          onRequiredChange={onRequiredChange}
+          isDragging={isDragging}
+          dragHandleProps={{
+            onPointerDown: (e: React.PointerEvent) => dragControls.start(e),
+            style: { touchAction: 'none' },
+          }}
+        />
+      </motion.div>
+    </div>
   );
 }
 
@@ -141,6 +151,12 @@ export function QuestionListSidebar({
   const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null);
   const [dropPosition, setDropPosition] = useState<'top' | 'bottom' | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Get translated questions based on editing language
+  const { questions: translatedQuestions } = useTranslatedQuestions();
+
+  // Create a map for quick lookup of translated text by question ID
+  const translationMap = new Map(translatedQuestions.map((q) => [q.id, { displayText: q.displayText, isUsingFallback: q.isUsingFallback }]));
 
   const handleDragStart = useCallback(
     (e: React.DragEvent, index: number) => {
@@ -279,25 +295,30 @@ export function QuestionListSidebar({
         ) : (
           <>
             <AnimatePresence mode="popLayout">
-              {questions.map((question, index) => (
-                <DraggableQuestionItem
-                  key={question.id}
-                  question={question}
-                  index={index}
-                  isSelected={selectedQuestionId === question.id}
-                  isReadOnly={isReadOnly}
-                  isDragging={draggedIndex === index}
-                  dropIndicator={dropTargetIndex === index ? dropPosition : null}
-                  onSelect={() => onQuestionSelect(question.id)}
-                  onDuplicate={() => onQuestionDuplicate(question.id)}
-                  onDelete={() => onQuestionDelete(question.id)}
-                  onRequiredChange={(required) => onQuestionRequiredChange(question.id, required)}
-                  onDragStart={(e) => handleDragStart(e, index)}
-                  onDragEnd={handleDragEnd}
-                  onDragOver={(e) => handleDragOver(e, index)}
-                  onDrop={(e) => handleDrop(e, index)}
-                />
-              ))}
+              {questions.map((question, index) => {
+                const translation = translationMap.get(question.id);
+                return (
+                  <DraggableQuestionItem
+                    key={question.id}
+                    question={question}
+                    index={index}
+                    isSelected={selectedQuestionId === question.id}
+                    isReadOnly={isReadOnly}
+                    isDragging={draggedIndex === index}
+                    dropIndicator={dropTargetIndex === index ? dropPosition : null}
+                    displayText={translation?.displayText}
+                    isUsingFallback={translation?.isUsingFallback}
+                    onSelect={() => onQuestionSelect(question.id)}
+                    onDuplicate={() => onQuestionDuplicate(question.id)}
+                    onDelete={() => onQuestionDelete(question.id)}
+                    onRequiredChange={(required) => onQuestionRequiredChange(question.id, required)}
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDrop={(e) => handleDrop(e, index)}
+                  />
+                );
+              })}
             </AnimatePresence>
 
             {/* Add Question Button - subtle at bottom (only in edit mode) */}

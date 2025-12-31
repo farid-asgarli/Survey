@@ -1,0 +1,5 @@
+"Path","LineNumber","Line"
+"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\questions\QuestionEditor.tsx","234","                        <Button variant=""tonal"" size=""sm"" onClick={() => setIsLogicDialogOpen(true)} className=""rounded-lg"">"
+"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\search\GlobalSearch.tsx","210","            <button onClick={closeSearch} className='p-1.5 rounded-lg hover:bg-surface-container-high transition-colors' aria-label='Close search'>"
+"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\search\KeyboardShortcutsHelp.tsx","94","            <button onClick={closeHelp} className=""p-2 rounded-xl hover:bg-surface-container-high transition-colors"" aria-label=""Close"">"
+"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\themes\ThemeEditorDrawer.tsx","160","  { name: 'Rounded', value: ButtonStyle.Rounded, preview: 'rounded-xl' },"

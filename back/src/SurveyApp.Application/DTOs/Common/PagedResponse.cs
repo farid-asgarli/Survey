@@ -79,7 +79,7 @@ public class PagedResponse<T>
     {
         return new PagedResponse<TNew>
         {
-            Items = Items.Select(mapper).ToList(),
+            Items = [.. Items.Select(mapper)],
             PageNumber = PageNumber,
             PageSize = PageSize,
             TotalCount = TotalCount,

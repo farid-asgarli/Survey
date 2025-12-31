@@ -14,9 +14,10 @@ import {
   Card,
   CardContent,
   DatePicker,
+  toast,
 } from '@/components/ui';
 import { useGenerateBulkLinks } from '@/hooks/queries/useLinks';
-import { toast } from '@/components/ui';
+import { useCopyToClipboard } from '@/hooks';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { bulkLinkSchema, type BulkLinkFormData } from '@/lib/validations';
 import { getTomorrow, generateDateFilename } from '@/utils';
@@ -32,25 +33,20 @@ interface BulkLinkGenerationDialogProps {
 function GeneratedLinksView({ links, onClose }: { links: SurveyLink[]; onClose: () => void }) {
   const { t } = useTranslation();
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const { copy } = useCopyToClipboard();
 
-  const handleCopy = async (url: string, index: number) => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2000);
-    } catch {
-      toast.error(t('bulkLinkDialog.toast.copyFailed'));
-    }
+  const handleCopy = (url: string, index: number) => {
+    copy(url, { showToast: false });
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const handleCopyAll = async () => {
-    try {
-      const allUrls = links.map((link) => link.fullUrl).join('\n');
-      await navigator.clipboard.writeText(allUrls);
-      toast.success(t('bulkLinkDialog.toast.allCopied'));
-    } catch {
-      toast.error(t('bulkLinkDialog.toast.copyFailed'));
-    }
+  const handleCopyAll = () => {
+    const allUrls = links.map((link) => link.fullUrl).join('\n');
+    copy(allUrls, {
+      successMessage: t('bulkLinkDialog.toast.allCopied'),
+      errorMessage: t('bulkLinkDialog.toast.copyFailed'),
+    });
   };
 
   const handleDownloadCSV = () => {

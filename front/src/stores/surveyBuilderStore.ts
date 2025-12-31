@@ -52,7 +52,10 @@ export interface SurveyBuilderState {
 
   // UI State
   isAddQuestionMenuOpen: boolean;
-  draggedQuestionId: string | null;
+  draggedQuestionId: null | string;
+
+  // Localization - current editing language
+  editingLanguage: string;
 }
 
 interface HistoryEntry {
@@ -104,6 +107,10 @@ interface SurveyBuilderActions {
   // UI State
   setAddQuestionMenuOpen: (isOpen: boolean) => void;
   setDraggedQuestionId: (questionId: string | null) => void;
+
+  // Localization
+  setEditingLanguage: (languageCode: string) => void;
+  addLanguage: (languageCode: string) => void;
 
   // Question ID mapping (after save)
   applyQuestionIdMappings: (mappings: Array<{ tempId: string; realId: string }>) => void;
@@ -157,7 +164,13 @@ const getDefaultSettings = (type: QuestionType): QuestionSettings => {
 const getDefaultOptions = (type: QuestionType): DraftOption[] => {
   if (
     (
-      [QuestionType.SingleChoice, QuestionType.MultipleChoice, QuestionType.Ranking, QuestionType.Dropdown, QuestionType.Checkbox] as QuestionType[]
+      [
+        QuestionType.SingleChoice,
+        QuestionType.MultipleChoice,
+        QuestionType.Ranking,
+        QuestionType.Dropdown,
+        QuestionType.Checkbox,
+      ] as QuestionType[]
     ).includes(type)
   ) {
     return [
@@ -239,6 +252,7 @@ const initialState: SurveyBuilderState = {
   historyIndex: -1,
   isAddQuestionMenuOpen: false,
   draggedQuestionId: null,
+  editingLanguage: 'en', // Default editing language
 };
 
 const MAX_HISTORY = 50;
@@ -268,6 +282,8 @@ export const useSurveyBuilderStore = create<SurveyBuilderState & SurveyBuilderAc
           state.historyIndex = 0;
           state.activePanel = 'questions';
           state.isPreviewMode = false;
+          // Set editing language to survey's default language
+          state.editingLanguage = survey.defaultLanguage || 'en';
         });
       },
 
@@ -609,6 +625,22 @@ export const useSurveyBuilderStore = create<SurveyBuilderState & SurveyBuilderAc
       setDraggedQuestionId: (questionId) => {
         set((state) => {
           state.draggedQuestionId = questionId;
+        });
+      },
+
+      // ============ Localization ============
+
+      setEditingLanguage: (languageCode) => {
+        set((state) => {
+          state.editingLanguage = languageCode;
+        });
+      },
+
+      addLanguage: (languageCode) => {
+        set((state) => {
+          if (state.survey && !state.survey.availableLanguages.includes(languageCode)) {
+            state.survey.availableLanguages = [...state.survey.availableLanguages, languageCode];
+          }
         });
       },
 

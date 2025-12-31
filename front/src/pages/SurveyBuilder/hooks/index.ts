@@ -1,3 +1,3 @@
 export { useSurveyBuilderSave } from './useSurveyBuilderSave';
-export { useAutosave } from './useAutosave';
-export { useKeyboardShortcuts } from './useKeyboardShortcuts';
+// Note: useKeyboardShortcuts moved to @/hooks/useKeyboardShortcuts
+// Note: useAutosave moved to @/hooks/useAutoSave (as useEditorAutoSave)

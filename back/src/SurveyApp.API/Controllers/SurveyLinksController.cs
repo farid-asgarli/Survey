@@ -12,7 +12,6 @@ using SurveyApp.Application.Features.SurveyLinks.Queries.GetLinkAnalytics;
 using SurveyApp.Application.Features.SurveyLinks.Queries.GetLinkByToken;
 using SurveyApp.Application.Features.SurveyLinks.Queries.GetSurveyLinkById;
 using SurveyApp.Application.Features.SurveyLinks.Queries.GetSurveyLinks;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 

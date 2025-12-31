@@ -165,40 +165,11 @@ export const OTHER_PRESETS: ValidationPreset[] = [
 ];
 
 /**
- * All presets grouped by category
- */
-export const ALL_PRESETS = {
-  phone: PHONE_PRESETS,
-  email: [EMAIL_PATTERN],
-  url: URL_PRESETS,
-  number: NUMBER_PRESETS,
-  other: OTHER_PRESETS,
-};
-
-/**
  * Get preset by ID
  */
 export function getPresetById(id: string): ValidationPreset | undefined {
   const allPresets = [...PHONE_PRESETS, EMAIL_PATTERN, ...URL_PRESETS, ...NUMBER_PRESETS, ...OTHER_PRESETS];
   return allPresets.find((p) => p.id === id);
-}
-
-/**
- * Get presets for a specific question type
- */
-export function getPresetsForQuestionType(questionType: string): ValidationPreset[] {
-  switch (questionType) {
-    case 'Phone':
-      return PHONE_PRESETS;
-    case 'Email':
-      return [EMAIL_PATTERN];
-    case 'Url':
-      return URL_PRESETS;
-    case 'Number':
-      return NUMBER_PRESETS;
-    default:
-      return OTHER_PRESETS;
-  }
 }
 
 /**
@@ -217,9 +188,10 @@ export function validatePattern(value: string, pattern: string): boolean {
 }
 
 /**
- * Validate email format
+ * Validate email format (internal helper for survey question validation)
+ * @internal Use `validateEmail` from '@/lib/validations' for form validation
  */
-export function validateEmail(value: string): boolean {
+function isValidEmailPattern(value: string): boolean {
   if (!value) return true;
   return validatePattern(value, EMAIL_PATTERN.pattern);
 }
@@ -308,7 +280,7 @@ export function validateQuestionValue(
   // Default validation based on question type
   switch (questionType) {
     case 'Email': {
-      const isValid = validateEmail(value);
+      const isValid = isValidEmailPattern(value);
       return {
         isValid,
         errorMessage: isValid ? undefined : settings?.validationMessage || 'Please enter a valid email address',
@@ -330,41 +302,5 @@ export function validateQuestionValue(
     }
     default:
       return { isValid: true };
-  }
-}
-
-/**
- * Get HTML input type for question type
- */
-export function getInputTypeForQuestion(questionType: string): string {
-  switch (questionType) {
-    case 'Email':
-      return 'email';
-    case 'Phone':
-      return 'tel';
-    case 'Url':
-      return 'url';
-    case 'Number':
-      return 'text'; // Use text with inputMode for better control
-    default:
-      return 'text';
-  }
-}
-
-/**
- * Get HTML inputMode for question type
- */
-export function getInputModeForQuestion(questionType: string): 'text' | 'email' | 'tel' | 'url' | 'numeric' | undefined {
-  switch (questionType) {
-    case 'Email':
-      return 'email';
-    case 'Phone':
-      return 'tel';
-    case 'Url':
-      return 'url';
-    case 'Number':
-      return 'numeric';
-    default:
-      return 'text';
   }
 }

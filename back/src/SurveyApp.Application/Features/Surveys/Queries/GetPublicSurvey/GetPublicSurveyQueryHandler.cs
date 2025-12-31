@@ -2,7 +2,6 @@ using AutoMapper;
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.DTOs;
-using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.Surveys.Queries.GetPublicSurvey;
@@ -48,23 +47,25 @@ public class GetPublicSurveyQueryHandler(ISurveyRepository surveyRepository, IMa
             IsAnonymous = survey.IsAnonymous,
             Language = languageCode,
             AvailableLanguages = survey.GetAvailableLanguages(),
-            Questions = survey
-                .Questions.OrderBy(q => q.Order)
-                .Select(q => new PublicQuestionDto
-                {
-                    Id = q.Id,
-                    Text = q.GetLocalizedText(languageCode),
-                    Description = q.GetLocalizedDescription(languageCode),
-                    Type = q.Type,
-                    IsRequired = q.IsRequired,
-                    Order = q.Order,
-                    Settings = _mapper.Map<DTOs.QuestionSettingsDto>(
-                        q.GetLocalizedSettings(languageCode)
-                    ),
-                    IsNpsQuestion = q.IsNpsQuestion,
-                    NpsType = q.NpsType,
-                })
-                .ToList(),
+            Questions =
+            [
+                .. survey
+                    .Questions.OrderBy(q => q.Order)
+                    .Select(q => new PublicQuestionDto
+                    {
+                        Id = q.Id,
+                        Text = q.GetLocalizedText(languageCode),
+                        Description = q.GetLocalizedDescription(languageCode),
+                        Type = q.Type,
+                        IsRequired = q.IsRequired,
+                        Order = q.Order,
+                        Settings = _mapper.Map<DTOs.QuestionSettingsDto>(
+                            q.GetLocalizedSettings(languageCode)
+                        ),
+                        IsNpsQuestion = q.IsNpsQuestion,
+                        NpsType = q.NpsType,
+                    }),
+            ],
         };
 
         // Include theme if present

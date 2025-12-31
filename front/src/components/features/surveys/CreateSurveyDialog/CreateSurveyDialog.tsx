@@ -12,17 +12,24 @@ import {
   Plus,
   Check,
   ChevronRight,
+  ChevronDown,
   Sparkles,
   Star,
   MessageCircle,
   Lock,
+  Globe,
 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogFooter, Button } from '@/components/ui';
+import { Dialog, DialogContent, DialogHeader, DialogFooter, Button, Menu, MenuItem } from '@/components/ui';
 import { SurveyType, CxMetricType } from '@/types';
 import { getCategoryByType, DEFAULT_CX_TITLES, CX_METRICS, SURVEY_CATEGORIES } from './constants';
 import type { CreateSurveyDialogProps, CreateSurveyFormData, SurveyCategory, CxMetricOption } from './types';
 import { cn } from '@/lib/utils';
-import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
+import { LANGUAGE_INFO } from '@/components/features/localization';
+import { getCurrentLanguage } from '@/i18n';
+
+// Survey language codes - these are the languages surveys can be created in
+const SURVEY_LANGUAGES = ['en', 'az', 'ru', 'es', 'fr', 'de', 'tr', 'it', 'pt', 'nl', 'pl', 'zh', 'ja', 'ko', 'ar', 'hi'] as const;
+type SurveyLanguageCode = (typeof SURVEY_LANGUAGES)[number];
 
 // Type alias for translation function
 type TFunction = ReturnType<typeof useTranslation>['t'];
@@ -46,10 +53,16 @@ const CX_METRIC_ICONS = {
 export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = false }: CreateSurveyDialogProps) {
   const { t } = useTranslation();
 
+  // Get initial language - use current UI language if it's a valid survey language, otherwise 'en'
+  const getInitialLanguage = (): SurveyLanguageCode => {
+    const currentLang = getCurrentLanguage();
+    return SURVEY_LANGUAGES.includes(currentLang as SurveyLanguageCode) ? (currentLang as SurveyLanguageCode) : 'en';
+  };
+
   // State
   const [selectedCategory, setSelectedCategory] = useState<SurveyType>(SurveyType.Classic);
   const [cxMetric, setCxMetric] = useState<CxMetricType>(CxMetricType.NPS);
-  const [languageCode, setLanguageCode] = useState<LanguageCode>(getCurrentLanguage());
+  const [languageCode, setLanguageCode] = useState<SurveyLanguageCode>(getInitialLanguage());
 
   // Handle close with reset
   const handleClose = useCallback(() => {
@@ -59,7 +72,7 @@ export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = f
       setTimeout(() => {
         setSelectedCategory(SurveyType.Classic);
         setCxMetric(CxMetricType.NPS);
-        setLanguageCode(getCurrentLanguage());
+        setLanguageCode(getInitialLanguage());
       }, 200);
     }
   }, [isLoading, onOpenChange]);
@@ -179,24 +192,40 @@ export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = f
 
             {/* Footer */}
             <DialogFooter className="border-t border-outline-variant/30 bg-surface">
-              {/* Language Selector */}
+              {/* Language Selector - Dropdown Menu */}
               <div className="flex items-center gap-2 mr-auto">
-                <label htmlFor="survey-language" className="text-sm text-on-surface-variant">
-                  {t('createSurvey.language', 'Language')}:
-                </label>
-                <select
-                  id="survey-language"
-                  value={languageCode}
-                  onChange={(e) => setLanguageCode(e.target.value as LanguageCode)}
-                  className="h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  disabled={isLoading}
+                <Globe className="h-4 w-4 text-on-surface-variant" />
+                <span className="text-sm text-on-surface-variant">{t('createSurvey.language', 'Language')}:</span>
+                <Menu
+                  align="start"
+                  trigger={
+                    <button
+                      disabled={isLoading}
+                      className={cn(
+                        'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+                        'bg-surface-container hover:bg-surface-container-high border border-outline-variant/40',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
+                        isLoading && 'opacity-50 cursor-not-allowed'
+                      )}
+                    >
+                      <span>{LANGUAGE_INFO[languageCode]?.flag || '🌐'}</span>
+                      <span>{LANGUAGE_INFO[languageCode]?.nativeName || languageCode}</span>
+                      <ChevronDown className="h-3.5 w-3.5 text-on-surface-variant" />
+                    </button>
+                  }
                 >
-                  {LANGUAGES.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                      {lang.flag} {lang.nativeName}
-                    </option>
-                  ))}
-                </select>
+                  {SURVEY_LANGUAGES.map((code) => {
+                    const lang = LANGUAGE_INFO[code];
+                    const isSelected = languageCode === code;
+                    return (
+                      <MenuItem key={code} onClick={() => setLanguageCode(code)} className={cn(isSelected && 'bg-primary/8')}>
+                        <span className="mr-2">{lang?.flag || '🌐'}</span>
+                        <span className="flex-1">{lang?.nativeName || code}</span>
+                        {isSelected && <Check className="h-4 w-4 text-primary" />}
+                      </MenuItem>
+                    );
+                  })}
+                </Menu>
               </div>
               <Button variant="text" onClick={handleClose} disabled={isLoading}>
                 {t('common.cancel')}

@@ -1,6 +1,7 @@
 // CreateEmailTemplateDialog - Dialog for creating new email templates
 
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Mail, FileText, Type, Globe } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Select, toast } from '@/components/ui';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
@@ -84,6 +85,7 @@ const defaultTemplateContent: Record<EmailTemplateTypeString, { subject: string;
 };
 
 export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: CreateEmailTemplateDialogProps) {
+  const { t } = useTranslation();
   // Language state for localization
   const [languageCode, setLanguageCode] = useState<LanguageCode>(getCurrentLanguage());
 
@@ -121,16 +123,16 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
         };
 
         const newTemplate = await createTemplate.mutateAsync(requestData);
-        toast.success('Template created successfully');
+        toast.success(t('emailTemplates.createSuccess'));
         onSuccess?.(newTemplate.id);
         onOpenChange(false);
         reset();
       } catch (error) {
         console.error('Failed to create template:', error);
-        toast.error('Failed to create template');
+        toast.error(t('emailTemplates.createError'));
       }
     },
-    [createTemplate, onSuccess, onOpenChange, reset, languageCode]
+    [createTemplate, onSuccess, onOpenChange, reset, languageCode, t]
   );
 
   const handleClose = useCallback(() => {
@@ -147,8 +149,8 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
         <DialogHeader
           hero
           icon={<Mail className="h-7 w-7" />}
-          title="Create Email Template"
-          description="Create a new email template for your survey distributions."
+          title={t('emailTemplates.form.title')}
+          description={t('emailTemplates.form.description')}
           showClose
         />
 
@@ -156,10 +158,10 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
           <DialogBody className="space-y-6">
             {/* Template Name */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-on-surface">Template Name</label>
+              <label className="text-sm font-medium text-on-surface">{t('emailTemplates.form.name')}</label>
               <Input
                 {...register('name')}
-                placeholder="e.g., Customer Satisfaction Survey Invite"
+                placeholder={t('emailTemplates.form.namePlaceholder')}
                 startIcon={<Type className="h-4 w-4" />}
                 error={errors.name?.message}
                 autoFocus
@@ -168,7 +170,7 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
 
             {/* Template Type */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-on-surface">Template Type</label>
+              <label className="text-sm font-medium text-on-surface">{t('emailTemplates.form.type')}</label>
               <Select
                 value={type}
                 onChange={(value) => setValue('type', value as EmailTemplateTypeString, { shouldValidate: true })}
@@ -185,11 +187,8 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
               <div className="flex items-start gap-3">
                 <FileText className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-sm font-medium text-on-surface">Default content will be added</p>
-                  <p className="text-xs text-on-surface-variant mt-1">
-                    A starter template with common placeholders like {`{{firstName}}`}, {`{{surveyLink}}`}, and {`{{senderName}}`} will be created.
-                    You can customize it in the editor.
-                  </p>
+                  <p className="text-sm font-medium text-on-surface">{t('emailTemplates.form.defaultContentInfo')}</p>
+                  <p className="text-xs text-on-surface-variant mt-1">{t('emailTemplates.form.defaultContentDesc')}</p>
                 </div>
               </div>
             </div>
@@ -210,10 +209,10 @@ export function CreateEmailTemplateDialog({ open, onOpenChange, onSuccess }: Cre
               />
             </div>
             <Button type="button" variant="text" onClick={handleClose} disabled={isSubmitting}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={!isValid} loading={isSubmitting}>
-              Create Template
+              {t('emailTemplates.form.createButton')}
             </Button>
           </DialogFooter>
         </form>

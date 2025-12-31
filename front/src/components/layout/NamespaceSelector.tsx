@@ -1,4 +1,5 @@
 import { type HTMLAttributes, useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Building2, Check, Plus } from 'lucide-react';
 import { useNamespaceStore, useActiveNamespace, useNamespaces } from '@/stores';
@@ -10,6 +11,7 @@ interface NamespaceSelectorProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function NamespaceSelector({ className, onCreateNew, ...props }: NamespaceSelectorProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const activeNamespace = useActiveNamespace();
   const namespaces = useNamespaces();
@@ -48,7 +50,7 @@ export function NamespaceSelector({ className, onCreateNew, ...props }: Namespac
         ref={triggerRef}
         onClick={() => setOpen(!open)}
         className={cn(
-          'flex items-center gap-3 px-3 py-2 rounded-2xl min-w-[200px]',
+          'flex items-center gap-3 px-3 py-2 rounded-2xl min-w-50',
           'bg-surface-container-low border-2 border-outline-variant/50 hover:border-outline-variant hover:bg-surface-container transition-all',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
         )}
@@ -57,7 +59,7 @@ export function NamespaceSelector({ className, onCreateNew, ...props }: Namespac
           <Building2 className="h-5 w-5 text-on-primary-container" />
         </div>
         <div className="flex-1 text-left">
-          <p className="text-sm font-medium text-on-surface truncate max-w-[140px]">{activeNamespace?.name || 'Select Workspace'}</p>
+          <p className="text-sm font-medium text-on-surface truncate max-w-35">{activeNamespace?.name || t('workspaces.selectWorkspace')}</p>
           {activeNamespace && <p className="text-xs text-on-surface-variant">{activeNamespace.slug}</p>}
         </div>
         <ChevronDown className={cn('h-5 w-5 text-on-surface-variant transition-transform duration-200', open && 'rotate-180')} />
@@ -72,7 +74,7 @@ export function NamespaceSelector({ className, onCreateNew, ...props }: Namespac
             'animate-in fade-in zoom-in-95 duration-150'
           )}
         >
-          <div className="px-3 py-2 text-xs font-medium text-on-surface-variant uppercase tracking-wider">Workspaces</div>
+          <div className="px-3 py-2 text-xs font-medium text-on-surface-variant uppercase tracking-wider">{t('workspaces.title')}</div>
 
           <div className="max-h-64 overflow-y-auto">
             {namespaces.map((namespace) => (
@@ -115,7 +117,7 @@ export function NamespaceSelector({ className, onCreateNew, ...props }: Namespac
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-dashed border-primary/50">
                   <Plus className="h-5 w-5" />
                 </div>
-                <span className="text-sm font-medium">Create New Workspace</span>
+                <span className="text-sm font-medium">{t('workspaces.createNewWorkspace')}</span>
               </button>
             </>
           )}

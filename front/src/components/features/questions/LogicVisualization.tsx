@@ -253,7 +253,7 @@ function LogicRuleBadge({ rule, getQuestionLabel, getActionIcon, getActionColor 
     <div className="flex flex-wrap items-center gap-1 text-xs">
       <span className="text-on-surface-variant">{t('conditionalLogic.if')}</span>
       <span className="px-1.5 py-0.5 bg-secondary-container text-on-secondary-container rounded">{getQuestionLabel(rule.sourceQuestionId)}</span>
-      <span className="text-on-surface-variant">{getOperatorLabel(rule.operator)}</span>
+      <span className="text-on-surface-variant">{getOperatorLabel(rule.operator, t)}</span>
       {rule.conditionValue && (
         <span className="px-1.5 py-0.5 bg-tertiary-container text-on-tertiary-container rounded max-w-24 truncate">{rule.conditionValue}</span>
       )}

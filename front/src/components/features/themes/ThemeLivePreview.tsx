@@ -75,9 +75,9 @@ export function ThemeLivePreview({
         <div className="px-6 py-4 border-b" style={{ borderColor: `${resolvedTextColor}20` }}>
           <div className="flex items-center gap-3">
             {logoUrl ? (
-              <img src={logoUrl} alt="Logo" className="h-10 w-10 rounded-lg object-contain" />
+              <img src={logoUrl} alt={t('a11y.logo')} className="h-10 w-10 rounded-lg object-contain" />
             ) : (
-              <div className="h-10 w-10 rounded-xl shadow-sm" style={{ backgroundColor: primaryColor }} />
+              <div className="h-10 w-10 rounded-xl ring-2 ring-primary/20" style={{ backgroundColor: primaryColor }} />
             )}
             <div>
               <div className="text-lg font-bold" style={{ color: resolvedTextColor }}>
@@ -164,7 +164,7 @@ export function ThemeLivePreview({
               {t('themePreview.previous')}
             </button>
             <button
-              className="px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg"
+              className="px-6 py-3 font-medium transition-all border-2 border-primary/30 hover:border-primary/50"
               style={{
                 backgroundColor: primaryColor,
                 color: buttonTextColor,
@@ -194,7 +194,7 @@ export function ThemeLivePreview({
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         {logoUrl ? (
-          <img src={logoUrl} alt="Logo" className="h-10 w-10 rounded-xl object-contain bg-white/90" />
+          <img src={logoUrl} alt={t('a11y.logo')} className="h-10 w-10 rounded-xl object-contain bg-white/90" />
         ) : (
           <div className="h-10 w-10 rounded-xl" style={{ backgroundColor: primaryColor }} />
         )}

@@ -5,7 +5,20 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, IconButton, Select, Input, Skeleton, Chip } from '@/components/ui';
-import { Plus, Trash2, GitBranch, AlertCircle, ArrowRight, Eye, EyeOff, SkipForward, CircleStop, GripVertical, Pencil } from 'lucide-react';
+import {
+  Plus,
+  Trash2,
+  GitBranch,
+  AlertCircle,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  SkipForward,
+  CircleStop,
+  GripVertical,
+  Pencil,
+  CornerDownRight,
+} from 'lucide-react';
 import {
   useQuestionLogic,
   useCreateLogic,
@@ -71,8 +84,8 @@ export function LogicBuilderDialog({ open, onOpenChange, questionId, surveyId }:
   // Get operators for the selected source question
   const availableOperators = useMemo(() => {
     const sourceQuestion = questions.find((q) => q.id === formData.sourceQuestionId);
-    return sourceQuestion ? getOperatorsForQuestionType(sourceQuestion.type) : [];
-  }, [formData.sourceQuestionId, questions]);
+    return sourceQuestion ? getOperatorsForQuestionType(sourceQuestion.type, t) : [];
+  }, [formData.sourceQuestionId, questions, t]);
 
   // Get options for the selected source question (for value selection)
   const sourceQuestionOptions = useMemo(() => {
@@ -87,13 +100,18 @@ export function LogicBuilderDialog({ open, onOpenChange, questionId, surveyId }:
 
   // Check if value input is needed for the selected operator
   const needsValueInput = useMemo(() => {
-    const noValueOperators: LogicOperator[] = [LogicOperator.IsAnswered, LogicOperator.IsNotAnswered];
+    const noValueOperators: LogicOperator[] = [
+      LogicOperator.IsAnswered,
+      LogicOperator.IsNotAnswered,
+      LogicOperator.IsEmpty,
+      LogicOperator.IsNotEmpty,
+    ];
     return !noValueOperators.includes(formData.operator);
   }, [formData.operator]);
 
   // Check if target question is needed for the selected action
   const needsTargetQuestion = useMemo(() => {
-    const targetActions: LogicAction[] = [LogicAction.Show, LogicAction.Hide, LogicAction.Skip];
+    const targetActions: LogicAction[] = [LogicAction.Show, LogicAction.Hide, LogicAction.Skip, LogicAction.JumpTo];
     return targetActions.includes(formData.action);
   }, [formData.action]);
 
@@ -248,6 +266,8 @@ export function LogicBuilderDialog({ open, onOpenChange, questionId, surveyId }:
         return <EyeOff className="w-4 h-4" />;
       case LogicAction.Skip:
         return <SkipForward className="w-4 h-4" />;
+      case LogicAction.JumpTo:
+        return <CornerDownRight className="w-4 h-4" />;
       case LogicAction.EndSurvey:
         return <CircleStop className="w-4 h-4" />;
       default:
@@ -473,6 +493,7 @@ function RuleForm({
     { value: String(LogicAction.Show), label: t('conditionalLogic.actions.show') },
     { value: String(LogicAction.Hide), label: t('conditionalLogic.actions.hide') },
     { value: String(LogicAction.Skip), label: t('conditionalLogic.actions.skip') },
+    { value: String(LogicAction.JumpTo), label: t('conditionalLogic.actions.jumpTo') },
     { value: String(LogicAction.EndSurvey), label: t('conditionalLogic.actions.endSurvey') },
   ];
 
@@ -603,7 +624,7 @@ function RuleSummary({ rule, getQuestionLabel, getActionIcon, t }: RuleSummaryPr
         <Chip size="sm" variant="assist">
           {getQuestionLabel(rule.sourceQuestionId)}
         </Chip>
-        <span className="text-on-surface-variant">{getOperatorLabel(rule.operator)}</span>
+        <span className="text-on-surface-variant">{getOperatorLabel(rule.operator, t)}</span>
         {rule.conditionValue && (
           <Chip size="sm" variant="input">
             {rule.conditionValue}
@@ -616,7 +637,7 @@ function RuleSummary({ rule, getQuestionLabel, getActionIcon, t }: RuleSummaryPr
         <Chip size="sm" variant="suggestion">
           <span className="flex items-center gap-1.5">
             {getActionIcon(rule.action)}
-            {getActionLabel(rule.action)}
+            {getActionLabel(rule.action, t)}
           </span>
         </Chip>
         {rule.targetQuestionId && (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Copy, FileStack, Sparkles } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Textarea } from '@/components/ui';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
@@ -26,6 +27,7 @@ function UseTemplateForm({
   onCancel: () => void;
   isLoading: boolean;
 }) {
+  const { t } = useTranslation();
   const [showDescription, setShowDescription] = useState(!!template.description);
   const [languageCode, setLanguageCode] = useState<LanguageCode>(getCurrentLanguage());
 
@@ -73,8 +75,8 @@ function UseTemplateForm({
 
         {/* Title input */}
         <Input
-          label="Survey Title"
-          placeholder="Enter a title for your new survey"
+          label={t('templates.useTemplateDialog.surveyTitle')}
+          placeholder={t('templates.useTemplateDialog.surveyTitlePlaceholder')}
           {...register('title')}
           error={errors.title?.message}
           autoFocus
@@ -84,8 +86,8 @@ function UseTemplateForm({
         {/* Description */}
         {showDescription ? (
           <Textarea
-            label="Description (optional)"
-            placeholder="Add a description for your survey..."
+            label={t('templates.useTemplateDialog.descriptionOptional')}
+            placeholder={t('templates.useTemplateDialog.descriptionPlaceholder')}
             {...register('description')}
             rows={3}
             disabled={isLoading}
@@ -98,14 +100,14 @@ function UseTemplateForm({
             disabled={isLoading}
           >
             <Sparkles className="h-4 w-4" />
-            Add description
+            {t('templates.useTemplateDialog.addDescription')}
           </button>
         )}
 
         {/* Language selector */}
         <div className="flex items-center gap-2">
           <label htmlFor="survey-language" className="text-sm text-on-surface-variant">
-            Language:
+            {t('templates.useTemplateDialog.language')}
           </label>
           <select
             id="survey-language"
@@ -122,18 +124,16 @@ function UseTemplateForm({
           </select>
         </div>
 
-        <p className="text-xs text-on-surface-variant text-center">
-          A new survey will be created with all questions from this template. You can customize it after creation.
-        </p>
+        <p className="text-xs text-on-surface-variant text-center">{t('templates.useTemplateDialog.infoMessage')}</p>
       </DialogBody>
 
       <DialogFooter className="pt-4">
         <Button type="button" variant="text" onClick={onCancel} disabled={isLoading}>
-          Cancel
+          {t('common.cancel')}
         </Button>
         <Button type="submit" variant="filled" disabled={!isValid || isLoading} loading={isLoading}>
           <Copy className="h-4 w-4 mr-2" />
-          Create Survey
+          {t('templates.useTemplateDialog.createButton')}
         </Button>
       </DialogFooter>
     </form>
@@ -141,6 +141,7 @@ function UseTemplateForm({
 }
 
 export function UseTemplateDialog({ open, onOpenChange, template, onSubmit, isLoading = false }: UseTemplateDialogProps) {
+  const { t } = useTranslation();
   if (!template) return null;
 
   return (
@@ -149,8 +150,8 @@ export function UseTemplateDialog({ open, onOpenChange, template, onSubmit, isLo
         <DialogHeader
           hero
           icon={<FileStack className="h-7 w-7" />}
-          title="Use Template"
-          description="Create a new survey from this template"
+          title={t('templates.useTemplateDialog.title')}
+          description={t('templates.useTemplateDialog.description')}
           showClose
         />
 

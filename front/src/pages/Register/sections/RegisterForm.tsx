@@ -65,7 +65,7 @@ export function RegisterForm({ onSubmit, isLoading, error }: RegisterFormProps) 
         type="email"
         variant="filled"
         size="lg"
-        placeholder="you@example.com"
+        placeholder={t('auth.emailPlaceholder')}
         {...register('email')}
         error={touchedFields.email ? errors.email?.message : undefined}
         autoComplete="email"

@@ -92,7 +92,7 @@ export function ResponseTrendChart({
                 />
                 {/* Tooltip */}
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                  <div className="bg-surface-container-highest text-on-surface text-xs rounded-lg px-2 py-1 whitespace-nowrap shadow-lg">
+                  <div className="bg-surface-container-highest text-on-surface text-xs rounded-lg px-2 py-1 whitespace-nowrap border-2 border-outline-variant">
                     <p className="font-medium">{item.count} responses</p>
                     <p className="text-on-surface-variant">{item.label}</p>
                   </div>

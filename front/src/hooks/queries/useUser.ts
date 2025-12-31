@@ -4,12 +4,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { usersApi } from '@/services';
 import { useAuthStore } from '@/stores';
 import type { UpdateProfileRequest, ChangePasswordRequest, User } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const userKeys = {
-  all: ['user'] as const,
-  current: () => [...userKeys.all, 'current'] as const,
-};
+// Query keys - user only has a current key (no list/detail pattern)
+export const userKeys = createExtendedQueryKeys('user', (base) => ({
+  current: () => [...base.all, 'current'] as const,
+}));
 
 /**
  * Hook to fetch current user profile
@@ -21,7 +21,7 @@ export function useCurrentUser() {
     queryKey: userKeys.current(),
     queryFn: usersApi.getCurrentUser,
     enabled: isAuthenticated,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
   });
 }
 

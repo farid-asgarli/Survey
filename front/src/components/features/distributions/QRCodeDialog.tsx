@@ -1,19 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Download, Copy, Check, QrCode, Palette, Sun, Moon, ExternalLink } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Button,
-  Select,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui';
-import { toast } from '@/components/ui';
+import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Select, Tabs, TabsList, TabsTrigger, toast } from '@/components/ui';
+import { useCopyToClipboard } from '@/hooks';
 import type { SurveyLink } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -38,7 +27,7 @@ function generateQRCodeUrl(data: string, size: number, fgColor: string, bgColor:
 
 export function QRCodeDialog({ link, onClose }: QRCodeDialogProps) {
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
   const [qrTheme, setQrTheme] = useState<QRTheme>('light');
   const [qrSize, setQrSize] = useState('300');
 
@@ -52,16 +41,12 @@ export function QRCodeDialog({ link, onClose }: QRCodeDialogProps) {
     [t]
   );
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = () => {
     if (!link) return;
-    try {
-      await navigator.clipboard.writeText(link.fullUrl);
-      setCopied(true);
-      toast.success(t('qrCodeDialog.toast.copied'));
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      toast.error(t('qrCodeDialog.toast.copyFailed'));
-    }
+    copy(link.fullUrl, {
+      successMessage: t('qrCodeDialog.toast.copied'),
+      errorMessage: t('qrCodeDialog.toast.copyFailed'),
+    });
   };
 
   const handleDownload = async () => {
@@ -120,7 +105,7 @@ export function QRCodeDialog({ link, onClose }: QRCodeDialogProps) {
                   qrTheme === 'dark' ? '' : 'border border-outline-variant/30'
                 )}
               >
-                <img src={qrUrl} alt="QR Code" className="rounded-xl" style={{ width: displaySize, height: displaySize }} />
+                <img src={qrUrl} alt={t('a11y.qrCode')} className="rounded-xl" style={{ width: displaySize, height: displaySize }} />
               </div>
 
               {/* Link display */}

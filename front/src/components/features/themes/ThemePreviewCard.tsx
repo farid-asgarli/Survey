@@ -169,7 +169,7 @@ export function ThemePreviewCard({
           <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" aria-label="More options">
+                <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')}>
                   <MoreVertical className="h-4 w-4" />
                 </IconButton>
               }
@@ -294,7 +294,7 @@ export function ThemePreviewCard({
           <div onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" className="h-7 w-7" aria-label="More options">
+                <IconButton variant="standard" size="sm" className="h-7 w-7" aria-label={t('a11y.moreOptions')}>
                   <MoreVertical className="h-3.5 w-3.5" style={{ color: displayTextColor, opacity: 0.6 }} />
                 </IconButton>
               }

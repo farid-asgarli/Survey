@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Camera, Trash2, Upload, X, Loader2, ImagePlus } from 'lucide-react';
 import { Avatar, Button, Dialog, DialogHeader, DialogContent, DialogFooter } from '@/components/ui';
+import { useDialogState } from '@/hooks';
 import { cn } from '@/lib/utils';
 
 interface AvatarUploadProps {
@@ -29,13 +30,24 @@ export function AvatarUpload({
   acceptedTypes = DEFAULT_ACCEPTED_TYPES,
 }: AvatarUploadProps) {
   const { t } = useTranslation();
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
-  const [showRemoveDialog, setShowRemoveDialog] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Dialog states with cleanup on close
+  const uploadDialog = useDialogState({
+    onClose: () => {
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+      setError(null);
+    },
+  });
+  const removeDialog = useDialogState();
 
   const isLoading = isUploading || isRemoving;
 
@@ -109,41 +121,29 @@ export function AvatarUpload({
 
     try {
       await onUpload(selectedFile);
-      setShowUploadDialog(false);
-      setSelectedFile(null);
-      setPreviewUrl(null);
+      uploadDialog.close();
     } catch {
       setError(t('avatar.uploadError'));
     }
-  }, [selectedFile, onUpload, t]);
+  }, [selectedFile, onUpload, t, uploadDialog]);
 
   const handleRemove = useCallback(async () => {
     if (!onRemove) return;
 
     try {
       await onRemove();
-      setShowRemoveDialog(false);
+      removeDialog.close();
     } catch {
       setError(t('avatar.removeError'));
     }
-  }, [onRemove, t]);
+  }, [onRemove, t, removeDialog]);
 
   const handleOpenUploadDialog = useCallback(() => {
     setSelectedFile(null);
     setPreviewUrl(null);
     setError(null);
-    setShowUploadDialog(true);
-  }, []);
-
-  const handleCloseUploadDialog = useCallback(() => {
-    setShowUploadDialog(false);
-    setSelectedFile(null);
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(null);
-    }
-    setError(null);
-  }, [previewUrl]);
+    uploadDialog.open();
+  }, [uploadDialog]);
 
   return (
     <>
@@ -178,7 +178,7 @@ export function AvatarUpload({
             </Button>
 
             {currentAvatarUrl && onRemove && (
-              <Button variant="outline" size="sm" onClick={() => setShowRemoveDialog(true)} disabled={isLoading} className="text-error">
+              <Button variant="outline" size="sm" onClick={() => removeDialog.open()} disabled={isLoading} className="text-error">
                 <Trash2 className="h-4 w-4" />
               </Button>
             )}
@@ -190,7 +190,7 @@ export function AvatarUpload({
       </div>
 
       {/* Upload Dialog */}
-      <Dialog open={showUploadDialog} onOpenChange={handleCloseUploadDialog}>
+      <Dialog open={uploadDialog.isOpen} onOpenChange={uploadDialog.setOpen}>
         <DialogContent showClose={false}>
           <DialogHeader
             hero
@@ -213,7 +213,7 @@ export function AvatarUpload({
             {previewUrl ? (
               <div className="flex flex-col items-center gap-4">
                 <div className="relative">
-                  <img src={previewUrl} alt="Preview" className="h-32 w-32 rounded-full object-cover" />
+                  <img src={previewUrl} alt={t('a11y.preview')} className="h-32 w-32 rounded-full object-cover" />
                   <button
                     onClick={() => {
                       setSelectedFile(null);
@@ -254,7 +254,7 @@ export function AvatarUpload({
         </DialogContent>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleCloseUploadDialog} disabled={isUploading}>
+          <Button variant="outline" onClick={() => uploadDialog.close()} disabled={isUploading}>
             {t('common.cancel')}
           </Button>
           <Button onClick={handleUpload} disabled={!selectedFile || isUploading}>
@@ -271,7 +271,7 @@ export function AvatarUpload({
       </Dialog>
 
       {/* Remove Confirmation Dialog */}
-      <Dialog open={showRemoveDialog} onOpenChange={setShowRemoveDialog}>
+      <Dialog open={removeDialog.isOpen} onOpenChange={removeDialog.setOpen}>
         <DialogContent showClose={false}>
           <DialogHeader
             hero
@@ -284,7 +284,7 @@ export function AvatarUpload({
 
           <div className="p-4">
             <div className="flex justify-end gap-3">
-              <Button variant="text" onClick={() => setShowRemoveDialog(false)} disabled={isRemoving}>
+              <Button variant="text" onClick={() => removeDialog.close()} disabled={isRemoving}>
                 {t('common.cancel')}
               </Button>
               <Button variant="destructive" onClick={handleRemove} disabled={isRemoving}>

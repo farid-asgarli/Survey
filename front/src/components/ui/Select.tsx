@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { ChevronDown, Check, Search } from 'lucide-react';
 
@@ -27,7 +28,7 @@ function Select({
   options,
   value,
   onChange,
-  placeholder = 'Select...',
+  placeholder,
   label,
   error,
   helperText,
@@ -36,6 +37,7 @@ function Select({
   className,
   size = 'default',
 }: SelectProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [position, setPosition] = useState<{ top: number; left: number; width: number } | null>(null);
@@ -143,7 +145,7 @@ function Select({
         )}
       >
         <span className={cn('text-sm truncate', selectedOption ? 'text-on-surface' : 'text-on-surface-variant/50')}>
-          {selectedOption?.label || placeholder}
+          {selectedOption?.label || placeholder || t('common.select')}
         </span>
         <ChevronDown className={cn('h-4 w-4 text-on-surface-variant transition-transform duration-200', open && 'rotate-180 text-primary')} />
       </button>
@@ -175,7 +177,7 @@ function Select({
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search..."
+                    placeholder={t('common.searchDots')}
                     className={cn(
                       'w-full h-9 pl-9 pr-3 rounded-xl',
                       'bg-surface-container/50 text-on-surface text-sm',
@@ -189,7 +191,7 @@ function Select({
             )}
 
             {filteredOptions.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-on-surface-variant text-center">No options found</div>
+              <div className="px-4 py-3 text-sm text-on-surface-variant text-center">{t('common.noOptionsFound')}</div>
             ) : (
               filteredOptions.map((option) => (
                 <button

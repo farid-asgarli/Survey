@@ -58,6 +58,8 @@ public class GetSurveysQueryHandler(
             request.PageSize,
             request.SearchTerm,
             request.Status,
+            request.SortBy,
+            request.SortDescending,
             cancellationToken
         );
 

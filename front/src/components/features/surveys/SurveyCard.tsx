@@ -54,7 +54,7 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
           <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" aria-label="More options" className="h-8 w-8">
+                <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')} className="h-8 w-8">
                   <MoreVertical className="h-4 w-4" />
                 </IconButton>
               }
@@ -201,7 +201,7 @@ export function SurveyListItem({ survey, onEdit, onPreview, onDuplicate, onShare
 
         <Menu
           trigger={
-            <IconButton variant="standard" size="sm" aria-label="More options">
+            <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')}>
               <MoreVertical className="h-4 w-4" />
             </IconButton>
           }

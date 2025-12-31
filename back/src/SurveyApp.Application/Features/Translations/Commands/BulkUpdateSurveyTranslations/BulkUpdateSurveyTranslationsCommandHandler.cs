@@ -1,7 +1,9 @@
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
+using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
 
@@ -29,7 +31,11 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
             return Result<BulkTranslationResultDto>.Failure("Errors.NamespaceRequired");
         }
 
-        var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
+        // Load survey with questions for language sync
+        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
+            request.SurveyId,
+            cancellationToken
+        );
         if (survey == null)
         {
             return Result<BulkTranslationResultDto>.Failure("Errors.SurveyNotFound");
@@ -43,6 +49,7 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
         var errors = new List<string>();
         var successCount = 0;
         string? newDefaultLanguage = null;
+        var newTranslations = new List<SurveyTranslation>();
 
         // Find if there's a new default language specified
         var defaultTranslation = request.Translations.FirstOrDefault(t => t.IsDefault);
@@ -51,10 +58,22 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
             newDefaultLanguage = defaultTranslation.LanguageCode;
         }
 
+        // Get existing language codes to determine which are new
+        var existingLanguages = survey
+            .GetAvailableLanguages()
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
         foreach (var translation in request.Translations)
         {
             try
             {
+                // Validate language code
+                if (!LanguageCode.IsSupported(translation.LanguageCode))
+                {
+                    errors.Add($"Unsupported language code: '{translation.LanguageCode}'");
+                    continue;
+                }
+
                 survey.AddOrUpdateTranslation(
                     translation.LanguageCode,
                     translation.Title,
@@ -62,6 +81,17 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
                     translation.WelcomeMessage,
                     translation.ThankYouMessage
                 );
+
+                // Track new translations for explicit adding to DbContext
+                if (!existingLanguages.Contains(translation.LanguageCode))
+                {
+                    var newTranslation = survey.GetTranslation(translation.LanguageCode);
+                    if (newTranslation != null)
+                    {
+                        newTranslations.Add(newTranslation);
+                    }
+                }
+
                 successCount++;
             }
             catch (Exception ex)
@@ -83,17 +113,86 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
             }
         }
 
-        _surveyRepository.Update(survey);
+        // Process question translations
+        var questionTranslationSuccess = 0;
+        var newQuestionTranslations = new List<QuestionTranslation>();
+        if (request.QuestionTranslations != null && request.QuestionTranslations.Count > 0)
+        {
+            var questionsDict = survey.Questions.ToDictionary(q => q.Id);
+
+            foreach (var qt in request.QuestionTranslations)
+            {
+                try
+                {
+                    if (!questionsDict.TryGetValue(qt.QuestionId, out var question))
+                    {
+                        errors.Add($"Question not found: '{qt.QuestionId}'");
+                        continue;
+                    }
+
+                    // Check if this is a new translation
+                    var existingQTranslation = question.Translations.FirstOrDefault(t =>
+                        t.LanguageCode.Equals(qt.LanguageCode, StringComparison.OrdinalIgnoreCase)
+                    );
+                    var isNewQTranslation = existingQTranslation == null;
+
+                    // Convert translated settings DTO to domain value object
+                    var translatedSettings = qt.TranslatedSettings?.ToDomain();
+
+                    // Add or update the question translation
+                    var qTranslation = question.AddOrUpdateTranslation(
+                        qt.LanguageCode,
+                        qt.Text,
+                        qt.Description,
+                        translatedSettings
+                    );
+
+                    // Track new translations for explicit adding to DbContext
+                    if (isNewQTranslation)
+                    {
+                        newQuestionTranslations.Add(qTranslation);
+                    }
+
+                    questionTranslationSuccess++;
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(
+                        $"Failed to update question '{qt.QuestionId}' for '{qt.LanguageCode}': {ex.Message}"
+                    );
+                }
+            }
+        }
+
+        // Explicitly add new translations to DbContext for proper change tracking
+        // This is necessary because adding to a tracked collection may not always
+        // be detected as an 'Added' state by EF Core's change tracker
+        foreach (var newTranslation in newTranslations)
+        {
+            await _surveyRepository.AddTranslationAsync(newTranslation, cancellationToken);
+        }
+
+        // Explicitly add new question translations to DbContext
+        foreach (var newQTranslation in newQuestionTranslations)
+        {
+            await _surveyRepository.AddQuestionTranslationAsync(newQTranslation, cancellationToken);
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        var totalProcessed =
+            request.Translations.Count + (request.QuestionTranslations?.Count ?? 0);
+        var totalSuccess = successCount + questionTranslationSuccess;
 
         return Result<BulkTranslationResultDto>.Success(
             new BulkTranslationResultDto
             {
-                TotalProcessed = request.Translations.Count,
-                SuccessCount = successCount,
+                TotalProcessed = totalProcessed,
+                SuccessCount = totalSuccess,
                 FailureCount = errors.Count,
                 Errors = errors,
-                Languages = survey.GetAvailableLanguages().ToList(),
+                Languages = [.. survey.GetAvailableLanguages()],
+                CompletionStatus = survey.GetTranslationCompletionStatus(),
             }
         );
     }

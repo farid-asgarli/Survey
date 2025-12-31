@@ -77,7 +77,7 @@ function LinkTypeSelector({ value, onChange }: { value: LinkTypeString; onChange
             className={cn(
               'relative p-5 rounded-2xl border-2 text-left transition-all duration-200',
               isSelected
-                ? `${type.color} border-current shadow-md`
+                ? `${type.color} border-current ring-2 ring-current/30`
                 : 'bg-surface border-outline-variant hover:border-outline hover:bg-surface-container-lowest'
             )}
           >

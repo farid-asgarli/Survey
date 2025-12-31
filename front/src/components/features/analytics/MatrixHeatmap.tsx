@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardContent, Skeleton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 
@@ -65,6 +66,8 @@ function getTextColor(percentage: number, colorScheme: 'primary' | 'gradient'): 
 }
 
 export function MatrixHeatmap({ questionText, data, totalAnswers, isLoading, className, colorScheme = 'primary' }: MatrixHeatmapProps) {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <Card variant="outlined" className={className}>
@@ -91,7 +94,7 @@ export function MatrixHeatmap({ questionText, data, totalAnswers, isLoading, cla
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-8 text-on-surface-variant">
-            <p className="text-sm">No matrix data available</p>
+            <p className="text-sm">{t('analytics.noMatrixData')}</p>
           </div>
         </CardContent>
       </Card>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
+using SurveyApp.Application.Features.Translations.Commands.DeleteSurveyTranslation;
 using SurveyApp.Application.Features.Translations.Queries.GetSurveyTranslations;
 
 namespace SurveyApp.API.Controllers;
@@ -36,11 +37,11 @@ public class TranslationsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Bulk update all translations for a survey.
+    /// Bulk update all translations for a survey (including question translations).
     /// This allows managing all language versions of a survey at once.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="translations">The translations to add or update.</param>
+    /// <param name="request">The translations to add or update.</param>
     /// <returns>Result of the bulk update operation.</returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,6 +57,7 @@ public class TranslationsController(IMediator mediator) : ControllerBase
             {
                 SurveyId = surveyId,
                 Translations = request.Translations,
+                QuestionTranslations = request.QuestionTranslations,
             }
         );
 
@@ -98,6 +100,28 @@ public class TranslationsController(IMediator mediator) : ControllerBase
 
         return Ok(result.Value);
     }
+
+    /// <summary>
+    /// Delete a translation for a survey.
+    /// </summary>
+    /// <param name="surveyId">The survey ID.</param>
+    /// <param name="languageCode">The language code to delete (e.g., "es", "fr").</param>
+    /// <returns>No content on success.</returns>
+    [HttpDelete("{languageCode}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteTranslation(Guid surveyId, string languageCode)
+    {
+        var result = await _mediator.Send(
+            new DeleteSurveyTranslationCommand { SurveyId = surveyId, LanguageCode = languageCode }
+        );
+
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
+
+        return NoContent();
+    }
 }
 
 /// <summary>
@@ -106,7 +130,12 @@ public class TranslationsController(IMediator mediator) : ControllerBase
 public class BulkUpdateTranslationsRequest
 {
     /// <summary>
-    /// The translations to add or update.
+    /// The survey-level translations to add or update.
     /// </summary>
     public IReadOnlyList<SurveyTranslationDto> Translations { get; set; } = [];
+
+    /// <summary>
+    /// The question translations to add or update.
+    /// </summary>
+    public IReadOnlyList<QuestionTranslationUpdateDto>? QuestionTranslations { get; set; }
 }

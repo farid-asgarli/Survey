@@ -3,17 +3,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { linksApi } from '@/services';
 import type { CreateLinkRequest, UpdateLinkRequest, SurveyLink, BulkLinkGenerationRequest, LinkAnalyticsResponse } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const linkKeys = {
-  all: ['links'] as const,
-  lists: () => [...linkKeys.all, 'list'] as const,
-  list: (surveyId: string) => [...linkKeys.lists(), surveyId] as const,
-  details: () => [...linkKeys.all, 'detail'] as const,
-  detail: (surveyId: string, linkId: string) => [...linkKeys.details(), surveyId, linkId] as const,
+// Query keys - links have custom detail key (surveyId + linkId) and analytics
+export const linkKeys = createExtendedQueryKeys('links', (base) => ({
+  // Override detail to include surveyId
+  detail: (surveyId: string, linkId: string) => [...base.details(), surveyId, linkId] as const,
   analytics: (surveyId: string, linkId: string, startDate?: string, endDate?: string) =>
-    [...linkKeys.all, 'analytics', surveyId, linkId, { startDate, endDate }] as const,
-};
+    [...base.all, 'analytics', surveyId, linkId, { startDate, endDate }] as const,
+}));
 
 /**
  * Hook to fetch all links for a survey
@@ -23,7 +21,7 @@ export function useSurveyLinks(surveyId: string | undefined) {
     queryKey: linkKeys.list(surveyId!),
     queryFn: () => linksApi.list(surveyId!),
     enabled: !!surveyId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -35,7 +33,7 @@ export function useLinkDetail(surveyId: string | undefined, linkId: string | und
     queryKey: linkKeys.detail(surveyId!, linkId!),
     queryFn: () => linksApi.getById(surveyId!, linkId!),
     enabled: !!surveyId && !!linkId,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -47,7 +45,7 @@ export function useLinkAnalytics(surveyId: string | undefined, linkId: string | 
     queryKey: linkKeys.analytics(surveyId!, linkId!, startDate, endDate),
     queryFn: () => linksApi.getAnalytics(surveyId!, linkId!, startDate, endDate),
     enabled: !!surveyId && !!linkId,
-    staleTime: 1 * 60 * 1000, // 1 minute
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 

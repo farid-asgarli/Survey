@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SurveyApp.Domain.Entities;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.Infrastructure.Persistence.Configurations;
 
@@ -32,9 +32,11 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
 
         builder.Property(x => x.IsDefault).IsRequired().HasDefaultValue(false);
 
-        // Store placeholders as JSON
+        // Store placeholders as JSON with value comparer
+        // Use backing field since property is IReadOnlyList<string>
         builder
-            .Property(x => x.AvailablePlaceholders)
+            .Property<List<string>>("_availablePlaceholders")
+            .HasColumnName("AvailablePlaceholders")
             .HasConversion(
                 v =>
                     System.Text.Json.JsonSerializer.Serialize(
@@ -47,7 +49,16 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
                         (System.Text.Json.JsonSerializerOptions?)null
                     ) ?? new List<string>()
             )
-            .HasColumnType("text");
+            .HasColumnType("text")
+            .Metadata.SetValueComparer(
+                new ValueComparer<List<string>>(
+                    (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()
+                )
+            );
+
+        builder.Ignore(x => x.AvailablePlaceholders);
 
         // Audit fields
         builder.Property(x => x.CreatedAt).IsRequired();

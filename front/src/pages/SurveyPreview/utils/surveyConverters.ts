@@ -22,6 +22,8 @@ export function surveyToPublicSurvey(survey: Survey): PublicSurvey {
     allowAnonymousResponses: survey.allowAnonymousResponses ?? false,
     questions: (survey.questions ?? []).map(questionToPublicQuestion),
     theme: undefined, // Theme loaded separately
+    language: survey.language,
+    availableLanguages: survey.availableLanguages,
   };
 }
 

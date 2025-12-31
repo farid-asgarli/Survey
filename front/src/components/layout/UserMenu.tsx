@@ -47,7 +47,7 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
       <button
         ref={triggerRef}
         onClick={() => setOpen(!open)}
-        aria-label="User menu"
+        aria-label={t('a11y.userMenu')}
         aria-expanded={open}
         aria-haspopup="menu"
         className={cn(

@@ -70,7 +70,6 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
   useLayoutEffect(() => {
     if (open && menuRef.current) {
       const menuHeight = menuRef.current.offsetHeight;
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- useLayoutEffect for DOM measurement before paint is the recommended React pattern
       setPosition(calculatePosition(menuHeight));
     }
   }, [open, calculatePosition]);
@@ -113,7 +112,7 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
 
   return (
     <>
-      <div ref={triggerRef} onClick={handleToggle} className='inline-flex cursor-pointer'>
+      <div ref={triggerRef} onClick={handleToggle} className="inline-flex cursor-pointer">
         {trigger}
       </div>
 
@@ -154,6 +153,7 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
 function MenuItem({ className, icon, destructive = false, disabled = false, ref, children, ...props }: MenuItemProps) {
   return (
     <button
+      type="button"
       ref={ref}
       disabled={disabled}
       className={cn(
@@ -166,8 +166,8 @@ function MenuItem({ className, icon, destructive = false, disabled = false, ref,
       style={{ width: 'calc(100% - 12px)' }}
       {...props}
     >
-      {icon && <span className='shrink-0 w-5 h-5 [&>svg]:w-5 [&>svg]:h-5'>{icon}</span>}
-      <span className='flex-1 font-medium'>{children}</span>
+      {icon && <span className="shrink-0 w-5 h-5 [&>svg]:w-5 [&>svg]:h-5">{icon}</span>}
+      <span className="flex-1 font-medium">{children}</span>
     </button>
   );
 }

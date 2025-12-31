@@ -296,10 +296,6 @@ namespace SurveyApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AvailablePlaceholders")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -342,6 +338,11 @@ namespace SurveyApp.Infrastructure.Migrations
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("_availablePlaceholders")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("AvailablePlaceholders");
 
                     b.HasKey("Id");
 
@@ -639,13 +640,6 @@ namespace SurveyApp.Infrastructure.Migrations
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("DefaultLanguage")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasDefaultValue("en");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
@@ -1678,9 +1672,7 @@ namespace SurveyApp.Infrastructure.Migrations
 
                     b.Property<string>("ProgressBarStyle")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Bar");
+                        .HasColumnType("text");
 
                     b.Property<string>("SecondaryColor")
                         .IsRequired()
@@ -1879,13 +1871,6 @@ namespace SurveyApp.Infrastructure.Migrations
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("DefaultLanguage")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasDefaultValue("en");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");

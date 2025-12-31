@@ -120,7 +120,7 @@ export function ForgotPasswordPage() {
               <Input
                 label={t('auth.email')}
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t('auth.forgotPasswordEmailPlaceholder')}
                 {...register('email')}
                 error={touchedFields.email ? errors.email?.message : undefined}
                 autoComplete="email"

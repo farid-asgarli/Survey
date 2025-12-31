@@ -86,7 +86,7 @@ export function BlockPalette({ onAddBlock, className }: BlockPaletteProps) {
             onClick={() => onAddBlock(option.type)}
             className={cn(
               'flex items-center gap-3 p-2.5 rounded-xl text-left transition-all duration-200',
-              'hover:bg-primary-container/50 hover:shadow-sm',
+              'border-2 border-transparent hover:bg-surface-container-high hover:border-primary/30',
               'active:scale-[0.98]',
               'group cursor-grab active:cursor-grabbing'
             )}

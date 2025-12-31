@@ -23,6 +23,13 @@ public class SurveyThemeTranslationConfiguration : IEntityTypeConfiguration<Surv
         builder.Property(t => t.LastModifiedAt);
         builder.Property(t => t.LastModifiedBy);
 
+        // Note: Concurrency control is handled at the parent entity level
+        // Translations don't need separate concurrency tokens
+        builder.Ignore(t => t.Version);
+
+        // Apply matching query filter to match parent entity's soft delete filter
+        builder.HasQueryFilter(t => !t.Theme.IsDeleted);
+
         // Note: Relationship is configured in SurveyThemeConfiguration (parent side)
 
         // Indexes

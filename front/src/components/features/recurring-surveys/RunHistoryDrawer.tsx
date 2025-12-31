@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   History,
   CheckCircle2,
@@ -161,6 +162,7 @@ function RunHistorySkeleton() {
 }
 
 export function RunHistoryDrawer({ open, onOpenChange, recurringSurvey }: RunHistoryDrawerProps) {
+  const { t } = useTranslation();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, refetch } = useRecurringRunsInfinite(recurringSurvey?.id, {
     pageSize: 20,
   });
@@ -188,7 +190,7 @@ export function RunHistoryDrawer({ open, onOpenChange, recurringSurvey }: RunHis
         <DrawerHeader
           hero
           icon={<History className="h-7 w-7" />}
-          title="Run History"
+          title={t('recurringSurveys.runHistory')}
           description={recurringSurvey?.name || 'Recurring Survey'}
           showClose
         >
@@ -233,19 +235,15 @@ export function RunHistoryDrawer({ open, onOpenChange, recurringSurvey }: RunHis
           ) : isError ? (
             <EmptyState
               icon={<AlertTriangle className="h-8 w-8" />}
-              title="Failed to load history"
-              description="Something went wrong while loading the run history."
+              title={t('recurringSurveys.loadHistoryError')}
+              description={t('recurringSurveys.loadHistoryErrorDesc')}
               action={{
-                label: 'Try Again',
+                label: t('common.tryAgain'),
                 onClick: () => refetch(),
               }}
             />
           ) : runs.length === 0 ? (
-            <EmptyState
-              icon={<History className="h-8 w-8" />}
-              title="No runs yet"
-              description="This recurring survey hasn't run yet. The first run will be triggered according to the schedule."
-            />
+            <EmptyState icon={<History className="h-8 w-8" />} title={t('recurringSurveys.noRuns')} description={t('recurringSurveys.noRunsDesc')} />
           ) : (
             <div className="space-y-3">
               {runs.map((run) => (
@@ -262,7 +260,7 @@ export function RunHistoryDrawer({ open, onOpenChange, recurringSurvey }: RunHis
                     disabled={isFetchingNextPage}
                     loading={isFetchingNextPage}
                   >
-                    Load More
+                    {t('common.loadMore')}
                   </Button>
                 </div>
               )}

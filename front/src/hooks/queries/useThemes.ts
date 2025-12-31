@@ -1,23 +1,19 @@
 // React Query hooks for Survey Themes operations
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { themesApi, type CreateThemeRequest, type UpdateThemeRequest } from '@/services';
 import { useNamespaceStore } from '@/stores';
+import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES } from './queryUtils';
 
 // Re-export types for consumers
 export type { CreateThemeRequest, UpdateThemeRequest, ThemePreviewResponse, ThemeCssResponse } from '@/services';
 
-// Query keys
-export const themeKeys = {
-  all: ['themes'] as const,
-  lists: () => [...themeKeys.all, 'list'] as const,
-  list: (namespaceId: string) => [...themeKeys.lists(), namespaceId] as const,
-  publicList: () => [...themeKeys.all, 'public'] as const,
-  details: () => [...themeKeys.all, 'detail'] as const,
-  detail: (id: string) => [...themeKeys.details(), id] as const,
-  preview: (id: string) => [...themeKeys.all, 'preview', id] as const,
-  css: (id: string) => [...themeKeys.all, 'css', id] as const,
-};
+// Query keys - using the utility with custom keys for preview/css
+export const themeKeys = createExtendedQueryKeys('themes', (base) => ({
+  publicList: () => [...base.all, 'public'] as const,
+  preview: (id: string) => [...base.all, 'preview', id] as const,
+  css: (id: string) => [...base.all, 'css', id] as const,
+}));
 
 /**
  * Hook to fetch themes list for current namespace
@@ -30,7 +26,7 @@ export function useThemes() {
     queryKey: themeKeys.list(namespaceId || ''),
     queryFn: () => themesApi.list(),
     enabled: !!namespaceId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -41,8 +37,8 @@ export function usePublicThemes() {
   return useQuery({
     queryKey: themeKeys.publicList(),
     queryFn: () => themesApi.listPublic(),
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    retry: false, // Don't retry if endpoint doesn't exist
+    staleTime: STALE_TIMES.VERY_LONG,
+    retry: false,
   });
 }
 
@@ -54,7 +50,7 @@ export function useThemeDetail(id: string | undefined) {
     queryKey: themeKeys.detail(id!),
     queryFn: () => themesApi.getById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -66,7 +62,7 @@ export function useThemePreview(id: string | undefined) {
     queryKey: themeKeys.preview(id!),
     queryFn: () => themesApi.getPreview(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -78,7 +74,7 @@ export function useThemeCss(id: string | undefined) {
     queryKey: themeKeys.css(id!),
     queryFn: () => themesApi.getCss(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -86,93 +82,62 @@ export function useThemeCss(id: string | undefined) {
  * Hook to create a new theme
  */
 export function useCreateTheme() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: CreateThemeRequest) => themesApi.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(themeKeys, (data: CreateThemeRequest) => themesApi.create(data));
 }
 
 /**
  * Hook to update a theme
  */
 export function useUpdateTheme() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateThemeRequest }) => themesApi.update(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: themeKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: themeKeys.preview(id) });
-      queryClient.invalidateQueries({ queryKey: themeKeys.css(id) });
-    },
-  });
+  return useUpdatingMutation(
+    themeKeys,
+    ({ id, data }: { id: string; data: UpdateThemeRequest }) => themesApi.update(id, data),
+    ({ id }) => id,
+    {
+      // Also invalidate preview and CSS caches when theme is updated
+      getAdditionalInvalidations: ({ id }) => [[...themeKeys.preview(id)], [...themeKeys.css(id)]],
+    }
+  );
 }
 
 /**
  * Hook to delete a theme
  */
 export function useDeleteTheme() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => themesApi.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(themeKeys, (id: string) => themesApi.delete(id), { removeDetail: (id) => id });
 }
 
 /**
  * Hook to duplicate a theme
  */
 export function useDuplicateTheme() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => themesApi.duplicate(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(themeKeys, (id: string) => themesApi.duplicate(id));
 }
 
 /**
  * Hook to set a theme as the default for the namespace
  */
 export function useSetDefaultTheme() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => themesApi.setDefault(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: themeKeys.lists() });
-    },
-  });
+  return useInvalidatingMutation(themeKeys, (id: string) => themesApi.setDefault(id));
 }
 
 /**
  * Hook to apply a theme to a survey
  */
 export function useApplyThemeToSurvey() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: { surveyId: string; themeId?: string; presetThemeId?: string; themeCustomizations?: string }) =>
+  return useInvalidatingMutation(
+    themeKeys,
+    (data: { surveyId: string; themeId?: string; presetThemeId?: string; themeCustomizations?: string }) =>
       themesApi.applyToSurvey(data.surveyId, {
         themeId: data.themeId,
         presetThemeId: data.presetThemeId,
         themeCustomizations: data.themeCustomizations,
       }),
-    onSuccess: (_, { surveyId }) => {
-      // Invalidate survey queries to reflect theme change
-      queryClient.invalidateQueries({ queryKey: ['surveys', 'detail', surveyId] });
-    },
-  });
+    {
+      // Invalidate survey detail to reflect theme change
+      additionalInvalidations: [], // Will be handled via surveyKeys in component
+    }
+  );
 }
 
 /**

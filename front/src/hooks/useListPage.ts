@@ -1,21 +1,20 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { ViewMode } from '@/components/ui/ViewModeToggle';
 import type { ActiveFilter } from '@/components/ui/ActiveFiltersBar';
+import type { FilterConfig } from '@/types/list-page';
+import { useDebounce } from './useDebounce';
+
+// Re-export for backwards compatibility
+export type { FilterConfig } from '@/types/list-page';
 
 /**
- * Configuration for a filter field used in list pages.
+ * Pagination state for list pages.
  */
-export interface FilterConfig<T> {
-  /** The key identifying this filter */
-  key: string;
-  /** Default value for this filter */
-  defaultValue: T;
-  /** Display label for the filter chip */
-  label: string;
-  /** Function to get the display value for the chip (e.g., format the value) */
-  formatValue?: (value: T) => string;
-  /** Function to determine if the filter is "active" (not at default) */
-  isActive?: (value: T) => boolean;
+export interface PaginationState {
+  /** Current page (1-indexed) */
+  page: number;
+  /** Number of items per page */
+  pageSize: number;
 }
 
 /**
@@ -30,6 +29,14 @@ export interface UseListPageOptions<TFilters extends Record<string, unknown>> {
   filterConfigs?: FilterConfig<unknown>[];
   /** Initial filter values */
   initialFilters?: Partial<TFilters>;
+  /** Debounce delay for search query in milliseconds (default: 300ms, set to 0 to disable) */
+  searchDebounceMs?: number;
+  /** Initial page number (1-indexed, default: 1) */
+  initialPage?: number;
+  /** Initial page size (default: 10) */
+  initialPageSize?: number;
+  /** Whether to enable pagination (default: false) */
+  enablePagination?: boolean;
 }
 
 /**
@@ -41,7 +48,12 @@ export interface UseListPageReturn<TFilters extends Record<string, unknown>> {
   setViewMode: (mode: ViewMode) => void;
 
   // Search
+  /** The immediate search query (for input display) */
   searchQuery: string;
+  /** The debounced search query (for filtering/API calls) */
+  debouncedSearchQuery: string;
+  /** Whether search is pending debounce */
+  isSearchPending: boolean;
   setSearchQuery: (query: string) => void;
   clearSearch: () => void;
 
@@ -51,6 +63,12 @@ export interface UseListPageReturn<TFilters extends Record<string, unknown>> {
   setFilters: (filters: Partial<TFilters>) => void;
   clearFilters: () => void;
   clearAllFilters: () => void;
+
+  // Pagination
+  pagination: PaginationState;
+  setPage: (page: number) => void;
+  setPageSize: (pageSize: number) => void;
+  resetPagination: () => void;
 
   // Active filters for display
   activeFilters: ActiveFilter[];
@@ -87,24 +105,50 @@ export interface UseListPageReturn<TFilters extends Record<string, unknown>> {
  * });
  * ```
  */
-export function useListPage<TFilters extends Record<string, unknown>>(
-  options: UseListPageOptions<TFilters> = {}
-): UseListPageReturn<TFilters> {
-  const { initialViewMode = 'grid', initialSearch = '', filterConfigs = [], initialFilters = {} as Partial<TFilters> } = options;
+export function useListPage<TFilters extends Record<string, unknown>>(options: UseListPageOptions<TFilters> = {}): UseListPageReturn<TFilters> {
+  const {
+    initialViewMode = 'grid',
+    initialSearch = '',
+    filterConfigs = [],
+    initialFilters = {} as Partial<TFilters>,
+    searchDebounceMs = 300,
+    initialPage = 1,
+    initialPageSize = 10,
+    enablePagination = false,
+  } = options;
+
+  // Memoize filterConfigs - use structural key as cache invalidation hint
+  // but still include filterConfigs for Compiler compliance
+  const filterConfigsKey = filterConfigs.map((c) => c.key).join(',');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stableFilterConfigs = useMemo(() => filterConfigs, [filterConfigsKey, filterConfigs]);
+
+  // Memoize initial filters - use structural key as cache invalidation hint
+  const initialFiltersKey = Object.keys(initialFilters).sort().join(',');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stableInitialFilters = useMemo(() => initialFilters, [initialFiltersKey, initialFilters]);
 
   // Build initial filters from configs and initial values
   const defaultFilters = useMemo(() => {
     const defaults = {} as TFilters;
-    filterConfigs.forEach((config) => {
+    stableFilterConfigs.forEach((config) => {
       (defaults as Record<string, unknown>)[config.key] = config.defaultValue;
     });
-    return { ...defaults, ...initialFilters } as TFilters;
-  }, [filterConfigs, initialFilters]);
+    return { ...defaults, ...stableInitialFilters } as TFilters;
+  }, [stableFilterConfigs, stableInitialFilters]);
 
   // State
   const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode);
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [filters, setFiltersState] = useState<TFilters>(defaultFilters);
+  const [pagination, setPagination] = useState<PaginationState>({
+    page: initialPage,
+    pageSize: initialPageSize,
+  });
+
+  // Debounced search query
+  const debouncedSearchQuery = useDebounce(searchQuery, searchDebounceMs);
+  const isSearchPending = searchQuery !== debouncedSearchQuery;
 
   // Clear search
   const clearSearch = useCallback(() => {
@@ -130,7 +174,40 @@ export function useListPage<TFilters extends Record<string, unknown>>(
   const clearAllFilters = useCallback(() => {
     setFiltersState(defaultFilters);
     setSearchQuery('');
-  }, [defaultFilters]);
+    // Reset pagination when clearing all filters
+    if (enablePagination) {
+      setPagination((prev) => ({ page: initialPage, pageSize: prev.pageSize }));
+    }
+  }, [defaultFilters, enablePagination, initialPage]);
+
+  // Pagination handlers
+  const setPage = useCallback((page: number) => {
+    setPagination((prev) => ({ ...prev, page: Math.max(1, page) }));
+  }, []);
+
+  const setPageSize = useCallback((pageSize: number) => {
+    setPagination({ page: 1, pageSize: Math.max(1, pageSize) });
+  }, []);
+
+  const resetPagination = useCallback(() => {
+    setPagination({ page: initialPage, pageSize: initialPageSize });
+  }, [initialPage, initialPageSize]);
+
+  // Track a "version" of filters/search to reset pagination when they change
+  // This is React 19 Compiler compliant - no setState in effect
+  const filterSearchVersion = useMemo(() => JSON.stringify({ search: debouncedSearchQuery, filters }), [debouncedSearchQuery, filters]);
+
+  // Store previous version to detect changes and reset page
+  const [lastFilterSearchVersion, setLastFilterSearchVersion] = useState(filterSearchVersion);
+
+  // If filter/search changed and we're not on page 1, reset page
+  // This runs synchronously during render which is the React 19 pattern
+  if (enablePagination && filterSearchVersion !== lastFilterSearchVersion) {
+    setLastFilterSearchVersion(filterSearchVersion);
+    if (pagination.page !== 1) {
+      setPagination((prev) => ({ ...prev, page: 1 }));
+    }
+  }
 
   // Build active filters for display
   const activeFilters = useMemo<ActiveFilter[]>(() => {
@@ -147,7 +224,7 @@ export function useListPage<TFilters extends Record<string, unknown>>(
     }
 
     // Add configured filters that are active
-    filterConfigs.forEach((config) => {
+    stableFilterConfigs.forEach((config) => {
       const currentValue = filters[config.key as keyof TFilters];
       const isActive = config.isActive ? config.isActive(currentValue) : currentValue !== config.defaultValue;
 
@@ -164,7 +241,7 @@ export function useListPage<TFilters extends Record<string, unknown>>(
     });
 
     return active;
-  }, [searchQuery, filters, filterConfigs, clearSearch, setFilter]);
+  }, [searchQuery, filters, stableFilterConfigs, clearSearch, setFilter]);
 
   // Check if any filters are active
   const hasActiveFilters = activeFilters.length > 0;
@@ -173,12 +250,13 @@ export function useListPage<TFilters extends Record<string, unknown>>(
   const buildQueryParams = useCallback((): Record<string, unknown> => {
     const params: Record<string, unknown> = {};
 
-    if (searchQuery.trim()) {
-      params.search = searchQuery;
+    // Use debounced search for query params (actual API calls)
+    if (debouncedSearchQuery.trim()) {
+      params.search = debouncedSearchQuery;
     }
 
     Object.entries(filters).forEach(([key, value]) => {
-      const config = filterConfigs.find((c) => c.key === key);
+      const config = stableFilterConfigs.find((c) => c.key === key);
       const isActive = config?.isActive ? config.isActive(value) : value !== config?.defaultValue;
 
       if (isActive && value !== 'all' && value !== undefined && value !== null) {
@@ -186,13 +264,21 @@ export function useListPage<TFilters extends Record<string, unknown>>(
       }
     });
 
+    // Include pagination params if enabled
+    if (enablePagination) {
+      params.page = pagination.page;
+      params.pageSize = pagination.pageSize;
+    }
+
     return params;
-  }, [searchQuery, filters, filterConfigs]);
+  }, [debouncedSearchQuery, filters, stableFilterConfigs, enablePagination, pagination]);
 
   return {
     viewMode,
     setViewMode,
     searchQuery,
+    debouncedSearchQuery,
+    isSearchPending,
     setSearchQuery,
     clearSearch,
     filters,
@@ -200,6 +286,10 @@ export function useListPage<TFilters extends Record<string, unknown>>(
     setFilters,
     clearFilters,
     clearAllFilters,
+    pagination,
+    setPage,
+    setPageSize,
+    resetPagination,
     activeFilters,
     hasActiveFilters,
     buildQueryParams,

@@ -12,8 +12,8 @@
 import { useMemo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, FileText } from 'lucide-react';
-import { useViewTransitionNavigate } from '@/hooks';
-import { toast, EmptyState } from '@/components/ui';
+import { useViewTransitionNavigate, useCopyToClipboard } from '@/hooks';
+import { EmptyState, toast } from '@/components/ui';
 import { ListPageLayout } from '@/components/layout';
 import { CreateSurveyDialog, type CreateSurveyFormData } from '@/components/features/surveys';
 import {
@@ -58,6 +58,7 @@ export function SurveysPage() {
   const { t } = useTranslation();
   const navigate = useViewTransitionNavigate();
   const { activeNamespace } = useNamespaceStore();
+  const { copy } = useCopyToClipboard();
 
   // Get user preferences for default view mode and sorting
   const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
@@ -120,7 +121,7 @@ export function SurveysPage() {
       action: (survey) => deleteSurvey.mutateAsync(survey.id),
     },
     duplicate: {
-      action: (survey) => duplicateSurvey.mutateAsync(survey.id),
+      action: (survey) => duplicateSurvey.mutateAsync({ surveyId: survey.id }),
     },
   });
 
@@ -218,10 +219,9 @@ export function SurveysPage() {
   const handleShareSurvey = useCallback(
     (survey: Survey) => {
       const shareUrl = `${window.location.origin}/s/${survey.id}`;
-      navigator.clipboard.writeText(shareUrl);
-      toast.success(t('distributions.linkCopied'));
+      copy(shareUrl, { successMessage: t('distributions.linkCopied') });
     },
-    [t]
+    [copy, t]
   );
 
   const clearFilters = useCallback(() => {

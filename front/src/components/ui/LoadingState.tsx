@@ -2,6 +2,7 @@
 // Provides consistent loading patterns across the application
 
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -28,16 +29,17 @@ export interface LoadingStateProps {
  * </LoadingState>
  * ```
  */
-export function LoadingState({ isLoading, skeleton, children, fallbackText = 'Loading...', fallbackClassName }: LoadingStateProps) {
+export function LoadingState({ isLoading, skeleton, children, fallbackText, fallbackClassName }: LoadingStateProps) {
+  const { t } = useTranslation();
   if (isLoading) {
     if (skeleton) {
       return <>{skeleton}</>;
     }
     return (
       <div className={cn('flex items-center justify-center py-8', fallbackClassName)}>
-        <div className='flex items-center gap-2 text-on-surface-variant'>
-          <Loader2 className='h-4 w-4 animate-spin' />
-          <span className='text-sm'>{fallbackText}</span>
+        <div className="flex items-center gap-2 text-on-surface-variant">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span className="text-sm">{fallbackText || t('common.loading')}</span>
         </div>
       </div>
     );
@@ -63,9 +65,9 @@ export interface PageLoadingProps {
 export function PageLoading({ message = 'Loading...', minHeight = 'min-h-[400px]' }: PageLoadingProps) {
   return (
     <div className={cn('flex items-center justify-center', minHeight)}>
-      <div className='flex flex-col items-center gap-3 text-on-surface-variant'>
-        <Loader2 className='h-8 w-8 animate-spin text-primary' />
-        <span className='text-sm font-medium'>{message}</span>
+      <div className="flex flex-col items-center gap-3 text-on-surface-variant">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="text-sm font-medium">{message}</span>
       </div>
     </div>
   );
@@ -102,7 +104,7 @@ const textSizes = {
  */
 export function InlineLoading({ message, size = 'md' }: InlineLoadingProps) {
   return (
-    <span className='inline-flex items-center gap-2 text-on-surface-variant'>
+    <span className="inline-flex items-center gap-2 text-on-surface-variant">
       <Loader2 className={cn('animate-spin', spinnerSizes[size])} />
       {message && <span className={textSizes[size]}>{message}</span>}
     </span>

@@ -2,16 +2,18 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { logicApi } from '@/services';
-import type { CreateLogicRequest, QuestionLogic, QuestionType, LogicOperator, LogicAction } from '@/types';
-import { QuestionType as QT, LogicOperator as LO, LogicAction as LA } from '@/types/enums';
+import type { CreateLogicRequest, QuestionLogic } from '@/types';
+import { QuestionType, LogicOperator, LogicAction } from '@/types/enums';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const logicKeys = {
-  all: ['logic'] as const,
-  lists: () => [...logicKeys.all, 'list'] as const,
-  list: (surveyId: string, questionId: string) => [...logicKeys.lists(), surveyId, questionId] as const,
-  logicMap: (surveyId: string) => [...logicKeys.all, 'map', surveyId] as const,
-};
+/** Translation function type */
+export type TranslationFn = (key: string) => string;
+
+// Query keys - logic uses surveyId+questionId scoped list and surveyId scoped logicMap
+export const logicKeys = createExtendedQueryKeys('logic', (base) => ({
+  list: (surveyId: string, questionId: string) => [...base.lists(), surveyId, questionId] as const,
+  logicMap: (surveyId: string) => [...base.all, 'map', surveyId] as const,
+}));
 
 /**
  * Hook to fetch logic rules for a specific question
@@ -21,7 +23,7 @@ export function useQuestionLogic(surveyId: string | undefined, questionId: strin
     queryKey: logicKeys.list(surveyId!, questionId!),
     queryFn: () => logicApi.list(surveyId!, questionId!),
     enabled: !!surveyId && !!questionId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -33,7 +35,7 @@ export function useLogicMap(surveyId: string | undefined) {
     queryKey: logicKeys.logicMap(surveyId!),
     queryFn: () => logicApi.getLogicMap(surveyId!),
     enabled: !!surveyId,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIMES.MEDIUM,
   });
 }
 
@@ -146,13 +148,53 @@ export function useReorderLogic(surveyId: string, questionId: string) {
 }
 
 /**
- * Validate logic rules for circular references
+ * Hook to evaluate logic on the server
+ * Use for: validation, preview mode, analytics, or complex conditions
+ *
+ * @example
+ * ```tsx
+ * const { mutateAsync: evaluateLogic } = useEvaluateLogic(surveyId);
+ *
+ * // On survey submission
+ * const result = await evaluateLogic({ answers: preparedAnswers });
+ * if (result.shouldEndSurvey) {
+ *   // Handle early termination
+ * }
+ * ```
  */
-export function validateLogicRules(rules: QuestionLogic[], questions: { id: string; order: number }[]): { isValid: boolean; errors: string[] } {
+export function useEvaluateLogic(surveyId: string) {
+  return useMutation({
+    mutationFn: ({ answers, currentQuestionId }: { answers: { questionId: string; value: string }[]; currentQuestionId?: string }) =>
+      logicApi.evaluateLogic(surveyId, answers, currentQuestionId),
+  });
+}
+
+/**
+ * Validate logic rules for circular references and consistency.
+ * @param rules - Array of logic rules to validate
+ * @param questions - Array of questions with id and order
+ * @returns Validation result with isValid flag and error messages
+ */
+export function validateLogicRules(
+  rules: QuestionLogic[] | null | undefined,
+  questions: { id: string; order: number }[] | null | undefined
+): { isValid: boolean; errors: string[] } {
   const errors: string[] = [];
+
+  // Handle null/undefined inputs
+  if (!rules || !questions) {
+    return { isValid: true, errors: [] };
+  }
+
+  if (rules.length === 0) {
+    return { isValid: true, errors: [] };
+  }
 
   // Build a map for quick question lookup
   const questionMap = new Map(questions.map((q) => [q.id, q]));
+
+  // Create local reference for use in nested function (TypeScript narrowing)
+  const validRules = rules;
 
   // Check for circular references using DFS
   const visited = new Set<string>();
@@ -172,7 +214,7 @@ export function validateLogicRules(rules: QuestionLogic[], questions: { id: stri
     recursionStack.add(questionId);
 
     // Find all rules that target this question
-    const outgoingRules = rules.filter((r) => r.sourceQuestionId === questionId && r.targetQuestionId);
+    const outgoingRules = validRules.filter((r) => r.sourceQuestionId === questionId && r.targetQuestionId);
 
     for (const rule of outgoingRules) {
       if (rule.targetQuestionId && hasCircularReference(rule.targetQuestionId, [...path, questionId])) {
@@ -214,54 +256,113 @@ export function validateLogicRules(rules: QuestionLogic[], questions: { id: stri
   };
 }
 
+/** Operator option for Select component - value is stringified for UI compatibility */
+export interface OperatorOption {
+  value: string;
+  label: string;
+}
+
+/** Maps LogicOperator enum to translation key */
+const operatorTranslationKeys: Record<LogicOperator, string> = {
+  [LogicOperator.Equals]: 'conditionalLogic.operators.equals',
+  [LogicOperator.NotEquals]: 'conditionalLogic.operators.notEquals',
+  [LogicOperator.Contains]: 'conditionalLogic.operators.contains',
+  [LogicOperator.NotContains]: 'conditionalLogic.operators.notContains',
+  [LogicOperator.GreaterThan]: 'conditionalLogic.operators.greaterThan',
+  [LogicOperator.GreaterThanOrEquals]: 'conditionalLogic.operators.greaterThanOrEquals',
+  [LogicOperator.LessThan]: 'conditionalLogic.operators.lessThan',
+  [LogicOperator.LessThanOrEquals]: 'conditionalLogic.operators.lessThanOrEquals',
+  [LogicOperator.IsEmpty]: 'conditionalLogic.operators.isEmpty',
+  [LogicOperator.IsNotEmpty]: 'conditionalLogic.operators.isNotEmpty',
+  [LogicOperator.IsAnswered]: 'conditionalLogic.operators.isAnswered',
+  [LogicOperator.IsNotAnswered]: 'conditionalLogic.operators.isNotAnswered',
+};
+
+/** Maps LogicOperator enum to translation key for inline labels (lowercase) */
+const operatorLabelTranslationKeys: Record<LogicOperator, string> = {
+  [LogicOperator.Equals]: 'conditionalLogic.operatorLabels.equals',
+  [LogicOperator.NotEquals]: 'conditionalLogic.operatorLabels.notEquals',
+  [LogicOperator.Contains]: 'conditionalLogic.operatorLabels.contains',
+  [LogicOperator.NotContains]: 'conditionalLogic.operatorLabels.notContains',
+  [LogicOperator.GreaterThan]: 'conditionalLogic.operatorLabels.greaterThan',
+  [LogicOperator.GreaterThanOrEquals]: 'conditionalLogic.operatorLabels.greaterThanOrEquals',
+  [LogicOperator.LessThan]: 'conditionalLogic.operatorLabels.lessThan',
+  [LogicOperator.LessThanOrEquals]: 'conditionalLogic.operatorLabels.lessThanOrEquals',
+  [LogicOperator.IsEmpty]: 'conditionalLogic.operatorLabels.isEmpty',
+  [LogicOperator.IsNotEmpty]: 'conditionalLogic.operatorLabels.isNotEmpty',
+  [LogicOperator.IsAnswered]: 'conditionalLogic.operatorLabels.isAnswered',
+  [LogicOperator.IsNotAnswered]: 'conditionalLogic.operatorLabels.isNotAnswered',
+};
+
+/** Maps LogicAction enum to translation key */
+const actionLabelTranslationKeys: Record<LogicAction, string> = {
+  [LogicAction.Show]: 'conditionalLogic.actionLabels.show',
+  [LogicAction.Hide]: 'conditionalLogic.actionLabels.hide',
+  [LogicAction.Skip]: 'conditionalLogic.actionLabels.skip',
+  [LogicAction.JumpTo]: 'conditionalLogic.actionLabels.jumpTo',
+  [LogicAction.EndSurvey]: 'conditionalLogic.actionLabels.endSurvey',
+};
+
 /**
- * Get available operators for a question type
+ * Get available operators for a question type.
+ * Returns operators with string values for UI Select component compatibility.
+ * Use parseInt(value) to convert back to LogicOperator enum.
+ * @param questionType - The question type to get operators for
+ * @param t - Translation function from useTranslation()
  */
-export function getOperatorsForQuestionType(questionType: QuestionType): { value: string; label: string }[] {
-  const baseOperators = [
-    { value: String(LO.IsAnswered), label: 'Is answered' },
-    { value: String(LO.IsNotAnswered), label: 'Is not answered' },
+export function getOperatorsForQuestionType(questionType: QuestionType, t: TranslationFn): OperatorOption[] {
+  const baseOperators: OperatorOption[] = [
+    { value: String(LogicOperator.IsAnswered), label: t(operatorTranslationKeys[LogicOperator.IsAnswered]) },
+    { value: String(LogicOperator.IsNotAnswered), label: t(operatorTranslationKeys[LogicOperator.IsNotAnswered]) },
+    { value: String(LogicOperator.IsEmpty), label: t(operatorTranslationKeys[LogicOperator.IsEmpty]) },
+    { value: String(LogicOperator.IsNotEmpty), label: t(operatorTranslationKeys[LogicOperator.IsNotEmpty]) },
   ];
 
   switch (questionType) {
-    case QT.SingleChoice:
-    case QT.MultipleChoice:
-    case QT.Dropdown:
-    case QT.Checkbox:
-    case QT.YesNo:
+    case QuestionType.SingleChoice:
+    case QuestionType.MultipleChoice:
+    case QuestionType.Dropdown:
+    case QuestionType.Checkbox:
+    case QuestionType.YesNo:
       return [
-        { value: String(LO.Equals), label: 'Equals' },
-        { value: String(LO.NotEquals), label: 'Does not equal' },
-        { value: String(LO.Contains), label: 'Contains' },
+        { value: String(LogicOperator.Equals), label: t(operatorTranslationKeys[LogicOperator.Equals]) },
+        { value: String(LogicOperator.NotEquals), label: t(operatorTranslationKeys[LogicOperator.NotEquals]) },
+        { value: String(LogicOperator.Contains), label: t(operatorTranslationKeys[LogicOperator.Contains]) },
+        { value: String(LogicOperator.NotContains), label: t(operatorTranslationKeys[LogicOperator.NotContains]) },
         ...baseOperators,
       ];
-    case QT.Text:
-    case QT.LongText:
-    case QT.ShortText:
-    case QT.Email:
+    case QuestionType.Text:
+    case QuestionType.LongText:
+    case QuestionType.ShortText:
+    case QuestionType.Email:
       return [
-        { value: String(LO.Equals), label: 'Equals' },
-        { value: String(LO.NotEquals), label: 'Does not equal' },
-        { value: String(LO.Contains), label: 'Contains' },
+        { value: String(LogicOperator.Equals), label: t(operatorTranslationKeys[LogicOperator.Equals]) },
+        { value: String(LogicOperator.NotEquals), label: t(operatorTranslationKeys[LogicOperator.NotEquals]) },
+        { value: String(LogicOperator.Contains), label: t(operatorTranslationKeys[LogicOperator.Contains]) },
+        { value: String(LogicOperator.NotContains), label: t(operatorTranslationKeys[LogicOperator.NotContains]) },
         ...baseOperators,
       ];
-    case QT.Rating:
-    case QT.Scale:
-    case QT.NPS:
-    case QT.Number:
+    case QuestionType.Rating:
+    case QuestionType.Scale:
+    case QuestionType.NPS:
+    case QuestionType.Number:
       return [
-        { value: String(LO.Equals), label: 'Equals' },
-        { value: String(LO.NotEquals), label: 'Does not equal' },
-        { value: String(LO.GreaterThan), label: 'Greater than' },
-        { value: String(LO.LessThan), label: 'Less than' },
+        { value: String(LogicOperator.Equals), label: t(operatorTranslationKeys[LogicOperator.Equals]) },
+        { value: String(LogicOperator.NotEquals), label: t(operatorTranslationKeys[LogicOperator.NotEquals]) },
+        { value: String(LogicOperator.GreaterThan), label: t(operatorTranslationKeys[LogicOperator.GreaterThan]) },
+        { value: String(LogicOperator.GreaterThanOrEquals), label: t(operatorTranslationKeys[LogicOperator.GreaterThanOrEquals]) },
+        { value: String(LogicOperator.LessThan), label: t(operatorTranslationKeys[LogicOperator.LessThan]) },
+        { value: String(LogicOperator.LessThanOrEquals), label: t(operatorTranslationKeys[LogicOperator.LessThanOrEquals]) },
         ...baseOperators,
       ];
-    case QT.Date:
-    case QT.DateTime:
+    case QuestionType.Date:
+    case QuestionType.DateTime:
       return [
-        { value: String(LO.Equals), label: 'Equals' },
-        { value: String(LO.GreaterThan), label: 'After' },
-        { value: String(LO.LessThan), label: 'Before' },
+        { value: String(LogicOperator.Equals), label: t(operatorTranslationKeys[LogicOperator.Equals]) },
+        { value: String(LogicOperator.GreaterThan), label: t('conditionalLogic.operators.after') },
+        { value: String(LogicOperator.GreaterThanOrEquals), label: t('conditionalLogic.operators.onOrAfter') },
+        { value: String(LogicOperator.LessThan), label: t('conditionalLogic.operators.before') },
+        { value: String(LogicOperator.LessThanOrEquals), label: t('conditionalLogic.operators.onOrBefore') },
         ...baseOperators,
       ];
     default:
@@ -270,30 +371,23 @@ export function getOperatorsForQuestionType(questionType: QuestionType): { value
 }
 
 /**
- * Get label for a logic action
+ * Get label for a logic action.
+ * Maps numeric LogicAction enum values to human-readable labels.
+ * @param action - The logic action enum value
+ * @param t - Translation function from useTranslation()
  */
-export function getActionLabel(action: LogicAction): string {
-  const labels: Record<number, string> = {
-    [LA.Show]: 'Show question',
-    [LA.Hide]: 'Hide question',
-    [LA.Skip]: 'Skip to question',
-    [LA.EndSurvey]: 'End survey',
-  };
-  return labels[action] || String(action);
+export function getActionLabel(action: LogicAction, t: TranslationFn): string {
+  const key = actionLabelTranslationKeys[action];
+  return key ? t(key) : `Unknown action (${action})`;
 }
 
 /**
- * Get label for a logic operator
+ * Get label for a logic operator.
+ * Maps numeric LogicOperator enum values to human-readable labels.
+ * @param operator - The logic operator enum value
+ * @param t - Translation function from useTranslation()
  */
-export function getOperatorLabel(operator: LogicOperator): string {
-  const labels: Record<number, string> = {
-    [LO.Equals]: 'equals',
-    [LO.NotEquals]: 'does not equal',
-    [LO.Contains]: 'contains',
-    [LO.GreaterThan]: 'is greater than',
-    [LO.LessThan]: 'is less than',
-    [LO.IsAnswered]: 'is answered',
-    [LO.IsNotAnswered]: 'is not answered',
-  };
-  return labels[operator] || String(operator);
+export function getOperatorLabel(operator: LogicOperator, t: TranslationFn): string {
+  const key = operatorLabelTranslationKeys[operator];
+  return key ? t(key) : `Unknown operator (${operator})`;
 }

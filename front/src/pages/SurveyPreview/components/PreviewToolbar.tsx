@@ -29,6 +29,7 @@ import {
 import { Button, IconButton, Switch, Menu, Input, Tooltip } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { DEVICE_PRESETS } from '../constants/devices';
+import { PreviewLanguageSwitcher } from './PreviewLanguageSwitcher';
 import type { DevicePreset, DeviceCategory, Orientation, DisplayMode, ThemeMode } from '../types';
 
 interface PreviewToolbarProps {
@@ -46,6 +47,12 @@ interface PreviewToolbarProps {
   customWidth: string;
   customHeight: string;
   previewUrl: string;
+  // Language props
+  previewLanguage: string;
+  availableLanguages: string[];
+  defaultLanguage: string;
+  onLanguageChange: (languageCode: string) => void;
+  // Callbacks
   onBack: () => void;
   onSelectPreset: (preset: DevicePreset) => void;
   onToggleOrientation: () => void;
@@ -82,6 +89,10 @@ export function PreviewToolbar({
   customWidth,
   customHeight,
   previewUrl,
+  previewLanguage,
+  availableLanguages,
+  defaultLanguage,
+  onLanguageChange,
   onBack,
   onSelectPreset,
   onToggleOrientation,
@@ -308,6 +319,14 @@ export function PreviewToolbar({
         </div>
 
         <div className="h-5 w-px bg-outline-variant/30 mx-1 hidden sm:block" />
+
+        {/* Language switcher */}
+        <PreviewLanguageSwitcher
+          currentLanguage={previewLanguage}
+          availableLanguages={availableLanguages}
+          defaultLanguage={defaultLanguage}
+          onLanguageChange={onLanguageChange}
+        />
 
         {/* Test mode indicator */}
         <Tooltip content={isTestMode ? t('surveyPreview.testModeDesc', 'No data is saved') : t('surveyPreview.testModeOff', 'Test mode is off')}>

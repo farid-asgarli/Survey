@@ -5,9 +5,7 @@ using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
-using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
-using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.Application.Features.Templates.Commands.CreateTemplate;
 

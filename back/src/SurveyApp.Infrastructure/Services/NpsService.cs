@@ -404,10 +404,12 @@ public class NpsService(
 
     private static List<int> ParseNpsAnswers(IEnumerable<string> answers)
     {
-        return answers
-            .Where(a => int.TryParse(a, out var value) && value >= 0 && value <= 10)
-            .Select(a => int.Parse(a))
-            .ToList();
+        return
+        [
+            .. answers
+                .Where(a => int.TryParse(a, out var value) && value >= 0 && value <= 10)
+                .Select(a => int.Parse(a)),
+        ];
     }
 
     private static NpsScoreDto MapToDto(NpsScore npsScore)

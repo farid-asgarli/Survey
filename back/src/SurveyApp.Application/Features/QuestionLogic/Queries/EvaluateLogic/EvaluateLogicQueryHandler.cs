@@ -80,7 +80,7 @@ public class EvaluateLogicQueryHandler(
 
         var result = new LogicEvaluationResultDto
         {
-            VisibleQuestionIds = visibleQuestionIds.ToList(),
+            VisibleQuestionIds = [.. visibleQuestionIds],
             HiddenQuestionIds = hiddenQuestionIds,
             NextQuestionId = nextQuestionId,
             ShouldEndSurvey = shouldEndSurvey,

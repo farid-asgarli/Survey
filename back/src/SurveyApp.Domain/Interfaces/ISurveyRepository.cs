@@ -68,12 +68,22 @@ public interface ISurveyRepository
     /// <summary>
     /// Gets paginated surveys for a namespace.
     /// </summary>
+    /// <param name="namespaceId">The namespace to filter by</param>
+    /// <param name="pageNumber">Page number (1-based)</param>
+    /// <param name="pageSize">Number of items per page</param>
+    /// <param name="searchTerm">Optional search term for title/description</param>
+    /// <param name="status">Optional status filter</param>
+    /// <param name="sortBy">Sort field: "title", "createdAt", "updatedAt", "status", "responseCount" (default: "createdAt")</param>
+    /// <param name="sortDescending">Sort direction (default: true for descending)</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     Task<(IReadOnlyList<Survey> Items, int TotalCount)> GetPagedAsync(
         Guid namespaceId,
         int pageNumber,
         int pageSize,
         string? searchTerm = null,
         SurveyStatus? status = null,
+        string? sortBy = null,
+        bool sortDescending = true,
         CancellationToken cancellationToken = default
     );
 
@@ -86,6 +96,22 @@ public interface ISurveyRepository
     /// Adds a new question to the context (for explicit tracking).
     /// </summary>
     Task AddQuestionAsync(Question question, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Adds a new survey translation to the context (for explicit tracking).
+    /// </summary>
+    Task AddTranslationAsync(
+        SurveyTranslation translation,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Adds a new question translation to the context (for explicit tracking).
+    /// </summary>
+    Task AddQuestionTranslationAsync(
+        QuestionTranslation translation,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Updates an existing survey.

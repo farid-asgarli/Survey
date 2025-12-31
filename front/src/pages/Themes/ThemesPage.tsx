@@ -28,6 +28,7 @@ import {
 } from '@/hooks';
 import { ThemeEditorDrawer, type ThemeFormData } from '@/components/features/themes';
 import type { SurveyTheme } from '@/types';
+import { ThemeLayout, LogoPosition, LogoSize, BackgroundImagePosition } from '@/types/enums';
 import { ThemesHeader, ThemesToolbar, ThemesContent, ThemesEmptyState } from './sections';
 import { getCurrentLanguage } from '@/i18n';
 
@@ -71,9 +72,10 @@ export function ThemesPage() {
   // Use full theme data when available, otherwise fall back to drawer state
   const themeForEditor = editingThemeId && fullThemeData ? fullThemeData : editorDrawer.editingItem;
 
-  // Reset editingThemeId when drawer closes
+  // Reset editingThemeId when drawer closes - this is intentional state sync
   useEffect(() => {
     if (!editorDrawer.isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional state sync when drawer closes
       setEditingThemeId(undefined);
     }
   }, [editorDrawer.isOpen]);
@@ -197,16 +199,16 @@ export function ThemesPage() {
             baseFontSize: data.fontSize,
           },
           layout: {
-            layout: 0, // ThemeLayout.Classic
+            layout: ThemeLayout.Classic,
             backgroundImageUrl: data.backgroundImageUrl || undefined,
-            backgroundPosition: 0, // BackgroundImagePosition.Cover
+            backgroundPosition: BackgroundImagePosition.Cover,
             showProgressBar: data.showProgressBar,
             progressBarStyle: data.progressBarStyle,
           },
           branding: {
             logoUrl: data.logoUrl || undefined,
-            logoPosition: 0, // LogoPosition.TopLeft
-            logoSize: data.logoSize,
+            logoPosition: LogoPosition.TopLeft,
+            logoSize: data.logoSize as LogoSize,
             showLogoBackground: data.showLogoBackground,
             logoBackgroundColor: data.showLogoBackground ? data.logoBackgroundColor : undefined,
             brandingTitle: data.brandingTitle || undefined,

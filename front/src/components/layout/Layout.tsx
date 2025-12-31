@@ -9,7 +9,7 @@ import { UserMenu } from './UserMenu';
 import { ToastContainer } from '@/components/ui';
 import { CreateNamespaceDialog } from '@/components/features/namespaces';
 import { GlobalSearch, SearchButton, KeyboardShortcutsHelp } from '@/components/features/search';
-import { useNamespacesList, useViewTransitionNavigate, useTranslatedNavItems, useTranslatedPageConfig } from '@/hooks';
+import { useNamespacesList, useViewTransitionNavigate, useTranslatedNavItems, useTranslatedPageConfig, useDialogState } from '@/hooks';
 import { useSearchStore, useShortcutsStore, useKeyboardShortcut, useGlobalKeyboardListener, useActiveNamespace } from '@/stores';
 import { Bell, Building2 } from 'lucide-react';
 
@@ -48,7 +48,7 @@ function CompactNamespaceSelector() {
   };
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <button
         className={cn(
           'flex h-11 w-11 items-center justify-center rounded-2xl',
@@ -57,7 +57,7 @@ function CompactNamespaceSelector() {
         )}
         title={activeNamespace?.name || t('workspaces.selectWorkspace')}
       >
-        {activeNamespace ? <span className='text-sm font-bold'>{getInitials(activeNamespace.name)}</span> : <Building2 className='h-5 w-5' />}
+        {activeNamespace ? <span className="text-sm font-bold">{getInitials(activeNamespace.name)}</span> : <Building2 className="h-5 w-5" />}
       </button>
     </div>
   );
@@ -70,7 +70,7 @@ export function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useViewTransitionNavigate();
-  const [createNamespaceOpen, setCreateNamespaceOpen] = useState(false);
+  const createNamespaceDialog = useDialogState();
 
   // Get translated navigation items
   const mainNavItems = useTranslatedNavItems('main');
@@ -178,12 +178,12 @@ export function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className='flex h-screen w-full bg-surface overflow-hidden'>
+    <div className="flex h-screen w-full bg-surface overflow-hidden">
       {/* Desktop Navigation Rail */}
-      <aside className='hidden md:flex flex-col h-full'>
-        <NavigationRail className='flex-1'>
+      <aside className="hidden md:flex flex-col h-full">
+        <NavigationRail className="flex-1">
           {/* Namespace Selector */}
-          <div className='mb-4 mt-1'>
+          <div className="mb-4 mt-1">
             <CompactNamespaceSelector />
           </div>
 
@@ -193,7 +193,7 @@ export function Layout({ children }: LayoutProps) {
             return (
               <NavigationRailItem
                 key={item.path}
-                icon={<Icon className='h-5 w-5' />}
+                icon={<Icon className="h-5 w-5" />}
                 label={item.label}
                 active={isActive(item.path)}
                 onClick={() => navigate(item.path)}
@@ -202,7 +202,7 @@ export function Layout({ children }: LayoutProps) {
           })}
 
           {/* Divider */}
-          <div className='w-10 h-px bg-outline-variant/30 my-2' />
+          <div className="w-10 h-px bg-outline-variant/30 my-2" />
 
           {/* Secondary navigation items */}
           {secondaryNavItems.map((item) => {
@@ -210,7 +210,7 @@ export function Layout({ children }: LayoutProps) {
             return (
               <NavigationRailItem
                 key={item.path}
-                icon={<Icon className='h-5 w-5' />}
+                icon={<Icon className="h-5 w-5" />}
                 label={item.label}
                 active={isActive(item.path)}
                 onClick={() => navigate(item.path)}
@@ -219,12 +219,12 @@ export function Layout({ children }: LayoutProps) {
           })}
 
           {/* Bottom items */}
-          <div className='mt-auto mb-2 flex flex-col items-center gap-1'>
+          <div className="mt-auto mb-2 flex flex-col items-center gap-1">
             {(() => {
               const Icon = settingsConfig.icon;
               return (
                 <NavigationRailItem
-                  icon={<Icon className='h-5 w-5' />}
+                  icon={<Icon className="h-5 w-5" />}
                   label={settingsConfig.label}
                   active={isActive(settingsConfig.path)}
                   onClick={() => navigate(settingsConfig.path)}
@@ -236,16 +236,16 @@ export function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Main content area */}
-      <div className='flex-1 flex flex-col min-w-0 overflow-hidden'>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top App Bar - only show on Dashboard */}
         {location.pathname === '/' && (
           <AppBar
-            leading={<NamespaceSelector className='hidden sm:block' onCreateNew={() => setCreateNamespaceOpen(true)} />}
+            leading={<NamespaceSelector className="hidden sm:block" onCreateNew={() => createNamespaceDialog.open()} />}
             trailing={
-              <div className='flex items-center gap-1'>
+              <div className="flex items-center gap-1">
                 {/* Search button - show compact on smaller screens */}
-                <SearchButton variant='compact' className='hidden lg:flex' />
-                <SearchButton variant='icon' className='lg:hidden' />
+                <SearchButton variant="compact" className="hidden lg:flex" />
+                <SearchButton variant="icon" className="lg:hidden" />
 
                 <button
                   aria-label={t('common.notifications')}
@@ -255,8 +255,8 @@ export function Layout({ children }: LayoutProps) {
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
                   )}
                 >
-                  <Bell className='h-5 w-5 text-on-surface-variant' />
-                  <span className='absolute top-2 right-2 h-2 w-2 rounded-full bg-error' />
+                  <Bell className="h-5 w-5 text-on-surface-variant" />
+                  <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-error" />
                 </button>
                 <UserMenu onSettingsClick={() => navigate('/settings')} onLogoutClick={() => navigate('/login')} />
               </div>
@@ -265,7 +265,7 @@ export function Layout({ children }: LayoutProps) {
         )}
 
         {/* Page content */}
-        <main className='flex-1 overflow-y-auto'>{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
 
       {/* Mobile Navigation Bar */}
@@ -275,7 +275,7 @@ export function Layout({ children }: LayoutProps) {
           return (
             <NavigationBarItem
               key={item.path}
-              icon={<Icon className='h-5 w-5' />}
+              icon={<Icon className="h-5 w-5" />}
               label={item.label}
               active={isActive(item.path)}
               onClick={() => navigate(item.path)}
@@ -288,7 +288,7 @@ export function Layout({ children }: LayoutProps) {
       <ToastContainer />
 
       {/* Create Namespace Dialog */}
-      <CreateNamespaceDialog open={createNamespaceOpen} onOpenChange={setCreateNamespaceOpen} />
+      <CreateNamespaceDialog open={createNamespaceDialog.isOpen} onOpenChange={createNamespaceDialog.setOpen} />
 
       {/* Global Search Dialog */}
       <GlobalSearch />

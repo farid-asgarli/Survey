@@ -72,6 +72,7 @@ export const API_ENDPOINTS = {
     bySlug: (slug: string) => `/api/namespaces/by-slug/${slug}`,
     members: (id: string) => `/api/namespaces/${id}/members`,
     removeMember: (namespaceId: string, membershipId: string) => `/api/namespaces/${namespaceId}/members/${membershipId}`,
+    updateMemberRole: (namespaceId: string, membershipId: string) => `/api/namespaces/${namespaceId}/members/${membershipId}`,
   },
   // Survey endpoints
   surveys: {
@@ -79,11 +80,14 @@ export const API_ENDPOINTS = {
     byId: (id: string) => `/api/surveys/${id}`,
     publish: (id: string) => `/api/surveys/${id}/publish`,
     close: (id: string) => `/api/surveys/${id}/close`,
+    duplicate: (id: string) => `/api/surveys/${id}/duplicate`,
     questions: (surveyId: string) => `/api/surveys/${surveyId}/questions`,
+    questionsSync: (surveyId: string) => `/api/surveys/${surveyId}/questions/sync`,
     questionById: (surveyId: string, questionId: string) => `/api/surveys/${surveyId}/questions/${questionId}`,
     questionLogic: (surveyId: string, questionId: string) => `/api/surveys/${surveyId}/questions/${questionId}/logic`,
     questionLogicReorder: (surveyId: string, questionId: string) => `/api/surveys/${surveyId}/questions/${questionId}/logic/reorder`,
     logicMap: (surveyId: string) => `/api/surveys/${surveyId}/logic-map`,
+    evaluateLogic: (surveyId: string) => `/api/surveys/${surveyId}/evaluate-logic`,
     links: (surveyId: string) => `/api/surveys/${surveyId}/links`,
     linkById: (surveyId: string, linkId: string) => `/api/surveys/${surveyId}/links/${linkId}`,
     linkAnalytics: (surveyId: string, linkId: string) => `/api/surveys/${surveyId}/links/${linkId}/analytics`,
@@ -123,6 +127,8 @@ export const API_ENDPOINTS = {
   emailTemplates: {
     list: '/api/email-templates',
     byId: (id: string) => `/api/email-templates/${id}`,
+    placeholders: '/api/email-templates/placeholders',
+    duplicate: (id: string) => `/api/email-templates/${id}/duplicate`,
   },
   // Analytics endpoints
   analytics: {

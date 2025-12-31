@@ -1,6 +1,7 @@
 // ResponseDetailDrawer - Side drawer showing individual response details
 
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { User, Clock, Calendar, Monitor, Globe, CheckCircle2, XCircle, Trash2, FileText, Hash, Loader2, AlertCircle } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, Button, Skeleton, Divider, OverlayHeader } from '@/components/ui';
 import { useResponseDetail, useDeleteResponse } from '@/hooks/queries/useResponses';
@@ -20,9 +21,9 @@ interface ResponseDetailDrawerProps {
 }
 
 // Helper to get answer display value
-function getAnswerDisplay(answer: Answer, question: Question | undefined): React.ReactNode {
+function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (key: string) => string): React.ReactNode {
   if (!question) {
-    return answer.answerValue || answer.values?.join(', ') || 'N/A';
+    return answer.answerValue || answer.values?.join(', ') || t('responses.na');
   }
 
   const type = question.type;
@@ -35,7 +36,7 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
     case QuestionType.YesNo: {
       // Options are stored as string[], answer value should match option text
       const option = options.find((o) => o === answer.answerValue);
-      return option || answer.answerValue || 'N/A';
+      return option || answer.answerValue || t('responses.na');
     }
 
     case QuestionType.MultipleChoice:
@@ -55,7 +56,7 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
           </ul>
         );
       }
-      return 'N/A';
+      return t('responses.na');
     }
 
     case QuestionType.Rating:
@@ -84,7 +85,7 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
           </div>
         );
       }
-      return 'N/A';
+      return t('responses.na');
     }
 
     case QuestionType.Ranking: {
@@ -102,7 +103,7 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
           </ol>
         );
       }
-      return 'N/A';
+      return t('responses.na');
     }
 
     case QuestionType.FileUpload: {
@@ -124,7 +125,7 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
           </div>
         );
       }
-      return 'No files uploaded';
+      return t('responses.noFiles');
     }
 
     case QuestionType.Date:
@@ -132,16 +133,16 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined): React
       if (answer.answerValue) {
         return formatDate(answer.answerValue);
       }
-      return 'N/A';
+      return t('responses.na');
     }
 
     default:
-      return answer.answerValue || 'N/A';
+      return answer.answerValue || t('responses.na');
   }
 }
 
 // Answer Card Component
-function AnswerCard({ answer, question, index }: { answer: Answer; question: Question | undefined; index: number }) {
+function AnswerCard({ answer, question, index, t }: { answer: Answer; question: Question | undefined; index: number; t: (key: string) => string }) {
   return (
     <div className="bg-surface-container-low rounded-2xl p-4 space-y-2">
       <div className="flex items-start gap-3">
@@ -149,16 +150,17 @@ function AnswerCard({ answer, question, index }: { answer: Answer; question: Que
           {index + 1}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-on-surface leading-tight">{question?.text || 'Unknown Question'}</p>
-          {question?.isRequired && <span className="text-xs text-error">Required</span>}
+          <p className="font-medium text-on-surface leading-tight">{question?.text || t('responses.unknownQuestion')}</p>
+          {question?.isRequired && <span className="text-xs text-error">{t('common.required')}</span>}
         </div>
       </div>
-      <div className="pl-9 text-on-surface">{getAnswerDisplay(answer, question)}</div>
+      <div className="pl-9 text-on-surface">{getAnswerDisplay(answer, question, t)}</div>
     </div>
   );
 }
 
 export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange, onDeleted }: ResponseDetailDrawerProps) {
+  const { t } = useTranslation();
   const { data: response, isLoading, error } = useResponseDetail(surveyId, responseId || undefined);
   const { data: survey } = useSurveyDetail(surveyId);
   const deleteResponse = useDeleteResponse(surveyId);
@@ -186,21 +188,21 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
     if (!responseId) return;
 
     const confirmed = await confirm({
-      title: 'Delete Response',
-      description: 'Are you sure you want to delete this response? This action cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      title: t('responses.deleteResponse.title'),
+      description: t('responses.deleteResponse.description'),
+      confirmText: t('common.delete'),
+      cancelText: t('common.cancel'),
       variant: 'destructive',
     });
 
     if (confirmed) {
       try {
         await deleteResponse.mutateAsync(responseId);
-        toast.success('Response deleted successfully');
+        toast.success(t('responses.deleteSuccess'));
         onOpenChange(false);
         onDeleted?.();
       } catch {
-        toast.error('Failed to delete response');
+        toast.error(t('responses.deleteError'));
       }
     }
   };
@@ -212,8 +214,8 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
           <DrawerHeader
             hero
             icon={<FileText className="h-7 w-7" />}
-            title="Response Details"
-            description={survey?.title || 'Survey Response'}
+            title={t('responses.responseDetails')}
+            description={survey?.title || t('responses.title')}
             showClose
           >
             {/* Stats pills */}
@@ -240,13 +242,13 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
             ) : error ? (
               <div className="flex flex-col items-center justify-center h-48 text-center">
                 <AlertCircle className="h-10 w-10 text-error mb-3" />
-                <p className="text-on-surface-variant">Failed to load response</p>
+                <p className="text-on-surface-variant">{t('responses.loadError')}</p>
               </div>
             ) : response ? (
               <div className="space-y-6">
                 {/* Response Metadata */}
                 <div className="bg-surface-container rounded-2xl p-4 space-y-3">
-                  <h4 className="font-semibold text-on-surface">Response Info</h4>
+                  <h4 className="font-semibold text-on-surface">{t('responses.responseInfo')}</h4>
 
                   <Divider />
 
@@ -254,15 +256,15 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-on-surface-variant" />
                       <div>
-                        <p className="text-on-surface-variant text-xs">Respondent</p>
-                        <p className="font-medium text-on-surface">{response.respondentEmail || 'Anonymous'}</p>
+                        <p className="text-on-surface-variant text-xs">{t('responses.respondent')}</p>
+                        <p className="font-medium text-on-surface">{response.respondentEmail || t('responses.anonymous')}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <Hash className="h-4 w-4 text-on-surface-variant" />
                       <div>
-                        <p className="text-on-surface-variant text-xs">Response ID</p>
+                        <p className="text-on-surface-variant text-xs">{t('responses.responseId')}</p>
                         <p className="font-medium text-on-surface font-mono text-xs">{response.id.slice(0, 8)}...</p>
                       </div>
                     </div>
@@ -270,7 +272,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-on-surface-variant" />
                       <div>
-                        <p className="text-on-surface-variant text-xs">Started</p>
+                        <p className="text-on-surface-variant text-xs">{t('responses.started')}</p>
                         <p className="font-medium text-on-surface">{formatDateTime(response.startedAt)}</p>
                       </div>
                     </div>
@@ -278,7 +280,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-on-surface-variant" />
                       <div>
-                        <p className="text-on-surface-variant text-xs">Duration</p>
+                        <p className="text-on-surface-variant text-xs">{t('responses.duration')}</p>
                         <p className="font-medium text-on-surface">{formatDurationBetween(response.startedAt, response.completedAt)}</p>
                       </div>
                     </div>
@@ -297,7 +299,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                                 <div className="flex items-center gap-2">
                                   <Monitor className="h-4 w-4 text-on-surface-variant" />
                                   <div>
-                                    <p className="text-on-surface-variant text-xs">Device</p>
+                                    <p className="text-on-surface-variant text-xs">{t('responses.device')}</p>
                                     <p className="font-medium text-on-surface">{String(meta.device)}</p>
                                   </div>
                                 </div>
@@ -306,7 +308,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                                 <div className="flex items-center gap-2">
                                   <Globe className="h-4 w-4 text-on-surface-variant" />
                                   <div>
-                                    <p className="text-on-surface-variant text-xs">Location</p>
+                                    <p className="text-on-surface-variant text-xs">{t('responses.location')}</p>
                                     <p className="font-medium text-on-surface">{String(meta.location)}</p>
                                   </div>
                                 </div>
@@ -321,13 +323,15 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
 
                 {/* Answers Section */}
                 <div>
-                  <h4 className="font-semibold text-on-surface mb-3">Answers ({sortedAnswers.length})</h4>
+                  <h4 className="font-semibold text-on-surface mb-3">
+                    {t('responses.answers')} ({sortedAnswers.length})
+                  </h4>
                   <div className="space-y-3">
                     {sortedAnswers.length === 0 ? (
-                      <div className="text-center py-8 text-on-surface-variant">No answers recorded</div>
+                      <div className="text-center py-8 text-on-surface-variant">{t('responses.noAnswers')}</div>
                     ) : (
                       sortedAnswers.map((answer, index) => (
-                        <AnswerCard key={answer.id} answer={answer} question={questionsMap.get(answer.questionId)} index={index} />
+                        <AnswerCard key={answer.id} answer={answer} question={questionsMap.get(answer.questionId)} index={index} t={t} />
                       ))
                     )}
                   </div>
@@ -338,11 +342,11 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
 
           <DrawerFooter>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Close
+              {t('common.close')}
             </Button>
             <Button variant="tonal" className="text-error" onClick={handleDelete} disabled={deleteResponse.isPending || !responseId}>
               {deleteResponse.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Trash2 className="h-4 w-4 mr-2" />}
-              Delete
+              {t('common.delete')}
             </Button>
           </DrawerFooter>
         </DrawerContent>

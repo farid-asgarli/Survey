@@ -152,14 +152,14 @@ export function ProfileSection() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               error={errors.firstName}
-              placeholder="John"
+              placeholder={t('profile.firstNamePlaceholder')}
             />
             <Input
               label={t('profile.lastName')}
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               error={errors.lastName}
-              placeholder="Doe"
+              placeholder={t('profile.lastNamePlaceholder')}
             />
           </div>
           <Input
@@ -168,7 +168,7 @@ export function ProfileSection() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
-            placeholder="john@example.com"
+            placeholder={t('profile.emailPlaceholder')}
             startIcon={<Mail className="h-4 w-4" />}
           />
         </CardContent>

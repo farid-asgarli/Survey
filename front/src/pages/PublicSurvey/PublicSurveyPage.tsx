@@ -1,10 +1,10 @@
 // Public Survey Page - Respondent-facing survey experience
 
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { usePublicSurveyStore } from '@/stores';
 import { usePublicSurveyActions } from '@/hooks/queries/usePublicSurvey';
+import { useDialogState } from '@/hooks';
 import { ResumeProgressDialog } from '@/components/features/public-survey';
 import { PublicSurveyLayout } from './components';
 import { usePublicSurveySetup, useSubmitSurvey, useKeyboardNavigation } from './hooks';
@@ -13,7 +13,7 @@ import { WelcomeSection, OneByOneSection, AllAtOnceSection, ThankYouSection, Loa
 export function PublicSurveyPage() {
   const { t } = useTranslation();
   const { shareToken } = useParams<{ shareToken: string }>();
-  const [showResumeDialog, setShowResumeDialog] = useState(false);
+  const resumeDialog = useDialogState();
 
   // React Query
   const {
@@ -52,7 +52,7 @@ export function PublicSurveyPage() {
     shareToken,
     isError,
     fetchError,
-    onShowResumeDialog: setShowResumeDialog,
+    onShowResumeDialog: resumeDialog.setOpen,
   });
 
   const { handleSubmit } = useSubmitSurvey({
@@ -66,12 +66,12 @@ export function PublicSurveyPage() {
   // Handle resume dialog
   const handleResumeProgress = () => {
     restoreProgress();
-    setShowResumeDialog(false);
+    resumeDialog.close();
   };
 
   const handleStartFresh = () => {
     clearSavedProgress();
-    setShowResumeDialog(false);
+    resumeDialog.close();
     startSurvey();
   };
 
@@ -140,7 +140,7 @@ export function PublicSurveyPage() {
       {viewMode === 'thank-you' && <ThankYouSection message={survey.thankYouMessage} />}
 
       {/* Resume Progress Dialog */}
-      <ResumeProgressDialog open={showResumeDialog} onResume={handleResumeProgress} onStartFresh={handleStartFresh} />
+      <ResumeProgressDialog open={resumeDialog.isOpen} onResume={handleResumeProgress} onStartFresh={handleStartFresh} />
     </PublicSurveyLayout>
   );
 }

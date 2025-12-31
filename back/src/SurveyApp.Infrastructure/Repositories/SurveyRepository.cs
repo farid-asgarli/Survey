@@ -121,6 +121,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
         int pageSize,
         string? searchTerm = null,
         SurveyStatus? status = null,
+        string? sortBy = null,
+        bool sortDescending = true,
         CancellationToken cancellationToken = default
     )
     {
@@ -153,13 +155,44 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
 
         var totalCount = await query.CountAsync(cancellationToken);
 
+        // Apply sorting
+        query = ApplySorting(query, sortBy, sortDescending);
+
         var surveys = await query
-            .OrderByDescending(s => s.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
         return (surveys, totalCount);
+    }
+
+    private static IQueryable<Survey> ApplySorting(
+        IQueryable<Survey> query,
+        string? sortBy,
+        bool sortDescending
+    )
+    {
+        return sortBy?.ToLowerInvariant() switch
+        {
+            "title" => sortDescending
+                ? query.OrderByDescending(s => s.Translations.First().Title)
+                : query.OrderBy(s => s.Translations.First().Title),
+            "updatedat" => sortDescending
+                ? query.OrderByDescending(s => s.UpdatedAt ?? s.CreatedAt)
+                : query.OrderBy(s => s.UpdatedAt ?? s.CreatedAt),
+            "status" => sortDescending
+                ? query.OrderByDescending(s => s.Status)
+                : query.OrderBy(s => s.Status),
+            "responsecount" => sortDescending
+                ? query.OrderByDescending(s => s.Responses.Count)
+                : query.OrderBy(s => s.Responses.Count),
+            "questioncount" => sortDescending
+                ? query.OrderByDescending(s => s.Questions.Count)
+                : query.OrderBy(s => s.Questions.Count),
+            _ => sortDescending
+                ? query.OrderByDescending(s => s.CreatedAt)
+                : query.OrderBy(s => s.CreatedAt), // Default: createdAt
+        };
     }
 
     public async Task<Survey> AddAsync(Survey survey, CancellationToken cancellationToken = default)
@@ -174,6 +207,22 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
     )
     {
         await _context.Questions.AddAsync(question, cancellationToken);
+    }
+
+    public async Task AddTranslationAsync(
+        SurveyTranslation translation,
+        CancellationToken cancellationToken = default
+    )
+    {
+        await _context.SurveyTranslations.AddAsync(translation, cancellationToken);
+    }
+
+    public async Task AddQuestionTranslationAsync(
+        QuestionTranslation translation,
+        CancellationToken cancellationToken = default
+    )
+    {
+        await _context.QuestionTranslations.AddAsync(translation, cancellationToken);
     }
 
     public void Update(Survey survey)

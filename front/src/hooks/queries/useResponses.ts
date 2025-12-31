@@ -3,17 +3,14 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { responsesApi } from '@/services';
 import type { ResponsesListParams, ExportResponsesRequest } from '@/types';
+import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
-// Query keys
-export const responseKeys = {
-  all: ['responses'] as const,
-  lists: () => [...responseKeys.all, 'list'] as const,
-  list: (surveyId: string, filters?: ResponsesListParams) => [...responseKeys.lists(), surveyId, filters] as const,
-  infiniteList: (surveyId: string, filters?: Omit<ResponsesListParams, 'pageNumber'>) => [...responseKeys.lists(), 'infinite', surveyId, filters] as const,
-  details: () => [...responseKeys.all, 'detail'] as const,
-  detail: (surveyId: string, responseId: string) => [...responseKeys.details(), surveyId, responseId] as const,
-  exportPreview: (surveyId: string) => [...responseKeys.all, 'export-preview', surveyId] as const,
-};
+// Query keys - responses use parent-scoped pattern with custom infiniteList and exportPreview keys
+export const responseKeys = createExtendedQueryKeys('responses', (base) => ({
+  infiniteList: (surveyId: string, filters?: Omit<ResponsesListParams, 'pageNumber'>) => [...base.lists(), 'infinite', surveyId, filters] as const,
+  detail: (surveyId: string, responseId: string) => [...base.details(), surveyId, responseId] as const,
+  exportPreview: (surveyId: string) => [...base.all, 'export-preview', surveyId] as const,
+}));
 
 export interface ResponseFilters {
   isCompleted?: boolean;
@@ -38,7 +35,7 @@ export function useResponsesList(surveyId: string | undefined, filters?: Respons
     queryKey: responseKeys.list(surveyId!, params),
     queryFn: () => responsesApi.list(surveyId!, params),
     enabled: !!surveyId,
-    staleTime: 1 * 60 * 1000, // 1 minute - responses change frequently
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 
@@ -59,7 +56,7 @@ export function useResponsesInfinite(surveyId: string | undefined, filters?: Res
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.pageNumber + 1 : undefined),
     enabled: !!surveyId,
-    staleTime: 1 * 60 * 1000,
+    staleTime: STALE_TIMES.SHORT,
   });
 }
 
@@ -71,7 +68,7 @@ export function useResponseDetail(surveyId: string | undefined, responseId: stri
     queryKey: responseKeys.detail(surveyId!, responseId!),
     queryFn: () => responsesApi.getById(surveyId!, responseId!),
     enabled: !!surveyId && !!responseId,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIMES.LONG,
   });
 }
 
@@ -128,6 +125,6 @@ export function useExportPreview(surveyId: string | undefined) {
     queryKey: responseKeys.exportPreview(surveyId!),
     queryFn: () => responsesApi.getExportPreview(surveyId!),
     enabled: !!surveyId,
-    staleTime: 10 * 60 * 1000, // 10 minutes - doesn't change often
+    staleTime: STALE_TIMES.VERY_LONG,
   });
 }

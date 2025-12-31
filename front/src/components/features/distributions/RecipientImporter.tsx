@@ -4,6 +4,7 @@ import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Upload, X, Plus, AlertCircle, CheckCircle2, FileText, Users, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useDialogState } from '@/hooks';
 import { Button, Input, Card, CardContent, Chip, Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter } from '@/components/ui';
 
 interface RecipientImporterProps {
@@ -75,7 +76,7 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
   const [emailError, setEmailError] = useState('');
   const [dragActive, setDragActive] = useState(false);
   const [importResult, setImportResult] = useState<ParseResult | null>(null);
-  const [showImportDialog, setShowImportDialog] = useState(false);
+  const importDialog = useDialogState();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAddEmail = useCallback(() => {
@@ -124,9 +125,9 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
       const result = processEmails(emails, recipients);
 
       setImportResult(result);
-      setShowImportDialog(true);
+      importDialog.open();
     },
-    [recipients]
+    [recipients, importDialog]
   );
 
   const handleConfirmImport = useCallback(() => {
@@ -134,9 +135,9 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
       const newRecipients = [...recipients, ...importResult.valid].slice(0, maxRecipients);
       onChange(newRecipients);
       setImportResult(null);
-      setShowImportDialog(false);
+      importDialog.close();
     }
-  }, [importResult, recipients, onChange, maxRecipients]);
+  }, [importResult, recipients, onChange, maxRecipients, importDialog]);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -189,8 +190,8 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
   return (
     <div className={cn('space-y-4', className)}>
       {/* Manual Entry */}
-      <div className='flex gap-2'>
-        <div className='flex-1'>
+      <div className="flex gap-2">
+        <div className="flex-1">
           <Input
             placeholder={t('recipientImporter.emailPlaceholder')}
             value={manualEmail}
@@ -200,11 +201,11 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
             }}
             onKeyDown={handleKeyDown}
             error={emailError}
-            size='default'
+            size="default"
           />
         </div>
-        <Button variant='tonal' onClick={handleAddEmail} className='shrink-0'>
-          <Plus className='w-4 h-4 mr-1' />
+        <Button variant="tonal" onClick={handleAddEmail} className="shrink-0">
+          <Plus className="w-4 h-4 mr-1" />
           {t('common.add')}
         </Button>
       </div>
@@ -218,7 +219,9 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
         className={cn(
           'relative border-2 border-dashed rounded-2xl p-6 transition-all duration-200',
           'flex flex-col items-center justify-center gap-3',
-          dragActive ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-outline-variant/50 hover:border-outline-variant bg-surface-container-lowest'
+          dragActive
+            ? 'border-primary bg-primary/5 scale-[1.01]'
+            : 'border-outline-variant/50 hover:border-outline-variant bg-surface-container-lowest'
         )}
       >
         <div
@@ -227,48 +230,48 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
             dragActive ? 'bg-primary/10 text-primary' : 'bg-surface-container-high text-on-surface-variant'
           )}
         >
-          <Upload className='w-6 h-6' />
+          <Upload className="w-6 h-6" />
         </div>
-        <div className='text-center'>
-          <p className='text-sm text-on-surface font-medium'>{t('recipientImporter.dropCsvHere')}</p>
-          <p className='text-xs text-on-surface-variant mt-1'>{t('recipientImporter.orClickToBrowse')}</p>
+        <div className="text-center">
+          <p className="text-sm text-on-surface font-medium">{t('recipientImporter.dropCsvHere')}</p>
+          <p className="text-xs text-on-surface-variant mt-1">{t('recipientImporter.orClickToBrowse')}</p>
         </div>
-        <input ref={fileInputRef} type='file' accept='.csv,text/csv' onChange={handleFileChange} className='hidden' id='csv-upload' />
-        <Button variant='outline' size='sm' onClick={() => fileInputRef.current?.click()}>
-          <FileText className='w-4 h-4 mr-2' />
+        <input ref={fileInputRef} type="file" accept=".csv,text/csv" onChange={handleFileChange} className="hidden" id="csv-upload" />
+        <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
+          <FileText className="w-4 h-4 mr-2" />
           {t('recipientImporter.browseFiles')}
         </Button>
       </div>
 
       {/* Recipients List */}
       {recipients.length > 0 && (
-        <Card variant='outlined'>
-          <CardContent className='p-4'>
-            <div className='flex items-center justify-between mb-3'>
-              <div className='flex items-center gap-2'>
-                <Users className='w-4 h-4 text-on-surface-variant' />
-                <span className='text-sm font-medium text-on-surface'>{t('recipientImporter.recipientCount', { count: recipients.length })}</span>
+        <Card variant="outlined">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 text-on-surface-variant" />
+                <span className="text-sm font-medium text-on-surface">{t('recipientImporter.recipientCount', { count: recipients.length })}</span>
               </div>
-              <Button variant='text' size='sm' onClick={handleClearAll} className='text-error hover:bg-error/10'>
-                <Trash2 className='w-4 h-4 mr-1' />
+              <Button variant="text" size="sm" onClick={handleClearAll} className="text-error hover:bg-error/10">
+                <Trash2 className="w-4 h-4 mr-1" />
                 {t('common.clearAll')}
               </Button>
             </div>
-            <div className='flex flex-wrap gap-2 max-h-48 overflow-y-auto'>
+            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
               {recipients.slice(0, 100).map((email) => (
-                <Chip key={email} size='sm' className='bg-surface-container-high text-on-surface pr-1'>
+                <Chip key={email} size="sm" className="bg-surface-container-high text-on-surface pr-1">
                   {email}
                   <button
                     onClick={() => handleRemoveEmail(email)}
-                    className='ml-1 p-0.5 hover:bg-on-surface/10 rounded-full transition-colors'
+                    className="ml-1 p-0.5 hover:bg-on-surface/10 rounded-full transition-colors"
                     aria-label={`Remove ${email}`}
                   >
-                    <X className='w-3 h-3' />
+                    <X className="w-3 h-3" />
                   </button>
                 </Chip>
               ))}
               {recipients.length > 100 && (
-                <Chip size='sm' className='bg-surface-container-highest text-on-surface-variant'>
+                <Chip size="sm" className="bg-surface-container-highest text-on-surface-variant">
                   {t('recipientImporter.moreRecipients', { count: recipients.length - 100 })}
                 </Chip>
               )}
@@ -278,54 +281,56 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
       )}
 
       {/* Import Preview Dialog */}
-      <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
-        <DialogContent size='default' showClose={false}>
+      <Dialog open={importDialog.isOpen} onOpenChange={importDialog.setOpen}>
+        <DialogContent size="default" showClose={false}>
           <DialogHeader
             hero
-            icon={<Upload className='h-7 w-7' />}
+            icon={<Upload className="h-7 w-7" />}
             title={t('recipientImporter.importTitle')}
             description={t('recipientImporter.importDescription')}
             showClose
           />
           <DialogBody>
             {importResult && (
-              <div className='space-y-4'>
+              <div className="space-y-4">
                 {/* Valid emails */}
-                <div className='flex items-center gap-3 p-3 rounded-xl bg-success-container/30'>
-                  <CheckCircle2 className='w-5 h-5 text-success shrink-0' />
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-success-container/30">
+                  <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
                   <div>
-                    <p className='text-sm font-medium text-on-surface'>{t('recipientImporter.validEmails', { count: importResult.valid.length })}</p>
-                    <p className='text-xs text-on-surface-variant'>{t('recipientImporter.willBeAdded')}</p>
+                    <p className="text-sm font-medium text-on-surface">{t('recipientImporter.validEmails', { count: importResult.valid.length })}</p>
+                    <p className="text-xs text-on-surface-variant">{t('recipientImporter.willBeAdded')}</p>
                   </div>
                 </div>
 
                 {/* Duplicates */}
                 {importResult.duplicates.length > 0 && (
-                  <div className='flex items-start gap-3 p-3 rounded-xl bg-warning-container/30'>
-                    <AlertCircle className='w-5 h-5 text-warning shrink-0 mt-0.5' />
+                  <div className="flex items-start gap-3 p-3 rounded-xl bg-warning-container/30">
+                    <AlertCircle className="w-5 h-5 text-warning shrink-0 mt-0.5" />
                     <div>
-                      <p className='text-sm font-medium text-on-surface'>
+                      <p className="text-sm font-medium text-on-surface">
                         {t('recipientImporter.duplicatesSkipped', { count: importResult.duplicates.length })}
                       </p>
-                      <p className='text-xs text-on-surface-variant'>{t('recipientImporter.alreadyInList')}</p>
+                      <p className="text-xs text-on-surface-variant">{t('recipientImporter.alreadyInList')}</p>
                     </div>
                   </div>
                 )}
 
                 {/* Invalid emails */}
                 {importResult.invalid.length > 0 && (
-                  <div className='flex items-start gap-3 p-3 rounded-xl bg-error-container/30'>
-                    <AlertCircle className='w-5 h-5 text-error shrink-0 mt-0.5' />
+                  <div className="flex items-start gap-3 p-3 rounded-xl bg-error-container/30">
+                    <AlertCircle className="w-5 h-5 text-error shrink-0 mt-0.5" />
                     <div>
-                      <p className='text-sm font-medium text-on-surface'>{t('recipientImporter.invalidEmails', { count: importResult.invalid.length })}</p>
-                      <div className='mt-2 max-h-24 overflow-y-auto'>
+                      <p className="text-sm font-medium text-on-surface">
+                        {t('recipientImporter.invalidEmails', { count: importResult.invalid.length })}
+                      </p>
+                      <div className="mt-2 max-h-24 overflow-y-auto">
                         {importResult.invalid.slice(0, 10).map((email, i) => (
-                          <p key={i} className='text-xs text-on-surface-variant truncate'>
+                          <p key={i} className="text-xs text-on-surface-variant truncate">
                             {email}
                           </p>
                         ))}
                         {importResult.invalid.length > 10 && (
-                          <p className='text-xs text-on-surface-variant font-medium'>
+                          <p className="text-xs text-on-surface-variant font-medium">
                             {t('recipientImporter.moreInvalid', { count: importResult.invalid.length - 10 })}
                           </p>
                         )}
@@ -337,7 +342,7 @@ export function RecipientImporter({ recipients, onChange, maxRecipients = 10000,
             )}
           </DialogBody>
           <DialogFooter>
-            <Button variant='text' onClick={() => setShowImportDialog(false)}>
+            <Button variant="text" onClick={() => importDialog.close()}>
               {t('common.cancel')}
             </Button>
             <Button onClick={handleConfirmImport} disabled={!importResult || importResult.valid.length === 0}>

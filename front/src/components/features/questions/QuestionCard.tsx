@@ -13,6 +13,10 @@ interface QuestionCardProps extends HTMLAttributes<HTMLDivElement> {
   index: number;
   isSelected: boolean;
   isReadOnly?: boolean;
+  /** Override displayed text (for translations) */
+  displayText?: string;
+  /** Whether displaying fallback text (not translated) */
+  isUsingFallback?: boolean;
   onSelect: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
@@ -28,6 +32,8 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
       index,
       isSelected,
       isReadOnly = false,
+      displayText,
+      isUsingFallback = false,
       onSelect,
       onDuplicate,
       onDelete,
@@ -40,6 +46,7 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
     ref
   ) => {
     const { t } = useTranslation();
+    const textToDisplay = displayText ?? question.text;
 
     return (
       <div
@@ -97,10 +104,21 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
             {/* Question Text */}
             <div className="flex-1 min-w-0 overflow-hidden">
               <div className="flex items-center gap-1.5">
-                <span className={cn('font-medium truncate block text-sm', isSelected ? 'text-primary' : 'text-on-surface')}>
-                  {question.text || t('editors.untitledQuestion')}
+                <span
+                  className={cn(
+                    'font-medium truncate block text-sm',
+                    isSelected ? 'text-primary' : 'text-on-surface',
+                    isUsingFallback && 'italic opacity-70'
+                  )}
+                >
+                  {textToDisplay || t('editors.untitledQuestion')}
                 </span>
                 {question.isRequired && <span className="shrink-0 text-error text-xs font-medium">*</span>}
+                {isUsingFallback && (
+                  <span className="shrink-0 text-[10px] font-medium text-warning bg-warning/10 px-1.5 py-0.5 rounded">
+                    {t('localization.fallback', 'Fallback')}
+                  </span>
+                )}
               </div>
               <div className="text-xs text-on-surface-variant/70 mt-0.5 truncate">
                 {getQuestionTypeLabel(question.type)}

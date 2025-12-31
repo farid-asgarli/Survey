@@ -56,13 +56,13 @@ public class IdentityService(
             Email = email,
             FirstName = firstName,
             LastName = lastName,
-            DomainUserId = domainUser.Id
+            DomainUserId = domainUser.Id,
         };
 
         var result = await _userManager.CreateAsync(identityUser, password);
         if (!result.Succeeded)
         {
-            return AuthenticationResult.Failure(result.Errors.Select(e => e.Description).ToArray());
+            return AuthenticationResult.Failure([.. result.Errors.Select(e => e.Description)]);
         }
 
         await _unitOfWork.SaveChangesAsync();
@@ -192,7 +192,7 @@ public class IdentityService(
             new(JwtRegisteredClaimNames.Email, user.Email!),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new("firstName", user.FirstName),
-            new("lastName", user.LastName)
+            new("lastName", user.LastName),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -204,7 +204,7 @@ public class IdentityService(
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
-            )
+            ),
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -239,7 +239,7 @@ public class IdentityService(
             ),
             ValidIssuer = _jwtSettings.Issuer,
             ValidAudience = _jwtSettings.Audience,
-            ValidateLifetime = false // Allow expired tokens
+            ValidateLifetime = false, // Allow expired tokens
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

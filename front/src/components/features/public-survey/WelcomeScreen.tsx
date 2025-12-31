@@ -71,7 +71,7 @@ export function WelcomeScreen({
             <>
               <div
                 className={`rounded-2xl @sm:rounded-2xl @md:rounded-3xl flex items-center justify-center overflow-hidden ${
-                  showLogoBackground ? 'p-2 shadow-sm border-2 border-outline-variant/30' : ''
+                  showLogoBackground ? 'p-2 border-2 border-outline-variant/30' : ''
                 } ${
                   logoSize === 0
                     ? 'w-14 h-14 @sm:w-16 @sm:h-16 @md:w-18 @md:h-18'
@@ -83,7 +83,7 @@ export function WelcomeScreen({
                 }`}
                 style={showLogoBackground ? { backgroundColor: logoBackgroundColor || '#ffffff' } : undefined}
               >
-                <img src={logoUrl} alt="Survey logo" className="w-full h-full object-contain" />
+                <img src={logoUrl} alt={t('a11y.surveyLogo')} className="w-full h-full object-contain" />
               </div>
               {/* Branding title and subtitle */}
               {(brandingTitle || brandingSubtitle) && (

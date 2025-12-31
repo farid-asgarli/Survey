@@ -16,6 +16,8 @@ const iconButtonVariants = cva(
         // Outlined - clean border
         outlined:
           'border-2 border-outline-variant/50 text-on-surface-variant hover:border-outline-variant hover:text-on-surface focus-visible:ring-primary/30 rounded-full',
+        // Ghost - completely transparent until hover
+        ghost: 'text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container-high/50 focus-visible:ring-primary/30 rounded-full',
       },
       size: {
         default: 'h-10 w-10',

@@ -72,11 +72,9 @@ public class SurveyThemeConfiguration : IEntityTypeConfiguration<SurveyTheme>
 
         builder.Property(x => x.ShowProgressBar).IsRequired().HasDefaultValue(true);
 
-        builder
-            .Property(x => x.ProgressBarStyle)
-            .IsRequired()
-            .HasDefaultValue(ProgressBarStyle.Bar)
-            .HasConversion<string>();
+        // Note: Not using HasDefaultValue for enum stored as string to avoid sentinel value warning.
+        // Default value is set in the SurveyTheme entity constructor instead.
+        builder.Property(x => x.ProgressBarStyle).IsRequired().HasConversion<string>();
 
         // Branding
         builder.Property(x => x.LogoUrl).HasMaxLength(500);

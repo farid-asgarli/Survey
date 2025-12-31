@@ -1,16 +1,17 @@
 // ResponsesPage - Survey response management page
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Download, RefreshCw, ClipboardList } from 'lucide-react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { Button, Card, EmptyState } from '@/components/ui';
 import { Layout, PageHeader } from '@/components/layout';
 import { renderPageIcon } from '@/config';
 import { ResponseDetailDrawer, ExportDialog } from '@/components/features/responses';
 import { useResponsesInfinite, useDeleteResponses, type ResponseFilters } from '@/hooks/queries/useResponses';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
-import { useInfiniteScroll } from '@/hooks';
+import { useDialogState } from '@/hooks';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { cn } from '@/lib/utils';
 import type { Survey } from '@/types';
@@ -30,11 +31,13 @@ export function ResponsesPage() {
   const [fromDate, setFromDate] = useState<string | undefined>();
   const [toDate, setToDate] = useState<string | undefined>();
   const [selectedResponses, setSelectedResponses] = useState<Set<string>>(new Set());
-  const [selectedResponseId, setSelectedResponseId] = useState<string | null>(null);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [isExportOpen, setIsExportOpen] = useState(false);
+  const detailDrawer = useDialogState<string>(); // stores responseId
+  const exportDialog = useDialogState();
 
   const { confirm, ConfirmDialog } = useConfirmDialog();
+
+  // Ref for virtualized list container
+  const listContainerRef = useRef<HTMLDivElement>(null);
 
   // Fetch surveys for the dropdown
   const { data: surveysData, isLoading: surveysLoading } = useSurveysList();
@@ -88,12 +91,24 @@ export function ResponsesPage() {
     });
   }, [responses, searchQuery, surveysMap]);
 
-  // Infinite scroll
-  const { sentinelRef } = useInfiniteScroll({
-    hasNextPage: !!hasNextPage,
-    isFetchingNextPage,
-    onLoadMore: fetchNextPage,
+  // Virtualizer for response list
+  const virtualizer = useVirtualizer({
+    count: filteredResponses.length,
+    getScrollElement: () => listContainerRef.current,
+    estimateSize: () => 64, // Estimated row height in pixels
+    overscan: 5, // Render 5 extra items above/below viewport
   });
+
+  // Load more when scrolling near the end
+  const virtualItems = virtualizer.getVirtualItems();
+  const lastItem = virtualItems[virtualItems.length - 1];
+
+  // Trigger fetch when approaching the end of the list
+  useMemo(() => {
+    if (lastItem && lastItem.index >= filteredResponses.length - 5 && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [lastItem?.index, filteredResponses.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Survey options for dropdown
   const surveyOptions = useMemo(() => {
@@ -168,10 +183,12 @@ export function ResponsesPage() {
   };
 
   // View response detail
-  const handleViewResponse = useCallback((responseId: string) => {
-    setSelectedResponseId(responseId);
-    setIsDetailOpen(true);
-  }, []);
+  const handleViewResponse = useCallback(
+    (responseId: string) => {
+      detailDrawer.open(responseId);
+    },
+    [detailDrawer]
+  );
 
   // Check if all visible responses are selected
   const isAllSelected = filteredResponses.length > 0 && selectedResponses.size === filteredResponses.length;
@@ -196,7 +213,7 @@ export function ResponsesPage() {
                 <RefreshCw className={cn('h-4 w-4 mr-2', responsesLoading && 'animate-spin')} />
                 {t('common.refresh')}
               </Button>
-              <Button variant="tonal" onClick={() => setIsExportOpen(true)} disabled={!selectedSurveyId}>
+              <Button variant="tonal" onClick={() => exportDialog.open()} disabled={!selectedSurveyId}>
                 <Download className="h-4 w-4 mr-2" />
                 {t('responses.export')}
               </Button>
@@ -233,7 +250,7 @@ export function ResponsesPage() {
         />
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-4 md:px-6 md:pb-6">
+        <div className="flex-1 overflow-hidden p-4 md:px-6 md:pb-6">
           {!selectedSurveyId ? (
             <EmptyState
               icon={<ClipboardList className="h-7 w-7" />}
@@ -249,36 +266,56 @@ export function ResponsesPage() {
           ) : filteredResponses.length === 0 ? (
             <ResponsesEmptyState hasFilters={hasFilters} />
           ) : (
-            <Card variant="outlined" shape="rounded" className="border-2 border-outline-variant/30 overflow-hidden">
-              {/* Table Header */}
+            <Card variant="outlined" shape="rounded" className="border-2 border-outline-variant/30 overflow-hidden h-full flex flex-col">
+              {/* Sticky Table Header */}
               <ResponsesTableHeader isAllSelected={isAllSelected} onSelectAll={handleSelectAll} />
 
-              {/* Response List */}
-              <div className="divide-y divide-outline-variant/30">
-                {filteredResponses.map((response) => (
-                  <ResponseRow
-                    key={response.id}
-                    response={response}
-                    survey={surveysMap.get(response.surveyId)}
-                    isSelected={selectedResponses.has(response.id)}
-                    onSelect={(checked) => handleSelectResponse(response.id, checked)}
-                    onClick={() => handleViewResponse(response.id)}
-                  />
-                ))}
-              </div>
-
-              {/* Infinite scroll trigger */}
-              <div ref={sentinelRef} className="h-px" />
-
-              {/* Loading more indicator */}
-              {isFetchingNextPage && (
-                <div className="flex items-center justify-center py-4">
-                  <div className="flex items-center gap-2 text-sm text-on-surface-variant">
-                    <RefreshCw className="h-4 w-4 animate-spin" />
-                    {t('common.loading')}
-                  </div>
+              {/* Virtualized Response List */}
+              <div ref={listContainerRef} className="flex-1 overflow-auto">
+                <div
+                  style={{
+                    height: `${virtualizer.getTotalSize()}px`,
+                    width: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  {virtualizer.getVirtualItems().map((virtualItem) => {
+                    const response = filteredResponses[virtualItem.index];
+                    return (
+                      <div
+                        key={response.id}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: `${virtualItem.size}px`,
+                          transform: `translateY(${virtualItem.start}px)`,
+                        }}
+                        className="border-b border-outline-variant/30"
+                      >
+                        <ResponseRow
+                          response={response}
+                          survey={surveysMap.get(response.surveyId)}
+                          isSelected={selectedResponses.has(response.id)}
+                          onSelect={(checked) => handleSelectResponse(response.id, checked)}
+                          onClick={() => handleViewResponse(response.id)}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
-              )}
+
+                {/* Loading more indicator */}
+                {isFetchingNextPage && (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="flex items-center gap-2 text-sm text-on-surface-variant">
+                      <RefreshCw className="h-4 w-4 animate-spin" />
+                      {t('common.loading')}
+                    </div>
+                  </div>
+                )}
+              </div>
             </Card>
           )}
         </div>
@@ -288,13 +325,13 @@ export function ResponsesPage() {
       {selectedSurveyId && (
         <ResponseDetailDrawer
           surveyId={selectedSurveyId}
-          responseId={selectedResponseId}
-          open={isDetailOpen}
-          onOpenChange={setIsDetailOpen}
+          responseId={detailDrawer.selectedItem}
+          open={detailDrawer.isOpen}
+          onOpenChange={detailDrawer.setOpen}
           onDeleted={() => {
             setSelectedResponses((prev) => {
               const next = new Set(prev);
-              if (selectedResponseId) next.delete(selectedResponseId);
+              if (detailDrawer.selectedItem) next.delete(detailDrawer.selectedItem);
               return next;
             });
           }}
@@ -303,7 +340,12 @@ export function ResponsesPage() {
 
       {/* Export Dialog */}
       {selectedSurveyId && (
-        <ExportDialog surveyId={selectedSurveyId} surveyTitle={selectedSurvey?.title} open={isExportOpen} onOpenChange={setIsExportOpen} />
+        <ExportDialog
+          surveyId={selectedSurveyId}
+          surveyTitle={selectedSurvey?.title}
+          open={exportDialog.isOpen}
+          onOpenChange={exportDialog.setOpen}
+        />
       )}
 
       <ConfirmDialog />

@@ -1,10 +1,11 @@
 // RecentItems - Display recently visited items in a dropdown or panel
 
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useViewTransitionNavigate } from '@/hooks';
 import { useSearchStore, type RecentItem } from '@/stores/searchStore';
 import { getPageIcon } from '@/config';
-import { formatTimeAgo } from '@/utils';
+import { formatRelativeTime } from '@/utils';
 import { Clock, Send, X, Trash2, FileText, type LucideIcon } from 'lucide-react';
 
 // Icon mapping for item types - using centralized page icons
@@ -33,7 +34,7 @@ interface RecentItemRowProps {
 
 function RecentItemRow({ item, onSelect, onRemove, compact = false }: RecentItemRowProps) {
   const Icon = typeIcons[item.type] || FileText;
-  const timeAgo = formatTimeAgo(item.visitedAt);
+  const timeAgo = formatRelativeTime(item.visitedAt);
 
   return (
     <div
@@ -43,7 +44,7 @@ function RecentItemRow({ item, onSelect, onRemove, compact = false }: RecentItem
         compact ? 'px-3 py-2' : 'px-4 py-3'
       )}
       onClick={() => onSelect(item)}
-      role='button'
+      role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -58,9 +59,9 @@ function RecentItemRow({ item, onSelect, onRemove, compact = false }: RecentItem
       </div>
 
       {/* Content */}
-      <div className='flex-1 min-w-0'>
+      <div className="flex-1 min-w-0">
         <p className={cn('font-medium text-on-surface truncate', compact ? 'text-sm' : 'text-base')}>{item.title}</p>
-        <p className='text-xs text-on-surface-variant truncate'>{timeAgo}</p>
+        <p className="text-xs text-on-surface-variant truncate">{timeAgo}</p>
       </div>
 
       {/* Remove button */}
@@ -76,7 +77,7 @@ function RecentItemRow({ item, onSelect, onRemove, compact = false }: RecentItem
         )}
         aria-label={`Remove ${item.title} from recent items`}
       >
-        <X className='h-4 w-4 text-on-surface-variant' />
+        <X className="h-4 w-4 text-on-surface-variant" />
       </button>
     </div>
   );
@@ -91,7 +92,15 @@ interface RecentItemsListProps {
   onItemSelect?: () => void;
 }
 
-export function RecentItemsList({ className, maxItems = 5, compact = false, showHeader = true, showClearAll = true, onItemSelect }: RecentItemsListProps) {
+export function RecentItemsList({
+  className,
+  maxItems = 5,
+  compact = false,
+  showHeader = true,
+  showClearAll = true,
+  onItemSelect,
+}: RecentItemsListProps) {
+  const { t } = useTranslation();
   const navigate = useViewTransitionNavigate();
   const { recentItems, removeRecentItem, clearRecentItems, addRecentItem } = useSearchStore();
 
@@ -112,10 +121,10 @@ export function RecentItemsList({ className, maxItems = 5, compact = false, show
   if (displayItems.length === 0) {
     return (
       <div className={cn('py-8 text-center', className)}>
-        <div className='inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-container mb-3'>
-          <Clock className='h-6 w-6 text-on-surface-variant/50' />
+        <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-container mb-3">
+          <Clock className="h-6 w-6 text-on-surface-variant/50" />
         </div>
-        <p className='text-sm text-on-surface-variant'>No recent items</p>
+        <p className="text-sm text-on-surface-variant">{t('emptyState.search.noRecentItems')}</p>
       </div>
     );
   }
@@ -124,8 +133,8 @@ export function RecentItemsList({ className, maxItems = 5, compact = false, show
     <div className={className}>
       {/* Header */}
       {showHeader && (
-        <div className='flex items-center justify-between px-4 py-2'>
-          <h3 className='text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>Recent</h3>
+        <div className="flex items-center justify-between px-4 py-2">
+          <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('common.recent')}</h3>
           {showClearAll && displayItems.length > 0 && (
             <button
               onClick={clearRecentItems}
@@ -135,7 +144,7 @@ export function RecentItemsList({ className, maxItems = 5, compact = false, show
                 'hover:bg-surface-container-high transition-colors'
               )}
             >
-              <Trash2 className='h-3 w-3' />
+              <Trash2 className="h-3 w-3" />
               Clear all
             </button>
           )}
@@ -143,7 +152,7 @@ export function RecentItemsList({ className, maxItems = 5, compact = false, show
       )}
 
       {/* Items */}
-      <div className='space-y-0.5 px-1'>
+      <div className="space-y-0.5 px-1">
         {displayItems.map((item) => (
           <RecentItemRow key={item.id} item={item} onSelect={handleSelect} onRemove={removeRecentItem} compact={compact} />
         ))}

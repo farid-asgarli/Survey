@@ -91,6 +91,8 @@ import {
   SubscriptionTier,
   MemberRole,
   SurveyStatus,
+  SurveyType,
+  CxMetricType,
   QuestionType,
   NpsQuestionType,
   LogicOperator,
@@ -102,6 +104,7 @@ import {
   ButtonStyle,
   ThemeLayout,
   LogoPosition,
+  LogoSize,
   ProgressBarStyle,
   BackgroundImagePosition,
   RecurrencePattern,
@@ -209,6 +212,18 @@ export interface CreateNamespaceRequest {
 
 export interface InviteMemberRequest {
   email: string;
+  role: MemberRole;
+}
+
+export interface UpdateMemberRoleRequest {
+  namespaceId: string;
+  membershipId: string;
+  role: MemberRole;
+}
+
+export interface UpdateMemberRoleResponse {
+  membershipId: string;
+  userId: string;
   role: MemberRole;
 }
 
@@ -359,6 +374,61 @@ export interface UpdateQuestionRequest {
   settings?: QuestionSettings;
   /** Language code for the translation to update */
   languageCode: string;
+}
+
+// ============ Question Batch Sync ============
+
+/** Request for batch syncing questions */
+export interface BatchSyncQuestionsRequest {
+  toCreate: BatchCreateQuestionData[];
+  toUpdate: BatchUpdateQuestionData[];
+  toDelete: string[];
+  finalOrder: string[];
+}
+
+/** Data for creating a question in batch sync */
+export interface BatchCreateQuestionData {
+  tempId: string;
+  text: string;
+  description?: string;
+  type: QuestionType;
+  isRequired: boolean;
+  order?: number;
+  settings?: QuestionSettings;
+  isNpsQuestion?: boolean;
+  npsType?: string;
+  languageCode?: string;
+}
+
+/** Data for updating a question in batch sync */
+export interface BatchUpdateQuestionData {
+  questionId: string;
+  text: string;
+  description?: string;
+  type: QuestionType;
+  isRequired: boolean;
+  order?: number;
+  settings?: QuestionSettings;
+  isNpsQuestion?: boolean;
+  npsType?: string;
+  languageCode?: string;
+}
+
+/** Result of batch sync operation */
+export interface BatchSyncQuestionsResult {
+  created: Array<{
+    tempId: string;
+    realId: string;
+    question: Question;
+  }>;
+  updated: Question[];
+  deleted: string[];
+  reordered: boolean;
+  errors: Array<{
+    operation: string;
+    questionId?: string;
+    message: string;
+  }>;
 }
 
 // ============ Question Logic ============
