@@ -14,7 +14,7 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.QuestionLogics.FirstOrDefaultAsync(
+        return await _context.QuestionLogics.AsNoTracking().FirstOrDefaultAsync(
             ql => ql.Id == id,
             cancellationToken
         );
@@ -26,7 +26,8 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     )
     {
         return await _context
-            .QuestionLogics.Include(ql => ql.Question)
+            .QuestionLogics.AsNoTracking()
+            .Include(ql => ql.Question)
             .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
             .ThenInclude(q => q!.Translations)
@@ -41,7 +42,8 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     )
     {
         return await _context
-            .QuestionLogics.Include(ql => ql.SourceQuestion)
+            .QuestionLogics.AsNoTracking()
+            .Include(ql => ql.SourceQuestion)
             .ThenInclude(q => q!.Translations)
             .Include(ql => ql.TargetQuestion)
             .ThenInclude(q => q!.Translations)
@@ -56,7 +58,8 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     )
     {
         return await _context
-            .QuestionLogics.Include(ql => ql.Question)
+            .QuestionLogics.AsNoTracking()
+            .Include(ql => ql.Question)
             .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
             .ThenInclude(q => q!.Translations)
@@ -74,7 +77,8 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     )
     {
         return await _context
-            .QuestionLogics.Include(ql => ql.Question)
+            .QuestionLogics.AsNoTracking()
+            .Include(ql => ql.Question)
             .ThenInclude(q => q.Translations)
             .Include(ql => ql.TargetQuestion)
             .ThenInclude(q => q!.Translations)
@@ -89,7 +93,8 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
     )
     {
         return await _context
-            .QuestionLogics.Include(ql => ql.Question)
+            .QuestionLogics.AsNoTracking()
+            .Include(ql => ql.Question)
             .ThenInclude(q => q.Translations)
             .Include(ql => ql.SourceQuestion)
             .ThenInclude(q => q!.Translations)
