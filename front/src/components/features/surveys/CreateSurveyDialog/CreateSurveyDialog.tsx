@@ -24,12 +24,8 @@ import { SurveyType, CxMetricType } from '@/types';
 import { getCategoryByType, DEFAULT_CX_TITLES, CX_METRICS, SURVEY_CATEGORIES } from './constants';
 import type { CreateSurveyDialogProps, CreateSurveyFormData, SurveyCategory, CxMetricOption } from './types';
 import { cn } from '@/lib/utils';
-import { LANGUAGE_INFO } from '@/components/features/localization';
+import { SUPPORTED_LANGUAGES, getLanguageInfo } from '@/config/languages';
 import { getCurrentLanguage } from '@/i18n';
-
-// Survey language codes - these are the languages surveys can be created in
-const SURVEY_LANGUAGES = ['en', 'az', 'ru', 'es', 'fr', 'de', 'tr', 'it', 'pt', 'nl', 'pl', 'zh', 'ja', 'ko', 'ar', 'hi'] as const;
-type SurveyLanguageCode = (typeof SURVEY_LANGUAGES)[number];
 
 // Type alias for translation function
 type TFunction = ReturnType<typeof useTranslation>['t'];
@@ -53,16 +49,16 @@ const CX_METRIC_ICONS = {
 export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = false }: CreateSurveyDialogProps) {
   const { t } = useTranslation();
 
-  // Get initial language - use current UI language if it's a valid survey language, otherwise 'en'
-  const getInitialLanguage = (): SurveyLanguageCode => {
+  // Get initial language - use current UI language if it's a supported survey language, otherwise 'en'
+  const getInitialLanguage = (): string => {
     const currentLang = getCurrentLanguage();
-    return SURVEY_LANGUAGES.includes(currentLang as SurveyLanguageCode) ? (currentLang as SurveyLanguageCode) : 'en';
+    return SUPPORTED_LANGUAGES.some((l) => l.code === currentLang) ? currentLang : 'en';
   };
 
   // State
   const [selectedCategory, setSelectedCategory] = useState<SurveyType>(SurveyType.Classic);
   const [cxMetric, setCxMetric] = useState<CxMetricType>(CxMetricType.NPS);
-  const [languageCode, setLanguageCode] = useState<SurveyLanguageCode>(getInitialLanguage());
+  const [languageCode, setLanguageCode] = useState<string>(getInitialLanguage());
 
   // Handle close with reset
   const handleClose = useCallback(() => {
@@ -208,19 +204,18 @@ export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = f
                         isLoading && 'opacity-50 cursor-not-allowed'
                       )}
                     >
-                      <span>{LANGUAGE_INFO[languageCode]?.flag || '🌐'}</span>
-                      <span>{LANGUAGE_INFO[languageCode]?.nativeName || languageCode}</span>
+                      <span>{getLanguageInfo(languageCode).flag}</span>
+                      <span>{getLanguageInfo(languageCode).nativeName}</span>
                       <ChevronDown className="h-3.5 w-3.5 text-on-surface-variant" />
                     </button>
                   }
                 >
-                  {SURVEY_LANGUAGES.map((code) => {
-                    const lang = LANGUAGE_INFO[code];
-                    const isSelected = languageCode === code;
+                  {SUPPORTED_LANGUAGES.map((lang) => {
+                    const isSelected = languageCode === lang.code;
                     return (
-                      <MenuItem key={code} onClick={() => setLanguageCode(code)} className={cn(isSelected && 'bg-primary/8')}>
-                        <span className="mr-2">{lang?.flag || '🌐'}</span>
-                        <span className="flex-1">{lang?.nativeName || code}</span>
+                      <MenuItem key={lang.code} onClick={() => setLanguageCode(lang.code)} className={cn(isSelected && 'bg-primary/8')}>
+                        <span className="mr-2">{lang.flag}</span>
+                        <span className="flex-1">{lang.nativeName}</span>
                         {isSelected && <Check className="h-4 w-4 text-primary" />}
                       </MenuItem>
                     );

@@ -6,26 +6,10 @@ import { useTranslation } from 'react-i18next';
 import { Globe, Check, ChevronDown, Plus, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui';
+import { LANGUAGE_INFO_MAP, getLanguageInfo } from '@/config/languages';
 
-// Language metadata for display
-const LANGUAGE_INFO: Record<string, { name: string; nativeName: string; flag: string }> = {
-  en: { name: 'English', nativeName: 'English', flag: '🇬🇧' },
-  es: { name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
-  fr: { name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-  de: { name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-  it: { name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹' },
-  pt: { name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹' },
-  nl: { name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱' },
-  pl: { name: 'Polish', nativeName: 'Polski', flag: '🇵🇱' },
-  ru: { name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
-  az: { name: 'Azerbaijani', nativeName: 'Azərbaycan', flag: '🇦🇿' },
-  zh: { name: 'Chinese', nativeName: '中文', flag: '🇨🇳' },
-  ja: { name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
-  ko: { name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
-  ar: { name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
-  hi: { name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳' },
-  tr: { name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷' },
-};
+// Re-export LANGUAGE_INFO_MAP for backward compatibility
+export const LANGUAGE_INFO = LANGUAGE_INFO_MAP;
 
 export interface LanguageStatus {
   code: string;
@@ -49,13 +33,6 @@ interface SurveyLanguageSwitcherProps {
   isReadOnly?: boolean;
   /** Additional CSS classes */
   className?: string;
-}
-
-/**
- * Get display info for a language code
- */
-function getLanguageInfo(code: string) {
-  return LANGUAGE_INFO[code] || { name: code.toUpperCase(), nativeName: code.toUpperCase(), flag: '🌐' };
 }
 
 /**
@@ -247,5 +224,3 @@ export function SurveyLanguageSwitcher({
     </div>
   );
 }
-
-export { LANGUAGE_INFO };

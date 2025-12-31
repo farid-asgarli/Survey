@@ -3,6 +3,18 @@
 export { SurveyLanguageSwitcher, LANGUAGE_INFO } from './SurveyLanguageSwitcher';
 export type { LanguageStatus } from './SurveyLanguageSwitcher';
 
+// Re-export centralized language config for convenience
+export {
+  SUPPORTED_LANGUAGES,
+  LANGUAGE_INFO_MAP,
+  SUPPORTED_LANGUAGE_CODES,
+  DEFAULT_LANGUAGE_CODE,
+  getLanguageInfo,
+  isLanguageSupported,
+  type LanguageInfo,
+  type SupportedLanguageCode,
+} from '@/config/languages';
+
 export { AddLanguageDialog } from './AddLanguageDialog';
 
 export { TranslationEditor } from './TranslationEditor';

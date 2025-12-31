@@ -21,12 +21,8 @@ import { createTemplateSchema, type CreateTemplateFormData } from '@/lib/validat
 import { getCategoryOptions } from './templateUtils';
 import { cn } from '@/lib/utils';
 import { getCurrentLanguage } from '@/i18n';
-import { LANGUAGE_INFO } from '@/components/features/localization';
+import { SUPPORTED_LANGUAGES, getLanguageInfo } from '@/config/languages';
 import type { TemplateCategory, Survey } from '@/types';
-
-// Template language codes - these are the languages templates can be created in
-const TEMPLATE_LANGUAGES = ['en', 'az', 'ru', 'es', 'fr', 'de', 'tr', 'it', 'pt', 'nl', 'pl', 'zh', 'ja', 'ko', 'ar', 'hi'] as const;
-type TemplateLanguageCode = (typeof TEMPLATE_LANGUAGES)[number];
 
 interface CreateTemplateDialogProps {
   open: boolean;
@@ -90,10 +86,10 @@ function ModeCard({
   );
 }
 
-// Get initial language - use current UI language if it's a valid template language, otherwise 'en'
-const getInitialLanguage = (): TemplateLanguageCode => {
+// Get initial language - use current UI language if it's a supported template language, otherwise 'en'
+const getInitialLanguage = (): string => {
   const currentLang = getCurrentLanguage();
-  return TEMPLATE_LANGUAGES.includes(currentLang as TemplateLanguageCode) ? (currentLang as TemplateLanguageCode) : 'en';
+  return SUPPORTED_LANGUAGES.some((l) => l.code === currentLang) ? currentLang : 'en';
 };
 
 function CreateTemplateForm({
@@ -107,7 +103,7 @@ function CreateTemplateForm({
 }) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<CreateMode>('scratch');
-  const [languageCode, setLanguageCode] = useState<TemplateLanguageCode>(getInitialLanguage());
+  const [languageCode, setLanguageCode] = useState<string>(getInitialLanguage());
 
   const {
     register,
@@ -274,19 +270,18 @@ function CreateTemplateForm({
                   isLoading && 'opacity-50 cursor-not-allowed'
                 )}
               >
-                <span>{LANGUAGE_INFO[languageCode]?.flag || '🌐'}</span>
-                <span>{LANGUAGE_INFO[languageCode]?.nativeName || languageCode}</span>
+                <span>{getLanguageInfo(languageCode).flag}</span>
+                <span>{getLanguageInfo(languageCode).nativeName}</span>
                 <ChevronDown className="h-3.5 w-3.5 text-on-surface-variant" />
               </button>
             }
           >
-            {TEMPLATE_LANGUAGES.map((code) => {
-              const lang = LANGUAGE_INFO[code];
-              const isSelected = languageCode === code;
+            {SUPPORTED_LANGUAGES.map((lang) => {
+              const isSelected = languageCode === lang.code;
               return (
-                <MenuItem key={code} onClick={() => setLanguageCode(code)} className={cn(isSelected && 'bg-primary/8')}>
-                  <span className="mr-2">{lang?.flag || '🌐'}</span>
-                  <span className="flex-1">{lang?.nativeName || code}</span>
+                <MenuItem key={lang.code} onClick={() => setLanguageCode(lang.code)} className={cn(isSelected && 'bg-primary/8')}>
+                  <span className="mr-2">{lang.flag}</span>
+                  <span className="flex-1">{lang.nativeName}</span>
                   {isSelected && <Check className="h-4 w-4 text-primary" />}
                 </MenuItem>
               );

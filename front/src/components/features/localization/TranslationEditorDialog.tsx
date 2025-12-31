@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Globe, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, EmptyState } from '@/components/ui';
 import { TranslationEditor } from './TranslationEditor';
-import { LANGUAGE_INFO } from './SurveyLanguageSwitcher';
+import { getLanguageInfo } from '@/config/languages';
 import { useSurveyTranslations, useUpdateSurveyTranslation } from '@/hooks';
 import type { SurveyTranslationDto } from '@/types';
 
@@ -23,13 +23,6 @@ interface TranslationEditorDialogProps {
   targetLanguage: string;
   /** Whether the survey is read-only */
   isReadOnly?: boolean;
-}
-
-/**
- * Get display info for a language code
- */
-function getLanguageInfo(code: string) {
-  return LANGUAGE_INFO[code] || { name: code.toUpperCase(), nativeName: code.toUpperCase(), flag: '🌐' };
 }
 
 export function TranslationEditorDialog({

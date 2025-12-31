@@ -6,7 +6,9 @@ import en from './locales/en.json';
 import az from './locales/az.json';
 import ru from './locales/ru.json';
 
-// Language configuration
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE_CODE, getLanguageInfo as getLanguageInfoFromConfig, type LanguageInfo } from '@/config/languages';
+
+// UI-supported languages (subset of survey-supported languages - only those with translation files)
 export const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
   { code: 'az', name: 'Azerbaijani', nativeName: 'Azərbaycan', flag: '🇦🇿' },
@@ -16,6 +18,10 @@ export const LANGUAGES = [
 export type LanguageCode = (typeof LANGUAGES)[number]['code'];
 
 export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+
+// Re-export centralized language config for survey languages
+export { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE_CODE, type LanguageInfo };
+export const getSurveyLanguageInfo = getLanguageInfoFromConfig;
 
 // Initialize i18next
 i18n

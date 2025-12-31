@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronRight, Check, AlertTriangle, HelpCircle, ListChecks, Star } from 'lucide-react';
 import { Input, Textarea, Tooltip } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { LANGUAGE_INFO } from './SurveyLanguageSwitcher';
+import { getLanguageInfo } from '@/config/languages';
 import type { QuestionTranslationsDto, QuestionTranslationItemDto } from '@/types';
 
 // Extended type for question with settings (options, etc.)
@@ -62,19 +62,6 @@ interface QuestionTranslationsEditorProps {
   expandedQuestionId?: string;
   /** Callback when a question is expanded/collapsed */
   onExpandQuestion?: (questionId: string | undefined) => void;
-}
-
-/**
- * Get display info for a language code
- */
-function getLanguageInfo(code: string) {
-  return (
-    LANGUAGE_INFO[code] || {
-      name: code.toUpperCase(),
-      nativeName: code.toUpperCase(),
-      flag: '🌐',
-    }
-  );
 }
 
 /**

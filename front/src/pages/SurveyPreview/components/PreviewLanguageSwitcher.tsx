@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Globe, Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui';
-import { LANGUAGE_INFO } from '@/components/features/localization';
+import { getLanguageInfo } from '@/config/languages';
 
 interface PreviewLanguageSwitcherProps {
   /** Currently selected preview language */
@@ -19,13 +19,6 @@ interface PreviewLanguageSwitcherProps {
   onLanguageChange: (languageCode: string) => void;
   /** Additional CSS classes */
   className?: string;
-}
-
-/**
- * Get display info for a language code
- */
-function getLanguageInfo(code: string) {
-  return LANGUAGE_INFO[code] || { name: code.toUpperCase(), nativeName: code.toUpperCase(), flag: '🌐' };
 }
 
 export function PreviewLanguageSwitcher({
