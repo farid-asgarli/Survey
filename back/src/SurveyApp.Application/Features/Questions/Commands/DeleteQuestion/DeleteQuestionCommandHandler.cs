@@ -28,7 +28,7 @@ public class DeleteQuestionCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
+        var survey = await _surveyRepository.GetByIdWithQuestionsForUpdateAsync(
             request.SurveyId,
             cancellationToken
         );

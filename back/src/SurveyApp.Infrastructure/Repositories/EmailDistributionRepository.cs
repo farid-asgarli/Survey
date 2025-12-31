@@ -21,6 +21,18 @@ public class EmailDistributionRepository(ApplicationDbContext context)
             .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
+    public async Task<EmailDistribution?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context.EmailDistributions.FirstOrDefaultAsync(
+            d => d.Id == id,
+            cancellationToken
+        );
+    }
+
     public async Task<EmailDistribution?> GetByIdWithRecipientsAsync(
         Guid id,
         CancellationToken cancellationToken = default

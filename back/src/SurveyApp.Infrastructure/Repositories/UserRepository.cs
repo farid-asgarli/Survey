@@ -18,6 +18,18 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 
+    public async Task<User?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .Users.Include(u => u.Memberships)
+            .ThenInclude(m => m.Namespace)
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+    }
+
     public async Task<User?> GetByEmailAsync(
         string email,
         CancellationToken cancellationToken = default

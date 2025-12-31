@@ -27,7 +27,7 @@ public class DeleteTemplateCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        var template = await _templateRepository.GetByIdAsync(
+        var template = await _templateRepository.GetByIdForUpdateAsync(
             request.TemplateId,
             cancellationToken
         );

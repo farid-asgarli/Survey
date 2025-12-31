@@ -8,9 +8,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface IQuestionLogicRepository
 {
     /// <summary>
-    /// Gets a question logic by its ID.
+    /// Gets a question logic by its ID (read-only, no change tracking).
     /// </summary>
     Task<QuestionLogic?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a question logic by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<QuestionLogic?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets a question logic by ID with related questions loaded.

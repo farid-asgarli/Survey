@@ -8,9 +8,14 @@ namespace SurveyApp.Domain.Interfaces;
 public interface INamespaceRepository
 {
     /// <summary>
-    /// Gets a namespace by its ID.
+    /// Gets a namespace by its ID (read-only, no change tracking).
     /// </summary>
     Task<Namespace?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a namespace by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<Namespace?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a namespace by its slug.

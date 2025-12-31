@@ -14,7 +14,18 @@ public class QuestionLogicRepository(ApplicationDbContext context) : IQuestionLo
         CancellationToken cancellationToken = default
     )
     {
-        return await _context.QuestionLogics.AsNoTracking().FirstOrDefaultAsync(
+        return await _context
+            .QuestionLogics.AsNoTracking()
+            .FirstOrDefaultAsync(ql => ql.Id == id, cancellationToken);
+    }
+
+    public async Task<QuestionLogic?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context.QuestionLogics.FirstOrDefaultAsync(
             ql => ql.Id == id,
             cancellationToken
         );

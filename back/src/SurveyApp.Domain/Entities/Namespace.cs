@@ -93,7 +93,7 @@ public class Namespace : AggregateRoot<Guid>
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Namespace name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.Namespace.NamespaceNameRequired");
 
         var namespaceSlug = NamespaceSlug.Create(slug);
         var ns = new Namespace(Guid.NewGuid(), name, namespaceSlug, subscriptionTier);
@@ -162,7 +162,7 @@ public class Namespace : AggregateRoot<Guid>
     public void UpgradeSubscription(SubscriptionTier newTier)
     {
         if (newTier <= SubscriptionTier)
-            throw new InvalidOperationException("Cannot downgrade subscription using this method.");
+            throw new DomainException("Domain.Namespace.CannotDowngradeSubscription");
 
         SubscriptionTier = newTier;
         SetLimitsForTier(newTier);
@@ -183,15 +183,13 @@ public class Namespace : AggregateRoot<Guid>
     public NamespaceMembership AddUser(User user, NamespaceRole role, Guid? invitedBy = null)
     {
         if (!IsActive)
-            throw new InvalidOperationException("Cannot add users to an inactive namespace.");
+            throw new DomainException("Domain.Namespace.CannotAddUsersInactive");
 
         if (_memberships.Count >= MaxUsers)
-            throw new InvalidOperationException(
-                $"Maximum number of users ({MaxUsers}) reached for this namespace."
-            );
+            throw new DomainException("Domain.Namespace.MaxUsersReached", MaxUsers);
 
         if (_memberships.Any(m => m.UserId == user.Id))
-            throw new InvalidOperationException("User is already a member of this namespace.");
+            throw new DomainException("Domain.Namespace.UserAlreadyMember");
 
         var membership = NamespaceMembership.Create(user.Id, Id, role, invitedBy);
         _memberships.Add(membership);
@@ -208,13 +206,13 @@ public class Namespace : AggregateRoot<Guid>
     {
         var membership = _memberships.FirstOrDefault(m => m.UserId == userId);
         if (membership == null)
-            throw new InvalidOperationException("User is not a member of this namespace.");
+            throw new DomainException("Domain.Namespace.UserNotMember");
 
         if (
             membership.Role == NamespaceRole.Owner
             && _memberships.Count(m => m.Role == NamespaceRole.Owner) == 1
         )
-            throw new InvalidOperationException("Cannot remove the last owner of the namespace.");
+            throw new DomainException("Domain.Namespace.CannotRemoveLastOwner");
 
         _memberships.Remove(membership);
     }
@@ -250,7 +248,7 @@ public class Namespace : AggregateRoot<Guid>
             SubscriptionTier.Free => (5, 10),
             SubscriptionTier.Pro => (50, 100),
             SubscriptionTier.Enterprise => (int.MaxValue, int.MaxValue),
-            _ => (5, 10)
+            _ => (5, 10),
         };
     }
 }

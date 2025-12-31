@@ -24,6 +24,18 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
+    public async Task<SurveyLink?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyLinks.Include(l => l.Survey)
+            .ThenInclude(s => s.Translations)
+            .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
+    }
+
     public async Task<SurveyLink?> GetByIdWithClicksAsync(
         Guid id,
         CancellationToken cancellationToken = default

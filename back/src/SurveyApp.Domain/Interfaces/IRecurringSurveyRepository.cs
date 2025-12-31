@@ -8,9 +8,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface IRecurringSurveyRepository
 {
     /// <summary>
-    /// Gets a recurring survey by its ID.
+    /// Gets a recurring survey by its ID (read-only, no change tracking).
     /// </summary>
     Task<RecurringSurvey?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a recurring survey by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<RecurringSurvey?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets a recurring survey by ID with runs loaded.

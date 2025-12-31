@@ -29,7 +29,7 @@ public class DeleteResponseCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        var response = await _responseRepository.GetByIdAsync(
+        var response = await _responseRepository.GetByIdForUpdateAsync(
             request.ResponseId,
             cancellationToken
         );

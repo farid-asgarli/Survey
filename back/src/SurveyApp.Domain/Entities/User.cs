@@ -85,10 +85,10 @@ public class User : AggregateRoot<Guid>
         var emailVO = ValueObjects.Email.Create(email);
 
         if (string.IsNullOrWhiteSpace(firstName))
-            throw new ArgumentException("First name cannot be empty.", nameof(firstName));
+            throw new DomainException("Domain.User.FirstNameRequired");
 
         if (string.IsNullOrWhiteSpace(lastName))
-            throw new ArgumentException("Last name cannot be empty.", nameof(lastName));
+            throw new DomainException("Domain.User.LastNameRequired");
 
         return new User(
             Guid.NewGuid(),
@@ -126,10 +126,10 @@ public class User : AggregateRoot<Guid>
     public void UpdateName(string firstName, string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName))
-            throw new ArgumentException("First name cannot be empty.", nameof(firstName));
+            throw new DomainException("Domain.User.FirstNameRequired");
 
         if (string.IsNullOrWhiteSpace(lastName))
-            throw new ArgumentException("Last name cannot be empty.", nameof(lastName));
+            throw new DomainException("Domain.User.LastNameRequired");
 
         FirstName = firstName.Trim();
         LastName = lastName.Trim();

@@ -287,7 +287,10 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = string.Empty; // Serve Swagger UI at root
 });
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 // Localization (before other middleware that may need localized strings)
 app.UseJsonLocalization();

@@ -31,7 +31,7 @@ public class UpdateNamespaceCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        var @namespace = await _namespaceRepository.GetByIdAsync(
+        var @namespace = await _namespaceRepository.GetByIdForUpdateAsync(
             request.NamespaceId,
             cancellationToken
         );

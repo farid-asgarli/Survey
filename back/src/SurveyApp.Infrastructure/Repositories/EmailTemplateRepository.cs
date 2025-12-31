@@ -21,6 +21,17 @@ public class EmailTemplateRepository(ApplicationDbContext context) : IEmailTempl
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
+    public async Task<EmailTemplate?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .EmailTemplates.Include(t => t.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<EmailTemplate>> GetByNamespaceIdAsync(
         Guid namespaceId,
         CancellationToken cancellationToken = default

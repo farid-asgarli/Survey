@@ -8,14 +8,30 @@ namespace SurveyApp.Domain.Interfaces;
 public interface ISurveyTemplateRepository
 {
     /// <summary>
-    /// Gets a template by its ID.
+    /// Gets a template by its ID (read-only, no change tracking).
     /// </summary>
     Task<SurveyTemplate?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Gets a template by its ID with questions loaded.
+    /// Gets a template by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyTemplate?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Gets a template by its ID with questions loaded (read-only, no change tracking).
     /// </summary>
     Task<SurveyTemplate?> GetByIdWithQuestionsAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Gets a template by its ID with questions loaded and change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyTemplate?> GetByIdWithQuestionsForUpdateAsync(
         Guid id,
         CancellationToken cancellationToken = default
     );

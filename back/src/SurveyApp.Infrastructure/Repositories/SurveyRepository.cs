@@ -19,6 +19,18 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
+    public async Task<Survey?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .Surveys.Include(s => s.Namespace)
+            .Include(s => s.Translations)
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+    }
+
     public async Task<Survey?> GetByIdWithQuestionsAsync(
         Guid id,
         CancellationToken cancellationToken = default
@@ -27,6 +39,20 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
         return await _context
             .Surveys.AsNoTracking()
             .Include(s => s.Namespace)
+            .Include(s => s.Translations)
+            .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+    }
+
+    public async Task<Survey?> GetByIdWithQuestionsForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .Surveys.Include(s => s.Namespace)
             .Include(s => s.Translations)
             .Include(s => s.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)

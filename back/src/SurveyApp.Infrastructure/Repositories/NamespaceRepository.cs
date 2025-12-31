@@ -21,6 +21,18 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
             .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 
+    public async Task<Namespace?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .Namespaces.Include(n => n.Memberships)
+            .ThenInclude(m => m.User)
+            .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
+    }
+
     public async Task<Namespace?> GetBySlugAsync(
         string slug,
         CancellationToken cancellationToken = default

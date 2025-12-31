@@ -27,8 +27,11 @@ public class DeleteThemeCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        // Get existing theme
-        var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
+        // Get existing theme with change tracking for delete
+        var theme = await _themeRepository.GetByIdForUpdateAsync(
+            request.ThemeId,
+            cancellationToken
+        );
         if (theme == null)
         {
             return Result<bool>.Failure("Handler.ThemeNotFound");

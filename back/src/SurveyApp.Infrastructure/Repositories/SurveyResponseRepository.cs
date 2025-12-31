@@ -20,6 +20,17 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
+    public async Task<SurveyResponse?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyResponses.Include(r => r.Respondent)
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+    }
+
     public async Task<SurveyResponse?> GetWithAnswersAsync(
         Guid id,
         CancellationToken cancellationToken = default

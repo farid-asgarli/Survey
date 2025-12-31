@@ -34,8 +34,11 @@ public class DeleteEmailTemplateCommandHandler(
             return Result<bool>.Failure("Errors.UserNotAuthenticated");
         }
 
-        // Get existing template
-        var template = await _templateRepository.GetByIdAsync(request.Id, cancellationToken);
+        // Get existing template with change tracking for delete
+        var template = await _templateRepository.GetByIdForUpdateAsync(
+            request.Id,
+            cancellationToken
+        );
         if (template == null)
         {
             return Result<bool>.Failure("Errors.EmailTemplateNotFound");

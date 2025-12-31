@@ -20,6 +20,17 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
+    public async Task<SurveyTheme?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyThemes.Include(t => t.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<SurveyTheme>> GetByNamespaceIdAsync(
         Guid namespaceId,
         CancellationToken cancellationToken = default
@@ -42,6 +53,20 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         return await _context
             .SurveyThemes.AsNoTracking()
             .Include(t => t.Translations)
+            .FirstOrDefaultAsync(
+                t => t.NamespaceId == namespaceId && t.IsDefault,
+                cancellationToken
+            );
+    }
+
+    public async Task<SurveyTheme?> GetDefaultByNamespaceIdForUpdateAsync(
+        Guid namespaceId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyThemes.Include(t => t.Translations)
             .FirstOrDefaultAsync(
                 t => t.NamespaceId == namespaceId && t.IsDefault,
                 cancellationToken

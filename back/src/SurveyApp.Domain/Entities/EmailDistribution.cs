@@ -133,7 +133,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     )
     {
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject cannot be empty.", nameof(subject));
+            throw new DomainException("Domain.EmailDistribution.SubjectRequired");
 
         if (string.IsNullOrWhiteSpace(body))
             throw new ArgumentException("Body cannot be empty.", nameof(body));
@@ -155,7 +155,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void UpdateSubject(string subject)
     {
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject cannot be empty.", nameof(subject));
+            throw new DomainException("Domain.EmailDistribution.SubjectRequired");
 
         Subject = subject;
     }
@@ -251,7 +251,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void StartSending()
     {
         if (_recipients.Count == 0)
-            throw new InvalidOperationException("Cannot send a distribution without recipients.");
+            throw new DomainException("Domain.EmailDistribution.NoRecipientsForDistribution");
 
         Status = DistributionStatus.Sending;
         SentAt = DateTime.UtcNow;

@@ -9,14 +9,28 @@ namespace SurveyApp.Domain.Interfaces;
 public interface ISurveyRepository
 {
     /// <summary>
-    /// Gets a survey by its ID.
+    /// Gets a survey by its ID (read-only, no change tracking).
     /// </summary>
     Task<Survey?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a survey by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<Survey?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a survey by its ID with questions loaded.
     /// </summary>
     Task<Survey?> GetByIdWithQuestionsAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a survey by its ID with questions loaded, with change tracking enabled for updates.
+    /// Use this method when you need to modify the survey or its related entities.
+    /// </summary>
+    Task<Survey?> GetByIdWithQuestionsForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets a survey with its questions.

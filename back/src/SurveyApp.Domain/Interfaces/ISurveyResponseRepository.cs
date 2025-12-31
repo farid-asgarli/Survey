@@ -8,9 +8,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface ISurveyResponseRepository
 {
     /// <summary>
-    /// Gets a response by its ID.
+    /// Gets a response by its ID (read-only, no change tracking).
     /// </summary>
     Task<SurveyResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a response by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyResponse?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets a response with its answers.

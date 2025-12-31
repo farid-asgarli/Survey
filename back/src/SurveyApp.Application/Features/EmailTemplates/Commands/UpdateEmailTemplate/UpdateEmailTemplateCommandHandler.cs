@@ -36,8 +36,11 @@ public class UpdateEmailTemplateCommandHandler(
             return Result<EmailTemplateDto>.Failure("Errors.UserNotAuthenticated");
         }
 
-        // Get existing template
-        var template = await _templateRepository.GetByIdAsync(request.Id, cancellationToken);
+        // Get existing template with change tracking for updates
+        var template = await _templateRepository.GetByIdForUpdateAsync(
+            request.Id,
+            cancellationToken
+        );
         if (template == null)
         {
             return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");

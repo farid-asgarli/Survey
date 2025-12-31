@@ -34,8 +34,8 @@ public class UpdateRecurringSurveyCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        // Get recurring survey
-        var recurringSurvey = await _recurringSurveyRepository.GetByIdAsync(
+        // Get recurring survey with change tracking for updates
+        var recurringSurvey = await _recurringSurveyRepository.GetByIdForUpdateAsync(
             request.Id,
             cancellationToken
         );

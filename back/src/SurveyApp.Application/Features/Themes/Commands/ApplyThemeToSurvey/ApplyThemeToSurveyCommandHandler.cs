@@ -33,8 +33,11 @@ public class ApplyThemeToSurveyCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        // Get survey
-        var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
+        // Get survey with change tracking
+        var survey = await _surveyRepository.GetByIdForUpdateAsync(
+            request.SurveyId,
+            cancellationToken
+        );
         if (survey == null)
         {
             return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
@@ -55,7 +58,7 @@ public class ApplyThemeToSurveyCommandHandler(
         // Decrement usage count of old theme (only for saved themes)
         if (survey.ThemeId.HasValue)
         {
-            var oldTheme = await _themeRepository.GetByIdAsync(
+            var oldTheme = await _themeRepository.GetByIdForUpdateAsync(
                 survey.ThemeId.Value,
                 cancellationToken
             );
@@ -69,7 +72,7 @@ public class ApplyThemeToSurveyCommandHandler(
         // If applying a saved theme, validate and increment usage
         if (request.ThemeId.HasValue)
         {
-            var theme = await _themeRepository.GetByIdAsync(
+            var theme = await _themeRepository.GetByIdForUpdateAsync(
                 request.ThemeId.Value,
                 cancellationToken
             );

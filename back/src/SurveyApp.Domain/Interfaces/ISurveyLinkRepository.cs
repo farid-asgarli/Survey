@@ -8,9 +8,14 @@ namespace SurveyApp.Domain.Interfaces;
 public interface ISurveyLinkRepository
 {
     /// <summary>
-    /// Gets a survey link by its ID.
+    /// Gets a survey link by its ID (read-only, no change tracking).
     /// </summary>
     Task<SurveyLink?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a survey link by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyLink?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a survey link by its ID with clicks loaded.

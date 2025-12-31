@@ -318,21 +318,50 @@ function TranslationEditorPanel({
       };
 
       const questionTranslationUpdates: QuestionTranslationUpdateDto[] = Object.entries(questionEdits).map(([questionId, update]) => {
-        // Build translatedSettings if any settings fields are present
-        const hasTranslatedSettings = update.minLabel || update.maxLabel || update.options || update.matrixRows || update.matrixColumns;
+        // Find existing server-side translation for this question
+        const existingQuestionTranslation = questionTranslations.find((qt) => qt.questionId === questionId);
+        const existingTargetTranslation = existingQuestionTranslation?.translations.find((t) => t.languageCode === targetLanguage);
+        const existingSettings = existingTargetTranslation?.translatedSettings;
+
+        // Merge local edits with existing server values - local edits take priority
+        const mergedText = update.text ?? existingTargetTranslation?.text ?? '';
+        const mergedDescription = update.description ?? existingTargetTranslation?.description;
+        const mergedMinLabel = update.minLabel ?? existingSettings?.minLabel;
+        const mergedMaxLabel = update.maxLabel ?? existingSettings?.maxLabel;
+        const mergedOptions = update.options ?? existingSettings?.options;
+        const mergedMatrixRows = update.matrixRows ?? existingSettings?.matrixRows;
+        const mergedMatrixColumns = update.matrixColumns ?? existingSettings?.matrixColumns;
+        // Also preserve other translatable settings
+        const mergedPlaceholder = existingSettings?.placeholder;
+        const mergedValidationMessage = existingSettings?.validationMessage;
+        const mergedOtherLabel = existingSettings?.otherLabel;
+
+        // Build translatedSettings if any settings fields are present (merged)
+        const hasTranslatedSettings =
+          mergedMinLabel ||
+          mergedMaxLabel ||
+          mergedOptions ||
+          mergedMatrixRows ||
+          mergedMatrixColumns ||
+          mergedPlaceholder ||
+          mergedValidationMessage ||
+          mergedOtherLabel;
 
         return {
           questionId,
           languageCode: targetLanguage,
-          text: update.text || '',
-          description: update.description,
+          text: mergedText,
+          description: mergedDescription,
           translatedSettings: hasTranslatedSettings
             ? {
-                minLabel: update.minLabel,
-                maxLabel: update.maxLabel,
-                options: update.options,
-                matrixRows: update.matrixRows,
-                matrixColumns: update.matrixColumns,
+                minLabel: mergedMinLabel,
+                maxLabel: mergedMaxLabel,
+                options: mergedOptions,
+                matrixRows: mergedMatrixRows,
+                matrixColumns: mergedMatrixColumns,
+                placeholder: mergedPlaceholder,
+                validationMessage: mergedValidationMessage,
+                otherLabel: mergedOtherLabel,
               }
             : undefined,
         };
@@ -355,7 +384,7 @@ function TranslationEditorPanel({
     } finally {
       setIsSaving(false);
     }
-  }, [isDirty, surveyId, targetLanguage, localTranslation, questionEdits, bulkUpdateMutation]);
+  }, [isDirty, surveyId, targetLanguage, localTranslation, questionEdits, questionTranslations, bulkUpdateMutation]);
 
   // Build survey fields for side-by-side display
   const surveyFields = useMemo(

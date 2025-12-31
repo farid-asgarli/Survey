@@ -8,9 +8,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface ISurveyThemeRepository
 {
     /// <summary>
-    /// Gets a theme by its ID.
+    /// Gets a theme by its ID (read-only, no change tracking).
     /// </summary>
     Task<SurveyTheme?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a theme by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyTheme?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets all themes in a namespace.
@@ -21,9 +29,17 @@ public interface ISurveyThemeRepository
     );
 
     /// <summary>
-    /// Gets the default theme for a namespace.
+    /// Gets the default theme for a namespace (read-only, no change tracking).
     /// </summary>
     Task<SurveyTheme?> GetDefaultByNamespaceIdAsync(
+        Guid namespaceId,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Gets the default theme for a namespace with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyTheme?> GetDefaultByNamespaceIdForUpdateAsync(
         Guid namespaceId,
         CancellationToken cancellationToken = default
     );

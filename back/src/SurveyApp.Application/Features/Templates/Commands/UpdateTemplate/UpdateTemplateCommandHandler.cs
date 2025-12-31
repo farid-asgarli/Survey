@@ -33,8 +33,8 @@ public class UpdateTemplateCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        // Get the template with questions
-        var template = await _templateRepository.GetByIdWithQuestionsAsync(
+        // Get the template with questions and change tracking for updates
+        var template = await _templateRepository.GetByIdWithQuestionsForUpdateAsync(
             request.TemplateId,
             cancellationToken
         );

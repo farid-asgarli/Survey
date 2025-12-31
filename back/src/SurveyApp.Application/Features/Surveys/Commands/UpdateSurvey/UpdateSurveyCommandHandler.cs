@@ -32,7 +32,10 @@ public class UpdateSurveyCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
+        var survey = await _surveyRepository.GetByIdForUpdateAsync(
+            request.SurveyId,
+            cancellationToken
+        );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
             return Result<SurveyDto>.Failure("Handler.SurveyNotFound");

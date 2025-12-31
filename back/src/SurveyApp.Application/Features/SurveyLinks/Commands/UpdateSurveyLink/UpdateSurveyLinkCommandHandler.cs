@@ -58,8 +58,11 @@ public class UpdateSurveyLinkCommandHandler(
             return Result<SurveyLinkDto>.Failure("Survey does not belong to this namespace.");
         }
 
-        // Get the link
-        var link = await _surveyLinkRepository.GetByIdAsync(request.LinkId, cancellationToken);
+        // Get the link with change tracking for updates
+        var link = await _surveyLinkRepository.GetByIdForUpdateAsync(
+            request.LinkId,
+            cancellationToken
+        );
         if (link == null)
         {
             return Result<SurveyLinkDto>.Failure("Survey link not found.");

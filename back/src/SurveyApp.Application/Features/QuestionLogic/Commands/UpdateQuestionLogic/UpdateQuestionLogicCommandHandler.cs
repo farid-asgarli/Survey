@@ -57,8 +57,8 @@ public class UpdateQuestionLogicCommandHandler(
             return Result<QuestionLogicDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
-        // Get existing logic
-        var questionLogic = await _questionLogicRepository.GetByIdAsync(
+        // Get existing logic with change tracking for updates
+        var questionLogic = await _questionLogicRepository.GetByIdForUpdateAsync(
             request.LogicId,
             cancellationToken
         );

@@ -27,8 +27,11 @@ public class SetDefaultThemeCommandHandler(
         // Context is validated by NamespaceValidationBehavior pipeline
         var ctx = _commandContext.Context!;
 
-        // Get the theme to set as default
-        var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
+        // Get the theme to set as default with change tracking
+        var theme = await _themeRepository.GetByIdForUpdateAsync(
+            request.ThemeId,
+            cancellationToken
+        );
         if (theme == null)
         {
             return Result<bool>.Failure("Handler.ThemeNotFound");
@@ -47,7 +50,7 @@ public class SetDefaultThemeCommandHandler(
         }
 
         // Get current default theme and unset it
-        var currentDefault = await _themeRepository.GetDefaultByNamespaceIdAsync(
+        var currentDefault = await _themeRepository.GetDefaultByNamespaceIdForUpdateAsync(
             ctx.NamespaceId,
             cancellationToken
         );

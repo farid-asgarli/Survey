@@ -31,8 +31,8 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
             return Result<BulkTranslationResultDto>.Failure("Errors.NamespaceRequired");
         }
 
-        // Load survey with questions for language sync
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
+        // Load survey with questions for language sync - use tracking version for updates
+        var survey = await _surveyRepository.GetByIdWithQuestionsForUpdateAsync(
             request.SurveyId,
             cancellationToken
         );

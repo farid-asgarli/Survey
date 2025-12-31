@@ -20,6 +20,17 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
 
+    public async Task<SurveyTemplate?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyTemplates.Include(t => t.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
     public async Task<SurveyTemplate?> GetByIdWithQuestionsAsync(
         Guid id,
         CancellationToken cancellationToken = default
@@ -28,6 +39,19 @@ public class SurveyTemplateRepository(ApplicationDbContext context) : ISurveyTem
         return await _context
             .SurveyTemplates.AsNoTracking()
             .Include(t => t.Translations)
+            .Include(t => t.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    }
+
+    public async Task<SurveyTemplate?> GetByIdWithQuestionsForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .SurveyTemplates.Include(t => t.Translations)
             .Include(t => t.Questions.OrderBy(q => q.Order))
             .ThenInclude(q => q.Translations)
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);

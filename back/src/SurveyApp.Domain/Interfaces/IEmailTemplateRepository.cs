@@ -9,9 +9,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface IEmailTemplateRepository
 {
     /// <summary>
-    /// Gets a template by its ID.
+    /// Gets a template by its ID (read-only, no change tracking).
     /// </summary>
     Task<EmailTemplate?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a template by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<EmailTemplate?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets all templates in a namespace.

@@ -29,8 +29,8 @@ public class DeleteSurveyTranslationCommandHandler(
             return Result.Failure("Errors.NamespaceRequired");
         }
 
-        // Load survey with questions (for cascade deletion of question translations)
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
+        // Load survey with questions and change tracking for cascade deletion of translations
+        var survey = await _surveyRepository.GetByIdWithQuestionsForUpdateAsync(
             request.SurveyId,
             cancellationToken
         );

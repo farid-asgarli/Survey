@@ -25,6 +25,19 @@ public class RecurringSurveyRepository(ApplicationDbContext context) : IRecurrin
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
 
+    public async Task<RecurringSurvey?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context
+            .RecurringSurveys.Include(r => r.Survey)
+            .ThenInclude(s => s.Translations)
+            .Include(r => r.Namespace)
+            .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+    }
+
     public async Task<RecurringSurvey?> GetByIdWithRunsAsync(
         Guid id,
         CancellationToken cancellationToken = default

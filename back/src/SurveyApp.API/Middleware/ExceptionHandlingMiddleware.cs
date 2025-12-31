@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Common.Exceptions;
+using SurveyApp.Domain.Common;
 
 namespace SurveyApp.API.Middleware;
 
@@ -42,6 +43,21 @@ public class ExceptionHandlingMiddleware(
     {
         return exception switch
         {
+            DomainException domainException => new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "Business rule violation.",
+                Status = (int)HttpStatusCode.BadRequest,
+                Detail =
+                    domainException.FormatArgs?.Length > 0
+                        ? string.Format(
+                            _localizer[domainException.ResourceKey],
+                            domainException.FormatArgs
+                        )
+                        : _localizer[domainException.ResourceKey],
+                Instance = context.Request.Path,
+            },
+
             ValidationException validationException => new ValidationProblemDetails(
                 validationException.Errors
             )

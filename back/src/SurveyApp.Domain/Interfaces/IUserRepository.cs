@@ -8,9 +8,14 @@ namespace SurveyApp.Domain.Interfaces;
 public interface IUserRepository
 {
     /// <summary>
-    /// Gets a user by their ID.
+    /// Gets a user by their ID (read-only, no change tracking).
     /// </summary>
     Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a user by their ID with change tracking enabled for updates.
+    /// </summary>
+    Task<User?> GetByIdForUpdateAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a user by their email.

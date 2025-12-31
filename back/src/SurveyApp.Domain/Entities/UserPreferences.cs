@@ -348,7 +348,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateLanguage(string language)
     {
         if (!IsValidLanguage(language))
-            throw new ArgumentException("Invalid language code.", nameof(language));
+            throw new DomainException("Domain.UserPreferences.InvalidLanguageCode");
 
         Language = language;
     }
@@ -600,7 +600,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateItemsPerPage(int count)
     {
         if (count < 6 || count > 50)
-            throw new ArgumentException("Items per page must be between 6 and 50.", nameof(count));
+            throw new DomainException("Domain.UserPreferences.ItemsPerPageRange");
         ItemsPerPage = count;
     }
 

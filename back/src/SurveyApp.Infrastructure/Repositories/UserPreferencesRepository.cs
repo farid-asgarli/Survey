@@ -19,6 +19,18 @@ public class UserPreferencesRepository(ApplicationDbContext context) : IUserPref
             .FirstOrDefaultAsync(up => up.UserId == userId, cancellationToken);
     }
 
+    public async Task<UserPreferences?> GetByUserIdForUpdateAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        return await _context.UserPreferences.FirstOrDefaultAsync(
+            up => up.UserId == userId,
+            cancellationToken
+        );
+    }
+
     public async Task<UserPreferences?> GetByIdAsync(
         Guid id,
         CancellationToken cancellationToken = default
@@ -59,6 +71,32 @@ public class UserPreferencesRepository(ApplicationDbContext context) : IUserPref
     )
     {
         var existing = await GetByUserIdAsync(userId, cancellationToken);
+        if (existing != null)
+        {
+            return existing;
+        }
+
+        // Check if the user exists in the Users table before creating preferences
+        var userExists = await _context.Users.AnyAsync(u => u.Id == userId, cancellationToken);
+        if (!userExists)
+        {
+            // User doesn't exist in domain Users table - can't create preferences
+            // This can happen if the user exists in Identity but not in domain
+            return null;
+        }
+
+        var preferences = UserPreferences.CreateDefault(userId);
+        await _context.UserPreferences.AddAsync(preferences, cancellationToken);
+        return preferences;
+    }
+
+    public async Task<UserPreferences?> GetOrCreateForUpdateAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // Use ForUpdate version for proper change tracking
+        var existing = await GetByUserIdForUpdateAsync(userId, cancellationToken);
         if (existing != null)
         {
             return existing;

@@ -30,7 +30,7 @@ public class UpdateProfileCommandHandler(
             return Result<UserDto>.Failure("Handler.UserNotAuthenticated");
         }
 
-        var user = await _userRepository.GetByIdAsync(userId.Value, cancellationToken);
+        var user = await _userRepository.GetByIdForUpdateAsync(userId.Value, cancellationToken);
         if (user == null)
         {
             return Result<UserDto>.Failure("Handler.UserNotFound");

@@ -102,8 +102,16 @@
   "Domain.EmailDistribution.ScheduledTimeMustBeFuture": "Scheduled time must be in the future.",
   "Domain.EmailDistribution.CannotScheduleWithoutRecipients": "Cannot schedule a distribution without recipients.",
   "Domain.EmailDistribution.CannotCancelAfterSending": "Cannot cancel a distribution that has already started sending.",
+  "Domain.EmailDistribution.SubjectRequired": "Subject cannot be empty.",
+  "Domain.EmailDistribution.NoRecipientsForDistribution": "Cannot send a distribution without recipients.",
 
   "Domain.Namespace.MaxUsersReached": "Maximum number of users ({0}) reached for this namespace.",
+  "Domain.Namespace.NamespaceNameRequired": "Namespace name cannot be empty.",
+  "Domain.Namespace.CannotDowngradeSubscription": "Cannot downgrade subscription using this method.",
+  "Domain.Namespace.CannotAddUsersInactive": "Cannot add users to an inactive namespace.",
+  "Domain.Namespace.UserAlreadyMember": "User is already a member of this namespace.",
+  "Domain.Namespace.UserNotMember": "User is not a member of this namespace.",
+  "Domain.Namespace.CannotRemoveLastOwner": "Cannot remove the last owner of the namespace.",
 
   "Domain.QuestionLogic.SourceQuestionIdEmpty": "Source question ID cannot be empty.",
   "Domain.QuestionLogic.TargetQuestionRequiredForJumpTo": "Target question ID is required for JumpTo action.",
@@ -121,6 +129,13 @@
   "Domain.Survey.MustHaveQuestionsToPublish": "Survey must have at least one question to be published.",
   "Domain.Survey.CannotModifyAfterPublish": "Survey cannot be modified after it has been published.",
   "Domain.Survey.CannotModifyPublishedSurvey": "Cannot modify published survey.",
+  "Domain.Survey.SurveyTitleRequired": "Survey title cannot be empty.",
+  "Domain.Survey.StartDateBeforeEndDate": "Start date must be before end date.",
+  "Domain.Survey.QuestionNotInSurvey": "Question not found in this survey.",
+  "Domain.Survey.OnlyDraftCanPublish": "Only draft surveys can be published.",
+  "Domain.Survey.OnlyPublishedCanClose": "Only published surveys can be closed.",
+  "Domain.Survey.DraftCannotArchive": "Draft surveys cannot be archived.",
+  "Domain.Survey.OnlyClosedCanReopen": "Only closed surveys can be reopened.",
 
   "Domain.SurveyTemplate.OrderOutOfRange": "Order must be between 1 and the number of questions.",
 
@@ -137,6 +152,11 @@
   "Domain.UserPreferences.AutoSaveIntervalRange": "Auto-save interval must be between 0 and 300 seconds.",
   "Domain.UserPreferences.InvalidNumberingStyle": "Invalid numbering style. Must be 'numbers', 'letters', or 'none'.",
   "Domain.UserPreferences.InvalidOnboardingStatus": "Invalid onboarding status. Must be 'not_started', 'in_progress', 'completed', or 'skipped'.",
+  "Domain.UserPreferences.InvalidLanguageCode": "Invalid language code.",
+  "Domain.UserPreferences.ItemsPerPageRange": "Items per page must be between 6 and 50.",
+
+  "Domain.User.FirstNameRequired": "First name cannot be empty.",
+  "Domain.User.LastNameRequired": "Last name cannot be empty.",
 
   "Domain.ValueObjects.Email.MaxLengthExceeded": "Email cannot exceed {0} characters.",
   "Domain.ValueObjects.NamespaceSlug.MinLength": "Slug must be at least {0} characters.",

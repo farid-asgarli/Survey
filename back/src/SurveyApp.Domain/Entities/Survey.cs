@@ -213,7 +213,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     )
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+            throw new DomainException("Domain.Survey.SurveyTitleRequired");
 
         var survey = new Survey(Guid.NewGuid(), namespaceId, createdBy);
         survey.DefaultLanguage = languageCode.ToLowerInvariant();
@@ -246,7 +246,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     )
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+            throw new DomainException("Domain.Survey.SurveyTitleRequired");
 
         var survey = new Survey(Guid.NewGuid(), namespaceId, createdBy)
         {
@@ -282,7 +282,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void UpdateTitle(string title, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+            throw new DomainException("Domain.Survey.SurveyTitleRequired");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -365,7 +365,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void UpdateDetails(string title, string? description, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Survey title cannot be empty.", nameof(title));
+            throw new DomainException("Domain.Survey.SurveyTitleRequired");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -423,7 +423,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void SetSchedule(DateTime? startsAt, DateTime? endsAt)
     {
         if (startsAt.HasValue && endsAt.HasValue && startsAt >= endsAt)
-            throw new ArgumentException("Start date must be before end date.");
+            throw new DomainException("Domain.Survey.StartDateBeforeEndDate");
 
         StartsAt = startsAt;
         EndsAt = endsAt;
@@ -476,7 +476,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 
         var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question == null)
-            throw new InvalidOperationException("Question not found in this survey.");
+            throw new DomainException("Domain.Survey.QuestionNotInSurvey");
 
         _questions.Remove(question);
         ReorderQuestions();
@@ -509,12 +509,10 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void Publish()
     {
         if (Status != SurveyStatus.Draft)
-            throw new InvalidOperationException("Only draft surveys can be published.");
+            throw new DomainException("Domain.Survey.OnlyDraftCanPublish");
 
         if (!_questions.Any())
-            throw new InvalidOperationException(
-                "Survey must have at least one question to be published."
-            );
+            throw new DomainException("Domain.Survey.MustHaveQuestionsToPublish");
 
         Status = SurveyStatus.Published;
         PublishedAt = DateTime.UtcNow;
@@ -528,7 +526,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void Close()
     {
         if (Status != SurveyStatus.Published)
-            throw new InvalidOperationException("Only published surveys can be closed.");
+            throw new DomainException("Domain.Survey.OnlyPublishedCanClose");
 
         Status = SurveyStatus.Closed;
         ClosedAt = DateTime.UtcNow;
@@ -540,7 +538,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void Archive()
     {
         if (Status == SurveyStatus.Draft)
-            throw new InvalidOperationException("Draft surveys cannot be archived.");
+            throw new DomainException("Domain.Survey.DraftCannotArchive");
 
         Status = SurveyStatus.Archived;
     }
@@ -551,7 +549,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void Reopen()
     {
         if (Status != SurveyStatus.Closed)
-            throw new InvalidOperationException("Only closed surveys can be reopened.");
+            throw new DomainException("Domain.Survey.OnlyClosedCanReopen");
 
         Status = SurveyStatus.Published;
         ClosedAt = null;

@@ -27,8 +27,8 @@ public class UpdateUserPreferencesCommandHandler(
             return Result<UserPreferencesDto>.Failure("Handler.UserNotAuthenticated");
         }
 
-        // Get or create preferences
-        var preferences = await _preferencesRepository.GetOrCreateAsync(
+        // Get or create preferences with change tracking for updates
+        var preferences = await _preferencesRepository.GetOrCreateForUpdateAsync(
             userId.Value,
             cancellationToken
         );

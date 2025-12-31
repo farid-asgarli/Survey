@@ -9,9 +9,17 @@ namespace SurveyApp.Domain.Interfaces;
 public interface IEmailDistributionRepository
 {
     /// <summary>
-    /// Gets a distribution by its ID.
+    /// Gets a distribution by its ID (read-only, no change tracking).
     /// </summary>
     Task<EmailDistribution?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a distribution by its ID with change tracking enabled for updates.
+    /// </summary>
+    Task<EmailDistribution?> GetByIdForUpdateAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets a distribution by its ID including recipients.

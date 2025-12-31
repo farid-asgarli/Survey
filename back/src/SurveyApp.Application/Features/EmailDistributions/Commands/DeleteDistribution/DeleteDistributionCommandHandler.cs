@@ -48,8 +48,8 @@ public class DeleteDistributionCommandHandler(
             return Result<bool>.Failure("Errors.UserNotAuthenticated");
         }
 
-        // Get distribution
-        var distribution = await _distributionRepository.GetByIdAsync(
+        // Get distribution with change tracking for delete
+        var distribution = await _distributionRepository.GetByIdForUpdateAsync(
             request.DistributionId,
             cancellationToken
         );
