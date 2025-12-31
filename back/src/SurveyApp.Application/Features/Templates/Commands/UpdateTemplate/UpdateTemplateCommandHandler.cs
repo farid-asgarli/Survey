@@ -54,7 +54,7 @@ public class UpdateTemplateCommandHandler(
             )
         )
         {
-            return Result<SurveyTemplateDto>.Failure("A template with this name already exists.");
+            return Result<SurveyTemplateDto>.Failure("Errors.TemplateNameExists");
         }
 
         // Update template properties (with optional language support)

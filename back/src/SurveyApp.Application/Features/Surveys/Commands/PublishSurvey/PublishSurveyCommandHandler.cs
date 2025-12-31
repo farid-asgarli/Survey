@@ -43,7 +43,7 @@ public class PublishSurveyCommandHandler(
         // Validate survey has at least one question
         if (!survey.Questions.Any())
         {
-            return Result<SurveyDto>.Failure("Cannot publish a survey without questions.");
+            return Result<SurveyDto>.Failure("Errors.SurveyRequiresQuestions");
         }
 
         // Publish survey

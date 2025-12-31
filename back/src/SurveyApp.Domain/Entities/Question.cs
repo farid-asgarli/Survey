@@ -111,7 +111,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     )
     {
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text cannot be empty.", nameof(text));
+            throw new DomainException("Domain.Question.TextEmpty");
 
         var question = new Question(Guid.NewGuid(), surveyId, type, order, isRequired);
 
@@ -127,7 +127,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     public void UpdateText(string text, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text cannot be empty.", nameof(text));
+            throw new DomainException("Domain.Question.TextEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -157,7 +157,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
     public void UpdateOrder(int order)
     {
         if (order < 1)
-            throw new ArgumentException("Order must be at least 1.", nameof(order));
+            throw new DomainException("Domain.Question.OrderMinimum");
 
         Order = order;
     }

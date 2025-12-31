@@ -48,7 +48,7 @@ public class GetResponsesQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure("User not authenticated.");
+            return Result<PagedList<ResponseListItemDto>>.Failure("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(

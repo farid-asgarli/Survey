@@ -148,16 +148,7 @@ public class TemplatesController(
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTemplateCommand command)
     {
         if (id != command.TemplateId)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.BadRequest"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.IdMismatch"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
+            return HttpContext.IdMismatchProblem();
 
         var result = await _mediator.Send(command);
 

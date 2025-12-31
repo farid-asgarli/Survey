@@ -41,21 +41,21 @@ public class GetResponseByIdQueryHandler(
         );
         if (response == null)
         {
-            return Result<SurveyResponseDto>.Failure("Response not found.");
+            return Result<SurveyResponseDto>.Failure("Errors.ResponseNotFound");
         }
 
         // Verify response belongs to a survey in the namespace
         var survey = await _surveyRepository.GetByIdAsync(response.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyResponseDto>.Failure("Response not found.");
+            return Result<SurveyResponseDto>.Failure("Errors.ResponseNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyResponseDto>.Failure("User not authenticated.");
+            return Result<SurveyResponseDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(

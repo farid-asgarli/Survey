@@ -115,7 +115,7 @@ public class User : AggregateRoot<Guid>
     public void UpdatePasswordHash(string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(passwordHash))
-            throw new ArgumentException("Password hash cannot be empty.", nameof(passwordHash));
+            throw new DomainException("Domain.User.PasswordHashEmpty");
 
         PasswordHash = passwordHash;
     }

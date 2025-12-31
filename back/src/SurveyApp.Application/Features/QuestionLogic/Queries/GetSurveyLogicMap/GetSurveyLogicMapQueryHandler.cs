@@ -41,7 +41,7 @@ public class GetSurveyLogicMapQueryHandler(
         // Verify survey belongs to namespace
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyLogicMapDto>.Failure("Survey not found in this namespace.");
+            return Result<SurveyLogicMapDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get all logic rules for the survey

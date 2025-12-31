@@ -35,12 +35,12 @@ public class DeleteRecurringSurveyCommandHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<bool>.Failure("Recurring survey not found.");
+            return Result<bool>.Failure("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Recurring survey does not belong to this namespace.");
+            return Result<bool>.Failure("Errors.RecurringSurveyNotInNamespace");
         }
 
         await _recurringSurveyRepository.DeleteAsync(recurringSurvey, cancellationToken);

@@ -105,19 +105,13 @@ public class QuestionLogic : Entity<Guid>
     )
     {
         if (questionId == Guid.Empty)
-            throw new ArgumentException("Question ID cannot be empty.", nameof(questionId));
+            throw new DomainException("Domain.QuestionLogic.QuestionIdEmpty");
 
         if (sourceQuestionId == Guid.Empty)
-            throw new ArgumentException(
-                "Source question ID cannot be empty.",
-                nameof(sourceQuestionId)
-            );
+            throw new DomainException("Domain.QuestionLogic.SourceQuestionIdEmpty");
 
         if (action == LogicAction.JumpTo && !targetQuestionId.HasValue)
-            throw new ArgumentException(
-                "Target question ID is required for JumpTo action.",
-                nameof(targetQuestionId)
-            );
+            throw new DomainException("Domain.QuestionLogic.TargetQuestionRequiredForJumpTo");
 
         // Validate that condition value is not required for certain operators
         var requiresConditionValue =
@@ -130,10 +124,7 @@ public class QuestionLogic : Entity<Guid>
                 );
 
         if (requiresConditionValue && string.IsNullOrWhiteSpace(conditionValue))
-            throw new ArgumentException(
-                "Condition value is required for this operator.",
-                nameof(conditionValue)
-            );
+            throw new DomainException("Domain.QuestionLogic.ConditionValueRequired");
 
         return new QuestionLogic(
             Guid.NewGuid(),
@@ -170,10 +161,7 @@ public class QuestionLogic : Entity<Guid>
                 );
 
         if (requiresConditionValue && string.IsNullOrWhiteSpace(conditionValue))
-            throw new ArgumentException(
-                "Condition value is required for this operator.",
-                nameof(conditionValue)
-            );
+            throw new DomainException("Domain.QuestionLogic.ConditionValueRequired");
 
         ConditionValue = conditionValue ?? string.Empty;
     }
@@ -184,10 +172,7 @@ public class QuestionLogic : Entity<Guid>
     public void UpdateAction(LogicAction action, Guid? targetQuestionId = null)
     {
         if (action == LogicAction.JumpTo && !targetQuestionId.HasValue)
-            throw new ArgumentException(
-                "Target question ID is required for JumpTo action.",
-                nameof(targetQuestionId)
-            );
+            throw new DomainException("Domain.QuestionLogic.TargetQuestionRequiredForJumpTo");
 
         Action = action;
         TargetQuestionId = action == LogicAction.JumpTo ? targetQuestionId : null;
@@ -199,7 +184,7 @@ public class QuestionLogic : Entity<Guid>
     public void UpdatePriority(int priority)
     {
         if (priority < 0)
-            throw new ArgumentException("Priority cannot be negative.", nameof(priority));
+            throw new DomainException("Domain.QuestionLogic.PriorityNonNegative");
 
         Priority = priority;
     }
@@ -210,10 +195,7 @@ public class QuestionLogic : Entity<Guid>
     public void UpdateSourceQuestion(Guid sourceQuestionId)
     {
         if (sourceQuestionId == Guid.Empty)
-            throw new ArgumentException(
-                "Source question ID cannot be empty.",
-                nameof(sourceQuestionId)
-            );
+            throw new DomainException("Domain.QuestionLogic.SourceQuestionIdEmpty");
 
         SourceQuestionId = sourceQuestionId;
     }

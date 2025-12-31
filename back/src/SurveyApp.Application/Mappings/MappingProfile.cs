@@ -40,15 +40,6 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.SurveyCount,
                 opt => opt.MapFrom(s => s.Surveys.Count(survey => !survey.IsDeleted))
-            )
-            .ForMember(
-                d => d.OwnerId,
-                opt =>
-                    opt.MapFrom(s =>
-                        s.Memberships.Where(m => m.Role == Domain.Enums.NamespaceRole.Owner)
-                            .Select(m => m.UserId)
-                            .FirstOrDefault()
-                    )
             );
 
         CreateMap<Namespace, NamespaceDetailsDto>()
@@ -56,15 +47,6 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.SurveyCount,
                 opt => opt.MapFrom(s => s.Surveys.Count(survey => !survey.IsDeleted))
-            )
-            .ForMember(
-                d => d.OwnerId,
-                opt =>
-                    opt.MapFrom(s =>
-                        s.Memberships.Where(m => m.Role == Domain.Enums.NamespaceRole.Owner)
-                            .Select(m => m.UserId)
-                            .FirstOrDefault()
-                    )
             )
             .ForMember(d => d.Members, opt => opt.MapFrom(s => s.Memberships));
 

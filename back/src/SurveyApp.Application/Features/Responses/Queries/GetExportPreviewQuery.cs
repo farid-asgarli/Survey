@@ -40,7 +40,7 @@ public class GetExportPreviewQueryHandler(
 
         if (survey == null)
         {
-            return Result<ExportPreviewDto>.Failure("Survey not found.", "SURVEY_NOT_FOUND");
+            return Result<ExportPreviewDto>.Failure("Errors.SurveyNotFound", "SURVEY_NOT_FOUND");
         }
 
         if (survey.NamespaceId != _namespaceContext.CurrentNamespaceId)

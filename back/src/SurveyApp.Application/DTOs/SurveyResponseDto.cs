@@ -2,6 +2,8 @@ namespace SurveyApp.Application.DTOs;
 
 /// <summary>
 /// DTO for survey response data.
+/// Note: IP addresses are not exposed in DTOs for GDPR compliance.
+/// For analytics use cases that require IP data, use dedicated analytics DTOs with explicit consent.
 /// </summary>
 public class SurveyResponseDto
 {
@@ -13,7 +15,6 @@ public class SurveyResponseDto
     public DateTime StartedAt { get; set; }
     public DateTime? SubmittedAt { get; set; }
     public int? TimeSpentSeconds { get; set; }
-    public string? IpAddress { get; set; }
     public IReadOnlyList<AnswerDto> Answers { get; set; } = Array.Empty<AnswerDto>();
 }
 

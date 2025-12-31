@@ -127,16 +127,7 @@ public class SurveysController(IMediator mediator, IStringLocalizer<SurveysContr
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSurveyCommand command)
     {
         if (id != command.SurveyId)
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = _localizer["Errors.BadRequest"],
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = _localizer["Errors.IdMismatchUrlBody"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
+            return HttpContext.IdMismatchProblem("Errors.IdMismatchUrlBody");
 
         var result = await _mediator.Send(command);
 

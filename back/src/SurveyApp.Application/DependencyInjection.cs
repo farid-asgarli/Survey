@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SurveyApp.Application.Behaviors;
 using SurveyApp.Application.Common.Interfaces;
+using SurveyApp.Application.Services;
 
 namespace SurveyApp.Application;
 
@@ -24,6 +25,10 @@ public static class DependencyInjection
 
         // Register namespace command context (scoped per request)
         services.AddScoped<INamespaceCommandContext, NamespaceCommandContextAccessor>();
+
+        // Register application services
+        services.AddScoped<IQuestionSettingsMapper, QuestionSettingsMapper>();
+        services.AddScoped<ISurveyAuthorizationService, SurveyAuthorizationService>();
 
         // Register MediatR pipeline behaviors (order matters!)
         // 1. Validation first (FluentValidation)

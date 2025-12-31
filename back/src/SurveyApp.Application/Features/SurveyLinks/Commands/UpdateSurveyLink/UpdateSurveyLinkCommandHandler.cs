@@ -43,7 +43,7 @@ public class UpdateSurveyLinkCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyLinkDto>.Failure("User not authenticated.");
+            return Result<SurveyLinkDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -55,7 +55,7 @@ public class UpdateSurveyLinkCommandHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyLinkDto>.Failure("Survey does not belong to this namespace.");
+            return Result<SurveyLinkDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get the link with change tracking for updates
@@ -65,12 +65,12 @@ public class UpdateSurveyLinkCommandHandler(
         );
         if (link == null)
         {
-            return Result<SurveyLinkDto>.Failure("Survey link not found.");
+            return Result<SurveyLinkDto>.Failure("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)
         {
-            return Result<SurveyLinkDto>.Failure("Survey link does not belong to this survey.");
+            return Result<SurveyLinkDto>.Failure("Errors.SurveyLinkNotBelongToSurvey");
         }
 
         // Update properties

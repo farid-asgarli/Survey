@@ -4,6 +4,7 @@ using System.Text.Json;
 using ClosedXML.Excel;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
@@ -17,12 +18,14 @@ namespace SurveyApp.Infrastructure.Services;
 public class ExportService(
     ISurveyRepository surveyRepository,
     ISurveyResponseRepository responseRepository,
-    IDateTimeService dateTimeService
+    IDateTimeService dateTimeService,
+    IStringLocalizer<ExportService> localizer
 ) : IExportService
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly ISurveyResponseRepository _responseRepository = responseRepository;
     private readonly IDateTimeService _dateTimeService = dateTimeService;
+    private readonly IStringLocalizer<ExportService> _localizer = localizer;
 
     /// <inheritdoc />
     public async Task<ExportResult> ExportToCsvAsync(
@@ -243,35 +246,35 @@ public class ExportService(
             new()
             {
                 Id = "ResponseId",
-                Name = "Response ID",
+                Name = _localizer["Infrastructure.ExportService.ResponseId"],
                 Type = "Metadata",
                 IsDefault = true,
             },
             new()
             {
                 Id = "RespondentEmail",
-                Name = "Respondent Email",
+                Name = _localizer["Infrastructure.ExportService.RespondentEmail"],
                 Type = "Metadata",
                 IsDefault = true,
             },
             new()
             {
                 Id = "StartedAt",
-                Name = "Started At",
+                Name = _localizer["Infrastructure.ExportService.StartedAt"],
                 Type = "Metadata",
                 IsDefault = true,
             },
             new()
             {
                 Id = "SubmittedAt",
-                Name = "Submitted At",
+                Name = _localizer["Infrastructure.ExportService.CompletedAt"],
                 Type = "Metadata",
                 IsDefault = true,
             },
             new()
             {
                 Id = "IsComplete",
-                Name = "Is Complete",
+                Name = _localizer["Infrastructure.ExportService.Status"],
                 Type = "Metadata",
                 IsDefault = true,
             },
@@ -324,7 +327,7 @@ public class ExportService(
         return (survey, responses);
     }
 
-    private static ExportData PrepareExportData(
+    private ExportData PrepareExportData(
         Survey survey,
         IReadOnlyList<SurveyResponse> responses,
         ExportRequest request
@@ -332,11 +335,11 @@ public class ExportService(
     {
         var columns = new List<string>
         {
-            "Response ID",
-            "Respondent Email",
-            "Started At",
-            "Submitted At",
-            "Is Complete",
+            _localizer["Infrastructure.ExportService.ResponseId"],
+            _localizer["Infrastructure.ExportService.RespondentEmail"],
+            _localizer["Infrastructure.ExportService.StartedAt"],
+            _localizer["Infrastructure.ExportService.CompletedAt"],
+            _localizer["Infrastructure.ExportService.Status"],
         };
 
         // Get questions to include

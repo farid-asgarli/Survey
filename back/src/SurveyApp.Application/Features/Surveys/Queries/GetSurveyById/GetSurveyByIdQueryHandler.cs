@@ -46,7 +46,7 @@ public class GetSurveyByIdQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyDetailsDto>.Failure("User not authenticated.");
+            return Result<SurveyDetailsDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(

@@ -117,7 +117,7 @@ public class Namespace : AggregateRoot<Guid>
     public void UpdateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Namespace name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.Namespace.NamespaceNameRequired");
 
         Name = name;
     }

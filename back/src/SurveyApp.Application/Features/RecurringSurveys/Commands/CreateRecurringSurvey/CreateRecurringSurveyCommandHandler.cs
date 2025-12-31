@@ -44,7 +44,7 @@ public class CreateRecurringSurveyCommandHandler(
 
         if (survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<RecurringSurveyDto>.Failure("Survey does not belong to this namespace.");
+            return Result<RecurringSurveyDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Create recurring survey

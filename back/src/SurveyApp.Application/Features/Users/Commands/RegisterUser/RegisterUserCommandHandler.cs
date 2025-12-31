@@ -26,14 +26,14 @@ public class RegisterUserCommandHandler(
         // Validate email
         if (!Email.TryCreate(request.Email, out var email) || email == null)
         {
-            return Result<UserDto>.Failure("Invalid email address.");
+            return Result<UserDto>.Failure("Errors.InvalidEmailAddress");
         }
 
         // Check if user already exists
         var existingUser = await _userRepository.GetByEmailAsync(email, cancellationToken);
         if (existingUser != null)
         {
-            return Result<UserDto>.Failure("A user with this email already exists.");
+            return Result<UserDto>.Failure("Errors.UserWithEmailExists");
         }
 
         // Create user (password hashing will be handled by Identity in Infrastructure layer)

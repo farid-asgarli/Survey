@@ -6,4 +6,5 @@ namespace SurveyApp.Application.Features.EmailDistributions.Commands.CancelDistr
 /// <summary>
 /// Command to cancel a scheduled email distribution.
 /// </summary>
-public record CancelDistributionCommand(Guid DistributionId) : IRequest<Result<bool>>;
+public record CancelDistributionCommand(Guid SurveyId, Guid DistributionId)
+    : IRequest<Result<bool>>;

@@ -134,7 +134,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Template name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.SurveyTemplate.NameEmpty");
 
         var template = new SurveyTemplate(Guid.NewGuid(), namespaceId, createdBy);
 
@@ -171,7 +171,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     )
     {
         if (string.IsNullOrWhiteSpace(templateName))
-            throw new ArgumentException("Template name cannot be empty.", nameof(templateName));
+            throw new DomainException("Domain.SurveyTemplate.NameEmpty");
 
         var lang = languageCode ?? survey.DefaultLanguage;
 
@@ -247,10 +247,10 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.SurveyTemplate.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.SurveyTemplate.NameRequired");
 
         var existing = TranslationHelper.Find(languageCode);
         if (existing != null)
@@ -315,7 +315,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     public void UpdateName(string name, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Template name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.SurveyTemplate.NameEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -479,7 +479,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question == null)
-            throw new InvalidOperationException("Question not found in template.");
+            throw new InvalidOperationException("Domain.SurveyTemplate.QuestionNotFound");
 
         _questions.Remove(question);
         ReorderQuestions();

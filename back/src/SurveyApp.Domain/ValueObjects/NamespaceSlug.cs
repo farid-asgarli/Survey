@@ -37,7 +37,10 @@ public sealed partial class NamespaceSlug : ValueObject
     public static NamespaceSlug Create(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
-            throw new ArgumentException("Slug cannot be empty.", nameof(slug));
+            throw new ArgumentException(
+                "Domain.ValueObjects.NamespaceSlug.SlugEmpty",
+                nameof(slug)
+            );
 
         slug = NormalizeSlug(slug);
 
@@ -70,7 +73,10 @@ public sealed partial class NamespaceSlug : ValueObject
     public static NamespaceSlug CreateFromName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name cannot be empty.", nameof(name));
+            throw new ArgumentException(
+                "Domain.ValueObjects.NamespaceSlug.NameEmpty",
+                nameof(name)
+            );
 
         var slug = NormalizeSlug(name);
         return Create(slug);

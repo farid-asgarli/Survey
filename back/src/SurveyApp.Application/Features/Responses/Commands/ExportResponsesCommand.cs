@@ -70,7 +70,7 @@ public class ExportResponsesCommandHandler(
 
         if (survey == null)
         {
-            return Result<ExportResult>.Failure("Survey not found.", "SURVEY_NOT_FOUND");
+            return Result<ExportResult>.Failure("Errors.SurveyNotFound", "SURVEY_NOT_FOUND");
         }
 
         if (survey.NamespaceId != _namespaceContext.CurrentNamespaceId)

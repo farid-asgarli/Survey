@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.RateLimiting;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.EmailDistributions.Commands.CancelDistribution;
@@ -25,13 +25,9 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/surveys/{surveyId:guid}/distributions")]
 [Authorize]
-public class EmailDistributionsController(
-    IMediator mediator,
-    IStringLocalizer<EmailDistributionsController> localizer
-) : ControllerBase
+public class EmailDistributionsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<EmailDistributionsController> _localizer = localizer;
 
     /// <summary>
     /// Gets all distributions for a survey.
@@ -45,7 +41,7 @@ public class EmailDistributionsController(
         typeof(IReadOnlyList<EmailDistributionSummaryDto>),
         StatusCodes.Status200OK
     )]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetDistributions(
         Guid surveyId,
         [FromQuery] int pageNumber = 1,
@@ -75,28 +71,13 @@ public class EmailDistributionsController(
     /// <returns>The distribution details.</returns>
     [HttpGet("{distId:guid}")]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDistributionById(Guid surveyId, Guid distId)
     {
-        var result = await _mediator.Send(new GetDistributionByIdQuery(distId));
+        var result = await _mediator.Send(new GetDistributionByIdQuery(surveyId, distId));
 
         if (!result.IsSuccess)
             return result.ToProblemDetails(HttpContext);
-
-        // Verify the distribution belongs to the survey
-        if (result.Value!.SurveyId != surveyId)
-        {
-            return NotFound(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = _localizer["Errors.ResourceNotFound"],
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = _localizer["Errors.DistributionNotFound"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-        }
 
         return Ok(result.Value);
     }
@@ -109,7 +90,7 @@ public class EmailDistributionsController(
     /// <returns>The created distribution.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDistribution(
         Guid surveyId,
         [FromBody] CreateEmailDistributionDto request
@@ -147,8 +128,8 @@ public class EmailDistributionsController(
     /// <returns>The updated distribution.</returns>
     [HttpPost("{distId:guid}/schedule")]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ScheduleDistribution(
         Guid surveyId,
         Guid distId,
@@ -157,6 +138,7 @@ public class EmailDistributionsController(
     {
         var command = new ScheduleDistributionCommand
         {
+            SurveyId = surveyId,
             DistributionId = distId,
             ScheduledAt = request.ScheduledAt,
         };
@@ -177,11 +159,11 @@ public class EmailDistributionsController(
     /// <returns>The updated distribution.</returns>
     [HttpPost("{distId:guid}/send")]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SendDistribution(Guid surveyId, Guid distId)
     {
-        var result = await _mediator.Send(new SendDistributionCommand(distId));
+        var result = await _mediator.Send(new SendDistributionCommand(surveyId, distId));
 
         if (!result.IsSuccess)
             return result.ToProblemDetails(HttpContext);
@@ -197,11 +179,11 @@ public class EmailDistributionsController(
     /// <returns>No content.</returns>
     [HttpPost("{distId:guid}/cancel")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CancelDistribution(Guid surveyId, Guid distId)
     {
-        var result = await _mediator.Send(new CancelDistributionCommand(distId));
+        var result = await _mediator.Send(new CancelDistributionCommand(surveyId, distId));
 
         if (!result.IsSuccess)
             return result.ToProblemDetails(HttpContext);
@@ -217,10 +199,10 @@ public class EmailDistributionsController(
     /// <returns>No content.</returns>
     [HttpDelete("{distId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteDistribution(Guid surveyId, Guid distId)
     {
-        var result = await _mediator.Send(new DeleteDistributionCommand(distId));
+        var result = await _mediator.Send(new DeleteDistributionCommand(surveyId, distId));
 
         if (!result.IsSuccess)
             return result.ToProblemDetails(HttpContext);
@@ -236,10 +218,10 @@ public class EmailDistributionsController(
     /// <returns>The distribution statistics.</returns>
     [HttpGet("{distId:guid}/stats")]
     [ProducesResponseType(typeof(DistributionStatsDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDistributionStats(Guid surveyId, Guid distId)
     {
-        var result = await _mediator.Send(new GetDistributionStatsQuery(distId));
+        var result = await _mediator.Send(new GetDistributionStatsQuery(surveyId, distId));
 
         if (!result.IsSuccess)
             return result.ToProblemDetails(HttpContext);
@@ -258,7 +240,7 @@ public class EmailDistributionsController(
     /// <returns>List of recipients.</returns>
     [HttpGet("{distId:guid}/recipients")]
     [ProducesResponseType(typeof(IReadOnlyList<EmailRecipientDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDistributionRecipients(
         Guid surveyId,
         Guid distId,
@@ -269,6 +251,7 @@ public class EmailDistributionsController(
     {
         var query = new GetDistributionRecipientsQuery
         {
+            SurveyId = surveyId,
             DistributionId = distId,
             PageNumber = pageNumber,
             PageSize = pageSize,
@@ -286,16 +269,14 @@ public class EmailDistributionsController(
 
 /// <summary>
 /// Controller for email tracking endpoints.
+/// Rate limited to prevent abuse such as token enumeration, metric inflation, and DoS attacks.
 /// </summary>
 [ApiController]
 [Route("api/track")]
-public class EmailTrackingController(
-    IMediator mediator,
-    IStringLocalizer<EmailTrackingController> localizer
-) : ControllerBase
+[EnableRateLimiting("tracking")]
+public class EmailTrackingController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IStringLocalizer<EmailTrackingController> _localizer = localizer;
 
     /// <summary>
     /// Tracks an email open event (1x1 pixel).
@@ -304,6 +285,7 @@ public class EmailTrackingController(
     /// <returns>A 1x1 transparent pixel.</returns>
     [HttpGet("open/{token}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     public async Task<IActionResult> TrackOpen(string token)
     {
         await _mediator.Send(new TrackOpenCommand(token));
@@ -323,24 +305,14 @@ public class EmailTrackingController(
     /// <returns>Redirect to the survey.</returns>
     [HttpGet("click/{token}")]
     [ProducesResponseType(StatusCodes.Status302Found)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     public async Task<IActionResult> TrackClick(string token)
     {
         var result = await _mediator.Send(new TrackClickCommand(token));
 
-        if (!result.IsSuccess || string.IsNullOrEmpty(result.Value))
-        {
-            return NotFound(
-                new ProblemDetails
-                {
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = _localizer["Errors.ResourceNotFound"],
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = _localizer["Errors.InvalidTrackingToken"],
-                    Instance = HttpContext.Request.Path,
-                }
-            );
-        }
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
 
         // Redirect to the public survey URL
         var surveyUrl = $"/survey/{result.Value}";

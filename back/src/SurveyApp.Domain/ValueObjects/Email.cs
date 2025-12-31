@@ -32,7 +32,7 @@ public sealed partial class Email : ValueObject
     public static Email Create(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email cannot be empty.", nameof(email));
+            throw new ArgumentException("Domain.ValueObjects.Email.EmailEmpty", nameof(email));
 
         email = email.Trim().ToLowerInvariant();
 
@@ -43,7 +43,10 @@ public sealed partial class Email : ValueObject
             );
 
         if (!EmailRegex().IsMatch(email))
-            throw new ArgumentException("Email format is invalid.", nameof(email));
+            throw new ArgumentException(
+                "Domain.ValueObjects.Email.EmailInvalidFormat",
+                nameof(email)
+            );
 
         return new Email(email);
     }

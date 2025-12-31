@@ -66,10 +66,10 @@ public class TemplateQuestionTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.TemplateQuestionTranslation.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text is required.", nameof(text));
+            throw new DomainException("Domain.TemplateQuestionTranslation.TextRequired");
 
         return new TemplateQuestionTranslation(
             Guid.NewGuid(),
@@ -93,7 +93,7 @@ public class TemplateQuestionTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text is required.", nameof(text));
+            throw new DomainException("Domain.TemplateQuestionTranslation.TextRequired");
 
         Text = text.Trim();
         Description = description?.Trim();

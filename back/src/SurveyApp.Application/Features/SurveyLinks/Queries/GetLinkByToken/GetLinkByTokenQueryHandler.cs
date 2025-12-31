@@ -24,7 +24,7 @@ public class GetLinkByTokenQueryHandler(
         var link = await _surveyLinkRepository.GetByTokenAsync(request.Token, cancellationToken);
         if (link == null)
         {
-            return Result<LinkByTokenResult>.Failure("Invalid survey link.");
+            return Result<LinkByTokenResult>.Failure("Errors.InvalidSurveyLink");
         }
 
         // Get the survey
@@ -41,22 +41,22 @@ public class GetLinkByTokenQueryHandler(
         if (!link.IsActive)
         {
             isValid = false;
-            invalidReason = "This survey link has been deactivated.";
+            invalidReason = "Application.SurveyLink.LinkDeactivated";
         }
         else if (link.ExpiresAt.HasValue && DateTime.UtcNow > link.ExpiresAt.Value)
         {
             isValid = false;
-            invalidReason = "This survey link has expired.";
+            invalidReason = "Application.SurveyLink.LinkExpired";
         }
         else if (link.MaxUses.HasValue && link.UsageCount >= link.MaxUses.Value)
         {
             isValid = false;
-            invalidReason = "This survey link has reached its maximum usage limit.";
+            invalidReason = "Application.SurveyLink.MaxUsageReached";
         }
         else if (!survey.CanAcceptResponses)
         {
             isValid = false;
-            invalidReason = "This survey is not currently accepting responses.";
+            invalidReason = "Application.Survey.NotAcceptingResponses";
         }
 
         return Result<LinkByTokenResult>.Success(

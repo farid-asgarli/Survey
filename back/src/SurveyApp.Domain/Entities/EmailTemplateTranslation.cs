@@ -80,16 +80,16 @@ public class EmailTemplateTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.EmailTemplateTranslation.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.EmailTemplateTranslation.NameRequired");
 
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject is required.", nameof(subject));
+            throw new DomainException("Domain.EmailTemplateTranslation.SubjectRequired");
 
         if (string.IsNullOrWhiteSpace(htmlBody))
-            throw new ArgumentException("HTML body is required.", nameof(htmlBody));
+            throw new DomainException("Domain.EmailTemplateTranslation.HtmlBodyRequired");
 
         return new EmailTemplateTranslation(
             Guid.NewGuid(),
@@ -117,13 +117,13 @@ public class EmailTemplateTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.EmailTemplateTranslation.NameRequired");
 
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject is required.", nameof(subject));
+            throw new DomainException("Domain.EmailTemplateTranslation.SubjectRequired");
 
         if (string.IsNullOrWhiteSpace(htmlBody))
-            throw new ArgumentException("HTML body is required.", nameof(htmlBody));
+            throw new DomainException("Domain.EmailTemplateTranslation.HtmlBodyRequired");
 
         Name = name.Trim();
         Subject = subject.Trim();

@@ -27,6 +27,10 @@
   "Errors.CannotCreateFailureResult": "Cannot create failure result for response type {0}.",
   "Errors.ValidationFailed": "Validation failed.",
   "Errors.ResourceNotFound": "Resource not found.",
+  "Errors.BusinessRuleViolation": "Business rule violation.",
+  "Errors.AccessDenied": "Access denied.",
+  "Errors.NamespaceError": "Namespace error.",
+  "Errors.Unauthorized": "Unauthorized.",
   "Errors.UnauthorizedAccess": "Unauthorized access.",
   "Errors.AccessForbidden": "Access forbidden.",
   "Errors.AccessToResourceForbidden": "Access to this resource is forbidden.",
@@ -34,6 +38,7 @@
   "Errors.SurveyNotFound": "Survey not found.",
   "Errors.EmailTemplateNotFound": "Email template not found.",
 
+  "Validation.CountGreaterThanZero": "Count must be greater than 0.",
   "Validation.SurveyIdRequired": "Survey ID is required.",
   "Validation.SubjectRequired": "Subject is required.",
   "Validation.SubjectMaxLength": "Subject must not exceed 500 characters.",
@@ -136,8 +141,10 @@
   "Domain.Survey.OnlyPublishedCanClose": "Only published surveys can be closed.",
   "Domain.Survey.DraftCannotArchive": "Draft surveys cannot be archived.",
   "Domain.Survey.OnlyClosedCanReopen": "Only closed surveys can be reopened.",
+  "Domain.Survey.CannotSetBothThemes": "Cannot set both ThemeId and PresetThemeId.",
 
   "Domain.SurveyTemplate.OrderOutOfRange": "Order must be between 1 and the number of questions.",
+  "Domain.SurveyTemplate.QuestionNotFound": "Question not found in template.",
 
   "Domain.SurveyTheme.FontSizeRange": "Base font size must be between 10 and 32.",
 
@@ -155,15 +162,23 @@
   "Domain.UserPreferences.InvalidLanguageCode": "Invalid language code.",
   "Domain.UserPreferences.ItemsPerPageRange": "Items per page must be between 6 and 50.",
 
+  "Domain.Response.CannotSubmitCompleted": "Cannot submit answers to a completed response.",
+  "Domain.Response.AlreadyComplete": "Response is already complete.",
+
   "Domain.User.FirstNameRequired": "First name cannot be empty.",
   "Domain.User.LastNameRequired": "Last name cannot be empty.",
 
   "Domain.ValueObjects.Email.MaxLengthExceeded": "Email cannot exceed {0} characters.",
+  "Domain.ValueObjects.Email.EmailEmpty": "Email cannot be empty.",
+  "Domain.ValueObjects.Email.EmailInvalidFormat": "Email format is invalid.",
   "Domain.ValueObjects.NamespaceSlug.MinLength": "Slug must be at least {0} characters.",
   "Domain.ValueObjects.NamespaceSlug.MaxLength": "Slug cannot exceed {0} characters.",
   "Domain.ValueObjects.NamespaceSlug.InvalidFormat": "Slug can only contain lowercase letters, numbers, and hyphens.",
+  "Domain.ValueObjects.NamespaceSlug.SlugEmpty": "Slug cannot be empty.",
+  "Domain.ValueObjects.NamespaceSlug.NameEmpty": "Name cannot be empty.",
 
   "Domain.ValueObjects.QuestionSettings.OptionsCannotBeEmpty": "Options cannot be empty for choice questions.",
+  "Domain.ValueObjects.QuestionSettings.MaxGreaterThanMin": "Max value must be greater than min value.",
   "Domain.ValueObjects.QuestionSettings.DefaultOption1": "Option 1",
   "Domain.ValueObjects.QuestionSettings.DefaultOption2": "Option 2",
   "Domain.ValueObjects.QuestionSettings.NpsMinLabel": "Not likely",
@@ -175,12 +190,16 @@
   "Domain.ValueObjects.DisplayText.Required": "Display text is required for language {0}.",
   "Domain.ValueObjects.DisplayText.MaxLengthExceeded": "Display text exceeds maximum length {0} for language {1}.",
   "Domain.ValueObjects.Email.InvalidFormat": "Email has an invalid format.",
+  "Domain.ValueObjects.LanguageCode.LanguageCodeEmpty": "Language code cannot be empty.",
   "Domain.ValueObjects.Color.InvalidFormat": "Invalid color format. Use hex format #RRGGBB.",
 
   "Domain.RecurringSurvey.StartTimeMustBeInFuture": "Start time must be in the future.",
   "Domain.RecurringSurvey.EndTimeCannotBeBeforeStart": "End time cannot be before start time.",
   "Domain.RecurringSurvey.InvalidTimeZone": "Invalid time zone.",
   "Domain.RecurringSurvey.CannotModifyPastInstance": "Cannot modify a past instance.",
+  "Domain.RecurringSurvey.CanOnlyStartScheduled": "Can only start a scheduled run.",
+  "Domain.RecurringSurvey.CanOnlyCompleteRunning": "Can only complete a running run.",
+  "Domain.RecurringSurvey.CanOnlyCancelScheduled": "Can only cancel a scheduled run.",
 
   "Domain.UserPreferences.InvalidLanguage": "Invalid language.",
   "Domain.UserPreferences.InvalidTimeZone": "Invalid time zone.",
@@ -261,6 +280,66 @@
   "Domain.NpsScore.GoodCategory": "Good - Room for improvement",
   "Domain.NpsScore.NeedsImprovementCategory": "Needs Improvement - Focus on customer experience",
 
+  "Domain.Question.TextEmpty": "Question text cannot be empty.",
+  "Domain.Question.OrderMinimum": "Order must be at least 1.",
+  "Domain.QuestionTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.QuestionTranslation.TextRequired": "Question text is required.",
+
+  "Domain.RecurringSurvey.NameRequired": "Name is required.",
+  "Domain.RecurringSurvey.TimezoneIdRequired": "Timezone ID is required.",
+  "Domain.RecurringSurvey.MaxRemindersMinimum": "Max reminders must be at least 1.",
+  "Domain.RecurringSurvey.EndDateMustBeFuture": "End date must be in the future.",
+  "Domain.RecurringSurvey.MaxRunsMinimum": "Max runs must be at least 1.",
+
+  "Domain.User.PasswordHashEmpty": "Password hash cannot be empty.",
+
+  "Domain.SurveyLink.MaxUsesPositive": "Max uses must be greater than 0.",
+  "Domain.SurveyResponse.AccessTokenEmpty": "Access token cannot be empty.",
+
+  "Domain.Survey.QuestionIdsMismatch": "Question IDs do not match the survey questions.",
+  "Domain.Survey.QuestionNotFoundById": "Question {0} not found in survey.",
+  "Domain.Survey.LanguageCodeRequired": "Language code is required.",
+
+  "Domain.SurveyTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.SurveyTranslation.TitleRequired": "Title is required.",
+
+  "Domain.SurveyTemplate.NameEmpty": "Template name cannot be empty.",
+  "Domain.SurveyTemplate.LanguageCodeRequired": "Language code is required.",
+  "Domain.SurveyTemplate.NameRequired": "Name is required.",
+  "Domain.SurveyTemplateTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.SurveyTemplateTranslation.NameRequired": "Name is required.",
+
+  "Domain.TemplateQuestion.TextEmpty": "Question text cannot be empty.",
+  "Domain.TemplateQuestion.TextRequired": "Question text is required.",
+  "Domain.TemplateQuestion.LanguageCodeRequired": "Language code is required.",
+  "Domain.TemplateQuestion.OrderMinimum": "Order must be at least 1.",
+  "Domain.TemplateQuestionTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.TemplateQuestionTranslation.TextRequired": "Question text is required.",
+
+  "Domain.SurveyTheme.NameEmpty": "Theme name cannot be empty.",
+  "Domain.SurveyTheme.FontFamilyEmpty": "Font family cannot be empty.",
+  "Domain.SurveyTheme.LanguageCodeRequired": "Language code is required.",
+  "Domain.SurveyTheme.ColorEmpty": "{0} cannot be empty.",
+  "Domain.SurveyTheme.InvalidHexColor": "{0} must be a valid hex color.",
+  "Domain.SurveyThemeTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.SurveyThemeTranslation.NameRequired": "Name is required.",
+
+  "Domain.EmailTemplate.NameEmpty": "Name cannot be empty.",
+  "Domain.EmailTemplate.SubjectEmpty": "Subject cannot be empty.",
+  "Domain.EmailTemplate.HtmlBodyEmpty": "HTML body cannot be empty.",
+  "Domain.EmailTemplateTranslation.LanguageCodeRequired": "Language code is required.",
+  "Domain.EmailTemplateTranslation.NameRequired": "Name is required.",
+  "Domain.EmailTemplateTranslation.SubjectRequired": "Subject is required.",
+  "Domain.EmailTemplateTranslation.HtmlBodyRequired": "HTML body is required.",
+  "Domain.EmailDistribution.BodyEmpty": "Body cannot be empty.",
+
+  "Domain.QuestionLogic.QuestionIdEmpty": "Question ID cannot be empty.",
+  "Domain.QuestionLogic.PriorityNonNegative": "Priority cannot be negative.",
+
+  "Domain.ValueObjects.QuestionSettings.OptionsEmpty": "Options cannot be empty for choice questions.",
+  "Domain.ValueObjects.QuestionSettings.MatrixRowsEmpty": "Matrix rows cannot be empty.",
+  "Domain.ValueObjects.QuestionSettings.MatrixColumnsEmpty": "Matrix columns cannot be empty.",
+
   "Infrastructure.Identity.UserCreatedSuccessfully": "User '{0}' created successfully.",
   "Infrastructure.Identity.FailedToCreateUser": "Failed to create user '{0}': {1}",
   "Infrastructure.Identity.FailedToAddToRole": "Failed to add user '{0}' to role '{1}': {2}",
@@ -280,6 +359,8 @@
   "Infrastructure.EmailNotification.NamespaceInvitation": "You've been invited to join {0}",
   "Infrastructure.EmailDistribution.ReminderPrefix": "Reminder: {0}",
   "Infrastructure.EmailDistribution.DefaultSenderName": "Survey Team",
+  "Infrastructure.EmailDistribution.TemplateNotFound": "Template not found.",
+  "Infrastructure.EmailDistribution.DistributionNotFound": "Distribution not found.",
 
   "Infrastructure.DatabaseSeeder.EmailDistributions": "Email Distributions",
   "Infrastructure.DatabaseSeeder.UserPreferences": "User Preferences",
@@ -465,6 +546,20 @@
   "Errors.AuthenticationFailed": "Authentication failed.",
   "Errors.TokenRefreshFailed": "Token refresh failed.",
   "Errors.PasswordResetFailed": "Password reset failed.",
+  "Errors.UserWithEmailExists": "A user with this email already exists.",
+  "Errors.TemplateNameExists": "A template with this name already exists.",
+  "Errors.TemplateNotFound": "Template not found.",
+  "Errors.SurveyLinkNotFound": "Survey link not found.",
+  "Errors.InvalidSurveyLink": "Invalid survey link.",
+  "Errors.SurveyLinkExpired": "This survey link has expired.",
+  "Errors.InvalidSurveyLinkPassword": "Invalid password for this survey link.",
+  "Errors.SurveyLinkNotBelongToSurvey": "Survey link does not belong to this survey.",
+  "Errors.ResponseNotFound": "Response not found.",
+  "Errors.RecurringSurveyNotFound": "Recurring survey not found.",
+  "Errors.RecurringSurveyNotInNamespace": "Recurring survey does not belong to this namespace.",
+  "Errors.RunNotFound": "Run not found.",
+  "Errors.SurveyRequiresQuestions": "Cannot publish a survey without questions.",
+  "Errors.NoPermissionCreateSurveys": "You do not have permission to create surveys.",
 
   "Validation.Email.Required": "Email is required.",
   "Validation.Email.MaxLength": "{0} cannot exceed {1} characters.",
@@ -621,5 +716,23 @@
   "Validation.Common.FutureDate": "{0} must be in the future.",
   "Validation.Common.DateRangeInvalid": "{0} must be before {1}.",
   "Validation.Common.NotEmptyCollection": "{0} must contain at least one item.",
-  "Validation.Common.MaxCollectionCount": "{0} cannot contain more than {1} items."
+  "Validation.Common.MaxCollectionCount": "{0} cannot contain more than {1} items.",
+
+  "Errors.InvalidFileContent": "Invalid file content.",
+  "Errors.FileContentMismatch": "File content does not match the expected file type. Please upload a valid image file.",
+  "Errors.SvgContainsUnsafeContent": "SVG file contains potentially unsafe content such as scripts or event handlers.",
+
+  "Email.SurveyInvitationSubject": "You're invited to take a survey: {0}",
+  "Email.SurveyInvitationHeading": "You're invited to take a survey!",
+  "Email.TakeSurveyButton": "Take Survey",
+  "Email.SentBy": "Sent by {0} from {1}",
+  "Email.NamespaceInvitationSubject": "You've been invited to join {0}",
+  "Email.NamespaceInvitationHeading": "You've been invited to join {0}",
+  "Email.NamespaceInvitationBody": "{0} has invited you to join their organization as a <strong>{1}</strong>.",
+  "Email.AcceptInvitationButton": "Accept Invitation",
+  "Email.NewResponseSubject": "New response received for {0}",
+  "Email.NewResponseHeading": "New Survey Response",
+  "Email.NewResponseBody": "A new response has been submitted for <strong>{0}</strong>.",
+  "Email.TotalResponses": "Total responses: {0}",
+  "Email.ViewDashboardButton": "View Dashboard"
 }

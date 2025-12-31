@@ -7,4 +7,5 @@ namespace SurveyApp.Application.Features.EmailDistributions.Commands.SendDistrib
 /// <summary>
 /// Command to send an email distribution immediately.
 /// </summary>
-public record SendDistributionCommand(Guid DistributionId) : IRequest<Result<EmailDistributionDto>>;
+public record SendDistributionCommand(Guid SurveyId, Guid DistributionId)
+    : IRequest<Result<EmailDistributionDto>>;

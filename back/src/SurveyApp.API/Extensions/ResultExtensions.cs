@@ -28,6 +28,80 @@ public static class ResultExtensions
     }
 
     /// <summary>
+    /// Creates a BadRequest ProblemDetails for ID mismatch validation errors.
+    /// Use this when the ID in the route doesn't match the ID in the request body.
+    /// </summary>
+    /// <param name="context">The HTTP context.</param>
+    /// <param name="detailKey">The localization key for the detail message (default: "Errors.IdMismatch").</param>
+    /// <returns>A BadRequest result with ProblemDetails.</returns>
+    public static IActionResult IdMismatchProblem(
+        this HttpContext context,
+        string detailKey = "Errors.IdMismatch"
+    )
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = LocalizeError(context, "Errors.BadRequest"),
+            Status = StatusCodes.Status400BadRequest,
+            Detail = LocalizeError(context, detailKey),
+            Instance = context.Request.Path,
+        };
+
+        return new BadRequestObjectResult(problemDetails);
+    }
+
+    /// <summary>
+    /// Creates an Unauthorized ProblemDetails response.
+    /// </summary>
+    /// <param name="context">The HTTP context.</param>
+    /// <param name="titleKey">The localization key for the title.</param>
+    /// <param name="detailKey">The localization key for the detail message.</param>
+    /// <returns>An Unauthorized result with ProblemDetails.</returns>
+    public static IActionResult UnauthorizedProblem(
+        this HttpContext context,
+        string titleKey = "Errors.AuthenticationFailed",
+        string? detailKey = null
+    )
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = LocalizeError(context, titleKey),
+            Status = StatusCodes.Status401Unauthorized,
+            Detail = detailKey != null ? LocalizeError(context, detailKey) : null,
+            Instance = context.Request.Path,
+        };
+
+        return new UnauthorizedObjectResult(problemDetails);
+    }
+
+    /// <summary>
+    /// Creates a BadRequest ProblemDetails response with a custom message.
+    /// </summary>
+    /// <param name="context">The HTTP context.</param>
+    /// <param name="titleKey">The localization key for the title.</param>
+    /// <param name="detailKey">The localization key for the detail message.</param>
+    /// <returns>A BadRequest result with ProblemDetails.</returns>
+    public static IActionResult BadRequestProblem(
+        this HttpContext context,
+        string titleKey = "Errors.BadRequest",
+        string? detailKey = null
+    )
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = LocalizeError(context, titleKey),
+            Status = StatusCodes.Status400BadRequest,
+            Detail = detailKey != null ? LocalizeError(context, detailKey) : null,
+            Instance = context.Request.Path,
+        };
+
+        return new BadRequestObjectResult(problemDetails);
+    }
+
+    /// <summary>
     /// Converts a failed Result to an appropriate ProblemDetails response.
     /// </summary>
     public static IActionResult ToProblemDetails<T>(this Result<T> result, HttpContext context)
@@ -67,7 +141,10 @@ public static class ResultExtensions
         };
     }
 
-    private static ObjectResult CreateNotFoundProblem<T>(Result<T> result, HttpContext context)
+    private static NotFoundObjectResult CreateNotFoundProblem<T>(
+        Result<T> result,
+        HttpContext context
+    )
     {
         var problemDetails = new ProblemDetails
         {
@@ -81,7 +158,7 @@ public static class ResultExtensions
         return new NotFoundObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateNotFoundProblem(Result result, HttpContext context)
+    private static NotFoundObjectResult CreateNotFoundProblem(Result result, HttpContext context)
     {
         var problemDetails = new ProblemDetails
         {
@@ -95,7 +172,10 @@ public static class ResultExtensions
         return new NotFoundObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateUnauthorizedProblem<T>(Result<T> result, HttpContext context)
+    private static UnauthorizedObjectResult CreateUnauthorizedProblem<T>(
+        Result<T> result,
+        HttpContext context
+    )
     {
         var problemDetails = new ProblemDetails
         {
@@ -109,7 +189,10 @@ public static class ResultExtensions
         return new UnauthorizedObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateUnauthorizedProblem(Result result, HttpContext context)
+    private static UnauthorizedObjectResult CreateUnauthorizedProblem(
+        Result result,
+        HttpContext context
+    )
     {
         var problemDetails = new ProblemDetails
         {
@@ -151,7 +234,10 @@ public static class ResultExtensions
         return new ObjectResult(problemDetails) { StatusCode = StatusCodes.Status403Forbidden };
     }
 
-    private static ObjectResult CreateValidationProblem<T>(Result<T> result, HttpContext context)
+    private static BadRequestObjectResult CreateValidationProblem<T>(
+        Result<T> result,
+        HttpContext context
+    )
     {
         var problemDetails = new ValidationProblemDetails(
             result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value)
@@ -168,7 +254,10 @@ public static class ResultExtensions
         return new BadRequestObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateValidationProblem(Result result, HttpContext context)
+    private static BadRequestObjectResult CreateValidationProblem(
+        Result result,
+        HttpContext context
+    )
     {
         var problemDetails = new ValidationProblemDetails(
             result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value)
@@ -185,7 +274,10 @@ public static class ResultExtensions
         return new BadRequestObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateBadRequestProblem<T>(Result<T> result, HttpContext context)
+    private static BadRequestObjectResult CreateBadRequestProblem<T>(
+        Result<T> result,
+        HttpContext context
+    )
     {
         var problemDetails = new ProblemDetails
         {
@@ -204,7 +296,10 @@ public static class ResultExtensions
         return new BadRequestObjectResult(problemDetails);
     }
 
-    private static ObjectResult CreateBadRequestProblem(Result result, HttpContext context)
+    private static BadRequestObjectResult CreateBadRequestProblem(
+        Result result,
+        HttpContext context
+    )
     {
         var problemDetails = new ProblemDetails
         {

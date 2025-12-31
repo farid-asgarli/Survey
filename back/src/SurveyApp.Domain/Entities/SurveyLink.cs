@@ -170,7 +170,7 @@ public class SurveyLink : Entity<Guid>
     public void SetMaxUses(int? maxUses)
     {
         if (maxUses.HasValue && maxUses.Value <= 0)
-            throw new ArgumentException("Max uses must be greater than 0.", nameof(maxUses));
+            throw new DomainException("Domain.SurveyLink.MaxUsesPositive");
 
         MaxUses = maxUses;
     }

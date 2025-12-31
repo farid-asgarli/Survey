@@ -35,7 +35,7 @@ public class GetQuestionsQueryHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<IReadOnlyList<QuestionDto>>.Failure("Survey not found.");
+            return Result<IReadOnlyList<QuestionDto>>.Failure("Errors.SurveyNotFound");
         }
 
         var questions = survey.Questions.OrderBy(q => q.Order).ToList();

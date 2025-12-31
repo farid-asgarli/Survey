@@ -46,7 +46,7 @@ public class ExceptionHandlingMiddleware(
             DomainException domainException => new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Business rule violation.",
+                Title = _localizer["Errors.BusinessRuleViolation"],
                 Status = (int)HttpStatusCode.BadRequest,
                 Detail =
                     domainException.FormatArgs?.Length > 0
@@ -71,7 +71,7 @@ public class ExceptionHandlingMiddleware(
             NotFoundException notFoundException => new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = "Resource not found.",
+                Title = _localizer["Errors.ResourceNotFound"],
                 Status = (int)HttpStatusCode.NotFound,
                 Detail = notFoundException.Message,
                 Instance = context.Request.Path,
@@ -80,7 +80,7 @@ public class ExceptionHandlingMiddleware(
             ForbiddenAccessException => new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
-                Title = "Access denied.",
+                Title = _localizer["Errors.AccessDenied"],
                 Status = (int)HttpStatusCode.Forbidden,
                 Detail = _localizer["Errors.PermissionDenied"],
                 Instance = context.Request.Path,
@@ -89,7 +89,7 @@ public class ExceptionHandlingMiddleware(
             NamespaceException namespaceException => new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Namespace error.",
+                Title = _localizer["Errors.NamespaceError"],
                 Status = (int)HttpStatusCode.BadRequest,
                 Detail = namespaceException.Message,
                 Instance = context.Request.Path,
@@ -98,7 +98,7 @@ public class ExceptionHandlingMiddleware(
             UnauthorizedAccessException => new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = "Unauthorized.",
+                Title = _localizer["Errors.Unauthorized"],
                 Status = (int)HttpStatusCode.Unauthorized,
                 Detail = _localizer["Errors.AuthenticationRequired"],
                 Instance = context.Request.Path,

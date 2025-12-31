@@ -10,51 +10,52 @@ public sealed class LanguageCode : ValueObject
     /// <summary>
     /// Supported language codes (ISO 639-1).
     /// </summary>
-    private static readonly HashSet<string> SupportedLanguages =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            "en", // English
-            "es", // Spanish
-            "fr", // French
-            "de", // German
-            "it", // Italian
-            "pt", // Portuguese
-            "nl", // Dutch
-            "pl", // Polish
-            "ru", // Russian
-            "az", // Azerbaijani
-            "zh", // Chinese
-            "ja", // Japanese
-            "ko", // Korean
-            "ar", // Arabic
-            "hi", // Hindi
-            "tr", // Turkish
-            "sv", // Swedish
-            "da", // Danish
-            "fi", // Finnish
-            "no", // Norwegian
-            "cs", // Czech
-            "el", // Greek
-            "he", // Hebrew
-            "hu", // Hungarian
-            "id", // Indonesian
-            "ms", // Malay
-            "th", // Thai
-            "vi", // Vietnamese
-            "uk", // Ukrainian
-            "ro", // Romanian
-            "bg", // Bulgarian
-            "hr", // Croatian
-            "sk", // Slovak
-            "sl", // Slovenian
-            "et", // Estonian
-            "lv", // Latvian
-            "lt", // Lithuanian
-            "sr", // Serbian
-            "ca", // Catalan
-            "eu", // Basque
-            "gl", // Galician
-        };
+    private static readonly HashSet<string> SupportedLanguages = new(
+        StringComparer.OrdinalIgnoreCase
+    )
+    {
+        "en", // English
+        "es", // Spanish
+        "fr", // French
+        "de", // German
+        "it", // Italian
+        "pt", // Portuguese
+        "nl", // Dutch
+        "pl", // Polish
+        "ru", // Russian
+        "az", // Azerbaijani
+        "zh", // Chinese
+        "ja", // Japanese
+        "ko", // Korean
+        "ar", // Arabic
+        "hi", // Hindi
+        "tr", // Turkish
+        "sv", // Swedish
+        "da", // Danish
+        "fi", // Finnish
+        "no", // Norwegian
+        "cs", // Czech
+        "el", // Greek
+        "he", // Hebrew
+        "hu", // Hungarian
+        "id", // Indonesian
+        "ms", // Malay
+        "th", // Thai
+        "vi", // Vietnamese
+        "uk", // Ukrainian
+        "ro", // Romanian
+        "bg", // Bulgarian
+        "hr", // Croatian
+        "sk", // Slovak
+        "sl", // Slovenian
+        "et", // Estonian
+        "lv", // Latvian
+        "lt", // Lithuanian
+        "sr", // Serbian
+        "ca", // Catalan
+        "eu", // Basque
+        "gl", // Galician
+    };
 
     /// <summary>
     /// Gets the language code value.
@@ -75,7 +76,10 @@ public sealed class LanguageCode : ValueObject
     public static LanguageCode Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Language code cannot be empty.", nameof(value));
+            throw new ArgumentException(
+                "Domain.ValueObjects.LanguageCode.LanguageCodeEmpty",
+                nameof(value)
+            );
 
         var normalized = value.Trim().ToLowerInvariant();
 

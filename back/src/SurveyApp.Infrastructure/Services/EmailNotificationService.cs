@@ -1,12 +1,16 @@
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using SurveyApp.Application.Services;
 
 namespace SurveyApp.Infrastructure.Services;
 
-public class EmailNotificationService(ILogger<EmailNotificationService> logger)
-    : INotificationService
+public class EmailNotificationService(
+    ILogger<EmailNotificationService> logger,
+    IStringLocalizer<EmailNotificationService> localizer
+) : INotificationService
 {
     private readonly ILogger<EmailNotificationService> _logger = logger;
+    private readonly IStringLocalizer<EmailNotificationService> _localizer = localizer;
 
     public Task SendEmailAsync(
         string to,
@@ -43,7 +47,10 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
         CancellationToken cancellationToken = default
     )
     {
-        var subject = $"You're invited to take a survey: {context.SurveyTitle}";
+        var subject = string.Format(
+            _localizer["Email.SurveyInvitationSubject"],
+            context.SurveyTitle
+        );
         var body = BuildSurveyInvitationEmail(context);
         return SendEmailAsync(to, subject, body, true, cancellationToken);
     }
@@ -54,7 +61,10 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
         CancellationToken cancellationToken = default
     )
     {
-        var subject = $"You've been invited to join {context.NamespaceName}";
+        var subject = string.Format(
+            _localizer["Email.NamespaceInvitationSubject"],
+            context.NamespaceName
+        );
         var body = BuildNamespaceInvitationEmail(context);
         return SendEmailAsync(to, subject, body, true, cancellationToken);
     }
@@ -65,13 +75,21 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
         CancellationToken cancellationToken = default
     )
     {
-        var subject = $"New response received for {context.SurveyTitle}";
+        var subject = string.Format(_localizer["Email.NewResponseSubject"], context.SurveyTitle);
         var body = BuildSurveyCompletionEmail(context);
         return SendEmailAsync(to, subject, body, true, cancellationToken);
     }
 
-    private static string BuildSurveyInvitationEmail(SurveyInvitationContext context)
+    private string BuildSurveyInvitationEmail(SurveyInvitationContext context)
     {
+        var heading = _localizer["Email.SurveyInvitationHeading"];
+        var buttonText = _localizer["Email.TakeSurveyButton"];
+        var sentByText = string.Format(
+            _localizer["Email.SentBy"],
+            context.SenderName,
+            context.OrganizationName
+        );
+
         return $@"
 <!DOCTYPE html>
 <html>
@@ -85,21 +103,32 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
 </head>
 <body>
     <div class='container'>
-        <h2>You're invited to take a survey!</h2>
+        <h2>{heading}</h2>
         <p><strong>{context.SurveyTitle}</strong></p>
         <p>{context.SurveyDescription}</p>
         {(string.IsNullOrEmpty(context.PersonalMessage) ? "" : $"<p><em>\"{context.PersonalMessage}\"</em></p>")}
-        <p><a href='{context.SurveyUrl}' class='button'>Take Survey</a></p>
+        <p><a href='{context.SurveyUrl}' class='button'>{buttonText}</a></p>
         <div class='footer'>
-            <p>Sent by {context.SenderName} from {context.OrganizationName}</p>
+            <p>{sentByText}</p>
         </div>
     </div>
 </body>
 </html>";
     }
 
-    private static string BuildNamespaceInvitationEmail(NamespaceInvitationContext context)
+    private string BuildNamespaceInvitationEmail(NamespaceInvitationContext context)
     {
+        var heading = string.Format(
+            _localizer["Email.NamespaceInvitationHeading"],
+            context.NamespaceName
+        );
+        var bodyText = string.Format(
+            _localizer["Email.NamespaceInvitationBody"],
+            context.InviterName,
+            context.Role
+        );
+        var buttonText = _localizer["Email.AcceptInvitationButton"];
+
         return $@"
 <!DOCTYPE html>
 <html>
@@ -112,17 +141,22 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
 </head>
 <body>
     <div class='container'>
-        <h2>You've been invited to join {context.NamespaceName}</h2>
-        <p>{context.InviterName} has invited you to join their organization as a <strong>{context.Role}</strong>.</p>
+        <h2>{heading}</h2>
+        <p>{bodyText}</p>
         {(string.IsNullOrEmpty(context.PersonalMessage) ? "" : $"<p><em>\"{context.PersonalMessage}\"</em></p>")}
-        <p><a href='{context.InviteUrl}' class='button'>Accept Invitation</a></p>
+        <p><a href='{context.InviteUrl}' class='button'>{buttonText}</a></p>
     </div>
 </body>
 </html>";
     }
 
-    private static string BuildSurveyCompletionEmail(SurveyCompletionContext context)
+    private string BuildSurveyCompletionEmail(SurveyCompletionContext context)
     {
+        var heading = _localizer["Email.NewResponseHeading"];
+        var bodyText = string.Format(_localizer["Email.NewResponseBody"], context.SurveyTitle);
+        var totalText = string.Format(_localizer["Email.TotalResponses"], context.TotalResponses);
+        var buttonText = _localizer["Email.ViewDashboardButton"];
+
         return $@"
 <!DOCTYPE html>
 <html>
@@ -135,10 +169,10 @@ public class EmailNotificationService(ILogger<EmailNotificationService> logger)
 </head>
 <body>
     <div class='container'>
-        <h2>New Survey Response</h2>
-        <p>A new response has been submitted for <strong>{context.SurveyTitle}</strong>.</p>
-        <p>Total responses: {context.TotalResponses}</p>
-        <p><a href='{context.DashboardUrl}' class='button'>View Dashboard</a></p>
+        <h2>{heading}</h2>
+        <p>{bodyText}</p>
+        <p>{totalText}</p>
+        <p><a href='{context.DashboardUrl}' class='button'>{buttonText}</a></p>
     </div>
 </body>
 </html>";

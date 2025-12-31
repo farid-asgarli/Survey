@@ -40,7 +40,7 @@ public class TriggerRecurringSurveyCommandHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Recurring survey not found.");
+            return Result<RecurringSurveyRunDto>.Failure("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != ctx.NamespaceId)

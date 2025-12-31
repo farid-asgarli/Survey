@@ -3,6 +3,7 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.Services;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
@@ -19,6 +20,7 @@ public class CreateSurveyCommandHandler(
     INamespaceRepository namespaceRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext,
+    IQuestionSettingsMapper questionSettingsMapper,
     IMapper mapper
 ) : IRequestHandler<CreateSurveyCommand, Result<SurveyDto>>
 {
@@ -26,6 +28,7 @@ public class CreateSurveyCommandHandler(
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
+    private readonly IQuestionSettingsMapper _questionSettingsMapper = questionSettingsMapper;
     private readonly IMapper _mapper = mapper;
 
     public async Task<Result<SurveyDto>> Handle(
@@ -105,7 +108,7 @@ public class CreateSurveyCommandHandler(
 
             if (questionDto.Settings != null)
             {
-                var settings = CreateQuestionSettings(questionDto.Type, questionDto.Settings);
+                var settings = _questionSettingsMapper.MapToSettings(questionDto.Settings);
                 if (settings != null)
                 {
                     question.UpdateSettings(settings);
@@ -118,14 +121,6 @@ public class CreateSurveyCommandHandler(
 
         var dto = _mapper.Map<SurveyDto>(survey);
         return Result<SurveyDto>.Success(dto);
-    }
-
-    private QuestionSettings? CreateQuestionSettings(QuestionType type, QuestionSettingsDto dto)
-    {
-        // Serialize the DTO to JSON and then deserialize it using QuestionSettings.FromJson
-        // This ensures all properties including RatingStyle and YesNoStyle are preserved
-        var json = System.Text.Json.JsonSerializer.Serialize(dto);
-        return QuestionSettings.FromJson(json);
     }
 
     /// <summary>

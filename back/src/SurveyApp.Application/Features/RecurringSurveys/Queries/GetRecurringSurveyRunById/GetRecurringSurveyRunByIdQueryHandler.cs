@@ -40,7 +40,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
 
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Recurring survey not found.");
+            return Result<RecurringSurveyRunDto>.Failure("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)
@@ -56,7 +56,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
         );
         if (run == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Run not found.");
+            return Result<RecurringSurveyRunDto>.Failure("Errors.RunNotFound");
         }
 
         if (run.RecurringSurveyId != request.RecurringSurveyId)

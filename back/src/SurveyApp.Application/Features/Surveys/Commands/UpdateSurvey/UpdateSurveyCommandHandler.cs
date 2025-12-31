@@ -44,7 +44,7 @@ public class UpdateSurveyCommandHandler(
         // Check if survey can be edited
         if (survey.Status != SurveyStatus.Draft)
         {
-            return Result<SurveyDto>.Failure("Only draft surveys can be edited.");
+            return Result<SurveyDto>.Failure("Errors.OnlyDraftSurveysEditable");
         }
 
         // Determine the language to update

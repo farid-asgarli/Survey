@@ -35,14 +35,14 @@ public class DeleteResponseCommandHandler(
         );
         if (response == null)
         {
-            return Result<bool>.Failure("Response not found.");
+            return Result<bool>.Failure("Errors.ResponseNotFound");
         }
 
         // Verify the response belongs to a survey in the current namespace
         var survey = await _surveyRepository.GetByIdAsync(response.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Response not found.");
+            return Result<bool>.Failure("Errors.ResponseNotFound");
         }
 
         _responseRepository.Delete(response);

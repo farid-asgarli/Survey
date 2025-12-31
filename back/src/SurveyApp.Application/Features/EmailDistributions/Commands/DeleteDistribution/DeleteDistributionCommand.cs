@@ -6,4 +6,5 @@ namespace SurveyApp.Application.Features.EmailDistributions.Commands.DeleteDistr
 /// <summary>
 /// Command to delete an email distribution.
 /// </summary>
-public record DeleteDistributionCommand(Guid DistributionId) : IRequest<Result<bool>>;
+public record DeleteDistributionCommand(Guid SurveyId, Guid DistributionId)
+    : IRequest<Result<bool>>;

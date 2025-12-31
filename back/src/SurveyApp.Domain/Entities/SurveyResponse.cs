@@ -118,7 +118,7 @@ public class SurveyResponse : AggregateRoot<Guid>
     )
     {
         if (string.IsNullOrWhiteSpace(accessToken))
-            throw new ArgumentException("Access token cannot be empty.", nameof(accessToken));
+            throw new DomainException("Domain.SurveyResponse.AccessTokenEmpty");
 
         return new SurveyResponse(
             Guid.NewGuid(),
@@ -145,7 +145,7 @@ public class SurveyResponse : AggregateRoot<Guid>
     public Answer SubmitAnswer(Guid questionId, string answerValue)
     {
         if (IsComplete)
-            throw new InvalidOperationException("Cannot submit answers to a completed response.");
+            throw new InvalidOperationException("Domain.Response.CannotSubmitCompleted");
 
         var existingAnswer = _answers.FirstOrDefault(a => a.QuestionId == questionId);
         if (existingAnswer != null)
@@ -185,7 +185,7 @@ public class SurveyResponse : AggregateRoot<Guid>
     public void Complete()
     {
         if (IsComplete)
-            throw new InvalidOperationException("Response is already complete.");
+            throw new InvalidOperationException("Domain.Response.AlreadyComplete");
 
         IsComplete = true;
         SubmittedAt = DateTime.UtcNow;

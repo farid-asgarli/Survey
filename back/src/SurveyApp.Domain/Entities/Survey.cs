@@ -491,13 +491,13 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 
         var questionIdList = questionIds.ToList();
         if (questionIdList.Count != _questions.Count)
-            throw new ArgumentException("Question IDs do not match the survey questions.");
+            throw new DomainException("Domain.Survey.QuestionIdsMismatch");
 
         for (int i = 0; i < questionIdList.Count; i++)
         {
             var question = _questions.FirstOrDefault(q => q.Id == questionIdList[i]);
             if (question == null)
-                throw new ArgumentException($"Question {questionIdList[i]} not found in survey.");
+                throw new DomainException("Domain.Survey.QuestionNotFoundById", questionIdList[i]);
 
             question.UpdateOrder(i + 1);
         }
@@ -577,7 +577,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     {
         // A survey can use either a saved theme OR a preset, not both
         if (themeId.HasValue && !string.IsNullOrEmpty(presetThemeId))
-            throw new InvalidOperationException("Cannot set both ThemeId and PresetThemeId.");
+            throw new InvalidOperationException("Domain.Survey.CannotSetBothThemes");
 
         ThemeId = themeId;
         PresetThemeId = presetThemeId;
@@ -664,7 +664,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public void SetDefaultLanguage(string languageCode)
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.Survey.LanguageCodeRequired");
 
         DefaultLanguage = languageCode.ToLowerInvariant();
     }

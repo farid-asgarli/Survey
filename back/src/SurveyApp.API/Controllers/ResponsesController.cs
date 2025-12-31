@@ -11,6 +11,7 @@ namespace SurveyApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize] // Class-level authorization - individual endpoints can override with [AllowAnonymous]
 public class ResponsesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -19,7 +20,6 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     /// Get responses for a survey
     /// </summary>
     [HttpGet]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetResponses(
         [FromQuery] Guid surveyId,
@@ -38,7 +38,7 @@ public class ResponsesController(IMediator mediator) : ControllerBase
                 PageSize = pageSize,
                 IsCompleted = isCompleted,
                 FromDate = fromDate,
-                ToDate = toDate
+                ToDate = toDate,
             }
         );
 
@@ -52,7 +52,6 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     /// Get a response by ID
     /// </summary>
     [HttpGet("{id:guid}")]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
@@ -86,7 +85,6 @@ public class ResponsesController(IMediator mediator) : ControllerBase
     /// Delete a response
     /// </summary>
     [HttpDelete("{id:guid}")]
-    [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

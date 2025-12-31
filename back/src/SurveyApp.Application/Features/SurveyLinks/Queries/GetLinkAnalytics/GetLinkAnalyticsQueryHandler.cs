@@ -35,7 +35,7 @@ public class GetLinkAnalyticsQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<LinkAnalyticsDto>.Failure("User not authenticated.");
+            return Result<LinkAnalyticsDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -47,7 +47,7 @@ public class GetLinkAnalyticsQueryHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<LinkAnalyticsDto>.Failure("Survey does not belong to this namespace.");
+            return Result<LinkAnalyticsDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get the link with clicks
@@ -57,12 +57,12 @@ public class GetLinkAnalyticsQueryHandler(
         );
         if (link == null)
         {
-            return Result<LinkAnalyticsDto>.Failure("Survey link not found.");
+            return Result<LinkAnalyticsDto>.Failure("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)
         {
-            return Result<LinkAnalyticsDto>.Failure("Survey link does not belong to this survey.");
+            return Result<LinkAnalyticsDto>.Failure("Errors.SurveyLinkNotBelongToSurvey");
         }
 
         // Filter clicks by date range if specified

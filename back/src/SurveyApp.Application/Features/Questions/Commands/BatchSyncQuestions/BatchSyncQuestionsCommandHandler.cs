@@ -3,9 +3,9 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.Services;
 using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
-using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.Application.Features.Questions.Commands.BatchSyncQuestions;
 
@@ -16,13 +16,16 @@ namespace SurveyApp.Application.Features.Questions.Commands.BatchSyncQuestions;
 public class BatchSyncQuestionsCommandHandler(
     ISurveyRepository surveyRepository,
     IUnitOfWork unitOfWork,
-    INamespaceCommandContext commandContext,
+    ISurveyAuthorizationService surveyAuthorizationService,
+    IQuestionSettingsMapper questionSettingsMapper,
     IMapper mapper
 ) : IRequestHandler<BatchSyncQuestionsCommand, Result<BatchSyncQuestionsResult>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly INamespaceCommandContext _commandContext = commandContext;
+    private readonly ISurveyAuthorizationService _surveyAuthorizationService =
+        surveyAuthorizationService;
+    private readonly IQuestionSettingsMapper _questionSettingsMapper = questionSettingsMapper;
     private readonly IMapper _mapper = mapper;
 
     public async Task<Result<BatchSyncQuestionsResult>> Handle(
@@ -30,26 +33,18 @@ public class BatchSyncQuestionsCommandHandler(
         CancellationToken cancellationToken
     )
     {
-        // Context is validated by NamespaceValidationBehavior pipeline
-        var ctx = _commandContext.Context!;
-
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
-            request.SurveyId,
-            cancellationToken
-        );
-
-        if (survey == null || survey.NamespaceId != ctx.NamespaceId)
-        {
-            return Result<BatchSyncQuestionsResult>.Failure("Handler.SurveyNotFound");
-        }
-
-        // Check if survey can be edited
-        if (survey.Status != SurveyStatus.Draft)
-        {
-            return Result<BatchSyncQuestionsResult>.Failure(
-                "Application.Survey.OnlyDraftCanBeEdited"
+        // Validate survey access and editability using centralized service
+        var surveyResult =
+            await _surveyAuthorizationService.ValidateSurveyWithQuestionsEditableAsync(
+                request.SurveyId,
+                cancellationToken
             );
+        if (!surveyResult.IsSuccess)
+        {
+            return Result<BatchSyncQuestionsResult>.Failure(surveyResult.Error!);
         }
+
+        var survey = surveyResult.Value!;
 
         var created = new List<CreatedQuestionResult>();
         var updated = new List<QuestionDto>();
@@ -107,7 +102,7 @@ public class BatchSyncQuestionsCommandHandler(
                 // Handle settings if provided
                 if (createData.Settings != null)
                 {
-                    var settings = CreateQuestionSettings(createData.Settings);
+                    var settings = _questionSettingsMapper.MapToSettings(createData.Settings);
                     if (settings != null)
                     {
                         question.UpdateSettings(settings);
@@ -188,7 +183,7 @@ public class BatchSyncQuestionsCommandHandler(
                 // Update settings if provided
                 if (updateData.Settings != null)
                 {
-                    var settings = CreateQuestionSettings(updateData.Settings);
+                    var settings = _questionSettingsMapper.MapToSettings(updateData.Settings);
                     if (settings != null)
                     {
                         question.UpdateSettings(settings);
@@ -271,13 +266,5 @@ public class BatchSyncQuestionsCommandHandler(
                 Errors = errors,
             }
         );
-    }
-
-    private static QuestionSettings? CreateQuestionSettings(QuestionSettingsDto dto)
-    {
-        // Serialize the DTO to JSON and then deserialize it using QuestionSettings.FromJson
-        // This ensures all properties including RatingStyle and YesNoStyle are preserved
-        var json = System.Text.Json.JsonSerializer.Serialize(dto);
-        return QuestionSettings.FromJson(json);
     }
 }

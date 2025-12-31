@@ -138,7 +138,7 @@ public class RecurringSurveyRun : Entity<Guid>
     public void Start()
     {
         if (Status != RunStatus.Scheduled)
-            throw new InvalidOperationException("Can only start a scheduled run.");
+            throw new InvalidOperationException("Domain.RecurringSurvey.CanOnlyStartScheduled");
 
         Status = RunStatus.Running;
         StartedAt = DateTime.UtcNow;
@@ -150,7 +150,7 @@ public class RecurringSurveyRun : Entity<Guid>
     public void Complete(int recipientsCount, int sentCount, int failedCount)
     {
         if (Status != RunStatus.Running)
-            throw new InvalidOperationException("Can only complete a running run.");
+            throw new InvalidOperationException("Domain.RecurringSurvey.CanOnlyCompleteRunning");
 
         RecipientsCount = recipientsCount;
         SentCount = sentCount;
@@ -185,7 +185,7 @@ public class RecurringSurveyRun : Entity<Guid>
     public void Cancel()
     {
         if (Status != RunStatus.Scheduled)
-            throw new InvalidOperationException("Can only cancel a scheduled run.");
+            throw new InvalidOperationException("Domain.RecurringSurvey.CanOnlyCancelScheduled");
 
         Status = RunStatus.Cancelled;
     }

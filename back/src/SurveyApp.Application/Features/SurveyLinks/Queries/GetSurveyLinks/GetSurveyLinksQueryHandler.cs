@@ -40,7 +40,7 @@ public class GetSurveyLinksQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<List<SurveyLinkDto>>.Failure("User not authenticated.");
+            return Result<List<SurveyLinkDto>>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -52,7 +52,7 @@ public class GetSurveyLinksQueryHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<List<SurveyLinkDto>>.Failure("Survey does not belong to this namespace.");
+            return Result<List<SurveyLinkDto>>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get links

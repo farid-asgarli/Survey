@@ -41,7 +41,7 @@ public class GetSurveyLinkByIdQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("User not authenticated.");
+            return Result<SurveyLinkDetailsDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -53,23 +53,19 @@ public class GetSurveyLinkByIdQueryHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyLinkDetailsDto>.Failure(
-                "Survey does not belong to this namespace."
-            );
+            return Result<SurveyLinkDetailsDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get the link
         var link = await _surveyLinkRepository.GetByIdAsync(request.LinkId, cancellationToken);
         if (link == null)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Survey link not found.");
+            return Result<SurveyLinkDetailsDto>.Failure("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)
         {
-            return Result<SurveyLinkDetailsDto>.Failure(
-                "Survey link does not belong to this survey."
-            );
+            return Result<SurveyLinkDetailsDto>.Failure("Errors.SurveyLinkNotBelongToSurvey");
         }
 
         var dto = _mapper.Map<SurveyLinkDetailsDto>(link);

@@ -42,7 +42,7 @@ public class CreateTemplateCommandHandler(
             )
         )
         {
-            return Result<SurveyTemplateDto>.Failure("A template with this name already exists.");
+            return Result<SurveyTemplateDto>.Failure("Errors.TemplateNameExists");
         }
 
         // Create template with localization support

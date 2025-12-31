@@ -36,7 +36,7 @@ public class DeactivateSurveyLinkCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("User not authenticated.");
+            return Result<bool>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -48,19 +48,19 @@ public class DeactivateSurveyLinkCommandHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<bool>.Failure("Survey does not belong to this namespace.");
+            return Result<bool>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get the link
         var link = await _surveyLinkRepository.GetByIdAsync(request.LinkId, cancellationToken);
         if (link == null)
         {
-            return Result<bool>.Failure("Survey link not found.");
+            return Result<bool>.Failure("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)
         {
-            return Result<bool>.Failure("Survey link does not belong to this survey.");
+            return Result<bool>.Failure("Errors.SurveyLinkNotBelongToSurvey");
         }
 
         link.Deactivate();

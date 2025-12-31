@@ -72,10 +72,10 @@ public class SurveyTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.SurveyTranslation.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title is required.", nameof(title));
+            throw new DomainException("Domain.SurveyTranslation.TitleRequired");
 
         return new SurveyTranslation(
             Guid.NewGuid(),
@@ -101,7 +101,7 @@ public class SurveyTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title is required.", nameof(title));
+            throw new DomainException("Domain.SurveyTranslation.TitleRequired");
 
         Title = title.Trim();
         Description = description?.Trim();

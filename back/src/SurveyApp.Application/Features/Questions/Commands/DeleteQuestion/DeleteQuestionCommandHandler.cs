@@ -34,19 +34,19 @@ public class DeleteQuestionCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<Unit>.Failure("Survey not found.");
+            return Result<Unit>.Failure("Errors.SurveyNotFound");
         }
 
         // Check if survey can be edited
         if (survey.Status != SurveyStatus.Draft)
         {
-            return Result<Unit>.Failure("Only draft surveys can be edited.");
+            return Result<Unit>.Failure("Errors.OnlyDraftSurveysEditable");
         }
 
         var question = survey.Questions.FirstOrDefault(q => q.Id == request.QuestionId);
         if (question == null)
         {
-            return Result<Unit>.Failure("Question not found.");
+            return Result<Unit>.Failure("Errors.QuestionNotFound");
         }
 
         survey.RemoveQuestion(request.QuestionId);

@@ -31,9 +31,13 @@ public class GetDistributionRecipientsQueryHandler(
             cancellationToken
         );
 
-        if (distribution == null || distribution.NamespaceId != namespaceId.Value)
+        if (
+            distribution == null
+            || distribution.NamespaceId != namespaceId.Value
+            || distribution.SurveyId != request.SurveyId
+        )
         {
-            return Result<IReadOnlyList<EmailRecipientDto>>.Failure("Errors.DistributionNotFound");
+            return Result<IReadOnlyList<EmailRecipientDto>>.NotFound("Errors.DistributionNotFound");
         }
 
         var (recipients, _) = await _distributionRepository.GetRecipientsPagedAsync(

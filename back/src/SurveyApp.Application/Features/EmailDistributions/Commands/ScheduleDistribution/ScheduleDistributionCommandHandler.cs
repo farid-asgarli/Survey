@@ -45,9 +45,13 @@ public class ScheduleDistributionCommandHandler(
             cancellationToken
         );
 
-        if (distribution == null || distribution.NamespaceId != namespaceId.Value)
+        if (
+            distribution == null
+            || distribution.NamespaceId != namespaceId.Value
+            || distribution.SurveyId != request.SurveyId
+        )
         {
-            return Result<EmailDistributionDto>.Failure("Errors.DistributionNotFound");
+            return Result<EmailDistributionDto>.NotFound("Errors.DistributionNotFound");
         }
 
         try

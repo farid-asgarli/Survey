@@ -121,13 +121,13 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.EmailTemplate.NameEmpty");
 
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Subject cannot be empty.", nameof(subject));
+            throw new DomainException("Domain.EmailTemplate.SubjectEmpty");
 
         if (string.IsNullOrWhiteSpace(htmlBody))
-            throw new ArgumentException("HTML body cannot be empty.", nameof(htmlBody));
+            throw new DomainException("Domain.EmailTemplate.HtmlBodyEmpty");
 
         var template = new EmailTemplate(namespaceId, type);
         template.DefaultLanguage = languageCode.ToLowerInvariant();

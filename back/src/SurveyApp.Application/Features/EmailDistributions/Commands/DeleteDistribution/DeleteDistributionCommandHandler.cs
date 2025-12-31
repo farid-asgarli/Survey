@@ -54,9 +54,13 @@ public class DeleteDistributionCommandHandler(
             cancellationToken
         );
 
-        if (distribution == null || distribution.NamespaceId != namespaceId.Value)
+        if (
+            distribution == null
+            || distribution.NamespaceId != namespaceId.Value
+            || distribution.SurveyId != request.SurveyId
+        )
         {
-            return Result<bool>.Failure("Errors.DistributionNotFound");
+            return Result<bool>.NotFound("Errors.DistributionNotFound");
         }
 
         // Validate status - prevent deletion of sent/sending distributions

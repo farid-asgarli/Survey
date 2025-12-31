@@ -10,6 +10,11 @@ namespace SurveyApp.Application.Features.EmailDistributions.Queries.GetDistribut
 /// </summary>
 public record GetDistributionRecipientsQuery : IRequest<Result<IReadOnlyList<EmailRecipientDto>>>
 {
+    /// <summary>
+    /// The survey ID that the distribution belongs to (for IDOR validation).
+    /// </summary>
+    public Guid SurveyId { get; init; }
+
     public Guid DistributionId { get; init; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 50;

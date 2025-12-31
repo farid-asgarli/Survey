@@ -9,6 +9,11 @@ namespace SurveyApp.Application.Features.EmailDistributions.Commands.ScheduleDis
 /// </summary>
 public record ScheduleDistributionCommand : IRequest<Result<EmailDistributionDto>>
 {
+    /// <summary>
+    /// The survey ID that the distribution belongs to (for IDOR validation).
+    /// </summary>
+    public Guid SurveyId { get; init; }
+
     public Guid DistributionId { get; init; }
     public DateTime ScheduledAt { get; init; }
 }

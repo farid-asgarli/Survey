@@ -204,10 +204,7 @@ public sealed class QuestionSettings : ValueObject
     )
     {
         if (options == null || options.Count == 0)
-            throw new ArgumentException(
-                "Options cannot be empty for choice questions.",
-                nameof(options)
-            );
+            throw new DomainException("Domain.ValueObjects.QuestionSettings.OptionsEmpty");
 
         return new QuestionSettings(options: options, allowOther: allowOther);
     }
@@ -218,7 +215,7 @@ public sealed class QuestionSettings : ValueObject
     public static QuestionSettings CreateRatingSettings(int minValue = 1, int maxValue = 5)
     {
         if (minValue >= maxValue)
-            throw new ArgumentException("Max value must be greater than min value.");
+            throw new DomainException("Domain.ValueObjects.QuestionSettings.MaxGreaterThanMin");
 
         return new QuestionSettings(minValue: minValue, maxValue: maxValue);
     }
@@ -234,7 +231,7 @@ public sealed class QuestionSettings : ValueObject
     )
     {
         if (minValue >= maxValue)
-            throw new ArgumentException("Max value must be greater than min value.");
+            throw new DomainException("Domain.ValueObjects.QuestionSettings.MaxGreaterThanMin");
 
         return new QuestionSettings(
             minValue: minValue,
@@ -253,10 +250,10 @@ public sealed class QuestionSettings : ValueObject
     )
     {
         if (rows == null || rows.Count == 0)
-            throw new ArgumentException("Matrix rows cannot be empty.", nameof(rows));
+            throw new DomainException("Domain.ValueObjects.QuestionSettings.MatrixRowsEmpty");
 
         if (columns == null || columns.Count == 0)
-            throw new ArgumentException("Matrix columns cannot be empty.", nameof(columns));
+            throw new DomainException("Domain.ValueObjects.QuestionSettings.MatrixColumnsEmpty");
 
         return new QuestionSettings(matrixRows: rows, matrixColumns: columns);
     }

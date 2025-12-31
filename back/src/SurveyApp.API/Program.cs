@@ -99,6 +99,24 @@ builder.Services.AddRateLimiter(options =>
                 }
             )
     );
+
+    // Rate limiter for email tracking endpoints (open/click tracking)
+    // Prevents abuse such as token enumeration, metric inflation, and DoS attacks
+    options.AddPolicy(
+        "tracking",
+        httpContext =>
+            RateLimitPartition.GetSlidingWindowLimiter(
+                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous",
+                factory: _ => new SlidingWindowRateLimiterOptions
+                {
+                    PermitLimit = 30, // Allow 30 requests per minute per IP
+                    Window = TimeSpan.FromMinutes(1),
+                    SegmentsPerWindow = 6, // 10-second segments for smoother limiting
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 5,
+                }
+            )
+    );
 });
 
 // Configure Output Caching for analytics and expensive read operations

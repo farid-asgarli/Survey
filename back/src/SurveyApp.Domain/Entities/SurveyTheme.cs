@@ -352,7 +352,7 @@ public class SurveyTheme : AggregateRoot<Guid>, ILocalizable<SurveyThemeTranslat
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Theme name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.SurveyTheme.NameEmpty");
 
         var theme = new SurveyTheme(Guid.NewGuid(), namespaceId);
         theme.DefaultLanguage = languageCode.ToLowerInvariant();
@@ -369,7 +369,7 @@ public class SurveyTheme : AggregateRoot<Guid>, ILocalizable<SurveyThemeTranslat
     public void UpdateName(string name, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Theme name cannot be empty.", nameof(name));
+            throw new DomainException("Domain.SurveyTheme.NameEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -527,13 +527,10 @@ public class SurveyTheme : AggregateRoot<Guid>, ILocalizable<SurveyThemeTranslat
     public void UpdateTypography(string fontFamily, string headingFontFamily, int baseFontSize)
     {
         if (string.IsNullOrWhiteSpace(fontFamily))
-            throw new ArgumentException("Font family cannot be empty.", nameof(fontFamily));
+            throw new DomainException("Domain.SurveyTheme.FontFamilyEmpty");
 
         if (baseFontSize < 10 || baseFontSize > 32)
-            throw new ArgumentException(
-                "Base font size must be between 10 and 32.",
-                nameof(baseFontSize)
-            );
+            throw new DomainException("Domain.SurveyTheme.FontSizeRange");
 
         FontFamily = fontFamily;
         HeadingFontFamily = string.IsNullOrWhiteSpace(headingFontFamily)
@@ -754,13 +751,13 @@ h1, h2, h3, h4, h5, h6 {{
     private static string ValidateHexColor(string color, string paramName)
     {
         if (string.IsNullOrWhiteSpace(color))
-            throw new ArgumentException($"{paramName} cannot be empty.", paramName);
+            throw new DomainException("Domain.SurveyTheme.ColorEmpty", paramName);
 
         if (!color.StartsWith('#'))
             color = "#" + color;
 
         if (color.Length != 7 && color.Length != 4)
-            throw new ArgumentException($"{paramName} must be a valid hex color.", paramName);
+            throw new DomainException("Domain.SurveyTheme.InvalidHexColor", paramName);
 
         return color.ToUpperInvariant();
     }
@@ -782,7 +779,7 @@ h1, h2, h3, h4, h5, h6 {{
     public void SetDefaultLanguage(string languageCode)
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.SurveyTheme.LanguageCodeRequired");
 
         DefaultLanguage = languageCode.ToLowerInvariant();
     }

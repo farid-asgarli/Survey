@@ -30,9 +30,13 @@ public class GetDistributionStatsQueryHandler(
             cancellationToken
         );
 
-        if (distribution == null || distribution.NamespaceId != namespaceId.Value)
+        if (
+            distribution == null
+            || distribution.NamespaceId != namespaceId.Value
+            || distribution.SurveyId != request.SurveyId
+        )
         {
-            return Result<DistributionStatsDto>.Failure("Errors.DistributionNotFound");
+            return Result<DistributionStatsDto>.NotFound("Errors.DistributionNotFound");
         }
 
         var stats = new DistributionStatsDto

@@ -37,13 +37,13 @@ public class DuplicateSurveyCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyDto>.Failure("User not authenticated.");
+            return Result<SurveyDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyDto>.Failure("Namespace context required.");
+            return Result<SurveyDto>.Failure("Errors.NamespaceRequired");
         }
 
         // Get the original survey with all data
@@ -56,7 +56,7 @@ public class DuplicateSurveyCommandHandler(
         // Verify the survey belongs to the current namespace
         if (original.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyDto>.Failure("Survey does not belong to the current namespace.");
+            return Result<SurveyDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Check permission to create surveys
@@ -67,7 +67,7 @@ public class DuplicateSurveyCommandHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.CreateSurveys))
         {
-            return Result<SurveyDto>.Failure("You do not have permission to create surveys.");
+            return Result<SurveyDto>.Failure("Errors.NoPermissionCreateSurveys");
         }
 
         // Check survey limits

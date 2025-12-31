@@ -51,9 +51,13 @@ public class CancelDistributionCommandHandler(
             cancellationToken
         );
 
-        if (distribution == null || distribution.NamespaceId != namespaceId.Value)
+        if (
+            distribution == null
+            || distribution.NamespaceId != namespaceId.Value
+            || distribution.SurveyId != request.SurveyId
+        )
         {
-            return Result<bool>.Failure("Errors.DistributionNotFound");
+            return Result<bool>.NotFound("Errors.DistributionNotFound");
         }
 
         // Validate status - return localized error key instead of domain exception

@@ -3,9 +3,9 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.Services;
 using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
-using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.Application.Features.Questions.Commands.CreateQuestion;
 
@@ -16,13 +16,16 @@ namespace SurveyApp.Application.Features.Questions.Commands.CreateQuestion;
 public class CreateQuestionCommandHandler(
     ISurveyRepository surveyRepository,
     IUnitOfWork unitOfWork,
-    INamespaceCommandContext commandContext,
+    ISurveyAuthorizationService surveyAuthorizationService,
+    IQuestionSettingsMapper questionSettingsMapper,
     IMapper mapper
 ) : IRequestHandler<CreateQuestionCommand, Result<QuestionDto>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly INamespaceCommandContext _commandContext = commandContext;
+    private readonly ISurveyAuthorizationService _surveyAuthorizationService =
+        surveyAuthorizationService;
+    private readonly IQuestionSettingsMapper _questionSettingsMapper = questionSettingsMapper;
     private readonly IMapper _mapper = mapper;
 
     public async Task<Result<QuestionDto>> Handle(
@@ -30,23 +33,18 @@ public class CreateQuestionCommandHandler(
         CancellationToken cancellationToken
     )
     {
-        // Context is validated by NamespaceValidationBehavior pipeline
-        var ctx = _commandContext.Context!;
-
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
-            request.SurveyId,
-            cancellationToken
-        );
-        if (survey == null || survey.NamespaceId != ctx.NamespaceId)
+        // Validate survey access and editability using centralized service
+        var surveyResult =
+            await _surveyAuthorizationService.ValidateSurveyWithQuestionsEditableAsync(
+                request.SurveyId,
+                cancellationToken
+            );
+        if (!surveyResult.IsSuccess)
         {
-            return Result<QuestionDto>.Failure("Survey not found.");
+            return Result<QuestionDto>.Failure(surveyResult.Error!);
         }
 
-        // Check if survey can be edited
-        if (survey.Status != SurveyStatus.Draft)
-        {
-            return Result<QuestionDto>.Failure("Only draft surveys can be edited.");
-        }
+        var survey = surveyResult.Value!;
 
         // Use provided language or survey's default language
         var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
@@ -74,7 +72,7 @@ public class CreateQuestionCommandHandler(
         // Handle settings if provided
         if (request.Settings != null)
         {
-            var settings = CreateQuestionSettings(request.Type, request.Settings);
+            var settings = _questionSettingsMapper.MapToSettings(request.Settings);
             if (settings != null)
             {
                 question.UpdateSettings(settings);
@@ -94,13 +92,5 @@ public class CreateQuestionCommandHandler(
 
         var dto = _mapper.Map<QuestionDto>(question);
         return Result<QuestionDto>.Success(dto);
-    }
-
-    private QuestionSettings? CreateQuestionSettings(QuestionType type, QuestionSettingsDto dto)
-    {
-        // Serialize the DTO to JSON and then deserialize it using QuestionSettings.FromJson
-        // This ensures all properties including RatingStyle and YesNoStyle are preserved
-        var json = System.Text.Json.JsonSerializer.Serialize(dto);
-        return QuestionSettings.FromJson(json);
     }
 }

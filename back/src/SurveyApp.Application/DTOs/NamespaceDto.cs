@@ -4,6 +4,7 @@ namespace SurveyApp.Application.DTOs;
 
 /// <summary>
 /// DTO for namespace data.
+/// Note: OwnerId is intentionally not exposed to prevent leaking internal user relationships.
 /// </summary>
 public class NamespaceDto
 {
@@ -18,7 +19,6 @@ public class NamespaceDto
     public string? LogoUrl { get; set; }
     public int MemberCount { get; set; }
     public int SurveyCount { get; set; }
-    public Guid? OwnerId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }

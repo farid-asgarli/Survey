@@ -44,7 +44,7 @@ public class CreateSurveyLinkCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyLinkDto>.Failure("User not authenticated.");
+            return Result<SurveyLinkDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
@@ -56,7 +56,7 @@ public class CreateSurveyLinkCommandHandler(
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyLinkDto>.Failure("Survey does not belong to this namespace.");
+            return Result<SurveyLinkDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Create the link

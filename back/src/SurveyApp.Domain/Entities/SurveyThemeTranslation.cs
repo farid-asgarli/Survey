@@ -56,10 +56,10 @@ public class SurveyThemeTranslation : Translation
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.SurveyThemeTranslation.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.SurveyThemeTranslation.NameRequired");
 
         return new SurveyThemeTranslation(
             Guid.NewGuid(),
@@ -77,7 +77,7 @@ public class SurveyThemeTranslation : Translation
     public void Update(string name, string? description, Guid? userId = null)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.SurveyThemeTranslation.NameRequired");
 
         Name = name.Trim();
         Description = description?.Trim();

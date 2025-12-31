@@ -28,7 +28,7 @@ public class RecordLinkClickCommandHandler(
         var link = await _surveyLinkRepository.GetByTokenAsync(request.Token, cancellationToken);
         if (link == null)
         {
-            return Result<RecordLinkClickResult>.Failure("Invalid survey link.");
+            return Result<RecordLinkClickResult>.Failure("Errors.InvalidSurveyLink");
         }
 
         // Check if link is valid
@@ -36,22 +36,22 @@ public class RecordLinkClickCommandHandler(
         {
             if (!link.IsActive)
                 return Result<RecordLinkClickResult>.Failure(
-                    "This survey link has been deactivated."
+                    "Application.SurveyLink.LinkDeactivated"
                 );
 
             if (link.ExpiresAt.HasValue && DateTime.UtcNow > link.ExpiresAt.Value)
-                return Result<RecordLinkClickResult>.Failure("This survey link has expired.");
+                return Result<RecordLinkClickResult>.Failure("Errors.SurveyLinkExpired");
 
             if (link.MaxUses.HasValue && link.UsageCount >= link.MaxUses.Value)
                 return Result<RecordLinkClickResult>.Failure(
-                    "This survey link has reached its maximum usage limit."
+                    "Application.SurveyLink.MaxUsageReached"
                 );
         }
 
         // Validate password if required
         if (!link.ValidatePassword(request.Password))
         {
-            return Result<RecordLinkClickResult>.Failure("Invalid password for this survey link.");
+            return Result<RecordLinkClickResult>.Failure("Errors.InvalidSurveyLinkPassword");
         }
 
         // Get the survey
@@ -64,7 +64,7 @@ public class RecordLinkClickCommandHandler(
         if (!survey.CanAcceptResponses)
         {
             return Result<RecordLinkClickResult>.Failure(
-                "This survey is not currently accepting responses."
+                "Application.Survey.NotAcceptingResponses"
             );
         }
 

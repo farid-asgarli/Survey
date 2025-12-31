@@ -42,7 +42,9 @@ public class GetRecurringSurveyRunsQueryHandler(
 
         if (recurringSurvey == null)
         {
-            return Result<PagedList<RecurringSurveyRunDto>>.Failure("Recurring survey not found.");
+            return Result<PagedList<RecurringSurveyRunDto>>.Failure(
+                "Errors.RecurringSurveyNotFound"
+            );
         }
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)

@@ -7,5 +7,5 @@ namespace SurveyApp.Application.Features.EmailDistributions.Queries.GetDistribut
 /// <summary>
 /// Query to get distribution statistics.
 /// </summary>
-public record GetDistributionStatsQuery(Guid DistributionId)
+public record GetDistributionStatsQuery(Guid SurveyId, Guid DistributionId)
     : IRequest<Result<DistributionStatsDto>>;

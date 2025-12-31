@@ -46,7 +46,7 @@ public class ApplyThemeToSurveyCommandHandler(
         // Verify survey belongs to namespace
         if (survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Survey not found in this namespace.");
+            return Result<SurveyDto>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Validate that only one theme type is specified

@@ -44,6 +44,25 @@ public class FilesController : ControllerBase
         ".svg",
     };
 
+    // File signature (magic bytes) validation to prevent polyglot attacks
+    private static readonly Dictionary<string, byte[][]> FileSignatures = new(
+        StringComparer.OrdinalIgnoreCase
+    )
+    {
+        { ".jpg", new[] { new byte[] { 0xFF, 0xD8, 0xFF } } },
+        { ".jpeg", new[] { new byte[] { 0xFF, 0xD8, 0xFF } } },
+        { ".png", new[] { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } } },
+        {
+            ".gif",
+            new[]
+            {
+                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x37, 0x61 },
+                new byte[] { 0x47, 0x49, 0x46, 0x38, 0x39, 0x61 },
+            }
+        }, // GIF87a and GIF89a
+        { ".webp", new[] { new byte[] { 0x52, 0x49, 0x46, 0x46 } } }, // RIFF header (WebP also has WEBP at offset 8)
+    };
+
     // Maximum file size (5 MB)
     private const long MaxFileSizeBytes = 5 * 1024 * 1024;
 
@@ -140,6 +159,43 @@ public class FilesController : ControllerBase
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
+        }
+
+        // Validate file content (magic bytes) to prevent polyglot attacks
+        // Note: SVG files are XML-based and don't have magic bytes, so we skip this check for them
+        // SVG files should be carefully sanitized to prevent XSS attacks
+        if (!extension.Equals(".svg", StringComparison.OrdinalIgnoreCase))
+        {
+            var validationResult = await ValidateFileSignatureAsync(file, extension);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = _localizer["Errors.InvalidFileContent"],
+                        Detail = _localizer["Errors.FileContentMismatch"],
+                        Status = StatusCodes.Status400BadRequest,
+                    }
+                );
+            }
+        }
+        else
+        {
+            // For SVG files, perform basic XSS validation
+            var svgValidation = await ValidateSvgFileAsync(file);
+            if (!svgValidation.IsValid)
+            {
+                return BadRequest(
+                    new ProblemDetails
+                    {
+                        Title = _localizer["Errors.InvalidFileContent"],
+                        Detail =
+                            svgValidation.ErrorMessage
+                            ?? _localizer["Errors.SvgContainsUnsafeContent"],
+                        Status = StatusCodes.Status400BadRequest,
+                    }
+                );
+            }
         }
 
         try
@@ -435,13 +491,147 @@ public class FilesController : ControllerBase
             safeBaseName = safeBaseName[..50];
         }
 
-        // Add category prefix if provided
+        // Add category prefix if provided (sanitized to prevent path traversal)
         if (!string.IsNullOrEmpty(category))
         {
-            return $"{category}_{safeBaseName}{extension}";
+            var safeCategory = SanitizeCategory(category);
+            return $"{safeCategory}_{safeBaseName}{extension}";
         }
 
         return $"{safeBaseName}{extension}";
+    }
+
+    /// <summary>
+    /// Sanitizes the category parameter to prevent path traversal attacks.
+    /// Only allows alphanumeric characters, hyphens, and underscores.
+    /// </summary>
+    private static string SanitizeCategory(string category)
+    {
+        if (string.IsNullOrEmpty(category))
+        {
+            return string.Empty;
+        }
+
+        // Remove any path separators and invalid characters
+        var invalidChars = Path.GetInvalidFileNameChars()
+            .Concat(new[] { '/', '\\', ':', '.', ' ' })
+            .ToArray();
+
+        var sanitized = string.Join(
+            "_",
+            category.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries)
+        );
+
+        // Only allow alphanumeric, hyphen, and underscore
+        sanitized = new string(
+            sanitized.Where(c => char.IsLetterOrDigit(c) || c == '-' || c == '_').ToArray()
+        );
+
+        // Limit length
+        if (sanitized.Length > 30)
+        {
+            sanitized = sanitized[..30];
+        }
+
+        return sanitized;
+    }
+
+    /// <summary>
+    /// Validates file content by checking magic bytes (file signature)
+    /// </summary>
+    private static async Task<(bool IsValid, string? ErrorMessage)> ValidateFileSignatureAsync(
+        IFormFile file,
+        string extension
+    )
+    {
+        if (!FileSignatures.TryGetValue(extension, out var signatures))
+        {
+            // No signature defined for this extension, skip validation
+            return (true, null);
+        }
+
+        var maxSignatureLength = signatures.Max(s => s.Length);
+        var headerBytes = new byte[maxSignatureLength];
+
+        using var stream = file.OpenReadStream();
+        var bytesRead = await stream.ReadAsync(headerBytes.AsMemory(0, maxSignatureLength));
+
+        if (bytesRead < signatures.Min(s => s.Length))
+        {
+            return (false, "File is too small to be a valid image");
+        }
+
+        // Check if any of the valid signatures match
+        foreach (var signature in signatures)
+        {
+            if (headerBytes.Take(signature.Length).SequenceEqual(signature))
+            {
+                // For WebP, also verify the WEBP identifier at offset 8
+                if (extension.Equals(".webp", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (bytesRead >= 12)
+                    {
+                        var webpIdentifier = new byte[] { 0x57, 0x45, 0x42, 0x50 }; // "WEBP"
+                        if (headerBytes.Skip(8).Take(4).SequenceEqual(webpIdentifier))
+                        {
+                            return (true, null);
+                        }
+                    }
+                    continue; // Try next signature if WebP verification failed
+                }
+                return (true, null);
+            }
+        }
+
+        return (false, "File content does not match the expected format");
+    }
+
+    /// <summary>
+    /// Validates SVG files for potential XSS attacks
+    /// </summary>
+    private static async Task<(bool IsValid, string? ErrorMessage)> ValidateSvgFileAsync(
+        IFormFile file
+    )
+    {
+        using var reader = new StreamReader(file.OpenReadStream());
+        var content = await reader.ReadToEndAsync();
+
+        // Check for potentially dangerous SVG content
+        var dangerousPatterns = new[]
+        {
+            "<script",
+            "javascript:",
+            "on\\w+\\s*=", // onclick, onerror, onload, etc.
+            "xlink:href\\s*=\\s*[\"']?javascript:",
+            "<foreignObject",
+            "data:text/html",
+        };
+
+        foreach (var pattern in dangerousPatterns)
+        {
+            if (
+                System.Text.RegularExpressions.Regex.IsMatch(
+                    content,
+                    pattern,
+                    System.Text.RegularExpressions.RegexOptions.IgnoreCase
+                )
+            )
+            {
+                return (false, "SVG file contains potentially unsafe content");
+            }
+        }
+
+        // Basic XML validation - should start with XML declaration or SVG tag
+        var trimmedContent = content.TrimStart();
+        if (
+            !trimmedContent.StartsWith("<?xml", StringComparison.OrdinalIgnoreCase)
+            && !trimmedContent.StartsWith("<svg", StringComparison.OrdinalIgnoreCase)
+        )
+        {
+            return (false, "File does not appear to be a valid SVG");
+        }
+
+        return (true, null);
     }
 }
 

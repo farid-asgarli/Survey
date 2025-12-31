@@ -179,10 +179,10 @@ public class RecurringSurvey : AggregateRoot<Guid>
     )
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.RecurringSurvey.NameRequired");
 
         if (string.IsNullOrWhiteSpace(timezoneId))
-            throw new ArgumentException("Timezone ID is required.", nameof(timezoneId));
+            throw new DomainException("Domain.RecurringSurvey.TimezoneIdRequired");
 
         var recurringSurvey = new RecurringSurvey
         {
@@ -209,7 +209,7 @@ public class RecurringSurvey : AggregateRoot<Guid>
     public void UpdateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new DomainException("Domain.RecurringSurvey.NameRequired");
 
         Name = name;
     }
@@ -227,7 +227,7 @@ public class RecurringSurvey : AggregateRoot<Guid>
     )
     {
         if (string.IsNullOrWhiteSpace(timezoneId))
-            throw new ArgumentException("Timezone ID is required.", nameof(timezoneId));
+            throw new DomainException("Domain.RecurringSurvey.TimezoneIdRequired");
 
         if (pattern == RecurrencePattern.Weekly && (daysOfWeek == null || daysOfWeek.Length == 0))
             throw new ArgumentException(
@@ -302,13 +302,10 @@ public class RecurringSurvey : AggregateRoot<Guid>
     )
     {
         if (reminderDaysAfter < 1)
-            throw new ArgumentException(
-                "Reminder days must be at least 1.",
-                nameof(reminderDaysAfter)
-            );
+            throw new DomainException("Domain.RecurringSurvey.ReminderDaysMinimum");
 
         if (maxReminders < 1)
-            throw new ArgumentException("Max reminders must be at least 1.", nameof(maxReminders));
+            throw new DomainException("Domain.RecurringSurvey.MaxRemindersMinimum");
 
         SendReminders = sendReminders;
         ReminderDaysAfter = reminderDaysAfter;
@@ -330,10 +327,10 @@ public class RecurringSurvey : AggregateRoot<Guid>
     public void SetEndConditions(DateTime? endsAt, int? maxRuns)
     {
         if (endsAt.HasValue && endsAt.Value < DateTime.UtcNow)
-            throw new ArgumentException("End date must be in the future.", nameof(endsAt));
+            throw new DomainException("Domain.RecurringSurvey.EndDateMustBeFuture");
 
         if (maxRuns.HasValue && maxRuns.Value < 1)
-            throw new ArgumentException("Max runs must be at least 1.", nameof(maxRuns));
+            throw new DomainException("Domain.RecurringSurvey.MaxRunsMinimum");
 
         EndsAt = endsAt;
         MaxRuns = maxRuns;

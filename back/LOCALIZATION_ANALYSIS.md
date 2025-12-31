@@ -1,214 +1,141 @@
-Created 5 todos
+### 🔴 HIGH PRIORITY - Domain Layer Exception Messages
 
-Searched for regex `throw new.*Exception\("` (`**/*.cs`), 20 results
-
-Searched for regex `.*not found` (`**/*.cs`), 20 results
-
-Searched for text `BadRequest\("` (`**/*.cs`), no results
-
-Searched for text `NotFound\("` (`**/*.cs`), no results
-
-Searched for regex `Failure\("` (`**/*.cs`), 20 results
-
-Searched for regex `Result\.Fail|Result\.Error|\.Failure\(` (`**/*.cs`), 20 results
-
-Searched for regex `WithMessage\("` (`**/*.cs`), no results
-
-Searched for regex `\.Message\s*=\s*"` (`**/*.cs`), no results
-
-Searched for regex `Failure\("` (`**/*.cs`), 100 results
-
-Searched for regex `throw new.*Exception\("` (`**/*.cs`), 100 results
-
-Starting: _Scan Services for hardcoded strings_ (2/5)
-
-Searched for regex `Failure\("[^"]*"` (`**/*.cs`), 100 results
-
-Searched for regex `\.Must|\.NotEmpty|\.NotNull|\.MaximumLength|\.MinimumLength|\.GreaterThan` (`**/Validators/*.cs`), no results
-
-Searched for files matching `**/Validators/**/*.cs`, 20 matches
-
-Searched for regex `Failure\("[A-Za-z]+ ` (`**/*.cs`), 74 results
-
-Let me check the existing localization resource files and scan the validators:
-
-Read [](file:///c%3A/Users/CyberDream/Desktop/projects/Work/survey_new/back/src/SurveyApp.API/Resources/en.json#1-1), lines 1 to 150
-
-Read [](file:///c%3A/Users/CyberDream/Desktop/projects/Work/survey_new/back/src/SurveyApp.Application/Validators/Users/RegisterUserCommandValidator.cs)
-
-Read [](file:///c%3A/Users/CyberDream/Desktop/projects/Work/survey_new/back/src/SurveyApp.Application/Validators/Surveys/CreateSurveyCommandValidator.cs#1-1), lines 1 to 50
-
-Starting: _Scan Domain/Application layers_ (4/5)
-
-Searched for regex `DomainException\("[^"]*"` (`**/*.cs`), 27 results
-
-Searched for regex `InvalidOperationException\("[^"]*"` (`**/*.cs`), 11 results
-
-Searched for regex `ArgumentException\("[^"]*"` (`**/*.cs`), 50 results
-
-Searched for regex `Subject\s*=\s*"[^"]+"|Subject\s*:\s*"[^"]+"` (`**/*.cs`), no results
-
-Read [](file:///c%3A/Users/CyberDream/Desktop/projects/Work/survey_new/back/src/SurveyApp.API/Resources/en.json#150-150), lines 150 to 350
-
-Starting: _Compile and categorize results_ (5/5)
-
-Based on my comprehensive scan of your codebase, I've identified hardcoded strings that need localization. The analysis shows that **many strings are already using localization keys**, but there are several that need to be converted.
-
-## Hardcoded Strings Analysis Report
-
-### ✅ **Already Localized (Using Keys)**
-
-Your project already follows good localization practices in many areas:
-
-- Domain exceptions use keys like `"Domain.Survey.SurveyTitleRequired"`
-- Infrastructure identity messages use keys like `"Infrastructure.Identity.UserAlreadyExists"`
-- Many handlers use keys like `"Handler.SurveyNotFound"`, `"Errors.NamespaceRequired"`
+| File                        | Line    | Current Text                                       | Category | Suggested Key                   | Priority |
+| --------------------------- | ------- | -------------------------------------------------- | -------- | ------------------------------- | -------- |
+| Question.cs                 | 237     | `"Matrix columns cannot be null."`                 | Error    | `Errors.MatrixColumnsNull`      | High     |
+| Question.cs                 | 256     | `"Matrix rows cannot be empty."`                   | Error    | `Errors.MatrixRowsEmpty`        | High     |
+| Question.cs                 | 259     | `"Matrix columns cannot be empty."`                | Error    | `Errors.MatrixColumnsEmpty`     | High     |
+| Question.cs                 | 108     | `"Scale start value is required..."`               | Error    | `Errors.ScaleStartRequired`     | High     |
+| Question.cs                 | 202     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
+| RecurringSurvey.cs          | 182     | `"Cron expression is required."`                   | Error    | `Errors.CronExpressionRequired` | High     |
+| RecurringSurvey.cs          | 185     | `"Timezone ID is required."`                       | Error    | `Errors.TimezoneIdRequired`     | High     |
+| RecurringSurvey.cs          | 212     | `"Cron expression is required."`                   | Error    | `Errors.CronExpressionRequired` | High     |
+| RecurringSurvey.cs          | 230     | `"Timezone ID is required."`                       | Error    | `Errors.TimezoneIdRequired`     | High     |
+| RecurringSurvey.cs          | 311     | `"Max reminders must be at least 1."`              | Error    | `Errors.MaxRemindersMinimum`    | High     |
+| RecurringSurvey.cs          | 333     | `"End date must be in the future."`                | Error    | `Errors.EndDateMustBeFuture`    | High     |
+| RecurringSurvey.cs          | 336     | `"Max runs must be at least 1."`                   | Error    | `Errors.MaxRunsMinimum`         | High     |
+| User.cs                     | 91      | `"New role must be higher than the current role."` | Error    | `Errors.RoleMustBeHigher`       | High     |
+| User.cs                     | 114     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
+| User.cs                     | 130     | `"Password hash cannot be empty."`                 | Error    | `Errors.PasswordHashEmpty`      | High     |
+| User.cs                     | 160     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
+| Namespace.cs                | 120     | `"Namespace name cannot be empty."`                | Error    | `Errors.NamespaceNameEmpty`     | High     |
+| QuestionLogic.cs            | 69      | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
+| QuestionLogic.cs            | 72      | `"Invalid language code format."`                  | Error    | `Errors.LanguageCodeInvalid`    | High     |
+| QuestionLogic.cs            | 96      | `"Translation not found..."`                       | Error    | `Errors.TranslationNotFound`    | High     |
+| SurveyLink.cs               | 121     | `"Access token cannot be empty."`                  | Error    | `Errors.AccessTokenEmpty`       | High     |
+| SurveyLink.cs               | 173     | `"Max uses must be greater than 0."`               | Error    | `Errors.MaxUsesPositive`        | High     |
+| Response.cs                 | 83-86   | `"Language code is required/invalid."`             | Error    | `Errors.LanguageCodeRequired`   | High     |
+| Survey.cs                   | 355     | `"Theme name cannot be empty."`                    | Error    | `Errors.ThemeNameEmpty`         | High     |
+| Survey.cs                   | 372     | `"Theme name cannot be empty."`                    | Error    | `Errors.ThemeNameEmpty`         | High     |
+| Survey.cs                   | 530     | `"Page index out of range."`                       | Error    | `Errors.PageIndexOutOfRange`    | High     |
+| Survey.cs                   | 785     | `"Language code is required."`                     | Error    | `Errors.LanguageCodeRequired`   | High     |
+| SurveyTranslation.cs        | 59-80   | Language code validation messages                  | Error    | `Errors.LanguageCodeRequired`   | High     |
+| Template.cs                 | 137     | `"Template name cannot be empty."`                 | Error    | `Errors.TemplateNameEmpty`      | High     |
+| Template.cs                 | 174     | `"Template name cannot be empty."`                 | Error    | `Errors.TemplateNameEmpty`      | High     |
+| Template.cs                 | 250-318 | Language code/template messages                    | Error    | `Errors.LanguageCode*`          | High     |
+| TemplateTranslation.cs      | 75-125  | Language code validation                           | Error    | `Errors.LanguageCode*`          | High     |
+| QuestionTranslation.cs      | 69-118  | Language code validation                           | Error    | `Errors.LanguageCode*`          | High     |
+| EmailDistribution.cs        | 94-169  | Email/name validation                              | Error    | `Errors.EmailDistribution*`     | High     |
+| EmailTemplate.cs            | 83-126  | Template validation messages                       | Error    | `Errors.EmailTemplate*`         | High     |
+| EmailTemplateTranslation.cs | 124-212 | Translation validation                             | Error    | `Errors.EmailTemplate*`         | High     |
 
 ---
 
-### 🔴 **Hardcoded Strings Requiring Localization**
+### 🔴 HIGH PRIORITY - API Middleware Problem Details
 
-| File                                      | Line | Current Text                                            | Category   | Suggested Key                          | Priority |
-| ----------------------------------------- | ---- | ------------------------------------------------------- | ---------- | -------------------------------------- | -------- |
-| RegisterUserCommandHandler.cs             | 29   | `"Invalid email address."`                              | Error      | `Errors.InvalidEmailAddress`           | High     |
-| RegisterUserCommandHandler.cs             | 36   | `"A user with this email already exists."`              | Error      | `Errors.UserWithEmailExists`           | High     |
-| GetSurveysQueryHandler.cs                 | 40   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetSurveyByIdQueryHandler.cs              | 49   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetSurveyAnalyticsQueryHandler.cs         | 49   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| UpdateSurveyCommandHandler.cs             | 44   | `"Only draft surveys can be edited."`                   | Error      | `Errors.OnlyDraftSurveysEditable`      | High     |
-| PublishSurveyCommandHandler.cs            | 46   | `"Cannot publish a survey without questions."`          | Error      | `Errors.SurveyRequiresQuestions`       | High     |
-| DuplicateSurveyCommandHandler.cs          | 40   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| DuplicateSurveyCommandHandler.cs          | 46   | `"Namespace context required."`                         | Error      | `Errors.NamespaceRequired`             | High     |
-| DuplicateSurveyCommandHandler.cs          | 59   | `"Survey does not belong to the current namespace."`    | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| DuplicateSurveyCommandHandler.cs          | 70   | `"You do not have permission to create surveys."`       | Error      | `Errors.NoPermissionCreateSurveys`     | High     |
-| CreateTemplateCommandHandler.cs           | 45   | `"A template with this name already exists."`           | Error      | `Errors.TemplateNameExists`            | High     |
-| UpdateTemplateCommandHandler.cs           | 57   | `"A template with this name already exists."`           | Error      | `Errors.TemplateNameExists`            | High     |
-| CreateTemplateFromSurveyCommandHandler.cs | 56   | `"A template with this name already exists."`           | Error      | `Errors.TemplateNameExists`            | High     |
-| CreateSurveyFromTemplateCommandHandler.cs | 59   | `"Template not found."`                                 | Error      | `Errors.TemplateNotFound`              | High     |
-| GetTemplateByIdQueryHandler.cs            | 38   | `"Template not found."`                                 | Error      | `Errors.TemplateNotFound`              | High     |
-| ApplyThemeToSurveyCommandHandler.cs       | 46   | `"Survey not found in this namespace."`                 | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| GetSurveyLinksQueryHandler.cs             | 43   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetSurveyLinksQueryHandler.cs             | 55   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| GetSurveyLinkByIdQueryHandler.cs          | 44   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetSurveyLinkByIdQueryHandler.cs          | 65   | `"Survey link not found."`                              | Error      | `Errors.SurveyLinkNotFound`            | High     |
-| GetLinkByTokenQueryHandler.cs             | 27   | `"Invalid survey link."`                                | Error      | `Errors.InvalidSurveyLink`             | High     |
-| GetLinkAnalyticsQueryHandler.cs           | 38   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetLinkAnalyticsQueryHandler.cs           | 50   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| GetLinkAnalyticsQueryHandler.cs           | 60   | `"Survey link not found."`                              | Error      | `Errors.SurveyLinkNotFound`            | High     |
-| GetLinkAnalyticsQueryHandler.cs           | 65   | `"Survey link does not belong to this survey."`         | Error      | `Errors.SurveyLinkNotBelongToSurvey`   | High     |
-| UpdateSurveyLinkCommandHandler.cs         | 46   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| UpdateSurveyLinkCommandHandler.cs         | 58   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| UpdateSurveyLinkCommandHandler.cs         | 65   | `"Survey link not found."`                              | Error      | `Errors.SurveyLinkNotFound`            | High     |
-| UpdateSurveyLinkCommandHandler.cs         | 70   | `"Survey link does not belong to this survey."`         | Error      | `Errors.SurveyLinkNotBelongToSurvey`   | High     |
-| RecordLinkClickCommandHandler.cs          | 31   | `"Invalid survey link."`                                | Error      | `Errors.InvalidSurveyLink`             | High     |
-| RecordLinkClickCommandHandler.cs          | 43   | `"This survey link has expired."`                       | Error      | `Errors.SurveyLinkExpired`             | High     |
-| RecordLinkClickCommandHandler.cs          | 54   | `"Invalid password for this survey link."`              | Error      | `Errors.InvalidSurveyLinkPassword`     | High     |
-| GenerateBulkLinksCommandHandler.cs        | 49   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GenerateBulkLinksCommandHandler.cs        | 54   | `"Count must be greater than 0."`                       | Validation | `Validation.CountGreaterThanZero`      | Medium   |
-| DeactivateSurveyLinkCommandHandler.cs     | 39   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| DeactivateSurveyLinkCommandHandler.cs     | 51   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| DeactivateSurveyLinkCommandHandler.cs     | 58   | `"Survey link not found."`                              | Error      | `Errors.SurveyLinkNotFound`            | High     |
-| DeactivateSurveyLinkCommandHandler.cs     | 63   | `"Survey link does not belong to this survey."`         | Error      | `Errors.SurveyLinkNotBelongToSurvey`   | High     |
-| CreateSurveyLinkCommandHandler.cs         | 47   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| CreateSurveyLinkCommandHandler.cs         | 59   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| GetResponseByIdQueryHandler.cs            | 44   | `"Response not found."`                                 | Error      | `Errors.ResponseNotFound`              | High     |
-| GetResponseByIdQueryHandler.cs            | 51   | `"Response not found."`                                 | Error      | `Errors.ResponseNotFound`              | High     |
-| GetResponseByIdQueryHandler.cs            | 58   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetResponsesQueryHandler.cs               | 51   | `"User not authenticated."`                             | Error      | `Errors.UserNotAuthenticated`          | High     |
-| GetExportPreviewQuery.cs                  | 43   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| ExportResponsesCommand.cs                 | 73   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| DeleteResponseCommandHandler.cs           | 38   | `"Response not found."`                                 | Error      | `Errors.ResponseNotFound`              | High     |
-| DeleteResponseCommandHandler.cs           | 45   | `"Response not found."`                                 | Error      | `Errors.ResponseNotFound`              | High     |
-| UpdateRecurringSurveyCommandHandler.cs    | 44   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| TriggerRecurringSurveyCommandHandler.cs   | 43   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| ResumeRecurringSurveyCommandHandler.cs    | 44   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| PauseRecurringSurveyCommandHandler.cs     | 44   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| DeleteRecurringSurveyCommandHandler.cs    | 38   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| DeleteRecurringSurveyCommandHandler.cs    | 43   | `"Recurring survey does not belong to this namespace."` | Error      | `Errors.RecurringSurveyNotInNamespace` | High     |
-| CreateRecurringSurveyCommandHandler.cs    | 47   | `"Survey does not belong to this namespace."`           | Error      | `Errors.SurveyNotInNamespace`          | High     |
-| GetRecurringSurveyByIdQueryHandler.cs     | 43   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| GetRecurringSurveyRunsQueryHandler.cs     | 45   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| GetRecurringSurveyRunByIdQueryHandler.cs  | 43   | `"Recurring survey not found."`                         | Error      | `Errors.RecurringSurveyNotFound`       | High     |
-| GetRecurringSurveyRunByIdQueryHandler.cs  | 59   | `"Run not found."`                                      | Error      | `Errors.RunNotFound`                   | High     |
-| GetQuestionsQueryHandler.cs               | 38   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| GetQuestionByIdQueryHandler.cs            | 38   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| GetQuestionByIdQueryHandler.cs            | 44   | `"Question not found."`                                 | Error      | `Errors.QuestionNotFound`              | High     |
-| ReorderQuestionsCommandHandler.cs         | 37   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| ReorderQuestionsCommandHandler.cs         | 43   | `"Only draft surveys can be edited."`                   | Error      | `Errors.OnlyDraftSurveysEditable`      | High     |
-| DeleteQuestionCommandHandler.cs           | 37   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| DeleteQuestionCommandHandler.cs           | 43   | `"Only draft surveys can be edited."`                   | Error      | `Errors.OnlyDraftSurveysEditable`      | High     |
-| DeleteQuestionCommandHandler.cs           | 49   | `"Question not found."`                                 | Error      | `Errors.QuestionNotFound`              | High     |
-| CreateQuestionCommandHandler.cs           | 42   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| CreateQuestionCommandHandler.cs           | 48   | `"Only draft surveys can be edited."`                   | Error      | `Errors.OnlyDraftSurveysEditable`      | High     |
-| UpdateQuestionCommandHandler.cs           | 42   | `"Survey not found."`                                   | Error      | `Errors.SurveyNotFound`                | High     |
-| UpdateQuestionCommandHandler.cs           | 48   | `"Only draft surveys can be edited."`                   | Error      | `Errors.OnlyDraftSurveysEditable`      | High     |
-| UpdateQuestionCommandHandler.cs           | 54   | `"Question not found."`                                 | Error      | `Errors.QuestionNotFound`              | High     |
-| GetSurveyLogicMapQueryHandler.cs          | 44   | `"Survey not found in this namespace."`                 | Error      | `Errors.SurveyNotInNamespace`          | High     |
+| File                           | Line    | Current Text                                               | Category | Suggested Key                  | Priority |
+| ------------------------------ | ------- | ---------------------------------------------------------- | -------- | ------------------------------ | -------- |
+| GlobalExceptionMiddleware.cs   | 49      | `"Business rule violation."`                               | Error    | `Errors.BusinessRuleViolation` | High     |
+| GlobalExceptionMiddleware.cs   | 74      | `"Resource not found."`                                    | Error    | `Errors.ResourceNotFound`      | High     |
+| GlobalExceptionMiddleware.cs   | 83      | `"Access denied."`                                         | Error    | `Errors.AccessDenied`          | High     |
+| GlobalExceptionMiddleware.cs   | 92      | `"Namespace error."`                                       | Error    | `Errors.NamespaceError`        | High     |
+| GlobalExceptionMiddleware.cs   | 109     | `"An internal server error occurred..."`                   | Error    | `Errors.InternalServerError`   | High     |
+| ExceptionHandlingMiddleware.cs | 133-139 | `"Validation Error"`, `"Not Found"`, `"An error occurred"` | Error    | `Errors.*`                     | High     |
+| ExceptionHandlingMiddleware.cs | 205     | `"Validation error"`                                       | Error    | `Errors.ValidationError`       | High     |
 
 ---
 
-### 🟡 **Domain Layer ArgumentExceptions (Medium Priority)**
+### 🔴 HIGH PRIORITY - Survey Link Status Messages
 
-These are in the Domain layer and should be converted to use localization keys:
-
-| File                        | Line | Current Text                                       | Suggested Key                                   |
-| --------------------------- | ---- | -------------------------------------------------- | ----------------------------------------------- |
-| NamespaceSlug.cs            | 40   | `"Slug cannot be empty."`                          | `Domain.Validation.SlugEmpty`                   |
-| NamespaceSlug.cs            | 73   | `"Name cannot be empty."`                          | `Domain.Validation.NameEmpty`                   |
-| LanguageCode.cs             | 78   | `"Language code cannot be empty."`                 | `Domain.Validation.LanguageCodeEmpty`           |
-| Email.cs                    | 35   | `"Email cannot be empty."`                         | `Domain.Validation.EmailEmpty`                  |
-| Email.cs                    | 46   | `"Email format is invalid."`                       | `Domain.Validation.EmailInvalidFormat`          |
-| QuestionSettings.cs         | 221  | `"Max value must be greater than min value."`      | `Domain.Validation.MaxGreaterThanMin`           |
-| EmailDistributionService.cs | 158  | `"Template not found."`                            | `Errors.TemplateNotFound`                       |
-| EmailDistributionService.cs | 300  | `"Distribution not found."`                        | `Errors.DistributionNotFound`                   |
-| RecurringSurveyRun.cs       | 141  | `"Can only start a scheduled run."`                | `Domain.RecurringSurvey.CanOnlyStartScheduled`  |
-| RecurringSurveyRun.cs       | 153  | `"Can only complete a running run."`               | `Domain.RecurringSurvey.CanOnlyCompleteRunning` |
-| RecurringSurveyRun.cs       | 188  | `"Can only cancel a scheduled run."`               | `Domain.RecurringSurvey.CanOnlyCancelScheduled` |
-| SurveyResponse.cs           | 148  | `"Cannot submit answers to a completed response."` | `Domain.Response.CannotSubmitCompleted`         |
-| SurveyResponse.cs           | 188  | `"Response is already complete."`                  | `Domain.Response.AlreadyComplete`               |
-| Survey.cs                   | 580  | `"Cannot set both ThemeId and PresetThemeId."`     | `Domain.Survey.CannotSetBothThemes`             |
-| SurveyTemplate.cs           | 482  | `"Question not found in template."`                | `Domain.Template.QuestionNotFound`              |
+| File                         | Line | Current Text                                                  | Category | Suggested Key                | Priority |
+| ---------------------------- | ---- | ------------------------------------------------------------- | -------- | ---------------------------- | -------- |
+| ValidateSurveyLinkHandler.cs | 44   | `"This survey link has been deactivated."`                    | Status   | `SurveyLink.Deactivated`     | High     |
+| ValidateSurveyLinkHandler.cs | 49   | `"This survey link has expired."`                             | Status   | `SurveyLink.Expired`         | High     |
+| ValidateSurveyLinkHandler.cs | 54   | `"This survey link has reached its maximum usage limit."`     | Status   | `SurveyLink.MaxUsageReached` | High     |
+| ValidateSurveyLinkHandler.cs | 59   | `"The survey associated with this link is no longer active."` | Status   | `SurveyLink.SurveyInactive`  | High     |
 
 ---
 
-### 📊 **Summary by Priority**
+### 🔴 HIGH PRIORITY - Email Templates (User-Facing)
 
-| Priority   | Count | Action                                |
-| ---------- | ----- | ------------------------------------- |
-| **High**   | ~70   | Immediate localization required       |
-| **Medium** | ~15   | Domain/Infrastructure exceptions      |
-| **Low**    | ~40   | ArgumentExceptions (developer-facing) |
+| File                        | Line    | Current Text                                           | Category | Suggested Key                                  | Priority |
+| --------------------------- | ------- | ------------------------------------------------------ | -------- | ---------------------------------------------- | -------- |
+| EmailNotificationService.cs | 45      | `"You've been invited to take a survey"`               | Email    | `Email.SurveyInvitationSubject`                | High     |
+| EmailNotificationService.cs | 53      | `"Please click the button below to start the survey."` | Email    | `Email.SurveyInvitationBody`                   | High     |
+| EmailNotificationService.cs | 68      | `"Reminder: Complete your survey"`                     | Email    | `Email.SurveyReminderSubject`                  | High     |
+| EmailNotificationService.cs | 86-93   | Invitation email content                               | Email    | `Email.InvitationContent*`                     | High     |
+| EmailNotificationService.cs | 116-119 | Invitation heading/button                              | Email    | `Email.InvitationHeader`, `Email.AcceptButton` | High     |
+| EmailNotificationService.cs | 135-138 | Response notification content                          | Email    | `Email.ResponseNotification*`                  | High     |
 
-### 🎯 **Recommended Keys to Add to en.json**
+---
 
-```json
-{
-  "Errors.UserWithEmailExists": "A user with this email already exists.",
-  "Errors.TemplateNameExists": "A template with this name already exists.",
-  "Errors.TemplateNotFound": "Template not found.",
-  "Errors.SurveyLinkNotFound": "Survey link not found.",
-  "Errors.InvalidSurveyLink": "Invalid survey link.",
-  "Errors.SurveyLinkExpired": "This survey link has expired.",
-  "Errors.InvalidSurveyLinkPassword": "Invalid password for this survey link.",
-  "Errors.SurveyLinkNotBelongToSurvey": "Survey link does not belong to this survey.",
-  "Errors.ResponseNotFound": "Response not found.",
-  "Errors.RecurringSurveyNotFound": "Recurring survey not found.",
-  "Errors.RecurringSurveyNotInNamespace": "Recurring survey does not belong to this namespace.",
-  "Errors.RunNotFound": "Run not found.",
-  "Errors.SurveyRequiresQuestions": "Cannot publish a survey without questions.",
-  "Errors.NoPermissionCreateSurveys": "You do not have permission to create surveys.",
-  "Validation.CountGreaterThanZero": "Count must be greater than 0."
-}
-```
+### 🟡 MEDIUM PRIORITY - Export Column Headers
 
-Completed: _Compile and categorize results_ (5/5)
+| File                     | Line | Current Text           | Category | Suggested Key                   | Priority |
+| ------------------------ | ---- | ---------------------- | -------- | ------------------------------- | -------- |
+| ResponseExportService.cs | 248  | `"Response ID"`        | Export   | `Export.Column.ResponseId`      | Medium   |
+| ResponseExportService.cs | 255  | `"Respondent Email"`   | Export   | `Export.Column.RespondentEmail` | Medium   |
+| ResponseExportService.cs | 262  | `"Started At"`         | Export   | `Export.Column.StartedAt`       | Medium   |
+| ResponseExportService.cs | 269  | `"Submitted At"`       | Export   | `Export.Column.SubmittedAt`     | Medium   |
+| ResponseExportService.cs | 276  | `"Duration (seconds)"` | Export   | `Export.Column.Duration`        | Medium   |
 
-Analysis complete. I found **approximately 85+ hardcoded strings** that need localization across your Application and Infrastructure layers.
+---
 
-**Good news:** Many of your error messages already use localization key patterns (like `"Handler.SurveyNotFound"` and `"Errors.NamespaceRequired"`).
+### 🟡 MEDIUM PRIORITY - Infrastructure Identity Messages
 
-**The main issue:** There's inconsistency - some handlers use localization keys while others use plain English text for the same error types. To fix this, you'll need to:
+| File                | Line | Current Text                             | Category | Suggested Key               | Priority |
+| ------------------- | ---- | ---------------------------------------- | -------- | --------------------------- | -------- |
+| IdentityService.cs  | 33   | `"User with this email already exists."` | Error    | `Auth.EmailExists`          | High     |
+| IdentityService.cs  | 116  | `"Invalid credentials."`                 | Error    | `Auth.InvalidCredentials`   | High     |
+| IdentityService.cs  | 222  | `"Token is required."`                   | Error    | `Auth.TokenRequired`        | High     |
+| IdentityService.cs  | 228  | `"Invalid token."`                       | Error    | `Auth.InvalidToken`         | High     |
+| IdentityService.cs  | 311  | `"User not found."`                      | Error    | `Auth.UserNotFound`         | High     |
+| NamespaceService.cs | 84   | `"User not found."`                      | Error    | `Errors.UserNotFound`       | High     |
+| NamespaceService.cs | 119  | `"User not found in namespace."`         | Error    | `Errors.UserNotInNamespace` | High     |
 
-1. Add the missing keys to your resource files (en.json, ru.json, az.json)
-2. Update the handlers to use keys instead of hardcoded text
-3. Standardize on a consistent naming convention for error keys
+---
+
+## Summary Statistics
+
+| Category                  | Count   | Priority  |
+| ------------------------- | ------- | --------- |
+| Domain Exception Messages | ~55     | 🔴 High   |
+| API Middleware Titles     | ~10     | 🔴 High   |
+| Survey Link Status        | 4       | 🔴 High   |
+| Email Templates           | ~15     | 🔴 High   |
+| Identity/Auth Messages    | ~7      | 🔴 High   |
+| Export Column Headers     | 5       | 🟡 Medium |
+| **Total**                 | **~96** |           |
+
+---
+
+## ✅ Already Properly Localized
+
+Good news - many parts of your codebase already use localization correctly:
+
+- ✅ FluentValidation messages in validators use `_localizer["key"]`
+- ✅ Most `Result.Failure()` calls use resource keys
+- ✅ Controllers use `IStringLocalizer` for responses
+- ✅ Some domain exceptions use resource keys
+
+---
+
+## Recommended Next Steps
+
+1. **Start with API Middleware** - These are the most visible to all users
+2. **Fix Email Templates** - Critical for user communication
+3. **Address Survey Link messages** - User-facing status messages
+4. **Batch update Domain exceptions** - Many are similar patterns (language code validation)
+5. **Add Export column headers** - Lower priority but affects exports
+
+Would you like me to help fix any specific category of these hardcoded strings?

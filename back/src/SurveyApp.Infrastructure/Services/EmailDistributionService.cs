@@ -155,7 +155,9 @@ public class EmailDistributionService(
         var template = await _templateRepository.GetByIdAsync(templateId, cancellationToken);
         if (template == null)
         {
-            throw new InvalidOperationException("Template not found.");
+            throw new InvalidOperationException(
+                "Infrastructure.EmailDistribution.TemplateNotFound"
+            );
         }
 
         var values = sampleData ?? BuildSamplePlaceholderValues();
@@ -297,7 +299,9 @@ public class EmailDistributionService(
         );
         if (distribution == null)
         {
-            throw new InvalidOperationException("Distribution not found.");
+            throw new InvalidOperationException(
+                "Infrastructure.EmailDistribution.DistributionNotFound"
+            );
         }
 
         return new DistributionStatsDto

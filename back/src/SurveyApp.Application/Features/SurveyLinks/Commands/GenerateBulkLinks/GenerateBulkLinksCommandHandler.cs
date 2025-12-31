@@ -46,12 +46,12 @@ public class GenerateBulkLinksCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("User not authenticated.");
+            return Result<BulkLinkGenerationResultDto>.Failure("Errors.UserNotAuthenticated");
         }
 
         if (request.Count <= 0)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Count must be greater than 0.");
+            return Result<BulkLinkGenerationResultDto>.Failure("Validation.CountGreaterThanZero");
         }
 
         if (request.Count > MaxBulkLinks)

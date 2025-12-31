@@ -136,7 +136,7 @@ public class EmailDistribution : AggregateRoot<Guid>
             throw new DomainException("Domain.EmailDistribution.SubjectRequired");
 
         if (string.IsNullOrWhiteSpace(body))
-            throw new ArgumentException("Body cannot be empty.", nameof(body));
+            throw new DomainException("Domain.EmailDistribution.BodyEmpty");
 
         return new EmailDistribution(surveyId, namespaceId, subject, body);
     }
@@ -166,7 +166,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void UpdateBody(string body)
     {
         if (string.IsNullOrWhiteSpace(body))
-            throw new ArgumentException("Body cannot be empty.", nameof(body));
+            throw new DomainException("Domain.EmailDistribution.BodyEmpty");
 
         Body = body;
     }

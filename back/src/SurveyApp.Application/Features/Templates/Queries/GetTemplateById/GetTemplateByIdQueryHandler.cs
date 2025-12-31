@@ -35,7 +35,7 @@ public class GetTemplateByIdQueryHandler(
 
         if (template == null || template.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyTemplateDto>.Failure("Template not found.");
+            return Result<SurveyTemplateDto>.Failure("Errors.TemplateNotFound");
         }
 
         var dto = _mapper.Map<SurveyTemplateDto>(template);

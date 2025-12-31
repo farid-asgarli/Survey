@@ -122,7 +122,7 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     )
     {
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text cannot be empty.", nameof(text));
+            throw new DomainException("Domain.TemplateQuestion.TextEmpty");
 
         var question = new TemplateQuestion(
             Guid.NewGuid(),
@@ -190,10 +190,10 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     )
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException("Language code is required.", nameof(languageCode));
+            throw new DomainException("Domain.TemplateQuestion.LanguageCodeRequired");
 
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text is required.", nameof(text));
+            throw new DomainException("Domain.TemplateQuestion.TextRequired");
 
         var existing = TranslationHelper.Find(languageCode);
         if (existing != null)
@@ -244,7 +244,7 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     public void UpdateText(string text, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(text))
-            throw new ArgumentException("Question text cannot be empty.", nameof(text));
+            throw new DomainException("Domain.TemplateQuestion.TextEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -273,7 +273,7 @@ public class TemplateQuestion : Entity<Guid>, ILocalizable<TemplateQuestionTrans
     public void UpdateOrder(int order)
     {
         if (order < 1)
-            throw new ArgumentException("Order must be at least 1.", nameof(order));
+            throw new DomainException("Domain.TemplateQuestion.OrderMinimum");
 
         Order = order;
     }

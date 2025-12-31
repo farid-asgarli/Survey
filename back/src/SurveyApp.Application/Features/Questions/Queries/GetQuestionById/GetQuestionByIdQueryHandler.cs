@@ -35,13 +35,13 @@ public class GetQuestionByIdQueryHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<QuestionDto>.Failure("Survey not found.");
+            return Result<QuestionDto>.Failure("Errors.SurveyNotFound");
         }
 
         var question = survey.Questions.FirstOrDefault(q => q.Id == request.QuestionId);
         if (question == null)
         {
-            return Result<QuestionDto>.Failure("Question not found.");
+            return Result<QuestionDto>.Failure("Errors.QuestionNotFound");
         }
 
         var dto = _mapper.Map<QuestionDto>(question);
