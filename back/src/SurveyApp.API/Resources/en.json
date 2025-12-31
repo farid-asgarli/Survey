@@ -422,5 +422,27 @@
   "Handler.NamespaceContextRequired": "Namespace context is required.",
   "Handler.TemplateNotFound": "Template not found.",
   "Handler.SurveyNotFound": "Survey not found.",
-  "Handler.NoAccessToTheme": "You do not have access to this theme."
+  "Handler.NoAccessToTheme": "You do not have access to this theme.",
+
+  "Errors.InvalidFile": "Invalid file",
+  "Errors.FileEmptyOrNotProvided": "No file was provided or the file is empty.",
+  "Errors.FileTooLarge": "File too large",
+  "Errors.FileTooLargeDetail": "The file size exceeds the maximum allowed size of {0} MB.",
+  "Errors.InvalidFileType": "Invalid file type",
+  "Errors.InvalidFileTypeDetail": "The file type '{0}' is not allowed. Allowed types: {1}",
+  "Errors.InvalidFileExtension": "Invalid file extension",
+  "Errors.InvalidFileExtensionDetail": "The file extension '{0}' is not allowed. Allowed extensions: {1}",
+  "Errors.UploadFailed": "Upload failed",
+  "Errors.UploadErrorRetry": "An error occurred while uploading the file. Please try again.",
+  "Errors.NoFilesProvided": "No files provided",
+  "Errors.AtLeastOneFileRequired": "At least one file must be provided.",
+  "Errors.TooManyFiles": "Too many files",
+  "Errors.MaxFilesUploadLimit": "A maximum of {0} files can be uploaded at once.",
+  "Errors.FileEmpty": "File is empty",
+  "Errors.FileNotFound": "File not found",
+  "Errors.FileNotFoundDetail": "No file found with ID: {0}",
+  "Errors.RegistrationFailed": "Registration failed.",
+  "Errors.AuthenticationFailed": "Authentication failed.",
+  "Errors.TokenRefreshFailed": "Token refresh failed.",
+  "Errors.PasswordResetFailed": "Password reset failed."
 }

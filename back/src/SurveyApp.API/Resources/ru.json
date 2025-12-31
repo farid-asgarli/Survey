@@ -368,5 +368,27 @@
   "Validation.SurveyIdRequired": "Требуется идентификатор опроса.",
   "Validation.TargetQuestionRequired": "Для действия JumpTo требуется целевой вопрос.",
   "Validation.TemplateIdRequired": "Требуется идентификатор шаблона.",
-  "Validation.ToDateNotFuture": "Дата окончания не может быть в будущем."
+  "Validation.ToDateNotFuture": "Дата окончания не может быть в будущем.",
+
+  "Errors.InvalidFile": "Недействительный файл",
+  "Errors.FileEmptyOrNotProvided": "Файл не был предоставлен или файл пуст.",
+  "Errors.FileTooLarge": "Файл слишком большой",
+  "Errors.FileTooLargeDetail": "Размер файла превышает максимально допустимый размер {0} МБ.",
+  "Errors.InvalidFileType": "Недопустимый тип файла",
+  "Errors.InvalidFileTypeDetail": "Тип файла '{0}' не разрешен. Разрешенные типы: {1}",
+  "Errors.InvalidFileExtension": "Недопустимое расширение файла",
+  "Errors.InvalidFileExtensionDetail": "Расширение файла '{0}' не разрешено. Разрешенные расширения: {1}",
+  "Errors.UploadFailed": "Загрузка не удалась",
+  "Errors.UploadErrorRetry": "Произошла ошибка при загрузке файла. Пожалуйста, попробуйте снова.",
+  "Errors.NoFilesProvided": "Файлы не предоставлены",
+  "Errors.AtLeastOneFileRequired": "Необходимо предоставить хотя бы один файл.",
+  "Errors.TooManyFiles": "Слишком много файлов",
+  "Errors.MaxFilesUploadLimit": "Максимальное количество файлов для загрузки за раз: {0}.",
+  "Errors.FileEmpty": "Файл пуст",
+  "Errors.FileNotFound": "Файл не найден",
+  "Errors.FileNotFoundDetail": "Файл с ID: {0} не найден.",
+  "Errors.RegistrationFailed": "Регистрация не удалась.",
+  "Errors.AuthenticationFailed": "Аутентификация не удалась.",
+  "Errors.TokenRefreshFailed": "Обновление токена не удалось.",
+  "Errors.PasswordResetFailed": "Сброс пароля не удался."
 }

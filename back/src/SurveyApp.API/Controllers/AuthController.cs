@@ -39,7 +39,7 @@ public class AuthController(
                 )
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Registration failed.",
+                    Title = _localizer["Errors.RegistrationFailed"],
                     Status = StatusCodes.Status400BadRequest,
                     Instance = HttpContext.Request.Path,
                 }
@@ -77,7 +77,7 @@ public class AuthController(
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Authentication failed.",
+                    Title = _localizer["Errors.AuthenticationFailed"],
                     Status = StatusCodes.Status401Unauthorized,
                     Detail =
                         result.Errors.FirstOrDefault() ?? _localizer["Errors.InvalidCredentials"],
@@ -117,7 +117,7 @@ public class AuthController(
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Token refresh failed.",
+                    Title = _localizer["Errors.TokenRefreshFailed"],
                     Status = StatusCodes.Status401Unauthorized,
                     Detail =
                         result.Errors.FirstOrDefault()
@@ -169,7 +169,7 @@ public class AuthController(
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Password reset failed.",
+                    Title = _localizer["Errors.PasswordResetFailed"],
                     Status = StatusCodes.Status400BadRequest,
                     Detail = _localizer["Errors.InvalidTokenOrEmail"],
                     Instance = HttpContext.Request.Path,

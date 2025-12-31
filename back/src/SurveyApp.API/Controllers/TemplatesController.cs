@@ -152,7 +152,7 @@ public class TemplatesController(
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                    Title = "Bad request.",
+                    Title = _localizer["Errors.BadRequest"],
                     Status = StatusCodes.Status400BadRequest,
                     Detail = _localizer["Errors.IdMismatch"],
                     Instance = HttpContext.Request.Path,

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SurveyApp.Application.Services;
 
 namespace SurveyApp.API.Controllers;
@@ -15,6 +16,7 @@ public class FilesController : ControllerBase
 {
     private readonly IFileStorageService _fileStorageService;
     private readonly ILogger<FilesController> _logger;
+    private readonly IStringLocalizer<FilesController> _localizer;
 
     // Allowed image MIME types
     private static readonly HashSet<string> AllowedImageTypes = new(
@@ -45,10 +47,18 @@ public class FilesController : ControllerBase
     // Maximum file size (5 MB)
     private const long MaxFileSizeBytes = 5 * 1024 * 1024;
 
-    public FilesController(IFileStorageService fileStorageService, ILogger<FilesController> logger)
+    // Maximum number of files for bulk upload
+    private const int MaxBulkUploadFiles = 10;
+
+    public FilesController(
+        IFileStorageService fileStorageService,
+        ILogger<FilesController> logger,
+        IStringLocalizer<FilesController> localizer
+    )
     {
         _fileStorageService = fileStorageService;
         _logger = logger;
+        _localizer = localizer;
     }
 
     /// <summary>
@@ -73,8 +83,8 @@ public class FilesController : ControllerBase
             return BadRequest(
                 new ProblemDetails
                 {
-                    Title = "Invalid file",
-                    Detail = "No file was provided or the file is empty.",
+                    Title = _localizer["Errors.InvalidFile"],
+                    Detail = _localizer["Errors.FileEmptyOrNotProvided"],
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
@@ -87,9 +97,11 @@ public class FilesController : ControllerBase
                 StatusCodes.Status413PayloadTooLarge,
                 new ProblemDetails
                 {
-                    Title = "File too large",
-                    Detail =
-                        $"The file size exceeds the maximum allowed size of {MaxFileSizeBytes / (1024 * 1024)} MB.",
+                    Title = _localizer["Errors.FileTooLarge"],
+                    Detail = string.Format(
+                        _localizer["Errors.FileTooLargeDetail"],
+                        MaxFileSizeBytes / (1024 * 1024)
+                    ),
                     Status = StatusCodes.Status413PayloadTooLarge,
                 }
             );
@@ -101,9 +113,12 @@ public class FilesController : ControllerBase
             return BadRequest(
                 new ProblemDetails
                 {
-                    Title = "Invalid file type",
-                    Detail =
-                        $"The file type '{file.ContentType}' is not allowed. Allowed types: {string.Join(", ", AllowedImageTypes)}",
+                    Title = _localizer["Errors.InvalidFileType"],
+                    Detail = string.Format(
+                        _localizer["Errors.InvalidFileTypeDetail"],
+                        file.ContentType,
+                        string.Join(", ", AllowedImageTypes)
+                    ),
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
@@ -116,9 +131,12 @@ public class FilesController : ControllerBase
             return BadRequest(
                 new ProblemDetails
                 {
-                    Title = "Invalid file extension",
-                    Detail =
-                        $"The file extension '{extension}' is not allowed. Allowed extensions: {string.Join(", ", AllowedImageExtensions)}",
+                    Title = _localizer["Errors.InvalidFileExtension"],
+                    Detail = string.Format(
+                        _localizer["Errors.InvalidFileExtensionDetail"],
+                        extension,
+                        string.Join(", ", AllowedImageExtensions)
+                    ),
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
@@ -166,8 +184,8 @@ public class FilesController : ControllerBase
                 StatusCodes.Status500InternalServerError,
                 new ProblemDetails
                 {
-                    Title = "Upload failed",
-                    Detail = "An error occurred while uploading the file. Please try again.",
+                    Title = _localizer["Errors.UploadFailed"],
+                    Detail = _localizer["Errors.UploadErrorRetry"],
                     Status = StatusCodes.Status500InternalServerError,
                 }
             );
@@ -192,20 +210,23 @@ public class FilesController : ControllerBase
             return BadRequest(
                 new ProblemDetails
                 {
-                    Title = "No files provided",
-                    Detail = "At least one file must be provided.",
+                    Title = _localizer["Errors.NoFilesProvided"],
+                    Detail = _localizer["Errors.AtLeastOneFileRequired"],
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
         }
 
-        if (files.Count > 10)
+        if (files.Count > MaxBulkUploadFiles)
         {
             return BadRequest(
                 new ProblemDetails
                 {
-                    Title = "Too many files",
-                    Detail = "A maximum of 10 files can be uploaded at once.",
+                    Title = _localizer["Errors.TooManyFiles"],
+                    Detail = string.Format(
+                        _localizer["Errors.MaxFilesUploadLimit"],
+                        MaxBulkUploadFiles
+                    ),
                     Status = StatusCodes.Status400BadRequest,
                 }
             );
@@ -225,7 +246,7 @@ public class FilesController : ControllerBase
                         {
                             FileName = file.FileName,
                             Success = false,
-                            Error = "File is empty",
+                            Error = _localizer["Errors.FileEmpty"],
                         }
                     );
                     continue;
@@ -238,7 +259,7 @@ public class FilesController : ControllerBase
                         {
                             FileName = file.FileName,
                             Success = false,
-                            Error = "File too large",
+                            Error = _localizer["Errors.FileTooLarge"],
                         }
                     );
                     continue;
@@ -251,7 +272,11 @@ public class FilesController : ControllerBase
                         {
                             FileName = file.FileName,
                             Success = false,
-                            Error = $"Invalid file type: {file.ContentType}",
+                            Error = string.Format(
+                                _localizer["Errors.InvalidFileTypeDetail"],
+                                file.ContentType,
+                                string.Join(", ", AllowedImageTypes)
+                            ),
                         }
                     );
                     continue;
@@ -286,7 +311,7 @@ public class FilesController : ControllerBase
                     {
                         FileName = file.FileName,
                         Success = false,
-                        Error = "Upload failed",
+                        Error = _localizer["Errors.UploadFailed"],
                     }
                 );
             }
@@ -324,8 +349,8 @@ public class FilesController : ControllerBase
             return NotFound(
                 new ProblemDetails
                 {
-                    Title = "File not found",
-                    Detail = $"No file found with ID: {fileId}",
+                    Title = _localizer["Errors.FileNotFound"],
+                    Detail = string.Format(_localizer["Errors.FileNotFoundDetail"], fileId),
                     Status = StatusCodes.Status404NotFound,
                 }
             );
@@ -356,8 +381,8 @@ public class FilesController : ControllerBase
             return NotFound(
                 new ProblemDetails
                 {
-                    Title = "File not found",
-                    Detail = $"No file found with ID: {fileId}",
+                    Title = _localizer["Errors.FileNotFound"],
+                    Detail = string.Format(_localizer["Errors.FileNotFoundDetail"], fileId),
                     Status = StatusCodes.Status404NotFound,
                 }
             );
@@ -382,8 +407,8 @@ public class FilesController : ControllerBase
             return NotFound(
                 new ProblemDetails
                 {
-                    Title = "File not found",
-                    Detail = $"No file found with ID: {fileId}",
+                    Title = _localizer["Errors.FileNotFound"],
+                    Detail = string.Format(_localizer["Errors.FileNotFoundDetail"], fileId),
                     Status = StatusCodes.Status404NotFound,
                 }
             );

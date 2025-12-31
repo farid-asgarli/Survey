@@ -368,5 +368,27 @@
   "Validation.SurveyIdRequired": "Sorğu ID tələb olunur.",
   "Validation.TargetQuestionRequired": "JumpTo əməliyyatı üçün hədəf sualı tələb olunur.",
   "Validation.TemplateIdRequired": "Şablon ID tələb olunur.",
-  "Validation.ToDateNotFuture": "Son tarix gələcəkdə ola bilməz."
+  "Validation.ToDateNotFuture": "Son tarix gələcəkdə ola bilməz.",
+
+  "Errors.InvalidFile": "Yanlış fayl",
+  "Errors.FileEmptyOrNotProvided": "Fayl təqdim edilməyib və ya fayl boşdur.",
+  "Errors.FileTooLarge": "Fayl çox böyükdür",
+  "Errors.FileTooLargeDetail": "Fayl ölçüsü maksimum icazə verilən {0} MB-dan böyükdür.",
+  "Errors.InvalidFileType": "Yanlış fayl növü",
+  "Errors.InvalidFileTypeDetail": "'{0}' fayl növünə icazə verilmir. İcazə verilən növlər: {1}",
+  "Errors.InvalidFileExtension": "Yanlış fayl genişlənməsi",
+  "Errors.InvalidFileExtensionDetail": "'{0}' fayl genişlənməsinə icazə verilmir. İcazə verilən genişlənmələr: {1}",
+  "Errors.UploadFailed": "Yükləmə uğursuz oldu",
+  "Errors.UploadErrorRetry": "Fayl yüklənərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+  "Errors.NoFilesProvided": "Fayl təqdim edilməyib",
+  "Errors.AtLeastOneFileRequired": "Ən azı bir fayl təqdim edilməlidir.",
+  "Errors.TooManyFiles": "Çox sayda fayl",
+  "Errors.MaxFilesUploadLimit": "Bir anda maksimum {0} fayl yüklənə bilər.",
+  "Errors.FileEmpty": "Fayl boşdur",
+  "Errors.FileNotFound": "Fayl tapılmadı",
+  "Errors.FileNotFoundDetail": "ID ilə fayl tapılmadı: {0}",
+  "Errors.RegistrationFailed": "Qeydiyyat uğursuz oldu.",
+  "Errors.AuthenticationFailed": "Autentifikasiya uğursuz oldu.",
+  "Errors.TokenRefreshFailed": "Token yeniləmə uğursuz oldu.",
+  "Errors.PasswordResetFailed": "Parol sıfırlama uğursuz oldu."
 }

@@ -90,7 +90,7 @@ public class EmailDistributionsController(
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = "Resource not found.",
+                    Title = _localizer["Errors.ResourceNotFound"],
                     Status = StatusCodes.Status404NotFound,
                     Detail = _localizer["Errors.DistributionNotFound"],
                     Instance = HttpContext.Request.Path,
@@ -289,9 +289,13 @@ public class EmailDistributionsController(
 /// </summary>
 [ApiController]
 [Route("api/track")]
-public class EmailTrackingController(IMediator mediator) : ControllerBase
+public class EmailTrackingController(
+    IMediator mediator,
+    IStringLocalizer<EmailTrackingController> localizer
+) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
+    private readonly IStringLocalizer<EmailTrackingController> _localizer = localizer;
 
     /// <summary>
     /// Tracks an email open event (1x1 pixel).
@@ -330,9 +334,9 @@ public class EmailTrackingController(IMediator mediator) : ControllerBase
                 new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                    Title = "Resource not found.",
+                    Title = _localizer["Errors.ResourceNotFound"],
                     Status = StatusCodes.Status404NotFound,
-                    Detail = "Invalid tracking token.",
+                    Detail = _localizer["Errors.InvalidTrackingToken"],
                     Instance = HttpContext.Request.Path,
                 }
             );
