@@ -9,6 +9,7 @@ public class SurveyResponseDto
 {
     public Guid Id { get; set; }
     public Guid SurveyId { get; set; }
+    public string SurveyTitle { get; set; } = null!;
     public string? RespondentEmail { get; set; }
     public string? RespondentName { get; set; }
     public bool IsComplete { get; set; }
@@ -24,6 +25,8 @@ public class SurveyResponseDto
 public class ResponseListItemDto
 {
     public Guid Id { get; set; }
+    public Guid SurveyId { get; set; }
+    public string SurveyTitle { get; set; } = null!;
     public Guid? RespondentId { get; set; }
     public string? RespondentEmail { get; set; }
     public string? RespondentName { get; set; }

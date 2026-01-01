@@ -89,11 +89,10 @@ export function ResponsesPage() {
     const query = searchQuery.toLowerCase();
     return responses.filter((r) => {
       if (r.respondentEmail?.toLowerCase().includes(query)) return true;
-      const survey = surveysMap.get(r.surveyId);
-      if (survey?.title.toLowerCase().includes(query)) return true;
+      if (r.surveyTitle?.toLowerCase().includes(query)) return true;
       return false;
     });
-  }, [responses, searchQuery, surveysMap]);
+  }, [responses, searchQuery]);
 
   // Virtualizer for response list
   const virtualizer = useVirtualizer({
@@ -208,20 +207,20 @@ export function ResponsesPage() {
 
   return (
     <Layout>
-      <div className="flex flex-col h-full">
+      <div className='flex flex-col h-full'>
         {/* Header */}
         <PageHeader
           title={t('responses.title')}
           description={t('responses.description')}
           icon={renderPageIcon('responses')}
           actions={
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => refetch()} disabled={responsesLoading}>
+            <div className='flex items-center gap-2'>
+              <Button variant='outline' onClick={() => refetch()} disabled={responsesLoading}>
                 <RefreshCw className={cn('h-4 w-4 mr-2', responsesLoading && 'animate-spin')} />
                 {t('common.refresh')}
               </Button>
-              <Button variant="tonal" onClick={() => exportDialog.open()} disabled={!selectedSurveyId}>
-                <Download className="h-4 w-4 mr-2" />
+              <Button variant='tonal' onClick={() => exportDialog.open()} disabled={!selectedSurveyId}>
+                <Download className='h-4 w-4 mr-2' />
                 {t('responses.export')}
               </Button>
             </div>
@@ -257,28 +256,28 @@ export function ResponsesPage() {
         />
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden p-4 md:px-6 md:pb-6">
+        <div className='flex-1 overflow-hidden p-4 md:px-6 md:pb-6'>
           {!selectedSurveyId ? (
             <EmptyState
-              icon={<ClipboardList className="h-7 w-7" />}
+              icon={<ClipboardList className='h-7 w-7' />}
               title={t('responses.selectSurveyTitle')}
               description={t('responses.selectSurveyDesc')}
-              iconVariant="default"
-              size="full"
+              iconVariant='default'
+              size='full'
             />
           ) : responsesLoading ? (
-            <Card variant="outlined" shape="rounded" className="border-2 border-outline-variant/30 overflow-hidden">
+            <Card variant='outlined' shape='rounded' className='border-2 border-outline-variant/30 overflow-hidden'>
               <LoadingSkeleton />
             </Card>
           ) : filteredResponses.length === 0 ? (
             <ResponsesEmptyState hasFilters={hasFilters} />
           ) : (
-            <Card variant="outlined" shape="rounded" className="border-2 border-outline-variant/30 overflow-hidden h-full flex flex-col">
+            <Card variant='outlined' shape='rounded' className='border-2 border-outline-variant/30 overflow-hidden h-full flex flex-col'>
               {/* Sticky Table Header */}
               <ResponsesTableHeader isAllSelected={isAllSelected} onSelectAll={handleSelectAll} />
 
               {/* Virtualized Response List */}
-              <div ref={listContainerRef} className="flex-1 overflow-auto">
+              <div ref={listContainerRef} className='flex-1 overflow-auto'>
                 <div
                   style={{
                     height: `${virtualizer.getTotalSize()}px`,
@@ -299,11 +298,10 @@ export function ResponsesPage() {
                           height: `${virtualItem.size}px`,
                           transform: `translateY(${virtualItem.start}px)`,
                         }}
-                        className="border-b border-outline-variant/30"
+                        className='border-b border-outline-variant/30'
                       >
                         <ResponseRow
                           response={response}
-                          survey={surveysMap.get(response.surveyId)}
                           isSelected={selectedResponses.has(response.id)}
                           onSelect={(checked) => handleSelectResponse(response.id, checked)}
                           onClick={() => handleViewResponse(response.id)}
@@ -314,13 +312,13 @@ export function ResponsesPage() {
                 </div>
 
                 {/* Sentinel element for infinite scroll - triggers loading when visible */}
-                <div ref={sentinelRef} className="h-1" />
+                <div ref={sentinelRef} className='h-1' />
 
                 {/* Loading more indicator */}
                 {isFetchingNextPage && (
-                  <div className="flex items-center justify-center py-4">
-                    <div className="flex items-center gap-2 text-sm text-on-surface-variant">
-                      <RefreshCw className="h-4 w-4 animate-spin" />
+                  <div className='flex items-center justify-center py-4'>
+                    <div className='flex items-center gap-2 text-sm text-on-surface-variant'>
+                      <RefreshCw className='h-4 w-4 animate-spin' />
                       {t('common.loading')}
                     </div>
                   </div>
@@ -350,12 +348,7 @@ export function ResponsesPage() {
 
       {/* Export Dialog */}
       {selectedSurveyId && (
-        <ExportDialog
-          surveyId={selectedSurveyId}
-          surveyTitle={selectedSurvey?.title}
-          open={exportDialog.isOpen}
-          onOpenChange={exportDialog.setOpen}
-        />
+        <ExportDialog surveyId={selectedSurveyId} surveyTitle={selectedSurvey?.title} open={exportDialog.isOpen} onOpenChange={exportDialog.setOpen} />
       )}
 
       <ConfirmDialog />

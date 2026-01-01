@@ -3,18 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { User, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { Checkbox, Chip, ListItemIcon } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { formatDateTimeShort, formatDurationBetween } from '@/utils';
-import type { SurveyResponse, Survey } from '@/types';
+import { formatDateTimeShort, formatDuration, formatDurationBetween } from '@/utils';
+import type { SurveyResponse } from '@/types';
 
 interface ResponseRowProps {
   response: SurveyResponse;
-  survey?: Survey;
   isSelected: boolean;
   onSelect: (checked: boolean) => void;
   onClick: () => void;
 }
 
-export const ResponseRow = memo(function ResponseRow({ response, survey, isSelected, onSelect, onClick }: ResponseRowProps) {
+export const ResponseRow = memo(function ResponseRow({ response, isSelected, onSelect, onClick }: ResponseRowProps) {
   const { t } = useTranslation();
 
   // Memoize event handlers to prevent unnecessary re-renders
@@ -43,30 +42,32 @@ export const ResponseRow = memo(function ResponseRow({ response, survey, isSelec
       </div>
 
       {/* Main content - clickable */}
-      <div className="flex-1 min-w-0 flex items-center gap-4" onClick={onClick}>
-        <ListItemIcon variant="primary" size="sm">
-          <User className="h-4 w-4" />
+      <div className='flex-1 min-w-0 flex items-center gap-4' onClick={onClick}>
+        <ListItemIcon variant='primary' size='sm'>
+          <User className='h-4 w-4' />
         </ListItemIcon>
 
-        <div className="flex-1 min-w-0">
-          <p className="font-medium text-on-surface truncate">{response.respondentEmail || t('responses.anonymous')}</p>
-          <p className="text-sm text-on-surface-variant truncate">{survey?.title || t('surveys.unknown')}</p>
+        <div className='flex-1 min-w-0'>
+          <p className='font-medium text-on-surface truncate'>{response.respondentEmail || t('responses.anonymous')}</p>
+          <p className='text-sm text-on-surface-variant truncate'>{response.surveyTitle || t('surveys.unknown')}</p>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-sm text-on-surface-variant">
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" />
-            <span>{formatDurationBetween(response.startedAt, response.submittedAt)}</span>
+        <div className='hidden md:flex items-center gap-4 text-sm text-on-surface-variant'>
+          <div className='flex items-center gap-1.5'>
+            <Clock className='h-4 w-4' />
+            <span>
+              {response.timeSpentSeconds != null ? formatDuration(response.timeSpentSeconds) : formatDurationBetween(response.startedAt, response.submittedAt)}
+            </span>
           </div>
-          <span className="w-32 text-right">{formatDateTimeShort(response.startedAt)}</span>
+          <span className='w-32 text-right'>{formatDateTimeShort(response.startedAt)}</span>
         </div>
 
         {response.isComplete ? (
-          <Chip size="sm" variant="success" icon={<CheckCircle2 className="h-3 w-3" />}>
+          <Chip size='sm' variant='success' icon={<CheckCircle2 className='h-3 w-3' />}>
             {t('responses.complete')}
           </Chip>
         ) : (
-          <Chip size="sm" variant="warning" icon={<XCircle className="h-3 w-3" />}>
+          <Chip size='sm' variant='warning' icon={<XCircle className='h-3 w-3' />}>
             {t('responses.partial')}
           </Chip>
         )}

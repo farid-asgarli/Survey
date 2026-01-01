@@ -77,6 +77,8 @@ public class GetResponsesQueryHandler(
             .Select(r => new ResponseListItemDto
             {
                 Id = r.Id,
+                SurveyId = r.SurveyId,
+                SurveyTitle = survey.Title,
                 RespondentEmail = r.RespondentEmail ?? r.Respondent?.Email,
                 RespondentName = r.RespondentName,
                 IsComplete = r.IsComplete,

@@ -16,6 +16,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     {
         return await _context
             .SurveyResponses.AsNoTracking()
+            .Include(r => r.Survey)
             .Include(r => r.Respondent)
             .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
     }
@@ -38,6 +39,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     {
         return await _context
             .SurveyResponses.AsNoTracking()
+            .Include(r => r.Survey)
             .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)
@@ -52,6 +54,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     {
         return await _context
             .SurveyResponses.AsNoTracking()
+            .Include(r => r.Survey)
             .Include(r => r.Respondent)
             .Include(r => r.Answers)
             .ThenInclude(a => a.Question)

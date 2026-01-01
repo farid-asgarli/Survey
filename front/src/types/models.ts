@@ -823,6 +823,7 @@ export interface CreateSurveyFromTemplateRequest {
 export interface SurveyResponse {
   id: string;
   surveyId: string;
+  surveyTitle?: string;
   respondentId?: string;
   respondentEmail?: string;
   respondentName?: string;
@@ -838,6 +839,8 @@ export interface SurveyResponse {
 
 export interface ResponseListItem {
   id: string;
+  surveyId: string;
+  surveyTitle: string;
   respondentId?: string;
   respondentEmail?: string;
   respondentName?: string;

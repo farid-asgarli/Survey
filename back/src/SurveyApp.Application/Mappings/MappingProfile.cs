@@ -125,9 +125,11 @@ public class MappingProfile : Profile
 
         // Response mappings
         CreateMap<SurveyResponse, SurveyResponseDto>()
+            .ForMember(d => d.SurveyTitle, opt => opt.MapFrom(s => s.Survey.Title))
             .ForMember(d => d.Answers, opt => opt.MapFrom(s => s.Answers));
 
         CreateMap<SurveyResponse, ResponseListItemDto>()
+            .ForMember(d => d.SurveyTitle, opt => opt.MapFrom(s => s.Survey.Title))
             .ForMember(d => d.AnswerCount, opt => opt.MapFrom(s => s.Answers.Count));
 
         // Answer mappings
