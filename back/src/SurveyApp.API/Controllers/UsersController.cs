@@ -78,9 +78,9 @@ public class UsersController(IMediator mediator) : ApiControllerBase
     {
         var result = await _mediator.Send(command);
 
-        if (!result.Success)
+        if (!result.IsSuccess)
         {
-            return BadRequest(new { error = result.Error });
+            return HandleResult(result);
         }
 
         return Ok(new { message = "Password changed successfully" });
@@ -100,7 +100,16 @@ public class UsersController(IMediator mediator) : ApiControllerBase
             return Unauthorized();
         }
 
-        var result = await _mediator.Send(new UploadAvatarCommand(userId.Value, file));
+        var stream = file.OpenReadStream();
+        var command = new UploadAvatarCommand(
+            userId.Value,
+            stream,
+            file.FileName,
+            file.ContentType,
+            file.Length
+        );
+
+        var result = await _mediator.Send(command);
 
         if (!result.Success)
         {

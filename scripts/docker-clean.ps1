@@ -1,1 +1,3 @@
 docker compose -f ..\docker-compose.yml down -v && docker compose -f ..\docker-compose.yml up -d && rm -r .\src\SurveyApp.Infrastructure\Migrations\ && dotnet-ef migrations add InitialMigration -s .\src\SurveyApp.API\ -p .\src\SurveyApp.Infrastructure\ --context ApplicationDbContext && clear && dotnet run --project .\src\SurveyApp.API\
+
+docker compose -f ../docker-compose.yml down -v && docker compose -f ../docker-compose.yml up -d && rm -r ./src/SurveyApp.Infrastructure/Migrations/ && dotnet ef migrations add InitialMigration -s ./src/SurveyApp.API/ -p ./src/SurveyApp.Infrastructure/ --context ApplicationDbContext && clear && dotnet run --project ./src/SurveyApp.API/

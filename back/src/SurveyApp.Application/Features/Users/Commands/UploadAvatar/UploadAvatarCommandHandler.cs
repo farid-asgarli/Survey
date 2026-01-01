@@ -1,5 +1,7 @@
 using MediatR;
+using Microsoft.Extensions.Options;
 using SurveyApp.Application.Services;
+using SurveyApp.Application.Services.Files;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.Users.Commands.UploadAvatar;
@@ -7,15 +9,14 @@ namespace SurveyApp.Application.Features.Users.Commands.UploadAvatar;
 public class UploadAvatarCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IFileStorageService fileStorageService
+    IFileStorageService fileStorageService,
+    IOptions<FileValidationOptions> fileValidationOptions
 ) : IRequestHandler<UploadAvatarCommand, UploadAvatarResult>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IFileStorageService _fileStorageService = fileStorageService;
-
-    private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
-    private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
+    private readonly FileValidationOptions _fileValidationOptions = fileValidationOptions.Value;
 
     public async Task<UploadAvatarResult> Handle(
         UploadAvatarCommand request,
@@ -28,26 +29,30 @@ public class UploadAvatarCommandHandler(
             return new UploadAvatarResult(false, null, "User not found");
         }
 
-        var file = request.File;
-
         // Validate file
-        if (file == null || file.Length == 0)
+        if (request.FileStream == null || request.FileSize == 0)
         {
             return new UploadAvatarResult(false, null, "No file provided");
         }
 
-        if (file.Length > MaxFileSize)
+        if (request.FileSize > _fileValidationOptions.MaxFileSizeBytes)
         {
-            return new UploadAvatarResult(false, null, "File size exceeds 5MB limit");
+            var maxSizeMb = _fileValidationOptions.MaxFileSizeBytes / (1024 * 1024);
+            return new UploadAvatarResult(false, null, $"File size exceeds {maxSizeMb}MB limit");
         }
 
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (Array.IndexOf(AllowedExtensions, extension) < 0)
+        var extension = Path.GetExtension(request.FileName).ToLowerInvariant();
+        var allowedExtensions = _fileValidationOptions.AllowedImageExtensions;
+        if (!allowedExtensions.Contains(extension))
         {
+            var allowedTypes = string.Join(
+                ", ",
+                allowedExtensions.Select(static e => e.TrimStart('.'))
+            );
             return new UploadAvatarResult(
                 false,
                 null,
-                "Invalid file type. Allowed types: jpg, jpeg, png, gif, webp"
+                $"Invalid file type. Allowed types: {allowedTypes}"
             );
         }
 
@@ -63,12 +68,11 @@ public class UploadAvatarCommandHandler(
             }
 
             // Upload new avatar
-            using var stream = file.OpenReadStream();
             var fileName = $"avatars/{request.UserId}/{Guid.NewGuid()}{extension}";
             var avatarUrl = await _fileStorageService.UploadFileAsync(
-                stream,
+                request.FileStream,
                 fileName,
-                file.ContentType,
+                request.ContentType,
                 cancellationToken
             );
 
