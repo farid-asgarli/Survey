@@ -9,7 +9,7 @@ public record GetResponsesQuery : IRequest<Result<PagedList<ResponseListItemDto>
     public Guid SurveyId { get; init; }
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
-    public bool? IsCompleted { get; init; }
+    public bool? IsComplete { get; init; }
     public DateTime? FromDate { get; init; }
     public DateTime? ToDate { get; init; }
 }

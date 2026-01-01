@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { PublicSurvey, PublicQuestion, AnswerValue, PublicSurveyViewMode, ValidationResult } from '@/types/public-survey';
+import type { QuestionOption } from '@/types/models';
 import { evaluateQuestionVisibility, shouldEndSurvey, type LogicRule } from '@/utils/logicEvaluator';
 import { loadProgress, clearProgress, createAutoSaver, type AutoSaver } from '@/utils/autoSave';
 import { QuestionType } from '@/types';
@@ -14,6 +15,10 @@ interface PublicSurveyState {
   // Survey data
   survey: PublicSurvey | null;
   shareToken: string | null;
+
+  // Response tracking (new flow)
+  responseId: string | null;
+  responseStartedAt: string | null;
 
   // Answers
   answers: Record<string, AnswerValue>;
@@ -48,6 +53,10 @@ interface PublicSurveyActions {
   setShareToken: (token: string) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+
+  // Response tracking (new flow)
+  setResponseId: (responseId: string, startedAt: string) => void;
+  getResponseId: () => string | null;
 
   // Display mode
   setDisplayMode: (mode: SurveyDisplayMode) => void;
@@ -93,6 +102,8 @@ interface PublicSurveyActions {
 const initialState: PublicSurveyState = {
   survey: null,
   shareToken: null,
+  responseId: null,
+  responseStartedAt: null,
   answers: {},
   errors: {},
   currentQuestionIndex: 0,
@@ -305,6 +316,11 @@ export const usePublicSurveyStore = create<PublicSurveyState & PublicSurveyActio
       setLoading: (loading) => set({ isLoading: loading }),
 
       setError: (error) => set({ error, isLoading: false, viewMode: 'error' }),
+
+      // Response tracking (new flow)
+      setResponseId: (responseId, startedAt) => set({ responseId, responseStartedAt: startedAt }),
+
+      getResponseId: () => get().responseId,
 
       // Display mode
       setDisplayMode: (mode) => set({ displayMode: mode }),
@@ -625,33 +641,115 @@ export const usePublicSurveyStore = create<PublicSurveyState & PublicSurveyActio
   )
 );
 
-// Helper function to format answer for submission
-export function formatAnswerForSubmission(value: AnswerValue): string | undefined {
+/**
+ * Determines if a question type uses option IDs for answers
+ */
+function isChoiceQuestion(type: QuestionType): boolean {
+  const choiceTypes: QuestionType[] = [
+    QuestionType.SingleChoice,
+    QuestionType.MultipleChoice,
+    QuestionType.Dropdown,
+    QuestionType.Checkbox,
+    QuestionType.Ranking,
+    QuestionType.YesNo,
+  ];
+  return choiceTypes.includes(type);
+}
+
+/**
+ * Format answer value for submission to backend.
+ * Returns { selectedOptionIds, text } structure for the new API.
+ */
+export function formatAnswerForSubmission(
+  value: AnswerValue,
+  questionType: QuestionType,
+  options?: QuestionOption[]
+): { selectedOptionIds?: string[]; text?: string } | undefined {
   if (value === null || value === undefined) {
     return undefined;
   }
 
+  // Choice questions - need to convert option text/IDs to selectedOptionIds
+  if (isChoiceQuestion(questionType) && options) {
+    if (typeof value === 'string') {
+      // Single choice - value might be option ID or option text
+      // Check for "Other" pattern first
+      if (value.startsWith('__other__:')) {
+        const otherText = value.substring('__other__:'.length);
+        return { text: otherText };
+      }
+
+      // Try to find by ID first, then by text
+      const option = options.find((o) => o.id === value) || options.find((o) => o.text === value);
+      if (option) {
+        return { selectedOptionIds: [option.id] };
+      }
+
+      // Fallback - might be a direct ID
+      return { selectedOptionIds: [value] };
+    }
+
+    if (Array.isArray(value)) {
+      // Multiple choice - array of option IDs or texts
+      const selectedIds: string[] = [];
+      let otherText: string | undefined;
+
+      for (const item of value) {
+        if (typeof item === 'string') {
+          if (item.startsWith('__other__:')) {
+            otherText = item.substring('__other__:'.length);
+          } else {
+            // Try to find by ID first, then by text
+            const option = options.find((o) => o.id === item) || options.find((o) => o.text === item);
+            if (option) {
+              selectedIds.push(option.id);
+            } else {
+              // Assume it's a direct ID
+              selectedIds.push(item);
+            }
+          }
+        }
+      }
+
+      if (selectedIds.length === 0 && !otherText) {
+        return undefined;
+      }
+
+      return {
+        selectedOptionIds: selectedIds.length > 0 ? selectedIds : undefined,
+        text: otherText,
+      };
+    }
+  }
+
+  // Text-based questions
   if (typeof value === 'string') {
-    return value || undefined;
+    return value ? { text: value } : undefined;
   }
 
   if (typeof value === 'number') {
-    return value.toString();
+    return { text: value.toString() };
   }
 
   if (Array.isArray(value)) {
-    // For multiple choice or ranking
+    // For ranking or other array types without options
     if (value.length === 0) return undefined;
     if (value[0] instanceof File) {
-      // File upload - handle separately
+      // File upload - handle separately (files are uploaded differently)
       return undefined;
     }
-    return JSON.stringify(value);
+    // Array of strings (ranking IDs or other) - send as selectedOptionIds
+    // The backend expects ranking answers as ordered option IDs
+    if (value.every((v) => typeof v === 'string')) {
+      return { selectedOptionIds: value as string[] };
+    }
+    // Fallback: Other array types - send as JSON text
+    return { text: JSON.stringify(value) };
   }
 
   if (typeof value === 'object') {
     // Matrix answers
-    return JSON.stringify(value);
+    return { text: JSON.stringify(value) };
   }
 
   return undefined;

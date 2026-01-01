@@ -5,6 +5,7 @@ using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
+using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.SurveyLinks.Commands.CreateSurveyLink;
@@ -57,6 +58,12 @@ public class CreateSurveyLinkCommandHandler(
         if (survey.NamespaceId != namespaceId.Value)
         {
             return Result<SurveyLinkDto>.Failure("Errors.SurveyNotInNamespace");
+        }
+
+        // Verify survey is published before allowing link creation
+        if (survey.Status != SurveyStatus.Published)
+        {
+            return Result<SurveyLinkDto>.Failure("Application.SurveyLink.SurveyMustBePublished");
         }
 
         // Create the link

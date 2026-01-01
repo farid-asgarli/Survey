@@ -479,7 +479,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question == null)
-            throw new InvalidOperationException("Domain.SurveyTemplate.QuestionNotFound");
+            throw new DomainException("Domain.SurveyTemplate.QuestionNotFound");
 
         _questions.Remove(question);
         ReorderQuestions();
@@ -492,13 +492,10 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question == null)
-            throw new InvalidOperationException("Domain.SurveyTemplate.QuestionNotFound");
+            throw new DomainException("Domain.SurveyTemplate.QuestionNotFound");
 
         if (newOrder < 1 || newOrder > _questions.Count)
-            throw new ArgumentOutOfRangeException(
-                nameof(newOrder),
-                "Domain.SurveyTemplate.OrderOutOfRange"
-            );
+            throw new DomainException("Domain.SurveyTemplate.OrderOutOfRange");
 
         var currentOrder = question.Order;
         if (currentOrder == newOrder)
@@ -574,7 +571,7 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
 
             if (!string.IsNullOrEmpty(templateQuestion.SettingsJson))
             {
-                var settings = Domain.ValueObjects.QuestionSettings.FromJson(
+                var settings = ValueObjects.QuestionSettings.FromJson(
                     templateQuestion.SettingsJson
                 );
                 question.UpdateSettings(settings);

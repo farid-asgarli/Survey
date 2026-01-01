@@ -102,6 +102,9 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddScoped<INotificationService, EmailNotificationService>();
 
+        // Debug service for troubleshooting
+        services.AddScoped<IDbContextDebugService, DbContextDebugService>();
+
         // File storage configuration
         services.Configure<FileStorageOptions>(
             configuration.GetSection(FileStorageOptions.SectionName)

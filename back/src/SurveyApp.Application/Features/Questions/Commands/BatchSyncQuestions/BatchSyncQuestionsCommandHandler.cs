@@ -180,10 +180,14 @@ public class BatchSyncQuestionsCommandHandler(
                     question.UpdateOrder(updateData.Order.Value);
                 }
 
-                // Update settings if provided
+                // Update settings if provided - preserve existing option IDs where possible
                 if (updateData.Settings != null)
                 {
-                    var settings = _questionSettingsMapper.MapToSettings(updateData.Settings);
+                    var existingSettings = question.GetSettings();
+                    var settings = _questionSettingsMapper.MapToSettingsPreservingIds(
+                        updateData.Settings,
+                        existingSettings
+                    );
                     if (settings != null)
                     {
                         question.UpdateSettings(settings);

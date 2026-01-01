@@ -186,9 +186,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public EmailRecipient AddRecipient(string email, string? name = null)
     {
         if (Status != DistributionStatus.Draft && Status != DistributionStatus.Scheduled)
-            throw new InvalidOperationException(
-                "Domain.EmailDistribution.CannotAddRecipientsAfterStarted"
-            );
+            throw new DomainException("Domain.EmailDistribution.CannotAddRecipientsAfterStarted");
 
         var recipient = EmailRecipient.Create(Id, email, name);
         _recipients.Add(recipient);
@@ -213,7 +211,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void RemoveRecipient(Guid recipientId)
     {
         if (Status != DistributionStatus.Draft && Status != DistributionStatus.Scheduled)
-            throw new InvalidOperationException(
+            throw new DomainException(
                 "Domain.EmailDistribution.CannotRemoveRecipientsAfterStarted"
             );
 
@@ -231,15 +229,10 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void Schedule(DateTime scheduledAt)
     {
         if (scheduledAt <= DateTime.UtcNow)
-            throw new ArgumentException(
-                "Domain.EmailDistribution.ScheduledTimeMustBeFuture",
-                nameof(scheduledAt)
-            );
+            throw new DomainException("Domain.EmailDistribution.ScheduledTimeMustBeFuture");
 
         if (_recipients.Count == 0)
-            throw new InvalidOperationException(
-                "Domain.EmailDistribution.CannotScheduleWithoutRecipients"
-            );
+            throw new DomainException("Domain.EmailDistribution.CannotScheduleWithoutRecipients");
 
         ScheduledAt = scheduledAt;
         Status = DistributionStatus.Scheduled;
@@ -287,9 +280,7 @@ public class EmailDistribution : AggregateRoot<Guid>
     public void Cancel()
     {
         if (Status == DistributionStatus.Sent || Status == DistributionStatus.Sending)
-            throw new InvalidOperationException(
-                "Domain.EmailDistribution.CannotCancelAfterSending"
-            );
+            throw new DomainException("Domain.EmailDistribution.CannotCancelAfterSending");
 
         Status = DistributionStatus.Cancelled;
     }

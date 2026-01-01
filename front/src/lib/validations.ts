@@ -152,8 +152,6 @@ export type RecurringSurveyFormData = z.infer<typeof recurringSurveySchema>;
 export interface PasswordRequirement {
   label: string;
   met: boolean;
-  /** @deprecated Use `met` property instead - validator function is redundant */
-  validator?: (password: string) => boolean;
 }
 
 export function getPasswordRequirements(password: string): PasswordRequirement[] {

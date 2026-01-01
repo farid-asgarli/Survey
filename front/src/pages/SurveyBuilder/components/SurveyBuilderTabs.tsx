@@ -1,6 +1,10 @@
-// Survey Builder Tabs - Secondary navigation for different builder modes
+// Survey Builder Tabs - M3 Expressive Design
 //
 // Uses the existing Tabs component with 'pills' variant for consistent styling.
+// Follows M3 Expressive principles:
+// - Rounded-full badges
+// - Semantic color tokens
+// - No shadows
 //
 // Tabs:
 // - Questions (default) - Main survey building interface
@@ -50,7 +54,7 @@ function TabBadge({ count, isActive }: { count: number; isActive: boolean }) {
  * Warning indicator dot for incomplete translations
  */
 function WarningDot() {
-  return <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface-container" />;
+  return <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface animate-pulse" />;
 }
 
 export function SurveyBuilderTabs({

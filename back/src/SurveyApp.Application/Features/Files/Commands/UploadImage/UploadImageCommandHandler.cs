@@ -141,7 +141,7 @@ public class UploadImageCommandHandler(
 
         // Only allow alphanumeric, hyphen, and underscore
         sanitized = new string(
-            sanitized.Where(c => char.IsLetterOrDigit(c) || c == '-' || c == '_').ToArray()
+            [.. sanitized.Where(c => char.IsLetterOrDigit(c) || c == '-' || c == '_')]
         );
 
         // Limit length

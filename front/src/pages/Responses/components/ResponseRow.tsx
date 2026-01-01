@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { User, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { Checkbox, Chip, ListItemIcon } from '@/components/ui';
@@ -13,8 +14,20 @@ interface ResponseRowProps {
   onClick: () => void;
 }
 
-export function ResponseRow({ response, survey, isSelected, onSelect, onClick }: ResponseRowProps) {
+export const ResponseRow = memo(function ResponseRow({ response, survey, isSelected, onSelect, onClick }: ResponseRowProps) {
   const { t } = useTranslation();
+
+  // Memoize event handlers to prevent unnecessary re-renders
+  const handleCheckboxChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onSelect(e.target.checked);
+    },
+    [onSelect]
+  );
+
+  const handleStopPropagation = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
 
   return (
     <div
@@ -25,8 +38,8 @@ export function ResponseRow({ response, survey, isSelected, onSelect, onClick }:
       )}
     >
       {/* Checkbox */}
-      <div onClick={(e) => e.stopPropagation()}>
-        <Checkbox checked={isSelected} onChange={(e) => onSelect(e.target.checked)} />
+      <div onClick={handleStopPropagation}>
+        <Checkbox checked={isSelected} onChange={handleCheckboxChange} />
       </div>
 
       {/* Main content - clickable */}
@@ -43,7 +56,7 @@ export function ResponseRow({ response, survey, isSelected, onSelect, onClick }:
         <div className="hidden md:flex items-center gap-4 text-sm text-on-surface-variant">
           <div className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" />
-            <span>{formatDurationBetween(response.startedAt, response.completedAt)}</span>
+            <span>{formatDurationBetween(response.startedAt, response.submittedAt)}</span>
           </div>
           <span className="w-32 text-right">{formatDateTimeShort(response.startedAt)}</span>
         </div>
@@ -60,4 +73,4 @@ export function ResponseRow({ response, survey, isSelected, onSelect, onClick }:
       </div>
     </div>
   );
-}
+});

@@ -17,8 +17,12 @@ import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
  * that can be used with the unified QuestionRenderer.
  */
 export function draftToPublicQuestion(draft: DraftQuestion): PublicQuestion {
-  // Convert DraftOption[] to string[] for options-based questions
-  const optionTexts = draft.options?.map((o) => o.text) || [];
+  // Convert DraftOption[] to QuestionOption[] for options-based questions
+  const convertedOptions = draft.options?.map((o, index) => ({
+    id: o.id,
+    text: o.text,
+    order: index,
+  }));
 
   return {
     id: draft.id,
@@ -30,8 +34,8 @@ export function draftToPublicQuestion(draft: DraftQuestion): PublicQuestion {
     settings: {
       // Spread existing settings
       ...draft.settings,
-      // Override options with converted format
-      options: optionTexts.length > 0 ? optionTexts : draft.settings.options,
+      // Override options with converted format (QuestionOption[])
+      options: convertedOptions && convertedOptions.length > 0 ? convertedOptions : draft.settings.options,
     },
   };
 }

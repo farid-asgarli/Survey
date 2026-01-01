@@ -70,7 +70,9 @@ public interface ISurveyResponseRepository
         Guid surveyId,
         int pageNumber,
         int pageSize,
-        bool? isCompleted = null,
+        bool? isComplete = null,
+        DateTime? fromDate = null,
+        DateTime? toDate = null,
         CancellationToken cancellationToken = default
     );
 
@@ -141,6 +143,12 @@ public interface ISurveyResponseRepository
         SurveyResponse response,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Adds answers to the DbContext for tracking as new entities.
+    /// This is needed when adding answers to an existing tracked response.
+    /// </summary>
+    void AddAnswersToContext(IEnumerable<Answer> answers);
 
     /// <summary>
     /// Updates an existing response.

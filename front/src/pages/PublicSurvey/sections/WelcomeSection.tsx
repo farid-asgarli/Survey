@@ -5,9 +5,10 @@ interface WelcomeSectionProps {
   survey: PublicSurvey;
   totalQuestions: number;
   onStart: () => void;
+  isStarting?: boolean;
 }
 
-export function WelcomeSection({ survey, totalQuestions, onStart }: WelcomeSectionProps) {
+export function WelcomeSection({ survey, totalQuestions, onStart, isStarting }: WelcomeSectionProps) {
   return (
     <WelcomeScreen
       title={survey.title}
@@ -15,6 +16,7 @@ export function WelcomeSection({ survey, totalQuestions, onStart }: WelcomeSecti
       welcomeMessage={survey.welcomeMessage}
       questionCount={totalQuestions}
       onStart={onStart}
+      isStarting={isStarting}
       logoUrl={survey.theme?.logoUrl}
       logoSize={survey.theme?.logoSize}
       showLogoBackground={survey.theme?.showLogoBackground}

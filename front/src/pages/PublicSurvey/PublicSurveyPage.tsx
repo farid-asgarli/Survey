@@ -1,5 +1,6 @@
 // Public Survey Page - Respondent-facing survey experience
 
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { usePublicSurveyStore } from '@/stores';
@@ -22,6 +23,8 @@ export function PublicSurveyPage() {
     isError,
     error: fetchError,
     refetch,
+    startResponseAsync,
+    isStarting,
     submitResponseAsync,
     isSubmitting: isApiSubmitting,
     submitError,
@@ -40,6 +43,7 @@ export function PublicSurveyPage() {
     canGoPrevious,
     setAnswer,
     startSurvey,
+    setResponseId,
     goToNextQuestion,
     goToPreviousQuestion,
     restoreProgress,
@@ -63,16 +67,39 @@ export function PublicSurveyPage() {
 
   useKeyboardNavigation({ survey, onSubmit: handleSubmit });
 
+  // Handle starting the survey (calls backend to create draft response)
+  const handleStartSurvey = useCallback(async () => {
+    if (!survey) return;
+
+    try {
+      // Call backend to create a draft response and get responseId
+      const result = await startResponseAsync({
+        surveyId: survey.id,
+        linkToken: shareToken, // Pass the share token if it's a tracked link
+      });
+
+      // Store the responseId for later submission
+      setResponseId(result.responseId, result.startedAt);
+
+      // Transition to questions view
+      startSurvey();
+    } catch (error) {
+      console.error('Failed to start survey response:', error);
+      // Fall back to starting survey without responseId (legacy flow)
+      startSurvey();
+    }
+  }, [survey, shareToken, startResponseAsync, setResponseId, startSurvey]);
+
   // Handle resume dialog
   const handleResumeProgress = () => {
     restoreProgress();
     resumeDialog.close();
   };
 
-  const handleStartFresh = () => {
+  const handleStartFresh = async () => {
     clearSavedProgress();
     resumeDialog.close();
-    startSurvey();
+    await handleStartSurvey();
   };
 
   // Loading state
@@ -103,7 +130,9 @@ export function PublicSurveyPage() {
   return (
     <PublicSurveyLayout title={survey.title} theme={survey.theme} showLogoInHeader={showLogoInHeader}>
       {/* Welcome Screen */}
-      {viewMode === 'welcome' && <WelcomeSection survey={survey} totalQuestions={totalQuestions} onStart={startSurvey} />}
+      {viewMode === 'welcome' && (
+        <WelcomeSection survey={survey} totalQuestions={totalQuestions} onStart={handleStartSurvey} isStarting={isStarting} />
+      )}
 
       {/* Questions - One by One Mode */}
       {viewMode === 'questions' && displayMode === 'one-by-one' && currentQuestion && (

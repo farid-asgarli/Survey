@@ -28,25 +28,19 @@ public sealed partial class Email : ValueObject
     /// </summary>
     /// <param name="email">The email address string.</param>
     /// <returns>A new Email value object.</returns>
-    /// <exception cref="ArgumentException">Thrown when the email is invalid.</exception>
+    /// <exception cref="DomainException">Thrown when the email is invalid.</exception>
     public static Email Create(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Domain.ValueObjects.Email.EmailEmpty", nameof(email));
+            throw new DomainException("Domain.ValueObjects.Email.EmailEmpty");
 
         email = email.Trim().ToLowerInvariant();
 
         if (email.Length > MaxLength)
-            throw new ArgumentException(
-                "Domain.ValueObjects.Email.MaxLengthExceeded",
-                nameof(email)
-            );
+            throw new DomainException("Domain.ValueObjects.Email.MaxLengthExceeded", MaxLength);
 
         if (!EmailRegex().IsMatch(email))
-            throw new ArgumentException(
-                "Domain.ValueObjects.Email.EmailInvalidFormat",
-                nameof(email)
-            );
+            throw new DomainException("Domain.ValueObjects.Email.EmailInvalidFormat");
 
         return new Email(email);
     }

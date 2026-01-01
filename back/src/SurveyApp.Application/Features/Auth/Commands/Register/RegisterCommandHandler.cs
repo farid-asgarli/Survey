@@ -24,7 +24,7 @@ public class RegisterCommandHandler(IIdentityService identityService)
 
         if (!result.Succeeded)
         {
-            return Result<AuthResponseDto>.ValidationFailure(result.Errors.ToArray());
+            return Result<AuthResponseDto>.ValidationFailure([.. result.Errors]);
         }
 
         return Result<AuthResponseDto>.Success(

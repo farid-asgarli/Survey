@@ -1,4 +1,9 @@
-// Question Card - Draggable card for question list in builder
+// Question Card - M3 Expressive Design
+// Features:
+// - Shape morphing: stationary (rounded-2xl) → hover (rounded-3xl) → selected (rounded-3xl)
+// - No shadows (uses border and color elevation)
+// - Semantic color tokens
+// - Accessible drag handles
 
 import { forwardRef, type HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -53,11 +58,12 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
         ref={ref}
         className={cn(
           'group relative bg-surface-container-lowest rounded-2xl border-2',
-          'transition-[border-radius,border-color,background-color] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
+          // Shape morphing: M3 Expressive dynamic shape
+          'transition-[border-radius,border-color,background-color,transform] duration-300 ease-[cubic-bezier(0.2,0,0,1)]',
           isSelected
-            ? 'border-primary ring-2 ring-primary/20 rounded-3xl'
-            : 'border-outline-variant/40 hover:border-outline-variant hover:rounded-3xl',
-          isDragging && 'opacity-95 border-primary/50',
+            ? 'border-primary bg-primary-container/10 rounded-3xl'
+            : 'border-outline-variant/40 hover:border-outline-variant/70 hover:rounded-3xl hover:bg-surface-container-low/50',
+          isDragging && 'opacity-90 border-primary ring-2 ring-primary/20',
           className
         )}
         {...props}
@@ -69,9 +75,12 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
               {...dragHandleProps}
               className={cn(
                 'shrink-0 w-9 flex items-center justify-center cursor-grab active:cursor-grabbing',
-                'text-on-surface-variant/40 hover:text-on-surface-variant/70',
-                'border-r border-outline-variant/20 rounded-l-2xl',
-                'hover:bg-surface-container/50 transition-colors'
+                'text-on-surface-variant/40 hover:text-on-surface-variant',
+                'border-r border-outline-variant/20',
+                'hover:bg-surface-container/50 transition-colors rounded-l-2xl',
+                // Shape morph with parent
+                isSelected && 'rounded-l-3xl',
+                'group-hover:rounded-l-3xl'
               )}
             >
               <GripVertical className="w-4 h-4" />
@@ -90,7 +99,7 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
             <div className="shrink-0 flex items-center gap-2.5">
               <span
                 className={cn(
-                  'w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold',
+                  'w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors',
                   isSelected ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
@@ -171,7 +180,7 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
 
         {/* Quick Required Toggle - visible when selected (not in read-only mode) */}
         {isSelected && !isReadOnly && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-outline-variant/20 bg-surface-container/30 rounded-b-2xl">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-outline-variant/20 bg-surface-container/30 rounded-b-3xl">
             <Switch size="sm" label={t('editors.required')} checked={question.isRequired} onChange={(e) => onRequiredChange(e.target.checked)} />
           </div>
         )}

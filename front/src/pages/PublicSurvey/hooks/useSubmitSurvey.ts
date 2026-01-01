@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { usePublicSurveyStore, formatAnswerForSubmission } from '@/stores';
-import type { SubmitResponseRequest, PublicSurvey, SubmitResponseResult } from '@/types/public-survey';
+import type { SubmitResponseRequest, PublicSurvey, SubmitResponseResult, SubmitAnswerRequest, PublicQuestion } from '@/types/public-survey';
 
 interface UseSubmitSurveyParams {
   survey: PublicSurvey | null;
@@ -9,7 +9,7 @@ interface UseSubmitSurveyParams {
 }
 
 export function useSubmitSurvey({ survey, shareToken, submitResponseAsync }: UseSubmitSurveyParams) {
-  const { answers, validateAll, setSubmitting, completeSurvey } = usePublicSurveyStore();
+  const { answers, validateAll, setSubmitting, completeSurvey, getResponseId } = usePublicSurveyStore();
 
   const handleSubmit = useCallback(async () => {
     if (!survey || !shareToken) return;
@@ -24,22 +24,34 @@ export function useSubmitSurvey({ survey, shareToken, submitResponseAsync }: Use
 
     try {
       // Format answers for submission
-      const formattedAnswers = survey.questions
-        .map((question: { id: string }) => {
-          const value = answers[question.id];
-          const formattedValue = formatAnswerForSubmission(value);
+      const formattedAnswers: SubmitAnswerRequest[] = survey.questions
+        .map((question: PublicQuestion) => {
+          const answerValue = answers[question.id];
+          const formatted = formatAnswerForSubmission(answerValue, question.type, question.settings?.options);
+
+          if (!formatted) return null;
 
           return {
             questionId: question.id,
-            answerValue: formattedValue,
+            ...formatted,
           };
         })
-        .filter((a: { questionId: string; answerValue: string | undefined }) => a.answerValue !== undefined);
+        .filter((a): a is SubmitAnswerRequest => a !== null);
 
-      const request: SubmitResponseRequest = {
-        surveyId: survey.id,
-        answers: formattedAnswers as SubmitResponseRequest['answers'],
-      };
+      // Get responseId from store (set when survey was started)
+      const responseId = getResponseId();
+
+      const request: SubmitResponseRequest = responseId
+        ? {
+            // New flow: complete existing draft response
+            responseId,
+            answers: formattedAnswers,
+          }
+        : {
+            // Legacy flow: create and complete in one step
+            surveyId: survey.id,
+            answers: formattedAnswers,
+          };
 
       await submitResponseAsync(request);
       completeSurvey();
@@ -49,7 +61,7 @@ export function useSubmitSurvey({ survey, shareToken, submitResponseAsync }: Use
     } finally {
       setSubmitting(false);
     }
-  }, [survey, shareToken, answers, validateAll, setSubmitting, submitResponseAsync, completeSurvey]);
+  }, [survey, shareToken, answers, validateAll, setSubmitting, submitResponseAsync, completeSurvey, getResponseId]);
 
   return { handleSubmit };
 }

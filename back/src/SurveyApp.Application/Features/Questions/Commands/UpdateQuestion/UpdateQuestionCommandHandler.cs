@@ -67,10 +67,14 @@ public class UpdateQuestionCommandHandler(
             question.UpdateOrder(request.Order.Value);
         }
 
-        // Update settings if provided
+        // Update settings if provided - preserve existing option IDs where possible
         if (request.Settings != null)
         {
-            var settings = _questionSettingsMapper.MapToSettings(request.Settings);
+            var existingSettings = question.GetSettings();
+            var settings = _questionSettingsMapper.MapToSettingsPreservingIds(
+                request.Settings,
+                existingSettings
+            );
             if (settings != null)
             {
                 question.UpdateSettings(settings);

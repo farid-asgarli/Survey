@@ -33,34 +33,22 @@ public sealed partial class NamespaceSlug : ValueObject
     /// </summary>
     /// <param name="slug">The slug string.</param>
     /// <returns>A new NamespaceSlug value object.</returns>
-    /// <exception cref="ArgumentException">Thrown when the slug is invalid.</exception>
+    /// <exception cref="DomainException">Thrown when the slug is invalid.</exception>
     public static NamespaceSlug Create(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug))
-            throw new ArgumentException(
-                "Domain.ValueObjects.NamespaceSlug.SlugEmpty",
-                nameof(slug)
-            );
+            throw new DomainException("Domain.ValueObjects.NamespaceSlug.SlugEmpty");
 
         slug = NormalizeSlug(slug);
 
         if (slug.Length < MinLength)
-            throw new ArgumentException(
-                "Domain.ValueObjects.NamespaceSlug.MinLength",
-                nameof(slug)
-            );
+            throw new DomainException("Domain.ValueObjects.NamespaceSlug.MinLength", MinLength);
 
         if (slug.Length > MaxLength)
-            throw new ArgumentException(
-                "Domain.ValueObjects.NamespaceSlug.MaxLength",
-                nameof(slug)
-            );
+            throw new DomainException("Domain.ValueObjects.NamespaceSlug.MaxLength", MaxLength);
 
         if (!SlugRegex().IsMatch(slug))
-            throw new ArgumentException(
-                "Domain.ValueObjects.NamespaceSlug.InvalidFormat",
-                nameof(slug)
-            );
+            throw new DomainException("Domain.ValueObjects.NamespaceSlug.InvalidFormat");
 
         return new NamespaceSlug(slug);
     }
@@ -73,10 +61,7 @@ public sealed partial class NamespaceSlug : ValueObject
     public static NamespaceSlug CreateFromName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException(
-                "Domain.ValueObjects.NamespaceSlug.NameEmpty",
-                nameof(name)
-            );
+            throw new DomainException("Domain.ValueObjects.NamespaceSlug.NameEmpty");
 
         var slug = NormalizeSlug(name);
         return Create(slug);

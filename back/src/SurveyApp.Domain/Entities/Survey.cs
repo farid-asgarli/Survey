@@ -511,7 +511,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         if (Status != SurveyStatus.Draft)
             throw new DomainException("Domain.Survey.OnlyDraftCanPublish");
 
-        if (!_questions.Any())
+        if (_questions.Count == 0)
             throw new DomainException("Domain.Survey.MustHaveQuestionsToPublish");
 
         Status = SurveyStatus.Published;
@@ -577,7 +577,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     {
         // A survey can use either a saved theme OR a preset, not both
         if (themeId.HasValue && !string.IsNullOrEmpty(presetThemeId))
-            throw new InvalidOperationException("Domain.Survey.CannotSetBothThemes");
+            throw new DomainException("Domain.Survey.CannotSetBothThemes");
 
         ThemeId = themeId;
         PresetThemeId = presetThemeId;
@@ -628,7 +628,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     private void EnsureDraft()
     {
         if (Status != SurveyStatus.Draft)
-            throw new InvalidOperationException("Domain.Survey.CannotModifyAfterPublish");
+            throw new DomainException("Domain.Survey.CannotModifyAfterPublish");
     }
 
     private void ReorderQuestions()
@@ -804,7 +804,7 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     {
         if (languageCode.Equals(DefaultLanguage, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException("Domain.Survey.CannotRemoveDefaultLanguage");
+            throw new DomainException("Domain.Survey.CannotRemoveDefaultLanguage");
         }
 
         // Remove from survey

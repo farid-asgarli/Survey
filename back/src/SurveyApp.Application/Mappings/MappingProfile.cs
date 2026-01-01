@@ -1,5 +1,6 @@
 using AutoMapper;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Domain.Common;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.ValueObjects;
 
@@ -12,12 +13,12 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // QuestionSettings value object to DTO mapping
+        // QuestionOption mapping
+        CreateMap<QuestionOption, QuestionOptionDto>();
+
+        // QuestionSettings mapping
         CreateMap<QuestionSettings, QuestionSettingsDto>()
-            .ForMember(
-                d => d.Options,
-                opt => opt.MapFrom(s => s.Options != null ? s.Options.ToList() : null)
-            )
+            .ForMember(d => d.Options, opt => opt.MapFrom(s => s.Options))
             .ForMember(
                 d => d.AllowedFileTypes,
                 opt =>
@@ -33,6 +34,9 @@ public class MappingProfile : Profile
                 d => d.MatrixColumns,
                 opt => opt.MapFrom(s => s.MatrixColumns != null ? s.MatrixColumns.ToList() : null)
             );
+
+        // SelectedOption mapping
+        CreateMap<SelectedOption, SelectedOptionDto>();
 
         // Namespace mappings
         CreateMap<Namespace, NamespaceDto>()
@@ -127,7 +131,16 @@ public class MappingProfile : Profile
             .ForMember(d => d.AnswerCount, opt => opt.MapFrom(s => s.Answers.Count));
 
         // Answer mappings
-        CreateMap<Answer, AnswerDto>();
+        CreateMap<Answer, AnswerDto>()
+            .ForMember(
+                d => d.SelectedOptions,
+                opt => opt.MapFrom(s => MapAnswerOptions(s.AnswerValue))
+            )
+            .ForMember(d => d.Text, opt => opt.MapFrom(s => MapAnswerText(s.AnswerValue)))
+            .ForMember(
+                d => d.DisplayValue,
+                opt => opt.MapFrom(s => MapAnswerDisplayValue(s.AnswerValue))
+            );
 
         // Question Logic mappings
         CreateMap<QuestionLogic, QuestionLogicDto>()
@@ -259,7 +272,14 @@ public class MappingProfile : Profile
         var settings = QuestionSettings.FromJson(settingsJson);
         return new QuestionSettingsDto
         {
-            Options = settings.Options?.ToList(),
+            Options = settings
+                .Options?.Select(o => new QuestionOptionDto
+                {
+                    Id = o.Id,
+                    Text = o.Text,
+                    Order = o.Order,
+                })
+                .ToList(),
             MinValue = settings.MinValue,
             MaxValue = settings.MaxValue,
             MinLabel = settings.MinLabel,
@@ -289,7 +309,14 @@ public class MappingProfile : Profile
         var settings = QuestionSettings.FromJson(settingsJson);
         return new QuestionSettingsResponseDto
         {
-            Options = settings.Options?.ToList(),
+            Options = settings
+                .Options?.Select(o => new QuestionOptionDto
+                {
+                    Id = o.Id,
+                    Text = o.Text,
+                    Order = o.Order,
+                })
+                .ToList(),
             MinValue = settings.MinValue,
             MaxValue = settings.MaxValue,
             MinLabel = settings.MinLabel,
@@ -350,5 +377,31 @@ public class MappingProfile : Profile
         // LinkClick mappings
         CreateMap<LinkClick, LinkClickDto>()
             .ForMember(d => d.HasResponse, opt => opt.MapFrom(s => s.ResponseId.HasValue));
+    }
+
+    private static List<SelectedOptionDto>? MapAnswerOptions(string? answerValue)
+    {
+        if (string.IsNullOrEmpty(answerValue))
+            return null;
+        var answer = AnswerValue.FromJson(answerValue);
+        if (answer.Options.Count == 0)
+            return null;
+        return [.. answer.Options.Select(o => new SelectedOptionDto { Id = o.Id, Text = o.Text })];
+    }
+
+    private static string? MapAnswerText(string? answerValue)
+    {
+        if (string.IsNullOrEmpty(answerValue))
+            return null;
+        var answer = AnswerValue.FromJson(answerValue);
+        return answer.Text;
+    }
+
+    private static string MapAnswerDisplayValue(string? answerValue)
+    {
+        if (string.IsNullOrEmpty(answerValue))
+            return string.Empty;
+        var answer = AnswerValue.FromJson(answerValue);
+        return answer.GetDisplayText();
     }
 }

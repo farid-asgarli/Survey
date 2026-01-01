@@ -168,13 +168,9 @@ public class SurveyResponseDto
 
 ---
 
-### 9. **Namespace OwnerId Exposed** - NamespaceDto.cs
+### 9. ~~**Namespace OwnerId Exposed** - NamespaceDto.cs~~ ✅ RESOLVED
 
-```csharp
-public Guid? OwnerId { get; set; }  // ← Internal relationship exposed
-```
-
-**Issue:** Exposes internal user relationships unnecessarily.
+OwnerId is now properly exposed in NamespaceDto as it's required by the frontend to determine ownership for permission checks.
 
 ---
 
@@ -233,21 +229,19 @@ if (survey.Status != SurveyStatus.Draft)
 
 ## 🏗️ Architecture Recommendations
 
-### 14. **Mixed Exception Types in Domain**
+### 14. ~~**Mixed Exception Types in Domain**~~ ✅ RESOLVED
 
-Domain throws inconsistent exception types:
+All domain exceptions have been standardized to use `DomainException` for business rule violations. This includes:
 
-- `DomainException` (proper domain exception)
-- `InvalidOperationException`
-- `ArgumentException`
+- **Value Objects:** `Email.cs`, `LanguageCode.cs`, `NamespaceSlug.cs`
+- **Entities:** `Survey.cs`, `SurveyResponse.cs`, `SurveyTemplate.cs`, `RecurringSurvey.cs`, `RecurringSurveyRun.cs`, `EmailTemplate.cs`, `EmailDistribution.cs`, `EmailRecipient.cs`, `NamespaceMembership.cs`, `UserPreferences.cs`
+- **Common:** `TranslationManager.cs`
 
-**Locations:**
+Benefits of this change:
 
-- LanguageCode.cs - `ArgumentException`
-- Email.cs - `ArgumentException`
-- Domain services using `InvalidOperationException`
-
-**Fix:** Standardize on `DomainException` for business rule violations.
+- Consistent exception handling with localization support via `ResourceKey`
+- All domain exceptions now flow through `ExceptionHandlingMiddleware` with proper localization
+- Format arguments can be passed for dynamic error messages
 
 ---
 
@@ -283,16 +277,16 @@ Domain events use `AddDomainEvent()` but there's no outbox pattern for reliable 
 
 ## 📋 Recommended Action Items (Priority Order)
 
-| #   | Issue                                              | Effort | Impact   |
-| --- | -------------------------------------------------- | ------ | -------- |
-| 1   | Fix DeleteResponse permission                      | Low    | Critical |
-| 2   | Add MaxResponses race condition fix                | Medium | Critical |
-| 3   | Add surveyId validation in distribution commands   | Low    | High     |
-| 4   | Add file magic byte validation                     | Medium | High     |
-| 5   | Add rate limiting on tracking endpoints            | Medium | High     |
-| 6   | Add class-level [Authorize] on ResponsesController | Low    | Medium   |
-| 7   | Extract `CreateQuestionSettings` to shared service | Low    | Medium   |
-| 8   | Remove IP from public DTOs                         | Low    | Medium   |
-| 9   | Standardize domain exceptions                      | Medium | Low      |
+| #   | Issue                                              | Effort | Impact   | Status  |
+| --- | -------------------------------------------------- | ------ | -------- | ------- |
+| 1   | Fix DeleteResponse permission                      | Low    | Critical |         |
+| 2   | Add MaxResponses race condition fix                | Medium | Critical |         |
+| 3   | Add surveyId validation in distribution commands   | Low    | High     |         |
+| 4   | Add file magic byte validation                     | Medium | High     |         |
+| 5   | Add rate limiting on tracking endpoints            | Medium | High     |         |
+| 6   | Add class-level [Authorize] on ResponsesController | Low    | Medium   |         |
+| 7   | Extract `CreateQuestionSettings` to shared service | Low    | Medium   |         |
+| 8   | Remove IP from public DTOs                         | Low    | Medium   |         |
+| 9   | Standardize domain exceptions                      | Medium | Low      | ✅ Done |
 
 Would you like me to implement any of these fixes?

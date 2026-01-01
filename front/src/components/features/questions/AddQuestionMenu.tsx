@@ -1,4 +1,9 @@
-// Add Question Menu - Beautiful floating menu to add question types
+// Add Question Menu - M3 Expressive Design
+// Features:
+// - No shadows (uses border elevation)
+// - Shape morphing on interactive elements
+// - Semantic color tokens
+// - Accessible keyboard navigation
 
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -182,8 +187,8 @@ export function AddQuestionMenu({ onSelectType, isOpen, onOpenChange, triggerRef
       ref={menuRef}
       className={cn(
         'fixed z-50 w-175 max-h-[80vh] overflow-hidden flex flex-col',
-        'bg-surface-container-low rounded-3xl shadow-2xl',
-        'border border-outline-variant/50',
+        'bg-surface-container-low rounded-3xl',
+        'border-2 border-outline-variant/50',
         'animate-in fade-in-0 zoom-in-95 duration-200',
         position === 'center' && 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
       )}
@@ -208,9 +213,9 @@ export function AddQuestionMenu({ onSelectType, isOpen, onOpenChange, triggerRef
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('editors.searchQuestionTypes')}
             className={cn(
-              'w-full pl-10 pr-4 py-3 rounded-xl',
+              'w-full pl-10 pr-4 py-3 rounded-2xl',
               'bg-surface-container text-on-surface placeholder:text-on-surface-variant/50',
-              'border border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/20',
+              'border-2 border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/20',
               'outline-none transition-all'
             )}
           />
@@ -260,10 +265,10 @@ export function AddQuestionMenu({ onSelectType, isOpen, onOpenChange, triggerRef
                       key={category.id}
                       onClick={() => setActiveCategory(category.id)}
                       className={cn(
-                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all',
+                        'w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl text-left transition-all duration-200',
                         isActive
-                          ? 'bg-primary text-on-primary font-medium'
-                          : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                          ? 'bg-primary text-on-primary font-semibold'
+                          : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface hover:rounded-3xl'
                       )}
                     >
                       <Icon className="w-4 h-4 shrink-0" />
@@ -324,16 +329,19 @@ function QuestionTypeButton({ type, onSelect }: { type: QuestionType; onSelect: 
     <button
       onClick={() => onSelect(type)}
       className={cn(
-        'flex items-center gap-3 p-3 rounded-xl text-left',
-        'bg-surface hover:bg-surface-container transition-all duration-150',
-        'border border-transparent hover:border-primary/30',
+        'flex items-center gap-3 p-3 rounded-2xl text-left',
+        'bg-surface hover:bg-surface-container transition-all duration-200',
+        'border-2 border-transparent hover:border-primary/30 hover:rounded-3xl',
         'group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary'
       )}
     >
       <div
-        className={cn('shrink-0 w-10 h-10 rounded-xl flex items-center justify-center', 'bg-primary/10 group-hover:bg-primary/20 transition-colors')}
+        className={cn(
+          'shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center',
+          'bg-primary-container/50 group-hover:bg-primary-container transition-colors'
+        )}
       >
-        <QuestionTypeIcon type={type} className="w-5 h-5" />
+        <QuestionTypeIcon type={type} className="w-5 h-5 text-on-primary-container" />
       </div>
       <div className="flex-1 min-w-0">
         <div className="font-medium text-sm text-on-surface group-hover:text-primary transition-colors">{getQuestionTypeLabel(type)}</div>
@@ -343,7 +351,7 @@ function QuestionTypeButton({ type, onSelect }: { type: QuestionType; onSelect: 
   );
 }
 
-// Floating Add Button Component - Clean Email Editor-inspired design
+// Floating Add Button Component - M3 Expressive Design
 interface AddQuestionButtonProps {
   onClick: () => void;
   className?: string;
@@ -355,17 +363,20 @@ export function AddQuestionButton({ onClick, className }: AddQuestionButtonProps
     <button
       onClick={onClick}
       className={cn(
-        'flex items-center justify-center gap-2 w-full py-3',
-        'border-2 border-dashed border-outline-variant/40 rounded-xl',
-        'text-on-surface-variant text-sm font-medium',
-        'hover:text-primary hover:border-primary/50 hover:bg-primary/5',
-        'transition-all duration-200',
-        'group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20',
+        'flex items-center justify-center gap-2.5 px-5 py-3',
+        'border-2 border-dashed border-outline-variant/50 rounded-full',
+        'text-on-surface-variant text-sm font-semibold',
+        'hover:text-primary hover:border-primary/60 hover:bg-primary-container/20',
+        'active:scale-[0.98] transition-all duration-200',
+        'group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2',
         className
       )}
     >
       <div
-        className={cn('w-7 h-7 rounded-lg flex items-center justify-center', 'bg-surface-container/50 group-hover:bg-primary/10 transition-colors')}
+        className={cn(
+          'w-6 h-6 rounded-full flex items-center justify-center',
+          'bg-surface-container group-hover:bg-primary-container transition-colors'
+        )}
       >
         <Plus className="w-4 h-4" />
       </div>

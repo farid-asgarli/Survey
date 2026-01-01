@@ -12,6 +12,7 @@ public class SurveyResponseConfiguration : IEntityTypeConfiguration<SurveyRespon
 
         builder.HasKey(r => r.Id);
 
+        builder.Property(r => r.SurveyLinkId);
         builder.Property(r => r.RespondentEmail).HasMaxLength(256);
         builder.Property(r => r.RespondentName).HasMaxLength(100);
         builder.Property(r => r.IpAddress).HasMaxLength(45);
@@ -19,10 +20,6 @@ public class SurveyResponseConfiguration : IEntityTypeConfiguration<SurveyRespon
         builder.Property(r => r.AccessToken).IsRequired().HasMaxLength(100);
 
         builder.Property(r => r.IsComplete).IsRequired().HasDefaultValue(false);
-
-        // Ignore computed properties - use IsComplete and SubmittedAt instead in queries
-        builder.Ignore(r => r.IsCompleted);
-        builder.Ignore(r => r.CompletedAt);
 
         builder.Property(r => r.StartedAt).IsRequired();
 
@@ -46,6 +43,12 @@ public class SurveyResponseConfiguration : IEntityTypeConfiguration<SurveyRespon
             .OnDelete(DeleteBehavior.SetNull);
 
         builder
+            .HasOne(r => r.SurveyLink)
+            .WithMany()
+            .HasForeignKey(r => r.SurveyLinkId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder
             .HasMany(r => r.Answers)
             .WithOne(a => a.Response)
             .HasForeignKey(a => a.ResponseId)
@@ -53,6 +56,7 @@ public class SurveyResponseConfiguration : IEntityTypeConfiguration<SurveyRespon
 
         // Indexes
         builder.HasIndex(r => r.SurveyId);
+        builder.HasIndex(r => r.SurveyLinkId);
         builder.HasIndex(r => r.RespondentEmail);
         builder.HasIndex(r => r.IsComplete);
         builder.HasIndex(r => r.SubmittedAt);

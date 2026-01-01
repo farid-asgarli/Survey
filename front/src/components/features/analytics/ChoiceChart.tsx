@@ -29,15 +29,15 @@ export function ChoiceChart({ questionText, data, totalAnswers, isLoading, class
 
   if (isLoading) {
     return (
-      <Card variant='outlined' className={className}>
-        <CardHeader className='pb-3'>
-          <Skeleton className='h-5 w-3/4' />
+      <Card variant="outlined" className={className}>
+        <CardHeader className="pb-3">
+          <Skeleton className="h-5 w-3/4" />
         </CardHeader>
-        <CardContent className='space-y-3'>
+        <CardContent className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className='space-y-2'>
-              <Skeleton className='h-4 w-1/3' />
-              <Skeleton className='h-6 w-full' />
+            <div key={i} className="space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-6 w-full" />
             </div>
           ))}
         </CardContent>
@@ -47,12 +47,12 @@ export function ChoiceChart({ questionText, data, totalAnswers, isLoading, class
 
   if (!sortedData.length) {
     return (
-      <Card variant='outlined' className={className}>
-        <CardHeader className='pb-3'>
-          <CardTitle className='text-base font-medium line-clamp-2'>{questionText}</CardTitle>
+      <Card variant="outlined" className={className}>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-medium line-clamp-2">{questionText}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className='text-sm text-on-surface-variant'>{t('charts.noResponsesYet')}</p>
+          <p className="text-sm text-on-surface-variant">{t('charts.noResponsesYet')}</p>
         </CardContent>
       </Card>
     );
@@ -60,16 +60,16 @@ export function ChoiceChart({ questionText, data, totalAnswers, isLoading, class
 
   if (variant === 'pie') {
     return (
-      <Card variant='outlined' className={className}>
-        <CardHeader className='pb-3'>
-          <CardTitle className='text-base font-medium line-clamp-2'>{questionText}</CardTitle>
-          <p className='text-xs text-on-surface-variant'>{t('charts.responseCount', { count: totalAnswers })}</p>
+      <Card variant="outlined" className={className}>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-medium line-clamp-2">{questionText}</CardTitle>
+          <p className="text-xs text-on-surface-variant">{t('charts.responseCount', { count: totalAnswers })}</p>
         </CardHeader>
         <CardContent>
-          <div className='flex items-start gap-4'>
+          <div className="flex items-start gap-4">
             {/* Pie chart */}
-            <div className='relative w-24 h-24 shrink-0'>
-              <svg viewBox='0 0 100 100' className='transform -rotate-90'>
+            <div className="relative w-24 h-24 shrink-0">
+              <svg viewBox="0 0 100 100" className="transform -rotate-90">
                 {
                   sortedData.reduce(
                     (acc, item, index) => {
@@ -111,18 +111,20 @@ export function ChoiceChart({ questionText, data, totalAnswers, isLoading, class
             </div>
 
             {/* Legend */}
-            <div className='flex-1 space-y-1.5 overflow-hidden'>
+            <div className="flex-1 space-y-1.5 overflow-hidden">
               {sortedData.slice(0, 5).map((item, index) => (
-                <div key={index} className='flex items-center gap-2 text-sm'>
+                <div key={item.optionId} className="flex items-center gap-2 text-sm">
                   <div
                     className={cn('w-3 h-3 rounded-sm shrink-0', colorScheme === 'mixed' ? chartColors[index % chartColors.length] : 'bg-primary')}
                     style={colorScheme === 'primary' ? { opacity: Math.max(0.3, 1 - index * 0.15) } : undefined}
                   />
-                  <span className='truncate text-on-surface'>{item.option}</span>
-                  <span className='text-on-surface-variant ml-auto shrink-0'>{Math.round(item.percentage)}%</span>
+                  <span className="truncate text-on-surface">{item.option}</span>
+                  <span className="text-on-surface-variant ml-auto shrink-0">{Math.round(item.percentage)}%</span>
                 </div>
               ))}
-              {sortedData.length > 5 && <p className='text-xs text-on-surface-variant'>{t('charts.moreOptions', { count: sortedData.length - 5 })}</p>}
+              {sortedData.length > 5 && (
+                <p className="text-xs text-on-surface-variant">{t('charts.moreOptions', { count: sortedData.length - 5 })}</p>
+              )}
             </div>
           </div>
         </CardContent>
@@ -132,21 +134,21 @@ export function ChoiceChart({ questionText, data, totalAnswers, isLoading, class
 
   // Default: Bar chart
   return (
-    <Card variant='outlined' className={className}>
-      <CardHeader className='pb-3'>
-        <CardTitle className='text-base font-medium line-clamp-2'>{questionText}</CardTitle>
-        <p className='text-xs text-on-surface-variant'>{t('charts.responseCount', { count: totalAnswers })}</p>
+    <Card variant="outlined" className={className}>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base font-medium line-clamp-2">{questionText}</CardTitle>
+        <p className="text-xs text-on-surface-variant">{t('charts.responseCount', { count: totalAnswers })}</p>
       </CardHeader>
-      <CardContent className='space-y-3'>
+      <CardContent className="space-y-3">
         {sortedData.map((item, index) => (
-          <div key={index} className='space-y-1.5'>
-            <div className='flex items-center justify-between text-sm'>
-              <span className='text-on-surface truncate flex-1 mr-2'>{item.option}</span>
-              <span className='text-on-surface-variant shrink-0'>
+          <div key={item.optionId} className="space-y-1.5">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-on-surface truncate flex-1 mr-2">{item.option}</span>
+              <span className="text-on-surface-variant shrink-0">
                 {item.count} ({Math.round(item.percentage)}%)
               </span>
             </div>
-            <div className='h-2 bg-surface-container rounded-full overflow-hidden'>
+            <div className="h-2 bg-surface-container rounded-full overflow-hidden">
               <div
                 className={cn(
                   'h-full rounded-full transition-all duration-500 ease-out',

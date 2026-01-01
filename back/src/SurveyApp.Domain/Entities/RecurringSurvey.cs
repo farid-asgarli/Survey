@@ -230,28 +230,16 @@ public class RecurringSurvey : AggregateRoot<Guid>
             throw new DomainException("Domain.RecurringSurvey.TimezoneIdRequired");
 
         if (pattern == RecurrencePattern.Weekly && (daysOfWeek == null || daysOfWeek.Length == 0))
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.DaysOfWeekRequiredWeekly",
-                nameof(daysOfWeek)
-            );
+            throw new DomainException("Domain.RecurringSurvey.DaysOfWeekRequiredWeekly");
 
         if (pattern == RecurrencePattern.Monthly && !dayOfMonth.HasValue)
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.DayOfMonthRequiredMonthly",
-                nameof(dayOfMonth)
-            );
+            throw new DomainException("Domain.RecurringSurvey.DayOfMonthRequiredMonthly");
 
         if (pattern == RecurrencePattern.Custom && string.IsNullOrWhiteSpace(cronExpression))
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.CronExpressionRequiredCustom",
-                nameof(cronExpression)
-            );
+            throw new DomainException("Domain.RecurringSurvey.CronExpressionRequiredCustom");
 
         if (dayOfMonth.HasValue && (dayOfMonth.Value < 1 || dayOfMonth.Value > 31))
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.DayOfMonthRange",
-                nameof(dayOfMonth)
-            );
+            throw new DomainException("Domain.RecurringSurvey.DayOfMonthRange");
 
         Pattern = pattern;
         SendTime = sendTime;
@@ -276,16 +264,10 @@ public class RecurringSurvey : AggregateRoot<Guid>
             audienceType == AudienceType.StaticList
             && (recipientEmails == null || recipientEmails.Length == 0)
         )
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.RecipientEmailsRequiredStatic",
-                nameof(recipientEmails)
-            );
+            throw new DomainException("Domain.RecurringSurvey.RecipientEmailsRequiredStatic");
 
         if (audienceType == AudienceType.DynamicList && !audienceListId.HasValue)
-            throw new ArgumentException(
-                "Domain.RecurringSurvey.AudienceListIdRequiredDynamic",
-                nameof(audienceListId)
-            );
+            throw new DomainException("Domain.RecurringSurvey.AudienceListIdRequiredDynamic");
 
         AudienceType = audienceType;
         RecipientEmails = recipientEmails ?? [];
@@ -450,7 +432,7 @@ public class RecurringSurvey : AggregateRoot<Guid>
                 RecurrencePattern.Monthly => CalculateMonthlyNextRun(localBaseDate),
                 RecurrencePattern.Quarterly => CalculateQuarterlyNextRun(localBaseDate),
                 RecurrencePattern.Custom => CalculateCustomNextRun(localBaseDate),
-                _ => throw new InvalidOperationException("Domain.RecurringSurvey.UnknownPattern"),
+                _ => throw new DomainException("Domain.RecurringSurvey.UnknownPattern"),
             };
 
             return TimeZoneInfo.ConvertTimeToUtc(nextLocalRun, timeZone);

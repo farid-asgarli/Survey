@@ -34,14 +34,33 @@ public class QuestionAnalyticsDto
     public int? MinValue { get; set; }
     public int? MaxValue { get; set; }
     public IReadOnlyList<string>? SampleAnswers { get; set; }
+
+    /// <summary>
+    /// "Other" responses count (when AllowOther is enabled).
+    /// </summary>
+    public int OtherCount { get; set; }
+
+    /// <summary>
+    /// Sample "Other" text responses.
+    /// </summary>
+    public IReadOnlyList<string>? OtherResponses { get; set; }
 }
 
 /// <summary>
-/// DTO for answer option statistics.
+/// DTO for answer option statistics (aggregated by option ID).
 /// </summary>
 public class AnswerOptionStatsDto
 {
+    /// <summary>
+    /// Option ID for stable identification.
+    /// </summary>
+    public Guid OptionId { get; set; }
+
+    /// <summary>
+    /// Current option text.
+    /// </summary>
     public string Option { get; set; } = null!;
+
     public int Count { get; set; }
     public decimal Percentage { get; set; }
 }

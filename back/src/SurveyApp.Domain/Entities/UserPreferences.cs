@@ -269,10 +269,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateThemeMode(string themeMode)
     {
         if (!IsValidThemeMode(themeMode))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidThemeMode",
-                nameof(themeMode)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidThemeMode");
 
         ThemeMode = themeMode;
     }
@@ -283,10 +280,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateColorPalette(string colorPalette)
     {
         if (!IsValidColorPalette(colorPalette))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidColorPalette",
-                nameof(colorPalette)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidColorPalette");
 
         ColorPalette = colorPalette;
     }
@@ -325,10 +319,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateFontSizeScale(string scale)
     {
         if (!IsValidFontSizeScale(scale))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidFontSizeScale",
-                nameof(scale)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidFontSizeScale");
 
         FontSizeScale = scale;
     }
@@ -362,10 +353,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDateFormat(string dateFormat)
     {
         if (!IsValidDateFormat(dateFormat))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidDateFormat",
-                nameof(dateFormat)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidDateFormat");
 
         DateFormat = dateFormat;
     }
@@ -376,10 +364,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateTimeFormat(string timeFormat)
     {
         if (!IsValidTimeFormat(timeFormat))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidTimeFormat",
-                nameof(timeFormat)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidTimeFormat");
 
         TimeFormat = timeFormat;
     }
@@ -390,10 +375,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateTimezone(string timezone)
     {
         if (string.IsNullOrWhiteSpace(timezone))
-            throw new ArgumentException(
-                "Domain.UserPreferences.TimezoneRequired",
-                nameof(timezone)
-            );
+            throw new DomainException("Domain.UserPreferences.TimezoneRequired");
 
         Timezone = timezone;
     }
@@ -404,10 +386,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDecimalSeparator(string separator)
     {
         if (!IsValidDecimalSeparator(separator))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidDecimalSeparator",
-                nameof(separator)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidDecimalSeparator");
 
         DecimalSeparator = separator;
     }
@@ -418,10 +397,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateThousandsSeparator(string separator)
     {
         if (!IsValidThousandsSeparator(separator))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidThousandsSeparator",
-                nameof(separator)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidThousandsSeparator");
 
         ThousandsSeparator = separator;
     }
@@ -596,7 +572,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultViewMode(string viewMode)
     {
         if (!IsValidViewMode(viewMode))
-            throw new ArgumentException("Domain.UserPreferences.InvalidViewMode", nameof(viewMode));
+            throw new DomainException("Domain.UserPreferences.InvalidViewMode");
         DefaultViewMode = viewMode;
     }
 
@@ -624,7 +600,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultSortField(string field)
     {
         if (!IsValidSortField(field))
-            throw new ArgumentException("Domain.UserPreferences.InvalidSortField", nameof(field));
+            throw new DomainException("Domain.UserPreferences.InvalidSortField");
         DefaultSortField = field;
     }
 
@@ -634,7 +610,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultSortOrder(string order)
     {
         if (!IsValidSortOrder(order))
-            throw new ArgumentException("Domain.UserPreferences.InvalidSortOrder", nameof(order));
+            throw new DomainException("Domain.UserPreferences.InvalidSortOrder");
         DefaultSortOrder = order;
     }
 
@@ -718,10 +694,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateAutoSaveInterval(int seconds)
     {
         if (seconds < 0 || seconds > 300)
-            throw new ArgumentException(
-                "Auto-save interval must be between 0 and 300 seconds.",
-                nameof(seconds)
-            );
+            throw new DomainException("Domain.UserPreferences.AutoSaveIntervalRange");
         AutoSaveInterval = seconds;
     }
 
@@ -731,10 +704,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateQuestionNumberingStyle(string style)
     {
         if (!IsValidQuestionNumberingStyle(style))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidNumberingStyle",
-                nameof(style)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidNumberingStyle");
         QuestionNumberingStyle = style;
     }
 
@@ -752,10 +722,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateDefaultPageBreakBehavior(string behavior)
     {
         if (!IsValidPageBreakBehavior(behavior))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidPageBreakBehavior",
-                nameof(behavior)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidPageBreakBehavior");
         DefaultPageBreakBehavior = behavior;
     }
 
@@ -793,10 +760,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateOnboardingStatus(string status)
     {
         if (!IsValidOnboardingStatus(status))
-            throw new ArgumentException(
-                "Domain.UserPreferences.InvalidOnboardingStatus",
-                nameof(status)
-            );
+            throw new DomainException("Domain.UserPreferences.InvalidOnboardingStatus");
         OnboardingStatus = status;
 
         if (status == "completed" || status == "skipped")
@@ -811,10 +775,7 @@ public class UserPreferences : Entity<Guid>
     public void UpdateOnboardingCurrentStep(int step)
     {
         if (step < 0 || step > 10)
-            throw new ArgumentException(
-                "Domain.UserPreferences.OnboardingStepOutOfRange",
-                nameof(step)
-            );
+            throw new DomainException("Domain.UserPreferences.OnboardingStepOutOfRange");
         OnboardingCurrentStep = step;
 
         if (OnboardingStatus == "not_started" && step > 0)

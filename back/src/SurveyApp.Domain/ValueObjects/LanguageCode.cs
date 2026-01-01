@@ -72,30 +72,24 @@ public sealed class LanguageCode : ValueObject
     /// </summary>
     /// <param name="value">The ISO 639-1 language code.</param>
     /// <returns>A validated LanguageCode instance.</returns>
-    /// <exception cref="ArgumentException">Thrown when the language code is invalid.</exception>
+    /// <exception cref="DomainException">Thrown when the language code is invalid.</exception>
     public static LanguageCode Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException(
-                "Domain.ValueObjects.LanguageCode.LanguageCodeEmpty",
-                nameof(value)
-            );
+            throw new DomainException("Domain.ValueObjects.LanguageCode.LanguageCodeEmpty");
 
         var normalized = value.Trim().ToLowerInvariant();
 
         if (normalized.Length < 2 || normalized.Length > 5)
-            throw new ArgumentException(
-                "Domain.ValueObjects.LanguageCode.InvalidFormat",
-                nameof(value)
-            );
+            throw new DomainException("Domain.ValueObjects.LanguageCode.InvalidFormat");
 
         // Allow codes like "en", "en-US", "zh-CN"
         var primaryCode = normalized.Split('-')[0];
 
         if (!SupportedLanguages.Contains(primaryCode))
-            throw new ArgumentException(
+            throw new DomainException(
                 "Domain.ValueObjects.LanguageCode.UnsupportedCode",
-                nameof(value)
+                primaryCode
             );
 
         return new LanguageCode(normalized);
@@ -119,7 +113,7 @@ public sealed class LanguageCode : ValueObject
             languageCode = Create(value);
             return true;
         }
-        catch (ArgumentException)
+        catch (DomainException)
         {
             return false;
         }

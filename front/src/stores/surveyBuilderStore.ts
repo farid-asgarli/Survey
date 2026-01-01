@@ -164,13 +164,7 @@ const getDefaultSettings = (type: QuestionType): QuestionSettings => {
 const getDefaultOptions = (type: QuestionType): DraftOption[] => {
   if (
     (
-      [
-        QuestionType.SingleChoice,
-        QuestionType.MultipleChoice,
-        QuestionType.Ranking,
-        QuestionType.Dropdown,
-        QuestionType.Checkbox,
-      ] as QuestionType[]
+      [QuestionType.SingleChoice, QuestionType.MultipleChoice, QuestionType.Ranking, QuestionType.Dropdown, QuestionType.Checkbox] as QuestionType[]
     ).includes(type)
   ) {
     return [
@@ -215,8 +209,8 @@ const getQuestionTypeLabel = (type: QuestionType): string => {
 
 const surveyToQuestions = (survey: Survey): DraftQuestion[] => {
   return (survey.questions || []).map((q, index) => {
-    // Options are stored in settings.options as string[]
-    const optionStrings = q.settings?.options || [];
+    // Options have id, text, order structure
+    const options = q.settings?.options || [];
     return {
       id: q.id,
       type: q.type,
@@ -225,11 +219,11 @@ const surveyToQuestions = (survey: Survey): DraftQuestion[] => {
       isRequired: q.isRequired,
       order: index, // Use 0-based index internally, server uses 1-based
       settings: q.settings || {},
-      options: optionStrings.map((text, optIndex) => ({
-        id: `opt-${optIndex}`,
-        text,
-        value: text,
-        order: optIndex,
+      options: options.map((opt, optIndex) => ({
+        id: opt.id || `temp-opt-${optIndex}`,
+        text: opt.text,
+        value: opt.text, // value mirrors text for DraftOption compatibility
+        order: opt.order ?? optIndex,
       })),
     };
   });

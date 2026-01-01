@@ -16,7 +16,7 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
     .WriteTo.Console()
-    // .WriteTo.File("logs/surveyapp-.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/surveyapp-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 builder.Host.UseSerilog();

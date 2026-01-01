@@ -1,4 +1,5 @@
 // Block Settings Panel - Right sidebar for editing block properties
+// M3 Expressive Design: Uses proper UI components, no native elements
 import { useTranslation } from 'react-i18next';
 import {
   X,
@@ -16,9 +17,22 @@ import {
   Share2,
   FileText,
   LayoutTemplate,
+  Plus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button, Input, Textarea, Select } from '@/components/ui';
+import {
+  Button,
+  Input,
+  Textarea,
+  Select,
+  Checkbox,
+  IconButton,
+  Card,
+  ColorPicker,
+  NumberStepper,
+  SegmentedButtonGroup,
+  SegmentedButton,
+} from '@/components/ui';
 import type {
   EmailBlock,
   HeaderBlock,
@@ -39,83 +53,60 @@ interface BlockSettingsPanelProps {
   onClose: () => void;
 }
 
-// Color input component
-function ColorInput({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+// Settings section component - consistent styling for all sections
+interface SettingsSectionProps {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+function SettingsSection({ title, children, className }: SettingsSectionProps) {
   return (
-    <div className="flex items-center gap-2">
-      <label className="text-xs text-on-surface-variant flex-1">{label}</label>
-      <div className="flex items-center gap-1.5">
-        <input
-          type="color"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-8 h-8 rounded-lg border border-outline-variant cursor-pointer"
-        />
-        <Input value={value} onChange={(e) => onChange(e.target.value)} className="w-24 text-xs font-mono" size="sm" />
-      </div>
+    <div className={cn('space-y-3', className)}>
+      <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{title}</h4>
+      {children}
     </div>
   );
 }
 
-// Alignment selector
+// Section divider
+function SectionDivider() {
+  return <div className="h-px bg-outline-variant/30 my-4" />;
+}
+
+// Settings field wrapper for consistent label/control layout
+interface SettingsFieldProps {
+  label: string;
+  children: React.ReactNode;
+  inline?: boolean;
+  className?: string;
+}
+
+function SettingsField({ label, children, inline = false, className }: SettingsFieldProps) {
+  if (inline) {
+    return (
+      <div className={cn('flex items-center justify-between gap-3', className)}>
+        <span className="text-xs text-on-surface-variant">{label}</span>
+        {children}
+      </div>
+    );
+  }
+  return (
+    <div className={cn('space-y-1.5', className)}>
+      <span className="text-xs text-on-surface-variant block">{label}</span>
+      {children}
+    </div>
+  );
+}
+
+// M3 Alignment selector using SegmentedButton
 function AlignmentSelector({ value, onChange }: { value: 'left' | 'center' | 'right'; onChange: (value: 'left' | 'center' | 'right') => void }) {
   return (
-    <div className="flex items-center gap-1 bg-surface-container rounded-lg p-0.5">
-      {[
-        { value: 'left' as const, icon: AlignLeft },
-        { value: 'center' as const, icon: AlignCenter },
-        { value: 'right' as const, icon: AlignRight },
-      ].map(({ value: alignValue, icon: Icon }) => (
-        <button
-          key={alignValue}
-          onClick={() => onChange(alignValue)}
-          className={cn(
-            'p-1.5 rounded-md transition-colors',
-            value === alignValue ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
-          )}
-        >
-          <Icon className="h-4 w-4" />
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// Number input with label
-function NumberInput({
-  label,
-  value,
-  onChange,
-  min = 0,
-  max = 1000,
-  step = 1,
-  suffix = '',
-}: {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  suffix?: string;
-}) {
-  return (
-    <div className="flex items-center gap-2">
-      <label className="text-xs text-on-surface-variant flex-1">{label}</label>
-      <div className="flex items-center gap-1">
-        <Input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          min={min}
-          max={max}
-          step={step}
-          className="w-20 text-xs"
-          size="sm"
-        />
-        {suffix && <span className="text-xs text-on-surface-variant">{suffix}</span>}
-      </div>
-    </div>
+    <SegmentedButtonGroup value={value} onChange={onChange} size="sm">
+      <SegmentedButton value="left" icon={<AlignLeft className="h-4 w-4" />} aria-label="Align left" />
+      <SegmentedButton value="center" icon={<AlignCenter className="h-4 w-4" />} aria-label="Align center" />
+      <SegmentedButton value="right" icon={<AlignRight className="h-4 w-4" />} aria-label="Align right" />
+    </SegmentedButtonGroup>
   );
 }
 
@@ -144,8 +135,7 @@ function HeaderBlockSettings({ block, onChange }: { block: HeaderBlock; onChange
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.logo', 'Logo')}</h4>
+      <SettingsSection title={t('emailEditor.settings.logo', 'Logo')}>
         <Input
           label={t('emailEditor.settings.logoUrl', 'Logo URL')}
           value={block.content.logoUrl || ''}
@@ -153,18 +143,21 @@ function HeaderBlockSettings({ block, onChange }: { block: HeaderBlock; onChange
           placeholder="https://..."
           size="sm"
         />
-        <NumberInput
-          label={t('emailEditor.settings.logoWidth', 'Logo Width')}
-          value={block.content.logoWidth || 150}
-          onChange={(value) => updateContent({ logoWidth: value })}
-          suffix="px"
-        />
-      </div>
+        <SettingsField label={t('emailEditor.settings.logoWidth', 'Logo Width')} inline>
+          <NumberStepper
+            value={block.content.logoWidth || 150}
+            onChange={(value) => updateContent({ logoWidth: value })}
+            min={50}
+            max={400}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.content', 'Content')}</h4>
+      <SettingsSection title={t('emailEditor.settings.content', 'Content')}>
         <Input
           label={t('emailEditor.settings.title', 'Title')}
           value={block.content.title || ''}
@@ -177,33 +170,35 @@ function HeaderBlockSettings({ block, onChange }: { block: HeaderBlock; onChange
           onChange={(e) => updateContent({ subtitle: e.target.value })}
           size="sm"
         />
-      </div>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.style', 'Style')}</h4>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-on-surface-variant">{t('emailEditor.settings.alignment', 'Alignment')}</span>
+      <SettingsSection title={t('emailEditor.settings.style', 'Style')}>
+        <SettingsField label={t('emailEditor.settings.alignment', 'Alignment')} inline>
           <AlignmentSelector value={block.content.alignment || 'center'} onChange={(alignment) => updateContent({ alignment })} />
-        </div>
-        <ColorInput
-          label={t('emailEditor.settings.backgroundColor', 'Background')}
-          value={block.content.backgroundColor || '#ffffff'}
-          onChange={(backgroundColor) => updateContent({ backgroundColor })}
-        />
-        <ColorInput
-          label={t('emailEditor.settings.textColor', 'Text Color')}
-          value={block.content.textColor || '#333333'}
-          onChange={(textColor) => updateContent({ textColor })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.padding', 'Padding')}
-          value={block.content.padding || 20}
-          onChange={(padding) => updateContent({ padding })}
-          suffix="px"
-        />
-      </div>
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.backgroundColor', 'Background')} inline>
+          <ColorPicker
+            value={block.content.backgroundColor || '#ffffff'}
+            onChange={(backgroundColor) => updateContent({ backgroundColor })}
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.textColor', 'Text Color')} inline>
+          <ColorPicker value={block.content.textColor || '#333333'} onChange={(textColor) => updateContent({ textColor })} size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.padding', 'Padding')} inline>
+          <NumberStepper
+            value={block.content.padding || 20}
+            onChange={(padding) => updateContent({ padding })}
+            min={0}
+            max={100}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -217,66 +212,65 @@ function TextBlockSettings({ block, onChange }: { block: TextBlock; onChange: (b
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.content', 'Content')}</h4>
-        <div>
-          <label className="text-xs text-on-surface-variant mb-1 block">{t('emailEditor.settings.htmlContent', 'HTML Content')}</label>
+      <SettingsSection title={t('emailEditor.settings.content', 'Content')}>
+        <SettingsField label={t('emailEditor.settings.htmlContent', 'HTML Content')}>
           <Textarea value={block.content.html} onChange={(e) => updateContent({ html: e.target.value })} rows={5} className="font-mono text-xs" />
-          <p className="text-xs text-on-surface-variant mt-1">
-            {t('emailEditor.settings.htmlSupport', 'Supports: <p>, <strong>, <em>, <a>, <ul>, <ol>')}
-          </p>
-        </div>
-      </div>
+          <p className="text-xs text-on-surface-variant">{t('emailEditor.settings.htmlSupport', 'Supports: <p>, <strong>, <em>, <a>, <ul>, <ol>')}</p>
+        </SettingsField>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
-          {t('emailEditor.settings.typography', 'Typography')}
-        </h4>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-on-surface-variant">{t('emailEditor.settings.alignment', 'Alignment')}</span>
+      <SettingsSection title={t('emailEditor.settings.typography', 'Typography')}>
+        <SettingsField label={t('emailEditor.settings.alignment', 'Alignment')} inline>
           <AlignmentSelector value={block.content.alignment || 'left'} onChange={(alignment) => updateContent({ alignment })} />
-        </div>
-        <NumberInput
-          label={t('emailEditor.settings.fontSize', 'Font Size')}
-          value={block.content.fontSize || 16}
-          onChange={(fontSize) => updateContent({ fontSize })}
-          min={10}
-          max={48}
-          suffix="px"
-        />
-        <NumberInput
-          label={t('emailEditor.settings.lineHeight', 'Line Height')}
-          value={block.content.lineHeight || 1.5}
-          onChange={(lineHeight) => updateContent({ lineHeight })}
-          min={1}
-          max={3}
-          step={0.1}
-        />
-      </div>
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.fontSize', 'Font Size')} inline>
+          <NumberStepper
+            value={block.content.fontSize || 16}
+            onChange={(fontSize) => updateContent({ fontSize })}
+            min={10}
+            max={48}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.lineHeight', 'Line Height')} inline>
+          <NumberStepper
+            value={block.content.lineHeight || 1.5}
+            onChange={(lineHeight) => updateContent({ lineHeight })}
+            min={1}
+            max={3}
+            step={0.1}
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.colors', 'Colors')}</h4>
-        <ColorInput
-          label={t('emailEditor.settings.textColor', 'Text Color')}
-          value={block.content.textColor || '#333333'}
-          onChange={(textColor) => updateContent({ textColor })}
-        />
-        <ColorInput
-          label={t('emailEditor.settings.backgroundColor', 'Background')}
-          value={block.content.backgroundColor || '#ffffff'}
-          onChange={(backgroundColor) => updateContent({ backgroundColor })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.padding', 'Padding')}
-          value={block.content.padding || 20}
-          onChange={(padding) => updateContent({ padding })}
-          suffix="px"
-        />
-      </div>
+      <SettingsSection title={t('emailEditor.settings.colors', 'Colors')}>
+        <SettingsField label={t('emailEditor.settings.textColor', 'Text Color')} inline>
+          <ColorPicker value={block.content.textColor || '#333333'} onChange={(textColor) => updateContent({ textColor })} size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.backgroundColor', 'Background')} inline>
+          <ColorPicker
+            value={block.content.backgroundColor || '#ffffff'}
+            onChange={(backgroundColor) => updateContent({ backgroundColor })}
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.padding', 'Padding')} inline>
+          <NumberStepper
+            value={block.content.padding || 20}
+            onChange={(padding) => updateContent({ padding })}
+            min={0}
+            max={100}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -290,8 +284,7 @@ function ImageBlockSettings({ block, onChange }: { block: ImageBlock; onChange: 
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.image', 'Image')}</h4>
+      <SettingsSection title={t('emailEditor.settings.image', 'Image')}>
         <Input
           label={t('emailEditor.settings.imageUrl', 'Image URL')}
           value={block.content.src}
@@ -313,36 +306,45 @@ function ImageBlockSettings({ block, onChange }: { block: ImageBlock; onChange: 
           size="sm"
           startIcon={block.content.linkUrl ? <Link className="h-3.5 w-3.5" /> : <Unlink className="h-3.5 w-3.5" />}
         />
-      </div>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.layout', 'Layout')}</h4>
-        <NumberInput
-          label={t('emailEditor.settings.width', 'Width')}
-          value={block.content.width || 560}
-          onChange={(width) => updateContent({ width })}
-          max={600}
-          suffix="px"
-        />
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-on-surface-variant">{t('emailEditor.settings.alignment', 'Alignment')}</span>
+      <SettingsSection title={t('emailEditor.settings.layout', 'Layout')}>
+        <SettingsField label={t('emailEditor.settings.width', 'Width')} inline>
+          <NumberStepper
+            value={block.content.width || 560}
+            onChange={(width) => updateContent({ width })}
+            min={100}
+            max={600}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.alignment', 'Alignment')} inline>
           <AlignmentSelector value={block.content.alignment || 'center'} onChange={(alignment) => updateContent({ alignment })} />
-        </div>
-        <NumberInput
-          label={t('emailEditor.settings.borderRadius', 'Border Radius')}
-          value={block.content.borderRadius || 0}
-          onChange={(borderRadius) => updateContent({ borderRadius })}
-          suffix="px"
-        />
-        <NumberInput
-          label={t('emailEditor.settings.padding', 'Padding')}
-          value={block.content.padding || 10}
-          onChange={(padding) => updateContent({ padding })}
-          suffix="px"
-        />
-      </div>
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.borderRadius', 'Border Radius')} inline>
+          <NumberStepper
+            value={block.content.borderRadius || 0}
+            onChange={(borderRadius) => updateContent({ borderRadius })}
+            min={0}
+            max={50}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.padding', 'Padding')} inline>
+          <NumberStepper
+            value={block.content.padding || 10}
+            onChange={(padding) => updateContent({ padding })}
+            min={0}
+            max={100}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -356,8 +358,7 @@ function ButtonBlockSettings({ block, onChange }: { block: ButtonBlock; onChange
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.button', 'Button')}</h4>
+      <SettingsSection title={t('emailEditor.settings.button', 'Button')}>
         <Input
           label={t('emailEditor.settings.buttonText', 'Button Text')}
           value={block.content.text}
@@ -371,77 +372,94 @@ function ButtonBlockSettings({ block, onChange }: { block: ButtonBlock; onChange
           placeholder="{{surveyLink}}"
           size="sm"
         />
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="fullWidth"
-            checked={block.content.fullWidth || false}
-            onChange={(e) => updateContent({ fullWidth: e.target.checked })}
-            className="rounded"
-          />
-          <label htmlFor="fullWidth" className="text-xs text-on-surface-variant">
-            {t('emailEditor.settings.fullWidth', 'Full Width')}
-          </label>
-        </div>
-      </div>
+        <Checkbox
+          id="fullWidth"
+          label={t('emailEditor.settings.fullWidth', 'Full Width')}
+          checked={block.content.fullWidth || false}
+          onChange={(e) => updateContent({ fullWidth: e.target.checked })}
+        />
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.style', 'Style')}</h4>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-on-surface-variant">{t('emailEditor.settings.alignment', 'Alignment')}</span>
+      <SettingsSection title={t('emailEditor.settings.style', 'Style')}>
+        <SettingsField label={t('emailEditor.settings.alignment', 'Alignment')} inline>
           <AlignmentSelector value={block.content.alignment || 'center'} onChange={(alignment) => updateContent({ alignment })} />
-        </div>
-        <ColorInput
-          label={t('emailEditor.settings.buttonColor', 'Button Color')}
-          value={block.content.backgroundColor || '#0066cc'}
-          onChange={(backgroundColor) => updateContent({ backgroundColor })}
-        />
-        <ColorInput
-          label={t('emailEditor.settings.textColor', 'Text Color')}
-          value={block.content.textColor || '#ffffff'}
-          onChange={(textColor) => updateContent({ textColor })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.fontSize', 'Font Size')}
-          value={block.content.fontSize || 16}
-          onChange={(fontSize) => updateContent({ fontSize })}
-          min={12}
-          max={24}
-          suffix="px"
-        />
-        <NumberInput
-          label={t('emailEditor.settings.borderRadius', 'Border Radius')}
-          value={block.content.borderRadius || 4}
-          onChange={(borderRadius) => updateContent({ borderRadius })}
-          suffix="px"
-        />
-      </div>
-
-      <div className="h-px bg-outline-variant/30" />
-
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.padding', 'Padding')}</h4>
-        <div className="grid grid-cols-2 gap-2">
-          <NumberInput
-            label={t('emailEditor.settings.vertical', 'Vertical')}
-            value={block.content.padding?.vertical || 12}
-            onChange={(vertical) =>
-              updateContent({ padding: { ...block.content.padding, vertical, horizontal: block.content.padding?.horizontal || 24 } })
-            }
-            suffix="px"
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.buttonColor', 'Button Color')} inline>
+          <ColorPicker
+            value={block.content.backgroundColor || '#0066cc'}
+            onChange={(backgroundColor) => updateContent({ backgroundColor })}
+            size="sm"
           />
-          <NumberInput
-            label={t('emailEditor.settings.horizontal', 'Horizontal')}
-            value={block.content.padding?.horizontal || 24}
-            onChange={(horizontal) =>
-              updateContent({ padding: { ...block.content.padding, horizontal, vertical: block.content.padding?.vertical || 12 } })
-            }
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.textColor', 'Text Color')} inline>
+          <ColorPicker value={block.content.textColor || '#ffffff'} onChange={(textColor) => updateContent({ textColor })} size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.fontSize', 'Font Size')} inline>
+          <NumberStepper
+            value={block.content.fontSize || 16}
+            onChange={(fontSize) => updateContent({ fontSize })}
+            min={12}
+            max={24}
             suffix="px"
+            size="sm"
           />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.borderRadius', 'Border Radius')} inline>
+          <NumberStepper
+            value={block.content.borderRadius || 4}
+            onChange={(borderRadius) => updateContent({ borderRadius })}
+            min={0}
+            max={50}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
+
+      <SectionDivider />
+
+      <SettingsSection title={t('emailEditor.settings.padding', 'Padding')}>
+        <div className="grid grid-cols-2 gap-3">
+          <SettingsField label={t('emailEditor.settings.vertical', 'Vertical')}>
+            <NumberStepper
+              value={block.content.padding?.vertical || 12}
+              onChange={(vertical) =>
+                updateContent({
+                  padding: {
+                    ...block.content.padding,
+                    vertical,
+                    horizontal: block.content.padding?.horizontal || 24,
+                  },
+                })
+              }
+              min={4}
+              max={40}
+              suffix="px"
+              size="sm"
+            />
+          </SettingsField>
+          <SettingsField label={t('emailEditor.settings.horizontal', 'Horizontal')}>
+            <NumberStepper
+              value={block.content.padding?.horizontal || 24}
+              onChange={(horizontal) =>
+                updateContent({
+                  padding: {
+                    ...block.content.padding,
+                    horizontal,
+                    vertical: block.content.padding?.vertical || 12,
+                  },
+                })
+              }
+              min={8}
+              max={60}
+              suffix="px"
+              size="sm"
+            />
+          </SettingsField>
         </div>
-      </div>
+      </SettingsSection>
     </div>
   );
 }
@@ -455,29 +473,28 @@ function DividerBlockSettings({ block, onChange }: { block: DividerBlock; onChan
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.divider', 'Divider')}</h4>
-        <ColorInput
-          label={t('emailEditor.settings.color', 'Color')}
-          value={block.content.color || '#dddddd'}
-          onChange={(color) => updateContent({ color })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.thickness', 'Thickness')}
-          value={block.content.thickness || 1}
-          onChange={(thickness) => updateContent({ thickness })}
-          min={1}
-          max={10}
-          suffix="px"
-        />
+      <SettingsSection title={t('emailEditor.settings.divider', 'Divider')}>
+        <SettingsField label={t('emailEditor.settings.color', 'Color')} inline>
+          <ColorPicker value={block.content.color || '#dddddd'} onChange={(color) => updateContent({ color })} size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.thickness', 'Thickness')} inline>
+          <NumberStepper
+            value={block.content.thickness || 1}
+            onChange={(thickness) => updateContent({ thickness })}
+            min={1}
+            max={10}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
         <Select
           label={t('emailEditor.settings.style', 'Style')}
           value={block.content.style || 'solid'}
           onChange={(style) => updateContent({ style: style as 'solid' | 'dashed' | 'dotted' })}
           options={[
-            { value: 'solid', label: 'Solid' },
-            { value: 'dashed', label: 'Dashed' },
-            { value: 'dotted', label: 'Dotted' },
+            { value: 'solid', label: t('emailEditor.dividerStyles.solid', 'Solid') },
+            { value: 'dashed', label: t('emailEditor.dividerStyles.dashed', 'Dashed') },
+            { value: 'dotted', label: t('emailEditor.dividerStyles.dotted', 'Dotted') },
           ]}
         />
         <Input
@@ -487,13 +504,17 @@ function DividerBlockSettings({ block, onChange }: { block: DividerBlock; onChan
           placeholder="100% or 400px"
           size="sm"
         />
-        <NumberInput
-          label={t('emailEditor.settings.padding', 'Padding')}
-          value={block.content.padding || 20}
-          onChange={(padding) => updateContent({ padding })}
-          suffix="px"
-        />
-      </div>
+        <SettingsField label={t('emailEditor.settings.padding', 'Padding')} inline>
+          <NumberStepper
+            value={block.content.padding || 20}
+            onChange={(padding) => updateContent({ padding })}
+            min={0}
+            max={100}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -504,17 +525,26 @@ function SpacerBlockSettings({ block, onChange }: { block: SpacerBlock; onChange
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.spacer', 'Spacer')}</h4>
-        <NumberInput
-          label={t('emailEditor.settings.height', 'Height')}
-          value={block.content.height || 20}
-          onChange={(height) => onChange({ ...block, content: { height } })}
-          min={5}
-          max={200}
-          suffix="px"
-        />
-      </div>
+      <SettingsSection title={t('emailEditor.settings.spacer', 'Spacer')}>
+        <SettingsField label={t('emailEditor.settings.height', 'Height')} inline>
+          <NumberStepper
+            value={block.content.height || 20}
+            onChange={(height) => onChange({ ...block, content: { height } })}
+            min={5}
+            max={200}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
+
+      {/* Visual preview of spacer height */}
+      <Card variant="outlined" padding="sm" className="mt-4">
+        <div className="text-xs text-on-surface-variant text-center mb-2">{t('emailEditor.settings.preview', 'Preview')}</div>
+        <div className="bg-primary/10 rounded-xl flex items-center justify-center" style={{ height: block.content.height || 20 }}>
+          <span className="text-xs text-primary font-medium">{block.content.height || 20}px</span>
+        </div>
+      </Card>
     </div>
   );
 }
@@ -527,7 +557,11 @@ function ColumnsBlockSettings({ block, onChange }: { block: ColumnsBlock; onChan
   };
 
   const addColumn = () => {
-    const newColumn = { id: `col-${Date.now()}`, blocks: [], width: Math.floor(100 / (block.content.columns.length + 1)) };
+    const newColumn = {
+      id: `col-${Date.now()}`,
+      blocks: [],
+      width: Math.floor(100 / (block.content.columns.length + 1)),
+    };
     const newColumns = [...block.content.columns, newColumn].map((col, _, arr) => ({
       ...col,
       width: Math.floor(100 / arr.length),
@@ -554,76 +588,74 @@ function ColumnsBlockSettings({ block, onChange }: { block: ColumnsBlock; onChan
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.columns', 'Columns')}</h4>
-          <Button variant="text" size="sm" onClick={addColumn} disabled={block.content.columns.length >= 4}>
-            + {t('common.add', 'Add')}
+      <SettingsSection title={t('emailEditor.settings.columns', 'Columns')}>
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs text-on-surface-variant">
+            {block.content.columns.length} {t('emailEditor.columns', 'columns')}
+          </span>
+          <Button variant="tonal" size="sm" onClick={addColumn} disabled={block.content.columns.length >= 4}>
+            <Plus className="h-3.5 w-3.5 mr-1" />
+            {t('common.add', 'Add')}
           </Button>
         </div>
 
         <div className="space-y-2">
           {block.content.columns.map((column, index) => (
-            <div key={column.id} className="flex items-center gap-2 p-2 bg-surface-container rounded-lg">
-              <span className="text-xs text-on-surface-variant w-8">#{index + 1}</span>
-              <Input
-                type="number"
+            <Card key={column.id} variant="filled" padding="sm" className="flex items-center gap-3">
+              <span className="text-xs text-on-surface-variant font-medium w-6">#{index + 1}</span>
+              <NumberStepper
                 value={column.width || Math.floor(100 / block.content.columns.length)}
-                onChange={(e) => updateColumnWidth(index, Number(e.target.value))}
+                onChange={(value) => updateColumnWidth(index, value)}
                 min={10}
                 max={90}
-                className="w-16 text-xs"
+                suffix="%"
                 size="sm"
+                className="flex-1"
               />
-              <span className="text-xs text-on-surface-variant">%</span>
-              <Button
-                variant="text"
-                size="icon-sm"
+              <IconButton
+                variant="ghost"
+                size="sm"
                 onClick={() => removeColumn(index)}
                 disabled={block.content.columns.length <= 1}
-                className="ml-auto"
+                aria-label={t('common.delete', 'Delete')}
               >
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
+                <X className="h-4 w-4" />
+              </IconButton>
+            </Card>
           ))}
         </div>
-      </div>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.layout', 'Layout')}</h4>
-        <NumberInput
-          label={t('emailEditor.settings.gap', 'Gap')}
-          value={block.content.gap || 20}
-          onChange={(gap) => updateContent({ gap })}
-          suffix="px"
-        />
-        <ColorInput
-          label={t('emailEditor.settings.backgroundColor', 'Background')}
-          value={block.content.backgroundColor || '#ffffff'}
-          onChange={(backgroundColor) => updateContent({ backgroundColor })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.padding', 'Padding')}
-          value={block.content.padding || 20}
-          onChange={(padding) => updateContent({ padding })}
-          suffix="px"
-        />
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="stackOnMobile"
-            checked={block.content.stackOnMobile !== false}
-            onChange={(e) => updateContent({ stackOnMobile: e.target.checked })}
-            className="rounded"
+      <SettingsSection title={t('emailEditor.settings.layout', 'Layout')}>
+        <SettingsField label={t('emailEditor.settings.gap', 'Gap')} inline>
+          <NumberStepper value={block.content.gap || 20} onChange={(gap) => updateContent({ gap })} min={0} max={60} suffix="px" size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.backgroundColor', 'Background')} inline>
+          <ColorPicker
+            value={block.content.backgroundColor || '#ffffff'}
+            onChange={(backgroundColor) => updateContent({ backgroundColor })}
+            size="sm"
           />
-          <label htmlFor="stackOnMobile" className="text-xs text-on-surface-variant">
-            {t('emailEditor.settings.stackOnMobile', 'Stack on mobile')}
-          </label>
-        </div>
-      </div>
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.padding', 'Padding')} inline>
+          <NumberStepper
+            value={block.content.padding || 20}
+            onChange={(padding) => updateContent({ padding })}
+            min={0}
+            max={100}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+        <Checkbox
+          id="stackOnMobile"
+          label={t('emailEditor.settings.stackOnMobile', 'Stack on mobile')}
+          checked={block.content.stackOnMobile !== false}
+          onChange={(e) => updateContent({ stackOnMobile: e.target.checked })}
+        />
+      </SettingsSection>
     </div>
   );
 }
@@ -653,58 +685,67 @@ function SocialBlockSettings({ block, onChange }: { block: SocialBlock; onChange
     updateContent({ links: newLinks });
   };
 
+  const availablePlatforms = platforms.filter((p) => !(block.content.links || []).some((l) => l.platform === p));
+
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
-          {t('emailEditor.settings.socialLinks', 'Social Links')}
-        </h4>
-        {(block.content.links || []).map((link, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <span className="text-xs font-medium capitalize w-16">{link.platform}</span>
-            <Input value={link.url} onChange={(e) => updateLink(index, e.target.value)} placeholder="https://..." size="sm" className="flex-1" />
-            <Button variant="text" size="icon-sm" onClick={() => removeLink(index)}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
-        <Select
-          value=""
-          onChange={(platform) => {
-            if (platform) addLink(platform as SocialLink['platform']);
-          }}
-          options={[
-            { value: '', label: t('emailEditor.settings.addPlatform', 'Add platform...') },
-            ...platforms
-              .filter((p) => !(block.content.links || []).some((l) => l.platform === p))
-              .map((p) => ({ value: p, label: p.charAt(0).toUpperCase() + p.slice(1) })),
-          ]}
-        />
-      </div>
-
-      <div className="h-px bg-outline-variant/30" />
-
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.style', 'Style')}</h4>
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-on-surface-variant">{t('emailEditor.settings.alignment', 'Alignment')}</span>
-          <AlignmentSelector value={block.content.alignment || 'center'} onChange={(alignment) => updateContent({ alignment })} />
+      <SettingsSection title={t('emailEditor.settings.socialLinks', 'Social Links')}>
+        <div className="space-y-2">
+          {(block.content.links || []).map((link, index) => (
+            <Card key={index} variant="filled" padding="sm" className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium capitalize text-on-surface">{link.platform}</span>
+                <IconButton variant="ghost" size="sm" onClick={() => removeLink(index)} aria-label={t('common.delete', 'Delete')}>
+                  <X className="h-4 w-4" />
+                </IconButton>
+              </div>
+              <Input
+                value={link.url}
+                onChange={(e) => updateLink(index, e.target.value)}
+                placeholder={`https://${link.platform}.com/...`}
+                size="sm"
+              />
+            </Card>
+          ))}
         </div>
-        <NumberInput
-          label={t('emailEditor.settings.iconSize', 'Icon Size')}
-          value={block.content.iconSize || 32}
-          onChange={(iconSize) => updateContent({ iconSize })}
-          min={20}
-          max={64}
-          suffix="px"
-        />
-        <NumberInput
-          label={t('emailEditor.settings.gap', 'Gap')}
-          value={block.content.gap || 10}
-          onChange={(gap) => updateContent({ gap })}
-          suffix="px"
-        />
-      </div>
+
+        {availablePlatforms.length > 0 && (
+          <Select
+            value=""
+            onChange={(platform) => {
+              if (platform) addLink(platform as SocialLink['platform']);
+            }}
+            options={[
+              { value: '', label: t('emailEditor.settings.addPlatform', 'Add platform...') },
+              ...availablePlatforms.map((p) => ({
+                value: p,
+                label: p.charAt(0).toUpperCase() + p.slice(1),
+              })),
+            ]}
+          />
+        )}
+      </SettingsSection>
+
+      <SectionDivider />
+
+      <SettingsSection title={t('emailEditor.settings.style', 'Style')}>
+        <SettingsField label={t('emailEditor.settings.alignment', 'Alignment')} inline>
+          <AlignmentSelector value={block.content.alignment || 'center'} onChange={(alignment) => updateContent({ alignment })} />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.iconSize', 'Icon Size')} inline>
+          <NumberStepper
+            value={block.content.iconSize || 32}
+            onChange={(iconSize) => updateContent({ iconSize })}
+            min={20}
+            max={64}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.gap', 'Gap')} inline>
+          <NumberStepper value={block.content.gap || 10} onChange={(gap) => updateContent({ gap })} min={0} max={40} suffix="px" size="sm" />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -718,10 +759,7 @@ function FooterBlockSettings({ block, onChange }: { block: FooterBlock; onChange
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
-          {t('emailEditor.settings.companyInfo', 'Company Info')}
-        </h4>
+      <SettingsSection title={t('emailEditor.settings.companyInfo', 'Company Info')}>
         <Input
           label={t('emailEditor.settings.companyName', 'Company Name')}
           value={block.content.companyName || ''}
@@ -729,23 +767,19 @@ function FooterBlockSettings({ block, onChange }: { block: FooterBlock; onChange
           placeholder="{{companyName}}"
           size="sm"
         />
-        <div>
-          <label className="text-xs text-on-surface-variant mb-1 block">{t('emailEditor.settings.address', 'Address')}</label>
+        <SettingsField label={t('emailEditor.settings.address', 'Address')}>
           <Textarea
             value={block.content.address || ''}
             onChange={(e) => updateContent({ address: e.target.value })}
             rows={2}
             placeholder={t('emailEditor.settings.addressPlaceholder', 'Company address...')}
           />
-        </div>
-      </div>
+        </SettingsField>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
-          {t('emailEditor.settings.unsubscribe', 'Unsubscribe')}
-        </h4>
+      <SettingsSection title={t('emailEditor.settings.unsubscribe', 'Unsubscribe')}>
         <Input
           label={t('emailEditor.settings.unsubscribeText', 'Link Text')}
           value={block.content.unsubscribeText || ''}
@@ -759,31 +793,32 @@ function FooterBlockSettings({ block, onChange }: { block: FooterBlock; onChange
           placeholder="{{unsubscribeLink}}"
           size="sm"
         />
-      </div>
+      </SettingsSection>
 
-      <div className="h-px bg-outline-variant/30" />
+      <SectionDivider />
 
-      <div className="space-y-3">
-        <h4 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{t('emailEditor.settings.style', 'Style')}</h4>
-        <ColorInput
-          label={t('emailEditor.settings.backgroundColor', 'Background')}
-          value={block.content.backgroundColor || '#f4f4f4'}
-          onChange={(backgroundColor) => updateContent({ backgroundColor })}
-        />
-        <ColorInput
-          label={t('emailEditor.settings.textColor', 'Text Color')}
-          value={block.content.textColor || '#666666'}
-          onChange={(textColor) => updateContent({ textColor })}
-        />
-        <NumberInput
-          label={t('emailEditor.settings.fontSize', 'Font Size')}
-          value={block.content.fontSize || 12}
-          onChange={(fontSize) => updateContent({ fontSize })}
-          min={10}
-          max={18}
-          suffix="px"
-        />
-      </div>
+      <SettingsSection title={t('emailEditor.settings.style', 'Style')}>
+        <SettingsField label={t('emailEditor.settings.backgroundColor', 'Background')} inline>
+          <ColorPicker
+            value={block.content.backgroundColor || '#f4f4f4'}
+            onChange={(backgroundColor) => updateContent({ backgroundColor })}
+            size="sm"
+          />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.textColor', 'Text Color')} inline>
+          <ColorPicker value={block.content.textColor || '#666666'} onChange={(textColor) => updateContent({ textColor })} size="sm" />
+        </SettingsField>
+        <SettingsField label={t('emailEditor.settings.fontSize', 'Font Size')} inline>
+          <NumberStepper
+            value={block.content.fontSize || 12}
+            onChange={(fontSize) => updateContent({ fontSize })}
+            min={10}
+            max={18}
+            suffix="px"
+            size="sm"
+          />
+        </SettingsField>
+      </SettingsSection>
     </div>
   );
 }
@@ -795,11 +830,13 @@ export function BlockSettingsPanel({ block, onChange, onClose }: BlockSettingsPa
   if (!block) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-3">
-          <MousePointer2 className="h-6 w-6 text-on-surface-variant" />
-        </div>
+        <Card variant="filled" className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
+          <MousePointer2 className="h-7 w-7 text-on-surface-variant" />
+        </Card>
         <h3 className="text-sm font-medium text-on-surface mb-1">{t('emailEditor.noBlockSelected', 'No block selected')}</h3>
-        <p className="text-xs text-on-surface-variant">{t('emailEditor.selectBlockHint', 'Select a block in the canvas to edit its properties')}</p>
+        <p className="text-xs text-on-surface-variant max-w-50">
+          {t('emailEditor.selectBlockHint', 'Select a block in the canvas to edit its properties')}
+        </p>
       </div>
     );
   }
@@ -844,17 +881,19 @@ export function BlockSettingsPanel({ block, onChange, onClose }: BlockSettingsPa
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b border-outline-variant/30 bg-surface-container/50 shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary">{getBlockIcon(block.type)}</div>
+      <div className="flex items-center justify-between p-4 border-b border-outline-variant/30 bg-surface-container/50 shrink-0">
+        <div className="flex items-center gap-3">
+          <Card variant="highlighted" className="w-10 h-10 rounded-xl flex items-center justify-center">
+            {getBlockIcon(block.type)}
+          </Card>
           <div>
-            <h4 className="text-sm font-medium text-on-surface">{blockTypeLabel[block.type]}</h4>
+            <h4 className="text-sm font-semibold text-on-surface">{blockTypeLabel[block.type]}</h4>
             <p className="text-xs text-on-surface-variant">{t('emailEditor.blockSettings', 'Block Settings')}</p>
           </div>
         </div>
-        <Button variant="text" size="icon-sm" onClick={onClose}>
+        <IconButton variant="standard" size="sm" onClick={onClose} aria-label={t('common.close', 'Close')}>
           <X className="h-4 w-4" />
-        </Button>
+        </IconButton>
       </div>
 
       {/* Settings content */}

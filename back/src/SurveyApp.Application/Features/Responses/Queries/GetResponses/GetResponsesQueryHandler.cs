@@ -67,7 +67,9 @@ public class GetResponsesQueryHandler(
             request.SurveyId,
             request.PageNumber,
             request.PageSize,
-            request.IsCompleted,
+            request.IsComplete,
+            request.FromDate,
+            request.ToDate,
             cancellationToken
         );
 
@@ -76,9 +78,11 @@ public class GetResponsesQueryHandler(
             {
                 Id = r.Id,
                 RespondentEmail = r.RespondentEmail ?? r.Respondent?.Email,
-                IsCompleted = r.IsComplete,
-                CompletedAt = r.SubmittedAt,
+                RespondentName = r.RespondentName,
+                IsComplete = r.IsComplete,
                 StartedAt = r.StartedAt,
+                SubmittedAt = r.SubmittedAt,
+                TimeSpentSeconds = r.TimeSpentSeconds,
                 AnswerCount = r.Answers.Count,
             })
             .ToList();

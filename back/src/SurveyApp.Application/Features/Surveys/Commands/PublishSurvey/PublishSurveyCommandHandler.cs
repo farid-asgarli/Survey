@@ -41,7 +41,7 @@ public class PublishSurveyCommandHandler(
         }
 
         // Validate survey has at least one question
-        if (!survey.Questions.Any())
+        if (survey.Questions.Count == 0)
         {
             return Result<SurveyDto>.Failure("Errors.SurveyRequiresQuestions");
         }

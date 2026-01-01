@@ -130,15 +130,14 @@ export function QuestionAnalyticsCard({ question, isLoading, className }: Questi
           <CardContent>
             {question.answerOptions?.length ? (
               <div className="space-y-2">
-                {question.answerOptions.map((option, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
+                {question.answerOptions.map((option) => (
+                  <div key={option.optionId} className="flex items-center justify-between text-sm">
                     <span className="text-on-surface">{option.option}</span>
                     <span className="text-on-surface-variant">
                       {option.count} ({Math.round(option.percentage)}%)
                     </span>
                   </div>
                 ))}
-                n{' '}
               </div>
             ) : (
               <p className="text-sm text-on-surface-variant">{t('analytics.noData')}</p>

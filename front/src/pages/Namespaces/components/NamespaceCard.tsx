@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardHeader, CardContent, Menu, MenuItem, MenuSeparator, Chip } from '@/components/ui';
+import { Card, CardHeader, CardContent, Menu, MenuItem, MenuSeparator, Chip, IconButton } from '@/components/ui';
 import { MoreVertical, Settings, Trash2, Crown, Check, Building2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { NamespaceCardProps } from '../types';
@@ -22,52 +22,50 @@ export function NamespaceCard({ namespace, isActive, isOwner, onSelect, onSettin
           </div>
 
           {/* Menu button */}
-          <Menu
-            trigger={
-              <button
-                className="p-2 -mr-2 -mt-1 rounded-full hover:bg-surface-container-high opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
-                onClick={(e) => e.stopPropagation()}
-                aria-label={t('common.workspaceOptions')}
+          <div onClick={(e) => e.stopPropagation()}>
+            <Menu
+              trigger={
+                <IconButton variant="standard" size="sm" aria-label={t('common.workspaceOptions')} className="h-8 w-8 -mr-1 -mt-1">
+                  <MoreVertical className="h-4 w-4" />
+                </IconButton>
+              }
+              align="end"
+            >
+              <MenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect();
+                }}
+                icon={<Check className="h-4 w-4" />}
               >
-                <MoreVertical className="h-4 w-4 text-on-surface-variant" />
-              </button>
-            }
-            align="end"
-          >
-            <MenuItem
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect();
-              }}
-              icon={<Check className="h-4 w-4" />}
-            >
-              {t('workspaces.switchTo')}
-            </MenuItem>
-            <MenuItem
-              onClick={(e) => {
-                e.stopPropagation();
-                onSettings();
-              }}
-              icon={<Settings className="h-4 w-4" />}
-            >
-              {t('workspaces.settings')}
-            </MenuItem>
-            {isOwner && (
-              <>
-                <MenuSeparator />
-                <MenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete();
-                  }}
-                  destructive
-                  icon={<Trash2 className="h-4 w-4" />}
-                >
-                  {t('workspaces.deleteWorkspace')}
-                </MenuItem>
-              </>
-            )}
-          </Menu>
+                {t('workspaces.switchTo')}
+              </MenuItem>
+              <MenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSettings();
+                }}
+                icon={<Settings className="h-4 w-4" />}
+              >
+                {t('workspaces.settings')}
+              </MenuItem>
+              {isOwner && (
+                <>
+                  <MenuSeparator />
+                  <MenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete();
+                    }}
+                    destructive
+                    icon={<Trash2 className="h-4 w-4" />}
+                  >
+                    {t('workspaces.deleteWorkspace')}
+                  </MenuItem>
+                </>
+              )}
+            </Menu>
+          </div>
         </div>
       </CardHeader>
 

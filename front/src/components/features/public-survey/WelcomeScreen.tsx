@@ -12,6 +12,8 @@ interface WelcomeScreenProps {
   welcomeMessage?: string;
   questionCount: number;
   onStart: () => void;
+  /** Whether the start action is in progress */
+  isStarting?: boolean;
   /** Logo URL to display instead of the default icon */
   logoUrl?: string;
   /** Logo size: 0=small, 1=medium (default), 2=large, 3=extra-large */
@@ -32,6 +34,7 @@ export function WelcomeScreen({
   welcomeMessage,
   questionCount,
   onStart,
+  isStarting,
   logoUrl,
   logoSize,
   showLogoBackground,
@@ -144,10 +147,12 @@ export function WelcomeScreen({
         <Button
           size="lg"
           onClick={onStart}
+          disabled={isStarting}
+          loading={isStarting}
           className="gap-2 @sm:gap-3 px-8 @sm:px-10 @md:px-14 text-base @sm:text-lg transition-all duration-200 group w-full @sm:w-auto"
         >
-          {t('welcomeScreen.startSurvey')}
-          <ArrowRight className="w-4 h-4 @sm:w-5 @sm:h-5 transition-transform duration-200 group-hover:translate-x-0.5" />
+          {isStarting ? t('welcomeScreen.starting', { defaultValue: 'Starting...' }) : t('welcomeScreen.startSurvey')}
+          {!isStarting && <ArrowRight className="w-4 h-4 @sm:w-5 @sm:h-5 transition-transform duration-200 group-hover:translate-x-0.5" />}
         </Button>
 
         {/* Subtle encouragement text */}

@@ -30,10 +30,8 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     )
     {
         // No AsNoTracking() - enables change tracking for updates
-        return await _context
-            .SurveyLinks.Include(l => l.Survey)
-            .ThenInclude(s => s.Translations)
-            .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
+        // No includes - we only need the link entity itself for counter updates
+        return await _context.SurveyLinks.FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
     public async Task<SurveyLink?> GetByIdWithClicksAsync(
@@ -46,6 +44,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
             .Include(l => l.Survey)
             .ThenInclude(s => s.Translations)
             .Include(l => l.Clicks)
+            .ThenInclude(c => c.Response)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
     }
 
@@ -59,6 +58,19 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
             .Include(l => l.Survey)
             .ThenInclude(s => s.Translations)
             .FirstOrDefaultAsync(l => l.Token == token, cancellationToken);
+    }
+
+    public async Task<SurveyLink?> GetByTokenForUpdateAsync(
+        string token,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // No AsNoTracking() - enables change tracking for updates
+        // No includes - we only need the link entity itself for counter updates
+        return await _context.SurveyLinks.FirstOrDefaultAsync(
+            l => l.Token == token,
+            cancellationToken
+        );
     }
 
     public async Task<IReadOnlyList<SurveyLink>> GetBySurveyIdAsync(

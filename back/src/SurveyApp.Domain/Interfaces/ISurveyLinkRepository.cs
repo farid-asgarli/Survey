@@ -26,9 +26,17 @@ public interface ISurveyLinkRepository
     );
 
     /// <summary>
-    /// Gets a survey link by its token.
+    /// Gets a survey link by its token (read-only, no change tracking).
     /// </summary>
     Task<SurveyLink?> GetByTokenAsync(string token, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a survey link by its token with change tracking enabled for updates.
+    /// </summary>
+    Task<SurveyLink?> GetByTokenForUpdateAsync(
+        string token,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Gets all survey links for a survey.

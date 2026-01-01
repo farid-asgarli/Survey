@@ -10,9 +10,9 @@ import { LANGUAGE_INFO } from './SurveyLanguageSwitcher';
 const POPULAR_LANGUAGE_CODES = ['es', 'fr', 'de', 'pt', 'it', 'nl'];
 
 // All available languages for surveys (subset of LANGUAGE_INFO)
-const ALL_LANGUAGES = Object.entries(LANGUAGE_INFO).map(([code, info]) => ({
-  code,
+const ALL_LANGUAGES = Object.entries(LANGUAGE_INFO).map(([languageCode, info]) => ({
   ...info,
+  code: languageCode,
 }));
 
 interface AddLanguageDialogProps {

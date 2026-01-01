@@ -1326,6 +1326,9 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Property<Guid>("SurveyId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("SurveyLinkId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("TimeSpentSeconds")
                         .HasColumnType("integer");
 
@@ -1352,6 +1355,8 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("SubmittedAt");
 
                     b.HasIndex("SurveyId");
+
+                    b.HasIndex("SurveyLinkId");
 
                     b.ToTable("SurveyResponses", (string)null);
                 });
@@ -2535,9 +2540,16 @@ namespace SurveyApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SurveyApp.Domain.Entities.SurveyLink", "SurveyLink")
+                        .WithMany()
+                        .HasForeignKey("SurveyLinkId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Respondent");
 
                     b.Navigation("Survey");
+
+                    b.Navigation("SurveyLink");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyTemplate", b =>

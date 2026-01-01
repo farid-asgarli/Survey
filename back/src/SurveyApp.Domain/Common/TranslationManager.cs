@@ -70,7 +70,7 @@ public class TranslationManager<TTranslation>(
             return false;
 
         // First translation becomes the default
-        var isFirst = !_translations.Any();
+        var isFirst = _translations.Count == 0;
         if (isFirst)
         {
             translation.SetAsDefault();
@@ -100,7 +100,7 @@ public class TranslationManager<TTranslation>(
     /// Removes a translation from the collection.
     /// </summary>
     /// <param name="languageCode">The language code of the translation to remove.</param>
-    /// <exception cref="InvalidOperationException">Thrown when trying to remove the default translation while others exist.</exception>
+    /// <exception cref="DomainException">Thrown when trying to remove the default translation while others exist.</exception>
     public void Remove(string languageCode)
     {
         var translation = Find(languageCode);
@@ -109,7 +109,7 @@ public class TranslationManager<TTranslation>(
 
         if (translation.IsDefault && _translations.Count > 1)
         {
-            throw new InvalidOperationException("Domain.Translation.CannotRemoveDefaultWithOthers");
+            throw new DomainException("Domain.Translation.CannotRemoveDefaultWithOthers");
         }
 
         _translations.Remove(translation);
@@ -127,13 +127,13 @@ public class TranslationManager<TTranslation>(
     /// Sets a translation as the default.
     /// </summary>
     /// <param name="languageCode">The language code to set as default.</param>
-    /// <exception cref="InvalidOperationException">Thrown when the translation doesn't exist.</exception>
+    /// <exception cref="DomainException">Thrown when the translation doesn't exist.</exception>
     public void SetDefault(string languageCode)
     {
         var translation = Find(languageCode);
         if (translation == null)
         {
-            throw new InvalidOperationException("Domain.Translation.NotFoundForLanguage");
+            throw new DomainException("Domain.Translation.NotFoundForLanguage", languageCode);
         }
 
         // Remove default from all translations

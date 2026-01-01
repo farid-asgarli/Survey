@@ -1,9 +1,10 @@
-// Block Editor - Renders editable block with toolbar (settings now in right sidebar)
+// Block Editor - Renders editable block with M3 Expressive toolbar
+// M3 Design: IconButton components, Card-based toolbar, shape morphing
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GripVertical, Trash2, Copy, ChevronUp, ChevronDown, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Tooltip } from '@/components/ui';
+import { IconButton, Tooltip, Card } from '@/components/ui';
 import type { EmailBlock, EmailGlobalStyles } from './types';
 
 interface BlockEditorProps {
@@ -72,108 +73,142 @@ export function BlockEditor({
     <div
       ref={blockRef}
       className={cn(
-        'group relative transition-all duration-200 pt-12', // pt-12 for toolbar space
+        'group relative transition-all duration-300 pt-14', // pt-14 for toolbar space
         isSelected && 'z-10',
-        isDragOver && 'ring-2 ring-primary ring-offset-2'
+        isDragOver && 'ring-2 ring-primary ring-offset-2 ring-offset-surface'
       )}
       onClick={onSelect}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {/* Block wrapper with selection outline */}
+      {/* Block wrapper with M3 selection outline and shape morphing */}
       <div
         className={cn(
-          'relative border-2 rounded-lg transition-all duration-200',
-          isSelected ? 'border-primary ring-2 ring-primary/30' : 'border-transparent hover:border-outline-variant/50'
+          'relative border-2 transition-all duration-300',
+          // Shape morphing: rounded-xl → rounded-2xl → rounded-3xl
+          isSelected
+            ? 'border-primary ring-2 ring-primary/20 rounded-2xl'
+            : 'border-transparent hover:border-outline-variant/40 rounded-xl hover:rounded-2xl'
         )}
       >
-        {/* Block toolbar */}
-        <div
+        {/* Block toolbar - M3 Card with IconButtons */}
+        <Card
+          variant="elevated"
+          padding="none"
           className={cn(
-            'absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 p-1 bg-surface rounded-lg border-2 border-outline-variant transition-all duration-200',
-            isSelected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+            'absolute -top-12 left-1/2 -translate-x-1/2',
+            'flex items-center gap-0.5 p-1',
+            'transition-all duration-300',
+            isSelected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0'
           )}
           role="toolbar"
           aria-label={t('emailEditor.blockToolbar', 'Block actions')}
         >
+          {/* Drag handle */}
           <Tooltip content={t('common.dragToReorder', 'Drag to reorder')}>
             <button
               draggable
               onDragStart={handleDragStart}
-              className="p-1.5 text-on-surface-variant hover:text-on-surface cursor-grab active:cursor-grabbing"
+              className={cn(
+                'p-2 rounded-xl text-on-surface-variant',
+                'hover:bg-surface-container-high hover:text-on-surface',
+                'cursor-grab active:cursor-grabbing',
+                'transition-colors duration-200',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
+              )}
               aria-label={t('common.dragToReorder', 'Drag to reorder')}
             >
               <GripVertical className="h-4 w-4" />
             </button>
           </Tooltip>
-          <div className="w-px h-4 bg-outline-variant/30" aria-hidden="true" />
+
+          {/* Divider */}
+          <div className="w-px h-5 bg-outline-variant/30 mx-0.5" aria-hidden="true" />
+
+          {/* Move up */}
           <Tooltip content={t('common.moveUp', 'Move Up')}>
-            <button
+            <IconButton
+              variant="standard"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 onMoveUp();
               }}
               disabled={!canMoveUp}
-              className="p-1.5 text-on-surface-variant hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed"
               aria-label={t('common.moveUp', 'Move Up')}
               aria-disabled={!canMoveUp}
             >
               <ChevronUp className="h-4 w-4" />
-            </button>
+            </IconButton>
           </Tooltip>
+
+          {/* Move down */}
           <Tooltip content={t('common.moveDown', 'Move Down')}>
-            <button
+            <IconButton
+              variant="standard"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 onMoveDown();
               }}
               disabled={!canMoveDown}
-              className="p-1.5 text-on-surface-variant hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed"
               aria-label={t('common.moveDown', 'Move Down')}
               aria-disabled={!canMoveDown}
             >
               <ChevronDown className="h-4 w-4" />
-            </button>
+            </IconButton>
           </Tooltip>
-          <div className="w-px h-4 bg-outline-variant/30" aria-hidden="true" />
+
+          {/* Divider */}
+          <div className="w-px h-5 bg-outline-variant/30 mx-0.5" aria-hidden="true" />
+
+          {/* Settings */}
           <Tooltip content={t('emailEditor.settings.title', 'Settings')}>
-            <button
+            <IconButton
+              variant={isSelected ? 'filled-tonal' : 'standard'}
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 onOpenSettings?.();
               }}
-              className={cn('p-1.5 transition-colors', isSelected ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface')}
               aria-label={t('emailEditor.settings.title', 'Settings')}
             >
               <Settings className="h-4 w-4" />
-            </button>
+            </IconButton>
           </Tooltip>
+
+          {/* Duplicate */}
           <Tooltip content={t('common.duplicate', 'Duplicate')}>
-            <button
+            <IconButton
+              variant="standard"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 onDuplicate();
               }}
-              className="p-1.5 text-on-surface-variant hover:text-on-surface"
               aria-label={t('common.duplicate', 'Duplicate')}
             >
               <Copy className="h-4 w-4" />
-            </button>
+            </IconButton>
           </Tooltip>
+
+          {/* Delete */}
           <Tooltip content={t('common.delete', 'Delete')}>
-            <button
+            <IconButton
+              variant="standard"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
               }}
-              className="p-1.5 text-on-surface-variant hover:text-error"
               aria-label={t('common.delete', 'Delete')}
+              className="hover:text-error hover:bg-error-container/50"
             >
               <Trash2 className="h-4 w-4" />
-            </button>
+            </IconButton>
           </Tooltip>
-        </div>
+        </Card>
 
         {/* Block content - rendered based on type */}
         <div className="min-h-10">
@@ -193,15 +228,26 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
   switch (block.type) {
     case 'header':
       return (
-        <div className="p-4 text-center" style={{ backgroundColor: block.content.backgroundColor, textAlign: block.content.alignment }}>
+        <div
+          className="p-4 text-center rounded-xl"
+          style={{
+            backgroundColor: block.content.backgroundColor,
+            textAlign: block.content.alignment,
+          }}
+        >
           {block.content.logoUrl && (
             <img
               src={block.content.logoUrl}
-              alt={block.content.logoAlt || t('a11y.logoAlt')}
+              alt={block.content.logoAlt || t('a11y.logoAlt', 'Company logo')}
               style={{ maxWidth: block.content.logoWidth || 150, margin: '0 auto 10px' }}
+              className="rounded-lg"
             />
           )}
-          {block.content.title && <h2 style={{ color: block.content.textColor, margin: 0 }}>{block.content.title}</h2>}
+          {block.content.title && (
+            <h2 style={{ color: block.content.textColor, margin: 0 }} className="font-semibold">
+              {block.content.title}
+            </h2>
+          )}
           {block.content.subtitle && <p style={{ color: block.content.textColor, opacity: 0.8, margin: '4px 0 0' }}>{block.content.subtitle}</p>}
           {!block.content.title && !block.content.logoUrl && (
             <span className="text-on-surface-variant text-sm">{t('emailEditor.preview.headerPlaceholder', 'Header Block')}</span>
@@ -212,7 +258,7 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
     case 'text':
       return (
         <div
-          className="p-4 [&_a]:underline"
+          className="p-4 [&_a]:underline rounded-xl"
           style={{
             backgroundColor: block.content.backgroundColor,
             color: block.content.textColor,
@@ -232,7 +278,7 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
 
     case 'image':
       return (
-        <div className="p-2" style={{ textAlign: block.content.alignment }}>
+        <div className="p-2 rounded-xl" style={{ textAlign: block.content.alignment }}>
           {block.content.src ? (
             <img
               src={block.content.src}
@@ -241,9 +287,10 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
                 maxWidth: block.content.width || '100%',
                 borderRadius: block.content.borderRadius,
               }}
+              className="inline-block"
             />
           ) : (
-            <div className="bg-surface-container-high rounded-lg p-8 text-center">
+            <div className="bg-surface-container-high rounded-2xl p-8 text-center inline-block min-w-50">
               <span className="text-on-surface-variant">{t('emailEditor.preview.imagePlaceholder', 'Add image URL')}</span>
             </div>
           )}
@@ -252,16 +299,15 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
 
     case 'button':
       return (
-        <div className="p-4" style={{ textAlign: block.content.alignment }}>
+        <div className="p-4 rounded-xl" style={{ textAlign: block.content.alignment }}>
           <span
+            className="inline-block font-semibold"
             style={{
-              display: 'inline-block',
               backgroundColor: block.content.backgroundColor,
               color: block.content.textColor,
               padding: `${block.content.padding?.vertical || 12}px ${block.content.padding?.horizontal || 24}px`,
               borderRadius: block.content.borderRadius,
               fontSize: block.content.fontSize,
-              fontWeight: 'bold',
               width: block.content.fullWidth ? '100%' : 'auto',
               textAlign: 'center',
             }}
@@ -273,7 +319,7 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
 
     case 'divider':
       return (
-        <div style={{ padding: `${block.content.padding}px 0` }}>
+        <div style={{ padding: `${block.content.padding}px 0` }} className="rounded-xl">
           <hr
             style={{
               border: 'none',
@@ -287,9 +333,9 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
 
     case 'spacer':
       return (
-        <div className="relative" style={{ height: block.content.height }}>
+        <div className="relative rounded-xl" style={{ height: block.content.height }}>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs text-on-surface-variant bg-surface px-2">{block.content.height}px</span>
+            <span className="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">{block.content.height}px</span>
           </div>
         </div>
       );
@@ -297,12 +343,12 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
     case 'columns':
       return (
         <div
-          className="p-4 text-center border-2 border-dashed border-outline-variant/50 rounded-lg"
+          className="p-4 text-center border-2 border-dashed border-outline-variant/50 rounded-2xl"
           style={{ backgroundColor: block.content.backgroundColor }}
         >
           <div className="flex items-center justify-center gap-2 text-on-surface-variant text-sm">
             <span>{t('emailEditor.preview.columnsPlaceholder', 'Columns Layout')}</span>
-            <span className="text-xs bg-surface-container px-2 py-0.5 rounded">
+            <span className="text-xs bg-surface-container px-2 py-0.5 rounded-full">
               {block.content.columns.length} {t('emailEditor.columns', 'columns')}
             </span>
           </div>
@@ -311,7 +357,7 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
 
     case 'social':
       return (
-        <div className="p-4" style={{ textAlign: block.content.alignment }}>
+        <div className="p-4 rounded-xl" style={{ textAlign: block.content.alignment }}>
           {(block.content.links || []).length > 0 ? (
             <div className="flex gap-2 justify-center">
               {block.content.links.map((link, i) => (
@@ -337,18 +383,18 @@ function BlockPreview({ block, globalStyles }: { block: EmailBlock; globalStyles
     case 'footer':
       return (
         <div
-          className="p-4 text-center"
+          className="p-4 text-center rounded-xl"
           style={{
             backgroundColor: block.content.backgroundColor,
             color: block.content.textColor,
             fontSize: block.content.fontSize,
           }}
         >
-          {block.content.companyName && <p className="font-bold m-0">{block.content.companyName}</p>}
-          {block.content.address && <p className="m-0 mt-1">{block.content.address}</p>}
+          {block.content.companyName && <p className="font-semibold m-0">{block.content.companyName}</p>}
+          {block.content.address && <p className="m-0 mt-1 whitespace-pre-line">{block.content.address}</p>}
           {block.content.unsubscribeText && (
             <p className="m-0 mt-2">
-              <span className="underline">{block.content.unsubscribeText}</span>
+              <span className="underline cursor-pointer">{block.content.unsubscribeText}</span>
             </p>
           )}
           {!block.content.companyName && !block.content.address && (

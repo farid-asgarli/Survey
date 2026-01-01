@@ -8,7 +8,7 @@ import { useResponseDetail, useDeleteResponse } from '@/hooks/queries/useRespons
 import { useSurveyDetail } from '@/hooks/queries/useSurveys';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { toast } from '@/components/ui';
-import { formatDurationBetween, formatDateTime, formatDate } from '@/utils';
+import { formatDuration, formatDurationBetween, formatDateTime, formatDate } from '@/utils';
 import { QuestionType } from '@/types';
 import type { Answer, Question } from '@/types';
 
@@ -20,10 +20,21 @@ interface ResponseDetailDrawerProps {
   onDeleted?: () => void;
 }
 
+// Helper to get response duration - prefer backend-calculated timeSpentSeconds
+function getResponseDuration(response: { timeSpentSeconds?: number; startedAt: string; submittedAt?: string }): string {
+  // Use backend-calculated timeSpentSeconds when available (most accurate)
+  if (response.timeSpentSeconds != null && response.timeSpentSeconds > 0) {
+    return formatDuration(response.timeSpentSeconds);
+  }
+  // Fallback to computing from timestamps
+  return formatDurationBetween(response.startedAt, response.submittedAt);
+}
+
 // Helper to get answer display value
 function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (key: string) => string): React.ReactNode {
   if (!question) {
-    return answer.answerValue || answer.values?.join(', ') || t('responses.na');
+    // Fallback: use displayValue (computed by backend) or deprecated fields
+    return answer.displayValue || answer.text || t('responses.na');
   }
 
   const type = question.type;
@@ -34,35 +45,41 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (ke
     case QuestionType.SingleChoice:
     case QuestionType.Dropdown:
     case QuestionType.YesNo: {
-      // Options are stored as string[], answer value should match option text
-      const option = options.find((o) => o === answer.answerValue);
-      return option || answer.answerValue || t('responses.na');
+      // Use selectedOptions if available, fallback to displayValue
+      if (answer.selectedOptions && answer.selectedOptions.length > 0) {
+        return answer.selectedOptions[0].text;
+      }
+      return answer.displayValue || answer.text || t('responses.na');
     }
 
     case QuestionType.MultipleChoice:
     case QuestionType.Checkbox: {
-      if (answer.values && answer.values.length > 0) {
-        const selectedOptions = answer.values.map((v) => {
-          const option = options.find((o) => o === v);
-          return option || v;
-        });
+      // Use selectedOptions for selected choices
+      if (answer.selectedOptions && answer.selectedOptions.length > 0) {
         return (
           <ul className="list-disc list-inside space-y-1">
-            {selectedOptions.map((opt, idx) => (
-              <li key={idx} className="text-sm">
-                {opt}
+            {answer.selectedOptions.map((opt) => (
+              <li key={opt.id} className="text-sm">
+                {opt.text}
               </li>
             ))}
+            {/* Show "Other" text if present */}
+            {answer.text && (
+              <li className="text-sm text-on-surface-variant italic">
+                {t('common.other')}: {answer.text}
+              </li>
+            )}
           </ul>
         );
       }
-      return t('responses.na');
+      // Fallback to displayValue
+      return answer.displayValue || t('responses.na');
     }
 
     case QuestionType.Rating:
     case QuestionType.NPS:
     case QuestionType.Scale: {
-      const rating = parseInt(answer.answerValue || '0');
+      const rating = parseInt(answer.text || answer.displayValue || '0');
       const max = question.settings?.maxValue || 5;
       return (
         <div className="flex items-center gap-2">
@@ -89,21 +106,42 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (ke
     }
 
     case QuestionType.Ranking: {
-      if (answer.values && answer.values.length > 0) {
+      // For ranking, selectedOptions contains the ordered options
+      if (answer.selectedOptions && answer.selectedOptions.length > 0) {
         return (
           <ol className="list-decimal list-inside space-y-1">
-            {answer.values.map((v, idx) => {
-              const option = options.find((o) => o === v);
-              return (
-                <li key={idx} className="text-sm">
-                  {option || v}
-                </li>
-              );
-            })}
+            {answer.selectedOptions.map((opt) => (
+              <li key={opt.id} className="text-sm">
+                {opt.text}
+              </li>
+            ))}
           </ol>
         );
       }
-      return t('responses.na');
+      // Fallback: try parsing text as JSON array
+      if (answer.text) {
+        try {
+          const rankedValues = JSON.parse(answer.text) as string[];
+          if (Array.isArray(rankedValues)) {
+            return (
+              <ol className="list-decimal list-inside space-y-1">
+                {rankedValues.map((v, idx) => {
+                  // Try to find option by ID or text
+                  const option = options.find((o) => o.id === v || o.text === v);
+                  return (
+                    <li key={idx} className="text-sm">
+                      {option?.text || v}
+                    </li>
+                  );
+                })}
+              </ol>
+            );
+          }
+        } catch {
+          // Not JSON, use displayValue
+        }
+      }
+      return answer.displayValue || t('responses.na');
     }
 
     case QuestionType.FileUpload: {
@@ -130,14 +168,14 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (ke
 
     case QuestionType.Date:
     case QuestionType.DateTime: {
-      if (answer.answerValue) {
-        return formatDate(answer.answerValue);
+      if (answer.text || answer.displayValue) {
+        return formatDate(answer.text || answer.displayValue);
       }
       return t('responses.na');
     }
 
     default:
-      return answer.answerValue || t('responses.na');
+      return answer.displayValue || answer.text || t('responses.na');
   }
 }
 
@@ -222,7 +260,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
             {response && (
               <div className="flex items-center gap-3 mt-4">
                 <OverlayHeader.StatsPill icon={<Hash />} value={sortedAnswers.length} label="answers" />
-                <OverlayHeader.StatsPill icon={<Clock />} value={formatDurationBetween(response.startedAt, response.completedAt)} />
+                <OverlayHeader.StatsPill icon={<Clock />} value={getResponseDuration(response)} />
                 {response.isComplete ? (
                   <OverlayHeader.Badge icon={<CheckCircle2 />} text="Complete" variant="success" />
                 ) : (
@@ -281,7 +319,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                       <Clock className="h-4 w-4 text-on-surface-variant" />
                       <div>
                         <p className="text-on-surface-variant text-xs">{t('responses.duration')}</p>
-                        <p className="font-medium text-on-surface">{formatDurationBetween(response.startedAt, response.completedAt)}</p>
+                        <p className="font-medium text-on-surface">{getResponseDuration(response)}</p>
                       </div>
                     </div>
                   </div>

@@ -22,7 +22,21 @@ import {
   PanelRightOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button, Input, Tooltip, toast, Chip, Select, Switch } from '@/components/ui';
+import {
+  Button,
+  Input,
+  Tooltip,
+  toast,
+  Chip,
+  Select,
+  Switch,
+  ColorPicker,
+  NumberStepper,
+  SegmentedButton,
+  SegmentedButtonGroup,
+  Card,
+  IconButton,
+} from '@/components/ui';
 import { useUpdateEmailTemplate } from '@/hooks/queries/useEmailTemplates';
 import { useCopyToClipboard } from '@/hooks';
 import { EmailTemplateType } from '@/types/enums';
@@ -530,8 +544,8 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
 
   return (
     <div className="flex flex-col h-full bg-surface-container-lowest" role="application" aria-label={t('emailEditor.title', 'Visual Email Editor')}>
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-outline-variant/30 bg-surface shrink-0" role="banner">
+      {/* Header - M3 border styling */}
+      <header className="flex items-center justify-between px-4 py-3 border-b-2 border-outline-variant/30 bg-surface shrink-0" role="banner">
         <div className="flex items-center gap-3">
           {onBack && (
             <Button variant="text" size="sm" onClick={onBack} aria-label={t('common.back', 'Back')}>
@@ -548,87 +562,62 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
         </div>
 
         <div className="flex items-center gap-3" role="toolbar" aria-label={t('emailEditor.toolbar', 'Editor toolbar')}>
-          {/* View mode */}
-          <div className="flex items-center bg-surface-container rounded-full p-1">
-            <Tooltip content={t('emailEditor.views.edit', 'Edit')}>
-              <Button variant={viewMode === 'edit' ? 'tonal' : 'text'} size="sm" className="rounded-full px-3" onClick={() => setViewMode('edit')}>
-                <Layout className="h-4 w-4" />
-              </Button>
-            </Tooltip>
-            <Tooltip content={t('emailEditor.views.preview', 'Preview')}>
-              <Button
-                variant={viewMode === 'preview' ? 'tonal' : 'text'}
-                size="sm"
-                className="rounded-full px-3"
-                onClick={() => setViewMode('preview')}
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
-            </Tooltip>
-            <Tooltip content={t('emailEditor.views.code', 'HTML Code')}>
-              <Button variant={viewMode === 'code' ? 'tonal' : 'text'} size="sm" className="rounded-full px-3" onClick={() => setViewMode('code')}>
-                <Code className="h-4 w-4" />
-              </Button>
-            </Tooltip>
-          </div>
+          {/* View mode - M3 SegmentedButton */}
+          <SegmentedButtonGroup value={viewMode} onChange={(v) => setViewMode(v as ViewMode)}>
+            <SegmentedButton value="edit" aria-label={t('emailEditor.views.edit', 'Edit')}>
+              <Layout className="h-4 w-4" />
+            </SegmentedButton>
+            <SegmentedButton value="preview" aria-label={t('emailEditor.views.preview', 'Preview')}>
+              <Eye className="h-4 w-4" />
+            </SegmentedButton>
+            <SegmentedButton value="code" aria-label={t('emailEditor.views.code', 'HTML Code')}>
+              <Code className="h-4 w-4" />
+            </SegmentedButton>
+          </SegmentedButtonGroup>
 
           {/* Device preview (visible in preview mode) */}
           {viewMode === 'preview' && (
-            <div className="flex items-center bg-surface-container rounded-full p-1">
-              <Tooltip content={t('emailEditor.device.desktop', 'Desktop')}>
-                <Button
-                  variant={devicePreview === 'desktop' ? 'tonal' : 'text'}
-                  size="icon-sm"
-                  className="rounded-full"
-                  onClick={() => setDevicePreview('desktop')}
-                >
-                  <Monitor className="h-4 w-4" />
-                </Button>
-              </Tooltip>
-              <Tooltip content={t('emailEditor.device.mobile', 'Mobile')}>
-                <Button
-                  variant={devicePreview === 'mobile' ? 'tonal' : 'text'}
-                  size="icon-sm"
-                  className="rounded-full"
-                  onClick={() => setDevicePreview('mobile')}
-                >
-                  <Smartphone className="h-4 w-4" />
-                </Button>
-              </Tooltip>
-            </div>
+            <SegmentedButtonGroup value={devicePreview} onChange={(v) => setDevicePreview(v as DevicePreview)}>
+              <SegmentedButton value="desktop" aria-label={t('emailEditor.device.desktop', 'Desktop')}>
+                <Monitor className="h-4 w-4" />
+              </SegmentedButton>
+              <SegmentedButton value="mobile" aria-label={t('emailEditor.device.mobile', 'Mobile')}>
+                <Smartphone className="h-4 w-4" />
+              </SegmentedButton>
+            </SegmentedButtonGroup>
           )}
 
           {/* Divider */}
-          <div className="w-px h-6 bg-outline-variant/30" />
+          <div className="w-px h-6 bg-outline-variant/30" aria-hidden="true" />
 
-          {/* Undo/Redo */}
+          {/* Undo/Redo - M3 IconButton */}
           <div className="flex items-center gap-1">
             <Tooltip content={`${t('common.undo', 'Undo')} (Ctrl+Z)`}>
-              <Button variant="text" size="icon-sm" onClick={handleUndo} disabled={!canUndo}>
+              <IconButton variant="standard" size="sm" onClick={handleUndo} disabled={!canUndo} aria-label={t('common.undo', 'Undo')}>
                 <Undo2 className="h-4 w-4" />
-              </Button>
+              </IconButton>
             </Tooltip>
             <Tooltip content={`${t('common.redo', 'Redo')} (Ctrl+Shift+Z)`}>
-              <Button variant="text" size="icon-sm" onClick={handleRedo} disabled={!canRedo}>
+              <IconButton variant="standard" size="sm" onClick={handleRedo} disabled={!canRedo} aria-label={t('common.redo', 'Redo')}>
                 <Redo2 className="h-4 w-4" />
-              </Button>
+              </IconButton>
             </Tooltip>
           </div>
 
           {/* Export buttons */}
           {viewMode === 'code' && (
             <>
-              <div className="w-px h-6 bg-outline-variant/30" />
+              <div className="w-px h-6 bg-outline-variant/30" aria-hidden="true" />
               <div className="flex items-center gap-1">
                 <Tooltip content={t('emailEditor.copyHtml', 'Copy HTML')}>
-                  <Button variant="text" size="icon-sm" onClick={copyHtmlToClipboard}>
+                  <IconButton variant="standard" size="sm" onClick={copyHtmlToClipboard} aria-label={t('emailEditor.copyHtml', 'Copy HTML')}>
                     {copiedCode ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
-                  </Button>
+                  </IconButton>
                 </Tooltip>
                 <Tooltip content={t('emailEditor.downloadHtml', 'Download HTML')}>
-                  <Button variant="text" size="icon-sm" onClick={downloadHtml}>
+                  <IconButton variant="standard" size="sm" onClick={downloadHtml} aria-label={t('emailEditor.downloadHtml', 'Download HTML')}>
                     <Download className="h-4 w-4" />
-                  </Button>
+                  </IconButton>
                 </Tooltip>
               </div>
             </>
@@ -646,40 +635,26 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
       <div className="flex-1 flex overflow-hidden">
         {/* Left sidebar - Block palette & Settings */}
         {viewMode === 'edit' && (
-          <aside className="w-72 border-r border-outline-variant/30 bg-surface flex flex-col overflow-hidden">
-            {/* Sidebar tabs */}
-            <div className="p-2 border-b border-outline-variant/30">
-              <div className="flex items-center gap-1 bg-surface-container rounded-lg p-1">
-                <button
-                  onClick={() => setActivePanel('blocks')}
-                  className={cn(
-                    'flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-                    activePanel === 'blocks' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
-                  )}
-                >
+          <aside className="w-72 border-r-2 border-outline-variant/30 bg-surface flex flex-col overflow-hidden">
+            {/* Sidebar tabs - M3 SegmentedButton */}
+            <div className="p-3 border-b-2 border-outline-variant/30">
+              <SegmentedButtonGroup
+                value={activePanel}
+                onChange={(v) => setActivePanel(v as 'blocks' | 'styles' | 'placeholders')}
+                className="w-full"
+              >
+                <SegmentedButton value="blocks">
                   <Layout className="h-4 w-4" />
-                  {t('emailEditor.panels.blocks', 'Blocks')}
-                </button>
-                <button
-                  onClick={() => setActivePanel('styles')}
-                  className={cn(
-                    'flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-                    activePanel === 'styles' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
-                  )}
-                >
+                  <span className="sr-only md:not-sr-only md:ml-1.5">{t('emailEditor.panels.blocks', 'Blocks')}</span>
+                </SegmentedButton>
+                <SegmentedButton value="styles">
                   <Palette className="h-4 w-4" />
-                  {t('emailEditor.panels.styles', 'Styles')}
-                </button>
-                <button
-                  onClick={() => setActivePanel('placeholders')}
-                  className={cn(
-                    'flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-                    activePanel === 'placeholders' ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container-high'
-                  )}
-                >
+                  <span className="sr-only md:not-sr-only md:ml-1.5">{t('emailEditor.panels.styles', 'Styles')}</span>
+                </SegmentedButton>
+                <SegmentedButton value="placeholders">
                   <Variable className="h-4 w-4" />
-                </button>
-              </div>
+                </SegmentedButton>
+              </SegmentedButtonGroup>
             </div>
 
             {/* Sidebar content */}
@@ -695,8 +670,8 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
 
         {/* Center - Canvas / Preview / Code */}
         <main className="flex-1 flex flex-col overflow-hidden">
-          {/* Template metadata bar */}
-          <div className="px-5 py-3 border-b border-outline-variant/30 bg-surface shrink-0">
+          {/* Template metadata bar - M3 border */}
+          <div className="px-5 py-3 border-b-2 border-outline-variant/30 bg-surface shrink-0">
             <div className="flex items-end gap-4">
               {/* Template name */}
               <div className="w-64 shrink-0">
@@ -770,8 +745,11 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
           <div className="flex-1 overflow-auto p-6" style={{ backgroundColor: globalStyles.backgroundColor }}>
             {viewMode === 'edit' && (
               <div ref={canvasRef} className="max-w-2xl mx-auto min-h-full" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-                <div
-                  className="rounded-lg overflow-hidden border-2 border-outline-variant"
+                {/* M3 Card wrapper for email canvas */}
+                <Card
+                  variant="outlined"
+                  padding="none"
+                  className="overflow-hidden"
                   style={{
                     backgroundColor: globalStyles.contentBackgroundColor,
                     maxWidth: globalStyles.contentWidth,
@@ -811,14 +789,14 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                       ))}
                     </div>
                   )}
-                </div>
+                </Card>
               </div>
             )}
 
             {viewMode === 'preview' && (
               <div className="flex flex-col items-center gap-4">
-                {/* Preview options bar */}
-                <div className="flex items-center gap-4 p-3 bg-surface rounded-lg border border-outline-variant/30">
+                {/* Preview options bar - M3 Card */}
+                <Card variant="filled" padding="sm" className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <Switch checked={previewWithSampleData} onChange={(e) => setPreviewWithSampleData(e.target.checked)} size="sm" />
                     <span className="text-sm text-on-surface-variant">{t('emailEditor.previewWithSampleData', 'Preview with sample data')}</span>
@@ -826,14 +804,13 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                   <Tooltip content={t('emailEditor.sampleDataInfo', 'Replaces placeholders like {{firstName}} with sample values')}>
                     <Info className="h-4 w-4 text-on-surface-variant cursor-help" />
                   </Tooltip>
-                </div>
+                </Card>
 
-                {/* Email preview */}
-                <div
-                  className={cn(
-                    'transition-all duration-300 bg-white rounded-lg border-2 border-outline-variant overflow-hidden',
-                    devicePreview === 'mobile' ? 'w-96' : 'w-full max-w-2xl'
-                  )}
+                {/* Email preview - M3 Card */}
+                <Card
+                  variant="outlined"
+                  padding="none"
+                  className={cn('transition-all duration-300 overflow-hidden bg-white', devicePreview === 'mobile' ? 'w-96' : 'w-full max-w-2xl')}
                 >
                   <iframe
                     srcDoc={replacePlaceholders(generatedHtml, previewWithSampleData)}
@@ -841,14 +818,14 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                     className="w-full border-0"
                     style={{ height: devicePreview === 'mobile' ? '667px' : '800px' }}
                   />
-                </div>
+                </Card>
               </div>
             )}
 
             {viewMode === 'code' && (
               <div className="max-w-4xl mx-auto">
-                <div className="bg-surface rounded-lg border border-outline-variant/30 overflow-hidden">
-                  <div className="p-3 bg-surface-container/50 border-b border-outline-variant/30 flex items-center justify-between">
+                <Card variant="outlined" padding="none" className="overflow-hidden">
+                  <div className="p-3 bg-surface-container/50 border-b-2 border-outline-variant/30 flex items-center justify-between">
                     <span className="text-sm font-medium text-on-surface">
                       {t('emailEditor.generatedHtml', 'Generated HTML (Outlook Compatible)')}
                     </span>
@@ -858,8 +835,10 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                       </Chip>
                     </div>
                   </div>
-                  <pre className="p-4 overflow-auto max-h-150 text-xs font-mono text-on-surface-variant whitespace-pre-wrap">{generatedHtml}</pre>
-                </div>
+                  <pre className="p-4 overflow-auto max-h-150 text-xs font-mono text-on-surface-variant whitespace-pre-wrap bg-surface-container-lowest">
+                    {generatedHtml}
+                  </pre>
+                </Card>
               </div>
             )}
           </div>
@@ -869,7 +848,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
         {viewMode === 'edit' && (
           <aside
             className={cn(
-              'border-l border-outline-variant/30 bg-surface flex flex-col overflow-hidden transition-all duration-300',
+              'border-l-2 border-outline-variant/30 bg-surface flex flex-col overflow-hidden transition-all duration-300',
               showRightSidebar ? 'w-80' : 'w-0'
             )}
           >
@@ -879,20 +858,23 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
           </aside>
         )}
 
-        {/* Right sidebar toggle button (floating) */}
+        {/* Right sidebar toggle button (floating) - M3 IconButton */}
         {viewMode === 'edit' && (
           <Tooltip
             content={showRightSidebar ? t('emailEditor.hideSettings', 'Hide settings panel') : t('emailEditor.showSettings', 'Show settings panel')}
           >
-            <Button
-              variant="tonal"
-              size="icon-sm"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 ring-2 ring-primary/20"
+            <IconButton
+              variant="filled-tonal"
+              size="default"
+              className="absolute top-1/2 -translate-y-1/2 z-20 ring-2 ring-primary/20"
               onClick={() => setShowRightSidebar(!showRightSidebar)}
               style={{ right: showRightSidebar ? '336px' : '16px' }}
+              aria-label={
+                showRightSidebar ? t('emailEditor.hideSettings', 'Hide settings panel') : t('emailEditor.showSettings', 'Show settings panel')
+              }
             >
               {showRightSidebar ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
-            </Button>
+            </IconButton>
           </Tooltip>
         )}
       </div>
@@ -900,7 +882,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
   );
 }
 
-// Global styles panel component
+// Global styles panel component - M3 Expressive design
 function GlobalStylesPanel({ styles, onChange }: { styles: EmailGlobalStyles; onChange: (styles: EmailGlobalStyles) => void }) {
   const { t } = useTranslation();
 
@@ -918,90 +900,86 @@ function GlobalStylesPanel({ styles, onChange }: { styles: EmailGlobalStyles; on
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <h3 className="text-sm font-semibold text-on-surface">{t('emailEditor.globalStyles', 'Global Styles')}</h3>
 
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.backgroundColor', 'Page Background')}</label>
-          <input
-            type="color"
-            value={styles.backgroundColor}
-            onChange={(e) => updateStyle('backgroundColor', e.target.value)}
-            className="w-8 h-8 rounded-lg border border-outline-variant cursor-pointer"
-          />
-        </div>
+      {/* Colors Section */}
+      <Card variant="outlined" padding="default" className="space-y-4">
+        <h4 className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">{t('emailEditor.styles.colors', 'Colors')}</h4>
 
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.contentBackground', 'Content Background')}</label>
-          <input
-            type="color"
-            value={styles.contentBackgroundColor}
-            onChange={(e) => updateStyle('contentBackgroundColor', e.target.value)}
-            className="w-8 h-8 rounded-lg border border-outline-variant cursor-pointer"
-          />
-        </div>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.backgroundColor', 'Page Background')}</label>
+            <ColorPicker value={styles.backgroundColor} onChange={(color) => updateStyle('backgroundColor', color)} size="sm" />
+          </div>
 
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.textColor', 'Text Color')}</label>
-          <input
-            type="color"
-            value={styles.textColor}
-            onChange={(e) => updateStyle('textColor', e.target.value)}
-            className="w-8 h-8 rounded-lg border border-outline-variant cursor-pointer"
-          />
-        </div>
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.contentBackground', 'Content Background')}</label>
+            <ColorPicker value={styles.contentBackgroundColor} onChange={(color) => updateStyle('contentBackgroundColor', color)} size="sm" />
+          </div>
 
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.linkColor', 'Link Color')}</label>
-          <input
-            type="color"
-            value={styles.linkColor}
-            onChange={(e) => updateStyle('linkColor', e.target.value)}
-            className="w-8 h-8 rounded-lg border border-outline-variant cursor-pointer"
-          />
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.textColor', 'Text Color')}</label>
+            <ColorPicker value={styles.textColor} onChange={(color) => updateStyle('textColor', color)} size="sm" />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.linkColor', 'Link Color')}</label>
+            <ColorPicker value={styles.linkColor} onChange={(color) => updateStyle('linkColor', color)} size="sm" />
+          </div>
         </div>
+      </Card>
+
+      {/* Typography Section */}
+      <Card variant="outlined" padding="default" className="space-y-4">
+        <h4 className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">{t('emailEditor.styles.typography', 'Typography')}</h4>
 
         <Select
           label={t('emailEditor.styles.fontFamily', 'Font Family')}
           value={styles.fontFamily}
           onChange={(value) => updateStyle('fontFamily', value)}
           options={fontOptions}
+          size="sm"
         />
+      </Card>
 
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.contentWidth', 'Content Width')}</label>
-          <Input
-            type="number"
-            value={styles.contentWidth}
-            onChange={(e) => updateStyle('contentWidth', Number(e.target.value))}
-            min={400}
-            max={800}
-            className="w-20 text-xs"
-            size="sm"
-          />
-          <span className="text-xs text-on-surface-variant">px</span>
-        </div>
+      {/* Layout Section */}
+      <Card variant="outlined" padding="default" className="space-y-4">
+        <h4 className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">{t('emailEditor.styles.layout', 'Layout')}</h4>
 
-        <div className="flex items-center gap-2">
-          <label className="text-xs text-on-surface-variant flex-1">{t('emailEditor.styles.borderRadius', 'Border Radius')}</label>
-          <Input
-            type="number"
-            value={styles.borderRadius || 0}
-            onChange={(e) => updateStyle('borderRadius', Number(e.target.value))}
-            min={0}
-            max={24}
-            className="w-20 text-xs"
-            size="sm"
-          />
-          <span className="text-xs text-on-surface-variant">px</span>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.contentWidth', 'Content Width')}</label>
+            <NumberStepper
+              value={styles.contentWidth}
+              onChange={(value) => updateStyle('contentWidth', value)}
+              min={400}
+              max={800}
+              step={10}
+              suffix="px"
+              size="sm"
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="text-sm text-on-surface">{t('emailEditor.styles.borderRadius', 'Border Radius')}</label>
+            <NumberStepper
+              value={styles.borderRadius || 0}
+              onChange={(value) => updateStyle('borderRadius', value)}
+              min={0}
+              max={24}
+              step={2}
+              suffix="px"
+              size="sm"
+            />
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
 
-// Placeholders panel component
+// Placeholders panel component - M3 Expressive design
 function PlaceholdersPanel() {
   const { t } = useTranslation();
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -1014,28 +992,42 @@ function PlaceholdersPanel() {
   };
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-on-surface">{t('emailEditor.placeholders', 'Placeholders')}</h3>
-      <p className="text-xs text-on-surface-variant">{t('emailEditor.placeholdersHelp', 'Click to copy, then paste into text blocks')}</p>
-      <div className="space-y-1.5">
+    <div className="space-y-4">
+      <div>
+        <h3 className="text-sm font-semibold text-on-surface">{t('emailEditor.placeholders', 'Placeholders')}</h3>
+        <p className="text-xs text-on-surface-variant mt-1">{t('emailEditor.placeholdersHelp', 'Click to copy, then paste into text blocks')}</p>
+      </div>
+      <div className="space-y-2">
         {emailPlaceholders.map(({ key, label, description }) => (
-          <button
+          <Card
             key={key}
-            onClick={() => copyPlaceholder(key)}
+            variant="outlined"
+            padding="sm"
             className={cn(
-              'w-full flex items-center justify-between p-2 rounded-lg text-left transition-colors',
-              'hover:bg-primary-container/50',
-              copiedKey === key && 'bg-success-container'
+              'cursor-pointer transition-all duration-200',
+              'hover:border-primary/50 hover:bg-primary-container/20',
+              copiedKey === key && 'border-success bg-success-container/30'
             )}
+            onClick={() => copyPlaceholder(key)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                copyPlaceholder(key);
+              }
+            }}
           >
-            <div>
-              <p className="text-sm font-medium text-on-surface">{label}</p>
-              <p className="text-xs text-on-surface-variant">{description}</p>
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-on-surface truncate">{label}</p>
+                <p className="text-xs text-on-surface-variant truncate">{description}</p>
+              </div>
+              <code className="text-xs font-mono bg-surface-container px-2 py-1 rounded-lg shrink-0">
+                {copiedKey === key ? <Check className="h-3 w-3 text-success" /> : key}
+              </code>
             </div>
-            <code className="text-xs font-mono bg-surface-container px-2 py-1 rounded">
-              {copiedKey === key ? <Check className="h-3 w-3 text-success" /> : key}
-            </code>
-          </button>
+          </Card>
         ))}
       </div>
     </div>

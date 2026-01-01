@@ -124,7 +124,9 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
         Guid surveyId,
         int pageNumber,
         int pageSize,
-        bool? isCompleted = null,
+        bool? isComplete = null,
+        DateTime? fromDate = null,
+        DateTime? toDate = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -134,9 +136,21 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
             .Include(r => r.Answers)
             .Where(r => r.SurveyId == surveyId);
 
-        if (isCompleted.HasValue)
+        if (isComplete.HasValue)
         {
-            query = query.Where(r => r.IsComplete == isCompleted.Value);
+            query = query.Where(r => r.IsComplete == isComplete.Value);
+        }
+
+        if (fromDate.HasValue)
+        {
+            query = query.Where(r => r.StartedAt >= fromDate.Value);
+        }
+
+        if (toDate.HasValue)
+        {
+            // Add one day to include the entire end date
+            var endDate = toDate.Value.Date.AddDays(1);
+            query = query.Where(r => r.StartedAt < endDate);
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -274,7 +288,7 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
             .Select(r => (r.SubmittedAt!.Value - r.StartedAt).TotalSeconds)
             .ToList();
 
-        var averageTimeSpent = completedWithTime.Any() ? completedWithTime.Average() : 0;
+        var averageTimeSpent = completedWithTime.Count != 0 ? completedWithTime.Average() : 0;
 
         // First and last response dates
         var firstResponseAt = responses
@@ -326,6 +340,13 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
     {
         await _context.SurveyResponses.AddAsync(response, cancellationToken);
         return response;
+    }
+
+    public void AddAnswersToContext(IEnumerable<Answer> answers)
+    {
+        // Explicitly add answers to the context so they're tracked as Added (not Modified)
+        // This is needed when adding answers to an existing tracked response
+        _context.Answers.AddRange(answers);
     }
 
     public void Update(SurveyResponse response)

@@ -54,6 +54,11 @@ public interface ISurveyRepository
     );
 
     /// <summary>
+    /// Gets a survey by its ID with questions and theme loaded for public display.
+    /// </summary>
+    Task<Survey?> GetByIdForPublicAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets all surveys in a namespace.
     /// </summary>
     Task<IReadOnlyList<Survey>> GetByNamespaceIdAsync(

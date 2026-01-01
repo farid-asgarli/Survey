@@ -5,7 +5,25 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mail, Users, Clock, Send, Calendar, Type, FileText, User, AtSign, Sparkles, Check, ChevronRight, Zap, PenLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Textarea, Skeleton, Card, DatePicker } from '@/components/ui';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
+  Input,
+  Textarea,
+  Skeleton,
+  Card,
+  DatePicker,
+  SelectionCard,
+  SelectionCardIcon,
+  SelectionCardLabel,
+  SelectionCardDescription,
+  SelectionCardGroup,
+  IconContainer,
+} from '@/components/ui';
 import { RecipientImporter } from './RecipientImporter';
 import { useCreateDistribution } from '@/hooks/queries/useDistributions';
 import { useEmailTemplates, useEmailTemplate } from '@/hooks/queries/useEmailTemplates';
@@ -315,9 +333,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
             <div className="space-y-5">
               {/* Section Header */}
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-primary" />
-                </div>
+                <IconContainer emphasis="emphasized" shape="rounded" variant="primary" icon={<Users />} />
                 <div>
                   <h3 className="font-semibold text-on-surface">{t('createDistribution.addRecipients')}</h3>
                   <p className="text-sm text-on-surface-variant">{t('createDistribution.importOrAddManually')}</p>
@@ -328,9 +344,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
 
               {recipients.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-8 px-4">
-                  <div className="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center mb-4">
-                    <AtSign className="w-10 h-10 text-on-surface-variant/50" />
-                  </div>
+                  <IconContainer emphasis="maximum" shape="circle" variant="muted" icon={<AtSign />} className="mb-4" />
                   <h4 className="font-medium text-on-surface mb-1">{t('createDistribution.noRecipientsYet')}</h4>
                   <p className="text-sm text-on-surface-variant text-center max-w-xs">{t('createDistribution.noRecipientsDesc')}</p>
                 </div>
@@ -339,9 +353,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
               {recipients.length > 0 && (
                 <Card variant="highlighted" padding="default">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                      <Check className="w-5 h-5 text-primary" />
-                    </div>
+                    <IconContainer emphasis="standard" shape="rounded" variant="primary" icon={<Check />} />
                     <div className="flex-1">
                       <div className="text-sm font-medium text-on-surface">
                         {t('createDistribution.recipientsAdded', { count: recipients.length })}
@@ -360,9 +372,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
             <div className="space-y-6">
               {/* Section Header */}
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <PenLine className="w-5 h-5 text-primary" />
-                </div>
+                <IconContainer emphasis="emphasized" shape="rounded" variant="primary" icon={<PenLine />} />
                 <div>
                   <h3 className="font-semibold text-on-surface">{t('createDistribution.emailContent')}</h3>
                   <p className="text-sm text-on-surface-variant">{t('createDistribution.customizeMessage')}</p>
@@ -376,46 +386,36 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
                   {t('createDistribution.chooseTemplate')}
                 </label>
                 {templatesLoading ? (
-                  <div className="grid grid-cols-3 gap-3">
+                  <SelectionCardGroup columns={{ default: 3 }} gap={3}>
                     <Skeleton className="h-24 rounded-2xl" />
                     <Skeleton className="h-24 rounded-2xl" />
                     <Skeleton className="h-24 rounded-2xl" />
-                  </div>
+                  </SelectionCardGroup>
                 ) : (
-                  <div className="grid grid-cols-3 gap-3">
+                  <SelectionCardGroup columns={{ default: 3 }} gap={3}>
                     {templateOptions.map((template) => {
                       const isSelected = selectedTemplateId === template.id;
                       const fallback = fallbackTemplates.find((t) => t.id === template.id);
                       const TemplateIcon = fallback?.icon || FileText;
                       return (
-                        <button
+                        <SelectionCard
                           key={template.id}
+                          isSelected={isSelected}
                           onClick={() => handleTemplateChange(template.id)}
-                          className={cn(
-                            'relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200',
-                            isSelected
-                              ? 'border-primary bg-primary-container/30 ring-1 ring-primary/20'
-                              : 'border-outline-variant/30 bg-surface hover:border-primary/50 hover:bg-surface-container/50'
-                          )}
+                          size="md"
+                          shape="rounded-2xl"
+                          layout="vertical"
+                          gap={2}
+                          showRing
                         >
-                          <div
-                            className={cn(
-                              'w-10 h-10 rounded-xl flex items-center justify-center transition-colors',
-                              isSelected ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant'
-                            )}
-                          >
+                          <SelectionCardIcon isSelected={isSelected} size="md">
                             <TemplateIcon className="w-5 h-5" />
-                          </div>
-                          <span className={cn('text-sm font-medium', isSelected ? 'text-primary' : 'text-on-surface')}>{template.name}</span>
-                          {isSelected && (
-                            <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                              <Check className="w-3 h-3 text-on-primary" />
-                            </div>
-                          )}
-                        </button>
+                          </SelectionCardIcon>
+                          <SelectionCardLabel isSelected={isSelected}>{template.name}</SelectionCardLabel>
+                        </SelectionCard>
                       );
                     })}
-                  </div>
+                  </SelectionCardGroup>
                 )}
               </div>
 
@@ -484,9 +484,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
             <div className="space-y-6">
               {/* Section Header */}
               <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-primary" />
-                </div>
+                <IconContainer emphasis="emphasized" shape="rounded" variant="primary" icon={<Calendar />} />
                 <div>
                   <h3 className="font-semibold text-on-surface">{t('createDistribution.whenToSend')}</h3>
                   <p className="text-sm text-on-surface-variant">{t('createDistribution.chooseWhenEmailsGoOut')}</p>
@@ -494,128 +492,112 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
               </div>
 
               {/* Send Options - Card Selection */}
-              <div className="grid grid-cols-2 gap-4">
+              <SelectionCardGroup columns={{ default: 2 }} gap={4}>
                 {/* Send Now Card */}
-                <button
+                <SelectionCard
+                  isSelected={sendOption === 'now'}
                   onClick={() => setSendOption('now')}
-                  className={cn(
-                    'relative flex flex-col items-center gap-4 p-6 rounded-3xl border-2 transition-all duration-200 text-center',
-                    sendOption === 'now'
-                      ? 'border-primary bg-primary-container/30 ring-1 ring-primary/20'
-                      : 'border-outline-variant/30 bg-surface hover:border-primary/50 hover:bg-surface-container/50'
-                  )}
+                  size="lg"
+                  shape="rounded-3xl"
+                  layout="vertical"
+                  gap={4}
+                  showRing
+                  className="text-center"
                 >
-                  <div
-                    className={cn(
-                      'w-16 h-16 rounded-2xl flex items-center justify-center transition-colors',
-                      sendOption === 'now' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant'
-                    )}
-                  >
+                  <SelectionCardIcon isSelected={sendOption === 'now'} size="lg" className="w-16 h-16 rounded-2xl">
                     <Zap className="w-8 h-8" />
-                  </div>
+                  </SelectionCardIcon>
                   <div>
-                    <div className={cn('text-lg font-semibold mb-1', sendOption === 'now' ? 'text-primary' : 'text-on-surface')}>
+                    <SelectionCardLabel isSelected={sendOption === 'now'} className="text-lg mb-1 block">
                       {t('createDistribution.sendNow')}
-                    </div>
-                    <div className="text-sm text-on-surface-variant">{t('createDistribution.deliverImmediately')}</div>
+                    </SelectionCardLabel>
+                    <SelectionCardDescription>{t('createDistribution.deliverImmediately')}</SelectionCardDescription>
                   </div>
-                  {sendOption === 'now' && (
-                    <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                      <Check className="w-4 h-4 text-on-primary" />
-                    </div>
-                  )}
-                </button>
+                </SelectionCard>
 
                 {/* Schedule Card */}
-                <button
+                <SelectionCard
+                  isSelected={sendOption === 'schedule'}
                   onClick={() => setSendOption('schedule')}
-                  className={cn(
-                    'relative flex flex-col items-center gap-4 p-6 rounded-3xl border-2 transition-all duration-200 text-center',
-                    sendOption === 'schedule'
-                      ? 'border-primary bg-primary-container/30 ring-1 ring-primary/20'
-                      : 'border-outline-variant/30 bg-surface hover:border-primary/50 hover:bg-surface-container/50'
-                  )}
+                  size="lg"
+                  shape="rounded-3xl"
+                  layout="vertical"
+                  gap={4}
+                  showRing
+                  className="text-center"
                 >
-                  <div
-                    className={cn(
-                      'w-16 h-16 rounded-2xl flex items-center justify-center transition-colors',
-                      sendOption === 'schedule' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant'
-                    )}
-                  >
+                  <SelectionCardIcon isSelected={sendOption === 'schedule'} size="lg" className="w-16 h-16 rounded-2xl">
                     <Clock className="w-8 h-8" />
-                  </div>
+                  </SelectionCardIcon>
                   <div>
-                    <div className={cn('text-lg font-semibold mb-1', sendOption === 'schedule' ? 'text-primary' : 'text-on-surface')}>
+                    <SelectionCardLabel isSelected={sendOption === 'schedule'} className="text-lg mb-1 block">
                       {t('createDistribution.scheduleLabel')}
-                    </div>
-                    <div className="text-sm text-on-surface-variant">{t('createDistribution.pickDateTime')}</div>
+                    </SelectionCardLabel>
+                    <SelectionCardDescription>{t('createDistribution.pickDateTime')}</SelectionCardDescription>
                   </div>
-                  {sendOption === 'schedule' && (
-                    <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                      <Check className="w-4 h-4 text-on-primary" />
-                    </div>
-                  )}
-                </button>
-              </div>
+                </SelectionCard>
+              </SelectionCardGroup>
 
               {/* Schedule Date/Time Picker */}
               {sendOption === 'schedule' && (
-                <div className="space-y-4 p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30">
-                  <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    {t('createDistribution.selectDateTime')}
-                  </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <DatePicker
-                      label={t('common.date')}
-                      value={scheduleDate || undefined}
-                      onChange={(date) => setScheduleDate(date || '')}
-                      minDate={today}
-                    />
-                    <Input label={t('common.time')} type="time" value={scheduleTime} onChange={(e) => setScheduleTime(e.target.value)} />
-                  </div>
-
-                  {scheduleDate && (
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
-                      <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                        <Calendar className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-on-surface">{t('createDistribution.scheduledFor')}</p>
-                        <p className="text-sm text-on-surface-variant">
-                          {new Date(`${scheduleDate}T${scheduleTime}`).toLocaleString('en-US', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit',
-                          })}
-                        </p>
-                      </div>
+                <Card variant="filled" padding="lg" shape="soft">
+                  <div className="space-y-4">
+                    <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {t('createDistribution.selectDateTime')}
+                    </label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <DatePicker
+                        label={t('common.date')}
+                        value={scheduleDate || undefined}
+                        onChange={(date) => setScheduleDate(date || '')}
+                        minDate={today}
+                      />
+                      <Input label={t('common.time')} type="time" value={scheduleTime} onChange={(e) => setScheduleTime(e.target.value)} />
                     </div>
-                  )}
-                </div>
+
+                    {scheduleDate && (
+                      <Card variant="highlighted" padding="default">
+                        <div className="flex items-center gap-3">
+                          <IconContainer emphasis="standard" shape="rounded" variant="primary" icon={<Calendar />} />
+                          <div>
+                            <p className="text-sm font-medium text-on-surface">{t('createDistribution.scheduledFor')}</p>
+                            <p className="text-sm text-on-surface-variant">
+                              {new Date(`${scheduleDate}T${scheduleTime}`).toLocaleString('en-US', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: '2-digit',
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+                    )}
+                  </div>
+                </Card>
               )}
 
               {/* Distribution Summary */}
-              <div className="p-5 rounded-2xl bg-surface-container border border-outline-variant/30">
+              <Card variant="outlined" padding="lg" shape="soft">
                 <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-4">
                   <FileText className="w-4 h-4" />
                   {t('createDistribution.summary')}
                 </label>
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 rounded-xl bg-surface-container-low">
+                  <Card variant="filled" padding="sm" shape="soft" className="text-center">
                     <div className="text-2xl font-bold text-primary mb-1">{recipients.length}</div>
                     <div className="text-xs text-on-surface-variant">{t('createDistribution.summaryRecipients')}</div>
-                  </div>
-                  <div className="text-center p-3 rounded-xl bg-surface-container-low">
+                  </Card>
+                  <Card variant="filled" padding="sm" shape="soft" className="text-center">
                     <div className="text-lg font-semibold text-on-surface mb-1 truncate px-2" title={subject}>
                       {subject ? subject.substring(0, 12) + (subject.length > 12 ? '...' : '') : '—'}
                     </div>
                     <div className="text-xs text-on-surface-variant">{t('createDistribution.summarySubject')}</div>
-                  </div>
-                  <div className="text-center p-3 rounded-xl bg-surface-container-low">
+                  </Card>
+                  <Card variant="filled" padding="sm" shape="soft" className="text-center">
                     <div className="text-lg font-semibold text-on-surface mb-1">
                       {sendOption === 'now'
                         ? t('createDistribution.now')
@@ -624,9 +606,9 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
                         : '—'}
                     </div>
                     <div className="text-xs text-on-surface-variant">{t('createDistribution.summarySendTime')}</div>
-                  </div>
+                  </Card>
                 </div>
-              </div>
+              </Card>
             </div>
           )}
         </DialogBody>

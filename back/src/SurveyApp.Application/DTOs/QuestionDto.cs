@@ -38,11 +38,25 @@ public class PublicQuestionDto
 }
 
 /// <summary>
-/// DTO for question settings.
+/// Option with stable ID for aggregation.
+/// </summary>
+public record QuestionOptionDto
+{
+    public Guid Id { get; init; }
+    public string Text { get; init; } = null!;
+    public int Order { get; init; }
+}
+
+/// <summary>
+/// Question settings DTO.
 /// </summary>
 public record QuestionSettingsDto
 {
-    public IReadOnlyList<string>? Options { get; init; }
+    /// <summary>
+    /// Options with IDs for choice-based questions.
+    /// </summary>
+    public IReadOnlyList<QuestionOptionDto>? Options { get; init; }
+
     public int? MinValue { get; init; }
     public int? MaxValue { get; init; }
     public string? MinLabel { get; init; }

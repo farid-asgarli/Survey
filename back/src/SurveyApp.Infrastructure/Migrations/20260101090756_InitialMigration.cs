@@ -636,47 +636,6 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SurveyResponses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RespondentEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    RespondentName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    IsComplete = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    SubmittedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    TimeSpentSeconds = table.Column<int>(type: "integer", nullable: true),
-                    IpAddress = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: true),
-                    UserAgent = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    AccessToken = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    RespondentUserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SurveyResponses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SurveyResponses_Surveys_SurveyId",
-                        column: x => x.SurveyId,
-                        principalTable: "Surveys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SurveyResponses_Users_RespondentUserId",
-                        column: x => x.RespondentUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SurveyTranslations",
                 columns: table => new
                 {
@@ -840,6 +799,54 @@ namespace SurveyApp.Infrastructure.Migrations
                         principalTable: "RecurringSurveys",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyResponses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SurveyLinkId = table.Column<Guid>(type: "uuid", nullable: true),
+                    RespondentEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    RespondentName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsComplete = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    TimeSpentSeconds = table.Column<int>(type: "integer", nullable: true),
+                    IpAddress = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: true),
+                    UserAgent = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    AccessToken = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    RespondentUserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyResponses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SurveyResponses_SurveyLinks_SurveyLinkId",
+                        column: x => x.SurveyLinkId,
+                        principalTable: "SurveyLinks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_SurveyResponses_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SurveyResponses_Users_RespondentUserId",
+                        column: x => x.RespondentUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -1226,6 +1233,11 @@ namespace SurveyApp.Infrastructure.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SurveyResponses_SurveyLinkId",
+                table: "SurveyResponses",
+                column: "SurveyLinkId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Surveys_AccessToken",
                 table: "Surveys",
                 column: "AccessToken",
@@ -1454,9 +1466,6 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "EmailDistributions");
 
             migrationBuilder.DropTable(
-                name: "SurveyLinks");
-
-            migrationBuilder.DropTable(
                 name: "SurveyResponses");
 
             migrationBuilder.DropTable(
@@ -1472,13 +1481,16 @@ namespace SurveyApp.Infrastructure.Migrations
                 name: "EmailTemplates");
 
             migrationBuilder.DropTable(
+                name: "SurveyLinks");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Surveys");
+                name: "SurveyTemplates");
 
             migrationBuilder.DropTable(
-                name: "SurveyTemplates");
+                name: "Surveys");
 
             migrationBuilder.DropTable(
                 name: "SurveyThemes");

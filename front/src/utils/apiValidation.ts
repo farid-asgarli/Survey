@@ -433,15 +433,6 @@ export const validateSurveyResponse: Validator<unknown> = (data, path = 'respons
     validateField(data, 'answers', 'array', true, path),
   ];
 
-  // Backend has submittedAt, frontend uses completedAt
-  if (data.submittedAt !== undefined && data.completedAt === undefined) {
-    results.push({
-      valid: true,
-      errors: [],
-      warnings: [`${path} uses submittedAt (backend) not completedAt (frontend)`],
-    });
-  }
-
   // Backend has additional fields frontend might want
   const backendOnlyFields = ['respondentName', 'timeSpentSeconds', 'ipAddress'];
   backendOnlyFields.forEach((field) => {

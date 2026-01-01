@@ -1,5 +1,9 @@
-// Question Editor - Main editor component that renders the appropriate editor for each question type
-// Design: Clean, Email Editor-inspired styling with card-based layout and smooth transitions
+// Question Editor - M3 Expressive Design
+// Features:
+// - Shape morphing cards (rounded-2xl base)
+// - No shadows (uses border and color elevation)
+// - Semantic color tokens
+// - Rounded-full action buttons
 
 import { useSurveyBuilderStore } from '@/stores';
 import { useDialogState, useQuestionEditorTranslation } from '@/hooks';
@@ -240,8 +244,8 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
           <div className="flex items-center gap-3">
             <div
               className={cn(
-                'w-10 h-10 rounded-xl flex items-center justify-center',
-                isReadOnly ? 'bg-surface-container text-on-surface-variant' : 'bg-primary/10 text-primary'
+                'w-10 h-10 rounded-2xl flex items-center justify-center transition-colors',
+                isReadOnly ? 'bg-surface-container text-on-surface-variant' : 'bg-primary-container text-on-primary-container'
               )}
             >
               <QuestionTypeIcon type={question.type} className="w-5 h-5" />
@@ -268,14 +272,13 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
           {/* Actions toolbar - hidden in read-only mode */}
           {!isReadOnly && (
-            <div className="flex items-center gap-1 p-1 bg-surface-container rounded-lg">
+            <div className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full">
               <Tooltip content={t('common.duplicate', 'Duplicate')}>
                 <IconButton
                   variant="standard"
                   size="sm"
                   aria-label={t('questionEditor.duplicateQuestion')}
                   onClick={() => duplicateQuestion(question.id)}
-                  className="rounded-md"
                 >
                   <Copy className="w-4 h-4" />
                 </IconButton>
@@ -286,7 +289,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
                   size="sm"
                   aria-label={t('questionEditor.deleteQuestion')}
                   onClick={() => deleteQuestion(question.id)}
-                  className="hover:text-error hover:bg-error/8 rounded-md"
+                  className="hover:text-error hover:bg-error/8"
                 >
                   <Trash2 className="w-4 h-4" />
                 </IconButton>
@@ -295,13 +298,13 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
           )}
         </div>
 
-        {/* Tabs - Pill style like Email Editor */}
+        {/* Tabs - M3 Expressive Pill style */}
         <div className="px-4 pb-3">
-          <TabsList className="flex items-center gap-1 p-1 bg-surface-container rounded-lg w-fit">
+          <TabsList className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full w-fit">
             {!isReadOnly && (
               <TabsTrigger
                 value="edit"
-                className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:ring-2 data-[state=active]:ring-primary/30"
+                className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-on-primary"
               >
                 <Pencil className="w-4 h-4" />
                 {t('questionEditor.edit')}
@@ -309,7 +312,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
             )}
             <TabsTrigger
               value="preview"
-              className="gap-2 px-4 py-1.5 rounded-md text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-on-primary data-[state=active]:ring-2 data-[state=active]:ring-primary/30"
+              className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-on-primary"
             >
               <Eye className="w-4 h-4" />
               {t('questionEditor.preview')}
@@ -321,9 +324,9 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
       {/* Content Area - Edit tab only in edit mode */}
       {!isReadOnly && (
         <TabsContent value="edit" className="flex-1 overflow-auto">
-          {/* Editor Card */}
+          {/* Editor Card - M3 shape */}
           <div className="p-4">
-            <div className="bg-surface rounded-xl border-2 border-outline-variant/40 overflow-hidden">
+            <div className="bg-surface rounded-2xl border-2 border-outline-variant/40 overflow-hidden">
               <div className="p-5">{renderEditor()}</div>
 
               {/* Settings Section */}
@@ -341,8 +344,8 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
                   <div className="pt-3 border-t border-outline-variant/20">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-tertiary/10 flex items-center justify-center">
-                          <GitBranch className="w-4 h-4 text-tertiary" />
+                        <div className="w-9 h-9 rounded-2xl bg-tertiary-container flex items-center justify-center">
+                          <GitBranch className="w-4 h-4 text-on-tertiary-container" />
                         </div>
                         <div>
                           <p className="text-sm font-medium text-on-surface">{t('questionEditor.conditionalLogic')}</p>
@@ -362,7 +365,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
                 {/* Info for unsaved questions */}
                 {question.id.startsWith('temp_') && (
-                  <div className="p-3 bg-surface-container-high/50 rounded-lg text-sm text-on-surface-variant flex items-center gap-2">
+                  <div className="p-3 bg-surface-container-high/50 rounded-2xl text-sm text-on-surface-variant flex items-center gap-2">
                     <GitBranch className="w-4 h-4 text-on-surface-variant/50 shrink-0" />
                     <span>{t('questionEditor.saveFirst')}</span>
                   </div>
@@ -375,7 +378,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
       <TabsContent value="preview" className="flex-1 overflow-auto p-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-surface rounded-xl border-2 border-outline-variant/40 p-6">
+          <div className="bg-surface rounded-2xl border-2 border-outline-variant/40 p-6">
             <QuestionPreview question={displayQuestion} />
           </div>
         </div>

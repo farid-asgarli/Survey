@@ -108,6 +108,14 @@ export type { ListEmptyStateConfig, ListEmptyStateProps, InlineListEmptyStatePro
 // Utility components
 export { Tooltip, Divider } from './Tooltip';
 
+// Color & Number inputs
+export { ColorPicker, ColorSwatch, presetColors } from './ColorPicker';
+export type { ColorPickerProps } from './ColorPicker';
+export { NumberStepper, numberStepperVariants } from './NumberStepper';
+export type { NumberStepperProps } from './NumberStepper';
+export { SegmentedButtonGroup, SegmentedButton } from './SegmentedButton';
+export type { SegmentedButtonGroupProps, SegmentedButtonProps } from './SegmentedButton';
+
 // Media components
 export { ImageUploader } from './ImageUploader';
 export type { ImageUploaderProps, ImageUploadResult } from './ImageUploader';

@@ -1,5 +1,11 @@
 // Survey Builder Page - The main survey editing experience (Hero Moment!)
 //
+// M3 Expressive Design Implementation:
+// - No shadows (uses color elevation via surface-container tokens)
+// - Dynamic shapes (rounded-full buttons, shape morphing cards)
+// - Semantic color tokens throughout
+// - Accessible and responsive
+//
 // This page provides a full-featured survey editor with:
 // - Survey metadata editing (title, description, completion message, redirect URL)
 // - Question list with drag-and-drop reordering

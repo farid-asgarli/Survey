@@ -1,6 +1,6 @@
 // Types for public survey (respondent-facing)
 
-import type { QuestionType } from './models';
+import type { QuestionType, QuestionOption } from './models';
 
 // ============ Public Survey Types ============
 
@@ -11,7 +11,8 @@ export interface PublicSurveySettings {
   maxLabel?: string;
   placeholder?: string;
   maxLength?: number;
-  options?: string[];
+  /** Options with stable IDs for choice questions */
+  options?: QuestionOption[];
   matrixRows?: string[];
   matrixColumns?: string[];
   allowedFileTypes?: string[];
@@ -97,14 +98,38 @@ export interface PublicSurveyTheme {
 
 // ============ Response Submission Types ============
 
-export interface SubmitAnswerRequest {
-  questionId: string;
-  answerValue: string;
+/** Request to start a survey response (creates a draft) */
+export interface StartResponseRequest {
+  surveyId: string;
+  /** Optional: Link token if accessed via a tracked link */
+  linkToken?: string;
+  respondentEmail?: string;
+  respondentName?: string;
 }
 
-// SubmitResponseRequest for public survey submissions
-export interface SubmitResponseRequest {
+/** Result of starting a survey response */
+export interface StartResponseResult {
+  responseId: string;
   surveyId: string;
+  startedAt: string;
+}
+
+export interface SubmitAnswerRequest {
+  questionId: string;
+  /** Selected option IDs for choice questions */
+  selectedOptionIds?: string[];
+  /** Text value for text questions or "Other" input */
+  text?: string;
+}
+
+/** Request to submit/complete a survey response (new flow with responseId) */
+export interface SubmitResponseRequest {
+  /** The response ID to complete (new flow - preferred) */
+  responseId?: string;
+  /** The survey ID (legacy flow - for backward compatibility) */
+  surveyId?: string;
+  /** Link token for tracking (only used in legacy flow) */
+  linkToken?: string;
   answers: SubmitAnswerRequest[];
   metadata?: Record<string, string>;
 }

@@ -171,7 +171,7 @@ function FiltersBar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   if (activeFilters.length === 0) return null;
 
   return (
-    <div className={cn('px-4 md:px-6 pb-4', className)} {...props}>
+    <div className={cn('px-4 md:px-6 py-3 border-b border-outline-variant/30', className)} {...props}>
       <ActiveFiltersBar filters={activeFilters} onClearAll={onClearAllFilters} />
     </div>
   );

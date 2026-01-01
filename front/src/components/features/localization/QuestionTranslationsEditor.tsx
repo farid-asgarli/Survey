@@ -1,10 +1,12 @@
-// Question Translations Editor - Side-by-side translation for survey questions
+// Question Translations Editor - M3 Expressive Design
 //
 // Features:
 // - List of all questions with translation status
 // - Side-by-side source/target view
 // - Support for question text, description, and options
 // - Progress tracking per question
+// - Shape morphing on expand/collapse
+// - No shadows (uses border/color elevation)
 
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -250,7 +252,7 @@ function QuestionTranslationItem({
         <span
           className={cn(
             'flex items-center justify-center w-8 h-8 rounded-full transition-colors',
-            isExpanded ? 'bg-primary/10 text-primary' : 'bg-surface-container-high text-on-surface-variant'
+            isExpanded ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container-high text-on-surface-variant'
           )}
         >
           {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -300,7 +302,7 @@ function QuestionTranslationItem({
               <label className="flex items-center gap-2 text-sm font-semibold text-on-surface">
                 {sourceLang.flag} {t('localization.questionText', 'Question Text')}
               </label>
-              <div className="px-4 py-3 rounded-2xl bg-surface-container-high/60 text-sm text-on-surface border border-outline-variant/20 min-h-18">
+              <div className="px-4 py-3 rounded-2xl bg-surface-container-high/50 text-sm text-on-surface border-2 border-outline-variant/20 min-h-18">
                 {sourceText || <span className="text-on-surface-variant/50 italic">{t('localization.noContent', 'No content')}</span>}
               </div>
             </div>
@@ -338,7 +340,7 @@ function QuestionTranslationItem({
                   <HelpCircle className="w-4 h-4 text-on-surface-variant" />
                   {sourceLang.flag} {t('localization.description', 'Description')}
                 </label>
-                <div className="px-4 py-3 rounded-2xl bg-surface-container-high/60 text-sm text-on-surface border border-outline-variant/20 min-h-14">
+                <div className="px-4 py-3 rounded-2xl bg-surface-container-high/50 text-sm text-on-surface border-2 border-outline-variant/20 min-h-14">
                   {sourceDesc}
                 </div>
               </div>
@@ -384,7 +386,7 @@ function QuestionTranslationItem({
                       <label className="flex items-center gap-2 text-sm font-medium text-on-surface-variant">
                         {sourceLang.flag} {t('localization.lowRatingLabel', 'Low Rating Label')}
                       </label>
-                      <div className="px-4 py-2.5 rounded-2xl bg-surface-container-high/60 text-sm text-on-surface border border-outline-variant/20">
+                      <div className="px-4 py-2.5 rounded-2xl bg-surface-container-high/50 text-sm text-on-surface border-2 border-outline-variant/20">
                         {question.sourceMinLabel}
                       </div>
                     </div>
@@ -420,7 +422,7 @@ function QuestionTranslationItem({
                       <label className="flex items-center gap-2 text-sm font-medium text-on-surface-variant">
                         {sourceLang.flag} {t('localization.highRatingLabel', 'High Rating Label')}
                       </label>
-                      <div className="px-4 py-2.5 rounded-2xl bg-surface-container-high/60 text-sm text-on-surface border border-outline-variant/20">
+                      <div className="px-4 py-2.5 rounded-2xl bg-surface-container-high/50 text-sm text-on-surface border-2 border-outline-variant/20">
                         {question.sourceMaxLabel}
                       </div>
                     </div>
@@ -464,7 +466,7 @@ function QuestionTranslationItem({
                 {question.sourceOptions.map((option, optIndex) => (
                   <div
                     key={optIndex}
-                    className="flex items-center gap-3 text-sm p-3 rounded-xl bg-surface-container-high/40 border border-outline-variant/20"
+                    className="flex items-center gap-3 text-sm p-3 rounded-2xl bg-surface-container-high/40 border-2 border-outline-variant/20"
                   >
                     <span className="w-6 h-6 rounded-full bg-primary-container/40 text-on-primary-container text-xs font-semibold flex items-center justify-center">
                       {optIndex + 1}

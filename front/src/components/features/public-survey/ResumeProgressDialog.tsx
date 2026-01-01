@@ -16,7 +16,7 @@ export function ResumeProgressDialog({ open, onResume, onStartFresh }: ResumePro
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent showClose={false}>
-        <div className="p-6 max-w-md">
+        <div className="p-6 max-w-md mx-auto">
           {/* Icon */}
           <div className="flex justify-center mb-6">
             <div className="w-16 h-16 rounded-3xl bg-primary-container/60 flex items-center justify-center">

@@ -1,9 +1,15 @@
-// Question List Sidebar - Enhanced drag-and-drop with framer-motion
+// Question List Sidebar - M3 Expressive Design
+// Features:
+// - Enhanced drag-and-drop with framer-motion
+// - No shadows (uses color elevation)
+// - Dynamic shapes (rounded-full for action buttons)
+// - Semantic color tokens
 import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { Plus, Layout, Eye, GripVertical, Sparkles } from 'lucide-react';
 import { QuestionCard, AddQuestionButton } from '@/components/features/questions';
+import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useTranslatedQuestions } from '@/hooks';
 import type { DraftQuestion } from '@/stores';
@@ -95,10 +101,9 @@ function DraggableQuestionItem({
         layout
         initial={{ opacity: 0, y: 20 }}
         animate={{
-          opacity: isDragging ? 0.5 : 1,
+          opacity: isDragging ? 0.6 : 1,
           y: 0,
           scale: isDragging ? 1.02 : 1,
-          boxShadow: isDragging ? '0 10px 40px rgba(0,0,0,0.15)' : 'none',
         }}
         exit={{ opacity: 0, y: -20 }}
         transition={{
@@ -106,6 +111,7 @@ function DraggableQuestionItem({
           opacity: { duration: 0.15 },
           scale: { duration: 0.15 },
         }}
+        className={cn(isDragging && 'ring-2 ring-primary/30 rounded-2xl')}
       >
         {/* Drop zone indicators */}
         <DropZoneIndicator isActive={dropIndicator === 'top'} position="top" />
@@ -217,8 +223,10 @@ export function QuestionListSidebar({
       <div className="shrink-0 p-4 border-b border-outline-variant/30 bg-surface">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', isReadOnly ? 'bg-surface-container' : 'bg-primary/10')}>
-              {isReadOnly ? <Eye className="w-4 h-4 text-on-surface-variant" /> : <Layout className="w-4 h-4 text-primary" />}
+            <div
+              className={cn('w-9 h-9 rounded-full flex items-center justify-center', isReadOnly ? 'bg-surface-container' : 'bg-primary-container')}
+            >
+              {isReadOnly ? <Eye className="w-4 h-4 text-on-surface-variant" /> : <Layout className="w-4 h-4 text-on-primary-container" />}
             </div>
             <div>
               <h2 className="font-semibold text-on-surface text-sm">{t('surveyBuilder.questions')}</h2>
@@ -228,19 +236,10 @@ export function QuestionListSidebar({
             </div>
           </div>
           {!isReadOnly && (
-            <motion.button
-              onClick={onAddQuestion}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={cn(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium',
-                'bg-primary text-on-primary',
-                'hover:bg-primary/90 transition-colors'
-              )}
-            >
+            <Button variant="filled" size="sm" onClick={onAddQuestion} className="gap-1.5">
               <Plus className="w-4 h-4" />
               {t('surveyBuilder.add', 'Add')}
-            </motion.button>
+            </Button>
           )}
         </div>
 
@@ -268,25 +267,45 @@ export function QuestionListSidebar({
       >
         {questions.length === 0 ? (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center py-12 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="flex flex-col items-center justify-center py-16 text-center px-4"
           >
+            {/* Icon container with subtle animation */}
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-              className="w-16 h-16 rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.4, ease: [0.2, 0, 0, 1] }}
+              className="w-20 h-20 rounded-[28px] bg-primary-container flex items-center justify-center mb-5 border-2 border-primary/20"
             >
-              <Sparkles className="w-8 h-8 text-primary" />
+              <Sparkles className="w-9 h-9 text-on-primary-container" />
             </motion.div>
-            <p className="text-on-surface font-semibold text-lg mb-2">{t('surveyBuilder.noQuestions')}</p>
+
+            {/* Title */}
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+              className="text-on-surface font-bold text-lg mb-2"
+            >
+              {t('surveyBuilder.noQuestions')}
+            </motion.p>
+
             {!isReadOnly && (
               <>
-                <p className="text-on-surface-variant text-sm mb-6 max-w-xs">
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.3 }}
+                  className="text-on-surface-variant text-sm mb-8 max-w-[240px] leading-relaxed"
+                >
                   {t('surveyBuilder.addFirstQuestionDesc', 'Start building your survey by adding your first question')}
-                </p>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                </motion.p>
+
+                {/* Add Question Button */}
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.3 }}>
                   <AddQuestionButton onClick={onAddQuestion} />
                 </motion.div>
               </>
@@ -329,11 +348,11 @@ export function QuestionListSidebar({
                   whileHover={{ scale: 1.01, borderColor: 'var(--color-primary)' }}
                   whileTap={{ scale: 0.99 }}
                   className={cn(
-                    'w-full flex items-center justify-center gap-2 p-4 rounded-xl',
-                    'border-2 border-dashed border-outline-variant/40',
-                    'text-on-surface-variant text-sm font-medium',
-                    'hover:text-primary hover:bg-primary/5',
-                    'transition-colors duration-200'
+                    'w-full flex items-center justify-center gap-2 p-4 rounded-2xl',
+                    'border-2 border-dashed border-outline-variant/50',
+                    'text-on-surface-variant text-sm font-semibold',
+                    'hover:text-primary hover:bg-primary-container/30 hover:border-primary/50',
+                    'transition-all duration-300'
                   )}
                 >
                   <Plus className="w-4 h-4" />

@@ -214,7 +214,7 @@ export interface ThemeResponse {
 
 // ============ Response API Types ============
 export interface ResponsesListParams extends PaginationParams {
-  isCompleted?: boolean;
+  isComplete?: boolean;
   fromDate?: string;
   toDate?: string;
 }

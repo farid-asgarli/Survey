@@ -28,10 +28,8 @@ public class ResponseListItemDto
     public string? RespondentEmail { get; set; }
     public string? RespondentName { get; set; }
     public bool IsComplete { get; set; }
-    public bool IsCompleted { get; set; }
     public DateTime StartedAt { get; set; }
     public DateTime? SubmittedAt { get; set; }
-    public DateTime? CompletedAt { get; set; }
     public int? TimeSpentSeconds { get; set; }
     public int AnswerCount { get; set; }
 }

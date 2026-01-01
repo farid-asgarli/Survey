@@ -96,8 +96,41 @@ public class DatabaseSeeder(
         );
         if (existingNamespace != null)
         {
-            _logger.LogInformation("Default namespace already exists, skipping seed");
-            return;
+            // Check if surveys exist - if not, we need to reseed data
+            var surveyCount = await _dbContext.Surveys.CountAsync(s =>
+                s.NamespaceId == existingNamespace.Id
+            );
+            if (surveyCount > 0)
+            {
+                _logger.LogInformation(
+                    "Default namespace already exists with {SurveyCount} surveys, skipping seed",
+                    surveyCount
+                );
+                return;
+            }
+
+            _logger.LogInformation(
+                "Default namespace exists but has no surveys, reseeding data..."
+            );
+
+            // Get existing users for this namespace
+            var existingUsers = await _dbContext
+                .Users.Where(u =>
+                    _dbContext.NamespaceMemberships.Any(m =>
+                        m.NamespaceId == existingNamespace.Id && m.UserId == u.Id
+                    )
+                )
+                .ToListAsync();
+
+            if (existingUsers.Count > 0)
+            {
+                // Reseed only surveys, themes, and email templates
+                await SeedThemesAsync(existingNamespace.Id);
+                await SeedEmailTemplatesAsync(existingNamespace.Id);
+                await SeedSurveysAsync(existingNamespace.Id, existingUsers);
+                _logger.LogInformation("Reseeded surveys and related data successfully");
+                return;
+            }
         }
 
         _logger.LogInformation("Creating comprehensive seed data...");
@@ -955,9 +988,10 @@ public class DatabaseSeeder(
             var response = SurveyResponse.Create(
                 survey.Id,
                 survey.AccessToken,
-                email,
-                $"192.168.1.{random.Next(1, 255)}",
-                "Mozilla/5.0"
+                surveyLinkId: null,
+                respondentEmail: email,
+                ipAddress: $"192.168.1.{random.Next(1, 255)}",
+                userAgent: "Mozilla/5.0"
             );
             response.SetRespondentInfo(email, name);
 
@@ -1122,9 +1156,10 @@ public class DatabaseSeeder(
             var response = SurveyResponse.Create(
                 survey.Id,
                 survey.AccessToken,
-                null,
-                $"10.0.{random.Next(1, 10)}.{random.Next(1, 255)}",
-                "Mozilla/5.0"
+                surveyLinkId: null,
+                respondentEmail: null,
+                ipAddress: $"10.0.{random.Next(1, 10)}.{random.Next(1, 255)}",
+                userAgent: "Mozilla/5.0"
             );
 
             response.AddAnswer(questions[0].Id, $"{{\"value\":{random.Next(3, 6)}}}");
@@ -1411,9 +1446,10 @@ public class DatabaseSeeder(
             var response = SurveyResponse.Create(
                 survey.Id,
                 survey.AccessToken,
-                null,
-                $"203.0.{random.Next(1, 255)}.{random.Next(1, 255)}",
-                "Mozilla/5.0"
+                surveyLinkId: null,
+                respondentEmail: null,
+                ipAddress: $"203.0.{random.Next(1, 255)}.{random.Next(1, 255)}",
+                userAgent: "Mozilla/5.0"
             );
 
             response.AddAnswer(questions[0].Id, $"{{\"value\":{random.Next(3, 6)}}}");
@@ -1603,9 +1639,10 @@ public class DatabaseSeeder(
             var response = SurveyResponse.Create(
                 survey.Id,
                 survey.AccessToken,
-                null,
-                $"172.16.{random.Next(1, 255)}.{random.Next(1, 255)}",
-                "Mozilla/5.0"
+                surveyLinkId: null,
+                respondentEmail: null,
+                ipAddress: $"172.16.{random.Next(1, 255)}.{random.Next(1, 255)}",
+                userAgent: "Mozilla/5.0"
             );
 
             var techChoices = Enumerable

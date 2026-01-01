@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SurveyApp.Domain.Common;
 
 namespace SurveyApp.API.Middleware;
 
@@ -68,6 +69,7 @@ public class GlobalExceptionMiddleware(
     {
         var statusCode = exception switch
         {
+            DomainException => (int)HttpStatusCode.BadRequest,
             ArgumentNullException => (int)HttpStatusCode.BadRequest,
             ArgumentException => (int)HttpStatusCode.BadRequest,
             UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,

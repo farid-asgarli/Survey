@@ -16,6 +16,11 @@ public class SurveyResponse : AggregateRoot<Guid>
     public Guid SurveyId { get; private set; }
 
     /// <summary>
+    /// Gets the survey link ID this response came from (if any).
+    /// </summary>
+    public Guid? SurveyLinkId { get; private set; }
+
+    /// <summary>
     /// Gets the email of the respondent (if provided).
     /// </summary>
     public string? RespondentEmail { get; private set; }
@@ -71,19 +76,14 @@ public class SurveyResponse : AggregateRoot<Guid>
     public Survey Survey { get; private set; } = null!;
 
     /// <summary>
-    /// Gets whether the response is completed.
-    /// </summary>
-    public bool IsCompleted => IsComplete;
-
-    /// <summary>
-    /// Gets the completion date (alias for SubmittedAt).
-    /// </summary>
-    public DateTime? CompletedAt => SubmittedAt;
-
-    /// <summary>
     /// Gets the respondent user navigation property (if authenticated).
     /// </summary>
     public User? Respondent { get; private set; }
+
+    /// <summary>
+    /// Gets the survey link navigation property (if response came from a link).
+    /// </summary>
+    public SurveyLink? SurveyLink { get; private set; }
 
     private SurveyResponse() { }
 
@@ -91,6 +91,7 @@ public class SurveyResponse : AggregateRoot<Guid>
         Guid id,
         Guid surveyId,
         string accessToken,
+        Guid? surveyLinkId = null,
         string? respondentEmail = null,
         string? ipAddress = null,
         string? userAgent = null
@@ -98,6 +99,7 @@ public class SurveyResponse : AggregateRoot<Guid>
         : base(id)
     {
         SurveyId = surveyId;
+        SurveyLinkId = surveyLinkId;
         AccessToken = accessToken;
         RespondentEmail = respondentEmail;
         IpAddress = ipAddress;
@@ -107,11 +109,12 @@ public class SurveyResponse : AggregateRoot<Guid>
     }
 
     /// <summary>
-    /// Creates a new survey response.
+    /// Creates a new survey response (draft - not yet complete).
     /// </summary>
     public static SurveyResponse Create(
         Guid surveyId,
         string accessToken,
+        Guid? surveyLinkId = null,
         string? respondentEmail = null,
         string? ipAddress = null,
         string? userAgent = null
@@ -124,6 +127,7 @@ public class SurveyResponse : AggregateRoot<Guid>
             Guid.NewGuid(),
             surveyId,
             accessToken,
+            surveyLinkId,
             respondentEmail,
             ipAddress,
             userAgent
@@ -145,7 +149,7 @@ public class SurveyResponse : AggregateRoot<Guid>
     public Answer SubmitAnswer(Guid questionId, string answerValue)
     {
         if (IsComplete)
-            throw new InvalidOperationException("Domain.Response.CannotSubmitCompleted");
+            throw new DomainException("Domain.Response.CannotSubmitCompleted");
 
         var existingAnswer = _answers.FirstOrDefault(a => a.QuestionId == questionId);
         if (existingAnswer != null)
@@ -185,7 +189,7 @@ public class SurveyResponse : AggregateRoot<Guid>
     public void Complete()
     {
         if (IsComplete)
-            throw new InvalidOperationException("Domain.Response.AlreadyComplete");
+            throw new DomainException("Domain.Response.AlreadyComplete");
 
         IsComplete = true;
         SubmittedAt = DateTime.UtcNow;

@@ -26,10 +26,14 @@ export function SingleChoiceRenderer({ question, value, onChange, error, disable
   const [otherValue, setOtherValue] = useState('');
   const selectedValue = value as string | null;
 
-  const handleSelect = (option: string) => {
+  // Check if selected value is an option ID or the __other__ pattern
+  const isOptionSelected = (optionId: string) => selectedValue === optionId;
+  const isOtherSelected = selectedValue?.startsWith('__other__');
+
+  const handleSelect = (optionId: string) => {
     if (disabled) return;
-    onChange(option);
-    if (option !== '__other__') {
+    onChange(optionId);
+    if (optionId !== '__other__') {
       setOtherValue('');
     }
   };
@@ -42,13 +46,13 @@ export function SingleChoiceRenderer({ question, value, onChange, error, disable
 
   return (
     <div className="space-y-3">
-      {options.map((option, index) => (
+      {options.map((option) => (
         <label
-          key={index}
-          onClick={() => handleSelect(option)}
+          key={option.id}
+          onClick={() => handleSelect(option.id)}
           className={cn(
             'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200',
-            selectedValue === option
+            isOptionSelected(option.id)
               ? 'border-primary bg-primary-container/30'
               : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container-low',
             disabled && 'opacity-50 cursor-not-allowed',
@@ -58,12 +62,12 @@ export function SingleChoiceRenderer({ question, value, onChange, error, disable
           <div
             className={cn(
               'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200',
-              selectedValue === option ? 'border-primary bg-primary' : 'border-outline-variant'
+              isOptionSelected(option.id) ? 'border-primary bg-primary' : 'border-outline-variant'
             )}
           >
-            {selectedValue === option && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
+            {isOptionSelected(option.id) && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
           </div>
-          <span className="text-on-surface font-medium">{option}</span>
+          <span className="text-on-surface font-medium">{option.text}</span>
         </label>
       ))}
 
@@ -72,7 +76,7 @@ export function SingleChoiceRenderer({ question, value, onChange, error, disable
           onClick={() => handleSelect('__other__')}
           className={cn(
             'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200',
-            selectedValue?.startsWith('__other__')
+            isOtherSelected
               ? 'border-primary bg-primary-container/30'
               : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container-low',
             disabled && 'opacity-50 cursor-not-allowed'
@@ -81,10 +85,10 @@ export function SingleChoiceRenderer({ question, value, onChange, error, disable
           <div
             className={cn(
               'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200',
-              selectedValue?.startsWith('__other__') ? 'border-primary bg-primary' : 'border-outline-variant'
+              isOtherSelected ? 'border-primary bg-primary' : 'border-outline-variant'
             )}
           >
-            {selectedValue?.startsWith('__other__') && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
+            {isOtherSelected && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
           </div>
           <div className="flex-1 flex items-center gap-3">
             <span className="text-on-surface font-medium">{t('questionRenderers.other')}:</span>
@@ -114,9 +118,13 @@ export function MultipleChoiceRenderer({ question, value, onChange, error, disab
   const [otherValue, setOtherValue] = useState('');
   const selectedValues = (value as string[]) || [];
 
-  const handleToggle = (option: string) => {
+  // Check if an option ID is in the selected values
+  const isOptionSelected = (optionId: string) => selectedValues.includes(optionId);
+  const isOtherSelected = selectedValues.some((v) => v.startsWith('__other__'));
+
+  const handleToggle = (optionId: string) => {
     if (disabled) return;
-    const newValues = selectedValues.includes(option) ? selectedValues.filter((v) => v !== option) : [...selectedValues, option];
+    const newValues = isOptionSelected(optionId) ? selectedValues.filter((v) => v !== optionId) : [...selectedValues, optionId];
     onChange(newValues);
   };
 
@@ -133,32 +141,30 @@ export function MultipleChoiceRenderer({ question, value, onChange, error, disab
     }
   };
 
-  const isOtherSelected = selectedValues.some((v) => v.startsWith('__other__'));
-
   return (
     <div className="space-y-3">
-      {options.map((option, index) => (
+      {options.map((option) => (
         <label
-          key={index}
+          key={option.id}
           className={cn(
             'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200',
-            selectedValues.includes(option)
+            isOptionSelected(option.id)
               ? 'border-primary bg-primary-container/30'
               : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container-low',
             disabled && 'opacity-50 cursor-not-allowed',
             error && selectedValues.length === 0 && 'border-error/50'
           )}
-          onClick={() => handleToggle(option)}
+          onClick={() => handleToggle(option.id)}
         >
           <div
             className={cn(
               'w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200',
-              selectedValues.includes(option) ? 'border-primary bg-primary' : 'border-outline-variant'
+              isOptionSelected(option.id) ? 'border-primary bg-primary' : 'border-outline-variant'
             )}
           >
-            {selectedValues.includes(option) && <Check className="w-4 h-4 text-on-primary" strokeWidth={3} />}
+            {isOptionSelected(option.id) && <Check className="w-4 h-4 text-on-primary" strokeWidth={3} />}
           </div>
-          <span className="text-on-surface font-medium">{option}</span>
+          <span className="text-on-surface font-medium">{option.text}</span>
         </label>
       ))}
 
@@ -969,11 +975,15 @@ export function FileUploadRenderer({ question, value, onChange, error, disabled 
 export function RankingRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
   const { t } = useTranslation();
   const options = question.settings?.options || [];
-  const rankedOptions = (value as string[]) || [...options];
+  // For ranking, we store option IDs in order. Initialize with default order if no value.
+  const rankedOptionIds = (value as string[]) || options.map((o) => o.id);
+
+  // Build a map for quick lookup of option text by ID
+  const optionMap = new Map(options.map((o) => [o.id, o]));
 
   const moveItem = (fromIndex: number, toIndex: number) => {
     if (disabled) return;
-    const newOrder = [...rankedOptions];
+    const newOrder = [...rankedOptionIds];
     const [removed] = newOrder.splice(fromIndex, 1);
     newOrder.splice(toIndex, 0, removed);
     onChange(newOrder);
@@ -983,35 +993,40 @@ export function RankingRenderer({ question, value, onChange, error, disabled }: 
     <div className="space-y-3">
       <p className="text-on-surface-variant text-sm mb-2">{t('questionRenderers.dragToReorder')}</p>
 
-      {rankedOptions.map((option, index) => (
-        <div
-          key={option}
-          draggable={!disabled}
-          onDragStart={(e) => {
-            e.dataTransfer.setData('text/plain', index.toString());
-          }}
-          onDragOver={(e) => {
-            e.preventDefault();
-          }}
-          onDrop={(e) => {
-            e.preventDefault();
-            const fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-            moveItem(fromIndex, index);
-          }}
-          className={cn(
-            'flex items-center gap-4 p-4 rounded-2xl border-2 border-outline-variant/50 bg-surface-container-lowest',
-            'cursor-move transition-all duration-200 hover:border-outline-variant hover:bg-surface-container-low',
-            disabled && 'cursor-not-allowed opacity-50',
-            error && 'border-error/50'
-          )}
-        >
-          <GripVertical className="w-5 h-5 text-on-surface-variant/50" />
-          <div className="w-8 h-8 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
-            {index + 1}
+      {rankedOptionIds.map((optionId, index) => {
+        const option = optionMap.get(optionId);
+        const displayText = option?.text || optionId;
+
+        return (
+          <div
+            key={optionId}
+            draggable={!disabled}
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', index.toString());
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              const fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
+              moveItem(fromIndex, index);
+            }}
+            className={cn(
+              'flex items-center gap-4 p-4 rounded-2xl border-2 border-outline-variant/50 bg-surface-container-lowest',
+              'cursor-move transition-all duration-200 hover:border-outline-variant hover:bg-surface-container-low',
+              disabled && 'cursor-not-allowed opacity-50',
+              error && 'border-error/50'
+            )}
+          >
+            <GripVertical className="w-5 h-5 text-on-surface-variant/50" />
+            <div className="w-8 h-8 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+              {index + 1}
+            </div>
+            <span className="text-on-surface font-medium">{displayText}</span>
           </div>
-          <span className="text-on-surface font-medium">{option}</span>
-        </div>
-      ))}
+        );
+      })}
 
       {error && <p className="text-error text-sm mt-2">{error}</p>}
     </div>
@@ -1024,11 +1039,19 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
   const yesNoStyle = (question.settings?.yesNoStyle ?? YesNoStyle.Text) as YesNoStyle;
   const yesLabel = t('common.yes');
   const noLabel = t('common.no');
-  const options = question.settings?.options || [yesLabel, noLabel];
+
+  // YesNo options are QuestionOption[] or we fall back to simple text labels
+  const rawOptions = question.settings?.options;
+  const optionTexts = rawOptions ? rawOptions.map((o) => o.text) : [yesLabel, noLabel];
+  const optionIds = rawOptions ? rawOptions.map((o) => o.id) : [yesLabel, noLabel];
+
   const selectedValue = value as string | null;
 
+  // Helper to get the option ID for comparison
+  const getOptionValue = (index: number) => optionIds[index] || optionTexts[index];
+
   // Pre-compute values for Toggle case to avoid lexical declarations in case block
-  const isYes = selectedValue === (options[0] || yesLabel);
+  const isYes = selectedValue === getOptionValue(0);
   const hasSelection = selectedValue !== null;
 
   switch (yesNoStyle) {
@@ -1040,10 +1063,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[0] || yesLabel)}
+              onClick={() => onChange(getOptionValue(0))}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[0] || yesLabel)
+                selectedValue === getOptionValue(0)
                   ? 'border-success bg-success-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1052,15 +1075,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
-                  selectedValue === (options[0] || yesLabel) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === getOptionValue(0) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <ThumbsUp className="w-7 h-7" />
               </div>
-              <span
-                className={cn('text-sm font-medium', selectedValue === (options[0] || yesLabel) ? 'text-on-success-container' : 'text-on-surface')}
-              >
-                {options[0] || yesLabel}
+              <span className={cn('text-sm font-medium', selectedValue === getOptionValue(0) ? 'text-on-success-container' : 'text-on-surface')}>
+                {optionTexts[0]}
               </span>
             </button>
 
@@ -1068,10 +1089,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[1] || noLabel)}
+              onClick={() => onChange(getOptionValue(1))}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[1] || noLabel)
+                selectedValue === getOptionValue(1)
                   ? 'border-error bg-error-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1080,13 +1101,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-xl transition-colors',
-                  selectedValue === (options[1] || noLabel) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === getOptionValue(1) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <ThumbsDown className="w-7 h-7" />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[1] || noLabel) ? 'text-on-error-container' : 'text-on-surface')}>
-                {options[1] || noLabel}
+              <span className={cn('text-sm font-medium', selectedValue === getOptionValue(1) ? 'text-on-error-container' : 'text-on-surface')}>
+                {optionTexts[1]}
               </span>
             </button>
           </div>
@@ -1099,12 +1120,12 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
         <div className="space-y-3">
           <div className="flex items-center justify-center gap-4">
             <span className={cn('text-base font-medium transition-colors', !isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
-              {options[1] || noLabel}
+              {optionTexts[1]}
             </span>
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(isYes ? options[1] || noLabel : options[0] || yesLabel)}
+              onClick={() => onChange(isYes ? getOptionValue(1) : getOptionValue(0))}
               className={cn(
                 'w-16 h-9 rounded-full relative transition-colors border-2',
                 hasSelection
@@ -1123,7 +1144,7 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               />
             </button>
             <span className={cn('text-base font-medium transition-colors', isYes && hasSelection ? 'text-on-surface' : 'text-on-surface-variant')}>
-              {options[0] || yesLabel}
+              {optionTexts[0]}
             </span>
           </div>
           {error && <p className="text-error text-sm text-center">{error}</p>}
@@ -1138,10 +1159,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[0] || yesLabel)}
+              onClick={() => onChange(getOptionValue(0))}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[0] || yesLabel)
+                selectedValue === getOptionValue(0)
                   ? 'border-success bg-success-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1150,15 +1171,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
-                  selectedValue === (options[0] || yesLabel) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === getOptionValue(0) ? 'bg-success text-on-success' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <Check className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span
-                className={cn('text-sm font-medium', selectedValue === (options[0] || yesLabel) ? 'text-on-success-container' : 'text-on-surface')}
-              >
-                {options[0] || yesLabel}
+              <span className={cn('text-sm font-medium', selectedValue === getOptionValue(0) ? 'text-on-success-container' : 'text-on-surface')}>
+                {optionTexts[0]}
               </span>
             </button>
 
@@ -1166,10 +1185,10 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
             <button
               type="button"
               disabled={disabled}
-              onClick={() => onChange(options[1] || noLabel)}
+              onClick={() => onChange(getOptionValue(1))}
               className={cn(
                 'flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-colors min-w-32',
-                selectedValue === (options[1] || noLabel)
+                selectedValue === getOptionValue(1)
                   ? 'border-error bg-error-container'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container',
                 disabled && 'cursor-not-allowed opacity-50'
@@ -1178,13 +1197,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'flex items-center justify-center w-14 h-14 rounded-full transition-colors',
-                  selectedValue === (options[1] || noLabel) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
+                  selectedValue === getOptionValue(1) ? 'bg-error text-on-error' : 'bg-surface-container-high text-on-surface-variant'
                 )}
               >
                 <X className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <span className={cn('text-sm font-medium', selectedValue === (options[1] || noLabel) ? 'text-on-error-container' : 'text-on-surface')}>
-                {options[1] || noLabel}
+              <span className={cn('text-sm font-medium', selectedValue === getOptionValue(1) ? 'text-on-error-container' : 'text-on-surface')}>
+                {optionTexts[1]}
               </span>
             </button>
           </div>
@@ -1197,13 +1216,13 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
       // Default to single choice renderer style
       return (
         <div className="space-y-3">
-          {options.map((option, index) => (
+          {optionTexts.map((optionText, index) => (
             <label
               key={index}
-              onClick={() => !disabled && onChange(option)}
+              onClick={() => !disabled && onChange(getOptionValue(index))}
               className={cn(
                 'flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-colors',
-                selectedValue === option
+                selectedValue === getOptionValue(index)
                   ? 'border-primary bg-primary-container/30'
                   : 'border-outline-variant/50 bg-surface-container-lowest hover:border-outline-variant hover:bg-surface-container-low',
                 disabled && 'opacity-50 cursor-not-allowed',
@@ -1213,12 +1232,12 @@ export function YesNoRenderer({ question, value, onChange, error, disabled }: Qu
               <div
                 className={cn(
                   'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors',
-                  selectedValue === option ? 'border-primary bg-primary' : 'border-outline-variant'
+                  selectedValue === getOptionValue(index) ? 'border-primary bg-primary' : 'border-outline-variant'
                 )}
               >
-                {selectedValue === option && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
+                {selectedValue === getOptionValue(index) && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
               </div>
-              <span className="text-on-surface font-medium">{option}</span>
+              <span className="text-on-surface font-medium">{optionText}</span>
             </label>
           ))}
           {error && <p className="text-error text-sm">{error}</p>}

@@ -101,6 +101,21 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
             .FirstOrDefaultAsync(s => s.AccessToken == shareToken, cancellationToken);
     }
 
+    public async Task<Survey?> GetByIdForPublicAsync(
+        Guid id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _context
+            .Surveys.AsNoTracking()
+            .Include(s => s.Translations)
+            .Include(s => s.Questions.OrderBy(q => q.Order))
+            .ThenInclude(q => q.Translations)
+            .Include(s => s.Theme)
+            .ThenInclude(t => t!.Translations)
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+    }
+
     public async Task<IReadOnlyList<Survey>> GetByNamespaceIdAsync(
         Guid namespaceId,
         CancellationToken cancellationToken = default

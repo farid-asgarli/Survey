@@ -1,4 +1,10 @@
-// Languages Tab - Main container for survey localization management
+// Languages Tab - M3 Expressive Design
+//
+// Features:
+// - No shadows (uses border/color elevation)
+// - Shape morphing on interactive elements
+// - Semantic color tokens
+// - Rounded-full buttons and pills
 //
 // This component orchestrates the language management experience by composing
 // existing components:
@@ -145,7 +151,7 @@ function TranslationField({
         </label>
         <div
           className={cn(
-            'px-4 py-3 rounded-2xl bg-surface-container-high/60 text-on-surface border border-outline-variant/20 text-sm',
+            'px-4 py-3 rounded-2xl bg-surface-container-high/50 text-on-surface border-2 border-outline-variant/20 text-sm',
             isMultiline && 'min-h-24'
           )}
         >
@@ -200,7 +206,7 @@ interface ProgressCardProps {
 
 function ProgressCard({ label, translated, total, percent }: ProgressCardProps) {
   return (
-    <div className="flex items-center justify-between p-4 rounded-2xl bg-surface-container border border-outline-variant/20">
+    <div className="flex items-center justify-between p-4 rounded-2xl bg-surface-container border-2 border-outline-variant/20">
       <span className="text-sm font-medium text-on-surface">{label}</span>
       <div className="flex items-center gap-3">
         <span className="text-sm text-on-surface-variant">
@@ -432,7 +438,7 @@ function TranslationEditorPanel({
         type: question?.type?.toString() || 'unknown',
         sourceText: sourceT?.text || question?.text || '',
         sourceDescription: sourceT?.description || question?.description,
-        sourceOptions: question?.settings?.options,
+        sourceOptions: question?.settings?.options?.map((opt) => opt.text),
         sourceMatrixRows: question?.settings?.matrixRows,
         sourceMatrixColumns: question?.settings?.matrixColumns,
         sourceMinLabel: question?.settings?.minLabel,
@@ -474,7 +480,7 @@ function TranslationEditorPanel({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface-container-lowest">
         <div className="flex items-center gap-4">
-          <Button variant="text" size="icon" onClick={onBack} className="rounded-full">
+          <Button variant="tonal" size="icon" onClick={onBack} className="rounded-full">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
@@ -579,9 +585,9 @@ function TranslationEditorPanel({
       {/* Footer */}
       {!isReadOnly && (
         <div className="px-6 py-4 border-t border-outline-variant/20 bg-surface-container">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/20 border border-primary/10">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-container">
-              <Sparkles className="w-4 h-4 text-primary" />
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/30 border-2 border-primary/10">
+            <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary-container">
+              <Sparkles className="w-4 h-4 text-on-primary-container" />
             </div>
             <span className="text-sm font-medium text-on-surface">{t('localization.autoTranslateHint', 'Auto-translate feature coming soon!')}</span>
           </div>
@@ -705,8 +711,8 @@ export function LanguagesTab({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20 bg-surface-container-lowest">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary-container/40 border border-primary/10">
-            <Globe className="w-6 h-6 text-primary" />
+          <div className="flex items-center justify-center w-12 h-12 rounded-3xl bg-primary-container border-2 border-primary/20">
+            <Globe className="w-6 h-6 text-on-primary-container" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-on-surface">{t('localization.surveyLanguages', 'Languages')}</h2>

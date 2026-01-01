@@ -11,12 +11,16 @@ import { renderPageIcon } from '@/config';
 import { ResponseDetailDrawer, ExportDialog } from '@/components/features/responses';
 import { useResponsesInfinite, useDeleteResponses, type ResponseFilters } from '@/hooks/queries/useResponses';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
-import { useDialogState } from '@/hooks';
+import { useDialogState, useInfiniteScroll } from '@/hooks';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { cn } from '@/lib/utils';
 import type { Survey } from '@/types';
 import type { CompletionFilter } from './types';
 import { ResponseRow, ResponsesEmptyState, LoadingSkeleton, FiltersBar, BulkActionsBar, ResponsesTableHeader } from './components';
+
+// Constants for virtualization
+const RESPONSE_ROW_HEIGHT = 64;
+const VIRTUALIZER_OVERSCAN = 5;
 
 export function ResponsesPage() {
   const { t } = useTranslation();
@@ -45,7 +49,7 @@ export function ResponsesPage() {
   // Build filters for responses query
   const filters: ResponseFilters = useMemo(
     () => ({
-      ...(completionFilter !== 'all' ? { isCompleted: completionFilter === 'complete' } : {}),
+      ...(completionFilter !== 'all' ? { isComplete: completionFilter === 'complete' } : {}),
       ...(fromDate ? { fromDate } : {}),
       ...(toDate ? { toDate } : {}),
       ...(searchQuery ? { search: searchQuery } : {}),
@@ -95,20 +99,18 @@ export function ResponsesPage() {
   const virtualizer = useVirtualizer({
     count: filteredResponses.length,
     getScrollElement: () => listContainerRef.current,
-    estimateSize: () => 64, // Estimated row height in pixels
-    overscan: 5, // Render 5 extra items above/below viewport
+    estimateSize: () => RESPONSE_ROW_HEIGHT,
+    overscan: VIRTUALIZER_OVERSCAN,
   });
 
-  // Load more when scrolling near the end
-  const virtualItems = virtualizer.getVirtualItems();
-  const lastItem = virtualItems[virtualItems.length - 1];
-
-  // Trigger fetch when approaching the end of the list
-  useMemo(() => {
-    if (lastItem && lastItem.index >= filteredResponses.length - 5 && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [lastItem?.index, filteredResponses.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  // Infinite scroll using IntersectionObserver (proper implementation)
+  // Pass isLoading to prevent fetching during initial load which causes infinite loops
+  const { sentinelRef } = useInfiniteScroll({
+    onLoadMore: fetchNextPage,
+    hasNextPage: !!hasNextPage,
+    isFetchingNextPage,
+    isLoading: responsesLoading,
+  });
 
   // Survey options for dropdown
   const surveyOptions = useMemo(() => {
@@ -164,8 +166,8 @@ export function ResponsesPage() {
     });
   }, []);
 
-  // Delete handlers
-  const handleDeleteSelected = async () => {
+  // Delete handlers with proper error handling
+  const handleDeleteSelected = useCallback(async () => {
     if (selectedResponses.size === 0 || !selectedSurveyId) return;
 
     const confirmed = await confirm({
@@ -177,10 +179,15 @@ export function ResponsesPage() {
     });
 
     if (confirmed) {
-      await deleteResponses.mutateAsync(Array.from(selectedResponses));
-      setSelectedResponses(new Set());
+      try {
+        await deleteResponses.mutateAsync(Array.from(selectedResponses));
+        setSelectedResponses(new Set());
+      } catch {
+        // Error toast is handled by API interceptor
+        // Just ensure selection state is preserved on error
+      }
     }
-  };
+  }, [selectedResponses, selectedSurveyId, confirm, t, deleteResponses]);
 
   // View response detail
   const handleViewResponse = useCallback(
@@ -305,6 +312,9 @@ export function ResponsesPage() {
                     );
                   })}
                 </div>
+
+                {/* Sentinel element for infinite scroll - triggers loading when visible */}
+                <div ref={sentinelRef} className="h-1" />
 
                 {/* Loading more indicator */}
                 {isFetchingNextPage && (

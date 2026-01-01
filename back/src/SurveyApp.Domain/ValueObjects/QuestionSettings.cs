@@ -5,109 +5,107 @@ using SurveyApp.Domain.Enums;
 namespace SurveyApp.Domain.ValueObjects;
 
 /// <summary>
-/// Represents question-specific settings as a value object.
+/// Question-specific settings as a value object.
 /// </summary>
 public sealed class QuestionSettings : ValueObject
 {
-    private readonly Dictionary<string, JsonElement> _settings;
-
     /// <summary>
-    /// Gets the options for choice-based questions.
+    /// Options for choice-based questions (with stable IDs for aggregation).
     /// </summary>
-    public IReadOnlyList<string>? Options { get; }
+    public IReadOnlyList<QuestionOption>? Options { get; }
 
     /// <summary>
-    /// Gets the minimum value for scale/rating questions.
+    /// Minimum value for scale/rating questions.
     /// </summary>
     public int? MinValue { get; }
 
     /// <summary>
-    /// Gets the maximum value for scale/rating questions.
+    /// Maximum value for scale/rating questions.
     /// </summary>
     public int? MaxValue { get; }
 
     /// <summary>
-    /// Gets the minimum label for scale questions.
+    /// Minimum label for scale questions.
     /// </summary>
     public string? MinLabel { get; }
 
     /// <summary>
-    /// Gets the maximum label for scale questions.
+    /// Maximum label for scale questions.
     /// </summary>
     public string? MaxLabel { get; }
 
     /// <summary>
-    /// Gets the allowed file types for file upload questions.
+    /// Allowed file types for file upload questions.
     /// </summary>
     public IReadOnlyList<string>? AllowedFileTypes { get; }
 
     /// <summary>
-    /// Gets the maximum file size in bytes for file upload questions.
+    /// Maximum file size in bytes for file upload questions.
     /// </summary>
     public long? MaxFileSize { get; }
 
     /// <summary>
-    /// Gets the rows for matrix questions.
+    /// Rows for matrix questions.
     /// </summary>
     public IReadOnlyList<string>? MatrixRows { get; }
 
     /// <summary>
-    /// Gets the columns for matrix questions.
+    /// Columns for matrix questions.
     /// </summary>
     public IReadOnlyList<string>? MatrixColumns { get; }
 
     /// <summary>
-    /// Gets the placeholder text for text questions.
+    /// Placeholder text for text questions.
     /// </summary>
     public string? Placeholder { get; }
 
     /// <summary>
-    /// Gets whether the 'Other' option is allowed.
+    /// Whether 'Other' option is allowed.
     /// </summary>
     public bool AllowOther { get; }
 
     /// <summary>
-    /// Gets the maximum character length for text questions.
+    /// Maximum character length for text questions.
     /// </summary>
     public int? MaxLength { get; }
 
     /// <summary>
-    /// Gets the minimum character length for text questions.
+    /// Minimum character length for text questions.
     /// </summary>
     public int? MinLength { get; }
 
     /// <summary>
-    /// Gets the maximum selections allowed for multiple choice questions.
+    /// Maximum selections for multiple choice questions.
     /// </summary>
     public int? MaxSelections { get; }
 
     /// <summary>
-    /// Gets the custom regex validation pattern for text-based questions.
+    /// Custom regex validation pattern.
     /// </summary>
     public string? ValidationPattern { get; }
 
     /// <summary>
-    /// Gets the custom error message when validation pattern fails.
+    /// Custom error message when validation fails.
     /// </summary>
     public string? ValidationMessage { get; }
 
     /// <summary>
-    /// Gets the name of a pre-defined validation pattern (e.g., "phone-us", "phone-international").
+    /// Pre-defined validation pattern name.
     /// </summary>
     public string? ValidationPreset { get; }
 
     /// <summary>
-    /// Gets the visual style for rating questions (stars, hearts, thumbs, smileys, numbers).
+    /// Visual style for rating questions.
     /// </summary>
     public RatingStyle? RatingStyle { get; }
 
     /// <summary>
-    /// Gets the visual style for yes/no questions (text, thumbs, toggle, checkX).
+    /// Visual style for yes/no questions.
     /// </summary>
     public YesNoStyle? YesNoStyle { get; }
 
     private QuestionSettings(
-        IReadOnlyList<string>? options = null,
+        IReadOnlyList<QuestionOption>? options = null,
         int? minValue = null,
         int? maxValue = null,
         string? minLabel = null,
@@ -147,12 +145,10 @@ public sealed class QuestionSettings : ValueObject
         ValidationPreset = validationPreset;
         RatingStyle = ratingStyle;
         YesNoStyle = yesNoStyle;
-        _settings = [];
     }
 
-    /// <summary>
-    /// Creates default settings for a question type.
-    /// </summary>
+    #region Factory Methods
+
     public static QuestionSettings CreateDefault(QuestionType questionType)
     {
         return questionType switch
@@ -170,7 +166,7 @@ public sealed class QuestionSettings : ValueObject
             QuestionType.FileUpload => CreateFileUploadSettings(
                 [".pdf", ".doc", ".docx", ".jpg", ".png"],
                 10 * 1024 * 1024
-            ), // 10MB
+            ),
             QuestionType.Text => CreateTextSettings(null, 500),
             QuestionType.LongText => CreateTextSettings(null, 5000),
             QuestionType.Email => CreateValidatedTextSettings(
@@ -195,34 +191,41 @@ public sealed class QuestionSettings : ValueObject
         };
     }
 
-    /// <summary>
-    /// Creates settings for choice-based questions.
-    /// </summary>
     public static QuestionSettings CreateChoiceSettings(
-        IReadOnlyList<string> options,
+        IReadOnlyList<string> optionTexts,
+        bool allowOther = false
+    )
+    {
+        if (optionTexts == null || optionTexts.Count == 0)
+            throw new DomainException("Domain.QuestionSettings.OptionsEmpty");
+
+        var options = optionTexts.Select((text, i) => QuestionOption.Create(text, i)).ToList();
+        return new QuestionSettings(options: options, allowOther: allowOther);
+    }
+
+    public static QuestionSettings CreateChoiceSettingsWithOptions(
+        IReadOnlyList<QuestionOption> options,
         bool allowOther = false
     )
     {
         if (options == null || options.Count == 0)
-            throw new DomainException("Domain.ValueObjects.QuestionSettings.OptionsEmpty");
+            throw new DomainException("Domain.QuestionSettings.OptionsEmpty");
 
         return new QuestionSettings(options: options, allowOther: allowOther);
     }
 
-    /// <summary>
-    /// Creates settings for rating questions.
-    /// </summary>
-    public static QuestionSettings CreateRatingSettings(int minValue = 1, int maxValue = 5)
+    public static QuestionSettings CreateRatingSettings(
+        int minValue = 1,
+        int maxValue = 5,
+        RatingStyle? style = null
+    )
     {
         if (minValue >= maxValue)
-            throw new DomainException("Domain.ValueObjects.QuestionSettings.MaxGreaterThanMin");
+            throw new DomainException("Domain.QuestionSettings.MaxGreaterThanMin");
 
-        return new QuestionSettings(minValue: minValue, maxValue: maxValue);
+        return new QuestionSettings(minValue: minValue, maxValue: maxValue, ratingStyle: style);
     }
 
-    /// <summary>
-    /// Creates settings for scale questions.
-    /// </summary>
     public static QuestionSettings CreateScaleSettings(
         int minValue,
         int maxValue,
@@ -231,7 +234,7 @@ public sealed class QuestionSettings : ValueObject
     )
     {
         if (minValue >= maxValue)
-            throw new DomainException("Domain.ValueObjects.QuestionSettings.MaxGreaterThanMin");
+            throw new DomainException("Domain.QuestionSettings.MaxGreaterThanMin");
 
         return new QuestionSettings(
             minValue: minValue,
@@ -241,26 +244,19 @@ public sealed class QuestionSettings : ValueObject
         );
     }
 
-    /// <summary>
-    /// Creates settings for matrix questions.
-    /// </summary>
     public static QuestionSettings CreateMatrixSettings(
         IReadOnlyList<string> rows,
         IReadOnlyList<string> columns
     )
     {
         if (rows == null || rows.Count == 0)
-            throw new DomainException("Domain.ValueObjects.QuestionSettings.MatrixRowsEmpty");
-
+            throw new DomainException("Domain.QuestionSettings.MatrixRowsEmpty");
         if (columns == null || columns.Count == 0)
-            throw new DomainException("Domain.ValueObjects.QuestionSettings.MatrixColumnsEmpty");
+            throw new DomainException("Domain.QuestionSettings.MatrixColumnsEmpty");
 
         return new QuestionSettings(matrixRows: rows, matrixColumns: columns);
     }
 
-    /// <summary>
-    /// Creates settings for file upload questions.
-    /// </summary>
     public static QuestionSettings CreateFileUploadSettings(
         IReadOnlyList<string>? allowedFileTypes = null,
         long? maxFileSize = null
@@ -269,9 +265,6 @@ public sealed class QuestionSettings : ValueObject
         return new QuestionSettings(allowedFileTypes: allowedFileTypes, maxFileSize: maxFileSize);
     }
 
-    /// <summary>
-    /// Creates settings for text questions.
-    /// </summary>
     public static QuestionSettings CreateTextSettings(
         string? placeholder = null,
         int? maxLength = null
@@ -280,9 +273,6 @@ public sealed class QuestionSettings : ValueObject
         return new QuestionSettings(placeholder: placeholder, maxLength: maxLength);
     }
 
-    /// <summary>
-    /// Creates settings for validated text questions (email, phone, URL).
-    /// </summary>
     public static QuestionSettings CreateValidatedTextSettings(
         string? placeholder = null,
         int? maxLength = null,
@@ -301,125 +291,149 @@ public sealed class QuestionSettings : ValueObject
     }
 
     /// <summary>
-    /// Creates settings for multiple choice questions (alias for CreateChoiceSettings).
+    /// Creates QuestionSettings from DTO values. Use this when mapping from application layer.
+    /// Unlike FromJson, this accepts pre-mapped QuestionOption instances.
     /// </summary>
-    public static QuestionSettings ForMultipleChoice(
-        IReadOnlyList<string> options,
-        bool allowMultiple = false,
-        int? maxSelections = null
+    public static QuestionSettings FromDto(
+        IReadOnlyList<QuestionOption>? options = null,
+        int? minValue = null,
+        int? maxValue = null,
+        string? minLabel = null,
+        string? maxLabel = null,
+        IReadOnlyList<string>? allowedFileTypes = null,
+        long? maxFileSize = null,
+        IReadOnlyList<string>? matrixRows = null,
+        IReadOnlyList<string>? matrixColumns = null,
+        string? placeholder = null,
+        bool allowOther = false,
+        int? maxLength = null,
+        int? minLength = null,
+        int? maxSelections = null,
+        string? validationPattern = null,
+        string? validationMessage = null,
+        string? validationPreset = null,
+        RatingStyle? ratingStyle = null,
+        YesNoStyle? yesNoStyle = null
     )
     {
         return new QuestionSettings(
             options: options,
-            allowOther: false,
-            maxSelections: maxSelections
+            minValue: minValue,
+            maxValue: maxValue,
+            minLabel: minLabel,
+            maxLabel: maxLabel,
+            allowedFileTypes: allowedFileTypes,
+            maxFileSize: maxFileSize,
+            matrixRows: matrixRows,
+            matrixColumns: matrixColumns,
+            placeholder: placeholder,
+            allowOther: allowOther,
+            maxLength: maxLength,
+            minLength: minLength,
+            maxSelections: maxSelections,
+            validationPattern: validationPattern,
+            validationMessage: validationMessage,
+            validationPreset: validationPreset,
+            ratingStyle: ratingStyle,
+            yesNoStyle: yesNoStyle
         );
     }
 
-    /// <summary>
-    /// Creates settings for rating questions (alias for CreateRatingSettings).
-    /// </summary>
-    public static QuestionSettings ForRating(int minValue = 1, int maxValue = 5)
+    #endregion
+
+    #region Option Helpers
+
+    public QuestionOption? GetOption(Guid optionId) =>
+        Options?.FirstOrDefault(o => o.Id == optionId);
+
+    public bool IsValidOption(Guid optionId) => Options?.Any(o => o.Id == optionId) ?? false;
+
+    public IEnumerable<QuestionOption> GetOptions(IEnumerable<Guid> optionIds)
     {
-        return CreateRatingSettings(minValue, maxValue);
+        if (Options == null)
+            yield break;
+        foreach (var id in optionIds)
+        {
+            var option = Options.FirstOrDefault(o => o.Id == id);
+            if (option != null)
+                yield return option;
+        }
     }
 
-    /// <summary>
-    /// Creates settings for text questions (alias for CreateTextSettings).
-    /// </summary>
-    public static QuestionSettings ForText(string? placeholder = null, int? maxLength = null)
-    {
-        return CreateTextSettings(placeholder, maxLength);
-    }
+    #endregion
 
-    /// <summary>
-    /// Creates settings for date questions.
-    /// </summary>
-    public static QuestionSettings ForDate()
-    {
-        return new QuestionSettings();
-    }
+    #region Serialization
 
-    /// <summary>
-    /// Creates settings for file upload questions (alias for CreateFileUploadSettings).
-    /// </summary>
-    public static QuestionSettings ForFileUpload(
-        IReadOnlyList<string>? allowedFileTypes = null,
-        long? maxFileSize = null
-    )
-    {
-        return CreateFileUploadSettings(allowedFileTypes, maxFileSize);
-    }
-
-    /// <summary>
-    /// Serializes the settings to a JSON string.
-    /// </summary>
     public string ToJson()
     {
-        return JsonSerializer.Serialize(
-            new
-            {
-                Options,
-                MinValue,
-                MaxValue,
-                MinLabel,
-                MaxLabel,
-                AllowedFileTypes,
-                MaxFileSize,
-                MatrixRows,
-                MatrixColumns,
-                Placeholder,
-                AllowOther,
-                MaxLength,
-                ValidationPattern,
-                ValidationMessage,
-                ValidationPreset,
-                RatingStyle,
-                YesNoStyle,
-            },
-            new JsonSerializerOptions
-            {
-                DefaultIgnoreCondition = System
-                    .Text
-                    .Json
-                    .Serialization
-                    .JsonIgnoreCondition
-                    .WhenWritingNull,
-            }
-        );
+        var dto = new SettingsJsonDto
+        {
+            Options = Options
+                ?.Select(o => new OptionJsonDto
+                {
+                    Id = o.Id,
+                    Text = o.Text,
+                    Order = o.Order,
+                })
+                .ToList(),
+            MinValue = MinValue,
+            MaxValue = MaxValue,
+            MinLabel = MinLabel,
+            MaxLabel = MaxLabel,
+            AllowedFileTypes = AllowedFileTypes?.ToList(),
+            MaxFileSize = MaxFileSize,
+            MatrixRows = MatrixRows?.ToList(),
+            MatrixColumns = MatrixColumns?.ToList(),
+            Placeholder = Placeholder,
+            AllowOther = AllowOther,
+            MaxLength = MaxLength,
+            MinLength = MinLength,
+            MaxSelections = MaxSelections,
+            ValidationPattern = ValidationPattern,
+            ValidationMessage = ValidationMessage,
+            ValidationPreset = ValidationPreset,
+            RatingStyle = RatingStyle,
+            YesNoStyle = YesNoStyle,
+        };
+
+        return JsonSerializer.Serialize(dto, JsonOptions);
     }
 
-    /// <summary>
-    /// Deserializes settings from a JSON string.
-    /// </summary>
-    public static QuestionSettings FromJson(string json)
+    public static QuestionSettings FromJson(string? json)
     {
         if (string.IsNullOrWhiteSpace(json))
             return new QuestionSettings();
 
         try
         {
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
+            var dto = JsonSerializer.Deserialize<SettingsJsonDto>(json, JsonOptions);
+            if (dto == null)
+                return new QuestionSettings();
+
+            var options = dto
+                .Options?.Select(o => QuestionOption.Restore(o.Id, o.Text, o.Order))
+                .ToList();
 
             return new QuestionSettings(
-                options: GetStringArray(root, "Options"),
-                minValue: GetNullableInt(root, "MinValue"),
-                maxValue: GetNullableInt(root, "MaxValue"),
-                minLabel: GetNullableString(root, "MinLabel"),
-                maxLabel: GetNullableString(root, "MaxLabel"),
-                allowedFileTypes: GetStringArray(root, "AllowedFileTypes"),
-                maxFileSize: GetNullableLong(root, "MaxFileSize"),
-                matrixRows: GetStringArray(root, "MatrixRows"),
-                matrixColumns: GetStringArray(root, "MatrixColumns"),
-                placeholder: GetNullableString(root, "Placeholder"),
-                allowOther: GetNullableBool(root, "AllowOther") ?? false,
-                maxLength: GetNullableInt(root, "MaxLength"),
-                validationPattern: GetNullableString(root, "ValidationPattern"),
-                validationMessage: GetNullableString(root, "ValidationMessage"),
-                validationPreset: GetNullableString(root, "ValidationPreset"),
-                ratingStyle: GetNullableEnum<RatingStyle>(root, "RatingStyle"),
-                yesNoStyle: GetNullableEnum<YesNoStyle>(root, "YesNoStyle")
+                options: options,
+                minValue: dto.MinValue,
+                maxValue: dto.MaxValue,
+                minLabel: dto.MinLabel,
+                maxLabel: dto.MaxLabel,
+                allowedFileTypes: dto.AllowedFileTypes,
+                maxFileSize: dto.MaxFileSize,
+                matrixRows: dto.MatrixRows,
+                matrixColumns: dto.MatrixColumns,
+                placeholder: dto.Placeholder,
+                allowOther: dto.AllowOther,
+                maxLength: dto.MaxLength,
+                minLength: dto.MinLength,
+                maxSelections: dto.MaxSelections,
+                validationPattern: dto.ValidationPattern,
+                validationMessage: dto.ValidationMessage,
+                validationPreset: dto.ValidationPreset,
+                ratingStyle: dto.RatingStyle,
+                yesNoStyle: dto.YesNoStyle
             );
         }
         catch
@@ -428,156 +442,66 @@ public sealed class QuestionSettings : ValueObject
         }
     }
 
-    /// <summary>
-    /// Tries to get a property from JSON, checking both PascalCase and camelCase variants.
-    /// This handles the mismatch between frontend (camelCase) and backend (PascalCase) property names.
-    /// </summary>
-    private static bool TryGetPropertyCaseInsensitive(
-        JsonElement root,
-        string propertyName,
-        out JsonElement element
-    )
+    private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        // Try PascalCase first (e.g., "YesNoStyle")
-        if (root.TryGetProperty(propertyName, out element))
-        {
-            return true;
-        }
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+    };
 
-        // Try camelCase (e.g., "yesNoStyle")
-        var camelCase = char.ToLowerInvariant(propertyName[0]) + propertyName[1..];
-        if (root.TryGetProperty(camelCase, out element))
-        {
-            return true;
-        }
-
-        element = default;
-        return false;
+    private class SettingsJsonDto
+    {
+        public List<OptionJsonDto>? Options { get; set; }
+        public int? MinValue { get; set; }
+        public int? MaxValue { get; set; }
+        public string? MinLabel { get; set; }
+        public string? MaxLabel { get; set; }
+        public List<string>? AllowedFileTypes { get; set; }
+        public long? MaxFileSize { get; set; }
+        public List<string>? MatrixRows { get; set; }
+        public List<string>? MatrixColumns { get; set; }
+        public string? Placeholder { get; set; }
+        public bool AllowOther { get; set; }
+        public int? MaxLength { get; set; }
+        public int? MinLength { get; set; }
+        public int? MaxSelections { get; set; }
+        public string? ValidationPattern { get; set; }
+        public string? ValidationMessage { get; set; }
+        public string? ValidationPreset { get; set; }
+        public RatingStyle? RatingStyle { get; set; }
+        public YesNoStyle? YesNoStyle { get; set; }
     }
 
-    private static List<string>? GetStringArray(JsonElement root, string propertyName)
+    private class OptionJsonDto
     {
-        if (
-            TryGetPropertyCaseInsensitive(root, propertyName, out var element)
-            && element.ValueKind == JsonValueKind.Array
-        )
-        {
-            return
-            [
-                .. element
-                    .EnumerateArray()
-                    .Where(e => e.ValueKind == JsonValueKind.String)
-                    .Select(e => e.GetString()!),
-            ];
-        }
-        return null;
+        public Guid Id { get; set; }
+        public string Text { get; set; } = null!;
+        public int Order { get; set; }
     }
 
-    private static int? GetNullableInt(JsonElement root, string propertyName)
-    {
-        if (
-            TryGetPropertyCaseInsensitive(root, propertyName, out var element)
-            && element.ValueKind == JsonValueKind.Number
-        )
-        {
-            return element.GetInt32();
-        }
-        return null;
-    }
+    #endregion
 
-    private static long? GetNullableLong(JsonElement root, string propertyName)
-    {
-        if (
-            TryGetPropertyCaseInsensitive(root, propertyName, out var element)
-            && element.ValueKind == JsonValueKind.Number
-        )
-        {
-            return element.GetInt64();
-        }
-        return null;
-    }
+    #region Translations
 
-    private static string? GetNullableString(JsonElement root, string propertyName)
-    {
-        if (
-            TryGetPropertyCaseInsensitive(root, propertyName, out var element)
-            && element.ValueKind == JsonValueKind.String
-        )
-        {
-            return element.GetString();
-        }
-        return null;
-    }
-
-    private static bool? GetNullableBool(JsonElement root, string propertyName)
-    {
-        if (TryGetPropertyCaseInsensitive(root, propertyName, out var element))
-        {
-            return element.ValueKind switch
-            {
-                JsonValueKind.True => true,
-                JsonValueKind.False => false,
-                _ => null,
-            };
-        }
-        return null;
-    }
-
-    private static TEnum? GetNullableEnum<TEnum>(JsonElement root, string propertyName)
-        where TEnum : struct, Enum
-    {
-        if (TryGetPropertyCaseInsensitive(root, propertyName, out var element))
-        {
-            if (
-                element.ValueKind == JsonValueKind.Number
-                && Enum.IsDefined(typeof(TEnum), element.GetInt32())
-            )
-            {
-                return (TEnum)Enum.ToObject(typeof(TEnum), element.GetInt32());
-            }
-            if (
-                element.ValueKind == JsonValueKind.String
-                && Enum.TryParse<TEnum>(element.GetString(), true, out var result)
-            )
-            {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    protected override IEnumerable<object?> GetEqualityComponents()
-    {
-        yield return Options != null ? string.Join(",", Options) : null;
-        yield return MinValue;
-        yield return MaxValue;
-        yield return MinLabel;
-        yield return MaxLabel;
-        yield return AllowedFileTypes != null ? string.Join(",", AllowedFileTypes) : null;
-        yield return MaxFileSize;
-        yield return MatrixRows != null ? string.Join(",", MatrixRows) : null;
-        yield return MatrixColumns != null ? string.Join(",", MatrixColumns) : null;
-        yield return Placeholder;
-        yield return AllowOther;
-        yield return MaxLength;
-        yield return ValidationPattern;
-        yield return ValidationMessage;
-        yield return ValidationPreset;
-        yield return RatingStyle;
-        yield return YesNoStyle;
-    }
-
-    /// <summary>
-    /// Creates a new QuestionSettings with translated text values merged in.
-    /// Non-text values (numbers, styles) are preserved from the original settings.
-    /// </summary>
-    public QuestionSettings WithTranslations(TranslatedQuestionSettings translations)
+    public QuestionSettings WithTranslations(TranslatedQuestionSettings? translations)
     {
         if (translations == null)
             return this;
 
+        // Update option texts while preserving IDs
+        IReadOnlyList<QuestionOption>? translatedOptions = null;
+        if (Options != null && translations.Options != null)
+        {
+            translatedOptions =
+            [
+                .. Options.Select(
+                    (opt, i) =>
+                        i < translations.Options.Count ? opt.WithText(translations.Options[i]) : opt
+                ),
+            ];
+        }
+
         return new QuestionSettings(
-            options: translations.Options ?? Options,
+            options: translatedOptions ?? Options,
             minValue: MinValue,
             maxValue: MaxValue,
             minLabel: translations.MinLabel ?? MinLabel,
@@ -597,5 +521,31 @@ public sealed class QuestionSettings : ValueObject
             ratingStyle: RatingStyle,
             yesNoStyle: YesNoStyle
         );
+    }
+
+    #endregion
+
+    protected override IEnumerable<object?> GetEqualityComponents()
+    {
+        if (Options != null)
+            yield return string.Join(",", Options.Select(o => o.Id));
+        yield return MinValue;
+        yield return MaxValue;
+        yield return MinLabel;
+        yield return MaxLabel;
+        yield return AllowedFileTypes != null ? string.Join(",", AllowedFileTypes) : null;
+        yield return MaxFileSize;
+        yield return MatrixRows != null ? string.Join(",", MatrixRows) : null;
+        yield return MatrixColumns != null ? string.Join(",", MatrixColumns) : null;
+        yield return Placeholder;
+        yield return AllowOther;
+        yield return MaxLength;
+        yield return MinLength;
+        yield return MaxSelections;
+        yield return ValidationPattern;
+        yield return ValidationMessage;
+        yield return ValidationPreset;
+        yield return RatingStyle;
+        yield return YesNoStyle;
     }
 }

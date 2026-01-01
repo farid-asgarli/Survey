@@ -1,11 +1,27 @@
 import { useEffect, type ReactNode, type HTMLAttributes, type Ref, useCallback, useSyncExternalStore, createContext, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
 import { OverlayHeader, type OverlayHeaderVariant } from './HeroHeader';
+
+// Animation variants - soft fade matching View Transitions API
+// 150ms ease-out for subtle, consistent feel across the app
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const dialogVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
+const dialogTransition = { duration: 0.15, ease: 'easeOut' as const };
 
 // Helper for SSR-safe portal mounting
 const emptySubscribe = () => () => {};
@@ -22,7 +38,10 @@ interface DialogProps {
   children: ReactNode;
 }
 
-interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
+// Omit React event handlers that conflict with framer-motion
+type MotionSafeHTMLAttributes<T> = Omit<HTMLAttributes<T>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>;
+
+interface DialogContentProps extends MotionSafeHTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   size?: 'sm' | 'default' | 'lg' | 'xl' | 'full';
   showClose?: boolean;
@@ -128,7 +147,7 @@ function DialogContent({ className, children, size = 'default', showClose = true
     };
   }, [open]);
 
-  if (!mounted || !open) return null;
+  if (!mounted) return null;
 
   const sizeClasses = {
     sm: 'max-w-sm',
@@ -139,35 +158,51 @@ function DialogContent({ className, children, size = 'default', showClose = true
   };
 
   return createPortal(
-    <div className='fixed inset-0 z-50 flex items-center justify-center p-4'>
-      {/* Backdrop */}
-      <div className='fixed inset-0 bg-scrim/30 backdrop-blur-sm animate-in fade-in duration-200' onClick={handleClose} />
+    <AnimatePresence mode="wait">
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop with fade animation */}
+          <motion.div
+            className="fixed inset-0 bg-scrim/30 backdrop-blur-sm"
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={dialogTransition}
+            onClick={handleClose}
+          />
 
-      {/* Dialog - Clean modern style */}
-      <div
-        ref={ref}
-        role='dialog'
-        aria-modal='true'
-        className={cn(
-          'relative z-50 w-full',
-          'bg-surface rounded-3xl',
-          'border border-outline-variant/30',
-          'shadow-xl shadow-scrim/10',
-          'animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-200',
-          'max-h-[90vh] overflow-hidden flex flex-col',
-          sizeClasses[size],
-          className
-        )}
-        {...props}
-      >
-        {showClose && (
-          <IconButton aria-label={t('common.close')} variant='standard' size='sm' className='absolute right-4 top-4 z-10' onClick={handleClose}>
-            <X className='h-5 w-5' />
-          </IconButton>
-        )}
-        {children}
-      </div>
-    </div>,
+          {/* Dialog */}
+          <motion.div
+            ref={ref}
+            role="dialog"
+            aria-modal="true"
+            variants={dialogVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={dialogTransition}
+            className={cn(
+              'relative z-50 w-full',
+              'bg-surface rounded-3xl',
+              'border border-outline-variant/30',
+              'shadow-xl shadow-scrim/10',
+              'max-h-[90vh] overflow-hidden flex flex-col',
+              sizeClasses[size],
+              className
+            )}
+            {...props}
+          >
+            {showClose && (
+              <IconButton aria-label={t('common.close')} variant="standard" size="sm" className="absolute right-4 top-4 z-10" onClick={handleClose}>
+                <X className="h-5 w-5" />
+              </IconButton>
+            )}
+            {children}
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }

@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { publicSurveyApi } from '@/services/api';
-import type { SubmitResponseRequest } from '@/types/public-survey';
+import type { StartResponseRequest, SubmitResponseRequest } from '@/types/public-survey';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - public survey uses token-based lookup instead of standard list/detail
@@ -30,6 +30,15 @@ export function usePublicSurvey(shareToken: string | undefined) {
 }
 
 /**
+ * Hook to start a survey response (creates a draft)
+ */
+export function useStartResponse() {
+  return useMutation({
+    mutationFn: (data: StartResponseRequest) => publicSurveyApi.startResponse(data),
+  });
+}
+
+/**
  * Hook to submit a survey response
  */
 export function useSubmitResponse() {
@@ -49,6 +58,7 @@ export function useSubmitResponse() {
  */
 export function usePublicSurveyActions(shareToken: string | undefined) {
   const surveyQuery = usePublicSurvey(shareToken);
+  const startMutation = useStartResponse();
   const submitMutation = useSubmitResponse();
 
   return {
@@ -58,6 +68,14 @@ export function usePublicSurveyActions(shareToken: string | undefined) {
     isError: surveyQuery.isError,
     error: surveyQuery.error,
     refetch: surveyQuery.refetch,
+
+    // Start response
+    startResponse: startMutation.mutate,
+    startResponseAsync: startMutation.mutateAsync,
+    isStarting: startMutation.isPending,
+    startError: startMutation.error,
+    startData: startMutation.data,
+    resetStart: startMutation.reset,
 
     // Submission
     submitResponse: submitMutation.mutate,

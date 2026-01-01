@@ -51,7 +51,7 @@ public class TemplateQuestionDto
 /// </summary>
 public class QuestionSettingsResponseDto
 {
-    public IReadOnlyList<string>? Options { get; set; }
+    public IReadOnlyList<QuestionOptionDto>? Options { get; set; }
     public int? MinValue { get; set; }
     public int? MaxValue { get; set; }
     public string? MinLabel { get; set; }

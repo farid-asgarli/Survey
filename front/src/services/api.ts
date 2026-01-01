@@ -31,7 +31,6 @@ import type {
   LoginResponse,
   RegisterResponse,
   RefreshTokenResponse,
-  NamespaceResponse,
   MembersResponse,
   SurveysResponse,
   SurveyListParams,
@@ -381,23 +380,23 @@ export const namespacesApi = {
   },
 
   getById: async (id: string): Promise<Namespace> => {
-    const response = await apiClient.get<NamespaceResponse>(API_ENDPOINTS.namespaces.byId(id));
-    return response.data.namespace;
+    const response = await apiClient.get<Namespace>(API_ENDPOINTS.namespaces.byId(id));
+    return response.data;
   },
 
   getBySlug: async (slug: string): Promise<Namespace> => {
-    const response = await apiClient.get<NamespaceResponse>(API_ENDPOINTS.namespaces.bySlug(slug));
-    return response.data.namespace;
+    const response = await apiClient.get<Namespace>(API_ENDPOINTS.namespaces.bySlug(slug));
+    return response.data;
   },
 
   create: async (data: CreateNamespaceRequest): Promise<Namespace> => {
-    const response = await apiClient.post<NamespaceResponse>(API_ENDPOINTS.namespaces.list, data);
-    return response.data.namespace;
+    const response = await apiClient.post<Namespace>(API_ENDPOINTS.namespaces.list, data);
+    return response.data;
   },
 
   update: async (id: string, data: Partial<CreateNamespaceRequest>): Promise<Namespace> => {
-    const response = await apiClient.put<NamespaceResponse>(API_ENDPOINTS.namespaces.byId(id), data);
-    return response.data.namespace;
+    const response = await apiClient.put<Namespace>(API_ENDPOINTS.namespaces.byId(id), data);
+    return response.data;
   },
 
   delete: async (id: string): Promise<void> => {
@@ -1009,7 +1008,7 @@ export const responsesApi = {
 
 // ============ Public Survey API ============
 // Note: These endpoints don't require authentication
-import type { PublicSurvey, SubmitResponseRequest, SubmitResponseResult } from '@/types/public-survey';
+import type { PublicSurvey, StartResponseRequest, StartResponseResult, SubmitResponseRequest, SubmitResponseResult } from '@/types/public-survey';
 
 export const publicSurveyApi = {
   /**
@@ -1022,11 +1021,33 @@ export const publicSurveyApi = {
   },
 
   /**
-   * Submit a survey response
-   * No authentication required (anonymous submissions allowed)
+   * Start a survey response (creates a draft)
+   * Call this when a respondent begins taking a survey.
+   * Returns a responseId to use when submitting.
+   */
+  startResponse: async (data: StartResponseRequest): Promise<StartResponseResult> => {
+    const response = await axios.post<StartResponseResult>(`${getApiBaseUrl()}${API_ENDPOINTS.publicSurvey.start}`, data);
+    return response.data;
+  },
+
+  /**
+   * Submit/complete a survey response
+   * Can use responseId (new flow) or surveyId (legacy flow)
    */
   submitResponse: async (data: SubmitResponseRequest): Promise<SubmitResponseResult> => {
     const response = await axios.post<SubmitResponseResult>(`${getApiBaseUrl()}${API_ENDPOINTS.publicSurvey.submit}`, data);
+    return response.data;
+  },
+
+  /**
+   * Submit/complete a survey response by ID
+   * Alternative endpoint for the new flow
+   */
+  submitResponseById: async (
+    responseId: string,
+    data: { answers: SubmitResponseRequest['answers']; metadata?: SubmitResponseRequest['metadata'] }
+  ): Promise<SubmitResponseResult> => {
+    const response = await axios.post<SubmitResponseResult>(`${getApiBaseUrl()}${API_ENDPOINTS.publicSurvey.submitById(responseId)}`, data);
     return response.data;
   },
 };

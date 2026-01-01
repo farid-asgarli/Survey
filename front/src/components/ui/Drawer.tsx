@@ -1,10 +1,26 @@
 import { useEffect, type ReactNode, type HTMLAttributes, type Ref, useCallback, createContext, useContext, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import { IconButton } from './IconButton';
 import { OverlayHeader, type OverlayHeaderVariant } from './HeroHeader';
+
+// Animation variants - soft fade matching View Transitions API
+// 150ms ease-out for subtle, consistent feel across the app
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const drawerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
+const drawerTransition = { duration: 0.15, ease: 'easeOut' as const };
 
 // Simple client-side check without setState
 function useIsMounted() {
@@ -40,8 +56,11 @@ interface DrawerProps {
   side?: 'left' | 'right' | 'top' | 'bottom';
 }
 
+// Omit React event handlers that conflict with framer-motion
+type MotionSafeHTMLAttributes<T> = Omit<HTMLAttributes<T>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>;
+
 // Drawer Content Props
-interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
+interface DrawerContentProps extends MotionSafeHTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
   showClose?: boolean;
   onClose?: () => void;
@@ -93,7 +112,7 @@ function DrawerTrigger({ children, asChild }: { children: ReactNode; asChild?: b
   }
 
   return (
-    <button onClick={() => onOpenChange(true)} type='button'>
+    <button onClick={() => onOpenChange(true)} type="button">
       {children}
     </button>
   );
@@ -136,32 +155,28 @@ function DrawerContent({ className, children, showClose = true, onClose, ref, ..
     };
   }, [open]);
 
-  if (!mounted || !open) return null;
+  if (!mounted) return null;
 
-  // Side-specific classes
+  // Side-specific classes (animation handled by Framer Motion)
   const sideClasses = {
     left: {
       container: 'inset-y-0 left-0',
       size: 'h-full w-full max-w-sm',
-      animation: 'animate-in slide-in-from-left duration-300',
       rounded: 'rounded-r-3xl',
     },
     right: {
       container: 'inset-y-0 right-0',
       size: 'h-full w-full max-w-sm',
-      animation: 'animate-in slide-in-from-right duration-300',
       rounded: 'rounded-l-3xl',
     },
     top: {
       container: 'inset-x-0 top-0',
       size: 'w-full max-h-[80vh]',
-      animation: 'animate-in slide-in-from-top duration-300',
       rounded: 'rounded-b-3xl',
     },
     bottom: {
       container: 'inset-x-0 bottom-0',
       size: 'w-full max-h-[80vh]',
-      animation: 'animate-in slide-in-from-bottom duration-300',
       rounded: 'rounded-t-3xl',
     },
   };
@@ -169,37 +184,54 @@ function DrawerContent({ className, children, showClose = true, onClose, ref, ..
   const sideStyles = sideClasses[side];
 
   return createPortal(
-    <div className='fixed inset-0 z-50'>
-      {/* Backdrop */}
-      <div className='absolute inset-0 bg-scrim/30 backdrop-blur-sm animate-in fade-in duration-200' onClick={handleClose} aria-hidden='true' />
+    <AnimatePresence mode="wait">
+      {open && (
+        <div className="fixed inset-0 z-50">
+          {/* Backdrop with fade animation */}
+          <motion.div
+            className="absolute inset-0 bg-scrim/30 backdrop-blur-sm"
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={drawerTransition}
+            onClick={handleClose}
+            aria-hidden="true"
+          />
 
-      {/* Drawer Panel */}
-      <div
-        ref={ref}
-        role='dialog'
-        aria-modal='true'
-        className={cn(
-          'fixed bg-surface flex flex-col border border-outline-variant/30',
-          sideStyles.container,
-          sideStyles.size,
-          sideStyles.animation,
-          sideStyles.rounded,
-          className
-        )}
-        {...props}
-      >
-        {/* Close button */}
-        {showClose && (
-          <div className='absolute top-4 right-4 z-10'>
-            <IconButton variant='standard' size='sm' onClick={handleClose} aria-label={t('common.closeDrawer')}>
-              <X className='h-5 w-5' />
-            </IconButton>
-          </div>
-        )}
+          {/* Drawer Panel with fade animation */}
+          <motion.div
+            ref={ref}
+            role="dialog"
+            aria-modal="true"
+            variants={drawerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={drawerTransition}
+            className={cn(
+              'fixed bg-surface flex flex-col border border-outline-variant/30',
+              sideStyles.container,
+              sideStyles.size,
+              sideStyles.rounded,
+              className
+            )}
+            {...props}
+          >
+            {/* Close button */}
+            {showClose && (
+              <div className="absolute top-4 right-4 z-10">
+                <IconButton variant="standard" size="sm" onClick={handleClose} aria-label={t('common.closeDrawer')}>
+                  <X className="h-5 w-5" />
+                </IconButton>
+              </div>
+            )}
 
-        {children}
-      </div>
-    </div>,
+            {children}
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }
@@ -264,7 +296,11 @@ function DrawerBody({ className, ref, ...props }: HTMLAttributes<HTMLDivElement>
 // Drawer Footer
 function DrawerFooter({ className, ref, ...props }: DrawerFooterProps) {
   return (
-    <div ref={ref} className={cn('flex flex-col-reverse sm:flex-row sm:justify-end gap-2 p-6 pt-4 border-t border-outline-variant/20', className)} {...props} />
+    <div
+      ref={ref}
+      className={cn('flex flex-col-reverse sm:flex-row sm:justify-end gap-2 p-6 pt-4 border-t border-outline-variant/20', className)}
+      {...props}
+    />
   );
 }
 
@@ -272,7 +308,7 @@ function DrawerFooter({ className, ref, ...props }: DrawerFooterProps) {
 function DrawerHandle({ className }: { className?: string }) {
   return (
     <div className={cn('flex justify-center pt-4 pb-2', className)}>
-      <div className='w-10 h-1 rounded-full bg-on-surface-variant/20' />
+      <div className="w-10 h-1 rounded-full bg-on-surface-variant/20" />
     </div>
   );
 }

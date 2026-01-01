@@ -40,8 +40,13 @@ export function useSurveyBuilderSave() {
         order: q.order,
         settings: {
           ...q.settings,
-          // Options are stored in settings.options as string[]
-          options: q.options.map((o) => o.text),
+          // Options are stored in settings.options as QuestionOption[]
+          // Send with id (empty string for new options - server generates real IDs)
+          options: q.options.map((o) => ({
+            id: o.id.startsWith('temp-') ? '' : o.id, // Server generates IDs for new options
+            text: o.text,
+            order: o.order,
+          })),
         },
       }));
 

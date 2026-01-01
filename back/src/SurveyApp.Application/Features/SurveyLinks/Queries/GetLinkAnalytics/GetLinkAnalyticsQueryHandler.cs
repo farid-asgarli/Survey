@@ -85,7 +85,8 @@ public class GetLinkAnalyticsQueryHandler(
             .Select(c => c.IpAddress)
             .Distinct()
             .Count();
-        var totalResponses = clickList.Count(c => c.ResponseId.HasValue);
+        // Only count responses that are complete (submitted), not just started
+        var totalResponses = clickList.Count(c => c.Response?.IsComplete == true);
         var conversionRate = totalClicks > 0 ? (decimal)totalResponses / totalClicks * 100 : 0;
 
         // Group by country with percentage

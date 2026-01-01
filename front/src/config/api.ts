@@ -57,7 +57,9 @@ export const API_ENDPOINTS = {
   // Public survey endpoints (no auth required)
   publicSurvey: {
     get: (shareToken: string) => `/api/surveys/public/${shareToken}`,
+    start: '/api/responses/start',
     submit: '/api/responses',
+    submitById: (responseId: string) => `/api/responses/${responseId}/submit`,
   },
   // User endpoints
   users: {

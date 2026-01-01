@@ -151,14 +151,14 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateName(string name, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Domain.EmailTemplate.NameEmpty", nameof(name));
+            throw new DomainException("Domain.EmailTemplate.NameEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
         if (translation == null)
         {
-            throw new InvalidOperationException("Domain.Translation.NotFoundCreateFirst");
+            throw new DomainException("Domain.Translation.NotFoundCreateFirst");
         }
 
         translation.Update(
@@ -184,7 +184,7 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateSubject(string subject, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(subject))
-            throw new ArgumentException("Domain.EmailTemplate.SubjectEmpty", nameof(subject));
+            throw new DomainException("Domain.EmailTemplate.SubjectEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -207,7 +207,7 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void UpdateHtmlBody(string htmlBody, string? languageCode = null)
     {
         if (string.IsNullOrWhiteSpace(htmlBody))
-            throw new ArgumentException("Domain.EmailTemplate.HtmlBodyEmpty", nameof(htmlBody));
+            throw new DomainException("Domain.EmailTemplate.HtmlBodyEmpty");
 
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
@@ -342,10 +342,7 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
     public void SetDefaultLanguage(string languageCode)
     {
         if (string.IsNullOrWhiteSpace(languageCode))
-            throw new ArgumentException(
-                "Domain.EmailTemplate.LanguageCodeRequired",
-                nameof(languageCode)
-            );
+            throw new DomainException("Domain.EmailTemplate.LanguageCodeRequired");
 
         DefaultLanguage = languageCode.ToLowerInvariant();
     }

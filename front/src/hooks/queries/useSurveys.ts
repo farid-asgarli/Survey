@@ -132,7 +132,12 @@ export function useSurveyDetail(id: string | undefined) {
 export function useCreateSurvey() {
   const { activeNamespace } = useNamespaceStore();
 
-  return useInvalidatingMutation(surveyKeys, (data: CreateSurveyRequest) => surveysApi.create(activeNamespace!.id, data));
+  return useInvalidatingMutation(surveyKeys, (data: CreateSurveyRequest) => {
+    if (!activeNamespace) {
+      return Promise.reject(new Error('No active namespace selected'));
+    }
+    return surveysApi.create(activeNamespace.id, data);
+  });
 }
 
 /**

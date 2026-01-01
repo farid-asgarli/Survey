@@ -234,6 +234,15 @@ export function SurveyPreviewPage() {
           const translation = questionTranslations?.translations?.find((t) => t.languageCode === previewLanguage);
 
           if (translation) {
+            // Map translated option texts back to QuestionOption[], preserving original IDs
+            let translatedOptions = question.settings?.options;
+            if (translation.translatedSettings?.options && question.settings?.options) {
+              translatedOptions = question.settings.options.map((opt, index) => ({
+                ...opt,
+                text: translation.translatedSettings?.options?.[index] ?? opt.text,
+              }));
+            }
+
             return {
               ...question,
               text: translation.text || question.text,
@@ -241,7 +250,7 @@ export function SurveyPreviewPage() {
               settings: {
                 ...question.settings,
                 // Apply translated settings if available
-                options: translation.translatedSettings?.options || question.settings?.options,
+                options: translatedOptions,
                 minLabel: translation.translatedSettings?.minLabel || question.settings?.minLabel,
                 maxLabel: translation.translatedSettings?.maxLabel || question.settings?.maxLabel,
                 placeholder: translation.translatedSettings?.placeholder || question.settings?.placeholder,

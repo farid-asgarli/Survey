@@ -10,7 +10,23 @@ public class SubmitSurveyResponseCommandValidator : AbstractValidator<SubmitSurv
         IStringLocalizer<SubmitSurveyResponseCommandValidator> localizer
     )
     {
-        RuleFor(x => x.SurveyId).NotEmpty().WithMessage(localizer["Validation.Survey.IdRequired"]);
+        // Either ResponseId (new flow) or SurveyId (legacy flow) must be provided
+        RuleFor(x => x)
+            .Must(x => x.ResponseId.HasValue || x.SurveyId.HasValue)
+            .WithMessage(localizer["Validation.Response.ResponseIdOrSurveyIdRequired"])
+            .WithName("ResponseId/SurveyId");
+
+        // If using legacy flow (no ResponseId), SurveyId is required
+        RuleFor(x => x.SurveyId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Survey.IdRequired"])
+            .When(x => !x.ResponseId.HasValue);
+
+        // If using new flow (ResponseId provided), it must be valid
+        RuleFor(x => x.ResponseId)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Response.IdRequired"])
+            .When(x => x.ResponseId.HasValue);
 
         RuleFor(x => x.Answers)
             .NotNull()
@@ -28,9 +44,10 @@ public class SubmitAnswerDtoValidator : AbstractValidator<SubmitAnswerDto>
             .NotEmpty()
             .WithMessage(localizer["Validation.Answer.QuestionIdRequired"]);
 
-        RuleFor(x => x.Value)
+        // Validate text answers don't exceed max length
+        RuleFor(x => x.Text)
             .MaximumLength(10000)
             .WithMessage(localizer["Validation.Answer.ValueMaxLength"])
-            .When(x => !string.IsNullOrEmpty(x.Value));
+            .When(x => !string.IsNullOrEmpty(x.Text));
     }
 }

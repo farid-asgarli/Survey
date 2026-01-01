@@ -2,14 +2,19 @@ using AutoMapper;
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.Surveys.Queries.GetPublicSurvey;
 
-public class GetPublicSurveyQueryHandler(ISurveyRepository surveyRepository, IMapper mapper)
-    : IRequestHandler<GetPublicSurveyQuery, Result<PublicSurveyDto>>
+public class GetPublicSurveyQueryHandler(
+    ISurveyRepository surveyRepository,
+    ISurveyLinkRepository surveyLinkRepository,
+    IMapper mapper
+) : IRequestHandler<GetPublicSurveyQuery, Result<PublicSurveyDto>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
+    private readonly ISurveyLinkRepository _surveyLinkRepository = surveyLinkRepository;
     private readonly IMapper _mapper = mapper;
 
     public async Task<Result<PublicSurveyDto>> Handle(
@@ -17,10 +22,53 @@ public class GetPublicSurveyQueryHandler(ISurveyRepository surveyRepository, IMa
         CancellationToken cancellationToken
     )
     {
+        // First, try to find the survey by its AccessToken (direct share token)
         var survey = await _surveyRepository.GetByShareTokenAsync(
             request.ShareToken,
             cancellationToken
         );
+
+        // If not found, check if it's a SurveyLink token
+        if (survey == null)
+        {
+            var surveyLink = await _surveyLinkRepository.GetByTokenAsync(
+                request.ShareToken,
+                cancellationToken
+            );
+
+            if (surveyLink != null)
+            {
+                // Validate the link
+                if (!surveyLink.IsActive)
+                {
+                    return Result<PublicSurveyDto>.Failure(
+                        "Application.SurveyLink.LinkDeactivated"
+                    );
+                }
+
+                if (surveyLink.ExpiresAt.HasValue && DateTime.UtcNow > surveyLink.ExpiresAt.Value)
+                {
+                    return Result<PublicSurveyDto>.Failure("Errors.SurveyLinkExpired");
+                }
+
+                if (
+                    surveyLink.MaxUses.HasValue
+                    && surveyLink.UsageCount >= surveyLink.MaxUses.Value
+                )
+                {
+                    return Result<PublicSurveyDto>.Failure(
+                        "Application.SurveyLink.MaxUsageReached"
+                    );
+                }
+
+                // Get the survey associated with this link
+                survey = await _surveyRepository.GetByIdForPublicAsync(
+                    surveyLink.SurveyId,
+                    cancellationToken
+                );
+            }
+        }
+
         if (survey == null)
         {
             return Result<PublicSurveyDto>.Failure("Handler.SurveyNotFound");

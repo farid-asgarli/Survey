@@ -88,7 +88,7 @@ public class NamespaceMembership : Entity<Guid>
     public void PromoteRole(NamespaceRole newRole)
     {
         if (newRole >= Role)
-            throw new InvalidOperationException("Domain.Membership.RoleMustBeHigher");
+            throw new DomainException("Domain.Membership.RoleMustBeHigher");
 
         Role = newRole;
     }

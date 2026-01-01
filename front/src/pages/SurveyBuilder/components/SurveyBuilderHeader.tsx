@@ -1,10 +1,13 @@
-// Survey Builder Header - Clean Email Editor-inspired design
+// Survey Builder Header - M3 Expressive Design
+// Follows Material Design 3 Expressive principles:
+// - No shadows (uses color elevation)
+// - Dynamic shapes (rounded-full for buttons)
+// - Semantic color tokens
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Save, Eye, Undo2, Redo2, Settings, Check, Loader2, Palette, Lock } from 'lucide-react';
-import { Button, Tooltip } from '@/components/ui';
+import { Button, Tooltip, IconButton } from '@/components/ui';
 import { SurveyStatusBadge } from '@/components/features/surveys';
 import { SurveyLanguageSwitcher, type LanguageStatus } from '@/components/features/localization';
-import { cn } from '@/lib/utils';
 import { SurveyStatus } from '@/types';
 
 interface SurveyBuilderHeaderProps {
@@ -125,43 +128,25 @@ export function SurveyBuilderHeader({
 
         {/* Center - Undo/Redo Pills (only in edit mode) */}
         {!isReadOnly && (
-          <div className="flex items-center gap-1 p-1 bg-surface-container rounded-lg">
+          <div className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full">
             <Tooltip content={`${t('surveyBuilder.undo')} (Ctrl+Z)`}>
-              <button
-                onClick={onUndo}
-                disabled={!canUndo}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors',
-                  canUndo
-                    ? 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
-                    : 'text-on-surface-variant/30 cursor-not-allowed'
-                )}
-              >
+              <IconButton variant="standard" size="sm" onClick={onUndo} disabled={!canUndo} aria-label={t('surveyBuilder.undo')}>
                 <Undo2 className="w-4 h-4" />
-              </button>
+              </IconButton>
             </Tooltip>
             <Tooltip content={`${t('surveyBuilder.redo')} (Ctrl+Y)`}>
-              <button
-                onClick={onRedo}
-                disabled={!canRedo}
-                className={cn(
-                  'p-1.5 rounded-md transition-colors',
-                  canRedo
-                    ? 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
-                    : 'text-on-surface-variant/30 cursor-not-allowed'
-                )}
-              >
+              <IconButton variant="standard" size="sm" onClick={onRedo} disabled={!canRedo} aria-label={t('surveyBuilder.redo')}>
                 <Redo2 className="w-4 h-4" />
-              </button>
+              </IconButton>
             </Tooltip>
           </div>
         )}
 
         {/* Center - Read-only indicator (only in read-only mode) */}
         {isReadOnly && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border-2 border-outline-variant/30">
             <Eye className="w-4 h-4 text-on-surface-variant" />
-            <span className="text-sm font-medium text-on-surface-variant">{t('surveyBuilder.viewOnly', 'View Only')}</span>
+            <span className="text-sm font-semibold text-on-surface-variant">{t('surveyBuilder.viewOnly', 'View Only')}</span>
           </div>
         )}
 
@@ -170,18 +155,21 @@ export function SurveyBuilderHeader({
           {/* Save Status Indicator - only in edit mode */}
           {!isReadOnly && (
             <>
-              <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-surface-container/50">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border-2 border-outline-variant/20">
                 {isSaving ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
-                    <span className="text-xs text-on-surface-variant">{t('surveyBuilder.saving')}</span>
+                    <span className="text-xs font-medium text-on-surface-variant">{t('surveyBuilder.saving')}</span>
                   </>
                 ) : isDirty ? (
-                  <span className="text-xs text-on-surface-variant">{t('surveyBuilder.unsaved')}</span>
+                  <>
+                    <span className="w-2 h-2 rounded-full bg-warning" />
+                    <span className="text-xs font-medium text-warning">{t('surveyBuilder.unsaved')}</span>
+                  </>
                 ) : (
                   <>
                     <Check className="w-3.5 h-3.5 text-success" />
-                    <span className="text-xs text-on-surface-variant">{t('surveyBuilder.saved')}</span>
+                    <span className="text-xs font-medium text-on-surface-variant">{t('surveyBuilder.saved')}</span>
                   </>
                 )}
               </div>
@@ -204,38 +192,38 @@ export function SurveyBuilderHeader({
 
           {/* Theme Panel Toggle */}
           <Tooltip content={t('surveyBuilder.toggleThemePanel')}>
-            <button
+            <IconButton
+              variant={showThemePanel ? 'filled' : 'standard'}
+              size="default"
               onClick={onToggleThemePanel}
-              className={cn(
-                'p-2 rounded-lg transition-colors',
-                showThemePanel ? 'bg-primary text-on-primary' : 'text-on-surface-variant hover:bg-surface-container'
-              )}
+              aria-label={t('surveyBuilder.toggleThemePanel')}
+              aria-pressed={showThemePanel}
             >
-              <Palette className="w-4 h-4" />
-            </button>
+              <Palette className="w-5 h-5" />
+            </IconButton>
           </Tooltip>
 
           {/* Settings - only in edit mode */}
           {!isReadOnly && (
             <Tooltip content={t('surveyBuilder.settingsAriaLabel')}>
-              <button onClick={onOpenSettings} className="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors">
-                <Settings className="w-4 h-4" />
-              </button>
+              <IconButton variant="standard" size="default" onClick={onOpenSettings} aria-label={t('surveyBuilder.settingsAriaLabel')}>
+                <Settings className="w-5 h-5" />
+              </IconButton>
             </Tooltip>
           )}
 
           <div className="h-5 w-px bg-outline-variant/30" />
 
           {/* Preview Button */}
-          <Button variant="outline" size="sm" onClick={onPreview} className="rounded-lg">
-            <Eye className="w-4 h-4 mr-1.5" />
+          <Button variant="outline" size="sm" onClick={onPreview}>
+            <Eye className="w-4 h-4" />
             {t('surveyBuilder.preview')}
           </Button>
 
           {/* Save Button - only in edit mode */}
           {!isReadOnly && (
-            <Button variant="filled" size="sm" onClick={onSave} loading={isSaving} className="rounded-lg">
-              <Save className="w-4 h-4 mr-1.5" />
+            <Button variant="filled" size="sm" onClick={onSave} loading={isSaving}>
+              <Save className="w-4 h-4" />
               {t('common.save')}
             </Button>
           )}

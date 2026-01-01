@@ -13,7 +13,7 @@ export const responseKeys = createExtendedQueryKeys('responses', (base) => ({
 }));
 
 export interface ResponseFilters {
-  isCompleted?: boolean;
+  isComplete?: boolean;
   fromDate?: string;
   toDate?: string;
   search?: string;
@@ -26,7 +26,7 @@ export function useResponsesList(surveyId: string | undefined, filters?: Respons
   const params: ResponsesListParams = {
     pageNumber,
     pageSize: 20,
-    ...(filters?.isCompleted !== undefined ? { isCompleted: filters.isCompleted } : {}),
+    ...(filters?.isComplete !== undefined ? { isComplete: filters.isComplete } : {}),
     ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
     ...(filters?.toDate ? { toDate: filters.toDate } : {}),
   };
@@ -45,7 +45,7 @@ export function useResponsesList(surveyId: string | undefined, filters?: Respons
 export function useResponsesInfinite(surveyId: string | undefined, filters?: ResponseFilters) {
   const baseParams: Omit<ResponsesListParams, 'pageNumber'> = {
     pageSize: 20,
-    ...(filters?.isCompleted !== undefined ? { isCompleted: filters.isCompleted } : {}),
+    ...(filters?.isComplete !== undefined ? { isComplete: filters.isComplete } : {}),
     ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
     ...(filters?.toDate ? { toDate: filters.toDate } : {}),
   };
