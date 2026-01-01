@@ -4,10 +4,10 @@ import { User, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { Checkbox, Chip, ListItemIcon } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { formatDateTimeShort, formatDuration, formatDurationBetween } from '@/utils';
-import type { SurveyResponse } from '@/types';
+import type { ResponseListItem } from '@/types';
 
 interface ResponseRowProps {
-  response: SurveyResponse;
+  response: ResponseListItem;
   isSelected: boolean;
   onSelect: (checked: boolean) => void;
   onClick: () => void;

@@ -53,7 +53,7 @@ public class SurveyDto
 /// </summary>
 public class SurveyDetailsDto : SurveyDto
 {
-    public IReadOnlyList<QuestionDto> Questions { get; set; } = Array.Empty<QuestionDto>();
+    public IReadOnlyList<QuestionDto> Questions { get; set; } = [];
 }
 
 /// <summary>
@@ -87,8 +87,7 @@ public class PublicSurveyDto
     public string? ThankYouMessage { get; set; }
     public bool AllowAnonymousResponses { get; set; }
     public bool IsAnonymous { get; set; }
-    public IReadOnlyList<PublicQuestionDto> Questions { get; set; } =
-        Array.Empty<PublicQuestionDto>();
+    public IReadOnlyList<PublicQuestionDto> Questions { get; set; } = [];
     public PublicSurveyThemeDto? Theme { get; set; }
 
     /// <summary>

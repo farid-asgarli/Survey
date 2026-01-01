@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.DTOs.Common;
-using SurveyApp.Application.Features.Themes.Commands.ApplyThemeToSurvey;
 using SurveyApp.Application.Features.Themes.Commands.CreateTheme;
 using SurveyApp.Application.Features.Themes.Commands.DeleteTheme;
 using SurveyApp.Application.Features.Themes.Commands.DuplicateTheme;
@@ -184,25 +183,6 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> SetDefaultTheme(Guid id)
     {
         var result = await _mediator.Send(new SetDefaultThemeCommand(id));
-        return HandleNoContentResult(result);
-    }
-
-    /// <summary>
-    /// Applies a theme to a survey.
-    /// </summary>
-    /// <param name="id">The theme ID.</param>
-    /// <param name="command">The command containing the survey ID.</param>
-    /// <returns>No content.</returns>
-    [HttpPost("{id:guid}/apply")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ApplyThemeToSurvey(
-        Guid id,
-        [FromBody] ApplyThemeToSurveyCommand command
-    )
-    {
-        var result = await _mediator.Send(command with { ThemeId = id });
         return HandleNoContentResult(result);
     }
 }

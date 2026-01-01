@@ -186,9 +186,9 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="distId">The distribution ID.</param>
     /// <param name="query">Query parameters for filtering and pagination.</param>
-    /// <returns>List of recipients.</returns>
+    /// <returns>Paginated list of recipients.</returns>
     [HttpGet("{distId:guid}/recipients")]
-    [ProducesResponseType(typeof(IReadOnlyList<EmailRecipientDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponse<EmailRecipientDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDistributionRecipients(
         Guid surveyId,

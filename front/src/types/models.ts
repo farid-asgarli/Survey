@@ -119,11 +119,28 @@ import {
 export interface User {
   id: string;
   email: string;
-  firstName: string | null;
-  lastName: string | null;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  emailConfirmed: boolean;
   avatarUrl?: string;
+  profilePictureUrl?: string; // Backend field name (avatarUrl is alias)
+  lastLoginAt?: string;
+  isActive: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
+}
+
+export interface UserProfile extends User {
+  namespaces: UserNamespaceMembership[];
+}
+
+export interface UserNamespaceMembership {
+  namespaceId: string;
+  namespaceName: string;
+  namespaceSlug: string;
+  role: string;
+  joinedAt: string;
 }
 
 export interface AuthTokens {
@@ -159,7 +176,7 @@ export interface ResetPasswordRequest {
 export interface UpdateProfileRequest {
   firstName?: string;
   lastName?: string;
-  email?: string;
+  avatarUrl?: string;
 }
 
 export interface ChangePasswordRequest {
@@ -215,9 +232,17 @@ export interface InviteMemberRequest {
   role: MemberRole;
 }
 
-export interface UpdateMemberRoleRequest {
-  namespaceId: string;
+/** Response from inviting a member to a namespace */
+export interface InviteMemberResponse {
   membershipId: string;
+  email: string;
+  role: MemberRole;
+  isNewUser: boolean;
+  inviteToken?: string;
+}
+
+/** Request body for updating a member's role - IDs are in URL params */
+export interface UpdateMemberRoleRequest {
   role: MemberRole;
 }
 
@@ -492,7 +517,8 @@ export interface SurveyLink {
 export interface CreateLinkRequest {
   type: LinkType;
   name?: string;
-  maxResponses?: number;
+  /** Maximum number of times this link can be used */
+  maxUses?: number;
   expiresAt?: string;
   password?: string;
   prefillData?: Record<string, string>;
@@ -501,7 +527,16 @@ export interface CreateLinkRequest {
   campaign?: string;
 }
 
-export interface UpdateLinkRequest extends Partial<CreateLinkRequest> {
+export interface UpdateLinkRequest {
+  name?: string;
+  /** Maximum number of times this link can be used */
+  maxUses?: number;
+  expiresAt?: string;
+  password?: string;
+  prefillData?: Record<string, string>;
+  source?: string;
+  medium?: string;
+  campaign?: string;
   isActive?: boolean;
 }
 
@@ -522,10 +557,42 @@ export interface BulkLinkGenerationResult {
 }
 
 // ============ Email Distribution ============
+
+/** Statistics for an email distribution */
+export interface DistributionStats {
+  distributionId: string;
+  totalRecipients: number;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  failed: number;
+  deliveryRate: number;
+  openRate: number;
+  clickRate: number;
+}
+
+/** Summary DTO for distribution list (matches backend EmailDistributionSummaryDto) */
+export interface EmailDistributionSummary {
+  id: string;
+  surveyId: string;
+  surveyTitle: string;
+  subject: string;
+  scheduledAt?: string;
+  sentAt?: string;
+  status: DistributionStatus;
+  totalRecipients: number;
+  sentCount: number;
+  openedCount: number;
+  createdAt: string;
+}
+
+/** Full distribution DTO (matches backend EmailDistributionDto) */
 export interface EmailDistribution {
   id: string;
   surveyId: string;
-  surveyTitle?: string;
+  surveyTitle: string;
   emailTemplateId?: string;
   emailTemplateName?: string;
   subject: string;
@@ -535,25 +602,23 @@ export interface EmailDistribution {
   status: DistributionStatus;
   scheduledAt?: string;
   sentAt?: string;
-  totalRecipients: number;
-  sentCount: number;
-  deliveredCount: number;
-  openedCount: number;
-  clickedCount: number;
-  bouncedCount: number;
+  stats: DistributionStats;
   createdAt: string;
   updatedAt?: string;
 }
 
 export interface DistributionRecipient {
   id: string;
-  distributionId: string;
   email: string;
   name?: string;
   status: RecipientStatus;
   sentAt?: string;
+  deliveredAt?: string;
   openedAt?: string;
   clickedAt?: string;
+  openCount: number;
+  clickCount: number;
+  errorMessage?: string;
 }
 
 export interface RecipientInput {
@@ -678,7 +743,7 @@ export interface ThemeTypography {
   baseFontSize: number;
 }
 
-export interface ThemeLayoutSettings {
+export interface ThemeLayoutDto {
   layout: ThemeLayout;
   backgroundImageUrl?: string;
   backgroundPosition: BackgroundImagePosition;
@@ -713,7 +778,7 @@ export interface SurveyTheme {
   isDark: boolean;
   colors?: ThemeColors;
   typography?: ThemeTypography;
-  layout?: ThemeLayoutSettings;
+  layout?: ThemeLayoutDto;
   branding?: ThemeBranding;
   button?: ThemeButton;
   customCss?: string;
@@ -784,39 +849,79 @@ export interface SurveyTemplate {
   availableLanguages: string[];
 }
 
+/** Question data for creating template questions */
+export interface CreateTemplateQuestionRequest {
+  text: string;
+  description?: string;
+  type: QuestionType;
+  isRequired: boolean;
+  order: number;
+  settings?: QuestionSettings;
+}
+
+/** Request to create a new template - matches backend CreateTemplateCommand */
 export interface CreateTemplateRequest {
   name: string;
   description?: string;
-  category: TemplateCategory;
+  category?: string;
   isPublic?: boolean;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  defaultAllowAnonymous?: boolean;
+  defaultAllowMultipleResponses?: boolean;
   /** Language code for the initial translation */
   languageCode: string;
+  /** Questions to include in the template */
+  questions?: CreateTemplateQuestionRequest[];
 }
 
+/** Request to create a template from an existing survey - matches backend CreateTemplateFromSurveyCommand */
 export interface CreateTemplateFromSurveyRequest {
   surveyId: string;
-  name: string;
+  /** Name for the new template - maps to backend TemplateName */
+  templateName: string;
   description?: string;
-  category: TemplateCategory;
+  category?: string;
   isPublic?: boolean;
   /** Language code for the initial translation */
   languageCode?: string;
 }
 
-export interface UpdateTemplateRequest {
-  name?: string;
+/** Question data for updating template questions */
+export interface UpdateTemplateQuestionRequest {
+  /** Question ID - null for new questions */
+  id?: string;
+  text: string;
   description?: string;
-  category?: TemplateCategory;
-  isPublic?: boolean;
-  /** Language code for the translation to update */
-  languageCode?: string;
+  type: QuestionType;
+  isRequired: boolean;
+  order: number;
+  settings?: QuestionSettings;
 }
 
+/** Request to update a template - matches backend UpdateTemplateCommand */
+export interface UpdateTemplateRequest {
+  name: string;
+  description?: string;
+  category?: string;
+  isPublic?: boolean;
+  welcomeMessage?: string;
+  thankYouMessage?: string;
+  defaultAllowAnonymous?: boolean;
+  defaultAllowMultipleResponses?: boolean;
+  /** Language code for the translation to update */
+  languageCode?: string;
+  /** Questions to include in the template (replaces existing) */
+  questions?: UpdateTemplateQuestionRequest[];
+}
+
+/** Request to create a survey from a template - matches backend CreateSurveyFromTemplateCommand */
 export interface CreateSurveyFromTemplateRequest {
-  title: string;
+  /** Title for the new survey - maps to backend SurveyTitle */
+  surveyTitle: string;
   description?: string;
   /** Language code for the survey's default language */
-  languageCode: string;
+  languageCode?: string;
 }
 
 // ============ Responses ============
@@ -875,17 +980,7 @@ export interface Answer {
   matrixAnswers?: Record<string, string>;
 }
 
-export interface SubmitResponseRequest {
-  linkShortCode?: string;
-  answers: Array<{
-    questionId: string;
-    /** Selected option IDs for choice questions */
-    selectedOptionIds?: string[];
-    /** Text value for text questions or "Other" input */
-    text?: string;
-  }>;
-  respondentEmail?: string;
-}
+// NOTE: SubmitResponseRequest is defined in public-survey.ts - use that instead
 
 // ============ Recurring Surveys ============
 // Keep RecurrenceFrequency as alias for backward compatibility
@@ -993,16 +1088,17 @@ export interface CreateRecurringSurveyRequest {
 }
 
 export interface UpdateRecurringSurveyRequest {
-  name?: string;
+  id: string;
+  name: string;
   // Schedule
-  pattern?: RecurrencePattern;
+  pattern: RecurrencePattern;
   cronExpression?: string;
-  sendTime?: string;
-  timezoneId?: string;
+  sendTime: string;
+  timezoneId: string;
   daysOfWeek?: DayOfWeek[];
   dayOfMonth?: number;
   // Audience
-  audienceType?: AudienceType;
+  audienceType: AudienceType;
   recipientEmails?: string[];
   audienceListId?: string;
   // Options
@@ -1048,7 +1144,8 @@ export interface MatrixAnalyticsData {
 export interface QuestionAnalytics {
   questionId: string;
   questionText: string;
-  questionType: QuestionType;
+  /** Question type - backend returns as string (e.g., "SingleChoice", "Text") */
+  questionType: QuestionType | string;
   totalAnswers: number;
   skippedCount: number;
   answerOptions?: AnswerOptionStats[];
@@ -1058,6 +1155,10 @@ export interface QuestionAnalytics {
   maxValue?: number;
   sampleAnswers?: string[];
   matrixData?: MatrixAnalyticsData;
+  /** "Other" responses count (when AllowOther is enabled) */
+  otherCount?: number;
+  /** Sample "Other" text responses */
+  otherResponses?: string[];
 }
 
 export interface AnswerOptionStats {

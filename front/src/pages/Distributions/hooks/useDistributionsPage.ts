@@ -19,7 +19,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSendDistribution, useCancelDistribution, useDeleteDistribution } from '@/hooks/queries/useDistributions';
 import { useConfirmDialog, useDialogState } from '@/hooks';
 import { toast } from '@/components/ui';
-import type { EmailDistribution } from '@/types';
+import type { EmailDistributionSummary } from '@/types';
 import type { StatusFilter, DistributionTab } from '../types';
 
 /** Return type for useDistributionsPage hook */
@@ -29,13 +29,13 @@ export interface UseDistributionsPageReturn {
   statusFilter: StatusFilter;
   searchQuery: string;
   createDialog: ReturnType<typeof useDialogState>;
-  statsDrawer: ReturnType<typeof useDialogState<EmailDistribution>>;
+  statsDrawer: ReturnType<typeof useDialogState<EmailDistributionSummary>>;
   // Setters
   setStatusFilter: (filter: StatusFilter) => void;
   setSearchQuery: (query: string) => void;
   // Handlers
   handleTabChange: (tab: DistributionTab) => void;
-  handleViewDistribution: (distribution: EmailDistribution) => void;
+  handleViewDistribution: (distribution: EmailDistributionSummary) => void;
   handleSendDistribution: (distId: string) => Promise<void>;
   handleCancelDistribution: (distId: string) => Promise<void>;
   handleDeleteDistribution: (distId: string) => Promise<void>;
@@ -52,7 +52,7 @@ export function useDistributionsPage(selectedSurveyId: string): UseDistributions
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const createDialog = useDialogState();
-  const statsDrawer = useDialogState<EmailDistribution>();
+  const statsDrawer = useDialogState<EmailDistributionSummary>();
 
   // Mutations
   const sendDistribution = useSendDistribution(selectedSurveyId);
@@ -73,7 +73,7 @@ export function useDistributionsPage(selectedSurveyId: string): UseDistributions
   );
 
   const handleViewDistribution = useCallback(
-    (distribution: EmailDistribution) => {
+    (distribution: EmailDistributionSummary) => {
       statsDrawer.open(distribution);
     },
     [statsDrawer]

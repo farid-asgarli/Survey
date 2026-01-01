@@ -14,12 +14,22 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/track")]
 [EnableRateLimiting("tracking")]
-public class EmailTrackingController(IMediator mediator) : ControllerBase
+public class EmailTrackingController(IMediator mediator, ILogger<EmailTrackingController> logger)
+    : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
+    private readonly ILogger<EmailTrackingController> _logger = logger;
+
+    /// <summary>
+    /// 1x1 transparent GIF pixel for email open tracking.
+    /// </summary>
+    private static readonly byte[] TransparentPixel = Convert.FromBase64String(
+        "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    );
 
     /// <summary>
     /// Tracks an email open event (1x1 pixel).
+    /// Always returns a pixel to avoid breaking email client display.
     /// </summary>
     /// <param name="token">The tracking token.</param>
     /// <returns>A 1x1 transparent pixel.</returns>
@@ -28,14 +38,20 @@ public class EmailTrackingController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     public async Task<IActionResult> TrackOpen(string token)
     {
-        await _mediator.Send(new TrackOpenCommand(token));
+        var result = await _mediator.Send(new TrackOpenCommand(token));
 
-        // Return a 1x1 transparent GIF
-        var transparentPixel = Convert.FromBase64String(
-            "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-        );
+        // Log failures but still return pixel to not break email client display
+        if (!result.IsSuccess)
+        {
+            _logger.LogWarning(
+                "Failed to track email open for token {Token}: {Error}",
+                token,
+                result.Error
+            );
+        }
 
-        return File(transparentPixel, "image/gif");
+        // Always return the transparent pixel (email clients expect an image)
+        return File(TransparentPixel, "image/gif");
     }
 
     /// <summary>
@@ -52,10 +68,22 @@ public class EmailTrackingController(IMediator mediator) : ControllerBase
         var result = await _mediator.Send(new TrackClickCommand(token));
 
         if (!result.IsSuccess)
+        {
+            _logger.LogWarning(
+                "Failed to track click for token {Token}: {Error}",
+                token,
+                result.Error
+            );
             return result.ToProblemDetails(HttpContext);
+        }
 
-        // Redirect to the public survey URL
-        var surveyUrl = $"/survey/{result.Value}";
+        _logger.LogInformation(
+            "Click tracked successfully for token {Token}, redirecting to survey",
+            token
+        );
+
+        // Redirect to the public survey URL (matches frontend route: /s/:shareToken)
+        var surveyUrl = $"/s/{result.Value}";
         return Redirect(surveyUrl);
     }
 }

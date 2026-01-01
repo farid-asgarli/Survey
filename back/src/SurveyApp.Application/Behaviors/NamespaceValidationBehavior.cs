@@ -146,12 +146,9 @@ public class NamespaceValidationBehavior<TRequest, TResponse>(
             var resultType = responseType.GetGenericArguments()[0];
             var failureMethod = typeof(Result<>)
                 .MakeGenericType(resultType)
-                .GetMethod(
-                    nameof(Result<object>.Failure),
-                    new[] { typeof(string), typeof(string) }
-                );
+                .GetMethod(nameof(Result<object>.Failure), [typeof(string), typeof(string)]);
 
-            return (TResponse)failureMethod!.Invoke(null, new object[] { error, errorCode })!;
+            return (TResponse)failureMethod!.Invoke(null, [error, errorCode])!;
         }
 
         // Handle non-generic Result type

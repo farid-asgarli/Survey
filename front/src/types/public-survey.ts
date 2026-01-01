@@ -147,10 +147,15 @@ export interface SubmitResponseRequest {
   metadata?: Record<string, string>;
 }
 
+/**
+ * Result of submitting a survey response.
+ * Backend returns full SurveyResponseDto - we only need these fields.
+ */
 export interface SubmitResponseResult {
   id: string;
   surveyId: string;
   isComplete: boolean;
+  startedAt: string;
   submittedAt?: string;
 }
 

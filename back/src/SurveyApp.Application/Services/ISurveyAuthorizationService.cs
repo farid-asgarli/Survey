@@ -71,19 +71,13 @@ public interface ISurveyAuthorizationService
 /// <summary>
 /// Default implementation of ISurveyAuthorizationService.
 /// </summary>
-public class SurveyAuthorizationService : ISurveyAuthorizationService
+public class SurveyAuthorizationService(
+    ISurveyRepository surveyRepository,
+    INamespaceCommandContext commandContext
+) : ISurveyAuthorizationService
 {
-    private readonly ISurveyRepository _surveyRepository;
-    private readonly INamespaceCommandContext _commandContext;
-
-    public SurveyAuthorizationService(
-        ISurveyRepository surveyRepository,
-        INamespaceCommandContext commandContext
-    )
-    {
-        _surveyRepository = surveyRepository;
-        _commandContext = commandContext;
-    }
+    private readonly ISurveyRepository _surveyRepository = surveyRepository;
+    private readonly INamespaceCommandContext _commandContext = commandContext;
 
     /// <inheritdoc />
     public async Task<Result<Survey>> ValidateSurveyAccessAsync(

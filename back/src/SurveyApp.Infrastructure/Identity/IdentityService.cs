@@ -71,7 +71,11 @@ public class IdentityService(
         return await GenerateAuthenticationResultAsync(identityUser);
     }
 
-    public async Task<AuthenticationResult> LoginAsync(string email, string password, bool rememberMe = false)
+    public async Task<AuthenticationResult> LoginAsync(
+        string email,
+        string password,
+        bool rememberMe = false
+    )
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -197,7 +201,10 @@ public class IdentityService(
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
-    private async Task<AuthenticationResult> GenerateAuthenticationResultAsync(ApplicationUser user, bool rememberMe = false)
+    private async Task<AuthenticationResult> GenerateAuthenticationResultAsync(
+        ApplicationUser user,
+        bool rememberMe = false
+    )
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -230,7 +237,7 @@ public class IdentityService(
         user.RefreshToken = refreshToken;
         // When rememberMe is true, use extended refresh token expiration (30 days by default)
         // Otherwise, use standard expiration
-        var refreshTokenDays = rememberMe 
+        var refreshTokenDays = rememberMe
             ? _jwtSettings.RefreshTokenExpirationInDays * 3 // Extended: 3x the normal duration
             : _jwtSettings.RefreshTokenExpirationInDays;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(refreshTokenDays);

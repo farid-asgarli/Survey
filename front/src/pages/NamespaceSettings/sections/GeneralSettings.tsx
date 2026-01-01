@@ -1,18 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  Button,
-  Input,
-  Textarea,
-  Skeleton,
-  ImageUploader,
-} from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Input, Textarea, Skeleton, ImageUploader } from '@/components/ui';
 import { Building2, Save } from 'lucide-react';
 import { useNamespaceDetail, useUpdateNamespace } from '@/hooks';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
@@ -72,27 +60,27 @@ export function GeneralSettings({ namespaceId, isOwner }: GeneralSettingsProps) 
 
   if (isLoading) {
     return (
-      <Card variant="elevated">
+      <Card variant='elevated'>
         <CardHeader>
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-4 w-48" />
+          <Skeleton className='h-6 w-32' />
+          <Skeleton className='h-4 w-48' />
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Skeleton className="h-14 w-full" />
-          <Skeleton className="h-24 w-full" />
+        <CardContent className='space-y-4'>
+          <Skeleton className='h-14 w-full' />
+          <Skeleton className='h-24 w-full' />
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card variant="elevated">
+    <Card variant='elevated'>
       <CardHeader>
         <CardTitle>{t('workspaceSettings.general.title')}</CardTitle>
         <CardDescription>{t('workspaceSettings.general.description')}</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-6">
+        <CardContent className='space-y-6'>
           {/* Logo Section */}
           <ImageUploader
             label={t('workspaceSettings.general.logo')}
@@ -100,16 +88,8 @@ export function GeneralSettings({ namespaceId, isOwner }: GeneralSettingsProps) 
             onChange={(url) => setValue('logoUrl', url, { shouldDirty: true })}
             helperText={t('workspaceSettings.general.logoHelperText')}
             disabled={!isOwner}
-            category="logo"
-            onUpload={async (file) => {
-              const result = await filesApi.uploadImage(file, 'logo');
-              return {
-                fileId: result.fileId,
-                url: result.url,
-                fileName: result.fileName,
-                size: result.size,
-              };
-            }}
+            category='logo'
+            onUpload={(file) => filesApi.uploadImage(file, 'logo')}
           />
 
           {/* Name Input */}
@@ -118,31 +98,31 @@ export function GeneralSettings({ namespaceId, isOwner }: GeneralSettingsProps) 
             {...register('name')}
             error={touchedFields.name ? errors.name?.message : undefined}
             disabled={!isOwner}
-            startIcon={<Building2 className="h-5 w-5" />}
+            startIcon={<Building2 className='h-5 w-5' />}
           />
 
           {/* URL (read-only) */}
           <div>
-            <label className="block text-sm font-medium text-on-surface-variant mb-1.5">{t('workspaceSettings.general.url')}</label>
+            <label className='block text-sm font-medium text-on-surface-variant mb-1.5'>{t('workspaceSettings.general.url')}</label>
             <Input value={namespace?.slug || ''} disabled helperText={t('workspaceSettings.general.urlHelperText')} />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-on-surface-variant mb-1.5">{t('workspaceSettings.general.descriptionLabel')}</label>
+            <label className='block text-sm font-medium text-on-surface-variant mb-1.5'>{t('workspaceSettings.general.descriptionLabel')}</label>
             <Textarea
               {...register('description')}
               placeholder={t('workspaceSettings.general.descriptionPlaceholder')}
               rows={3}
               disabled={!isOwner}
-              className="resize-none"
+              className='resize-none'
             />
           </div>
         </CardContent>
         {isOwner && (
-          <CardFooter className="border-t border-outline-variant/30 mt-4">
-            <Button type="submit" disabled={!isDirty || updateNamespace.isPending} className="gap-2">
-              <Save className="h-4 w-4" />
+          <CardFooter className='border-t border-outline-variant/30 mt-4'>
+            <Button type='submit' disabled={!isDirty || updateNamespace.isPending} className='gap-2'>
+              <Save className='h-4 w-4' />
               {updateNamespace.isPending ? t('common.saving') : t('common.saveChanges')}
             </Button>
           </CardFooter>

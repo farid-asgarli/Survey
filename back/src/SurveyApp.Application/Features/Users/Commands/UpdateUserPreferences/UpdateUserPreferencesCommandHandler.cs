@@ -141,6 +141,12 @@ public class UpdateUserPreferencesCommandHandler(
                 {
                     preferences.MarkFirstSurveyCreated();
                 }
+                // Handle Getting Started Guide tracking
+                preferences.UpdateGettingStartedStep(request.Onboarding.GettingStartedStep);
+                if (request.Onboarding.HasCompletedGettingStarted)
+                {
+                    preferences.MarkGettingStartedCompleted();
+                }
             }
 
             _preferencesRepository.Update(preferences);
@@ -219,6 +225,9 @@ public class UpdateUserPreferencesCommandHandler(
                 HasSeenWelcomeTour = preferences.HasSeenWelcomeTour,
                 HasCompletedProfileSetup = preferences.HasCompletedProfileSetup,
                 HasCreatedFirstSurvey = preferences.HasCreatedFirstSurvey,
+                HasCompletedGettingStarted = preferences.HasCompletedGettingStarted,
+                GettingStartedStep = preferences.GettingStartedStep,
+                GettingStartedCompletedAt = preferences.GettingStartedCompletedAt,
             },
         };
     }

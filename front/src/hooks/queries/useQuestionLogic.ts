@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { logicApi } from '@/services';
-import type { CreateLogicRequest, QuestionLogic } from '@/types';
+import type { CreateLogicRequest, QuestionLogic, LogicMapResponse, LogicNodeDto, LogicEdgeDto } from '@/types';
 import { QuestionType, LogicOperator, LogicAction } from '@/types/enums';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
@@ -14,6 +14,72 @@ export const logicKeys = createExtendedQueryKeys('logic', (base) => ({
   list: (surveyId: string, questionId: string) => [...base.lists(), surveyId, questionId] as const,
   logicMap: (surveyId: string) => [...base.all, 'map', surveyId] as const,
 }));
+
+/**
+ * Transformed logic map structure for component consumption.
+ * Converts backend graph structure (nodes/edges) to component-friendly format.
+ */
+export interface TransformedLogicMap {
+  surveyId: string;
+  /** Graph structure from backend - use for advanced visualizations */
+  nodes: LogicNodeDto[];
+  edges: LogicEdgeDto[];
+  /** Questions with embedded logic rules - for backward compatibility with components */
+  questions: {
+    id: string;
+    text: string;
+    order: number;
+    type: string;
+    hasLogic: boolean;
+    isConditional: boolean;
+    logicRules: QuestionLogic[];
+  }[];
+}
+
+/**
+ * Transform backend LogicMapResponse (nodes/edges) to component-friendly format.
+ */
+function transformLogicMapResponse(response: LogicMapResponse): TransformedLogicMap {
+  // Build rules from edges - group edges by source question
+  const edgesBySource = new Map<string, LogicEdgeDto[]>();
+  for (const edge of response.edges) {
+    const existing = edgesBySource.get(edge.sourceId) || [];
+    existing.push(edge);
+    edgesBySource.set(edge.sourceId, existing);
+  }
+
+  // Transform nodes to questions with embedded rules
+  const questions = response.nodes.map((node) => {
+    const nodeEdges = edgesBySource.get(node.id) || [];
+    const logicRules: QuestionLogic[] = nodeEdges.map((edge, index) => ({
+      id: edge.id,
+      questionId: edge.sourceId, // The question this rule belongs to
+      sourceQuestionId: edge.sourceId,
+      targetQuestionId: edge.targetId,
+      operator: edge.operator,
+      conditionValue: edge.conditionValue,
+      action: edge.action,
+      priority: index,
+    }));
+
+    return {
+      id: node.id,
+      text: node.text,
+      order: node.order,
+      type: node.type,
+      hasLogic: node.hasLogic,
+      isConditional: node.isConditional,
+      logicRules,
+    };
+  });
+
+  return {
+    surveyId: response.surveyId,
+    nodes: response.nodes,
+    edges: response.edges,
+    questions,
+  };
+}
 
 /**
  * Hook to fetch logic rules for a specific question
@@ -28,12 +94,16 @@ export function useQuestionLogic(surveyId: string | undefined, questionId: strin
 }
 
 /**
- * Hook to fetch the full logic map for a survey
+ * Hook to fetch the full logic map for a survey.
+ * Returns both the raw graph structure (nodes/edges) and transformed questions array.
  */
 export function useLogicMap(surveyId: string | undefined) {
   return useQuery({
     queryKey: logicKeys.logicMap(surveyId!),
-    queryFn: () => logicApi.getLogicMap(surveyId!),
+    queryFn: async () => {
+      const response = await logicApi.getLogicMap(surveyId!);
+      return transformLogicMapResponse(response);
+    },
     enabled: !!surveyId,
     staleTime: STALE_TIMES.MEDIUM,
   });

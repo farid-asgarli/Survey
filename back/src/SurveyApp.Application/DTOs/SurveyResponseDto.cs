@@ -16,7 +16,7 @@ public class SurveyResponseDto
     public DateTime StartedAt { get; set; }
     public DateTime? SubmittedAt { get; set; }
     public int? TimeSpentSeconds { get; set; }
-    public IReadOnlyList<AnswerDto> Answers { get; set; } = Array.Empty<AnswerDto>();
+    public IReadOnlyList<AnswerDto> Answers { get; set; } = [];
 }
 
 /// <summary>

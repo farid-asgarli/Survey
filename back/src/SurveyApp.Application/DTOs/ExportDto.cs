@@ -96,7 +96,7 @@ public class ExportResult
     /// <summary>
     /// The exported data.
     /// </summary>
-    public byte[] Data { get; set; } = Array.Empty<byte>();
+    public byte[] Data { get; set; } = [];
 
     /// <summary>
     /// The suggested filename.

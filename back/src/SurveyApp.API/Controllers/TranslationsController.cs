@@ -1,8 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApp.API.Models;
 using SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
 using SurveyApp.Application.Features.Translations.Commands.DeleteSurveyTranslation;
+using SurveyApp.Application.Features.Translations.Commands.UpdateSurveyTranslation;
 using SurveyApp.Application.Features.Translations.Queries.GetSurveyTranslations;
 
 namespace SurveyApp.API.Controllers;
@@ -57,8 +59,8 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="languageCode">The language code (e.g., "es", "fr").</param>
-    /// <param name="translation">The translation content.</param>
-    /// <returns>Result of the update operation.</returns>
+    /// <param name="request">The translation content.</param>
+    /// <returns>The updated translation.</returns>
     [HttpPut("{languageCode}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,17 +68,18 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> UpdateTranslation(
         Guid surveyId,
         string languageCode,
-        [FromBody] SurveyTranslationDto translation
+        [FromBody] UpdateSurveyTranslationRequest request
     )
     {
-        // Ensure the language code matches
-        translation.LanguageCode = languageCode;
-
         var result = await _mediator.Send(
-            new BulkUpdateSurveyTranslationsCommand
+            new UpdateSurveyTranslationCommand
             {
                 SurveyId = surveyId,
-                Translations = [translation],
+                LanguageCode = languageCode,
+                Title = request.Title,
+                Description = request.Description,
+                WelcomeMessage = request.WelcomeMessage,
+                ThankYouMessage = request.ThankYouMessage,
             }
         );
 

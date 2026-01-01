@@ -18,15 +18,22 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { distributionsApi } from '@/services';
 import { DistributionStatus } from '@/types';
-import type { CreateDistributionRequest, EmailDistribution, DistributionStatsResponse, DistributionRecipient, RecipientStatus } from '@/types';
+import type {
+  CreateDistributionRequest,
+  EmailDistribution,
+  EmailDistributionSummary,
+  DistributionStats,
+  DistributionRecipient,
+  RecipientStatus,
+  DistributionsResponse,
+} from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - distributions have custom detail (surveyId + distId), stats, and recipients
 export const distributionKeys = createExtendedQueryKeys('distributions', (base) => ({
   detail: (surveyId: string, distId: string) => [...base.details(), surveyId, distId] as const,
   stats: (surveyId: string, distId: string) => [...base.all, 'stats', surveyId, distId] as const,
-  recipients: (surveyId: string, distId: string, params?: { status?: RecipientStatus }) =>
-    [...base.all, 'recipients', surveyId, distId, params] as const,
+  recipients: (surveyId: string, distId: string, params?: { status?: RecipientStatus }) => [...base.all, 'recipients', surveyId, distId, params] as const,
 }));
 
 /**
@@ -74,13 +81,8 @@ export function useCreateDistribution(surveyId: string) {
 
   return useMutation({
     mutationFn: (data: CreateDistributionRequest) => distributionsApi.create(surveyId, data),
-    onSuccess: (newDistribution) => {
-      // Update cache with new distribution
-      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
-        if (!old) return [newDistribution];
-        return [...old, newDistribution];
-      });
-      // Invalidate to refetch
+    onSuccess: () => {
+      // Invalidate to refetch the paginated list
       queryClient.invalidateQueries({ queryKey: distributionKeys.list(surveyId) });
     },
   });
@@ -97,11 +99,8 @@ export function useScheduleDistribution(surveyId: string) {
     onSuccess: (updatedDistribution, { distId }) => {
       // Update detail cache
       queryClient.setQueryData(distributionKeys.detail(surveyId, distId), updatedDistribution);
-      // Update list cache
-      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
-        if (!old) return [updatedDistribution];
-        return old.map((dist) => (dist.id === distId ? updatedDistribution : dist));
-      });
+      // Invalidate list to refetch
+      queryClient.invalidateQueries({ queryKey: distributionKeys.list(surveyId) });
     },
   });
 }
@@ -117,11 +116,8 @@ export function useSendDistribution(surveyId: string) {
     onSuccess: (updatedDistribution, distId) => {
       // Update detail cache
       queryClient.setQueryData(distributionKeys.detail(surveyId, distId), updatedDistribution);
-      // Update list cache
-      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
-        if (!old) return [updatedDistribution];
-        return old.map((dist) => (dist.id === distId ? updatedDistribution : dist));
-      });
+      // Invalidate list to refetch
+      queryClient.invalidateQueries({ queryKey: distributionKeys.list(surveyId) });
     },
   });
 }
@@ -141,13 +137,16 @@ export function useCancelDistribution(surveyId: string) {
       await queryClient.cancelQueries({ queryKey: distributionKeys.detail(surveyId, distId) });
 
       // Snapshot current values for rollback
-      const previousList = queryClient.getQueryData<EmailDistribution[]>(distributionKeys.list(surveyId));
+      const previousList = queryClient.getQueryData<DistributionsResponse>(distributionKeys.list(surveyId));
       const previousDetail = queryClient.getQueryData<EmailDistribution>(distributionKeys.detail(surveyId, distId));
 
-      // Optimistically update to cancelled status
-      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
+      // Optimistically update list
+      queryClient.setQueryData<DistributionsResponse>(distributionKeys.list(surveyId), (old) => {
         if (!old) return old;
-        return old.map((dist) => (dist.id === distId ? { ...dist, status: DistributionStatus.Cancelled } : dist));
+        return {
+          ...old,
+          items: old.items.map((dist) => (dist.id === distId ? { ...dist, status: DistributionStatus.Cancelled } : dist)),
+        };
       });
 
       queryClient.setQueryData<EmailDistribution>(distributionKeys.detail(surveyId, distId), (old) => {
@@ -188,12 +187,16 @@ export function useDeleteDistribution(surveyId: string) {
       await queryClient.cancelQueries({ queryKey: distributionKeys.list(surveyId) });
 
       // Snapshot current value for rollback
-      const previousList = queryClient.getQueryData<EmailDistribution[]>(distributionKeys.list(surveyId));
+      const previousList = queryClient.getQueryData<DistributionsResponse>(distributionKeys.list(surveyId));
 
       // Optimistically remove from list
-      queryClient.setQueryData<EmailDistribution[]>(distributionKeys.list(surveyId), (old) => {
+      queryClient.setQueryData<DistributionsResponse>(distributionKeys.list(surveyId), (old) => {
         if (!old) return old;
-        return old.filter((dist) => dist.id !== distId);
+        return {
+          ...old,
+          items: old.items.filter((dist) => dist.id !== distId),
+          totalCount: old.totalCount - 1,
+        };
       });
 
       return { previousList };
@@ -222,11 +225,7 @@ export function useDeleteDistribution(surveyId: string) {
 /**
  * Hook to fetch distribution recipients with pagination
  */
-export function useDistributionRecipients(
-  surveyId: string | undefined,
-  distId: string | undefined,
-  options?: { status?: RecipientStatus; pageSize?: number }
-) {
+export function useDistributionRecipients(surveyId: string | undefined, distId: string | undefined, options?: { status?: RecipientStatus; pageSize?: number }) {
   const pageSize = options?.pageSize ?? 20;
 
   return useInfiniteQuery({
@@ -248,4 +247,4 @@ export function useDistributionRecipients(
 }
 
 // Re-export types for convenience
-export type { EmailDistribution, CreateDistributionRequest, DistributionStatsResponse, DistributionRecipient };
+export type { EmailDistribution, EmailDistributionSummary, CreateDistributionRequest, DistributionStats, DistributionRecipient, DistributionsResponse };

@@ -36,13 +36,13 @@ const FORMAT_OPTIONS: { value: ExportFormat; label: string; icon: React.ReactNod
   {
     value: ExportFormat.Csv,
     label: 'CSV',
-    icon: <FileText className="h-5 w-5" />,
+    icon: <FileText className='h-5 w-5' />,
     description: 'Comma-separated values, opens in any spreadsheet',
   },
   {
     value: ExportFormat.Excel,
     label: 'Excel',
-    icon: <FileSpreadsheet className="h-5 w-5" />,
+    icon: <FileSpreadsheet className='h-5 w-5' />,
     description: 'Microsoft Excel format with formatting',
   },
 ];
@@ -61,7 +61,7 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
 
   // Group columns by type
   const groupedColumns = useMemo(() => {
-    const columns = preview?.availableColumns;
+    const columns = preview?.columns;
     if (!columns) return { questions: [], metadata: [], system: [] };
 
     const groups: Record<string, ExportColumn[]> = {
@@ -71,7 +71,9 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
     };
 
     columns.forEach((col) => {
-      const group = groups[col.type] || groups.system;
+      // Map backend type to frontend group
+      const type = col.type.toLowerCase();
+      const group = type === 'question' ? groups.questions : type === 'metadata' ? groups.metadata : groups.system;
       group.push(col);
     });
 
@@ -81,8 +83,8 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
   // Use selected columns if set, otherwise default to all columns from preview
   const activeColumns = useMemo(() => {
     if (selectedColumns !== null) return selectedColumns;
-    if (preview?.availableColumns) {
-      return new Set(preview.availableColumns.map((c) => c.id));
+    if (preview?.columns) {
+      return new Set(preview.columns.map((c) => c.id));
     }
     return new Set<string>();
   }, [selectedColumns, preview]);
@@ -159,45 +161,43 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
     }
   };
 
-  const responseCount = includeIncomplete ? preview?.totalResponses || 0 : preview?.completeResponses || 0;
+  const responseCount = includeIncomplete ? preview?.totalResponses || 0 : preview?.completedResponses || 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl" showClose={false}>
+      <DialogContent className='max-w-2xl' showClose={false}>
         <DialogHeader
           hero
-          icon={<Download className="h-7 w-7" />}
+          icon={<Download className='h-7 w-7' />}
           title={t('responses.exportDialog.title')}
-          description={
-            surveyTitle ? t('responses.exportDialog.descriptionWithTitle', { title: surveyTitle }) : t('responses.exportDialog.description')
-          }
+          description={surveyTitle ? t('responses.exportDialog.descriptionWithTitle', { title: surveyTitle }) : t('responses.exportDialog.description')}
           showClose
         />
 
-        <DialogBody className="space-y-6 max-h-[60vh] overflow-y-auto">
+        <DialogBody className='space-y-6 max-h-[60vh] overflow-y-auto'>
           {/* Format Selection */}
           <div>
-            <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
-              <FileOutput className="h-4 w-4" />
+            <h4 className='text-sm font-semibold text-on-surface mb-3 flex items-center gap-2'>
+              <FileOutput className='h-4 w-4' />
               {t('responses.exportDialog.format')}
             </h4>
-            <Tabs value={String(format)} onValueChange={(v) => setFormat(Number(v) as ExportFormat)} variant="segmented">
-              <TabsList className="grid grid-cols-3">
+            <Tabs value={String(format)} onValueChange={(v) => setFormat(Number(v) as ExportFormat)} variant='segmented'>
+              <TabsList className='grid grid-cols-3'>
                 {FORMAT_OPTIONS.map((opt) => (
-                  <TabsTrigger key={opt.value} value={String(opt.value)} className="flex items-center gap-2">
+                  <TabsTrigger key={opt.value} value={String(opt.value)} className='flex items-center gap-2'>
                     {opt.icon}
                     {opt.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </Tabs>
-            <p className="text-xs text-on-surface-variant mt-2">{FORMAT_OPTIONS.find((o) => o.value === format)?.description}</p>
+            <p className='text-xs text-on-surface-variant mt-2'>{FORMAT_OPTIONS.find((o) => o.value === format)?.description}</p>
           </div>
 
           {/* Date Range Filter */}
           <div>
-            <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+            <h4 className='text-sm font-semibold text-on-surface mb-3 flex items-center gap-2'>
+              <Calendar className='h-4 w-4' />
               {t('responses.exportDialog.dateRange')}
             </h4>
             <DateRangePicker
@@ -212,11 +212,11 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
 
           {/* Filter Options */}
           <div>
-            <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
-              <Filter className="h-4 w-4" />
+            <h4 className='text-sm font-semibold text-on-surface mb-3 flex items-center gap-2'>
+              <Filter className='h-4 w-4' />
               {t('responses.exportDialog.filters')}
             </h4>
-            <div className="space-y-3">
+            <div className='space-y-3'>
               <Checkbox
                 checked={includeIncomplete}
                 onChange={(e) => setIncludeIncomplete(e.target.checked)}
@@ -234,27 +234,27 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
 
           {/* Column Selection */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-semibold text-on-surface flex items-center gap-2">
-                <CheckSquare className="h-4 w-4" />
+            <div className='flex items-center justify-between mb-3'>
+              <h4 className='text-sm font-semibold text-on-surface flex items-center gap-2'>
+                <CheckSquare className='h-4 w-4' />
                 {t('responses.exportDialog.columnsToExport')}
               </h4>
-              <span className="text-xs text-on-surface-variant">{t('responses.exportDialog.selectedCount', { count: activeColumns.size })}</span>
+              <span className='text-xs text-on-surface-variant'>{t('responses.exportDialog.selectedCount', { count: activeColumns.size })}</span>
             </div>
 
             {previewLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-10 rounded-xl" />
-                <Skeleton className="h-10 rounded-xl" />
-                <Skeleton className="h-10 rounded-xl" />
+              <div className='space-y-2'>
+                <Skeleton className='h-10 rounded-xl' />
+                <Skeleton className='h-10 rounded-xl' />
+                <Skeleton className='h-10 rounded-xl' />
               </div>
             ) : previewError ? (
-              <div className="flex items-center gap-2 p-4 bg-error-container rounded-2xl text-on-error-container">
-                <AlertCircle className="h-5 w-5" />
+              <div className='flex items-center gap-2 p-4 bg-error-container rounded-2xl text-on-error-container'>
+                <AlertCircle className='h-5 w-5' />
                 <span>{t('responses.exportDialog.loadColumnsError')}</span>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 {/* Questions */}
                 {groupedColumns.questions.length > 0 && (
                   <ColumnGroup
@@ -301,23 +301,23 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
           </div>
 
           {/* Export Summary */}
-          <div className="bg-surface-container rounded-2xl p-4">
-            <h4 className="text-sm font-semibold text-on-surface mb-3 flex items-center gap-2">
-              <ClipboardList className="h-4 w-4" />
+          <div className='bg-surface-container rounded-2xl p-4'>
+            <h4 className='text-sm font-semibold text-on-surface mb-3 flex items-center gap-2'>
+              <ClipboardList className='h-4 w-4' />
               {t('responses.exportDialog.exportSummary')}
             </h4>
-            <div className="flex flex-wrap gap-2">
-              <Chip variant="filter-selected" size="sm">
+            <div className='flex flex-wrap gap-2'>
+              <Chip variant='filter-selected' size='sm'>
                 {t('responses.exportDialog.responsesCount', { count: responseCount })}
               </Chip>
-              <Chip variant="assist" size="sm">
+              <Chip variant='assist' size='sm'>
                 {t('responses.exportDialog.columnsCount', { count: activeColumns.size })}
               </Chip>
-              <Chip variant="assist" size="sm">
+              <Chip variant='assist' size='sm'>
                 {t('responses.exportDialog.formatLabel', { format: ExportFormatLabels[format] })}
               </Chip>
               {(fromDate || toDate) && (
-                <Chip variant="assist" size="sm">
+                <Chip variant='assist' size='sm'>
                   {fromDate && toDate ? `${fromDate} - ${toDate}` : fromDate || toDate}
                 </Chip>
               )}
@@ -326,18 +326,18 @@ export function ExportDialog({ surveyId, surveyTitle, open, onOpenChange }: Expo
         </DialogBody>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant='outline' onClick={() => onOpenChange(false)}>
             {t('common.cancel')}
           </Button>
           <Button onClick={handleExport} disabled={exportMutation.isPending || activeColumns.size === 0}>
             {exportMutation.isPending ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className='h-4 w-4 mr-2 animate-spin' />
                 {t('responses.exportDialog.exporting')}
               </>
             ) : (
               <>
-                <Download className="h-4 w-4 mr-2" />
+                <Download className='h-4 w-4 mr-2' />
                 {t('responses.exportDialog.exportButton', { count: responseCount })}
               </>
             )}
@@ -377,10 +377,10 @@ function ColumnGroup({
   };
 
   return (
-    <div className="bg-surface-container-low rounded-2xl overflow-hidden">
+    <div className='bg-surface-container-low rounded-2xl overflow-hidden'>
       {/* Group Header */}
-      <button type="button" onClick={handleGroupToggle} className="w-full flex items-center gap-3 p-3 hover:bg-surface-container transition-colors">
-        <div className="relative flex items-center justify-center">
+      <button type='button' onClick={handleGroupToggle} className='w-full flex items-center gap-3 p-3 hover:bg-surface-container transition-colors'>
+        <div className='relative flex items-center justify-center'>
           <div
             className={cn(
               'h-5 w-5 rounded border-2 flex items-center justify-center transition-colors',
@@ -390,18 +390,18 @@ function ColumnGroup({
             {(isAllSelected || isPartiallySelected) && <CheckSquare className={cn('h-3 w-3', isAllSelected ? 'text-on-primary' : 'text-primary')} />}
           </div>
         </div>
-        <span className="font-medium text-on-surface flex-1 text-left">{title}</span>
-        <span className="text-xs text-on-surface-variant">
+        <span className='font-medium text-on-surface flex-1 text-left'>{title}</span>
+        <span className='text-xs text-on-surface-variant'>
           {columns.filter((c) => selectedColumns.has(c.id)).length} / {columns.length}
         </span>
       </button>
 
       {/* Column List */}
-      <div className="border-t border-outline-variant/30 divide-y divide-outline-variant/20">
+      <div className='border-t border-outline-variant/30 divide-y divide-outline-variant/20'>
         {columns.map((column) => (
-          <label key={column.id} className="flex items-center gap-3 px-3 py-2 hover:bg-surface-container/50 cursor-pointer transition-colors">
+          <label key={column.id} className='flex items-center gap-3 px-3 py-2 hover:bg-surface-container/50 cursor-pointer transition-colors'>
             <Checkbox checked={selectedColumns.has(column.id)} onChange={() => onToggle(column.id)} />
-            <span className="text-sm text-on-surface">{column.label}</span>
+            <span className='text-sm text-on-surface'>{column.name}</span>
           </label>
         ))}
       </div>

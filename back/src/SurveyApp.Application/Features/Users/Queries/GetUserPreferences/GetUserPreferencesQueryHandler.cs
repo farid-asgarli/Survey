@@ -164,6 +164,9 @@ public class GetUserPreferencesQueryHandler(
                 HasSeenWelcomeTour = preferences.HasSeenWelcomeTour,
                 HasCompletedProfileSetup = preferences.HasCompletedProfileSetup,
                 HasCreatedFirstSurvey = preferences.HasCreatedFirstSurvey,
+                HasCompletedGettingStarted = preferences.HasCompletedGettingStarted,
+                GettingStartedStep = preferences.GettingStartedStep,
+                GettingStartedCompletedAt = preferences.GettingStartedCompletedAt,
             },
         };
     }

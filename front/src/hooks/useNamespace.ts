@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useNamespaceStore, getActiveNamespaceId } from '@/stores';
 import { namespacesApi } from '@/services';
-import type { CreateNamespaceRequest, InviteMemberRequest } from '@/types';
+import type { CreateNamespaceRequest, InviteMemberRequest, PaginationParams } from '@/types';
 
 export function useNamespace() {
   const {
@@ -61,12 +61,22 @@ export function useNamespace() {
     [removeNamespace]
   );
 
-  // Get namespace members
+  // Get namespace members (paginated)
   const getMembers = useCallback(
+    async (namespaceId?: string, params?: PaginationParams) => {
+      const id = namespaceId || activeNamespace?.id;
+      if (!id) throw new Error('No namespace selected');
+      return namespacesApi.getMembers(id, params);
+    },
+    [activeNamespace]
+  );
+
+  // Get all namespace members (non-paginated)
+  const getAllMembers = useCallback(
     async (namespaceId?: string) => {
       const id = namespaceId || activeNamespace?.id;
       if (!id) throw new Error('No namespace selected');
-      return namespacesApi.getMembers(id);
+      return namespacesApi.getAllMembers(id);
     },
     [activeNamespace]
   );
@@ -76,7 +86,7 @@ export function useNamespace() {
     async (data: InviteMemberRequest, namespaceId?: string) => {
       const id = namespaceId || activeNamespace?.id;
       if (!id) throw new Error('No namespace selected');
-      await namespacesApi.inviteMember(id, data);
+      return namespacesApi.inviteMember(id, data);
     },
     [activeNamespace]
   );
@@ -102,6 +112,7 @@ export function useNamespace() {
     switchNamespace,
     setActiveNamespace,
     getMembers,
+    getAllMembers,
     inviteMember,
     removeMember,
     getActiveNamespaceId,

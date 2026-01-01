@@ -181,8 +181,7 @@ export function ThemeEditorDrawer({ open, onOpenChange, theme, onSave, isSaving 
         surfaceColor: theme.colors?.surface || defaultFormData.surfaceColor,
         textColor: theme.colors?.text || theme.textColor || defaultFormData.textColor,
         fontFamily: theme.typography?.fontFamily || theme.fontFamily || defaultFormData.fontFamily,
-        headingFontFamily:
-          theme.typography?.headingFontFamily || theme.typography?.fontFamily || theme.fontFamily || defaultFormData.headingFontFamily,
+        headingFontFamily: theme.typography?.headingFontFamily || theme.typography?.fontFamily || theme.fontFamily || defaultFormData.headingFontFamily,
         fontSize: theme.typography?.baseFontSize || theme.fontSize || defaultFormData.fontSize,
         // These layout fields may not be in backend yet, use defaults
         cornerRadius: defaultFormData.cornerRadius,
@@ -309,28 +308,28 @@ ${formData.customCss || '/* Custom CSS */'}`;
   }, [formData]);
 
   return (
-    <Drawer open={open} onOpenChange={handleClose} side="right">
-      <DrawerContent className="w-full max-w-6xl" showClose={false}>
+    <Drawer open={open} onOpenChange={handleClose} side='right'>
+      <DrawerContent className='w-full max-w-6xl' showClose={false}>
         <DrawerHeader
           hero
-          icon={<Palette className="h-7 w-7" />}
+          icon={<Palette className='h-7 w-7' />}
           title={isEditing ? t('themeEditor.editTitle') : t('themeEditor.createTitle')}
           description={isEditing ? t('themeEditor.editDescription') : t('themeEditor.createDescription')}
           showClose
         />
 
         {/* Split Layout: Preview (left) + Editor (right) */}
-        <div className="flex-1 flex min-h-0">
+        <div className='flex-1 flex min-h-0'>
           {/* Live Preview Panel - Fixed on left */}
-          <div className="hidden lg:flex w-100 shrink-0 flex-col border-r border-outline-variant/30 bg-surface-container-low/50">
-            <div className="p-4 border-b border-outline-variant/20">
-              <div className="flex items-center gap-2 text-sm font-semibold text-on-surface">
-                <Eye className="h-4 w-4" />
+          <div className='hidden lg:flex w-100 shrink-0 flex-col border-r border-outline-variant/30 bg-surface-container-low/50'>
+            <div className='p-4 border-b border-outline-variant/20'>
+              <div className='flex items-center gap-2 text-sm font-semibold text-on-surface'>
+                <Eye className='h-4 w-4' />
                 {t('themeEditor.livePreview')}
               </div>
-              <p className="text-xs text-on-surface-variant mt-1">{t('themeEditor.livePreviewHint', 'Changes update in real-time')}</p>
+              <p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.livePreviewHint', 'Changes update in real-time')}</p>
             </div>
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className='flex-1 overflow-y-auto p-4'>
               <ThemeLivePreview
                 primaryColor={formData.primaryColor}
                 secondaryColor={formData.secondaryColor}
@@ -341,16 +340,16 @@ ${formData.customCss || '/* Custom CSS */'}`;
                 logoUrl={formData.logoUrl}
                 backgroundImageUrl={formData.backgroundImageUrl}
                 buttonStyle={formData.buttonStyle}
-                variant="full"
-                className="sticky top-0"
+                variant='full'
+                className='sticky top-0'
               />
             </div>
           </div>
 
           {/* Editor Panel - Scrollable on right */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className='flex-1 overflow-y-auto p-6'>
             {/* Theme Name */}
-            <div className="mb-6">
+            <div className='mb-6'>
               <Input
                 label={t('themeEditor.themeName')}
                 value={formData.name}
@@ -362,37 +361,37 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="mb-6 flex-wrap">
-                <TabsTrigger value="colors">
-                  <Palette className="h-4 w-4 mr-2" /> {t('themeEditor.tabs.colors')}
+              <TabsList className='mb-6 flex-wrap'>
+                <TabsTrigger value='colors'>
+                  <Palette className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.colors')}
                 </TabsTrigger>
-                <TabsTrigger value="typography">
-                  <Type className="h-4 w-4 mr-2" /> {t('themeEditor.tabs.typography')}
+                <TabsTrigger value='typography'>
+                  <Type className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.typography')}
                 </TabsTrigger>
-                <TabsTrigger value="layout">
-                  <Sliders className="h-4 w-4 mr-2" /> {t('themeEditor.tabs.layout', 'Layout')}
+                <TabsTrigger value='layout'>
+                  <Sliders className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.layout', 'Layout')}
                 </TabsTrigger>
-                <TabsTrigger value="branding">
-                  <Image className="h-4 w-4 mr-2" /> {t('themeEditor.tabs.branding')}
+                <TabsTrigger value='branding'>
+                  <Image className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.branding')}
                 </TabsTrigger>
-                <TabsTrigger value="advanced">
-                  <Code className="h-4 w-4 mr-2" /> {t('themeEditor.tabs.advanced')}
+                <TabsTrigger value='advanced'>
+                  <Code className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.advanced')}
                 </TabsTrigger>
               </TabsList>
 
               {/* Colors Tab */}
-              <TabsContent value="colors" className="space-y-6">
+              <TabsContent value='colors' className='space-y-6'>
                 {/* Quick Presets */}
                 <div>
-                  <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-3">
-                    <Sparkles className="h-4 w-4" />
+                  <label className='text-sm font-semibold text-on-surface flex items-center gap-2 mb-3'>
+                    <Sparkles className='h-4 w-4' />
                     {t('themeEditor.quickPresets')}
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className='flex flex-wrap gap-2'>
                     {colorPresets.map((preset) => (
                       <button
                         key={preset.name}
-                        type="button"
+                        type='button'
                         onClick={() => applyPreset(preset)}
                         className={cn(
                           'flex items-center gap-2 px-3 py-2 rounded-xl border-2 transition-all',
@@ -401,11 +400,11 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <div className="flex -space-x-1">
-                          <div className="h-5 w-5 rounded-full ring-2 ring-surface" style={{ backgroundColor: preset.primary }} />
-                          <div className="h-5 w-5 rounded-full ring-2 ring-surface" style={{ backgroundColor: preset.secondary }} />
+                        <div className='flex -space-x-1'>
+                          <div className='h-5 w-5 rounded-full ring-2 ring-surface' style={{ backgroundColor: preset.primary }} />
+                          <div className='h-5 w-5 rounded-full ring-2 ring-surface' style={{ backgroundColor: preset.secondary }} />
                         </div>
-                        <span className="text-sm font-medium">{preset.name}</span>
+                        <span className='text-sm font-medium'>{preset.name}</span>
                       </button>
                     ))}
                   </div>
@@ -413,19 +412,15 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Brand Colors */}
                 <div>
-                  <span className="text-xs font-medium text-on-surface-variant block mb-3">{t('themeEditor.brandColors', 'Brand Colors')}</span>
-                  <div className="grid grid-cols-2 gap-4">
+                  <span className='text-xs font-medium text-on-surface-variant block mb-3'>{t('themeEditor.brandColors', 'Brand Colors')}</span>
+                  <div className='grid grid-cols-2 gap-4'>
                     <ColorPicker
                       label={t('themeEditor.colors.primary')}
                       value={formData.primaryColor}
                       onChange={(v) => updateField('primaryColor', v)}
                       error={errors.primaryColor}
                     />
-                    <ColorPicker
-                      label={t('themeEditor.colors.secondary')}
-                      value={formData.secondaryColor}
-                      onChange={(v) => updateField('secondaryColor', v)}
-                    />
+                    <ColorPicker label={t('themeEditor.colors.secondary')} value={formData.secondaryColor} onChange={(v) => updateField('secondaryColor', v)} />
                     <ColorPicker
                       label={t('themeEditor.colors.accent', 'Accent')}
                       value={formData.accentColor}
@@ -436,8 +431,8 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Surface Colors */}
                 <div>
-                  <span className="text-xs font-medium text-on-surface-variant block mb-3">{t('themeEditor.surfaceColors', 'Surface Colors')}</span>
-                  <div className="grid grid-cols-2 gap-4">
+                  <span className='text-xs font-medium text-on-surface-variant block mb-3'>{t('themeEditor.surfaceColors', 'Surface Colors')}</span>
+                  <div className='grid grid-cols-2 gap-4'>
                     <ColorPicker
                       label={t('themeEditor.colors.background')}
                       value={formData.backgroundColor}
@@ -455,15 +450,15 @@ ${formData.customCss || '/* Custom CSS */'}`;
               </TabsContent>
 
               {/* Typography Tab */}
-              <TabsContent value="typography" className="space-y-6">
+              <TabsContent value='typography' className='space-y-6'>
                 {/* Body Font */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.bodyFont', 'Body Font')}</span>
-                  <div className="grid grid-cols-2 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.bodyFont', 'Body Font')}</span>
+                  <div className='grid grid-cols-2 gap-2'>
                     {FONT_OPTIONS.map((font) => (
                       <button
                         key={font.name}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('fontFamily', font.value)}
                         className={cn(
                           'flex flex-col items-start gap-1 p-2.5 rounded-xl border-2 transition-all text-left',
@@ -472,14 +467,14 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <div className="flex items-center justify-between w-full">
-                          <span className="text-base font-medium" style={{ fontFamily: font.value }}>
+                        <div className='flex items-center justify-between w-full'>
+                          <span className='text-base font-medium' style={{ fontFamily: font.value }}>
                             Aa
                           </span>
-                          {formData.fontFamily === font.value && <Check className="w-3.5 h-3.5 text-primary" />}
+                          {formData.fontFamily === font.value && <Check className='w-3.5 h-3.5 text-primary' />}
                         </div>
-                        <span className="text-xs font-medium text-on-surface">{font.name}</span>
-                        <span className="text-[10px] text-on-surface-variant">{font.category}</span>
+                        <span className='text-xs font-medium text-on-surface'>{font.name}</span>
+                        <span className='text-[10px] text-on-surface-variant'>{font.category}</span>
                       </button>
                     ))}
                   </div>
@@ -487,12 +482,12 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Heading Font */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.headingFont', 'Heading Font')}</span>
-                  <div className="grid grid-cols-2 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.headingFont', 'Heading Font')}</span>
+                  <div className='grid grid-cols-2 gap-2'>
                     {FONT_OPTIONS.map((font) => (
                       <button
                         key={font.name}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('headingFontFamily', font.value)}
                         className={cn(
                           'flex flex-col items-start gap-1 p-2.5 rounded-xl border-2 transition-all text-left',
@@ -501,13 +496,13 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <div className="flex items-center justify-between w-full">
-                          <span className="text-base font-semibold" style={{ fontFamily: font.value }}>
+                        <div className='flex items-center justify-between w-full'>
+                          <span className='text-base font-semibold' style={{ fontFamily: font.value }}>
                             Heading
                           </span>
-                          {formData.headingFontFamily === font.value && <Check className="w-3.5 h-3.5 text-primary" />}
+                          {formData.headingFontFamily === font.value && <Check className='w-3.5 h-3.5 text-primary' />}
                         </div>
-                        <span className="text-xs font-medium text-on-surface">{font.name}</span>
+                        <span className='text-xs font-medium text-on-surface'>{font.name}</span>
                       </button>
                     ))}
                   </div>
@@ -515,12 +510,12 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Button Style */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.buttonStyle')}</span>
-                  <div className="grid grid-cols-3 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.buttonStyle')}</span>
+                  <div className='grid grid-cols-3 gap-2'>
                     {BUTTON_STYLE_OPTIONS.map((style) => (
                       <button
                         key={style.value}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('buttonStyle', style.value)}
                         className={cn(
                           'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all',
@@ -530,9 +525,9 @@ ${formData.customCss || '/* Custom CSS */'}`;
                         )}
                       >
                         <div className={cn('w-16 h-8 bg-primary flex items-center justify-center', style.preview)}>
-                          <span className="text-xs text-on-primary font-medium">Button</span>
+                          <span className='text-xs text-on-primary font-medium'>Button</span>
                         </div>
-                        <span className="text-xs text-on-surface-variant">{style.name}</span>
+                        <span className='text-xs text-on-surface-variant'>{style.name}</span>
                       </button>
                     ))}
                   </div>
@@ -540,18 +535,18 @@ ${formData.customCss || '/* Custom CSS */'}`;
               </TabsContent>
 
               {/* Layout Tab */}
-              <TabsContent value="layout" className="space-y-6">
+              <TabsContent value='layout' className='space-y-6'>
                 {/* Corner Radius */}
                 <div>
-                  <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-3">
-                    <SquareIcon className="w-4 h-4" />
+                  <label className='text-sm font-semibold text-on-surface flex items-center gap-2 mb-3'>
+                    <SquareIcon className='w-4 h-4' />
                     {t('themeEditor.cornerRadius', 'Corner Radius')}
                   </label>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className='grid grid-cols-5 gap-2'>
                     {CORNER_OPTIONS.map((corner) => (
                       <button
                         key={corner.name}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('cornerRadius', corner.value)}
                         className={cn(
                           'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all',
@@ -561,7 +556,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                         )}
                       >
                         <div className={cn('w-8 h-8 bg-primary/20 border-2 border-primary/40', corner.preview)} />
-                        <span className="text-xs text-on-surface-variant">{corner.name}</span>
+                        <span className='text-xs text-on-surface-variant'>{corner.name}</span>
                       </button>
                     ))}
                   </div>
@@ -569,12 +564,12 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Container Width */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.containerWidth', 'Container Width')}</span>
-                  <div className="grid grid-cols-2 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.containerWidth', 'Container Width')}</span>
+                  <div className='grid grid-cols-2 gap-2'>
                     {WIDTH_OPTIONS.map((width) => (
                       <button
                         key={width.name}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('containerWidth', width.value)}
                         className={cn(
                           'flex flex-col items-start gap-0.5 p-2.5 rounded-xl border-2 transition-all text-left',
@@ -583,8 +578,8 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <span className="text-xs font-medium text-on-surface">{width.name}</span>
-                        <span className="text-[10px] text-on-surface-variant">{width.description}</span>
+                        <span className='text-xs font-medium text-on-surface'>{width.name}</span>
+                        <span className='text-[10px] text-on-surface-variant'>{width.description}</span>
                       </button>
                     ))}
                   </div>
@@ -592,12 +587,12 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Spacing */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.spacing', 'Spacing')}</span>
-                  <div className="grid grid-cols-4 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.spacing', 'Spacing')}</span>
+                  <div className='grid grid-cols-4 gap-2'>
                     {SPACING_OPTIONS.map((spacingOption) => (
                       <button
                         key={spacingOption.name}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('spacing', spacingOption.value)}
                         className={cn(
                           'flex items-center justify-center p-2.5 rounded-xl border-2 transition-all',
@@ -606,7 +601,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <span className="text-xs text-on-surface-variant">{spacingOption.name}</span>
+                        <span className='text-xs text-on-surface-variant'>{spacingOption.name}</span>
                       </button>
                     ))}
                   </div>
@@ -614,10 +609,10 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Progress Indicator */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.progressIndicator', 'Progress Indicator')}</span>
-                  <div className="grid grid-cols-4 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.progressIndicator', 'Progress Indicator')}</span>
+                  <div className='grid grid-cols-4 gap-2'>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() => updateField('showProgressBar', false)}
                       className={cn(
                         'flex items-center justify-center p-2.5 rounded-xl border-2 transition-all',
@@ -626,12 +621,12 @@ ${formData.customCss || '/* Custom CSS */'}`;
                           : 'border-outline-variant/30 hover:border-outline-variant text-on-surface-variant'
                       )}
                     >
-                      <span className="text-xs">{t('common.none', 'None')}</span>
+                      <span className='text-xs'>{t('common.none', 'None')}</span>
                     </button>
                     {PROGRESS_STYLES.map((style) => (
                       <button
                         key={style.name}
-                        type="button"
+                        type='button'
                         onClick={() => {
                           updateField('showProgressBar', true);
                           updateField('progressBarStyle', style.value);
@@ -643,8 +638,8 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant'
                         )}
                       >
-                        <span className="text-sm font-mono text-on-surface">{style.icon}</span>
-                        <span className="text-[10px] text-on-surface-variant">{style.name}</span>
+                        <span className='text-sm font-mono text-on-surface'>{style.icon}</span>
+                        <span className='text-[10px] text-on-surface-variant'>{style.name}</span>
                       </button>
                     ))}
                   </div>
@@ -652,10 +647,10 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Question Numbers */}
                 <div>
-                  <span className="text-sm font-semibold text-on-surface block mb-3">{t('themeEditor.questionNumbers', 'Question Numbers')}</span>
-                  <div className="grid grid-cols-3 gap-2">
+                  <span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.questionNumbers', 'Question Numbers')}</span>
+                  <div className='grid grid-cols-3 gap-2'>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() => updateField('showQuestionNumbers', false)}
                       className={cn(
                         'flex items-center justify-center p-2.5 rounded-xl border-2 transition-all',
@@ -664,7 +659,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                           : 'border-outline-variant/30 hover:border-outline-variant text-on-surface-variant'
                       )}
                     >
-                      <span className="text-xs">{t('common.none', 'None')}</span>
+                      <span className='text-xs'>{t('common.none', 'None')}</span>
                     </button>
                     {[
                       { name: 'Badge', value: 'badge' },
@@ -672,7 +667,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                     ].map((style) => (
                       <button
                         key={style.value}
-                        type="button"
+                        type='button'
                         onClick={() => {
                           updateField('showQuestionNumbers', true);
                           updateField('questionNumberStyle', style.value);
@@ -684,7 +679,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant text-on-surface-variant'
                         )}
                       >
-                        <span className="text-xs">{style.name}</span>
+                        <span className='text-xs'>{style.name}</span>
                       </button>
                     ))}
                   </div>
@@ -692,29 +687,21 @@ ${formData.customCss || '/* Custom CSS */'}`;
               </TabsContent>
 
               {/* Branding Tab */}
-              <TabsContent value="branding" className="space-y-6">
+              <TabsContent value='branding' className='space-y-6'>
                 <ImageUploader
                   label={t('themeEditor.logoUrl')}
                   value={formData.logoUrl}
                   onChange={(v) => updateField('logoUrl', v)}
-                  placeholder="https://example.com/logo.png"
+                  placeholder='https://example.com/logo.png'
                   helperText={t('themeEditor.logoUrlHelperText')}
-                  category="logo"
-                  onUpload={async (file) => {
-                    const result = await filesApi.uploadImage(file, 'logo');
-                    return {
-                      fileId: result.fileId,
-                      url: result.url,
-                      fileName: result.fileName,
-                      size: result.size,
-                    };
-                  }}
+                  category='logo'
+                  onUpload={(file) => filesApi.uploadImage(file, 'logo')}
                 />
 
                 {/* Logo Size */}
                 <div>
-                  <label className="text-sm font-semibold text-on-surface mb-3 block">{t('themeEditor.branding.logoSize')}</label>
-                  <div className="grid grid-cols-4 gap-2">
+                  <label className='text-sm font-semibold text-on-surface mb-3 block'>{t('themeEditor.branding.logoSize')}</label>
+                  <div className='grid grid-cols-4 gap-2'>
                     {[
                       { name: t('themeEditor.branding.sizes.small'), value: 0 },
                       { name: t('themeEditor.branding.sizes.medium'), value: 1 },
@@ -723,7 +710,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                     ].map((size) => (
                       <button
                         key={size.value}
-                        type="button"
+                        type='button'
                         onClick={() => updateField('logoSize', size.value)}
                         className={cn(
                           'flex items-center justify-center p-2.5 rounded-xl border-2 transition-all',
@@ -732,18 +719,18 @@ ${formData.customCss || '/* Custom CSS */'}`;
                             : 'border-outline-variant/30 hover:border-outline-variant text-on-surface-variant'
                         )}
                       >
-                        <span className="text-xs">{size.name}</span>
+                        <span className='text-xs'>{size.name}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {/* Logo Background */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-semibold text-on-surface">{t('themeEditor.branding.showLogoBackground')}</label>
+                <div className='space-y-3'>
+                  <div className='flex items-center justify-between'>
+                    <label className='text-sm font-semibold text-on-surface'>{t('themeEditor.branding.showLogoBackground')}</label>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() => updateField('showLogoBackground', !formData.showLogoBackground)}
                       className={cn(
                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
@@ -759,19 +746,19 @@ ${formData.customCss || '/* Custom CSS */'}`;
                     </button>
                   </div>
                   {formData.showLogoBackground && (
-                    <div className="flex items-center gap-2">
+                    <div className='flex items-center gap-2'>
                       <input
-                        type="color"
+                        type='color'
                         value={formData.logoBackgroundColor}
                         onChange={(e) => updateField('logoBackgroundColor', e.target.value)}
-                        className="h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer"
+                        className='h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer'
                       />
                       <Input
                         value={formData.logoBackgroundColor}
                         onChange={(e) => updateField('logoBackgroundColor', e.target.value)}
-                        className="flex-1"
-                        size="sm"
-                        placeholder="#ffffff"
+                        className='flex-1'
+                        size='sm'
+                        placeholder='#ffffff'
                       />
                     </div>
                   )}
@@ -779,83 +766,73 @@ ${formData.customCss || '/* Custom CSS */'}`;
 
                 {/* Branding Title */}
                 <div>
-                  <label className="text-sm font-semibold text-on-surface mb-2 block">{t('themeEditor.branding.brandingTitle')}</label>
+                  <label className='text-sm font-semibold text-on-surface mb-2 block'>{t('themeEditor.branding.brandingTitle')}</label>
                   <Input
                     value={formData.brandingTitle}
                     onChange={(e) => updateField('brandingTitle', e.target.value)}
                     placeholder={t('themeEditor.branding.brandingTitlePlaceholder')}
-                    size="sm"
+                    size='sm'
                   />
-                  <p className="text-xs text-on-surface-variant mt-1">{t('themeEditor.branding.brandingTitleHelper')}</p>
+                  <p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.branding.brandingTitleHelper')}</p>
                 </div>
 
                 {/* Branding Subtitle */}
                 <div>
-                  <label className="text-sm font-semibold text-on-surface mb-2 block">{t('themeEditor.branding.brandingSubtitle')}</label>
+                  <label className='text-sm font-semibold text-on-surface mb-2 block'>{t('themeEditor.branding.brandingSubtitle')}</label>
                   <Input
                     value={formData.brandingSubtitle}
                     onChange={(e) => updateField('brandingSubtitle', e.target.value)}
                     placeholder={t('themeEditor.branding.brandingSubtitlePlaceholder')}
-                    size="sm"
+                    size='sm'
                   />
-                  <p className="text-xs text-on-surface-variant mt-1">{t('themeEditor.branding.brandingSubtitleHelper')}</p>
+                  <p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.branding.brandingSubtitleHelper')}</p>
                 </div>
 
                 <ImageUploader
                   label={t('themeEditor.backgroundImageUrl')}
                   value={formData.backgroundImageUrl}
                   onChange={(v) => updateField('backgroundImageUrl', v)}
-                  placeholder="https://example.com/background.jpg"
+                  placeholder='https://example.com/background.jpg'
                   helperText={t('themeEditor.backgroundImageUrlHelperText')}
-                  category="background"
-                  size="lg"
-                  onUpload={async (file) => {
-                    const result = await filesApi.uploadImage(file, 'background');
-                    return {
-                      fileId: result.fileId,
-                      url: result.url,
-                      fileName: result.fileName,
-                      size: result.size,
-                    };
-                  }}
+                  category='background'
+                  size='lg'
+                  onUpload={(file) => filesApi.uploadImage(file, 'background')}
                 />
               </TabsContent>
 
               {/* Advanced Tab */}
-              <TabsContent value="advanced" className="space-y-6">
+              <TabsContent value='advanced' className='space-y-6'>
                 <div>
-                  <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-3">
-                    <Code className="h-4 w-4" />
+                  <label className='text-sm font-semibold text-on-surface flex items-center gap-2 mb-3'>
+                    <Code className='h-4 w-4' />
                     {t('themeEditor.customCss')}
                   </label>
                   <Textarea
                     value={formData.customCss}
                     onChange={(e) => updateField('customCss', e.target.value)}
                     placeholder={t('themeEditor.customCssPlaceholder')}
-                    className="font-mono text-sm"
+                    className='font-mono text-sm'
                     rows={6}
                   />
-                  <p className="text-xs text-on-surface-variant mt-2">
-                    {t('themeEditor.customCssHelperText')} <code className="bg-surface-container-high px-1 rounded">var(--theme-primary)</code>
+                  <p className='text-xs text-on-surface-variant mt-2'>
+                    {t('themeEditor.customCssHelperText')} <code className='bg-surface-container-high px-1 rounded'>var(--theme-primary)</code>
                   </p>
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-3">
-                    <FileCode className="h-4 w-4" />
+                  <label className='text-sm font-semibold text-on-surface flex items-center gap-2 mb-3'>
+                    <FileCode className='h-4 w-4' />
                     {t('themeEditor.generatedCssPreview')}
                   </label>
-                  <pre className="bg-surface-container-highest rounded-xl p-4 text-xs font-mono overflow-x-auto text-on-surface-variant">
-                    {cssPreview}
-                  </pre>
+                  <pre className='bg-surface-container-highest rounded-xl p-4 text-xs font-mono overflow-x-auto text-on-surface-variant'>{cssPreview}</pre>
                 </div>
               </TabsContent>
             </Tabs>
 
             {/* Mobile-only Live Preview (shown below form on smaller screens) */}
-            <div className="mt-8 lg:hidden">
-              <label className="text-sm font-semibold text-on-surface flex items-center gap-2 mb-3">
-                <Eye className="h-4 w-4" />
+            <div className='mt-8 lg:hidden'>
+              <label className='text-sm font-semibold text-on-surface flex items-center gap-2 mb-3'>
+                <Eye className='h-4 w-4' />
                 {t('themeEditor.livePreview')}
               </label>
               <ThemeLivePreview
@@ -868,14 +845,14 @@ ${formData.customCss || '/* Custom CSS */'}`;
                 logoUrl={formData.logoUrl}
                 backgroundImageUrl={formData.backgroundImageUrl}
                 buttonStyle={formData.buttonStyle}
-                variant="full"
+                variant='full'
               />
             </div>
           </div>
         </div>
 
         <DrawerFooter>
-          <Button variant="text" onClick={handleClose} disabled={isSaving}>
+          <Button variant='text' onClick={handleClose} disabled={isSaving}>
             {t('common.cancel')}
           </Button>
           <Button onClick={handleSubmit} loading={isSaving}>
@@ -900,14 +877,14 @@ function ColorPicker({ label, value, onChange, error }: ColorPickerProps) {
   return (
     <div>
       <label className={cn('block text-sm font-semibold mb-2', error ? 'text-error' : 'text-on-surface')}>{label}</label>
-      <div className="flex items-center gap-2">
+      <div className='flex items-center gap-2'>
         <input
-          type="color"
+          type='color'
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer"
+          className='h-10 w-14 rounded-lg border-2 border-outline-variant/30 cursor-pointer'
         />
-        <Input value={value} onChange={(e) => onChange(e.target.value)} className="flex-1" size="sm" error={error} />
+        <Input value={value} onChange={(e) => onChange(e.target.value)} className='flex-1' size='sm' error={error} />
       </div>
     </div>
   );

@@ -128,7 +128,7 @@ public class NpsService(
                 DataPoints = [],
                 AverageScore = 0,
                 ChangeFromPrevious = 0,
-                TrendDirection = "Stable",
+                TrendDirection = NpsTrendDirection.Stable,
                 FromDate = fromDate,
                 ToDate = toDate,
             };
@@ -193,9 +193,9 @@ public class NpsService(
 
         var trendDirection = changeFromPrevious switch
         {
-            > 0 => "Up",
-            < 0 => "Down",
-            _ => "Stable",
+            > 0 => NpsTrendDirection.Up,
+            < 0 => NpsTrendDirection.Down,
+            _ => NpsTrendDirection.Stable,
         };
 
         return new NpsTrendDto
@@ -425,7 +425,7 @@ public class NpsService(
             PromoterPercentage = npsScore.PromoterPercentage,
             PassivePercentage = npsScore.PassivePercentage,
             DetractorPercentage = npsScore.DetractorPercentage,
-            Category = npsScore.Category.ToString(),
+            Category = npsScore.Category,
             CategoryDescription = npsScore.GetCategoryDescription(),
         };
     }

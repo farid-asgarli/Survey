@@ -2155,7 +2155,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_ResponseId_QuestionId",
                 table: "Answers",
-                columns: new[] { "ResponseId", "QuestionId" },
+                columns: ["ResponseId", "QuestionId"],
                 unique: true
             );
 
@@ -2224,7 +2224,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_NamespaceId_Type_IsDefault",
                 table: "EmailTemplates",
-                columns: new[] { "NamespaceId", "Type", "IsDefault" }
+                columns: ["NamespaceId", "Type", "IsDefault"]
             );
 
             migrationBuilder.CreateIndex(
@@ -2236,7 +2236,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplateTranslations_EmailTemplateId_LanguageCode",
                 table: "EmailTemplateTranslations",
-                columns: new[] { "EmailTemplateId", "LanguageCode" },
+                columns: ["EmailTemplateId", "LanguageCode"],
                 unique: true
             );
 
@@ -2273,7 +2273,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_NamespaceMemberships_NamespaceId_UserId",
                 table: "NamespaceMemberships",
-                columns: new[] { "NamespaceId", "UserId" },
+                columns: ["NamespaceId", "UserId"],
                 unique: true
             );
 
@@ -2323,7 +2323,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_QuestionId_Priority",
                 table: "QuestionLogics",
-                columns: new[] { "QuestionId", "Priority" }
+                columns: ["QuestionId", "Priority"]
             );
 
             migrationBuilder.CreateIndex(
@@ -2359,7 +2359,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId_Order",
                 table: "Questions",
-                columns: new[] { "SurveyId", "Order" }
+                columns: ["SurveyId", "Order"]
             );
 
             migrationBuilder.CreateIndex(
@@ -2377,7 +2377,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionTranslations_QuestionId_LanguageCode",
                 table: "QuestionTranslations",
-                columns: new[] { "QuestionId", "LanguageCode" },
+                columns: ["QuestionId", "LanguageCode"],
                 unique: true
             );
 
@@ -2592,7 +2592,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplateTranslations_TemplateId_LanguageCode",
                 table: "SurveyTemplateTranslations",
-                columns: new[] { "TemplateId", "LanguageCode" },
+                columns: ["TemplateId", "LanguageCode"],
                 unique: true
             );
 
@@ -2617,7 +2617,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemes_NamespaceId_IsDefault",
                 table: "SurveyThemes",
-                columns: new[] { "NamespaceId", "IsDefault" }
+                columns: ["NamespaceId", "IsDefault"]
             );
 
             migrationBuilder.CreateIndex(
@@ -2635,7 +2635,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemeTranslations_ThemeId_LanguageCode",
                 table: "SurveyThemeTranslations",
-                columns: new[] { "ThemeId", "LanguageCode" },
+                columns: ["ThemeId", "LanguageCode"],
                 unique: true
             );
 
@@ -2654,7 +2654,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTranslations_SurveyId_LanguageCode",
                 table: "SurveyTranslations",
-                columns: new[] { "SurveyId", "LanguageCode" },
+                columns: ["SurveyId", "LanguageCode"],
                 unique: true
             );
 
@@ -2673,7 +2673,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestions_TemplateId_Order",
                 table: "TemplateQuestions",
-                columns: new[] { "TemplateId", "Order" }
+                columns: ["TemplateId", "Order"]
             );
 
             migrationBuilder.CreateIndex(
@@ -2691,7 +2691,7 @@ namespace SurveyApp.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestionTranslations_TemplateQuestionId_LanguageCode",
                 table: "TemplateQuestionTranslations",
-                columns: new[] { "TemplateQuestionId", "LanguageCode" },
+                columns: ["TemplateQuestionId", "LanguageCode"],
                 unique: true
             );
 

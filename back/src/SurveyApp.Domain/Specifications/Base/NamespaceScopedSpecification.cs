@@ -5,22 +5,17 @@ namespace SurveyApp.Domain.Specifications.Base;
 /// Provides common namespace filtering functionality.
 /// </summary>
 /// <typeparam name="T">The entity type.</typeparam>
-public abstract class NamespaceScopedSpecification<T> : BaseSpecification<T>
+/// <remarks>
+/// Creates a new namespace-scoped specification.
+/// </remarks>
+/// <param name="namespaceId">The namespace ID to filter by.</param>
+public abstract class NamespaceScopedSpecification<T>(Guid namespaceId) : BaseSpecification<T>
     where T : class
 {
     /// <summary>
     /// Gets the namespace ID used for filtering.
     /// </summary>
-    protected Guid NamespaceId { get; }
-
-    /// <summary>
-    /// Creates a new namespace-scoped specification.
-    /// </summary>
-    /// <param name="namespaceId">The namespace ID to filter by.</param>
-    protected NamespaceScopedSpecification(Guid namespaceId)
-    {
-        NamespaceId = namespaceId;
-    }
+    protected Guid NamespaceId { get; } = namespaceId;
 }
 
 /// <summary>
@@ -28,20 +23,16 @@ public abstract class NamespaceScopedSpecification<T> : BaseSpecification<T>
 /// </summary>
 /// <typeparam name="T">The entity type.</typeparam>
 /// <typeparam name="TResult">The projection result type.</typeparam>
-public abstract class NamespaceScopedSpecification<T, TResult> : BaseSpecification<T, TResult>
+/// <remarks>
+/// Creates a new namespace-scoped specification.
+/// </remarks>
+/// <param name="namespaceId">The namespace ID to filter by.</param>
+public abstract class NamespaceScopedSpecification<T, TResult>(Guid namespaceId)
+    : BaseSpecification<T, TResult>
     where T : class
 {
     /// <summary>
     /// Gets the namespace ID used for filtering.
     /// </summary>
-    protected Guid NamespaceId { get; }
-
-    /// <summary>
-    /// Creates a new namespace-scoped specification.
-    /// </summary>
-    /// <param name="namespaceId">The namespace ID to filter by.</param>
-    protected NamespaceScopedSpecification(Guid namespaceId)
-    {
-        NamespaceId = namespaceId;
-    }
+    protected Guid NamespaceId { get; } = namespaceId;
 }

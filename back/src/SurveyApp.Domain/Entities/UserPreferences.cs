@@ -238,6 +238,21 @@ public class UserPreferences : Entity<Guid>
     /// </summary>
     public bool HasCreatedFirstSurvey { get; private set; }
 
+    /// <summary>
+    /// Gets whether the user has completed the getting started guide.
+    /// </summary>
+    public bool HasCompletedGettingStarted { get; private set; }
+
+    /// <summary>
+    /// Gets the current step in the getting started guide.
+    /// </summary>
+    public int GettingStartedStep { get; private set; } = 0;
+
+    /// <summary>
+    /// Gets the date and time when the getting started guide was completed.
+    /// </summary>
+    public DateTime? GettingStartedCompletedAt { get; private set; }
+
     #endregion
 
     /// <summary>
@@ -806,6 +821,25 @@ public class UserPreferences : Entity<Guid>
     public void MarkFirstSurveyCreated()
     {
         HasCreatedFirstSurvey = true;
+    }
+
+    /// <summary>
+    /// Updates the getting started guide step.
+    /// </summary>
+    public void UpdateGettingStartedStep(int step)
+    {
+        if (step < 0)
+            throw new DomainException("Domain.UserPreferences.GettingStartedStepOutOfRange");
+        GettingStartedStep = step;
+    }
+
+    /// <summary>
+    /// Marks the getting started guide as completed.
+    /// </summary>
+    public void MarkGettingStartedCompleted()
+    {
+        HasCompletedGettingStarted = true;
+        GettingStartedCompletedAt = DateTime.UtcNow;
     }
 
     /// <summary>

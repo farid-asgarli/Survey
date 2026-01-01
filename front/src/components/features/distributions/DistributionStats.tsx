@@ -38,7 +38,7 @@ import {
 } from '@/components/ui';
 import { useDistributionStats, useDistributionRecipients } from '@/hooks/queries/useDistributions';
 import { RecipientStatus, getRecipientStatusLabel } from '@/types';
-import type { DistributionStatsResponse, DistributionRecipient } from '@/types';
+import type { DistributionStats as DistributionStatsType, DistributionRecipient } from '@/types';
 
 interface DistributionStatsProps {
   surveyId: string;
@@ -58,25 +58,25 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, color, percentage, trend, trendValue }: StatCardProps) {
   return (
-    <Card variant="filled" className={cn('relative overflow-hidden', color)}>
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between">
+    <Card variant='filled' className={cn('relative overflow-hidden', color)}>
+      <CardContent className='p-4'>
+        <div className='flex items-start justify-between'>
           <div>
-            <p className="text-xs font-medium opacity-80 uppercase tracking-wide">{label}</p>
-            <p className="text-2xl font-bold mt-1">{value}</p>
+            <p className='text-xs font-medium opacity-80 uppercase tracking-wide'>{label}</p>
+            <p className='text-2xl font-bold mt-1'>{value}</p>
             {percentage !== undefined && (
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-sm font-medium">{percentage.toFixed(1)}%</span>
+              <div className='flex items-center gap-1 mt-1'>
+                <span className='text-sm font-medium'>{percentage.toFixed(1)}%</span>
                 {trend && trend !== 'neutral' && (
-                  <span className="flex items-center text-xs">
-                    {trend === 'up' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                  <span className='flex items-center text-xs'>
+                    {trend === 'up' ? <ArrowUpRight className='w-3 h-3' /> : <ArrowDownRight className='w-3 h-3' />}
                     {trendValue}
                   </span>
                 )}
               </div>
             )}
           </div>
-          <div className="p-2 rounded-xl bg-surface-container-lowest/20">{icon}</div>
+          <div className='p-2 rounded-xl bg-surface-container-lowest/20'>{icon}</div>
         </div>
       </CardContent>
     </Card>
@@ -86,14 +86,14 @@ function StatCard({ label, value, icon, color, percentage, trend, trendValue }: 
 // Simple bar chart component
 function SimpleBarChart({ data, maxValue }: { data: { label: string; value: number; color: string }[]; maxValue: number }) {
   return (
-    <div className="space-y-3">
+    <div className='space-y-3'>
       {data.map((item, index) => (
         <div key={index}>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-on-surface-variant">{item.label}</span>
-            <span className="font-medium text-on-surface">{item.value}</span>
+          <div className='flex justify-between text-sm mb-1'>
+            <span className='text-on-surface-variant'>{item.label}</span>
+            <span className='font-medium text-on-surface'>{item.value}</span>
           </div>
-          <div className="h-2 rounded-full bg-surface-container-highest overflow-hidden">
+          <div className='h-2 rounded-full bg-surface-container-highest overflow-hidden'>
             <div
               className={cn('h-full rounded-full transition-all duration-500', item.color)}
               style={{ width: `${maxValue > 0 ? (item.value / maxValue) * 100 : 0}%` }}
@@ -109,34 +109,53 @@ function SimpleBarChart({ data, maxValue }: { data: { label: string; value: numb
 const mockRecipients: DistributionRecipient[] = [
   {
     id: '1',
-    distributionId: '1',
     email: 'john.doe@example.com',
     status: RecipientStatus.Opened,
     sentAt: '2024-12-15T10:00:00',
     openedAt: '2024-12-15T10:30:00',
+    openCount: 1,
+    clickCount: 0,
   },
   {
     id: '2',
-    distributionId: '1',
     email: 'jane.smith@example.com',
     status: RecipientStatus.Clicked,
     sentAt: '2024-12-15T10:00:00',
     openedAt: '2024-12-15T11:00:00',
     clickedAt: '2024-12-15T11:05:00',
+    openCount: 2,
+    clickCount: 1,
   },
-  { id: '3', distributionId: '1', email: 'bob.wilson@example.com', status: RecipientStatus.Delivered, sentAt: '2024-12-15T10:00:00' },
-  { id: '4', distributionId: '1', email: 'alice.johnson@example.com', status: RecipientStatus.Bounced, sentAt: '2024-12-15T10:00:00' },
-  { id: '5', distributionId: '1', email: 'charlie.brown@example.com', status: RecipientStatus.Sent, sentAt: '2024-12-15T10:00:00' },
+  {
+    id: '3',
+    email: 'bob.wilson@example.com',
+    status: RecipientStatus.Delivered,
+    sentAt: '2024-12-15T10:00:00',
+    deliveredAt: '2024-12-15T10:01:00',
+    openCount: 0,
+    clickCount: 0,
+  },
+  {
+    id: '4',
+    email: 'alice.johnson@example.com',
+    status: RecipientStatus.Bounced,
+    sentAt: '2024-12-15T10:00:00',
+    openCount: 0,
+    clickCount: 0,
+    errorMessage: 'Mailbox not found',
+  },
+  { id: '5', email: 'charlie.brown@example.com', status: RecipientStatus.Sent, sentAt: '2024-12-15T10:00:00', openCount: 0, clickCount: 0 },
   {
     id: '6',
-    distributionId: '1',
     email: 'diana.ross@example.com',
     status: RecipientStatus.Opened,
     sentAt: '2024-12-15T10:00:00',
     openedAt: '2024-12-15T14:00:00',
+    openCount: 3,
+    clickCount: 0,
   },
-  { id: '7', distributionId: '1', email: 'edward.king@example.com', status: RecipientStatus.Failed },
-  { id: '8', distributionId: '1', email: 'fiona.green@example.com', status: RecipientStatus.Pending },
+  { id: '7', email: 'edward.king@example.com', status: RecipientStatus.Failed, openCount: 0, clickCount: 0, errorMessage: 'Connection timeout' },
+  { id: '8', email: 'fiona.green@example.com', status: RecipientStatus.Pending, openCount: 0, clickCount: 0 },
 ];
 
 const recipientStatusConfig: Record<RecipientStatus, { color: string; icon: typeof Send }> = {
@@ -155,13 +174,13 @@ function RecipientRow({ recipient }: { recipient: DistributionRecipient }) {
   const StatusIcon = config.icon;
 
   return (
-    <div className="flex items-center gap-3 py-3 px-4 hover:bg-surface-container-low transition-colors border-b border-outline-variant/30 last:border-0">
+    <div className='flex items-center gap-3 py-3 px-4 hover:bg-surface-container-low transition-colors border-b border-outline-variant/30 last:border-0'>
       <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', config.color)}>
-        <StatusIcon className="w-4 h-4" />
+        <StatusIcon className='w-4 h-4' />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-on-surface truncate">{recipient.email}</p>
-        <div className="flex items-center gap-2 text-xs text-on-surface-variant">
+      <div className='flex-1 min-w-0'>
+        <p className='text-sm font-medium text-on-surface truncate'>{recipient.email}</p>
+        <div className='flex items-center gap-2 text-xs text-on-surface-variant'>
           {recipient.sentAt && <span>Sent: {new Date(recipient.sentAt).toLocaleString()}</span>}
           {recipient.openedAt && (
             <>
@@ -177,7 +196,7 @@ function RecipientRow({ recipient }: { recipient: DistributionRecipient }) {
           )}
         </div>
       </div>
-      <Chip size="sm" className={config.color}>
+      <Chip size='sm' className={config.color}>
         {getRecipientStatusLabel(recipient.status)}
       </Chip>
     </div>
@@ -186,12 +205,7 @@ function RecipientRow({ recipient }: { recipient: DistributionRecipient }) {
 
 export function DistributionStats({ surveyId, distributionId, className }: DistributionStatsProps) {
   const { t } = useTranslation();
-  const {
-    data: stats,
-    isLoading: statsLoading,
-    refetch: refetchStats,
-    isRefetching: isRefetchingStats,
-  } = useDistributionStats(surveyId, distributionId);
+  const { data: stats, isLoading: statsLoading, refetch: refetchStats, isRefetching: isRefetchingStats } = useDistributionStats(surveyId, distributionId);
   const [statusFilter, setStatusFilter] = useState<RecipientStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -243,7 +257,7 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
   }, []);
 
   // Use mock data if API not available
-  const displayStats: DistributionStatsResponse = stats || {
+  const displayStats: DistributionStatsType = stats || {
     distributionId,
     totalRecipients: 500,
     sent: 498,
@@ -272,12 +286,12 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
   if (statsLoading) {
     return (
       <div className={cn('space-y-4', className)}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-28 rounded-2xl" />
+            <Skeleton key={i} className='h-28 rounded-2xl' />
           ))}
         </div>
-        <Skeleton className="h-64 rounded-2xl" />
+        <Skeleton className='h-64 rounded-2xl' />
       </div>
     );
   }
@@ -285,53 +299,53 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
   return (
     <div className={cn('space-y-6', className)}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-on-surface">{t('distributions.analytics')}</h3>
-        <Button variant="tonal" size="sm" onClick={handleRefresh} disabled={isRefetchingStats}>
+      <div className='flex items-center justify-between'>
+        <h3 className='text-lg font-semibold text-on-surface'>{t('distributions.analytics')}</h3>
+        <Button variant='tonal' size='sm' onClick={handleRefresh} disabled={isRefetchingStats}>
           <RefreshCw className={cn('w-4 h-4 mr-2', isRefetchingStats && 'animate-spin')} />
           {t('common.refresh')}
         </Button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
         <StatCard
           label={t('distributions.sent')}
           value={displayStats.sent}
-          icon={<Send className="w-5 h-5" />}
-          color="bg-primary text-on-primary"
+          icon={<Send className='w-5 h-5' />}
+          color='bg-primary text-on-primary'
           percentage={displayStats.totalRecipients > 0 ? (displayStats.sent / displayStats.totalRecipients) * 100 : 0}
         />
         <StatCard
           label={t('distributions.delivered')}
           value={displayStats.delivered}
-          icon={<CheckCircle2 className="w-5 h-5" />}
-          color="bg-secondary text-on-secondary"
+          icon={<CheckCircle2 className='w-5 h-5' />}
+          color='bg-secondary text-on-secondary'
           percentage={displayStats.deliveryRate}
         />
         <StatCard
           label={t('distributions.statusOpened')}
           value={displayStats.opened}
-          icon={<Eye className="w-5 h-5" />}
-          color="bg-tertiary text-on-tertiary"
+          icon={<Eye className='w-5 h-5' />}
+          color='bg-tertiary text-on-tertiary'
           percentage={displayStats.openRate}
         />
         <StatCard
           label={t('distributions.statusClicked')}
           value={displayStats.clicked}
-          icon={<MousePointerClick className="w-5 h-5" />}
-          color="bg-success text-on-success"
+          icon={<MousePointerClick className='w-5 h-5' />}
+          color='bg-success text-on-success'
           percentage={displayStats.clickRate}
         />
       </div>
 
       {/* Performance Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         {/* Funnel Chart */}
-        <Card variant="outlined">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-primary" />
+        <Card variant='outlined'>
+          <CardHeader className='pb-2'>
+            <CardTitle className='text-base flex items-center gap-2'>
+              <TrendingUp className='w-4 h-4 text-primary' />
               {t('distributions.deliveryFunnel')}
             </CardTitle>
             <CardDescription>{t('distributions.performanceBreakdown')}</CardDescription>
@@ -342,43 +356,43 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
         </Card>
 
         {/* Rates Overview */}
-        <Card variant="outlined">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-primary" />
+        <Card variant='outlined'>
+          <CardHeader className='pb-2'>
+            <CardTitle className='text-base flex items-center gap-2'>
+              <TrendingUp className='w-4 h-4 text-primary' />
               {t('distributions.performanceRates')}
             </CardTitle>
             <CardDescription>{t('distributions.metricsComparison')}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className='space-y-4'>
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">{t('distributions.deliveryRate')}</span>
-                <span className="font-semibold text-on-surface">{displayStats.deliveryRate.toFixed(1)}%</span>
+              <div className='flex justify-between text-sm mb-2'>
+                <span className='text-on-surface-variant'>{t('distributions.deliveryRate')}</span>
+                <span className='font-semibold text-on-surface'>{displayStats.deliveryRate.toFixed(1)}%</span>
               </div>
-              <LinearProgress value={displayStats.deliveryRate} size="default" className="bg-primary" />
+              <LinearProgress value={displayStats.deliveryRate} size='default' className='bg-primary' />
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">{t('distributions.openRate')}</span>
-                <span className="font-semibold text-on-surface">{displayStats.openRate.toFixed(1)}%</span>
+              <div className='flex justify-between text-sm mb-2'>
+                <span className='text-on-surface-variant'>{t('distributions.openRate')}</span>
+                <span className='font-semibold text-on-surface'>{displayStats.openRate.toFixed(1)}%</span>
               </div>
-              <LinearProgress value={displayStats.openRate} size="default" className="bg-tertiary" />
+              <LinearProgress value={displayStats.openRate} size='default' className='bg-tertiary' />
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-on-surface-variant">{t('distributions.clickRate')}</span>
-                <span className="font-semibold text-on-surface">{displayStats.clickRate.toFixed(1)}%</span>
+              <div className='flex justify-between text-sm mb-2'>
+                <span className='text-on-surface-variant'>{t('distributions.clickRate')}</span>
+                <span className='font-semibold text-on-surface'>{displayStats.clickRate.toFixed(1)}%</span>
               </div>
-              <LinearProgress value={displayStats.clickRate} size="default" className="bg-success" />
+              <LinearProgress value={displayStats.clickRate} size='default' className='bg-success' />
             </div>
 
-            <div className="pt-2 border-t border-outline-variant/30 flex justify-between text-sm">
-              <span className="text-on-surface-variant">
-                {t('distributions.bounced')}: <span className="font-medium text-warning">{displayStats.bounced}</span>
+            <div className='pt-2 border-t border-outline-variant/30 flex justify-between text-sm'>
+              <span className='text-on-surface-variant'>
+                {t('distributions.bounced')}: <span className='font-medium text-warning'>{displayStats.bounced}</span>
               </span>
-              <span className="text-on-surface-variant">
-                {t('distributions.failed')}: <span className="font-medium text-error">{displayStats.failed}</span>
+              <span className='text-on-surface-variant'>
+                {t('distributions.failed')}: <span className='font-medium text-error'>{displayStats.failed}</span>
               </span>
             </div>
           </CardContent>
@@ -386,53 +400,53 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
       </div>
 
       {/* Recipients List */}
-      <Card variant="outlined">
-        <CardHeader className="pb-2">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <Card variant='outlined'>
+        <CardHeader className='pb-2'>
+          <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3'>
             <div>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Users className="w-4 h-4 text-primary" />
+              <CardTitle className='text-base flex items-center gap-2'>
+                <Users className='w-4 h-4 text-primary' />
                 {t('distributions.recipients')}
               </CardTitle>
               <CardDescription>{t('distributions.totalRecipients', { count: totalRecipients })}</CardDescription>
             </div>
 
             {/* Search Filter */}
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <Input
                 placeholder={t('distributions.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                startIcon={<Search className="w-4 h-4" />}
-                size="sm"
-                className="w-48"
+                startIcon={<Search className='w-4 h-4' />}
+                size='sm'
+                className='w-48'
               />
             </div>
           </div>
 
           {/* Status Filter Tabs */}
-          <div className="mt-4">
+          <div className='mt-4'>
             <Tabs value={statusFilter === 'all' ? 'all' : String(statusFilter)} onValueChange={(v) => handleStatusFilterChange(v)}>
-              <TabsList className="flex-wrap">
-                <TabsTrigger value="all" className="text-xs">
+              <TabsList className='flex-wrap'>
+                <TabsTrigger value='all' className='text-xs'>
                   {t('distributions.statusAll')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Sent)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Sent)} className='text-xs'>
                   {t('distributions.statusSent')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Delivered)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Delivered)} className='text-xs'>
                   {t('distributions.statusDelivered')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Opened)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Opened)} className='text-xs'>
                   {t('distributions.statusOpened')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Clicked)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Clicked)} className='text-xs'>
                   {t('distributions.statusClicked')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Bounced)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Bounced)} className='text-xs'>
                   {t('distributions.statusBounced')}
                 </TabsTrigger>
-                <TabsTrigger value={String(RecipientStatus.Failed)} className="text-xs">
+                <TabsTrigger value={String(RecipientStatus.Failed)} className='text-xs'>
                   {t('distributions.statusFailed')}
                 </TabsTrigger>
               </TabsList>
@@ -440,28 +454,28 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
           </div>
         </CardHeader>
 
-        <CardContent className="p-0">
+        <CardContent className='p-0'>
           {recipientsLoading ? (
-            <div className="divide-y divide-outline-variant/30">
+            <div className='divide-y divide-outline-variant/30'>
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex items-center gap-3 py-3 px-4">
-                  <Skeleton className="w-8 h-8 rounded-lg" />
-                  <div className="flex-1">
-                    <Skeleton className="h-4 w-48 mb-1" />
-                    <Skeleton className="h-3 w-32" />
+                <div key={i} className='flex items-center gap-3 py-3 px-4'>
+                  <Skeleton className='w-8 h-8 rounded-lg' />
+                  <div className='flex-1'>
+                    <Skeleton className='h-4 w-48 mb-1' />
+                    <Skeleton className='h-3 w-32' />
                   </div>
-                  <Skeleton className="h-6 w-20 rounded-full" />
+                  <Skeleton className='h-6 w-20 rounded-full' />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="divide-y divide-outline-variant/30">
+            <div className='divide-y divide-outline-variant/30'>
               {filteredRecipients.length > 0 ? (
                 filteredRecipients.map((recipient) => <RecipientRow key={recipient.id} recipient={recipient} />)
               ) : (
-                <div className="py-8 text-center">
-                  <Mail className="w-8 h-8 mx-auto text-on-surface-variant mb-2" />
-                  <p className="text-sm text-on-surface-variant">{t('distributions.noRecipients')}</p>
+                <div className='py-8 text-center'>
+                  <Mail className='w-8 h-8 mx-auto text-on-surface-variant mb-2' />
+                  <p className='text-sm text-on-surface-variant'>{t('distributions.noRecipients')}</p>
                 </div>
               )}
             </div>
@@ -469,16 +483,16 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
 
           {/* Load More Button */}
           {hasNextPage && (
-            <div className="p-4 border-t border-outline-variant/30">
-              <Button variant="text" onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className="w-full">
+            <div className='p-4 border-t border-outline-variant/30'>
+              <Button variant='text' onClick={() => fetchNextPage()} disabled={isFetchingNextPage} className='w-full'>
                 {isFetchingNextPage ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className='w-4 h-4 mr-2 animate-spin' />
                     Loading...
                   </>
                 ) : (
                   <>
-                    <ChevronDown className="w-4 h-4 mr-2" />
+                    <ChevronDown className='w-4 h-4 mr-2' />
                     {t('common.loadMore')}
                   </>
                 )}

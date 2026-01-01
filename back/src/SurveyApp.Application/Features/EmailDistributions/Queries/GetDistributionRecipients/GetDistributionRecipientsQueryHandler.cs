@@ -2,6 +2,7 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionRecipients;
@@ -9,12 +10,12 @@ namespace SurveyApp.Application.Features.EmailDistributions.Queries.GetDistribut
 public class GetDistributionRecipientsQueryHandler(
     IEmailDistributionRepository distributionRepository,
     INamespaceContext namespaceContext
-) : IRequestHandler<GetDistributionRecipientsQuery, Result<IReadOnlyList<EmailRecipientDto>>>
+) : IRequestHandler<GetDistributionRecipientsQuery, Result<PagedResponse<EmailRecipientDto>>>
 {
     private readonly IEmailDistributionRepository _distributionRepository = distributionRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
 
-    public async Task<Result<IReadOnlyList<EmailRecipientDto>>> Handle(
+    public async Task<Result<PagedResponse<EmailRecipientDto>>> Handle(
         GetDistributionRecipientsQuery request,
         CancellationToken cancellationToken
     )
@@ -22,7 +23,7 @@ public class GetDistributionRecipientsQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<IReadOnlyList<EmailRecipientDto>>.Failure("Errors.NamespaceRequired");
+            return Result<PagedResponse<EmailRecipientDto>>.Failure("Errors.NamespaceRequired");
         }
 
         // Verify distribution exists and belongs to namespace
@@ -37,10 +38,10 @@ public class GetDistributionRecipientsQueryHandler(
             || distribution.SurveyId != request.SurveyId
         )
         {
-            return Result<IReadOnlyList<EmailRecipientDto>>.NotFound("Errors.DistributionNotFound");
+            return Result<PagedResponse<EmailRecipientDto>>.NotFound("Errors.DistributionNotFound");
         }
 
-        var (recipients, _) = await _distributionRepository.GetRecipientsPagedAsync(
+        var (recipients, totalCount) = await _distributionRepository.GetRecipientsPagedAsync(
             request.DistributionId,
             request.PageNumber,
             request.PageSize,
@@ -65,6 +66,13 @@ public class GetDistributionRecipientsQueryHandler(
             })
             .ToList();
 
-        return Result<IReadOnlyList<EmailRecipientDto>>.Success(dtos);
+        var pagedResponse = PagedResponse<EmailRecipientDto>.Create(
+            dtos,
+            request.PageNumber,
+            request.PageSize,
+            totalCount
+        );
+
+        return Result<PagedResponse<EmailRecipientDto>>.Success(pagedResponse);
     }
 }

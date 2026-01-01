@@ -8,20 +8,20 @@ public class TrackClickCommandHandler(
     IEmailDistributionRepository distributionRepository,
     ISurveyRepository surveyRepository,
     IUnitOfWork unitOfWork
-) : IRequestHandler<TrackClickCommand, Result<string?>>
+) : IRequestHandler<TrackClickCommand, Result<string>>
 {
     private readonly IEmailDistributionRepository _distributionRepository = distributionRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public async Task<Result<string?>> Handle(
+    public async Task<Result<string>> Handle(
         TrackClickCommand request,
         CancellationToken cancellationToken
     )
     {
         if (string.IsNullOrWhiteSpace(request.Token))
         {
-            return Result<string?>.Failure("Errors.InvalidTrackingToken");
+            return Result<string>.Failure("Errors.InvalidTrackingToken");
         }
 
         var recipient = await _distributionRepository.GetRecipientByTokenAsync(
@@ -31,7 +31,7 @@ public class TrackClickCommandHandler(
 
         if (recipient == null)
         {
-            return Result<string?>.NotFound("Errors.RecipientNotFound");
+            return Result<string>.NotFound("Errors.RecipientNotFound");
         }
 
         recipient.MarkAsClicked();
@@ -44,7 +44,7 @@ public class TrackClickCommandHandler(
 
         if (distribution == null)
         {
-            return Result<string?>.NotFound("Errors.DistributionNotFound");
+            return Result<string>.NotFound("Errors.DistributionNotFound");
         }
 
         distribution.RefreshCounts();
@@ -54,8 +54,17 @@ public class TrackClickCommandHandler(
 
         // Get survey access token for redirect
         var survey = await _surveyRepository.GetByIdAsync(distribution.SurveyId, cancellationToken);
-        var surveyAccessToken = survey?.AccessToken;
 
-        return Result<string?>.Success(surveyAccessToken);
+        if (survey == null)
+        {
+            return Result<string>.NotFound("Errors.SurveyNotFound");
+        }
+
+        if (string.IsNullOrWhiteSpace(survey.AccessToken))
+        {
+            return Result<string>.Failure("Errors.SurveyAccessTokenMissing");
+        }
+
+        return Result<string>.Success(survey.AccessToken);
     }
 }

@@ -80,7 +80,6 @@ export function useGlobalSearch(params: SearchParams, options: UseGlobalSearchOp
           (async () => {
             try {
               const response = await templatesApi.list({
-                namespaceId,
                 searchTerm: searchTerm, // Backend expects searchTerm parameter
                 pageNumber: 1,
                 pageSize: limitPerType + 5, // Fetch slightly more for relevance sorting

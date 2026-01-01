@@ -127,25 +127,21 @@ public class EmailDistributionSummaryDto
 /// </summary>
 public class DistributionStatsDto
 {
+    public Guid DistributionId { get; set; }
     public int TotalRecipients { get; set; }
-    public int SentCount { get; set; }
-    public int DeliveredCount { get; set; }
-    public int OpenedCount { get; set; }
-    public int ClickedCount { get; set; }
-    public int BouncedCount { get; set; }
-    public int UnsubscribedCount { get; set; }
+    public int Sent { get; set; }
+    public int Delivered { get; set; }
+    public int Opened { get; set; }
+    public int Clicked { get; set; }
+    public int Bounced { get; set; }
+    public int Failed { get; set; }
 
     public decimal DeliveryRate =>
-        TotalRecipients > 0 ? Math.Round((decimal)DeliveredCount / TotalRecipients * 100, 2) : 0;
+        TotalRecipients > 0 ? Math.Round((decimal)Delivered / TotalRecipients * 100, 2) : 0;
 
-    public decimal OpenRate =>
-        DeliveredCount > 0 ? Math.Round((decimal)OpenedCount / DeliveredCount * 100, 2) : 0;
+    public decimal OpenRate => Delivered > 0 ? Math.Round((decimal)Opened / Delivered * 100, 2) : 0;
 
-    public decimal ClickRate =>
-        OpenedCount > 0 ? Math.Round((decimal)ClickedCount / OpenedCount * 100, 2) : 0;
-
-    public decimal BounceRate =>
-        TotalRecipients > 0 ? Math.Round((decimal)BouncedCount / TotalRecipients * 100, 2) : 0;
+    public decimal ClickRate => Opened > 0 ? Math.Round((decimal)Clicked / Opened * 100, 2) : 0;
 }
 
 /// <summary>

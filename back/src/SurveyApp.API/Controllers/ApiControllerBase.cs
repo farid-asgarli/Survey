@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.Common;
@@ -99,6 +100,20 @@ public abstract class ApiControllerBase : ControllerBase
         }
 
         return result.ToProblemDetails(HttpContext);
+    }
+
+    /// <summary>
+    /// Gets the current authenticated user's ID from claims.
+    /// </summary>
+    /// <returns>The user ID if authenticated, null otherwise.</returns>
+    protected Guid? GetCurrentUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (Guid.TryParse(userIdClaim, out var userId))
+        {
+            return userId;
+        }
+        return null;
     }
 
     /// <summary>

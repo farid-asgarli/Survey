@@ -83,13 +83,17 @@ public class GetDistributionByIdQueryHandler(
             Status = distribution.Status,
             Stats = new DistributionStatsDto
             {
+                DistributionId = distribution.Id,
                 TotalRecipients = distribution.TotalRecipients,
-                SentCount = distribution.SentCount,
-                DeliveredCount = distribution.DeliveredCount,
-                OpenedCount = distribution.OpenedCount,
-                ClickedCount = distribution.ClickedCount,
-                BouncedCount = distribution.BouncedCount,
-                UnsubscribedCount = distribution.UnsubscribedCount,
+                Sent = distribution.SentCount,
+                Delivered = distribution.DeliveredCount,
+                Opened = distribution.OpenedCount,
+                Clicked = distribution.ClickedCount,
+                Bounced = distribution.BouncedCount,
+                Failed =
+                    distribution.Recipients?.Count(r =>
+                        r.Status == Domain.Enums.RecipientStatus.Failed
+                    ) ?? 0,
             },
             CreatedAt = distribution.CreatedAt,
             UpdatedAt = distribution.UpdatedAt,

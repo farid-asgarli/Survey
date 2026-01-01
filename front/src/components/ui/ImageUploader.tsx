@@ -4,13 +4,7 @@ import { cn } from '@/lib/utils';
 import { Upload, X, Image as ImageIcon, Loader2, AlertCircle, Link as LinkIcon } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
-
-export interface ImageUploadResult {
-  fileId: string;
-  url: string;
-  fileName: string;
-  size: number;
-}
+import { type FileUploadResponse } from '@/services/api';
 
 export interface ImageUploaderProps {
   /** Current image URL (can be an uploaded file URL or external URL) */
@@ -18,7 +12,7 @@ export interface ImageUploaderProps {
   /** Callback when image changes (receives URL or empty string) */
   onChange: (url: string) => void;
   /** Optional callback with full upload result */
-  onUploadComplete?: (result: ImageUploadResult) => void;
+  onUploadComplete?: (result: FileUploadResponse) => void;
   /** Label for the uploader */
   label?: string;
   /** Helper text below the uploader */
@@ -30,7 +24,7 @@ export interface ImageUploaderProps {
   /** Whether the uploader is disabled */
   disabled?: boolean;
   /** Upload function - if not provided, only URL input is available */
-  onUpload?: (file: File) => Promise<ImageUploadResult>;
+  onUpload?: (file: File) => Promise<FileUploadResponse>;
   /** Accepted file types */
   accept?: string;
   /** Maximum file size in bytes (default: 5MB) */
@@ -219,9 +213,9 @@ ImageUploaderProps) {
 
       {/* Mode tabs - only show if upload is available */}
       {onUpload && (
-        <div className="flex gap-1 mb-3 p-1 bg-surface-container-low rounded-xl">
+        <div className='flex gap-1 mb-3 p-1 bg-surface-container-low rounded-xl'>
           <button
-            type="button"
+            type='button'
             onClick={() => setMode('upload')}
             disabled={disabled}
             className={cn(
@@ -231,11 +225,11 @@ ImageUploaderProps) {
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
             )}
           >
-            <Upload className="h-4 w-4" />
+            <Upload className='h-4 w-4' />
             {t('imageUploader.upload', 'Upload')}
           </button>
           <button
-            type="button"
+            type='button'
             onClick={() => setMode('url')}
             disabled={disabled}
             className={cn(
@@ -245,13 +239,13 @@ ImageUploaderProps) {
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
             )}
           >
-            <LinkIcon className="h-4 w-4" />
+            <LinkIcon className='h-4 w-4' />
             {t('imageUploader.url', 'URL')}
           </button>
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className='flex gap-3'>
         {/* Preview */}
         <div
           className={cn(
@@ -264,7 +258,7 @@ ImageUploaderProps) {
             <img
               src={value}
               alt={t('a11y.preview')}
-              className="h-full w-full object-contain"
+              className='h-full w-full object-contain'
               onError={() => setPreviewError(true)}
               onLoad={() => setPreviewError(false)}
             />
@@ -274,7 +268,7 @@ ImageUploaderProps) {
         </div>
 
         {/* Upload/URL area */}
-        <div className="flex-1 min-w-0">
+        <div className='flex-1 min-w-0'>
           {mode === 'upload' && onUpload ? (
             // Drag & drop zone
             <div
@@ -294,11 +288,11 @@ ImageUploaderProps) {
             >
               <input
                 ref={fileInputRef}
-                type="file"
+                type='file'
                 accept={accept}
                 onChange={handleInputChange}
                 disabled={disabled || isUploading}
-                className="sr-only"
+                className='sr-only'
                 aria-label={t('imageUploader.selectFile', 'Select file')}
               />
 
@@ -310,10 +304,8 @@ ImageUploaderProps) {
               ) : (
                 <>
                   <Upload className={cn('text-on-surface-variant/60 mb-2', styles.icon)} />
-                  <p className={cn('text-on-surface-variant text-center', styles.text)}>
-                    {t('imageUploader.dragDrop', 'Drag & drop or click to upload')}
-                  </p>
-                  <p className="text-xs text-on-surface-variant/60 mt-1">
+                  <p className={cn('text-on-surface-variant text-center', styles.text)}>{t('imageUploader.dragDrop', 'Drag & drop or click to upload')}</p>
+                  <p className='text-xs text-on-surface-variant/60 mt-1'>
                     {t('imageUploader.maxSize', {
                       size: Math.round(maxSize / (1024 * 1024)),
                       defaultValue: `Max ${Math.round(maxSize / (1024 * 1024))}MB`,
@@ -324,8 +316,8 @@ ImageUploaderProps) {
             </div>
           ) : (
             // URL input
-            <div className="space-y-2">
-              <div className="flex gap-2">
+            <div className='space-y-2'>
+              <div className='flex gap-2'>
                 <Input
                   value={urlInput}
                   onChange={(e) => {
@@ -340,10 +332,10 @@ ImageUploaderProps) {
                   }}
                   placeholder={placeholder}
                   disabled={disabled}
-                  size="sm"
-                  className="flex-1"
+                  size='sm'
+                  className='flex-1'
                 />
-                <Button type="button" size="sm" onClick={handleUrlSubmit} disabled={disabled || !urlInput.trim()}>
+                <Button type='button' size='sm' onClick={handleUrlSubmit} disabled={disabled || !urlInput.trim()}>
                   {t('imageUploader.apply', 'Apply')}
                 </Button>
               </div>
@@ -352,8 +344,8 @@ ImageUploaderProps) {
 
           {/* Clear button - show when there's a value */}
           {value && (
-            <Button type="button" variant="text" size="sm" onClick={handleClear} disabled={disabled} className="mt-2 text-error hover:text-error">
-              <X className="h-4 w-4 mr-1" />
+            <Button type='button' variant='text' size='sm' onClick={handleClear} disabled={disabled} className='mt-2 text-error hover:text-error'>
+              <X className='h-4 w-4 mr-1' />
               {t('imageUploader.remove', 'Remove image')}
             </Button>
           )}
@@ -362,14 +354,14 @@ ImageUploaderProps) {
 
       {/* Error message */}
       {displayError && (
-        <div className="flex items-center gap-2 mt-2 text-error text-sm">
-          <AlertCircle className="h-4 w-4 shrink-0" />
+        <div className='flex items-center gap-2 mt-2 text-error text-sm'>
+          <AlertCircle className='h-4 w-4 shrink-0' />
           <span>{displayError}</span>
         </div>
       )}
 
       {/* Helper text */}
-      {helperText && !displayError && <p className="mt-2 text-sm text-on-surface-variant/70">{helperText}</p>}
+      {helperText && !displayError && <p className='mt-2 text-sm text-on-surface-variant/70'>{helperText}</p>}
     </div>
   );
 }

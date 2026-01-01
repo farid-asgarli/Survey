@@ -10,14 +10,16 @@ import type {
   QuestionLogic,
   SurveyLink,
   EmailDistribution,
+  EmailDistributionSummary,
   DistributionRecipient,
+  DistributionStats,
   EmailTemplate,
   EmailTemplateSummary,
   SurveyTheme,
   SurveyTemplate,
-  SurveyResponse as SurveyResponseModel,
+  ResponseListItem,
 } from './models';
-import type { ExportFormat } from './enums';
+import type { ExportFormat, LogicOperator, LogicAction } from './enums';
 
 // ============ Common API Types ============
 
@@ -74,9 +76,13 @@ export interface NamespaceResponse {
   namespace: Namespace;
 }
 
+/** @deprecated Use PaginatedResponse<NamespaceMembership> instead - backend returns paginated response */
 export interface MembersResponse {
   members: NamespaceMembership[];
 }
+
+/** Paginated response for namespace members */
+export type MembersPaginatedResponse = PaginatedResponse<NamespaceMembership>;
 
 // ============ Survey API Types ============
 export interface SurveyListParams extends PaginationParams {
@@ -118,13 +124,41 @@ export interface LogicResponse {
   rules: QuestionLogic[];
 }
 
+/**
+ * Represents a node (question) in the logic map visualization.
+ * Matches backend LogicNodeDto.
+ */
+export interface LogicNodeDto {
+  id: string;
+  text: string;
+  order: number;
+  type: string;
+  hasLogic: boolean;
+  isConditional: boolean;
+}
+
+/**
+ * Represents an edge (logic connection) in the logic map visualization.
+ * Matches backend LogicEdgeDto.
+ */
+export interface LogicEdgeDto {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  operator: LogicOperator;
+  conditionValue: string;
+  action: LogicAction;
+  label: string;
+}
+
+/**
+ * Response from GET /api/surveys/{surveyId}/logic-map
+ * Matches backend SurveyLogicMapDto - graph-based structure for visualization.
+ */
 export interface LogicMapResponse {
-  questions: {
-    id: string;
-    text: string;
-    order: number;
-    logicRules: QuestionLogic[];
-  }[];
+  surveyId: string;
+  nodes: LogicNodeDto[];
+  edges: LogicEdgeDto[];
 }
 
 // ============ Links API Types ============
@@ -158,37 +192,74 @@ export interface BulkLinkGenerationResponse {
   links: SurveyLink[];
 }
 
+// ============ Short Links (Public Access) API Types ============
+
+/**
+ * Result from GET /api/s/{token} - validates link before accessing survey
+ * Matches backend LinkByTokenResult
+ */
+export interface LinkByTokenResult {
+  linkId: string;
+  surveyId: string;
+  surveyTitle: string;
+  isValid: boolean;
+  invalidReason?: string;
+  requiresPassword: boolean;
+}
+
+/**
+ * Request body for POST /api/s/{token}/access
+ * Matches backend LinkAccessRequest
+ */
+export interface LinkAccessRequest {
+  password?: string;
+}
+
+/**
+ * Result from POST /api/s/{token}/access - records click and provides survey access
+ * Matches backend RecordLinkClickResult
+ */
+export interface RecordLinkClickResult {
+  surveyId: string;
+  surveyAccessToken: string;
+  clickId: string;
+  prefillData?: Record<string, string>;
+}
+
+/** Paginated response for survey links list */
+export type SurveyLinksResponse = PaginatedResponse<SurveyLink>;
+
 // ============ Distribution API Types ============
-export interface DistributionsResponse {
-  distributions: EmailDistribution[];
-}
+/** Paginated response of distribution summaries for list endpoint */
+export type DistributionsResponse = PaginatedResponse<EmailDistributionSummary>;
 
-export interface DistributionResponse {
-  distribution: EmailDistribution;
-}
+/** Single distribution detail response */
+export type DistributionResponse = EmailDistribution;
 
+/** Paginated recipients response */
 export type DistributionRecipientsResponse = PaginatedResponse<DistributionRecipient>;
 
-export interface DistributionStatsResponse {
-  distributionId: string;
-  totalRecipients: number;
-  sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  failed: number;
-  deliveryRate: number;
-  openRate: number;
-  clickRate: number;
-}
+/** Distribution statistics response (same as DistributionStats) */
+export type DistributionStatsResponse = DistributionStats;
 
 // ============ Template API Types ============
-// Note: Backend returns arrays directly, not wrapped in { templates: [...] }
-export type EmailTemplatesResponse = EmailTemplateSummary[];
 
-// Single template response is the template directly
+/** Paginated response of email template summaries for list endpoint */
+export type EmailTemplatesResponse = PaginatedResponse<EmailTemplateSummary>;
+
+/** Single email template response is the template directly */
 export type EmailTemplateResponse = EmailTemplate;
+
+/** Request body for duplicating an email template */
+export interface DuplicateEmailTemplateRequest {
+  newName?: string;
+}
+
+/** Pagination params for email templates list */
+export interface EmailTemplateListParams extends PaginationParams {
+  searchTerm?: string;
+  type?: number;
+}
 
 // Survey Templates use paginated response
 export type SurveyTemplatesResponse = PaginatedResponse<SurveyTemplate>;
@@ -219,14 +290,19 @@ export interface ResponsesListParams extends PaginationParams {
   toDate?: string;
 }
 
-export type SurveyResponsesResponse = PaginatedResponse<SurveyResponseModel>;
+/**
+ * Paginated list of response summaries.
+ * Backend returns PagedResponse<ResponseListItemDto>
+ */
+export type SurveyResponsesResponse = PaginatedResponse<ResponseListItem>;
 
-export interface SingleResponseResponse {
-  response: SurveyResponseModel;
-}
-
-export interface SubmitResponseResponse {
-  responseId: string;
+/**
+ * Bulk delete operation result.
+ * Backend returns BulkDeleteResponsesResult
+ */
+export interface BulkDeleteResponsesResult {
+  deletedCount: number;
+  failedIds: string[];
   isComplete: boolean;
 }
 
@@ -240,18 +316,31 @@ export interface ExportResponsesRequest {
   includeMetadata?: boolean;
 }
 
+/**
+ * Export preview response matching backend ExportPreviewDto
+ */
 export interface ExportPreviewResponse {
-  availableColumns: ExportColumn[];
+  surveyId: string;
+  surveyTitle: string;
   totalResponses: number;
-  completeResponses: number;
+  completedResponses: number;
   incompleteResponses: number;
+  columns: ExportColumn[];
+  availableFormats: string[];
 }
 
+/**
+ * Export column matching backend ExportColumnDto
+ */
 export interface ExportColumn {
+  /** Column identifier (Question ID or metadata field name) */
   id: string;
-  label: string;
-  type: 'question' | 'metadata' | 'system';
-  questionId?: string;
+  /** Column header/name */
+  name: string;
+  /** Column type (Question, Metadata) */
+  type: string;
+  /** Whether the column is selected by default */
+  isDefault: boolean;
 }
 
 // ============ Analytics API Types ============
@@ -306,7 +395,6 @@ export interface QuestionTranslationItemDto {
 export interface QuestionTranslationsDto {
   questionId: string;
   order: number;
-  defaultLanguage: string;
   translations: QuestionTranslationItemDto[];
 }
 
@@ -349,6 +437,8 @@ export interface BulkTranslationResultDto {
   failureCount: number;
   errors: string[];
   languages: string[];
+  /** Translation completion status per language (percentage 0-100) */
+  completionStatus?: Record<string, number>;
 }
 
 export interface NpsTrendParams {
@@ -369,18 +459,10 @@ export interface ExportAnalyticsParams {
 }
 
 // ============ Recurring Surveys API Types ============
-import type { RecurringSurvey, RecurringSurveyListItem, RecurringRun, UpcomingRun } from './models';
+import type { RecurringSurveyListItem, RecurringRun } from './models';
 
 // Backend returns paginated response with 'items' key
 export type RecurringSurveysResponse = PaginatedResponse<RecurringSurveyListItem>;
-
-export interface RecurringSurveyResponse {
-  recurringSurvey: RecurringSurvey;
-}
-
-export interface UpcomingRunsResponse {
-  upcomingRuns: UpcomingRun[];
-}
 
 // Backend returns paginated response with 'items' key
 export type RecurringRunsResponse = PaginatedResponse<RecurringRun>;
@@ -403,7 +485,9 @@ export type {
   BulkLinkGenerationRequest,
   BulkLinkGenerationResult,
   EmailDistribution,
+  EmailDistributionSummary,
   DistributionRecipient,
+  DistributionStats,
   EmailTemplate,
   EmailTemplateSummary,
   EmailTemplateType,
@@ -411,10 +495,13 @@ export type {
   UpdateEmailTemplateRequest,
   SurveyTheme,
   SurveyTemplate,
+  TemplateQuestion,
   TemplateCategory,
   CreateTemplateRequest,
+  CreateTemplateQuestionRequest,
   CreateTemplateFromSurveyRequest,
   UpdateTemplateRequest,
+  UpdateTemplateQuestionRequest,
   CreateSurveyFromTemplateRequest,
   SurveyResponse,
   ResponseListItem,
@@ -441,4 +528,5 @@ export type {
   MemberRole,
   ThemeLayout,
   LogoPosition,
+  InviteMemberResponse,
 } from './models';

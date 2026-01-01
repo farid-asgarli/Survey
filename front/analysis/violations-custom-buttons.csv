@@ -1,4 +1,0 @@
-"Path","LineNumber","Line"
-"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\namespaces\MembersManagement.tsx","224","                          <button className=""p-2 rounded-full hover:bg-on-surface/5 opacity-0 group-hover:opacity-100 transition-opacity"">"
-"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\namespaces\MembersManagement.tsx","249","                <Button className=""mt-4"" onClick={() => setInviteDialogOpen(true)}>"
-"C:\Users\CyberDream\Desktop\projects\Work\survey_new\front\src\components\features\questions\editors\OptionListEditor.tsx","115","            <button className=""cursor-grab active:cursor-grabbing p-1 rounded text-on-surface-variant/40 hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity"">"

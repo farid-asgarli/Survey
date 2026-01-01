@@ -78,7 +78,7 @@ export function useUpdateRecurringSurvey() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateRecurringSurveyRequest }) => recurringSurveysApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<UpdateRecurringSurveyRequest, 'id'> }) => recurringSurveysApi.update(id, data),
     onSuccess: (updatedRecurringSurvey, { id }) => {
       // Update detail cache
       queryClient.setQueryData(recurringSurveyKeys.detail(id), updatedRecurringSurvey);

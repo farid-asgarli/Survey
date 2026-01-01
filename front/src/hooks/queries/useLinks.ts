@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { linksApi } from '@/services';
-import type { CreateLinkRequest, UpdateLinkRequest, SurveyLink, BulkLinkGenerationRequest, LinkAnalyticsResponse } from '@/types';
+import type { CreateLinkRequest, UpdateLinkRequest, SurveyLink, BulkLinkGenerationRequest, LinkAnalyticsResponse, SurveyLinksResponse } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - links have custom detail key (surveyId + linkId) and analytics
@@ -14,19 +14,23 @@ export const linkKeys = createExtendedQueryKeys('links', (base) => ({
 }));
 
 /**
- * Hook to fetch all links for a survey
+ * Hook to fetch all links for a survey (paginated).
+ * Backend returns PagedResponse<SurveyLinkDto>
  */
-export function useSurveyLinks(surveyId: string | undefined) {
+export function useSurveyLinks(surveyId: string | undefined, params?: { pageNumber?: number; pageSize?: number; isActive?: boolean }) {
   return useQuery({
     queryKey: linkKeys.list(surveyId!),
-    queryFn: () => linksApi.list(surveyId!),
+    queryFn: () => linksApi.list(surveyId!, params),
     enabled: !!surveyId,
     staleTime: STALE_TIMES.MEDIUM,
+    // Extract items array for backward compatibility in select
+    select: (data: SurveyLinksResponse) => data,
   });
 }
 
 /**
- * Hook to fetch a single link by ID
+ * Hook to fetch a single link by ID.
+ * Backend returns SurveyLinkDetailsDto
  */
 export function useLinkDetail(surveyId: string | undefined, linkId: string | undefined) {
   return useQuery({
@@ -38,7 +42,8 @@ export function useLinkDetail(surveyId: string | undefined, linkId: string | und
 }
 
 /**
- * Hook to fetch link analytics
+ * Hook to fetch link analytics.
+ * Backend returns LinkAnalyticsDto
  */
 export function useLinkAnalytics(surveyId: string | undefined, linkId: string | undefined, startDate?: string, endDate?: string) {
   return useQuery({
@@ -50,7 +55,8 @@ export function useLinkAnalytics(surveyId: string | undefined, linkId: string | 
 }
 
 /**
- * Hook to create a new link
+ * Hook to create a new link.
+ * Backend accepts CreateSurveyLinkCommand, returns SurveyLinkDto
  */
 export function useCreateLink(surveyId: string) {
   const queryClient = useQueryClient();
@@ -58,10 +64,14 @@ export function useCreateLink(surveyId: string) {
   return useMutation({
     mutationFn: (data: CreateLinkRequest) => linksApi.create(surveyId, data),
     onSuccess: (newLink) => {
-      // Update cache with new link
-      queryClient.setQueryData<SurveyLink[]>(linkKeys.list(surveyId), (old) => {
-        if (!old) return [newLink];
-        return [...old, newLink];
+      // Update paginated cache with new link
+      queryClient.setQueryData<SurveyLinksResponse>(linkKeys.list(surveyId), (old) => {
+        if (!old) return { items: [newLink], totalCount: 1, pageNumber: 1, pageSize: 10, totalPages: 1, hasNextPage: false, hasPreviousPage: false };
+        return {
+          ...old,
+          items: [...old.items, newLink],
+          totalCount: old.totalCount + 1,
+        };
       });
       // Invalidate to refetch
       queryClient.invalidateQueries({ queryKey: linkKeys.list(surveyId) });
@@ -70,7 +80,8 @@ export function useCreateLink(surveyId: string) {
 }
 
 /**
- * Hook to update a link
+ * Hook to update a link.
+ * Backend accepts UpdateSurveyLinkCommand, returns SurveyLinkDto
  */
 export function useUpdateLink(surveyId: string) {
   const queryClient = useQueryClient();
@@ -81,16 +92,20 @@ export function useUpdateLink(surveyId: string) {
       // Update detail cache
       queryClient.setQueryData(linkKeys.detail(surveyId, linkId), updatedLink);
       // Update list cache
-      queryClient.setQueryData<SurveyLink[]>(linkKeys.list(surveyId), (old) => {
-        if (!old) return [updatedLink];
-        return old.map((link) => (link.id === linkId ? updatedLink : link));
+      queryClient.setQueryData<SurveyLinksResponse>(linkKeys.list(surveyId), (old) => {
+        if (!old) return { items: [updatedLink], totalCount: 1, pageNumber: 1, pageSize: 10, totalPages: 1, hasNextPage: false, hasPreviousPage: false };
+        return {
+          ...old,
+          items: old.items.map((link) => (link.id === linkId ? updatedLink : link)),
+        };
       });
     },
   });
 }
 
 /**
- * Hook to deactivate a link
+ * Hook to deactivate a link.
+ * Backend returns 204 No Content
  */
 export function useDeactivateLink(surveyId: string) {
   const queryClient = useQueryClient();
@@ -107,7 +122,8 @@ export function useDeactivateLink(surveyId: string) {
 }
 
 /**
- * Hook to generate bulk links
+ * Hook to generate bulk links.
+ * Backend accepts GenerateBulkLinksCommand, returns BulkLinkGenerationResultDto
  */
 export function useGenerateBulkLinks(surveyId: string) {
   const queryClient = useQueryClient();
@@ -115,10 +131,23 @@ export function useGenerateBulkLinks(surveyId: string) {
   return useMutation({
     mutationFn: (data: BulkLinkGenerationRequest) => linksApi.generateBulkLinks(surveyId, data),
     onSuccess: (result) => {
-      // Add new links to cache
-      queryClient.setQueryData<SurveyLink[]>(linkKeys.list(surveyId), (old) => {
-        if (!old) return result.links;
-        return [...old, ...result.links];
+      // Add new links to paginated cache
+      queryClient.setQueryData<SurveyLinksResponse>(linkKeys.list(surveyId), (old) => {
+        if (!old)
+          return {
+            items: result.links,
+            totalCount: result.generatedCount,
+            pageNumber: 1,
+            pageSize: 10,
+            totalPages: 1,
+            hasNextPage: false,
+            hasPreviousPage: false,
+          };
+        return {
+          ...old,
+          items: [...old.items, ...result.links],
+          totalCount: old.totalCount + result.generatedCount,
+        };
       });
       // Invalidate to refetch
       queryClient.invalidateQueries({ queryKey: linkKeys.list(surveyId) });
@@ -127,4 +156,4 @@ export function useGenerateBulkLinks(surveyId: string) {
 }
 
 // Re-export types for convenience
-export type { SurveyLink, CreateLinkRequest, UpdateLinkRequest, BulkLinkGenerationRequest, LinkAnalyticsResponse };
+export type { SurveyLink, CreateLinkRequest, UpdateLinkRequest, BulkLinkGenerationRequest, LinkAnalyticsResponse, SurveyLinksResponse };

@@ -6,7 +6,7 @@ import { useNamespaceStore } from '@/stores';
 import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES } from './queryUtils';
 
 // Re-export types for consumers
-export type { CreateThemeRequest, UpdateThemeRequest, ThemePreviewResponse, ThemeCssResponse } from '@/services';
+export type { CreateThemeRequest, UpdateThemeRequest, ThemePreviewResponse } from '@/services';
 
 // Query keys - using the utility with custom keys for preview/css
 export const themeKeys = createExtendedQueryKeys('themes', (base) => ({

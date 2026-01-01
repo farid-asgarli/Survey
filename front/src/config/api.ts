@@ -163,4 +163,9 @@ export const API_ENDPOINTS = {
     survey: (surveyId: string) => `/api/surveys/${surveyId}/translations`,
     surveyByLang: (surveyId: string, languageCode: string) => `/api/surveys/${surveyId}/translations/${languageCode}`,
   },
+  // Short links (public survey access via token)
+  shortLinks: {
+    byToken: (token: string) => `/api/s/${token}`,
+    access: (token: string) => `/api/s/${token}/access`,
+  },
 } as const;

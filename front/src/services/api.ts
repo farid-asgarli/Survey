@@ -16,6 +16,7 @@ import type {
   UploadAvatarResponse,
   CreateNamespaceRequest,
   InviteMemberRequest,
+  InviteMemberResponse,
   CreateSurveyRequest,
   UpdateSurveyRequest,
   CreateQuestionRequest,
@@ -31,14 +32,16 @@ import type {
   LoginResponse,
   RegisterResponse,
   RefreshTokenResponse,
-  MembersResponse,
+  MembersPaginatedResponse,
   SurveysResponse,
   SurveyListParams,
   LogicMapResponse,
   LinkAnalyticsResponse,
   BulkLinkGenerationRequest,
   BulkLinkGenerationResponse,
+  DistributionsResponse,
   DistributionStatsResponse,
+  DistributionRecipientsResponse,
   SurveyTemplatesResponse,
   SurveyAnalytics,
   SurveyNpsSummary,
@@ -47,19 +50,24 @@ import type {
   NpsScore,
   User,
   Namespace,
+  NamespaceMembership,
   Survey,
   Question,
   QuestionLogic,
   SurveyLink,
   EmailDistribution,
   EmailTemplate,
-  EmailTemplateSummary,
   SurveyTheme,
   SurveyTemplate,
   ExportFormat,
   RecipientStatus,
   UpdateMemberRoleRequest,
   UpdateMemberRoleResponse,
+  PaginationParams,
+  SurveyLinksResponse,
+  LinkByTokenResult,
+  LinkAccessRequest,
+  RecordLinkClickResult,
 } from '@/types';
 
 // Create axios instance with base configuration
@@ -130,13 +138,10 @@ const createApiClient = (): AxiosInstance => {
           const { tokens } = useAuthStore.getState();
           if (tokens?.refreshToken && tokens?.accessToken) {
             // Backend expects both token (expired access token) and refreshToken
-            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(
-              `${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`,
-              {
-                token: tokens.accessToken,
-                refreshToken: tokens.refreshToken,
-              }
-            );
+            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(`${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`, {
+              token: tokens.accessToken,
+              refreshToken: tokens.refreshToken,
+            });
 
             const newTokens = {
               accessToken: response.data.token,
@@ -403,21 +408,34 @@ export const namespacesApi = {
     await apiClient.delete(API_ENDPOINTS.namespaces.byId(id));
   },
 
-  getMembers: async (id: string): Promise<MembersResponse['members']> => {
-    const response = await apiClient.get<MembersResponse>(API_ENDPOINTS.namespaces.members(id));
-    return response.data.members ?? response.data ?? [];
+  /** Get paginated members for a namespace */
+  getMembers: async (id: string, params?: PaginationParams): Promise<MembersPaginatedResponse> => {
+    const response = await apiClient.get<MembersPaginatedResponse>(API_ENDPOINTS.namespaces.members(id), { params });
+    return response.data;
   },
 
-  inviteMember: async (id: string, data: InviteMemberRequest): Promise<void> => {
-    await apiClient.post(API_ENDPOINTS.namespaces.members(id), data);
+  /** Get all members for a namespace (non-paginated, fetches all) */
+  getAllMembers: async (id: string): Promise<NamespaceMembership[]> => {
+    const response = await apiClient.get<MembersPaginatedResponse>(API_ENDPOINTS.namespaces.members(id), {
+      params: { pageSize: 1000 },
+    });
+    return response.data.items;
+  },
+
+  inviteMember: async (id: string, data: InviteMemberRequest): Promise<InviteMemberResponse> => {
+    const response = await apiClient.post<InviteMemberResponse>(API_ENDPOINTS.namespaces.members(id), {
+      ...data,
+      namespaceId: id,
+    });
+    return response.data;
   },
 
   removeMember: async (namespaceId: string, membershipId: string): Promise<void> => {
     await apiClient.delete(API_ENDPOINTS.namespaces.removeMember(namespaceId, membershipId));
   },
 
-  updateMemberRole: async (namespaceId: string, membershipId: string, data: UpdateMemberRoleRequest): Promise<UpdateMemberRoleResponse> => {
-    const response = await apiClient.put<UpdateMemberRoleResponse>(API_ENDPOINTS.namespaces.updateMemberRole(namespaceId, membershipId), data);
+  updateMemberRole: async (namespaceId: string, membershipId: string, role: UpdateMemberRoleRequest['role']): Promise<UpdateMemberRoleResponse> => {
+    const response = await apiClient.put<UpdateMemberRoleResponse>(API_ENDPOINTS.namespaces.updateMemberRole(namespaceId, membershipId), { role });
     return response.data;
   },
 };
@@ -582,19 +600,16 @@ export const logicApi = {
   },
 
   create: async (surveyId: string, questionId: string, data: CreateLogicRequest): Promise<QuestionLogic> => {
-    const response = await apiClient.post<{ rule: QuestionLogic }>(
-      API_ENDPOINTS.surveys.questionLogic(surveyId, questionId),
-      transformLogicRequest(data)
-    );
-    return response.data.rule;
+    const response = await apiClient.post<QuestionLogic>(API_ENDPOINTS.surveys.questionLogic(surveyId, questionId), transformLogicRequest(data));
+    return response.data;
   },
 
   update: async (surveyId: string, questionId: string, logicId: string, data: Partial<CreateLogicRequest>): Promise<QuestionLogic> => {
-    const response = await apiClient.put<{ rule: QuestionLogic }>(
+    const response = await apiClient.put<QuestionLogic>(
       `${API_ENDPOINTS.surveys.questionLogic(surveyId, questionId)}/${logicId}`,
       transformLogicRequest(data as CreateLogicRequest)
     );
-    return response.data.rule;
+    return response.data;
   },
 
   delete: async (surveyId: string, questionId: string, logicId: string): Promise<void> => {
@@ -637,30 +652,54 @@ export const logicApi = {
 // ============ Survey Links API ============
 
 export const linksApi = {
-  list: async (surveyId: string): Promise<SurveyLink[]> => {
-    const response = await apiClient.get<SurveyLink[]>(API_ENDPOINTS.surveys.links(surveyId));
-    return response.data ?? [];
+  /**
+   * Get all links for a survey with pagination.
+   * Backend returns PagedResponse<SurveyLinkDto>
+   */
+  list: async (surveyId: string, params?: { pageNumber?: number; pageSize?: number; isActive?: boolean }): Promise<SurveyLinksResponse> => {
+    const response = await apiClient.get<SurveyLinksResponse>(API_ENDPOINTS.surveys.links(surveyId), { params });
+    return response.data;
   },
 
+  /**
+   * Get a survey link by ID.
+   * Backend returns SurveyLinkDetailsDto which extends SurveyLinkDto
+   */
   getById: async (surveyId: string, linkId: string): Promise<SurveyLink> => {
     const response = await apiClient.get<SurveyLink>(API_ENDPOINTS.surveys.linkById(surveyId, linkId));
     return response.data;
   },
 
+  /**
+   * Create a new survey link.
+   * Backend accepts CreateSurveyLinkCommand, returns SurveyLinkDto
+   */
   create: async (surveyId: string, data: CreateLinkRequest): Promise<SurveyLink> => {
     const response = await apiClient.post<SurveyLink>(API_ENDPOINTS.surveys.links(surveyId), data);
     return response.data;
   },
 
+  /**
+   * Update a survey link.
+   * Backend accepts UpdateSurveyLinkCommand, returns SurveyLinkDto
+   */
   update: async (surveyId: string, linkId: string, data: UpdateLinkRequest): Promise<SurveyLink> => {
     const response = await apiClient.put<SurveyLink>(API_ENDPOINTS.surveys.linkById(surveyId, linkId), data);
     return response.data;
   },
 
+  /**
+   * Deactivate a survey link.
+   * Backend returns 204 No Content
+   */
   deactivate: async (surveyId: string, linkId: string): Promise<void> => {
     await apiClient.delete(API_ENDPOINTS.surveys.linkById(surveyId, linkId));
   },
 
+  /**
+   * Get analytics for a survey link.
+   * Backend returns LinkAnalyticsDto
+   */
   getAnalytics: async (surveyId: string, linkId: string, startDate?: string, endDate?: string): Promise<LinkAnalyticsResponse> => {
     const params = new URLSearchParams();
     if (startDate) params.append('startDate', startDate);
@@ -671,18 +710,46 @@ export const linksApi = {
     return response.data;
   },
 
+  /**
+   * Generate multiple unique links at once.
+   * Backend accepts GenerateBulkLinksCommand, returns BulkLinkGenerationResultDto
+   */
   generateBulkLinks: async (surveyId: string, data: BulkLinkGenerationRequest): Promise<BulkLinkGenerationResponse> => {
     const response = await apiClient.post<BulkLinkGenerationResponse>(API_ENDPOINTS.surveys.linksBulk(surveyId), data);
     return response.data;
   },
 };
 
+// ============ Short Links API (Public Survey Access) ============
+
+export const shortLinksApi = {
+  /**
+   * Get link information by token (for pre-validation before accessing survey).
+   * This is an anonymous endpoint - no auth required.
+   * Backend returns LinkByTokenResult
+   */
+  getByToken: async (token: string): Promise<LinkByTokenResult> => {
+    const response = await apiClient.get<LinkByTokenResult>(API_ENDPOINTS.shortLinks.byToken(token));
+    return response.data;
+  },
+
+  /**
+   * Access a survey via short link (records click and provides survey access token).
+   * This is an anonymous endpoint - no auth required.
+   * Backend accepts LinkAccessRequest (optional password), returns RecordLinkClickResult
+   */
+  access: async (token: string, request?: LinkAccessRequest): Promise<RecordLinkClickResult> => {
+    const response = await apiClient.post<RecordLinkClickResult>(API_ENDPOINTS.shortLinks.access(token), request ?? {});
+    return response.data;
+  },
+};
+
 // ============ Distributions API ============
 export const distributionsApi = {
-  list: async (surveyId: string): Promise<EmailDistribution[]> => {
-    // Backend returns IReadOnlyList<EmailDistributionSummaryDto> directly
-    const response = await apiClient.get<EmailDistribution[]>(API_ENDPOINTS.surveys.distributions(surveyId));
-    return response.data ?? [];
+  list: async (surveyId: string, params?: { pageNumber?: number; pageSize?: number }): Promise<DistributionsResponse> => {
+    // Backend returns PagedResponse<EmailDistributionSummaryDto>
+    const response = await apiClient.get<DistributionsResponse>(API_ENDPOINTS.surveys.distributions(surveyId), { params });
+    return response.data;
   },
 
   getById: async (surveyId: string, distId: string): Promise<EmailDistribution> => {
@@ -730,30 +797,22 @@ export const distributionsApi = {
     surveyId: string,
     distId: string,
     params?: { pageNumber?: number; pageSize?: number; status?: RecipientStatus }
-  ): Promise<{ items: import('@/types').DistributionRecipient[]; totalCount: number; pageNumber: number; pageSize: number }> => {
-    const response = await apiClient.get<{
-      items: import('@/types').DistributionRecipient[];
-      totalCount: number;
-      pageNumber: number;
-      pageSize: number;
-    }>(`${API_ENDPOINTS.surveys.distributionById(surveyId, distId)}/recipients`, { params });
+  ): Promise<DistributionRecipientsResponse> => {
+    // Backend returns PagedResponse<EmailRecipientDto>
+    const response = await apiClient.get<DistributionRecipientsResponse>(`${API_ENDPOINTS.surveys.distributionById(surveyId, distId)}/recipients`, { params });
     return response.data;
   },
 };
 
 // ============ Themes API ============
 
-import type { ThemeColors, ThemeTypography, ThemeLayoutSettings, ThemeBranding, ThemeButton } from '@/types';
+import type { ThemeColors, ThemeTypography, ThemeLayoutDto, ThemeBranding, ThemeButton } from '@/types';
 
 // Issue 15: ThemePreviewResponse matching backend ThemePreviewDto
 export interface ThemePreviewResponse {
   theme: SurveyTheme;
   generatedCss: string; // Backend uses generatedCss, not css
   // Note: previewHtml is frontend-only, not returned by backend
-}
-
-export interface ThemeCssResponse {
-  css: string;
 }
 
 export interface ThemesListResponse {
@@ -789,7 +848,7 @@ export interface CreateThemeRequest {
   languageCode?: string;
   colors?: Partial<ThemeColors>;
   typography?: Partial<ThemeTypography>;
-  layout?: Partial<ThemeLayoutSettings>;
+  layout?: Partial<ThemeLayoutDto>;
   branding?: Partial<ThemeBranding>;
   button?: Partial<ThemeButton>;
   customCss?: string;
@@ -823,8 +882,15 @@ export const themesApi = {
     return response.data;
   },
 
-  getCss: async (id: string): Promise<ThemeCssResponse> => {
-    const response = await apiClient.get<ThemeCssResponse>(API_ENDPOINTS.themes.css(id));
+  /**
+   * Get generated CSS for a theme.
+   * Backend returns raw CSS text with content-type: text/css
+   */
+  getCss: async (id: string): Promise<string> => {
+    const response = await apiClient.get<string>(API_ENDPOINTS.themes.css(id), {
+      responseType: 'text',
+      headers: { Accept: 'text/css' },
+    });
     return response.data;
   },
 
@@ -833,8 +899,15 @@ export const themesApi = {
     return response.data;
   },
 
+  /**
+   * Update a theme.
+   * Backend requires themeId in the request body.
+   */
   update: async (id: string, data: UpdateThemeRequest): Promise<SurveyTheme> => {
-    const response = await apiClient.put<SurveyTheme>(API_ENDPOINTS.themes.byId(id), data);
+    const response = await apiClient.put<SurveyTheme>(API_ENDPOINTS.themes.byId(id), {
+      ...data,
+      themeId: id,
+    });
     return response.data;
   },
 
@@ -861,11 +934,16 @@ export const themesApi = {
 };
 
 // ============ Templates API ============
+import type { CreateTemplateRequest, CreateTemplateFromSurveyRequest, UpdateTemplateRequest, CreateSurveyFromTemplateRequest } from '@/types';
+
 export const templatesApi = {
+  /**
+   * List templates with pagination and filtering.
+   * Backend: GET /api/templates with query params from GetTemplatesQuery
+   */
   list: async (params?: {
-    namespaceId?: string;
     category?: string;
-    searchTerm?: string; // Backend expects searchTerm parameter
+    searchTerm?: string;
     isPublic?: boolean;
     pageNumber?: number;
     pageSize?: number;
@@ -873,63 +951,71 @@ export const templatesApi = {
     const response = await apiClient.get<SurveyTemplatesResponse>(API_ENDPOINTS.templates.list, {
       params: {
         ...params,
-        pageSize: params?.pageSize ?? 50, // Default to larger page size for templates
+        pageSize: params?.pageSize ?? 50,
       },
     });
     return response.data;
   },
 
+  /**
+   * Get a single template by ID.
+   * Backend: GET /api/templates/{id} returns SurveyTemplateDto
+   */
   getById: async (id: string): Promise<SurveyTemplate> => {
-    // Backend returns SurveyTemplateDto directly
     const response = await apiClient.get<SurveyTemplate>(API_ENDPOINTS.templates.byId(id));
     return response.data;
   },
 
-  create: async (
-    namespaceId: string,
-    data: { name: string; description?: string; category: string; isPublic?: boolean; languageCode: string; surveyData?: Record<string, unknown> }
-  ): Promise<SurveyTemplate> => {
-    // Backend returns SurveyTemplateDto directly
-    const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.list, {
-      namespaceId,
+  /**
+   * Create a new template.
+   * Backend: POST /api/templates with CreateTemplateCommand
+   * Returns SurveyTemplateDto
+   */
+  create: async (data: CreateTemplateRequest): Promise<SurveyTemplate> => {
+    const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.list, data);
+    return response.data;
+  },
+
+  /**
+   * Create a template from an existing survey.
+   * Backend: POST /api/templates/from-survey with CreateTemplateFromSurveyCommand
+   * Returns SurveyTemplateDto
+   */
+  createFromSurvey: async (data: CreateTemplateFromSurveyRequest): Promise<SurveyTemplate> => {
+    const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.fromSurvey, data);
+    return response.data;
+  },
+
+  /**
+   * Update an existing template.
+   * Backend: PUT /api/templates/{id} with UpdateTemplateCommand
+   * Returns SurveyTemplateDto
+   */
+  update: async (id: string, data: UpdateTemplateRequest): Promise<SurveyTemplate> => {
+    const response = await apiClient.put<SurveyTemplate>(API_ENDPOINTS.templates.byId(id), {
+      templateId: id,
       ...data,
     });
     return response.data;
   },
 
-  createFromSurvey: async (
-    namespaceId: string,
-    data: { surveyId: string; name: string; description?: string; category: string; isPublic?: boolean; languageCode?: string }
-  ): Promise<SurveyTemplate> => {
-    // Backend returns SurveyTemplateDto directly
-    const response = await apiClient.post<SurveyTemplate>(API_ENDPOINTS.templates.fromSurvey, {
-      namespaceId,
-      ...data,
-    });
-    return response.data;
-  },
-
-  update: async (
-    id: string,
-    data: { name?: string; description?: string; category?: string; isPublic?: boolean; languageCode?: string; surveyData?: Record<string, unknown> }
-  ): Promise<SurveyTemplate> => {
-    // Backend returns SurveyTemplateDto directly
-    const response = await apiClient.put<SurveyTemplate>(API_ENDPOINTS.templates.byId(id), data);
-    return response.data;
-  },
-
+  /**
+   * Delete a template.
+   * Backend: DELETE /api/templates/{id}
+   * Returns 204 No Content
+   */
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(API_ENDPOINTS.templates.byId(id));
   },
 
-  createSurveyFromTemplate: async (
-    templateId: string,
-    namespaceId: string,
-    data: { title: string; description?: string; languageCode: string }
-  ): Promise<Survey> => {
-    // Backend returns SurveyDto directly
+  /**
+   * Create a survey from a template.
+   * Backend: POST /api/templates/{id}/create-survey with CreateSurveyFromTemplateCommand
+   * Returns SurveyDto
+   */
+  createSurveyFromTemplate: async (templateId: string, data: CreateSurveyFromTemplateRequest): Promise<Survey> => {
     const response = await apiClient.post<Survey>(API_ENDPOINTS.templates.createSurvey(templateId), {
-      namespaceId,
+      templateId,
       ...data,
     });
     return response.data;
@@ -937,18 +1023,14 @@ export const templatesApi = {
 };
 
 // ============ Responses API ============
-import type {
-  ResponsesListParams,
-  SurveyResponsesResponse,
-  ExportResponsesRequest,
-  ExportPreviewResponse,
-  SurveyResponse as SurveyResponseType,
-} from '@/types';
+import type { ResponsesListParams, SurveyResponsesResponse, ExportResponsesRequest, ExportPreviewResponse, BulkDeleteResponsesResult } from '@/types';
+import type { SurveyResponse } from '@/types/models';
 
 export const responsesApi = {
   /**
    * List responses for a survey (paginated)
    * Backend: GET /api/responses?surveyId=...
+   * Returns ResponseListItem[] (summary without answers)
    */
   list: async (surveyId: string, params?: ResponsesListParams): Promise<SurveyResponsesResponse> => {
     const response = await apiClient.get<SurveyResponsesResponse>(API_ENDPOINTS.responses.list, {
@@ -958,11 +1040,11 @@ export const responsesApi = {
   },
 
   /**
-   * Get a single response by ID
+   * Get a single response by ID (full detail with answers)
    * Backend: GET /api/responses/{responseId}
    */
-  getById: async (_surveyId: string, responseId: string): Promise<SurveyResponseType> => {
-    const response = await apiClient.get<SurveyResponseType>(API_ENDPOINTS.responses.byId(responseId));
+  getById: async (_surveyId: string, responseId: string): Promise<SurveyResponse> => {
+    const response = await apiClient.get<SurveyResponse>(API_ENDPOINTS.responses.byId(responseId));
     return response.data;
   },
 
@@ -976,13 +1058,15 @@ export const responsesApi = {
 
   /**
    * Delete multiple responses in bulk
-   * Note: This endpoint may not exist on the backend - keep for now
+   * Backend: POST /api/responses/bulk-delete
+   * Returns BulkDeleteResponsesResult with deletedCount, failedIds, isComplete
    */
-  deleteBulk: async (surveyId: string, responseIds: string[]): Promise<void> => {
-    await apiClient.post(`/api/responses/bulk-delete`, {
+  deleteBulk: async (surveyId: string, responseIds: string[]): Promise<BulkDeleteResponsesResult> => {
+    const response = await apiClient.post<BulkDeleteResponsesResult>(`/api/responses/bulk-delete`, {
       surveyId,
       responseIds,
     });
+    return response.data;
   },
 
   /**
@@ -1053,13 +1137,15 @@ export const publicSurveyApi = {
 };
 
 // ============ Email Templates API ============
+import type { EmailTemplatesResponse, EmailTemplateListParams, DuplicateEmailTemplateRequest } from '@/types/api';
+
 export const emailTemplatesApi = {
   /**
    * List all email templates for the namespace
-   * Backend returns: EmailTemplateSummary[] (array directly, not wrapped)
+   * Backend returns: PagedResponse<EmailTemplateSummary>
    */
-  list: async (params?: { pageNumber?: number; pageSize?: number; searchTerm?: string; type?: string }): Promise<EmailTemplateSummary[]> => {
-    const response = await apiClient.get<EmailTemplateSummary[]>(API_ENDPOINTS.emailTemplates.list, {
+  list: async (params?: EmailTemplateListParams): Promise<EmailTemplatesResponse> => {
+    const response = await apiClient.get<EmailTemplatesResponse>(API_ENDPOINTS.emailTemplates.list, {
       params,
     });
     return response.data;
@@ -1124,10 +1210,8 @@ export const emailTemplatesApi = {
    * Duplicate a template (creates a copy with all content and translations)
    * Backend returns: EmailTemplate (the new duplicate)
    */
-  duplicate: async (id: string, newName?: string): Promise<EmailTemplate> => {
-    const response = await apiClient.post<EmailTemplate>(API_ENDPOINTS.emailTemplates.duplicate(id), {
-      newName,
-    });
+  duplicate: async (id: string, request?: DuplicateEmailTemplateRequest): Promise<EmailTemplate> => {
+    const response = await apiClient.post<EmailTemplate>(API_ENDPOINTS.emailTemplates.duplicate(id), request ?? {});
     return response.data;
   },
 };
@@ -1194,9 +1278,9 @@ export const recurringSurveysApi = {
   /**
    * Update an existing recurring survey
    */
-  update: async (id: string, data: UpdateRecurringSurveyRequest): Promise<RecurringSurvey> => {
-    // Backend returns RecurringSurveyDto directly
-    const response = await apiClient.put<RecurringSurvey>(API_ENDPOINTS.recurringSurveys.byId(id), data);
+  update: async (id: string, data: Omit<UpdateRecurringSurveyRequest, 'id'>): Promise<RecurringSurvey> => {
+    // Backend requires id in body as well as URL
+    const response = await apiClient.put<RecurringSurvey>(API_ENDPOINTS.recurringSurveys.byId(id), { ...data, id });
     return response.data;
   },
 

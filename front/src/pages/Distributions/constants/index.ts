@@ -2,7 +2,7 @@
 
 import { AlertCircle, CheckCircle2, Clock, Pause, Send, XCircle } from 'lucide-react';
 import { DistributionStatus } from '@/types';
-import type { EmailDistribution } from '@/types';
+import type { EmailDistributionSummary } from '@/types';
 
 // Status configuration for visual presentation
 export const statusConfigKeys: Record<DistributionStatus, { labelKey: string; color: string; icon: typeof AlertCircle }> = {
@@ -23,19 +23,16 @@ export const statusConfigKeys: Record<DistributionStatus, { labelKey: string; co
   },
 };
 
-// Mock data for fallback when API is not available
-export const mockDistributions: EmailDistribution[] = [
+// Mock data for fallback when API is not available (uses summary type for list view)
+export const mockDistributions: EmailDistributionSummary[] = [
   {
     id: '1',
     surveyId: '1',
+    surveyTitle: 'Customer Feedback Survey',
     subject: 'We value your feedback',
-    body: 'Please take our survey...',
     totalRecipients: 500,
     sentCount: 498,
-    deliveredCount: 480,
     openedCount: 245,
-    clickedCount: 180,
-    bouncedCount: 12,
     status: DistributionStatus.Sent,
     sentAt: '2024-12-15T10:00:00',
     createdAt: '2024-12-14T10:00:00',
@@ -43,14 +40,11 @@ export const mockDistributions: EmailDistribution[] = [
   {
     id: '2',
     surveyId: '2',
+    surveyTitle: 'Product Survey',
     subject: 'Share your thoughts',
-    body: 'We want to hear from you...',
     totalRecipients: 150,
     sentCount: 0,
-    deliveredCount: 0,
     openedCount: 0,
-    clickedCount: 0,
-    bouncedCount: 0,
     status: DistributionStatus.Scheduled,
     scheduledAt: '2024-12-20T09:00:00',
     createdAt: '2024-12-18T10:00:00',
@@ -58,14 +52,11 @@ export const mockDistributions: EmailDistribution[] = [
   {
     id: '3',
     surveyId: '3',
+    surveyTitle: 'Service Improvement Survey',
     subject: 'Help us improve',
-    body: 'Your feedback matters...',
     totalRecipients: 1000,
     sentCount: 1000,
-    deliveredCount: 950,
     openedCount: 420,
-    clickedCount: 310,
-    bouncedCount: 25,
     status: DistributionStatus.Sent,
     sentAt: '2024-12-10T14:00:00',
     createdAt: '2024-12-09T10:00:00',
@@ -73,14 +64,11 @@ export const mockDistributions: EmailDistribution[] = [
   {
     id: '4',
     surveyId: '4',
+    surveyTitle: 'Quick Poll',
     subject: 'Quick survey request',
-    body: 'Please take a moment...',
     totalRecipients: 250,
     sentCount: 0,
-    deliveredCount: 0,
     openedCount: 0,
-    clickedCount: 0,
-    bouncedCount: 0,
     status: DistributionStatus.Draft,
     createdAt: '2024-12-16T10:00:00',
   },

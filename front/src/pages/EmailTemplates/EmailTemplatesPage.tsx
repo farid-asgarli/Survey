@@ -33,7 +33,8 @@ export function EmailTemplatesPage() {
   const createDialog = useDialogState();
 
   // Queries
-  const { data: templates = mockTemplates, isLoading, error } = useEmailTemplates();
+  const { data: templatesResponse, isLoading, error } = useEmailTemplates();
+  const templates = templatesResponse?.items ?? mockTemplates;
 
   // Mutations
   const deleteTemplate = useDeleteEmailTemplate();
@@ -84,7 +85,7 @@ export function EmailTemplatesPage() {
       action: (template) =>
         duplicateTemplate.mutateAsync({
           id: template.id,
-          newName: `${template.name} (${t('common.copy')})`,
+          request: { newName: `${template.name} (${t('common.copy')})` },
         }),
     },
   });
@@ -130,8 +131,8 @@ export function EmailTemplatesPage() {
         title={t('emailTemplates.title')}
         description={t('emailTemplates.description')}
         actions={
-          <Button onClick={() => createDialog.open()} className="hidden sm:flex">
-            <Plus className="h-4 w-4 mr-2" />
+          <Button onClick={() => createDialog.open()} className='hidden sm:flex'>
+            <Plus className='h-4 w-4 mr-2' />
             {t('emailTemplates.newTemplate')}
           </Button>
         }
@@ -139,13 +140,13 @@ export function EmailTemplatesPage() {
 
       {/* Toolbar with filters */}
       <ListPageLayout.Toolbar searchPlaceholder={t('emailTemplates.searchPlaceholder')}>
-        <Tabs value={String(filters.type)} onValueChange={(v) => setFilter('type', v as FilterType)} variant="segmented">
+        <Tabs value={String(filters.type)} onValueChange={(v) => setFilter('type', v as FilterType)} variant='segmented'>
           <TabsList>
-            <TabsTrigger value="all">{t('common.all')}</TabsTrigger>
-            <TabsTrigger value="Invitation">{t('emailTemplates.types.invitation')}</TabsTrigger>
-            <TabsTrigger value="Reminder">{t('emailTemplates.types.reminder')}</TabsTrigger>
-            <TabsTrigger value="ThankYou">{t('emailTemplates.types.thankYou')}</TabsTrigger>
-            <TabsTrigger value="Custom">{t('emailTemplates.types.custom')}</TabsTrigger>
+            <TabsTrigger value='all'>{t('common.all')}</TabsTrigger>
+            <TabsTrigger value='Invitation'>{t('emailTemplates.types.invitation')}</TabsTrigger>
+            <TabsTrigger value='Reminder'>{t('emailTemplates.types.reminder')}</TabsTrigger>
+            <TabsTrigger value='ThankYou'>{t('emailTemplates.types.thankYou')}</TabsTrigger>
+            <TabsTrigger value='Custom'>{t('emailTemplates.types.custom')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </ListPageLayout.Toolbar>
@@ -157,15 +158,15 @@ export function EmailTemplatesPage() {
       <ListPageLayout.Content>
         <ListContainer items={filteredTemplates} isLoading={isLoading} hasError={!!error} viewMode={viewMode}>
           <ListContainer.Loading>
-            <GridSkeleton viewMode={viewMode} count={6} gridHeight="h-40" listHeight="h-20" />
+            <GridSkeleton viewMode={viewMode} count={6} gridHeight='h-40' listHeight='h-20' />
           </ListContainer.Loading>
 
           <ListContainer.Error>
             <EmptyState
-              icon={<Mail className="h-7 w-7" />}
+              icon={<Mail className='h-7 w-7' />}
               title={t('emailTemplates.errors.loadFailed')}
               description={t('emailTemplates.errors.loadFailedDescription')}
-              iconVariant="muted"
+              iconVariant='muted'
               action={{
                 label: t('common.retry'),
                 onClick: () => window.location.reload(),
@@ -180,7 +181,7 @@ export function EmailTemplatesPage() {
 
           <ListContainer.Content>
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                 {filteredTemplates.map((template) => (
                   <EmailTemplateCard
                     key={template.id}
@@ -194,31 +195,31 @@ export function EmailTemplatesPage() {
                 ))}
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className='space-y-2'>
                 {filteredTemplates.map((template) => (
-                  <Card key={template.id} variant="elevated" className="p-4 cursor-pointer group" onClick={() => handleEdit(template.id)}>
-                    <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-xl bg-primary-container/50 flex items-center justify-center shrink-0">
-                        <Mail className="h-6 w-6 text-primary" />
+                  <Card key={template.id} variant='elevated' className='p-4 cursor-pointer group' onClick={() => handleEdit(template.id)}>
+                    <div className='flex items-center gap-4'>
+                      <div className='h-12 w-12 rounded-xl bg-primary-container/50 flex items-center justify-center shrink-0'>
+                        <Mail className='h-6 w-6 text-primary' />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-semibold text-on-surface truncate">{template.name}</h3>
+                      <div className='flex-1 min-w-0'>
+                        <div className='flex items-center gap-2'>
+                          <h3 className='font-semibold text-on-surface truncate'>{template.name}</h3>
                           {template.isDefault && (
-                            <Chip size="sm" className="bg-primary text-on-primary">
-                              <Star className="h-3 w-3 mr-1" fill="currentColor" />
+                            <Chip size='sm' className='bg-primary text-on-primary'>
+                              <Star className='h-3 w-3 mr-1' fill='currentColor' />
                               {t('common.default')}
                             </Chip>
                           )}
                         </div>
-                        <p className="text-sm text-on-surface-variant truncate">{template.subject}</p>
+                        <p className='text-sm text-on-surface-variant truncate'>{template.subject}</p>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <Chip size="sm" variant="assist">
+                      <div className='flex items-center gap-2 shrink-0'>
+                        <Chip size='sm' variant='assist'>
                           {template.type}
                         </Chip>
-                        <span className="text-xs text-on-surface-variant flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
+                        <span className='text-xs text-on-surface-variant flex items-center gap-1'>
+                          <Clock className='h-3 w-3' />
                           {formatDate(template.createdAt)}
                         </span>
                       </div>
@@ -232,7 +233,7 @@ export function EmailTemplatesPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} label={t('emailTemplates.newTemplate')} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} label={t('emailTemplates.newTemplate')} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
       <ListPageLayout.Dialogs>

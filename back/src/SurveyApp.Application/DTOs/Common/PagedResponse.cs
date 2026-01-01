@@ -11,7 +11,7 @@ public class PagedResponse<T>
     /// <summary>
     /// Gets or sets the items on the current page.
     /// </summary>
-    public IReadOnlyList<T> Items { get; init; } = Array.Empty<T>();
+    public IReadOnlyList<T> Items { get; init; } = [];
 
     /// <summary>
     /// Gets or sets the current page number (1-based).
@@ -98,7 +98,7 @@ public class PagedResponse<T>
     {
         return new PagedResponse<T>
         {
-            Items = Array.Empty<T>(),
+            Items = [],
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalCount = 0,

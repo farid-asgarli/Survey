@@ -12,9 +12,16 @@ public class UserDto
     public string FullName { get; set; } = null!;
     public bool EmailConfirmed { get; set; }
     public string? ProfilePictureUrl { get; set; }
+    
+    /// <summary>
+    /// Alias for ProfilePictureUrl for frontend compatibility.
+    /// </summary>
+    public string? AvatarUrl => ProfilePictureUrl;
+    
     public DateTime? LastLoginAt { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }
 
 /// <summary>
@@ -22,8 +29,7 @@ public class UserDto
 /// </summary>
 public class UserProfileDto : UserDto
 {
-    public IReadOnlyList<UserNamespaceMembershipDto> Namespaces { get; set; } =
-        Array.Empty<UserNamespaceMembershipDto>();
+    public IReadOnlyList<UserNamespaceMembershipDto> Namespaces { get; set; } = [];
 }
 
 /// <summary>

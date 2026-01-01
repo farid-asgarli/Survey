@@ -48,9 +48,9 @@ public class NpsScoreDto
     public decimal DetractorPercentage { get; set; }
 
     /// <summary>
-    /// Gets or sets the NPS category (NeedsImprovement, Good, Great, Excellent).
+    /// Gets or sets the NPS category (NeedsImprovement=0, Good=1, Great=2, Excellent=3).
     /// </summary>
-    public string Category { get; set; } = null!;
+    public NpsCategory Category { get; set; }
 
     /// <summary>
     /// Gets or sets the category description.
@@ -84,9 +84,9 @@ public class NpsTrendDto
     public decimal ChangeFromPrevious { get; set; }
 
     /// <summary>
-    /// Gets or sets the trend direction (Up, Down, Stable).
+    /// Gets or sets the trend direction (Up=0, Down=1, Stable=2).
     /// </summary>
-    public string TrendDirection { get; set; } = null!;
+    public NpsTrendDirection TrendDirection { get; set; }
 
     /// <summary>
     /// Gets or sets the start date of the trend period.

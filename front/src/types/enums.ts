@@ -236,7 +236,6 @@ export const RunStatus = {
   PartiallyCompleted: 3,
   Failed: 4,
   Cancelled: 5,
-  Skipped: 6,
 } as const;
 export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus];
 
@@ -529,8 +528,7 @@ const distributionStatusKeys: Record<DistributionStatus, string> = {
   [DistributionStatus.Failed]: 'failed',
   [DistributionStatus.Cancelled]: 'cancelled',
 };
-export const getDistributionStatusLabel = (value: DistributionStatus): string =>
-  getEnumLabel('enums.distributionStatus', distributionStatusKeys, value);
+export const getDistributionStatusLabel = (value: DistributionStatus): string => getEnumLabel('enums.distributionStatus', distributionStatusKeys, value);
 export const DistributionStatusLabels: Record<DistributionStatus, string> = {
   [DistributionStatus.Draft]: 'Draft',
   [DistributionStatus.Scheduled]: 'Scheduled',
@@ -685,7 +683,6 @@ const runStatusKeys: Record<RunStatus, string> = {
   [RunStatus.PartiallyCompleted]: 'partiallyCompleted',
   [RunStatus.Failed]: 'failed',
   [RunStatus.Cancelled]: 'cancelled',
-  [RunStatus.Skipped]: 'skipped',
 };
 export const getRunStatusLabel = (value: RunStatus): string => getEnumLabel('enums.runStatus', runStatusKeys, value);
 export const RunStatusLabels: Record<RunStatus, string> = {
@@ -695,7 +692,6 @@ export const RunStatusLabels: Record<RunStatus, string> = {
   [RunStatus.PartiallyCompleted]: 'Partially Completed',
   [RunStatus.Failed]: 'Failed',
   [RunStatus.Cancelled]: 'Cancelled',
-  [RunStatus.Skipped]: 'Skipped',
 };
 
 // Audience Type
@@ -811,8 +807,7 @@ const namespacePermissionKeys: Record<NamespacePermission, string> = {
   [NamespacePermission.ManageSettings]: 'manageSettings',
   [NamespacePermission.DeleteNamespace]: 'deleteNamespace',
 };
-export const getNamespacePermissionLabel = (value: NamespacePermission): string =>
-  getEnumLabel('enums.namespacePermission', namespacePermissionKeys, value);
+export const getNamespacePermissionLabel = (value: NamespacePermission): string => getEnumLabel('enums.namespacePermission', namespacePermissionKeys, value);
 export const NamespacePermissionLabels: Record<NamespacePermission, string> = {
   [NamespacePermission.ViewSurveys]: 'View Surveys',
   [NamespacePermission.CreateSurvey]: 'Create Survey',

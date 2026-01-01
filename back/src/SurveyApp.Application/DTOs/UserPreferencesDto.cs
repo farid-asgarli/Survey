@@ -106,6 +106,11 @@ public class OnboardingSettingsDto
     public bool HasSeenWelcomeTour { get; set; }
     public bool HasCompletedProfileSetup { get; set; }
     public bool HasCreatedFirstSurvey { get; set; }
+
+    // Getting Started Guide tracking
+    public bool HasCompletedGettingStarted { get; set; }
+    public int GettingStartedStep { get; set; } = 0;
+    public DateTime? GettingStartedCompletedAt { get; set; }
 }
 
 /// <summary>

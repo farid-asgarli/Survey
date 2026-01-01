@@ -45,6 +45,5 @@ public class NamespaceMemberDto
 /// </summary>
 public class NamespaceDetailsDto : NamespaceDto
 {
-    public IReadOnlyList<NamespaceMemberDto> Members { get; set; } =
-        Array.Empty<NamespaceMemberDto>();
+    public IReadOnlyList<NamespaceMemberDto> Members { get; set; } = [];
 }

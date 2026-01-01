@@ -1,5 +1,6 @@
 using MediatR;
 using SurveyApp.Application.Common;
+using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.DTOs.Common;
 
@@ -8,10 +9,10 @@ namespace SurveyApp.Application.Features.RecurringSurveys.Queries.GetRecurringSu
 /// <summary>
 /// Query to get paginated list of recurring surveys.
 /// </summary>
-public record GetRecurringSurveysQuery : IRequest<Result<PagedResponse<RecurringSurveyListItemDto>>>
+public record GetRecurringSurveysQuery
+    : PagedQuery,
+        IRequest<Result<PagedResponse<RecurringSurveyListItemDto>>>
 {
-    public int PageNumber { get; init; } = PaginationDefaults.DefaultPageNumber;
-    public int PageSize { get; init; } = PaginationDefaults.DefaultPageSize;
     public string? SearchTerm { get; init; }
     public bool? IsActive { get; init; }
 }

@@ -1,6 +1,6 @@
 import type { Survey, Question } from '@/types';
 import type { PublicSurvey, PublicQuestion } from '@/types/public-survey';
-import type { LogicMapResponse } from '@/types/api';
+import type { TransformedLogicMap } from '@/hooks/queries/useQuestionLogic';
 import type { LogicRule } from '@/utils/logicEvaluator';
 
 // Extended PublicQuestion type with logic rules for preview
@@ -64,23 +64,26 @@ export function questionToPublicQuestion(question: Question): PublicQuestion {
  * Merge logic map data into public questions
  * This adds the logicRules to each question for conditional logic evaluation
  */
-export function mergeLogicMapWithQuestions(questions: PublicQuestion[], logicMap: LogicMapResponse | null | undefined): PublicQuestionWithLogic[] {
+export function mergeLogicMapWithQuestions(questions: PublicQuestion[], logicMap: TransformedLogicMap | null | undefined): PublicQuestionWithLogic[] {
   if (!logicMap?.questions) {
-    return questions as PublicQuestionWithLogic[];
+    return questions.map((q) => ({ ...q, logicRules: [] }));
   }
 
   const logicByQuestionId = new Map(
     logicMap.questions.map((q) => [
       q.id,
-      q.logicRules?.map((rule) => ({
-        id: rule.id,
-        sourceQuestionId: rule.sourceQuestionId,
-        operator: rule.operator,
-        value: rule.conditionValue,
-        action: rule.action,
-        targetQuestionId: rule.targetQuestionId,
-        order: rule.priority,
-      })) ?? [],
+      q.logicRules?.map(
+        (rule) =>
+          ({
+            id: rule.id,
+            sourceQuestionId: rule.sourceQuestionId,
+            operator: rule.operator,
+            value: rule.conditionValue,
+            action: rule.action,
+            targetQuestionId: rule.targetQuestionId,
+            order: rule.priority,
+          } as LogicRule)
+      ) ?? [],
     ])
   );
 

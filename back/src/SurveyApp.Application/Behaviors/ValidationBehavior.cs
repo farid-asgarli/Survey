@@ -50,10 +50,10 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
                     .MakeGenericType(resultType)
                     .GetMethod(
                         nameof(Result<object>.ValidationFailure),
-                        new[] { typeof(IDictionary<string, string[]>) }
+                        [typeof(IDictionary<string, string[]>)]
                     );
 
-                return (TResponse)failureMethod!.Invoke(null, new object[] { errorDict })!;
+                return (TResponse)failureMethod!.Invoke(null, [errorDict])!;
             }
 
             if (responseType == typeof(Result))

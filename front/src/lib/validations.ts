@@ -132,8 +132,9 @@ export const recurringSurveySchema = z.object({
   endsAt: z.string().optional(),
   maxRuns: z.number().optional(),
   // Audience
-  audienceType: z.enum(['StaticList', 'AllContacts']),
+  audienceType: z.enum(['StaticList', 'DynamicList', 'AllContacts', 'PreviousRespondents']),
   recipientEmails: z.string().optional(),
+  audienceListId: z.string().optional(),
   // Reminders
   sendReminders: z.boolean(),
   reminderDaysAfter: z.number().optional(),

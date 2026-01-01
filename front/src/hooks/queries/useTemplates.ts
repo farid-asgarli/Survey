@@ -4,36 +4,34 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { templatesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import { surveyKeys } from './useSurveys';
-import type { TemplateCategory } from '@/types';
+import type { CreateTemplateRequest, CreateTemplateFromSurveyRequest, UpdateTemplateRequest, CreateSurveyFromTemplateRequest } from '@/types';
 import { createQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys
 export const templateKeys = createQueryKeys('templates');
 
 export interface TemplateFilters {
-  namespaceId?: string;
-  category?: TemplateCategory | 'all';
+  category?: string | 'all';
   search?: string;
   isPublic?: boolean;
   visibility?: 'all' | 'public' | 'private';
 }
 
 /**
- * Hook to fetch templates list
+ * Hook to fetch templates list.
+ * Maps frontend filters to backend GetTemplatesQuery parameters.
  */
 export function useTemplatesList(filters?: TemplateFilters) {
   const { activeNamespace } = useNamespaceStore();
 
-  // Build API params
-  const params: Record<string, string | boolean | undefined> = {
-    namespaceId: activeNamespace?.id,
-  };
+  // Build API params matching backend GetTemplatesQuery
+  const params: Record<string, string | boolean | undefined> = {};
 
   if (filters?.category && filters.category !== 'all') {
     params.category = filters.category;
   }
   if (filters?.search) {
-    params.searchTerm = filters.search; // Map search filter to searchTerm API param
+    params.searchTerm = filters.search;
   }
   if (filters?.visibility === 'public') {
     params.isPublic = true;
@@ -45,7 +43,6 @@ export function useTemplatesList(filters?: TemplateFilters) {
     queryKey: templateKeys.list(filters),
     queryFn: async () => {
       const response = await templatesApi.list(params);
-      // Return items from paginated response, default to empty array
       return response.items ?? [];
     },
     enabled: !!activeNamespace?.id,
@@ -54,7 +51,8 @@ export function useTemplatesList(filters?: TemplateFilters) {
 }
 
 /**
- * Hook to fetch a single template by ID
+ * Hook to fetch a single template by ID.
+ * Returns SurveyTemplateDto with full questions array.
  */
 export function useTemplateDetail(id: string | undefined) {
   return useQuery({
@@ -66,21 +64,14 @@ export function useTemplateDetail(id: string | undefined) {
 }
 
 /**
- * Hook to create a new template
+ * Hook to create a new template.
+ * Maps to backend CreateTemplateCommand.
  */
 export function useCreateTemplate() {
   const queryClient = useQueryClient();
-  const { activeNamespace } = useNamespaceStore();
 
   return useMutation({
-    mutationFn: (data: {
-      name: string;
-      description?: string;
-      category: TemplateCategory;
-      isPublic?: boolean;
-      languageCode: string;
-      surveyData?: Record<string, unknown>;
-    }) => templatesApi.create(activeNamespace!.id, data),
+    mutationFn: (data: CreateTemplateRequest) => templatesApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: templateKeys.lists(),
@@ -90,21 +81,14 @@ export function useCreateTemplate() {
 }
 
 /**
- * Hook to create a template from an existing survey
+ * Hook to create a template from an existing survey.
+ * Maps to backend CreateTemplateFromSurveyCommand.
  */
 export function useCreateTemplateFromSurvey() {
   const queryClient = useQueryClient();
-  const { activeNamespace } = useNamespaceStore();
 
   return useMutation({
-    mutationFn: (data: {
-      surveyId: string;
-      name: string;
-      description?: string;
-      category: TemplateCategory;
-      isPublic?: boolean;
-      languageCode?: string;
-    }) => templatesApi.createFromSurvey(activeNamespace!.id, data),
+    mutationFn: (data: CreateTemplateFromSurveyRequest) => templatesApi.createFromSurvey(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: templateKeys.lists(),
@@ -114,37 +98,24 @@ export function useCreateTemplateFromSurvey() {
 }
 
 /**
- * Hook to update a template
+ * Hook to update a template.
+ * Maps to backend UpdateTemplateCommand.
  */
 export function useUpdateTemplate() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: {
-        name?: string;
-        description?: string;
-        category?: TemplateCategory;
-        isPublic?: boolean;
-        languageCode?: string;
-        surveyData?: Record<string, unknown>;
-      };
-    }) => templatesApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateTemplateRequest }) => templatesApi.update(id, data),
     onSuccess: (updatedTemplate, { id }) => {
-      // Update detail cache
       queryClient.setQueryData(templateKeys.detail(id), updatedTemplate);
-      // Invalidate lists
       queryClient.invalidateQueries({ queryKey: templateKeys.lists() });
     },
   });
 }
 
 /**
- * Hook to delete a template
+ * Hook to delete a template.
+ * Maps to backend DeleteTemplateCommand.
  */
 export function useDeleteTemplate() {
   const queryClient = useQueryClient();
@@ -152,28 +123,24 @@ export function useDeleteTemplate() {
   return useMutation({
     mutationFn: (id: string) => templatesApi.delete(id),
     onSuccess: (_, deletedId) => {
-      // Remove from detail cache
       queryClient.removeQueries({ queryKey: templateKeys.detail(deletedId) });
-      // Invalidate lists
       queryClient.invalidateQueries({ queryKey: templateKeys.lists() });
     },
   });
 }
 
 /**
- * Hook to create a survey from a template
+ * Hook to create a survey from a template.
+ * Maps to backend CreateSurveyFromTemplateCommand.
  */
 export function useCreateSurveyFromTemplate() {
   const queryClient = useQueryClient();
-  const { activeNamespace } = useNamespaceStore();
 
   return useMutation({
-    mutationFn: ({ templateId, data }: { templateId: string; data: { title: string; description?: string; languageCode: string } }) =>
-      templatesApi.createSurveyFromTemplate(templateId, activeNamespace!.id, data),
+    mutationFn: ({ templateId, data }: { templateId: string; data: CreateSurveyFromTemplateRequest }) =>
+      templatesApi.createSurveyFromTemplate(templateId, data),
     onSuccess: (newSurvey) => {
-      // Invalidate surveys list
       queryClient.invalidateQueries({ queryKey: surveyKeys.lists() });
-      // Update template usage count in cache
       queryClient.invalidateQueries({ queryKey: templateKeys.lists() });
       return newSurvey;
     },

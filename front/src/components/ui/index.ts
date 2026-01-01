@@ -68,15 +68,7 @@ export {
 export { ToastContainer, Snackbar, toast, useToastStore } from './Toast';
 
 // Empty states & Error handling
-export {
-  EmptyState,
-  EmptyStateSurveys,
-  EmptyStateResponses,
-  EmptyStateTemplates,
-  EmptyStateSearch,
-  EmptyStateError,
-  presetIcons,
-} from './EmptyState';
+export { EmptyState, EmptyStateSurveys, EmptyStateResponses, EmptyStateTemplates, EmptyStateSearch, EmptyStateError, presetIcons } from './EmptyState';
 export type { EmptyStateAction, EmptyStateProps } from './EmptyState';
 export { OfflineIndicator, useOnlineStatus, OnlineOnly } from './OfflineIndicator';
 
@@ -118,7 +110,7 @@ export type { SegmentedButtonGroupProps, SegmentedButtonProps } from './Segmente
 
 // Media components
 export { ImageUploader } from './ImageUploader';
-export type { ImageUploaderProps, ImageUploadResult } from './ImageUploader';
+export type { ImageUploaderProps } from './ImageUploader';
 
 // Internationalization
 export { LanguageSwitcher } from './LanguageSwitcher';

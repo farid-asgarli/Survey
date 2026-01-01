@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { emailTemplatesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
-import type { CreateEmailTemplateRequest, UpdateEmailTemplateRequest } from '@/types';
+import type { CreateEmailTemplateRequest, UpdateEmailTemplateRequest, EmailTemplateListParams, DuplicateEmailTemplateRequest } from '@/types';
 import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES, GC_TIMES } from './queryUtils';
 
 // Query keys - email templates have a custom placeholders key
@@ -13,9 +13,9 @@ export const emailTemplateKeys = createExtendedQueryKeys('emailTemplates', (base
 
 /**
  * Hook to fetch all email templates for the current namespace
- * Returns EmailTemplateSummary[] for list views
+ * Returns PaginatedResponse<EmailTemplateSummary> for list views
  */
-export function useEmailTemplates(params?: { pageNumber?: number; pageSize?: number; searchTerm?: string; type?: string }) {
+export function useEmailTemplates(params?: EmailTemplateListParams) {
   const { activeNamespace } = useNamespaceStore();
   const namespaceId = activeNamespace?.id;
 
@@ -99,5 +99,7 @@ export function useSetDefaultEmailTemplate() {
  * Uses dedicated backend endpoint for atomic operation with full translation support
  */
 export function useDuplicateEmailTemplate() {
-  return useInvalidatingMutation(emailTemplateKeys, ({ id, newName }: { id: string; newName?: string }) => emailTemplatesApi.duplicate(id, newName));
+  return useInvalidatingMutation(emailTemplateKeys, ({ id, request }: { id: string; request?: DuplicateEmailTemplateRequest }) =>
+    emailTemplatesApi.duplicate(id, request)
+  );
 }

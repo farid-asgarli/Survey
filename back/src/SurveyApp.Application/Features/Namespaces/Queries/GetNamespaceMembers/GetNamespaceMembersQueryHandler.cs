@@ -63,7 +63,10 @@ public class GetNamespaceMembersQueryHandler(
                 Email = m.User?.Email ?? string.Empty,
                 FirstName = m.User?.FirstName ?? string.Empty,
                 LastName = m.User?.LastName ?? string.Empty,
+                FullName =
+                    $"{m.User?.FirstName ?? string.Empty} {m.User?.LastName ?? string.Empty}".Trim(),
                 AvatarUrl = m.User?.AvatarUrl,
+                ProfilePictureUrl = m.User?.AvatarUrl,
                 Role = m.Role,
                 JoinedAt = m.JoinedAt,
             })

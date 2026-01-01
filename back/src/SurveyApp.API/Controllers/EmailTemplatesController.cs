@@ -9,7 +9,6 @@ using SurveyApp.Application.Features.EmailTemplates.Commands.DuplicateEmailTempl
 using SurveyApp.Application.Features.EmailTemplates.Commands.UpdateEmailTemplate;
 using SurveyApp.Application.Features.EmailTemplates.Queries.GetEmailTemplateById;
 using SurveyApp.Application.Features.EmailTemplates.Queries.GetEmailTemplates;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 
@@ -73,7 +72,7 @@ public class EmailTemplatesController(IMediator mediator) : ApiControllerBase
     /// Updates an existing email template.
     /// </summary>
     /// <param name="id">The template ID.</param>
-    /// <param name="command">The update command.</param>
+    /// <param name="request">The update request.</param>
     /// <returns>The updated template.</returns>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(EmailTemplateDto), StatusCodes.Status200OK)]
@@ -81,11 +80,21 @@ public class EmailTemplatesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateEmailTemplate(
         Guid id,
-        [FromBody] UpdateEmailTemplateCommand command
+        [FromBody] UpdateEmailTemplateRequest request
     )
     {
-        if (ValidateIdMatch(id, command.Id) is { } mismatchResult)
-            return mismatchResult;
+        var command = new UpdateEmailTemplateCommand
+        {
+            Id = id,
+            Name = request.Name,
+            Type = request.Type,
+            Subject = request.Subject,
+            HtmlBody = request.HtmlBody,
+            PlainTextBody = request.PlainTextBody,
+            LanguageCode = request.LanguageCode,
+            DesignJson = request.DesignJson,
+            IsDefault = request.IsDefault,
+        };
 
         var result = await _mediator.Send(command);
 
@@ -112,17 +121,17 @@ public class EmailTemplatesController(IMediator mediator) : ApiControllerBase
     /// Creates a copy with all content and translations, but as a non-default template.
     /// </summary>
     /// <param name="id">The template ID to duplicate.</param>
-    /// <param name="command">Optional command with new name for the duplicate.</param>
+    /// <param name="request">Optional request with new name for the duplicate.</param>
     /// <returns>The duplicated template.</returns>
     [HttpPost("{id:guid}/duplicate")]
     [ProducesResponseType(typeof(EmailTemplateDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DuplicateEmailTemplate(
         Guid id,
-        [FromBody] DuplicateEmailTemplateCommand? command = null
+        [FromBody] DuplicateEmailTemplateRequest? request = null
     )
     {
-        var result = await _mediator.Send(new DuplicateEmailTemplateCommand(id, command?.NewName));
+        var result = await _mediator.Send(new DuplicateEmailTemplateCommand(id, request?.NewName));
 
         return HandleCreatedResult(result, nameof(GetEmailTemplateById), v => new { id = v.Id });
     }

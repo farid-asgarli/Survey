@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { responsesApi } from '@/services';
-import type { ResponsesListParams, ExportResponsesRequest } from '@/types';
+import type { ResponsesListParams, ExportResponsesRequest, BulkDeleteResponsesResult } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - responses use parent-scoped pattern with custom infiniteList and exportPreview keys
@@ -91,14 +91,17 @@ export function useDeleteResponse(surveyId: string) {
 
 /**
  * Hook to delete multiple responses in bulk
+ * Returns BulkDeleteResponsesResult with info about partial failures
  */
 export function useDeleteResponses(surveyId: string) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<BulkDeleteResponsesResult, Error, string[]>({
     mutationFn: (responseIds: string[]) => responsesApi.deleteBulk(surveyId, responseIds),
-    onSuccess: (_, deletedIds) => {
-      // Remove from detail cache
+    onSuccess: (result, requestedIds) => {
+      // Remove successfully deleted responses from detail cache
+      // Failed IDs are in result.failedIds, so we remove the ones that succeeded
+      const deletedIds = requestedIds.filter((id) => !result.failedIds.includes(id));
       deletedIds.forEach((id) => {
         queryClient.removeQueries({ queryKey: responseKeys.detail(surveyId, id) });
       });

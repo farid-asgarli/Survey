@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { namespacesApi } from '@/services';
 import { useNamespaceStore, useAuthStore } from '@/stores';
-import type { Namespace, CreateNamespaceRequest, InviteMemberRequest, MemberRole } from '@/types';
+import type { Namespace, CreateNamespaceRequest, InviteMemberRequest, MemberRole, PaginationParams, InviteMemberResponse } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - namespaces have bySlug and members custom keys
@@ -114,12 +114,24 @@ export function useDeleteNamespace() {
 }
 
 /**
- * Hook to fetch namespace members
+ * Hook to fetch namespace members with pagination
  */
-export function useNamespaceMembers(namespaceId: string | undefined) {
+export function useNamespaceMembers(namespaceId: string | undefined, params?: PaginationParams) {
   return useQuery({
-    queryKey: namespaceKeys.members(namespaceId!),
-    queryFn: () => namespacesApi.getMembers(namespaceId!),
+    queryKey: [...namespaceKeys.members(namespaceId!), params],
+    queryFn: () => namespacesApi.getMembers(namespaceId!, params),
+    enabled: !!namespaceId,
+    staleTime: STALE_TIMES.MEDIUM,
+  });
+}
+
+/**
+ * Hook to fetch all namespace members (non-paginated)
+ */
+export function useAllNamespaceMembers(namespaceId: string | undefined) {
+  return useQuery({
+    queryKey: [...namespaceKeys.members(namespaceId!), 'all'],
+    queryFn: () => namespacesApi.getAllMembers(namespaceId!),
     enabled: !!namespaceId,
     staleTime: STALE_TIMES.MEDIUM,
   });
@@ -132,7 +144,8 @@ export function useInviteMember() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ namespaceId, data }: { namespaceId: string; data: InviteMemberRequest }) => namespacesApi.inviteMember(namespaceId, data),
+    mutationFn: ({ namespaceId, data }: { namespaceId: string; data: InviteMemberRequest }): Promise<InviteMemberResponse> =>
+      namespacesApi.inviteMember(namespaceId, data),
     onSuccess: (_, { namespaceId }) => {
       queryClient.invalidateQueries({ queryKey: namespaceKeys.members(namespaceId) });
     },
@@ -146,8 +159,7 @@ export function useRemoveMember() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ namespaceId, membershipId }: { namespaceId: string; membershipId: string }) =>
-      namespacesApi.removeMember(namespaceId, membershipId),
+    mutationFn: ({ namespaceId, membershipId }: { namespaceId: string; membershipId: string }) => namespacesApi.removeMember(namespaceId, membershipId),
     onSuccess: (_, { namespaceId }) => {
       queryClient.invalidateQueries({ queryKey: namespaceKeys.members(namespaceId) });
     },
@@ -162,7 +174,7 @@ export function useUpdateMemberRole() {
 
   return useMutation({
     mutationFn: ({ namespaceId, membershipId, role }: { namespaceId: string; membershipId: string; role: MemberRole }) =>
-      namespacesApi.updateMemberRole(namespaceId, membershipId, { namespaceId, membershipId, role }),
+      namespacesApi.updateMemberRole(namespaceId, membershipId, role),
     onSuccess: (_, { namespaceId }) => {
       queryClient.invalidateQueries({ queryKey: namespaceKeys.members(namespaceId) });
     },

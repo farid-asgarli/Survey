@@ -121,7 +121,7 @@ export function TemplatesPage() {
       if (data.surveyId) {
         await createFromSurveyMutation.mutateAsync({
           surveyId: data.surveyId,
-          name: data.name,
+          templateName: data.name,
           description: data.description,
           category: data.category,
           isPublic: data.isPublic,
@@ -163,7 +163,11 @@ export function TemplatesPage() {
     try {
       const newSurvey = await createSurveyFromTemplateMutation.mutateAsync({
         templateId: useTemplateDialog.selectedItem.id,
-        data,
+        data: {
+          surveyTitle: data.title,
+          description: data.description,
+          languageCode: data.languageCode,
+        },
       });
       useTemplateDialog.close();
       navigate(`/surveys/${newSurvey.id}/edit`);
@@ -213,7 +217,7 @@ export function TemplatesPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
       <ListPageLayout.Dialogs>

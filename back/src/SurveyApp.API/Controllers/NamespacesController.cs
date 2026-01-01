@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApp.API.Models;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
@@ -76,10 +77,15 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(typeof(NamespaceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNamespaceCommand command)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNamespaceRequest request)
     {
-        if (ValidateIdMatch(id, command.NamespaceId) is { } mismatchResult)
-            return mismatchResult;
+        var command = new UpdateNamespaceCommand
+        {
+            NamespaceId = id,
+            Name = request.Name,
+            Description = request.Description,
+            LogoUrl = request.LogoUrl,
+        };
 
         var result = await _mediator.Send(command);
         return HandleResult(result);
@@ -104,15 +110,16 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Invite a user to a namespace
     /// </summary>
     [HttpPost("{id:guid}/members")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(InviteUserResult), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> InviteMember(
-        Guid id,
-        [FromBody] InviteUserToNamespaceCommand command
-    )
+    public async Task<IActionResult> InviteMember(Guid id, [FromBody] InviteMemberRequest request)
     {
-        if (ValidateIdMatch(id, command.NamespaceId) is { } mismatchResult)
-            return mismatchResult;
+        var command = new InviteUserToNamespaceCommand
+        {
+            NamespaceId = id,
+            Email = request.Email,
+            Role = request.Role,
+        };
 
         var result = await _mediator.Send(command);
         return HandleCreatedResult(result, nameof(GetMembers), new { id });
@@ -137,19 +144,21 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Update a member's role in a namespace
     /// </summary>
     [HttpPut("{namespaceId:guid}/members/{membershipId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UpdateMemberRoleResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateMemberRole(
         Guid namespaceId,
         Guid membershipId,
-        [FromBody] UpdateMemberRoleCommand command
+        [FromBody] UpdateMemberRoleRequest request
     )
     {
-        if (ValidateIdMatch(namespaceId, command.NamespaceId) is { } nsMismatch)
-            return nsMismatch;
-        if (ValidateIdMatch(membershipId, command.MembershipId) is { } memberMismatch)
-            return memberMismatch;
+        var command = new UpdateMemberRoleCommand
+        {
+            NamespaceId = namespaceId,
+            MembershipId = membershipId,
+            Role = request.Role,
+        };
 
         var result = await _mediator.Send(command);
         return HandleResult(result);

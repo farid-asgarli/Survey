@@ -96,7 +96,7 @@ public class GetQuestionNpsQueryHandler(
                 PromoterPercentage = npsScore.PromoterPercentage,
                 PassivePercentage = npsScore.PassivePercentage,
                 DetractorPercentage = npsScore.DetractorPercentage,
-                Category = npsScore.Category.ToString(),
+                Category = npsScore.Category,
                 CategoryDescription = npsScore.GetCategoryDescription(),
             }
         );
