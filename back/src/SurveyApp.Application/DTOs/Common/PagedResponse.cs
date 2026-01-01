@@ -1,3 +1,5 @@
+using SurveyApp.Application.Common;
+
 namespace SurveyApp.Application.DTOs.Common;
 
 /// <summary>
@@ -89,7 +91,10 @@ public class PagedResponse<T>
     /// <summary>
     /// Creates an empty paged response.
     /// </summary>
-    public static PagedResponse<T> Empty(int pageNumber = 1, int pageSize = 10)
+    public static PagedResponse<T> Empty(
+        int pageNumber = PaginationDefaults.DefaultPageNumber,
+        int pageSize = PaginationDefaults.DefaultPageSize
+    )
     {
         return new PagedResponse<T>
         {
@@ -97,49 +102,6 @@ public class PagedResponse<T>
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalCount = 0,
-        };
-    }
-}
-
-/// <summary>
-/// Request parameters for pagination.
-/// </summary>
-public record PaginationRequest
-{
-    /// <summary>
-    /// Gets or sets the page number (1-based).
-    /// </summary>
-    public int PageNumber { get; init; } = 1;
-
-    /// <summary>
-    /// Gets or sets the page size.
-    /// </summary>
-    public int PageSize { get; init; } = 10;
-
-    /// <summary>
-    /// Gets or sets the search term.
-    /// </summary>
-    public string? SearchTerm { get; init; }
-
-    /// <summary>
-    /// Gets or sets the sort field.
-    /// </summary>
-    public string? SortBy { get; init; }
-
-    /// <summary>
-    /// Gets or sets whether to sort descending.
-    /// </summary>
-    public bool SortDescending { get; init; }
-
-    /// <summary>
-    /// Validates and normalizes the pagination parameters.
-    /// </summary>
-    public PaginationRequest Normalized(int maxPageSize = 100)
-    {
-        return this with
-        {
-            PageNumber = Math.Max(1, PageNumber),
-            PageSize = Math.Clamp(PageSize, 1, maxPageSize),
         };
     }
 }

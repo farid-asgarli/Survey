@@ -44,7 +44,7 @@ export function PublicSurveyLayout({ children, title, theme, showLogoInHeader = 
 
   return (
     <div
-      className="min-h-screen bg-surface"
+      className='min-h-screen bg-surface'
       style={{
         ...(hasBackgroundImage && {
           backgroundImage: `url(${theme.backgroundImageUrl})`,
@@ -55,32 +55,34 @@ export function PublicSurveyLayout({ children, title, theme, showLogoInHeader = 
         }),
       }}
     >
-      {/* Background decoration - only show if no background image */}
+      {/* M3 Expressive Background - Solid colors with opacity, NO gradients */}
       {!hasBackgroundImage && (
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+        <div className='fixed inset-0 -z-10 overflow-hidden'>
+          {/* Primary shape - top left */}
+          <div className='absolute -top-32 -left-32 w-96 h-96 bg-primary/5 rounded-full' />
+          {/* Secondary shape - bottom right */}
+          <div className='absolute -bottom-32 -right-32 w-80 h-80 bg-secondary/5 rounded-full' />
         </div>
       )}
 
       {/* Content */}
-      <div className="relative max-w-4xl mx-auto min-h-screen flex flex-col">
+      <div className='relative max-w-4xl mx-auto min-h-screen flex flex-col'>
         {/* Logo in header - only if explicitly enabled and not on welcome screen */}
         {showLogoInHeader && theme?.logoUrl && (
-          <div className="sticky top-0 z-10 px-4 py-3 sm:px-6 sm:py-4 bg-surface/80 backdrop-blur-sm border-b border-outline-variant/20">
-            <div className="flex items-center gap-3">
+          <div className='sticky top-0 z-10 px-4 py-3 sm:px-6 sm:py-4 bg-surface/80 backdrop-blur-md border-b border-outline-variant/15'>
+            <div className='flex items-center gap-3'>
               {/* Logo with optional background */}
               <div
-                className={cn('shrink-0 flex items-center justify-center rounded-lg', theme.showLogoBackground && 'p-1.5 shadow-sm')}
+                className={cn('shrink-0 flex items-center justify-center rounded-xl', theme.showLogoBackground && 'p-1.5 border border-outline-variant/20')}
                 style={theme.showLogoBackground ? { backgroundColor: theme.logoBackgroundColor || '#ffffff' } : undefined}
               >
                 <img src={theme.logoUrl} alt={t('a11y.surveyLogo')} className={cn('w-auto object-contain rounded', getLogoSizeClass())} />
               </div>
               {/* Branding title and subtitle */}
               {(theme.brandingTitle || theme.brandingSubtitle) && (
-                <div className="min-w-0 flex-1">
-                  {theme.brandingTitle && <p className="text-sm sm:text-base font-semibold text-on-surface truncate">{theme.brandingTitle}</p>}
-                  {theme.brandingSubtitle && <p className="text-xs sm:text-sm text-on-surface-variant truncate">{theme.brandingSubtitle}</p>}
+                <div className='min-w-0 flex-1'>
+                  {theme.brandingTitle && <p className='text-sm sm:text-base font-semibold text-on-surface truncate'>{theme.brandingTitle}</p>}
+                  {theme.brandingSubtitle && <p className='text-xs sm:text-sm text-on-surface-variant truncate'>{theme.brandingSubtitle}</p>}
                 </div>
               )}
             </div>
@@ -88,12 +90,14 @@ export function PublicSurveyLayout({ children, title, theme, showLogoInHeader = 
         )}
 
         {/* Main content */}
-        <main className="flex-1 flex flex-col justify-center py-8">{children}</main>
+        <main className='flex-1 flex flex-col justify-center py-8'>{children}</main>
 
-        {/* Footer */}
-        <footer className="py-6 text-center shrink-0">
-          <p className="text-sm text-on-surface-variant/50">{t('publicSurveyPage.poweredBy')}</p>
-        </footer>
+        {/* Footer - only show "Powered by" if enabled in theme (default: true) */}
+        {theme?.showPoweredBy !== false && (
+          <footer className='py-6 text-center shrink-0'>
+            <p className='text-sm text-on-surface-variant/40 font-medium'>{t('publicSurveyPage.poweredBy')}</p>
+          </footer>
+        )}
       </div>
     </div>
   );

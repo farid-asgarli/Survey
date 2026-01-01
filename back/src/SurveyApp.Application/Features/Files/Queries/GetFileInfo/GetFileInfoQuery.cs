@@ -4,7 +4,4 @@ using SurveyApp.Application.DTOs;
 
 namespace SurveyApp.Application.Features.Files.Queries.GetFileInfo;
 
-public record GetFileInfoQuery : IRequest<Result<FileInfoDto>>
-{
-    public required string FileId { get; init; }
-}
+public record GetFileInfoQuery(string FileId) : IRequest<Result<FileInfoDto>>;

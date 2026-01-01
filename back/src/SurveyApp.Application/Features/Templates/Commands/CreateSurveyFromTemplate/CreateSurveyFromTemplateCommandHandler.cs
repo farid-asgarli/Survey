@@ -54,7 +54,7 @@ public class CreateSurveyFromTemplateCommandHandler(
         );
         if (template == null || template.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Errors.TemplateNotFound");
+            return Result<SurveyDto>.NotFound("Errors.TemplateNotFound");
         }
 
         // Create survey from template (with optional language support)

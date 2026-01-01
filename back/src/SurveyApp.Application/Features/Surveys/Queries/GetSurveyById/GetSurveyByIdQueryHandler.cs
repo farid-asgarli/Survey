@@ -5,18 +5,20 @@ using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
+using SurveyApp.Domain.Specifications.Surveys;
 
 namespace SurveyApp.Application.Features.Surveys.Queries.GetSurveyById;
 
 public class GetSurveyByIdQueryHandler(
-    ISurveyRepository surveyRepository,
+    ISpecificationRepository<Survey> surveySpecRepository,
     INamespaceRepository namespaceRepository,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService,
     IMapper mapper
 ) : IRequestHandler<GetSurveyByIdQuery, Result<SurveyDetailsDto>>
 {
-    private readonly ISurveyRepository _surveyRepository = surveyRepository;
+    private readonly ISpecificationRepository<Survey> _surveySpecRepository = surveySpecRepository;
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
@@ -30,23 +32,22 @@ public class GetSurveyByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyDetailsDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyDetailsDto>.Failure("Errors.NamespaceContextRequired");
         }
 
-        var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
-            request.SurveyId,
-            cancellationToken
-        );
+        var spec = new SurveyWithQuestionsSpec(request.SurveyId);
+        var survey = await _surveySpecRepository.FirstOrDefaultAsync(spec, cancellationToken);
+
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyDetailsDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyDetailsDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyDetailsDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyDetailsDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(

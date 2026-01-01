@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ProgressBar, QuestionCard, NavigationControls } from '@/components/features/public-survey';
-import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
+import { ProgressBar, StepIndicator, QuestionCard, NavigationControls } from '@/components/features/public-survey';
+import type { PublicQuestion, AnswerValue, PublicSurveyTheme } from '@/types/public-survey';
 
 interface OneByOneSectionProps {
   currentQuestion: PublicQuestion;
@@ -15,6 +15,8 @@ interface OneByOneSectionProps {
   onPrevious: () => void;
   onNext: () => void;
   onSubmit: () => void;
+  /** Theme settings for progress bar visibility and style */
+  theme?: PublicSurveyTheme;
 }
 
 export function OneByOneSection({
@@ -30,17 +32,36 @@ export function OneByOneSection({
   onPrevious,
   onNext,
   onSubmit,
+  theme,
 }: OneByOneSectionProps) {
   const { t } = useTranslation();
 
   // Translate error key if it looks like a translation key (contains a dot)
   const translatedError = error && error.includes('.') ? t(error) : error;
 
+  // Default to showing progress bar if not specified
+  const showProgressBar = theme?.showProgressBar !== false;
+  // Default to Bar style (1) - Backend enum: None=0, Bar=1, Percentage=2, Steps=3, Dots=4
+  const progressBarStyle = theme?.progressBarStyle ?? 1;
+
+  // Render the appropriate progress indicator based on style
+  const renderProgressIndicator = () => {
+    if (!showProgressBar) return null;
+
+    // Steps (3) and Dots (4) use the StepIndicator component
+    if (progressBarStyle === 3 || progressBarStyle === 4) {
+      return <StepIndicator current={currentQuestionIndex + 1} total={totalQuestions} className='mb-10' />;
+    }
+
+    // Default: Bar (1) or Percentage (2) use the ProgressBar component
+    return <ProgressBar current={currentQuestionIndex + 1} total={totalQuestions} className='mb-10' />;
+  };
+
   return (
-    <div className="py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Progress */}
-        <ProgressBar current={currentQuestionIndex + 1} total={totalQuestions} className="mb-10" />
+    <div className='py-8 px-4'>
+      <div className='max-w-2xl mx-auto'>
+        {/* Progress - only show if enabled in theme */}
+        {renderProgressIndicator()}
 
         {/* Question */}
         <QuestionCard
@@ -54,7 +75,7 @@ export function OneByOneSection({
         />
 
         {/* Submit error */}
-        {submitError && <div className="mt-6 p-4 rounded-xl bg-error-container text-on-error-container">{t('publicSurveyPage.submitError')}</div>}
+        {submitError && <div className='mt-6 p-4 rounded-xl bg-error-container text-on-error-container'>{t('publicSurveyPage.submitError')}</div>}
 
         {/* Navigation */}
         <NavigationControls
@@ -65,7 +86,7 @@ export function OneByOneSection({
           onPrevious={onPrevious}
           onNext={onNext}
           onSubmit={onSubmit}
-          className="mt-12"
+          className='mt-12'
         />
       </div>
     </div>

@@ -57,6 +57,32 @@ public class NamespaceRepository(ApplicationDbContext context) : INamespaceRepos
             .FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
     }
 
+    public async Task<(
+        IReadOnlyList<NamespaceMembership> Items,
+        int TotalCount
+    )> GetMembersPagedAsync(
+        Guid namespaceId,
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = _context
+            .NamespaceMemberships.AsNoTracking()
+            .Include(m => m.User)
+            .Where(m => m.NamespaceId == namespaceId);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .OrderBy(m => m.JoinedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public async Task<IReadOnlyList<Namespace>> GetAllAsync(
         CancellationToken cancellationToken = default
     )

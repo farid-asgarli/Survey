@@ -3,6 +3,7 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.Namespaces.Queries.GetNamespaceMembers;
@@ -11,13 +12,13 @@ public class GetNamespaceMembersQueryHandler(
     INamespaceRepository namespaceRepository,
     ICurrentUserService currentUserService,
     IMapper mapper
-) : IRequestHandler<GetNamespaceMembersQuery, Result<List<NamespaceMemberDto>>>
+) : IRequestHandler<GetNamespaceMembersQuery, Result<PagedResponse<NamespaceMemberDto>>>
 {
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<List<NamespaceMemberDto>>> Handle(
+    public async Task<Result<PagedResponse<NamespaceMemberDto>>> Handle(
         GetNamespaceMembersQuery request,
         CancellationToken cancellationToken
     )
@@ -28,24 +29,34 @@ public class GetNamespaceMembersQueryHandler(
         );
         if (@namespace == null)
         {
-            return Result<List<NamespaceMemberDto>>.Failure("Errors.NamespaceNotFound");
+            return Result<PagedResponse<NamespaceMemberDto>>.NotFound("Errors.NamespaceNotFound");
         }
 
         // Check if user has access
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<List<NamespaceMemberDto>>.Failure("Errors.UserNotAuthenticated");
+            return Result<PagedResponse<NamespaceMemberDto>>.Unauthorized(
+                "Errors.UserNotAuthenticated"
+            );
         }
 
         var membership = @namespace.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null)
         {
-            return Result<List<NamespaceMemberDto>>.Failure("Errors.NoAccessToNamespace");
+            return Result<PagedResponse<NamespaceMemberDto>>.Failure("Errors.NoAccessToNamespace");
         }
 
-        var members = @namespace
-            .Memberships.Select(m => new NamespaceMemberDto
+        // Get paginated members
+        var (members, totalCount) = await _namespaceRepository.GetMembersPagedAsync(
+            request.NamespaceId,
+            request.PageNumber,
+            request.PageSize,
+            cancellationToken
+        );
+
+        var memberDtos = members
+            .Select(m => new NamespaceMemberDto
             {
                 MembershipId = m.Id,
                 UserId = m.UserId,
@@ -58,6 +69,13 @@ public class GetNamespaceMembersQueryHandler(
             })
             .ToList();
 
-        return Result<List<NamespaceMemberDto>>.Success(members);
+        var pagedResponse = PagedResponse<NamespaceMemberDto>.Create(
+            memberDtos,
+            request.PageNumber,
+            request.PageSize,
+            totalCount
+        );
+
+        return Result<PagedResponse<NamespaceMemberDto>>.Success(pagedResponse);
     }
 }

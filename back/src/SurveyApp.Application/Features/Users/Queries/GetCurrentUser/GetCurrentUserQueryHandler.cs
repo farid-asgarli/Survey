@@ -25,13 +25,13 @@ public class GetCurrentUserQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<UserProfileDto>.Failure("Handler.UserNotAuthenticated");
+            return Result<UserProfileDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var user = await _userRepository.GetByIdAsync(userId.Value, cancellationToken);
         if (user == null)
         {
-            return Result<UserProfileDto>.Failure("Handler.UserNotFound");
+            return Result<UserProfileDto>.NotFound("Errors.UserNotFound");
         }
 
         var dto = _mapper.Map<UserProfileDto>(user);

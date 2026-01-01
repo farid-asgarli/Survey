@@ -40,13 +40,13 @@ public class TriggerRecurringSurveyCommandHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Errors.RecurringSurveyNotFound");
+            return Result<RecurringSurveyRunDto>.NotFound("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != ctx.NamespaceId)
         {
             return Result<RecurringSurveyRunDto>.Failure(
-                "Recurring survey does not belong to this namespace."
+                "Errors.RecurringSurveyNotInNamespace"
             );
         }
 

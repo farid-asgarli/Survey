@@ -18,7 +18,7 @@ public class LogoutCommandHandler(IIdentityService identityService, ICurrentUser
         var userId = _currentUser.UserId;
         if (!userId.HasValue)
         {
-            return Result<Unit>.Failure("Errors.NotAuthenticated", "UNAUTHORIZED");
+            return Result<Unit>.Unauthorized("Errors.NotAuthenticated");
         }
 
         await _identityService.RevokeTokenAsync(userId.Value.ToString());

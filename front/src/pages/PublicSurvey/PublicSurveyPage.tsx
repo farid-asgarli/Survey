@@ -109,8 +109,7 @@ export function PublicSurveyPage() {
 
   // Error state
   if (viewMode === 'error' || isError) {
-    const errorMessage =
-      (fetchError as { response?: { data?: { message?: string } } })?.response?.data?.message || t('publicSurveyPage.notAvailable');
+    const errorMessage = (fetchError as { response?: { data?: { message?: string } } })?.response?.data?.message || t('publicSurveyPage.notAvailable');
     return <ErrorSection message={errorMessage} onRetry={() => refetch()} />;
   }
 
@@ -130,9 +129,7 @@ export function PublicSurveyPage() {
   return (
     <PublicSurveyLayout title={survey.title} theme={survey.theme} showLogoInHeader={showLogoInHeader}>
       {/* Welcome Screen */}
-      {viewMode === 'welcome' && (
-        <WelcomeSection survey={survey} totalQuestions={totalQuestions} onStart={handleStartSurvey} isStarting={isStarting} />
-      )}
+      {viewMode === 'welcome' && <WelcomeSection survey={survey} totalQuestions={totalQuestions} onStart={handleStartSurvey} isStarting={isStarting} />}
 
       {/* Questions - One by One Mode */}
       {viewMode === 'questions' && displayMode === 'one-by-one' && currentQuestion && (
@@ -149,6 +146,7 @@ export function PublicSurveyPage() {
           onPrevious={goToPreviousQuestion}
           onNext={goToNextQuestion}
           onSubmit={handleSubmit}
+          theme={survey.theme}
         />
       )}
 

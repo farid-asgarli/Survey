@@ -6,7 +6,7 @@ namespace SurveyApp.Application.Features.QuestionLogic.Commands.RemoveQuestionLo
 /// <summary>
 /// Command to remove question logic.
 /// </summary>
-public record RemoveQuestionLogicCommand : IRequest<Result<bool>>
+public record RemoveQuestionLogicCommand : IRequest<Result<Unit>>
 {
     /// <summary>
     /// The survey ID.

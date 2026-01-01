@@ -3,6 +3,7 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.RecurringSurveys.Queries.GetRecurringSurveyRuns;
@@ -14,14 +15,14 @@ public class GetRecurringSurveyRunsQueryHandler(
     IRecurringSurveyRepository recurringSurveyRepository,
     INamespaceContext namespaceContext,
     IMapper mapper
-) : IRequestHandler<GetRecurringSurveyRunsQuery, Result<PagedList<RecurringSurveyRunDto>>>
+) : IRequestHandler<GetRecurringSurveyRunsQuery, Result<PagedResponse<RecurringSurveyRunDto>>>
 {
     private readonly IRecurringSurveyRepository _recurringSurveyRepository =
         recurringSurveyRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<PagedList<RecurringSurveyRunDto>>> Handle(
+    public async Task<Result<PagedResponse<RecurringSurveyRunDto>>> Handle(
         GetRecurringSurveyRunsQuery request,
         CancellationToken cancellationToken
     )
@@ -29,8 +30,8 @@ public class GetRecurringSurveyRunsQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<PagedList<RecurringSurveyRunDto>>.Failure(
-                "Handler.NamespaceContextRequired"
+            return Result<PagedResponse<RecurringSurveyRunDto>>.Failure(
+                "Errors.NamespaceContextRequired"
             );
         }
 
@@ -42,15 +43,15 @@ public class GetRecurringSurveyRunsQueryHandler(
 
         if (recurringSurvey == null)
         {
-            return Result<PagedList<RecurringSurveyRunDto>>.Failure(
+            return Result<PagedResponse<RecurringSurveyRunDto>>.Failure(
                 "Errors.RecurringSurveyNotFound"
             );
         }
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)
         {
-            return Result<PagedList<RecurringSurveyRunDto>>.Failure(
-                "Recurring survey does not belong to this namespace."
+            return Result<PagedResponse<RecurringSurveyRunDto>>.Failure(
+                "Errors.RecurringSurveyNotInNamespace"
             );
         }
 
@@ -63,13 +64,13 @@ public class GetRecurringSurveyRunsQueryHandler(
 
         var dtos = items.Select(item => _mapper.Map<RecurringSurveyRunDto>(item)).ToList();
 
-        var pagedList = new PagedList<RecurringSurveyRunDto>(
+        var pagedResponse = PagedResponse<RecurringSurveyRunDto>.Create(
             dtos,
-            totalCount,
             request.PageNumber,
-            request.PageSize
+            request.PageSize,
+            totalCount
         );
 
-        return Result<PagedList<RecurringSurveyRunDto>>.Success(pagedList);
+        return Result<PagedResponse<RecurringSurveyRunDto>>.Success(pagedResponse);
     }
 }

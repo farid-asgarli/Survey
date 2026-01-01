@@ -38,7 +38,7 @@ public class BulkUpdateSurveyTranslationsCommandHandler(
         );
         if (survey == null)
         {
-            return Result<BulkTranslationResultDto>.Failure("Errors.SurveyNotFound");
+            return Result<BulkTranslationResultDto>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

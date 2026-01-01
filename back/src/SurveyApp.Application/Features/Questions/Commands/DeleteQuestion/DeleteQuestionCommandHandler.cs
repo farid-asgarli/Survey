@@ -34,7 +34,7 @@ public class DeleteQuestionCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<Unit>.Failure("Errors.SurveyNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check if survey can be edited
@@ -46,7 +46,7 @@ public class DeleteQuestionCommandHandler(
         var question = survey.Questions.FirstOrDefault(q => q.Id == request.QuestionId);
         if (question == null)
         {
-            return Result<Unit>.Failure("Errors.QuestionNotFound");
+            return Result<Unit>.NotFound("Errors.QuestionNotFound");
         }
 
         survey.RemoveQuestion(request.QuestionId);

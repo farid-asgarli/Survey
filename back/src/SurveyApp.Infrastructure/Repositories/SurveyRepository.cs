@@ -64,13 +64,8 @@ public class SurveyRepository(ApplicationDbContext context) : ISurveyRepository
         CancellationToken cancellationToken = default
     )
     {
-        return await _context
-            .Surveys.AsNoTracking()
-            .Include(s => s.Namespace)
-            .Include(s => s.Translations)
-            .Include(s => s.Questions.OrderBy(q => q.Order))
-            .ThenInclude(q => q.Translations)
-            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+        // Delegates to GetByIdWithQuestionsAsync for consistency - this method exists for interface compatibility
+        return await GetByIdWithQuestionsAsync(id, cancellationToken);
     }
 
     public async Task<Survey?> GetByAccessTokenAsync(

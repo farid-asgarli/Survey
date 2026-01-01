@@ -31,7 +31,7 @@ public class GetRecurringSurveyByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<RecurringSurveyDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<RecurringSurveyDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var recurringSurvey = await _recurringSurveyRepository.GetByIdAsync(
@@ -40,13 +40,13 @@ public class GetRecurringSurveyByIdQueryHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyDto>.Failure("Errors.RecurringSurveyNotFound");
+            return Result<RecurringSurveyDto>.NotFound("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)
         {
             return Result<RecurringSurveyDto>.Failure(
-                "Recurring survey does not belong to this namespace."
+                "Errors.RecurringSurveyNotInNamespace"
             );
         }
 

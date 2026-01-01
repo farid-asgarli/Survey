@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.SurveyLinks.Commands.CreateSurveyLink;
 using SurveyApp.Application.Features.SurveyLinks.Commands.DeactivateSurveyLink;
 using SurveyApp.Application.Features.SurveyLinks.Commands.GenerateBulkLinks;
@@ -26,28 +26,23 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
     private readonly IMediator _mediator = mediator;
 
     /// <summary>
-    /// Get all links for a survey.
+    /// Get all links for a survey with pagination.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="isActive">Optional filter by active status.</param>
-    /// <returns>List of survey links.</returns>
+    /// <param name="query">Query parameters for filtering and pagination.</param>
+    /// <returns>Paginated list of survey links.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(List<SurveyLinkDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponse<SurveyLinkDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSurveyLinks(
         Guid surveyId,
-        [FromQuery] bool? isActive = null
+        [FromQuery] GetSurveyLinksQuery query
     )
     {
-        var result = await _mediator.Send(
-            new GetSurveyLinksQuery { SurveyId = surveyId, IsActive = isActive }
-        );
+        var result = await _mediator.Send(query with { SurveyId = surveyId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -61,53 +56,31 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSurveyLinkById(Guid surveyId, Guid linkId)
     {
-        var result = await _mediator.Send(
-            new GetSurveyLinkByIdQuery { SurveyId = surveyId, LinkId = linkId }
-        );
+        var result = await _mediator.Send(new GetSurveyLinkByIdQuery(surveyId, linkId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Create a new survey link.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="dto">The link creation data.</param>
+    /// <param name="command">The link creation command.</param>
     /// <returns>The created survey link.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(SurveyLinkDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateSurveyLink(
         Guid surveyId,
-        [FromBody] CreateSurveyLinkDto dto
+        [FromBody] CreateSurveyLinkCommand command
     )
     {
-        var result = await _mediator.Send(
-            new CreateSurveyLinkCommand
-            {
-                SurveyId = surveyId,
-                Type = dto.Type,
-                Name = dto.Name,
-                Source = dto.Source,
-                Medium = dto.Medium,
-                Campaign = dto.Campaign,
-                PrefillData = dto.PrefillData,
-                ExpiresAt = dto.ExpiresAt,
-                MaxUses = dto.MaxUses,
-                Password = dto.Password,
-            }
-        );
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
+        return HandleCreatedResult(
+            result,
             nameof(GetSurveyLinkById),
-            new { surveyId, linkId = result.Value!.Id },
-            result.Value
+            v => new { surveyId, linkId = v.Id }
         );
     }
 
@@ -116,7 +89,7 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="linkId">The link ID.</param>
-    /// <param name="dto">The link update data.</param>
+    /// <param name="command">The link update command.</param>
     /// <returns>The updated survey link.</returns>
     [HttpPut("{linkId:guid}")]
     [ProducesResponseType(typeof(SurveyLinkDto), StatusCodes.Status200OK)]
@@ -125,30 +98,12 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> UpdateSurveyLink(
         Guid surveyId,
         Guid linkId,
-        [FromBody] UpdateSurveyLinkDto dto
+        [FromBody] UpdateSurveyLinkCommand command
     )
     {
-        var result = await _mediator.Send(
-            new UpdateSurveyLinkCommand
-            {
-                SurveyId = surveyId,
-                LinkId = linkId,
-                Name = dto.Name,
-                Source = dto.Source,
-                Medium = dto.Medium,
-                Campaign = dto.Campaign,
-                PrefillData = dto.PrefillData,
-                ExpiresAt = dto.ExpiresAt,
-                MaxUses = dto.MaxUses,
-                Password = dto.Password,
-                IsActive = dto.IsActive,
-            }
-        );
+        var result = await _mediator.Send(command with { SurveyId = surveyId, LinkId = linkId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -166,10 +121,7 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
             new DeactivateSurveyLinkCommand { SurveyId = surveyId, LinkId = linkId }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -200,43 +152,26 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Generate multiple unique links at once.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="dto">The bulk generation data.</param>
+    /// <param name="command">The bulk generation command.</param>
     /// <returns>The generated links.</returns>
     [HttpPost("bulk")]
-    [ProducesResponseType(typeof(BulkLinkGenerationResultDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BulkLinkGenerationResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GenerateBulkLinks(
         Guid surveyId,
-        [FromBody] BulkLinkGenerationDto dto
+        [FromBody] GenerateBulkLinksCommand command
     )
     {
-        var result = await _mediator.Send(
-            new GenerateBulkLinksCommand
-            {
-                SurveyId = surveyId,
-                Count = dto.Count,
-                NamePrefix = dto.NamePrefix,
-                Source = dto.Source,
-                Medium = dto.Medium,
-                Campaign = dto.Campaign,
-                ExpiresAt = dto.ExpiresAt,
-            }
-        );
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Created("", result.Value);
+        return HandleResult(result);
     }
 }
 
@@ -245,7 +180,7 @@ public class SurveyLinksController(IMediator mediator) : ApiControllerBase
 /// </summary>
 [ApiController]
 [Route("api/s")]
-public class ShortLinksController(IMediator mediator) : ControllerBase
+public class ShortLinksController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
 
@@ -260,12 +195,8 @@ public class ShortLinksController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetLinkByToken(string token)
     {
-        var result = await _mediator.Send(new GetLinkByTokenQuery { Token = token });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        var result = await _mediator.Send(new GetLinkByTokenQuery(token));
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -299,10 +230,7 @@ public class ShortLinksController(IMediator mediator) : ControllerBase
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     private string? GetClientIpAddress()

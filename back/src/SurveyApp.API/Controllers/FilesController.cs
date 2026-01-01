@@ -136,10 +136,7 @@ public class FilesController(
         CancellationToken cancellationToken = default
     )
     {
-        var result = await _mediator.Send(
-            new GetFileInfoQuery { FileId = fileId },
-            cancellationToken
-        );
+        var result = await _mediator.Send(new GetFileInfoQuery(fileId), cancellationToken);
 
         return HandleResult(result);
     }
@@ -156,10 +153,7 @@ public class FilesController(
         CancellationToken cancellationToken = default
     )
     {
-        var result = await _mediator.Send(
-            new DownloadFileQuery { FileId = fileId },
-            cancellationToken
-        );
+        var result = await _mediator.Send(new DownloadFileQuery(fileId), cancellationToken);
 
         return HandleStreamFileResult(result, v => v.Stream, v => v.ContentType, v => v.FileName);
     }
@@ -175,10 +169,7 @@ public class FilesController(
         CancellationToken cancellationToken = default
     )
     {
-        var result = await _mediator.Send(
-            new DeleteFileCommand { FileId = fileId },
-            cancellationToken
-        );
+        var result = await _mediator.Send(new DeleteFileCommand(fileId), cancellationToken);
 
         return HandleNoContentResult(result);
     }

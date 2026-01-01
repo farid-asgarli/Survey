@@ -34,7 +34,7 @@ public class ReorderQuestionsCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<Unit>.Failure("Errors.SurveyNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check if survey can be edited

@@ -87,6 +87,21 @@ public abstract class ApiControllerBase : ControllerBase
     }
 
     /// <summary>
+    /// Creates a NoContent result for successful operations that don't return data (non-generic).
+    /// </summary>
+    /// <param name="result">The result to check.</param>
+    /// <returns>NoContent if successful, otherwise ProblemDetails.</returns>
+    protected IActionResult HandleNoContentResult(Result result)
+    {
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+
+        return result.ToProblemDetails(HttpContext);
+    }
+
+    /// <summary>
     /// Creates an ID mismatch error response.
     /// </summary>
     /// <param name="detailKey">The localization key for the detail message.</param>

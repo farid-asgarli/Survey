@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
 using SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 using SurveyApp.Application.Features.Namespaces.Commands.RemoveMember;
@@ -24,7 +26,7 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Get all namespaces for the current user
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IReadOnlyList<NamespaceDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserNamespaces()
     {
         var result = await _mediator.Send(new GetUserNamespacesQuery());
@@ -35,11 +37,11 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Get a namespace by ID
     /// </summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NamespaceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetNamespaceByIdQuery { NamespaceId = id });
+        var result = await _mediator.Send(new GetNamespaceByIdQuery(id));
         return HandleResult(result);
     }
 
@@ -47,11 +49,11 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Get a namespace by slug
     /// </summary>
     [HttpGet("by-slug/{slug}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NamespaceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBySlug(string slug)
     {
-        var result = await _mediator.Send(new GetNamespaceBySlugQuery { Slug = slug });
+        var result = await _mediator.Send(new GetNamespaceBySlugQuery(slug));
         return HandleResult(result);
     }
 
@@ -59,7 +61,7 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Create a new namespace
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(NamespaceDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateNamespaceCommand command)
     {
@@ -71,7 +73,7 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     /// Update a namespace
     /// </summary>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(NamespaceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNamespaceCommand command)
@@ -84,14 +86,17 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
     }
 
     /// <summary>
-    /// Get members of a namespace
+    /// Get members of a namespace with pagination
     /// </summary>
+    /// <param name="id">The namespace ID.</param>
+    /// <param name="query">Query parameters for pagination.</param>
+    /// <returns>Paginated list of namespace members.</returns>
     [HttpGet("{id:guid}/members")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponse<NamespaceMemberDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetMembers(Guid id)
+    public async Task<IActionResult> GetMembers(Guid id, [FromQuery] GetNamespaceMembersQuery query)
     {
-        var result = await _mediator.Send(new GetNamespaceMembersQuery { NamespaceId = id });
+        var result = await _mediator.Send(query with { NamespaceId = id });
         return HandleResult(result);
     }
 

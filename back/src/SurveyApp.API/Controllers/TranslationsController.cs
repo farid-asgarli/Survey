@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
 using SurveyApp.Application.Features.Translations.Commands.DeleteSurveyTranslation;
 using SurveyApp.Application.Features.Translations.Queries.GetSurveyTranslations;
@@ -28,12 +27,8 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTranslations(Guid surveyId)
     {
-        var result = await _mediator.Send(new GetSurveyTranslationsQuery { SurveyId = surveyId });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        var result = await _mediator.Send(new GetSurveyTranslationsQuery(surveyId));
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -41,7 +36,7 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
     /// This allows managing all language versions of a survey at once.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The translations to add or update.</param>
+    /// <param name="command">The translations command.</param>
     /// <returns>Result of the bulk update operation.</returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -49,22 +44,12 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> BulkUpdateTranslations(
         Guid surveyId,
-        [FromBody] BulkUpdateTranslationsRequest request
+        [FromBody] BulkUpdateSurveyTranslationsCommand command
     )
     {
-        var result = await _mediator.Send(
-            new BulkUpdateSurveyTranslationsCommand
-            {
-                SurveyId = surveyId,
-                Translations = request.Translations,
-                QuestionTranslations = request.QuestionTranslations,
-            }
-        );
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -95,10 +80,7 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -117,25 +99,6 @@ public class TranslationsController(IMediator mediator) : ApiControllerBase
             new DeleteSurveyTranslationCommand { SurveyId = surveyId, LanguageCode = languageCode }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
-}
-
-/// <summary>
-/// Request model for bulk updating translations.
-/// </summary>
-public class BulkUpdateTranslationsRequest
-{
-    /// <summary>
-    /// The survey-level translations to add or update.
-    /// </summary>
-    public IReadOnlyList<SurveyTranslationDto> Translations { get; set; } = [];
-
-    /// <summary>
-    /// The question translations to add or update.
-    /// </summary>
-    public IReadOnlyList<QuestionTranslationUpdateDto>? QuestionTranslations { get; set; }
 }

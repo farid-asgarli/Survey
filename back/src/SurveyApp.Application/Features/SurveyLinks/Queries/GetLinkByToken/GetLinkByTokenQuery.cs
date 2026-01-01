@@ -6,10 +6,8 @@ namespace SurveyApp.Application.Features.SurveyLinks.Queries.GetLinkByToken;
 /// <summary>
 /// Query to get a survey link by its token (for public access).
 /// </summary>
-public record GetLinkByTokenQuery : IRequest<Result<LinkByTokenResult>>
-{
-    public string Token { get; init; } = null!;
-}
+/// <param name="Token">The unique token identifying the link.</param>
+public record GetLinkByTokenQuery(string Token) : IRequest<Result<LinkByTokenResult>>;
 
 /// <summary>
 /// Result of getting a link by token.

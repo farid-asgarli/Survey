@@ -2,21 +2,26 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
+using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
+using SurveyApp.Domain.Specifications.Distributions;
 
 namespace SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributions;
 
 public class GetDistributionsQueryHandler(
-    IEmailDistributionRepository distributionRepository,
+    ISpecificationRepository<EmailDistribution> distributionRepository,
     ISurveyRepository surveyRepository,
     INamespaceContext namespaceContext
-) : IRequestHandler<GetDistributionsQuery, Result<IReadOnlyList<EmailDistributionSummaryDto>>>
+) : IRequestHandler<GetDistributionsQuery, Result<PagedResponse<EmailDistributionSummaryDto>>>
 {
-    private readonly IEmailDistributionRepository _distributionRepository = distributionRepository;
+    private readonly ISpecificationRepository<EmailDistribution> _distributionRepository =
+        distributionRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
 
-    public async Task<Result<IReadOnlyList<EmailDistributionSummaryDto>>> Handle(
+    public async Task<Result<PagedResponse<EmailDistributionSummaryDto>>> Handle(
         GetDistributionsQuery request,
         CancellationToken cancellationToken
     )
@@ -24,7 +29,7 @@ public class GetDistributionsQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<IReadOnlyList<EmailDistributionSummaryDto>>.Failure(
+            return Result<PagedResponse<EmailDistributionSummaryDto>>.Failure(
                 "Errors.NamespaceRequired"
             );
         }
@@ -33,15 +38,19 @@ public class GetDistributionsQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<IReadOnlyList<EmailDistributionSummaryDto>>.Failure(
+            return Result<PagedResponse<EmailDistributionSummaryDto>>.Failure(
                 "Errors.SurveyNotFound"
             );
         }
 
-        var (distributions, _) = await _distributionRepository.GetPagedBySurveyIdAsync(
+        // Use specification pattern for querying
+        var spec = new DistributionsBySurveySpec(
             request.SurveyId,
-            request.PageNumber,
-            request.PageSize,
+            PagingParameters.Create(request.PageNumber, request.PageSize)
+        );
+
+        var (distributions, totalCount) = await _distributionRepository.GetPagedAsync(
+            spec,
             cancellationToken
         );
 
@@ -62,6 +71,13 @@ public class GetDistributionsQueryHandler(
             })
             .ToList();
 
-        return Result<IReadOnlyList<EmailDistributionSummaryDto>>.Success(dtos);
+        var pagedResponse = PagedResponse<EmailDistributionSummaryDto>.Create(
+            dtos,
+            request.PageNumber,
+            request.PageSize,
+            totalCount
+        );
+
+        return Result<PagedResponse<EmailDistributionSummaryDto>>.Success(pagedResponse);
     }
 }

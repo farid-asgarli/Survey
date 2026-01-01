@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.Themes.Commands.ApplyThemeToSurvey;
 using SurveyApp.Application.Features.Themes.Commands.CreateTheme;
 using SurveyApp.Application.Features.Themes.Commands.DeleteTheme;
@@ -29,26 +30,13 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Gets all themes in the current namespace.
     /// </summary>
-    /// <param name="pageNumber">Page number (default: 1).</param>
-    /// <param name="pageSize">Page size (default: 20).</param>
-    /// <param name="searchTerm">Optional search term.</param>
-    /// <returns>List of themes.</returns>
+    /// <param name="query">Query parameters for filtering and pagination.</param>
+    /// <returns>Paginated list of themes.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IReadOnlyList<SurveyThemeSummaryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponse<SurveyThemeSummaryDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetThemes(
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 20,
-        [FromQuery] string? searchTerm = null
-    )
+    public async Task<IActionResult> GetThemes([FromQuery] GetThemesQuery query)
     {
-        var query = new GetThemesQuery
-        {
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            SearchTerm = searchTerm,
-        };
-
         var result = await _mediator.Send(query);
         return HandleResult(result);
     }
@@ -56,12 +44,13 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Gets all public themes available to all namespaces.
     /// </summary>
-    /// <returns>List of public themes.</returns>
+    /// <param name="query">Query parameters for filtering and pagination.</param>
+    /// <returns>Paginated list of public themes.</returns>
     [HttpGet("public")]
-    [ProducesResponseType(typeof(IReadOnlyList<SurveyThemeSummaryDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPublicThemes()
+    [ProducesResponseType(typeof(PagedResponse<SurveyThemeSummaryDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPublicThemes([FromQuery] GetPublicThemesQuery query)
     {
-        var result = await _mediator.Send(new GetPublicThemesQuery());
+        var result = await _mediator.Send(query);
         return HandleResult(result);
     }
 
@@ -105,35 +94,22 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     {
         var result = await _mediator.Send(new GetThemePreviewQuery(id));
 
-        if (!result.IsSuccess)
+        if (!result.IsSuccess || result.Value is null)
             return result.ToProblemDetails(HttpContext);
 
-        return Content(result.Value!.GeneratedCss, "text/css");
+        return Content(result.Value.GeneratedCss, "text/css");
     }
 
     /// <summary>
     /// Creates a new theme.
     /// </summary>
-    /// <param name="request">The theme creation request.</param>
+    /// <param name="command">The theme creation command.</param>
     /// <returns>The created theme.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(SurveyThemeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateTheme([FromBody] CreateThemeDto request)
+    public async Task<IActionResult> CreateTheme([FromBody] CreateThemeCommand command)
     {
-        var command = new CreateThemeCommand
-        {
-            Name = request.Name,
-            Description = request.Description,
-            IsPublic = request.IsPublic,
-            Colors = request.Colors,
-            Typography = request.Typography,
-            Layout = request.Layout,
-            Branding = request.Branding,
-            Button = request.Button,
-            CustomCss = request.CustomCss,
-        };
-
         var result = await _mediator.Send(command);
         return HandleCreatedResult(result, nameof(GetThemeById), v => new { id = v.Id });
     }
@@ -142,27 +118,16 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     /// Updates an existing theme.
     /// </summary>
     /// <param name="id">The theme ID.</param>
-    /// <param name="request">The theme update request.</param>
+    /// <param name="command">The theme update command.</param>
     /// <returns>The updated theme.</returns>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(SurveyThemeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateTheme(Guid id, [FromBody] UpdateThemeDto request)
+    public async Task<IActionResult> UpdateTheme(Guid id, [FromBody] UpdateThemeCommand command)
     {
-        var command = new UpdateThemeCommand
-        {
-            ThemeId = id,
-            Name = request.Name,
-            Description = request.Description,
-            IsPublic = request.IsPublic,
-            Colors = request.Colors,
-            Typography = request.Typography,
-            Layout = request.Layout,
-            Branding = request.Branding,
-            Button = request.Button,
-            CustomCss = request.CustomCss,
-        };
+        if (ValidateIdMatch(id, command.ThemeId) is { } mismatchResult)
+            return mismatchResult;
 
         var result = await _mediator.Send(command);
         return HandleResult(result);
@@ -179,7 +144,7 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteTheme(Guid id)
     {
-        var result = await _mediator.Send(new DeleteThemeCommand { ThemeId = id });
+        var result = await _mediator.Send(new DeleteThemeCommand(id));
         return HandleNoContentResult(result);
     }
 
@@ -187,7 +152,7 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     /// Duplicates an existing theme.
     /// </summary>
     /// <param name="id">The source theme ID.</param>
-    /// <param name="request">The duplicate request with new name.</param>
+    /// <param name="command">The duplicate command with optional new name.</param>
     /// <returns>The new theme.</returns>
     [HttpPost("{id:guid}/duplicate")]
     [ProducesResponseType(typeof(SurveyThemeDto), StatusCodes.Status201Created)]
@@ -195,11 +160,14 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DuplicateTheme(
         Guid id,
-        [FromBody] DuplicateThemeRequest request
+        [FromBody] DuplicateThemeCommand? command = null
     )
     {
         var result = await _mediator.Send(
-            new DuplicateThemeCommand { ThemeId = id, NewName = request.NewName }
+            (command ?? new DuplicateThemeCommand()) with
+            {
+                ThemeId = id,
+            }
         );
         return HandleCreatedResult(result, nameof(GetThemeById), v => new { id = v.Id });
     }
@@ -215,7 +183,7 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SetDefaultTheme(Guid id)
     {
-        var result = await _mediator.Send(new SetDefaultThemeCommand { ThemeId = id });
+        var result = await _mediator.Send(new SetDefaultThemeCommand(id));
         return HandleNoContentResult(result);
     }
 
@@ -223,29 +191,18 @@ public class ThemesController(IMediator mediator) : ApiControllerBase
     /// Applies a theme to a survey.
     /// </summary>
     /// <param name="id">The theme ID.</param>
-    /// <param name="request">The request containing the survey ID.</param>
+    /// <param name="command">The command containing the survey ID.</param>
     /// <returns>No content.</returns>
     [HttpPost("{id:guid}/apply")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ApplyThemeToSurvey(Guid id, [FromBody] ApplyThemeDto request)
+    public async Task<IActionResult> ApplyThemeToSurvey(
+        Guid id,
+        [FromBody] ApplyThemeToSurveyCommand command
+    )
     {
-        var result = await _mediator.Send(
-            new ApplyThemeToSurveyCommand { ThemeId = id, SurveyId = request.SurveyId }
-        );
+        var result = await _mediator.Send(command with { ThemeId = id });
         return HandleNoContentResult(result);
     }
 }
-
-#region Request DTOs
-
-/// <summary>
-/// Request for duplicating a theme.
-/// </summary>
-public class DuplicateThemeRequest
-{
-    public string NewName { get; set; } = null!;
-}
-
-#endregion

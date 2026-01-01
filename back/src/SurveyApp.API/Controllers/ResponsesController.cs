@@ -2,6 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApp.API.Extensions;
+using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
+using SurveyApp.Application.Features.Responses.Commands.BulkDeleteResponses;
 using SurveyApp.Application.Features.Responses.Commands.DeleteResponse;
 using SurveyApp.Application.Features.Responses.Commands.StartResponse;
 using SurveyApp.Application.Features.Responses.Commands.SubmitResponse;
@@ -21,27 +24,10 @@ public class ResponsesController(IMediator mediator) : ApiControllerBase
     /// Get responses for a survey
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetResponses(
-        [FromQuery] Guid surveyId,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10,
-        [FromQuery] bool? isComplete = null,
-        [FromQuery] DateTime? fromDate = null,
-        [FromQuery] DateTime? toDate = null
-    )
+    [ProducesResponseType(typeof(PagedResponse<ResponseListItemDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetResponses([FromQuery] GetResponsesQuery query)
     {
-        var result = await _mediator.Send(
-            new GetResponsesQuery
-            {
-                SurveyId = surveyId,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                IsComplete = isComplete,
-                FromDate = fromDate,
-                ToDate = toDate,
-            }
-        );
+        var result = await _mediator.Send(query);
         return HandleResult(result);
     }
 
@@ -49,11 +35,11 @@ public class ResponsesController(IMediator mediator) : ApiControllerBase
     /// Get a response by ID
     /// </summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SurveyResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetResponseByIdQuery { ResponseId = id });
+        var result = await _mediator.Send(new GetResponseByIdQuery(id));
         return HandleResult(result);
     }
 
@@ -115,17 +101,10 @@ public class ResponsesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SubmitById(
         Guid id,
-        [FromBody] SubmitResponseByIdRequest request
+        [FromBody] SubmitSurveyResponseCommand command
     )
     {
-        var command = new SubmitSurveyResponseCommand
-        {
-            ResponseId = id,
-            Answers = request.Answers,
-            Metadata = request.Metadata,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command with { ResponseId = id });
         return HandleResult(result);
     }
 
@@ -138,7 +117,7 @@ public class ResponsesController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _mediator.Send(new DeleteResponseCommand { ResponseId = id });
+        var result = await _mediator.Send(new DeleteResponseCommand(id));
         return HandleNoContentResult(result);
     }
 
@@ -146,67 +125,20 @@ public class ResponsesController(IMediator mediator) : ApiControllerBase
     /// Delete multiple responses in bulk
     /// </summary>
     [HttpPost("bulk-delete")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteResponsesRequest request)
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteResponsesCommand command)
     {
-        if (request.ResponseIds == null || request.ResponseIds.Count == 0)
-        {
-            return BadRequest("At least one response ID is required.");
-        }
+        var result = await _mediator.Send(command);
 
-        var errors = new List<string>();
+        if (!result.IsSuccess)
+            return result.ToProblemDetails(HttpContext);
 
-        foreach (var responseId in request.ResponseIds)
-        {
-            var result = await _mediator.Send(
-                new DeleteResponseCommand { ResponseId = responseId }
-            );
-            if (!result.IsSuccess)
-            {
-                errors.Add($"Failed to delete response {responseId}: {result.Error}");
-            }
-        }
+        // Return NoContent if all deletions succeeded, otherwise return the partial result
+        if (result.Value!.IsComplete)
+            return NoContent();
 
-        if (errors.Count > 0 && errors.Count == request.ResponseIds.Count)
-        {
-            // All deletions failed
-            return BadRequest(new { message = "All deletions failed", errors });
-        }
-
-        // Return success even if some failed (partial success)
-        return NoContent();
+        return Ok(result.Value);
     }
-}
-
-/// <summary>
-/// Request body for bulk deleting responses.
-/// </summary>
-public class BulkDeleteResponsesRequest
-{
-    /// <summary>
-    /// The survey ID (for authorization purposes).
-    /// </summary>
-    public Guid SurveyId { get; init; }
-
-    /// <summary>
-    /// The IDs of the responses to delete.
-    /// </summary>
-    public List<Guid> ResponseIds { get; init; } = [];
-}
-
-/// <summary>
-/// Request body for submitting a response by ID.
-/// </summary>
-public class SubmitResponseByIdRequest
-{
-    /// <summary>
-    /// The answers to submit.
-    /// </summary>
-    public List<SubmitAnswerDto> Answers { get; init; } = [];
-
-    /// <summary>
-    /// Optional metadata.
-    /// </summary>
-    public Dictionary<string, string>? Metadata { get; init; }
 }

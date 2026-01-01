@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.CreateRecurringSurvey;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.DeleteRecurringSurvey;
 using SurveyApp.Application.Features.RecurringSurveys.Commands.PauseRecurringSurvey;
@@ -29,24 +31,13 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Get all recurring surveys in the current namespace.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRecurringSurveys(
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10,
-        [FromQuery] string? searchTerm = null,
-        [FromQuery] bool? isActive = null
-    )
+    [ProducesResponseType(
+        typeof(PagedResponse<RecurringSurveyListItemDto>),
+        StatusCodes.Status200OK
+    )]
+    public async Task<IActionResult> GetRecurringSurveys([FromQuery] GetRecurringSurveysQuery query)
     {
-        var result = await _mediator.Send(
-            new GetRecurringSurveysQuery
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                SearchTerm = searchTerm,
-                IsActive = isActive,
-            }
-        );
-
+        var result = await _mediator.Send(query);
         return HandleResult(result);
     }
 
@@ -54,10 +45,10 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Get upcoming scheduled runs.
     /// </summary>
     [HttpGet("upcoming")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<UpcomingRunDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUpcomingRuns([FromQuery] int count = 10)
     {
-        var result = await _mediator.Send(new GetUpcomingRunsQuery { Count = count });
+        var result = await _mediator.Send(new GetUpcomingRunsQuery(count));
 
         return HandleResult(result);
     }
@@ -66,11 +57,11 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Get a recurring survey by ID.
     /// </summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetRecurringSurveyByIdQuery { Id = id });
+        var result = await _mediator.Send(new GetRecurringSurveyByIdQuery(id));
 
         return HandleResult(result);
     }
@@ -79,7 +70,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Create a new recurring survey.
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(RecurringSurveyDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateRecurringSurveyCommand command)
     {
@@ -92,7 +83,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Update a recurring survey.
     /// </summary>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(
@@ -100,8 +91,8 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
         [FromBody] UpdateRecurringSurveyCommand command
     )
     {
-        if (id != command.Id)
-            return IdMismatchError();
+        if (ValidateIdMatch(id, command.Id) is { } mismatchResult)
+            return mismatchResult;
 
         var result = await _mediator.Send(command);
 
@@ -116,7 +107,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _mediator.Send(new DeleteRecurringSurveyCommand { Id = id });
+        var result = await _mediator.Send(new DeleteRecurringSurveyCommand(id));
 
         return HandleNoContentResult(result);
     }
@@ -129,7 +120,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Pause(Guid id)
     {
-        var result = await _mediator.Send(new PauseRecurringSurveyCommand { Id = id });
+        var result = await _mediator.Send(new PauseRecurringSurveyCommand(id));
 
         return HandleResult(result);
     }
@@ -142,7 +133,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Resume(Guid id)
     {
-        var result = await _mediator.Send(new ResumeRecurringSurveyCommand { Id = id });
+        var result = await _mediator.Send(new ResumeRecurringSurveyCommand(id));
 
         return HandleResult(result);
     }
@@ -155,7 +146,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Trigger(Guid id)
     {
-        var result = await _mediator.Send(new TriggerRecurringSurveyCommand { Id = id });
+        var result = await _mediator.Send(new TriggerRecurringSurveyCommand(id));
 
         return HandleResult(result);
     }
@@ -164,23 +155,11 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Get run history for a recurring survey.
     /// </summary>
     [HttpGet("{id:guid}/runs")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedResponse<RecurringSurveyRunDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRuns(
-        Guid id,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10
-    )
+    public async Task<IActionResult> GetRuns(Guid id, [FromQuery] GetRecurringSurveyRunsQuery query)
     {
-        var result = await _mediator.Send(
-            new GetRecurringSurveyRunsQuery
-            {
-                RecurringSurveyId = id,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-            }
-        );
-
+        var result = await _mediator.Send(query with { RecurringSurveyId = id });
         return HandleResult(result);
     }
 
@@ -188,13 +167,11 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Get a specific run by ID.
     /// </summary>
     [HttpGet("{id:guid}/runs/{runId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyRunDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRunById(Guid id, Guid runId)
     {
-        var result = await _mediator.Send(
-            new GetRecurringSurveyRunByIdQuery { RecurringSurveyId = id, RunId = runId }
-        );
+        var result = await _mediator.Send(new GetRecurringSurveyRunByIdQuery(id, runId));
 
         return HandleResult(result);
     }

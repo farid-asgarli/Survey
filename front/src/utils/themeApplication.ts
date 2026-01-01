@@ -2,14 +2,33 @@
 
 import type { PublicSurveyTheme } from '@/types/public-survey';
 
+// Store the original palette and theme for restoration
+let originalPalette: string | null = null;
+let originalTheme: string | null = null;
+
 /**
  * Applies a survey theme to the document
- * This creates CSS custom properties that override the default M3 colors
+ * This creates CSS custom properties that override the default M3 colors.
+ *
+ * IMPORTANT: This function removes the data-palette and data-theme attributes
+ * to prevent the app's palette-based CSS selectors from overriding the survey theme.
+ * The original values are restored when clearSurveyTheme() is called.
  */
 export function applySurveyTheme(theme: PublicSurveyTheme | undefined): void {
   if (!theme) return;
 
   const root = document.documentElement;
+
+  // Store original palette/theme and remove them to prevent CSS attribute selectors
+  // from overriding our inline style custom properties
+  originalPalette = root.getAttribute('data-palette');
+  originalTheme = root.getAttribute('data-theme');
+  root.removeAttribute('data-palette');
+  root.removeAttribute('data-theme');
+  root.classList.remove('dark');
+
+  // Mark as survey mode for any special CSS handling
+  root.setAttribute('data-survey-mode', 'true');
 
   // Primary colors
   if (theme.primaryColor) {
@@ -75,10 +94,31 @@ export function applySurveyTheme(theme: PublicSurveyTheme | undefined): void {
     root.style.setProperty('--color-outline-variant', theme.outlineVariantColor);
   }
 
-  // Font family
+  // Typography
   if (theme.fontFamily) {
     root.style.setProperty('--font-sans', theme.fontFamily);
     document.body.style.fontFamily = theme.fontFamily;
+  }
+  if (theme.headingFontFamily) {
+    root.style.setProperty('--font-heading', theme.headingFontFamily);
+  }
+  if (theme.baseFontSize) {
+    root.style.setProperty('--base-font-size', `${theme.baseFontSize}px`);
+  }
+
+  // Button styling - border radius based on buttonStyle
+  // buttonStyle: 0 = Rounded (8px), 1 = Square (0), 2 = Pill (9999px)
+  if (theme.buttonStyle !== undefined) {
+    const buttonRadius = theme.buttonStyle === 1 ? '0' : theme.buttonStyle === 2 ? '9999px' : '8px';
+    // Input radius: same logic but capped at 12px for readability
+    const inputRadius = theme.buttonStyle === 1 ? '0' : theme.buttonStyle === 2 ? '12px' : '8px';
+    root.style.setProperty('--button-border-radius', buttonRadius);
+    root.style.setProperty('--input-border-radius', inputRadius);
+    // Also set M3 radius variables for buttons
+    root.style.setProperty('--radius-button', buttonRadius);
+  }
+  if (theme.buttonTextColor) {
+    root.style.setProperty('--color-button-text', theme.buttonTextColor);
   }
 }
 
@@ -113,10 +153,34 @@ export function clearSurveyTheme(): void {
     '--color-outline',
     '--color-outline-variant',
     '--font-sans',
+    '--font-heading',
+    '--base-font-size',
+    '--button-border-radius',
+    '--input-border-radius',
+    '--radius-button',
+    '--color-button-text',
   ];
 
   properties.forEach((prop) => root.style.removeProperty(prop));
   document.body.style.fontFamily = '';
+
+  // Remove survey mode marker
+  root.removeAttribute('data-survey-mode');
+
+  // Restore original palette and theme if they existed
+  if (originalPalette) {
+    root.setAttribute('data-palette', originalPalette);
+  }
+  if (originalTheme) {
+    root.setAttribute('data-theme', originalTheme);
+    if (originalTheme === 'dark') {
+      root.classList.add('dark');
+    }
+  }
+
+  // Reset stored values
+  originalPalette = null;
+  originalTheme = null;
 }
 
 /**

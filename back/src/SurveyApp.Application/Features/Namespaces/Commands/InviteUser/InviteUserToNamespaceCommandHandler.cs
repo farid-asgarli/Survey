@@ -30,14 +30,14 @@ public class InviteUserToNamespaceCommandHandler(
         );
         if (@namespace == null)
         {
-            return Result<InviteUserResult>.Failure("Errors.NamespaceNotFound");
+            return Result<InviteUserResult>.NotFound("Errors.NamespaceNotFound");
         }
 
         // Check permission
         var currentUserId = _currentUserService.UserId;
         if (!currentUserId.HasValue)
         {
-            return Result<InviteUserResult>.Failure("Errors.UserNotAuthenticated");
+            return Result<InviteUserResult>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var currentMembership = @namespace.Memberships.FirstOrDefault(m =>
@@ -48,7 +48,7 @@ public class InviteUserToNamespaceCommandHandler(
             || !currentMembership.HasPermission(NamespacePermission.ManageMembers)
         )
         {
-            return Result<InviteUserResult>.Failure("Errors.NoPermissionInviteUsers");
+            return Result<InviteUserResult>.Forbidden("Errors.NoPermissionInviteUsers");
         }
 
         // Cannot assign a role higher than your own

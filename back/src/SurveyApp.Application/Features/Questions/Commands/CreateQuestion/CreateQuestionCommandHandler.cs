@@ -1,7 +1,6 @@
 using AutoMapper;
 using MediatR;
 using SurveyApp.Application.Common;
-using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Services;
 using SurveyApp.Domain.Enums;

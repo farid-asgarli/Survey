@@ -7,7 +7,5 @@ namespace SurveyApp.Application.Features.RecurringSurveys.Queries.GetRecurringSu
 /// <summary>
 /// Query to get a recurring survey by ID.
 /// </summary>
-public record GetRecurringSurveyByIdQuery : IRequest<Result<RecurringSurveyDto>>
-{
-    public Guid Id { get; init; }
-}
+/// <param name="Id">The recurring survey ID.</param>
+public record GetRecurringSurveyByIdQuery(Guid Id) : IRequest<Result<RecurringSurveyDto>>;

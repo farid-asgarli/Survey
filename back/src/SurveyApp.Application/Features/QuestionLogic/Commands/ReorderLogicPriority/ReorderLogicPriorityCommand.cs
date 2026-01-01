@@ -6,7 +6,7 @@ namespace SurveyApp.Application.Features.QuestionLogic.Commands.ReorderLogicPrio
 /// <summary>
 /// Command to reorder logic priority.
 /// </summary>
-public record ReorderLogicPriorityCommand : IRequest<Result<bool>>
+public record ReorderLogicPriorityCommand : IRequest<Result<Unit>>
 {
     /// <summary>
     /// The survey ID.

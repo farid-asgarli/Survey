@@ -27,13 +27,13 @@ public class UpdateProfileCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<UserDto>.Failure("Handler.UserNotAuthenticated");
+            return Result<UserDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var user = await _userRepository.GetByIdForUpdateAsync(userId.Value, cancellationToken);
         if (user == null)
         {
-            return Result<UserDto>.Failure("Handler.UserNotFound");
+            return Result<UserDto>.NotFound("Errors.UserNotFound");
         }
 
         user.UpdateProfile(request.FirstName, request.LastName, request.AvatarUrl);

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -17,74 +16,188 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
-                    Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    DefaultLanguage = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "en"
+                    ),
+                    Type = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
                     AvailablePlaceholders = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmailTemplates", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Namespaces",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Slug = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    SubscriptionTier = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    MaxUsers = table.Column<int>(type: "integer", nullable: false, defaultValue: 10),
-                    MaxSurveys = table.Column<int>(type: "integer", nullable: false, defaultValue: 10),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    LogoUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Name = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false
+                    ),
+                    Slug = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    SubscriptionTier = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false
+                    ),
+                    IsActive = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    MaxUsers = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 10
+                    ),
+                    MaxSurveys = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 10
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    LogoUrl = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Namespaces", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Email = table.Column<string>(
+                        type: "character varying(256)",
+                        maxLength: 256,
+                        nullable: false
+                    ),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    ProfilePictureUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    LastLoginAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FirstName = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    LastName = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    EmailConfirmed = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    ProfilePictureUrl = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    LastLoginAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    IsActive = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "EmailTemplateTranslations",
@@ -92,15 +205,34 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     EmailTemplateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Subject = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Name = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: false
+                    ),
+                    Subject = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: false
+                    ),
                     HtmlBody = table.Column<string>(type: "text", nullable: false),
                     PlainTextBody = table.Column<string>(type: "text", nullable: true),
                     DesignJson = table.Column<string>(type: "jsonb", nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -110,8 +242,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.EmailTemplateId,
                         principalTable: "EmailTemplates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyTemplates",
@@ -119,18 +253,52 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
-                    IsPublic = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DefaultAllowAnonymous = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    DefaultAllowMultipleResponses = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    UsageCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DefaultLanguage = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "en"
+                    ),
+                    IsPublic = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DefaultAllowAnonymous = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    DefaultAllowMultipleResponses = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    UsageCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -140,8 +308,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.NamespaceId,
                         principalTable: "Namespaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyThemes",
@@ -149,60 +319,186 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    IsPublic = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    DefaultLanguage = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "en"
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    IsPublic = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
                     IsSystem = table.Column<bool>(type: "boolean", nullable: false),
-                    PrimaryColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#3B82F6"),
+                    PrimaryColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#3B82F6"
+                    ),
                     OnPrimaryColor = table.Column<string>(type: "text", nullable: false),
                     PrimaryContainerColor = table.Column<string>(type: "text", nullable: false),
                     OnPrimaryContainerColor = table.Column<string>(type: "text", nullable: false),
-                    SecondaryColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#64748B"),
+                    SecondaryColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#64748B"
+                    ),
                     OnSecondaryColor = table.Column<string>(type: "text", nullable: false),
                     SecondaryContainerColor = table.Column<string>(type: "text", nullable: false),
                     OnSecondaryContainerColor = table.Column<string>(type: "text", nullable: false),
                     SurfaceColor = table.Column<string>(type: "text", nullable: false),
-                    SurfaceContainerLowestColor = table.Column<string>(type: "text", nullable: false),
+                    SurfaceContainerLowestColor = table.Column<string>(
+                        type: "text",
+                        nullable: false
+                    ),
                     SurfaceContainerLowColor = table.Column<string>(type: "text", nullable: false),
                     SurfaceContainerColor = table.Column<string>(type: "text", nullable: false),
                     SurfaceContainerHighColor = table.Column<string>(type: "text", nullable: false),
-                    SurfaceContainerHighestColor = table.Column<string>(type: "text", nullable: false),
+                    SurfaceContainerHighestColor = table.Column<string>(
+                        type: "text",
+                        nullable: false
+                    ),
                     OnSurfaceColor = table.Column<string>(type: "text", nullable: false),
                     OnSurfaceVariantColor = table.Column<string>(type: "text", nullable: false),
                     OutlineColor = table.Column<string>(type: "text", nullable: false),
                     OutlineVariantColor = table.Column<string>(type: "text", nullable: false),
-                    BackgroundColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#FFFFFF"),
-                    TextColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#1F2937"),
-                    AccentColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#8B5CF6"),
-                    ErrorColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#EF4444"),
-                    SuccessColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#22C55E"),
-                    FontFamily = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: "Inter"),
-                    HeadingFontFamily = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: "Inter"),
-                    BaseFontSize = table.Column<int>(type: "integer", nullable: false, defaultValue: 16),
-                    Layout = table.Column<string>(type: "text", nullable: false, defaultValue: "Classic"),
-                    BackgroundImageUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    BackgroundPosition = table.Column<string>(type: "text", nullable: false, defaultValue: "Cover"),
-                    ShowProgressBar = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    BackgroundColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#FFFFFF"
+                    ),
+                    TextColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#1F2937"
+                    ),
+                    AccentColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#8B5CF6"
+                    ),
+                    ErrorColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#EF4444"
+                    ),
+                    SuccessColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#22C55E"
+                    ),
+                    FontFamily = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false,
+                        defaultValue: "Inter"
+                    ),
+                    HeadingFontFamily = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false,
+                        defaultValue: "Inter"
+                    ),
+                    BaseFontSize = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 16
+                    ),
+                    Layout = table.Column<string>(
+                        type: "text",
+                        nullable: false,
+                        defaultValue: "Classic"
+                    ),
+                    BackgroundImageUrl = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    BackgroundPosition = table.Column<string>(
+                        type: "text",
+                        nullable: false,
+                        defaultValue: "Cover"
+                    ),
+                    ShowProgressBar = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
                     ProgressBarStyle = table.Column<string>(type: "text", nullable: false),
-                    LogoUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    LogoPosition = table.Column<string>(type: "text", nullable: false, defaultValue: "TopLeft"),
+                    LogoUrl = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    LogoPosition = table.Column<string>(
+                        type: "text",
+                        nullable: false,
+                        defaultValue: "TopLeft"
+                    ),
                     LogoSize = table.Column<int>(type: "integer", nullable: false),
                     ShowLogoBackground = table.Column<bool>(type: "boolean", nullable: false),
                     LogoBackgroundColor = table.Column<string>(type: "text", nullable: true),
                     BrandingTitle = table.Column<string>(type: "text", nullable: true),
                     BrandingSubtitle = table.Column<string>(type: "text", nullable: true),
-                    ShowPoweredBy = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    ButtonStyle = table.Column<string>(type: "text", nullable: false, defaultValue: "Rounded"),
-                    ButtonTextColor = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "#FFFFFF"),
-                    CustomCss = table.Column<string>(type: "character varying(50000)", maxLength: 50000, nullable: true),
-                    UsageCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ShowPoweredBy = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    ButtonStyle = table.Column<string>(
+                        type: "text",
+                        nullable: false,
+                        defaultValue: "Rounded"
+                    ),
+                    ButtonTextColor = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "#FFFFFF"
+                    ),
+                    CustomCss = table.Column<string>(
+                        type: "character varying(50000)",
+                        maxLength: 50000,
+                        nullable: true
+                    ),
+                    UsageCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -212,8 +508,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.NamespaceId,
                         principalTable: "Namespaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "NamespaceMemberships",
@@ -222,16 +520,32 @@ namespace SurveyApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    JoinedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Role = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false
+                    ),
+                    JoinedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     InvitedBy = table.Column<Guid>(type: "uuid", maxLength: 50, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -241,14 +555,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.NamespaceId,
                         principalTable: "Namespaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_NamespaceMemberships_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "UserPreferences",
@@ -256,53 +573,240 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ThemeMode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "system"),
-                    ColorPalette = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "purple"),
-                    HighContrastMode = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    ReducedMotion = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    ScreenReaderOptimized = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    FontSizeScale = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "medium"),
-                    DyslexiaFriendlyFont = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Language = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
-                    DateFormat = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "MM/DD/YYYY"),
-                    TimeFormat = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "12h"),
-                    Timezone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false, defaultValue: "UTC"),
-                    DecimalSeparator = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "dot"),
-                    ThousandsSeparator = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "comma"),
-                    EmailNotifications = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    ResponseAlerts = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    WeeklyDigest = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    MarketingEmails = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    CompletionAlerts = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    DistributionReports = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    DefaultViewMode = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "grid"),
-                    ItemsPerPage = table.Column<int>(type: "integer", nullable: false, defaultValue: 12),
-                    SidebarCollapsed = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DefaultSortField = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "updatedAt"),
-                    DefaultSortOrder = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "desc"),
-                    HomeWidgets = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false, defaultValue: "[\"stats\",\"recent\",\"quick-actions\"]"),
-                    PinnedSurveyIds = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false, defaultValue: ""),
-                    DefaultQuestionRequired = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    ThemeMode = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "system"
+                    ),
+                    ColorPalette = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "purple"
+                    ),
+                    HighContrastMode = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    ReducedMotion = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    ScreenReaderOptimized = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    FontSizeScale = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "medium"
+                    ),
+                    DyslexiaFriendlyFont = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    Language = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "en"
+                    ),
+                    DateFormat = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "MM/DD/YYYY"
+                    ),
+                    TimeFormat = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "12h"
+                    ),
+                    Timezone = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false,
+                        defaultValue: "UTC"
+                    ),
+                    DecimalSeparator = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "dot"
+                    ),
+                    ThousandsSeparator = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "comma"
+                    ),
+                    EmailNotifications = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    ResponseAlerts = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    WeeklyDigest = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    MarketingEmails = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    CompletionAlerts = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    DistributionReports = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    DefaultViewMode = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "grid"
+                    ),
+                    ItemsPerPage = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 12
+                    ),
+                    SidebarCollapsed = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DefaultSortField = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false,
+                        defaultValue: "updatedAt"
+                    ),
+                    DefaultSortOrder = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "desc"
+                    ),
+                    HomeWidgets = table.Column<string>(
+                        type: "character varying(1000)",
+                        maxLength: 1000,
+                        nullable: false,
+                        defaultValue: "[\"stats\",\"recent\",\"quick-actions\"]"
+                    ),
+                    PinnedSurveyIds = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: false,
+                        defaultValue: ""
+                    ),
+                    DefaultQuestionRequired = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
                     DefaultThemeId = table.Column<Guid>(type: "uuid", nullable: true),
-                    DefaultWelcomeMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false, defaultValue: ""),
-                    DefaultThankYouMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false, defaultValue: ""),
-                    AutoSaveInterval = table.Column<int>(type: "integer", nullable: false, defaultValue: 30),
-                    QuestionNumberingStyle = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "numbers"),
-                    ShowQuestionDescriptions = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    DefaultPageBreakBehavior = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "auto"),
-                    OnboardingStatus = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false, defaultValue: "not_started"),
-                    OnboardingCompletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    OnboardingCurrentStep = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    HasSeenWelcomeTour = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    HasCompletedProfileSetup = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    HasCreatedFirstSurvey = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DefaultWelcomeMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: false,
+                        defaultValue: ""
+                    ),
+                    DefaultThankYouMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: false,
+                        defaultValue: ""
+                    ),
+                    AutoSaveInterval = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 30
+                    ),
+                    QuestionNumberingStyle = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "numbers"
+                    ),
+                    ShowQuestionDescriptions = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    DefaultPageBreakBehavior = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "auto"
+                    ),
+                    OnboardingStatus = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false,
+                        defaultValue: "not_started"
+                    ),
+                    OnboardingCompletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    OnboardingCurrentStep = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    HasSeenWelcomeTour = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    HasCompletedProfileSetup = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    HasCreatedFirstSurvey = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -312,8 +816,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyTemplateTranslations",
@@ -321,15 +827,46 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TemplateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    Category = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    WelcomeMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    ThankYouMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    Name = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: false
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    Category = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    WelcomeMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    ThankYouMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -339,8 +876,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.TemplateId,
                         principalTable: "SurveyTemplates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "TemplateQuestions",
@@ -348,17 +887,38 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TemplateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Type = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
                     Order = table.Column<int>(type: "integer", nullable: false),
-                    IsRequired = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    IsRequired = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
                     SettingsJson = table.Column<string>(type: "jsonb", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -368,8 +928,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.TemplateId,
                         principalTable: "SurveyTemplates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Surveys",
@@ -377,28 +939,87 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false, defaultValue: "Classic"),
-                    CxMetricType = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    AccessToken = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PublishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ClosedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    StartsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    EndsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    AllowAnonymousResponses = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    AllowMultipleResponses = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    Type = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false,
+                        defaultValue: "Classic"
+                    ),
+                    CxMetricType = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: true
+                    ),
+                    Status = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false
+                    ),
+                    AccessToken = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false
+                    ),
+                    PublishedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    ClosedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    StartsAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    EndsAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    AllowAnonymousResponses = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    AllowMultipleResponses = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
                     MaxResponses = table.Column<int>(type: "integer", nullable: true),
                     ThemeId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PresetThemeId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    PresetThemeId = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: true
+                    ),
                     ThemeCustomizations = table.Column<string>(type: "jsonb", nullable: true),
-                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DefaultLanguage = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false,
+                        defaultValue: "en"
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -408,14 +1029,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.NamespaceId,
                         principalTable: "Namespaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_Surveys_SurveyThemes_ThemeId",
                         column: x => x.ThemeId,
                         principalTable: "SurveyThemes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
+                        onDelete: ReferentialAction.SetNull
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyThemeTranslations",
@@ -423,12 +1047,31 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ThemeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    Name = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: false
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(1000)",
+                        maxLength: 1000,
+                        nullable: true
+                    ),
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -438,8 +1081,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.ThemeId,
                         principalTable: "SurveyThemes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "TemplateQuestionTranslations",
@@ -447,13 +1092,32 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TemplateQuestionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Text = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: false
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
                     TranslatedSettingsJson = table.Column<string>(type: "jsonb", nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -463,8 +1127,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.TemplateQuestionId,
                         principalTable: "TemplateQuestions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "EmailDistributions",
@@ -474,27 +1140,91 @@ namespace SurveyApp.Infrastructure.Migrations
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
                     EmailTemplateId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Subject = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Subject = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: false
+                    ),
                     Body = table.Column<string>(type: "text", nullable: false),
-                    SenderName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    SenderEmail = table.Column<string>(type: "character varying(320)", maxLength: 320, nullable: true),
-                    ScheduledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Draft"),
-                    TotalRecipients = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    SentCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    DeliveredCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    OpenedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    ClickedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    BouncedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    UnsubscribedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    SenderName = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: true
+                    ),
+                    SenderEmail = table.Column<string>(
+                        type: "character varying(320)",
+                        maxLength: 320,
+                        nullable: true
+                    ),
+                    ScheduledAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    SentAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    Status = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false,
+                        defaultValue: "Draft"
+                    ),
+                    TotalRecipients = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    SentCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    DeliveredCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    OpenedCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    ClickedCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    BouncedCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    UnsubscribedCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -504,14 +1234,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.EmailTemplateId,
                         principalTable: "EmailTemplates",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.SetNull
+                    );
                     table.ForeignKey(
                         name: "FK_EmailDistributions_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Questions",
@@ -519,19 +1252,48 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Type = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Type = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
                     Order = table.Column<int>(type: "integer", nullable: false),
-                    IsRequired = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    IsRequired = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
                     SettingsJson = table.Column<string>(type: "jsonb", nullable: true),
-                    IsNpsQuestion = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    NpsType = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsNpsQuestion = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    NpsType = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: true
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -541,8 +1303,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "RecurringSurveys",
@@ -551,34 +1315,115 @@ namespace SurveyApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
                     NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    Pattern = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    CronExpression = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    SendTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    TimezoneId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DaysOfWeek = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: false
+                    ),
+                    IsActive = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    Pattern = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false
+                    ),
+                    CronExpression = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    SendTime = table.Column<TimeOnly>(
+                        type: "time without time zone",
+                        nullable: false
+                    ),
+                    TimezoneId = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false
+                    ),
+                    DaysOfWeek = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
                     DayOfMonth = table.Column<int>(type: "integer", nullable: true),
-                    AudienceType = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    RecipientEmails = table.Column<string>(type: "character varying(10000)", maxLength: 10000, nullable: false),
+                    AudienceType = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
+                    RecipientEmails = table.Column<string>(
+                        type: "character varying(10000)",
+                        maxLength: 10000,
+                        nullable: false
+                    ),
                     AudienceListId = table.Column<Guid>(type: "uuid", nullable: true),
-                    SendReminders = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    ReminderDaysAfter = table.Column<int>(type: "integer", nullable: false, defaultValue: 3),
-                    MaxReminders = table.Column<int>(type: "integer", nullable: false, defaultValue: 2),
-                    CustomSubject = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    CustomMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    NextRunAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastRunAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    TotalRuns = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    EndsAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SendReminders = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    ReminderDaysAfter = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 3
+                    ),
+                    MaxReminders = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 2
+                    ),
+                    CustomSubject = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: true
+                    ),
+                    CustomMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    NextRunAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastRunAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    TotalRuns = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    EndsAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     MaxRuns = table.Column<int>(type: "integer", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -588,14 +1433,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.NamespaceId,
                         principalTable: "Namespaces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_RecurringSurveys_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyLinks",
@@ -603,26 +1451,82 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Token = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Source = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Medium = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Campaign = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Token = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    Type = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: false
+                    ),
+                    Name = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    Source = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    Medium = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    Campaign = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
                     PrefillDataJson = table.Column<string>(type: "text", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsActive = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
+                    ExpiresAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     MaxUses = table.Column<int>(type: "integer", nullable: true),
-                    UsageCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    ResponseCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    Password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UsageCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    ResponseCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    Password = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -632,8 +1536,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyTranslations",
@@ -641,14 +1547,41 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    WelcomeMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    ThankYouMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    Title = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: false
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    WelcomeMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    ThankYouMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -658,8 +1591,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "EmailRecipients",
@@ -667,24 +1602,78 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DistributionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Email = table.Column<string>(type: "character varying(320)", maxLength: 320, nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Status = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Pending"),
-                    SentAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeliveredAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    OpenedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ClickedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UniqueToken = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    ErrorMessage = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    OpenCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    ClickCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Email = table.Column<string>(
+                        type: "character varying(320)",
+                        maxLength: 320,
+                        nullable: false
+                    ),
+                    Name = table.Column<string>(
+                        type: "character varying(200)",
+                        maxLength: 200,
+                        nullable: true
+                    ),
+                    Status = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false,
+                        defaultValue: "Pending"
+                    ),
+                    SentAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeliveredAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    OpenedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    ClickedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    UniqueToken = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: false
+                    ),
+                    ErrorMessage = table.Column<string>(
+                        type: "character varying(1000)",
+                        maxLength: 1000,
+                        nullable: true
+                    ),
+                    OpenCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    ClickCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -694,8 +1683,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.DistributionId,
                         principalTable: "EmailDistributions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "QuestionLogics",
@@ -704,18 +1695,43 @@ namespace SurveyApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
                     SourceQuestionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Operator = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    ConditionValue = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    Action = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Operator = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
+                    ConditionValue = table.Column<string>(
+                        type: "character varying(1000)",
+                        maxLength: 1000,
+                        nullable: false
+                    ),
+                    Action = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
                     TargetQuestionId = table.Column<Guid>(type: "uuid", nullable: true),
                     Priority = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -725,20 +1741,24 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.QuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_QuestionLogics_Questions_SourceQuestionId",
                         column: x => x.SourceQuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_QuestionLogics_Questions_TargetQuestionId",
                         column: x => x.TargetQuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "QuestionTranslations",
@@ -746,13 +1766,32 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Text = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: false
+                    ),
+                    Description = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
                     TranslatedSettingsJson = table.Column<string>(type: "jsonb", nullable: true),
-                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    LanguageCode = table.Column<string>(
+                        type: "character varying(10)",
+                        maxLength: 10,
+                        nullable: false
+                    ),
+                    IsDefault = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    LastModifiedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -762,8 +1801,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.QuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "RecurringSurveyRuns",
@@ -772,23 +1813,73 @@ namespace SurveyApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RecurringSurveyId = table.Column<Guid>(type: "uuid", nullable: false),
                     RunNumber = table.Column<int>(type: "integer", nullable: false),
-                    ScheduledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CompletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Status = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    RecipientsCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    SentCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    FailedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    ResponsesCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    ErrorMessage = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    DurationMs = table.Column<long>(type: "bigint", nullable: false, defaultValue: 0L),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ScheduledAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    StartedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    CompletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    Status = table.Column<string>(
+                        type: "character varying(30)",
+                        maxLength: 30,
+                        nullable: false
+                    ),
+                    RecipientsCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    SentCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    FailedCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    ResponsesCount = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    ErrorMessage = table.Column<string>(
+                        type: "character varying(2000)",
+                        maxLength: 2000,
+                        nullable: true
+                    ),
+                    DurationMs = table.Column<long>(
+                        type: "bigint",
+                        nullable: false,
+                        defaultValue: 0L
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -798,8 +1889,10 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.RecurringSurveyId,
                         principalTable: "RecurringSurveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "SurveyResponses",
@@ -808,23 +1901,66 @@ namespace SurveyApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyId = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyLinkId = table.Column<Guid>(type: "uuid", nullable: true),
-                    RespondentEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    RespondentName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    IsComplete = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    SubmittedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    RespondentEmail = table.Column<string>(
+                        type: "character varying(256)",
+                        maxLength: 256,
+                        nullable: true
+                    ),
+                    RespondentName = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    IsComplete = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    StartedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    SubmittedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     TimeSpentSeconds = table.Column<int>(type: "integer", nullable: true),
-                    IpAddress = table.Column<string>(type: "character varying(45)", maxLength: 45, nullable: true),
-                    UserAgent = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    AccessToken = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    IpAddress = table.Column<string>(
+                        type: "character varying(45)",
+                        maxLength: 45,
+                        nullable: true
+                    ),
+                    UserAgent = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    AccessToken = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: false
+                    ),
                     RespondentUserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -834,20 +1970,24 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.SurveyLinkId,
                         principalTable: "SurveyLinks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.SetNull
+                    );
                     table.ForeignKey(
                         name: "FK_SurveyResponses_Surveys_SurveyId",
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_SurveyResponses_Users_RespondentUserId",
                         column: x => x.RespondentUserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
+                        onDelete: ReferentialAction.SetNull
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Answers",
@@ -857,14 +1997,30 @@ namespace SurveyApp.Infrastructure.Migrations
                     ResponseId = table.Column<Guid>(type: "uuid", nullable: false),
                     QuestionId = table.Column<Guid>(type: "uuid", nullable: false),
                     AnswerValue = table.Column<string>(type: "text", nullable: false),
-                    AnsweredAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AnsweredAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -874,14 +2030,17 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.QuestionId,
                         principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Restrict
+                    );
                     table.ForeignKey(
                         name: "FK_Answers_SurveyResponses_ResponseId",
                         column: x => x.ResponseId,
                         principalTable: "SurveyResponses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "LinkClicks",
@@ -889,23 +2048,71 @@ namespace SurveyApp.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SurveyLinkId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ClickedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IpAddress = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    UserAgent = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    Referrer = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    Country = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    DeviceType = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Browser = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    OperatingSystem = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    ClickedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
+                    IpAddress = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: true
+                    ),
+                    UserAgent = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    Referrer = table.Column<string>(
+                        type: "character varying(500)",
+                        maxLength: 500,
+                        nullable: true
+                    ),
+                    Country = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    City = table.Column<string>(
+                        type: "character varying(100)",
+                        maxLength: 100,
+                        nullable: true
+                    ),
+                    DeviceType = table.Column<string>(
+                        type: "character varying(20)",
+                        maxLength: 20,
+                        nullable: true
+                    ),
+                    Browser = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: true
+                    ),
+                    OperatingSystem = table.Column<string>(
+                        type: "character varying(50)",
+                        maxLength: 50,
+                        nullable: true
+                    ),
                     ResponseId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false
+                    ),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsDeleted = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: false
+                    ),
+                    DeletedAt = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: true
+                    ),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -915,588 +2122,658 @@ namespace SurveyApp.Infrastructure.Migrations
                         column: x => x.SurveyLinkId,
                         principalTable: "SurveyLinks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "FK_LinkClicks_SurveyResponses_ResponseId",
                         column: x => x.ResponseId,
                         principalTable: "SurveyResponses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
+                        onDelete: ReferentialAction.SetNull
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_IsDeleted",
                 table: "Answers",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_QuestionId",
                 table: "Answers",
-                column: "QuestionId");
+                column: "QuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_ResponseId",
                 table: "Answers",
-                column: "ResponseId");
+                column: "ResponseId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_ResponseId_QuestionId",
                 table: "Answers",
                 columns: new[] { "ResponseId", "QuestionId" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailDistributions_EmailTemplateId",
                 table: "EmailDistributions",
-                column: "EmailTemplateId");
+                column: "EmailTemplateId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailDistributions_NamespaceId",
                 table: "EmailDistributions",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailDistributions_ScheduledAt",
                 table: "EmailDistributions",
                 column: "ScheduledAt",
-                filter: "\"Status\" = 'Scheduled'");
+                filter: "\"Status\" = 'Scheduled'"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailDistributions_Status",
                 table: "EmailDistributions",
-                column: "Status");
+                column: "Status"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailDistributions_SurveyId",
                 table: "EmailDistributions",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailRecipients_DistributionId",
                 table: "EmailRecipients",
-                column: "DistributionId");
+                column: "DistributionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailRecipients_Email",
                 table: "EmailRecipients",
-                column: "Email");
+                column: "Email"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailRecipients_Status",
                 table: "EmailRecipients",
-                column: "Status");
+                column: "Status"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailRecipients_UniqueToken",
                 table: "EmailRecipients",
                 column: "UniqueToken",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_NamespaceId",
                 table: "EmailTemplates",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplates_NamespaceId_Type_IsDefault",
                 table: "EmailTemplates",
-                columns: new[] { "NamespaceId", "Type", "IsDefault" });
+                columns: new[] { "NamespaceId", "Type", "IsDefault" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplateTranslations_EmailTemplateId",
                 table: "EmailTemplateTranslations",
-                column: "EmailTemplateId");
+                column: "EmailTemplateId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplateTranslations_EmailTemplateId_LanguageCode",
                 table: "EmailTemplateTranslations",
                 columns: new[] { "EmailTemplateId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTemplateTranslations_LanguageCode",
                 table: "EmailTemplateTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkClicks_ClickedAt",
                 table: "LinkClicks",
-                column: "ClickedAt");
+                column: "ClickedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkClicks_IsDeleted",
                 table: "LinkClicks",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkClicks_ResponseId",
                 table: "LinkClicks",
-                column: "ResponseId");
+                column: "ResponseId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkClicks_SurveyLinkId",
                 table: "LinkClicks",
-                column: "SurveyLinkId");
+                column: "SurveyLinkId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NamespaceMemberships_NamespaceId_UserId",
                 table: "NamespaceMemberships",
                 columns: new[] { "NamespaceId", "UserId" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NamespaceMemberships_Role",
                 table: "NamespaceMemberships",
-                column: "Role");
+                column: "Role"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_NamespaceMemberships_UserId",
                 table: "NamespaceMemberships",
-                column: "UserId");
+                column: "UserId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Namespaces_CreatedAt",
                 table: "Namespaces",
-                column: "CreatedAt");
+                column: "CreatedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Namespaces_IsDeleted",
                 table: "Namespaces",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Namespaces_Slug",
                 table: "Namespaces",
                 column: "Slug",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_IsDeleted",
                 table: "QuestionLogics",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_QuestionId",
                 table: "QuestionLogics",
-                column: "QuestionId");
+                column: "QuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_QuestionId_Priority",
                 table: "QuestionLogics",
-                columns: new[] { "QuestionId", "Priority" });
+                columns: new[] { "QuestionId", "Priority" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_SourceQuestionId",
                 table: "QuestionLogics",
-                column: "SourceQuestionId");
+                column: "SourceQuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionLogics_TargetQuestionId",
                 table: "QuestionLogics",
-                column: "TargetQuestionId");
+                column: "TargetQuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_IsDeleted",
                 table: "Questions",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_IsNpsQuestion",
                 table: "Questions",
-                column: "IsNpsQuestion");
+                column: "IsNpsQuestion"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId",
                 table: "Questions",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId_Order",
                 table: "Questions",
-                columns: new[] { "SurveyId", "Order" });
+                columns: new[] { "SurveyId", "Order" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionTranslations_LanguageCode",
                 table: "QuestionTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionTranslations_QuestionId",
                 table: "QuestionTranslations",
-                column: "QuestionId");
+                column: "QuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuestionTranslations_QuestionId_LanguageCode",
                 table: "QuestionTranslations",
                 columns: new[] { "QuestionId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveyRuns_IsDeleted",
                 table: "RecurringSurveyRuns",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveyRuns_RecurringSurveyId",
                 table: "RecurringSurveyRuns",
-                column: "RecurringSurveyId");
+                column: "RecurringSurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveyRuns_ScheduledAt",
                 table: "RecurringSurveyRuns",
-                column: "ScheduledAt");
+                column: "ScheduledAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveyRuns_Status",
                 table: "RecurringSurveyRuns",
-                column: "Status");
+                column: "Status"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveys_IsActive",
                 table: "RecurringSurveys",
-                column: "IsActive");
+                column: "IsActive"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveys_IsDeleted",
                 table: "RecurringSurveys",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveys_NamespaceId",
                 table: "RecurringSurveys",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveys_NextRunAt",
                 table: "RecurringSurveys",
-                column: "NextRunAt");
+                column: "NextRunAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecurringSurveys_SurveyId",
                 table: "RecurringSurveys",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyLinks_CreatedAt",
                 table: "SurveyLinks",
-                column: "CreatedAt");
+                column: "CreatedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyLinks_IsActive",
                 table: "SurveyLinks",
-                column: "IsActive");
+                column: "IsActive"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyLinks_IsDeleted",
                 table: "SurveyLinks",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyLinks_SurveyId",
                 table: "SurveyLinks",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyLinks_Token",
                 table: "SurveyLinks",
                 column: "Token",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_IsComplete",
                 table: "SurveyResponses",
-                column: "IsComplete");
+                column: "IsComplete"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_IsDeleted",
                 table: "SurveyResponses",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_RespondentEmail",
                 table: "SurveyResponses",
-                column: "RespondentEmail");
+                column: "RespondentEmail"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_RespondentUserId",
                 table: "SurveyResponses",
-                column: "RespondentUserId");
+                column: "RespondentUserId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_SubmittedAt",
                 table: "SurveyResponses",
-                column: "SubmittedAt");
+                column: "SubmittedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_SurveyId",
                 table: "SurveyResponses",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyResponses_SurveyLinkId",
                 table: "SurveyResponses",
-                column: "SurveyLinkId");
+                column: "SurveyLinkId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_AccessToken",
                 table: "Surveys",
                 column: "AccessToken",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_CreatedAt",
                 table: "Surveys",
-                column: "CreatedAt");
+                column: "CreatedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_IsDeleted",
                 table: "Surveys",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_NamespaceId",
                 table: "Surveys",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_PresetThemeId",
                 table: "Surveys",
-                column: "PresetThemeId");
+                column: "PresetThemeId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_Status",
                 table: "Surveys",
-                column: "Status");
+                column: "Status"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_ThemeId",
                 table: "Surveys",
-                column: "ThemeId");
+                column: "ThemeId"
+            );
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Surveys_Type",
-                table: "Surveys",
-                column: "Type");
+            migrationBuilder.CreateIndex(name: "IX_Surveys_Type", table: "Surveys", column: "Type");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_CreatedAt",
                 table: "SurveyTemplates",
-                column: "CreatedAt");
+                column: "CreatedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_IsDeleted",
                 table: "SurveyTemplates",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_IsPublic",
                 table: "SurveyTemplates",
-                column: "IsPublic");
+                column: "IsPublic"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplates_NamespaceId",
                 table: "SurveyTemplates",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplateTranslations_LanguageCode",
                 table: "SurveyTemplateTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplateTranslations_TemplateId",
                 table: "SurveyTemplateTranslations",
-                column: "TemplateId");
+                column: "TemplateId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTemplateTranslations_TemplateId_LanguageCode",
                 table: "SurveyTemplateTranslations",
                 columns: new[] { "TemplateId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemes_IsDeleted",
                 table: "SurveyThemes",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemes_IsPublic",
                 table: "SurveyThemes",
-                column: "IsPublic");
+                column: "IsPublic"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemes_NamespaceId",
                 table: "SurveyThemes",
-                column: "NamespaceId");
+                column: "NamespaceId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemes_NamespaceId_IsDefault",
                 table: "SurveyThemes",
-                columns: new[] { "NamespaceId", "IsDefault" });
+                columns: new[] { "NamespaceId", "IsDefault" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemeTranslations_LanguageCode",
                 table: "SurveyThemeTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemeTranslations_ThemeId",
                 table: "SurveyThemeTranslations",
-                column: "ThemeId");
+                column: "ThemeId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyThemeTranslations_ThemeId_LanguageCode",
                 table: "SurveyThemeTranslations",
                 columns: new[] { "ThemeId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTranslations_LanguageCode",
                 table: "SurveyTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTranslations_SurveyId",
                 table: "SurveyTranslations",
-                column: "SurveyId");
+                column: "SurveyId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyTranslations_SurveyId_LanguageCode",
                 table: "SurveyTranslations",
                 columns: new[] { "SurveyId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestions_IsDeleted",
                 table: "TemplateQuestions",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestions_TemplateId",
                 table: "TemplateQuestions",
-                column: "TemplateId");
+                column: "TemplateId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestions_TemplateId_Order",
                 table: "TemplateQuestions",
-                columns: new[] { "TemplateId", "Order" });
+                columns: new[] { "TemplateId", "Order" }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestionTranslations_LanguageCode",
                 table: "TemplateQuestionTranslations",
-                column: "LanguageCode");
+                column: "LanguageCode"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestionTranslations_TemplateQuestionId",
                 table: "TemplateQuestionTranslations",
-                column: "TemplateQuestionId");
+                column: "TemplateQuestionId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateQuestionTranslations_TemplateQuestionId_LanguageCode",
                 table: "TemplateQuestionTranslations",
                 columns: new[] { "TemplateQuestionId", "LanguageCode" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPreferences_UserId",
                 table: "UserPreferences",
                 column: "UserId",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CreatedAt",
                 table: "Users",
-                column: "CreatedAt");
+                column: "CreatedAt"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_IsDeleted",
                 table: "Users",
-                column: "IsDeleted");
+                column: "IsDeleted"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Answers");
+            migrationBuilder.DropTable(name: "Answers");
 
-            migrationBuilder.DropTable(
-                name: "EmailRecipients");
+            migrationBuilder.DropTable(name: "EmailRecipients");
 
-            migrationBuilder.DropTable(
-                name: "EmailTemplateTranslations");
+            migrationBuilder.DropTable(name: "EmailTemplateTranslations");
 
-            migrationBuilder.DropTable(
-                name: "LinkClicks");
+            migrationBuilder.DropTable(name: "LinkClicks");
 
-            migrationBuilder.DropTable(
-                name: "NamespaceMemberships");
+            migrationBuilder.DropTable(name: "NamespaceMemberships");
 
-            migrationBuilder.DropTable(
-                name: "QuestionLogics");
+            migrationBuilder.DropTable(name: "QuestionLogics");
 
-            migrationBuilder.DropTable(
-                name: "QuestionTranslations");
+            migrationBuilder.DropTable(name: "QuestionTranslations");
 
-            migrationBuilder.DropTable(
-                name: "RecurringSurveyRuns");
+            migrationBuilder.DropTable(name: "RecurringSurveyRuns");
 
-            migrationBuilder.DropTable(
-                name: "SurveyTemplateTranslations");
+            migrationBuilder.DropTable(name: "SurveyTemplateTranslations");
 
-            migrationBuilder.DropTable(
-                name: "SurveyThemeTranslations");
+            migrationBuilder.DropTable(name: "SurveyThemeTranslations");
 
-            migrationBuilder.DropTable(
-                name: "SurveyTranslations");
+            migrationBuilder.DropTable(name: "SurveyTranslations");
 
-            migrationBuilder.DropTable(
-                name: "TemplateQuestionTranslations");
+            migrationBuilder.DropTable(name: "TemplateQuestionTranslations");
 
-            migrationBuilder.DropTable(
-                name: "UserPreferences");
+            migrationBuilder.DropTable(name: "UserPreferences");
 
-            migrationBuilder.DropTable(
-                name: "EmailDistributions");
+            migrationBuilder.DropTable(name: "EmailDistributions");
 
-            migrationBuilder.DropTable(
-                name: "SurveyResponses");
+            migrationBuilder.DropTable(name: "SurveyResponses");
 
-            migrationBuilder.DropTable(
-                name: "Questions");
+            migrationBuilder.DropTable(name: "Questions");
 
-            migrationBuilder.DropTable(
-                name: "RecurringSurveys");
+            migrationBuilder.DropTable(name: "RecurringSurveys");
 
-            migrationBuilder.DropTable(
-                name: "TemplateQuestions");
+            migrationBuilder.DropTable(name: "TemplateQuestions");
 
-            migrationBuilder.DropTable(
-                name: "EmailTemplates");
+            migrationBuilder.DropTable(name: "EmailTemplates");
 
-            migrationBuilder.DropTable(
-                name: "SurveyLinks");
+            migrationBuilder.DropTable(name: "SurveyLinks");
 
-            migrationBuilder.DropTable(
-                name: "Users");
+            migrationBuilder.DropTable(name: "Users");
 
-            migrationBuilder.DropTable(
-                name: "SurveyTemplates");
+            migrationBuilder.DropTable(name: "SurveyTemplates");
 
-            migrationBuilder.DropTable(
-                name: "Surveys");
+            migrationBuilder.DropTable(name: "Surveys");
 
-            migrationBuilder.DropTable(
-                name: "SurveyThemes");
+            migrationBuilder.DropTable(name: "SurveyThemes");
 
-            migrationBuilder.DropTable(
-                name: "Namespaces");
+            migrationBuilder.DropTable(name: "Namespaces");
         }
     }
 }

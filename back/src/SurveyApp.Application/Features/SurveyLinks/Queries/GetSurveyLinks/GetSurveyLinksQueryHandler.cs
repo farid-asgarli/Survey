@@ -3,12 +3,13 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.SurveyLinks.Queries.GetSurveyLinks;
 
 /// <summary>
-/// Handler for getting all links for a survey.
+/// Handler for getting all links for a survey with pagination.
 /// </summary>
 public class GetSurveyLinksQueryHandler(
     ISurveyLinkRepository surveyLinkRepository,
@@ -17,7 +18,7 @@ public class GetSurveyLinksQueryHandler(
     ICurrentUserService currentUserService,
     ILinkUrlService linkUrlService,
     IMapper mapper
-) : IRequestHandler<GetSurveyLinksQuery, Result<List<SurveyLinkDto>>>
+) : IRequestHandler<GetSurveyLinksQuery, Result<PagedResponse<SurveyLinkDto>>>
 {
     private readonly ISurveyLinkRepository _surveyLinkRepository = surveyLinkRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
@@ -26,7 +27,7 @@ public class GetSurveyLinksQueryHandler(
     private readonly ILinkUrlService _linkUrlService = linkUrlService;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<List<SurveyLinkDto>>> Handle(
+    public async Task<Result<PagedResponse<SurveyLinkDto>>> Handle(
         GetSurveyLinksQuery request,
         CancellationToken cancellationToken
     )
@@ -34,30 +35,32 @@ public class GetSurveyLinksQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<List<SurveyLinkDto>>.Failure("Handler.NamespaceContextRequired");
+            return Result<PagedResponse<SurveyLinkDto>>.Failure("Errors.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<List<SurveyLinkDto>>.Failure("Errors.UserNotAuthenticated");
+            return Result<PagedResponse<SurveyLinkDto>>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<List<SurveyLinkDto>>.Failure("Handler.SurveyNotFound");
+            return Result<PagedResponse<SurveyLinkDto>>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<List<SurveyLinkDto>>.Failure("Errors.SurveyNotInNamespace");
+            return Result<PagedResponse<SurveyLinkDto>>.Failure("Errors.SurveyNotInNamespace");
         }
 
-        // Get links
-        var links = await _surveyLinkRepository.GetBySurveyIdAsync(
+        // Get paginated links
+        var (links, totalCount) = await _surveyLinkRepository.GetBySurveyIdPagedAsync(
             request.SurveyId,
+            request.PageNumber,
+            request.PageSize,
             request.IsActive,
             cancellationToken
         );
@@ -71,6 +74,13 @@ public class GetSurveyLinksQueryHandler(
             })
             .ToList();
 
-        return Result<List<SurveyLinkDto>>.Success(dtos);
+        var pagedResponse = PagedResponse<SurveyLinkDto>.Create(
+            dtos,
+            request.PageNumber,
+            request.PageSize,
+            totalCount
+        );
+
+        return Result<PagedResponse<SurveyLinkDto>>.Success(pagedResponse);
     }
 }

@@ -9,13 +9,8 @@ namespace SurveyApp.Application.Features.Responses.Queries;
 /// <summary>
 /// Query to get export preview information.
 /// </summary>
-public record GetExportPreviewQuery : IRequest<Result<ExportPreviewDto>>
-{
-    /// <summary>
-    /// The survey ID to get export preview for.
-    /// </summary>
-    public Guid SurveyId { get; init; }
-}
+/// <param name="SurveyId">The survey ID to get export preview for.</param>
+public record GetExportPreviewQuery(Guid SurveyId) : IRequest<Result<ExportPreviewDto>>;
 
 /// <summary>
 /// Handler for getting export preview information.

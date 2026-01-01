@@ -31,18 +31,18 @@ public class GetSurveyAnalyticsQueryHandler(
     {
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
-            return Result<SurveyAnalyticsDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyAnalyticsDto>.Failure("Errors.NamespaceContextRequired");
 
         var survey = await _surveyRepository.GetByIdWithQuestionsAsync(
             request.SurveyId,
             cancellationToken
         );
         if (survey == null || survey.NamespaceId != namespaceId.Value)
-            return Result<SurveyAnalyticsDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyAnalyticsDto>.NotFound("Errors.SurveyNotFound");
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
-            return Result<SurveyAnalyticsDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyAnalyticsDto>.Unauthorized("Errors.UserNotAuthenticated");
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
             namespaceId.Value,

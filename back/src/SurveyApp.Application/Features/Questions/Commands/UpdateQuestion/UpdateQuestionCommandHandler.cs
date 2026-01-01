@@ -1,7 +1,6 @@
 using AutoMapper;
 using MediatR;
 using SurveyApp.Application.Common;
-using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Services;
 using SurveyApp.Domain.Enums;
@@ -49,7 +48,7 @@ public class UpdateQuestionCommandHandler(
         var question = survey.Questions.FirstOrDefault(q => q.Id == request.QuestionId);
         if (question == null)
         {
-            return Result<QuestionDto>.Failure("Errors.QuestionNotFound");
+            return Result<QuestionDto>.NotFound("Errors.QuestionNotFound");
         }
 
         // Determine the language to update (use survey's default if not specified)

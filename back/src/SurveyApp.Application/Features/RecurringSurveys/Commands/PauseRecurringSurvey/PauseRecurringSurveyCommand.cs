@@ -9,15 +9,13 @@ namespace SurveyApp.Application.Features.RecurringSurveys.Commands.PauseRecurrin
 /// <summary>
 /// Command to pause a recurring survey.
 /// </summary>
-public record PauseRecurringSurveyCommand : IRequest<Result<RecurringSurveyDto>>, INamespaceCommand
+/// <param name="Id">The recurring survey ID to pause.</param>
+public record PauseRecurringSurveyCommand(Guid Id)
+    : IRequest<Result<RecurringSurveyDto>>,
+        INamespaceCommand
 {
     /// <summary>
     /// The permission required to execute this command.
     /// </summary>
     public static NamespacePermission RequiredPermission => NamespacePermission.EditSurveys;
-
-    /// <summary>
-    /// The recurring survey ID to pause.
-    /// </summary>
-    public Guid Id { get; init; }
 }

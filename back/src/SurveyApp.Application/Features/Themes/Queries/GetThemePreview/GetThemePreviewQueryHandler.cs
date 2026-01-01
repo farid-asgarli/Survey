@@ -22,7 +22,7 @@ public class GetThemePreviewQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<ThemePreviewDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<ThemePreviewDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var theme = await _themeRepository.GetByIdAsync(request.ThemeId, cancellationToken);
@@ -37,7 +37,7 @@ public class GetThemePreviewQueryHandler(
         // Check namespace access - allow if same namespace or if theme is public
         if (theme.NamespaceId != namespaceId.Value && !theme.IsPublic)
         {
-            return Result<ThemePreviewDto>.Failure("Handler.NoAccessToTheme");
+            return Result<ThemePreviewDto>.Failure("Errors.NoAccessToTheme");
         }
 
         var generatedCss = theme.GenerateCss();

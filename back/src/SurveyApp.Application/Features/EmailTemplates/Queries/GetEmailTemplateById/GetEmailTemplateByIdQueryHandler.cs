@@ -29,13 +29,13 @@ public class GetEmailTemplateByIdQueryHandler(
         var template = await _templateRepository.GetByIdAsync(request.Id, cancellationToken);
         if (template == null)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Verify namespace ownership
         if (template.NamespaceId != namespaceId.Value)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         return Result<EmailTemplateDto>.Success(MapToDto(template));

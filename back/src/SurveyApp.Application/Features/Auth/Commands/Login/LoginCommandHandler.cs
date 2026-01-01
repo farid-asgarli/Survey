@@ -15,7 +15,7 @@ public class LoginCommandHandler(IIdentityService identityService)
         CancellationToken cancellationToken
     )
     {
-        var result = await _identityService.LoginAsync(request.Email, request.Password);
+        var result = await _identityService.LoginAsync(request.Email, request.Password, request.RememberMe);
 
         if (!result.Succeeded)
         {

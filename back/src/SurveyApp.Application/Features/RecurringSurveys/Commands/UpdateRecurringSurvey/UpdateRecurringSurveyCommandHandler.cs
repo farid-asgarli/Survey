@@ -41,13 +41,13 @@ public class UpdateRecurringSurveyCommandHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyDto>.Failure("Errors.RecurringSurveyNotFound");
+            return Result<RecurringSurveyDto>.NotFound("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != ctx.NamespaceId)
         {
             return Result<RecurringSurveyDto>.Failure(
-                "Recurring survey does not belong to this namespace."
+                "Errors.RecurringSurveyNotInNamespace"
             );
         }
 

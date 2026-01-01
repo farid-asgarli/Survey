@@ -40,14 +40,14 @@ public class GetNpsTrendQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<NpsTrendDto>.Failure("Errors.SurveyNotFound");
+            return Result<NpsTrendDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<NpsTrendDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<NpsTrendDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
@@ -57,7 +57,7 @@ public class GetNpsTrendQueryHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.ViewResponses))
         {
-            return Result<NpsTrendDto>.Failure("Errors.NoPermissionViewNps");
+            return Result<NpsTrendDto>.Forbidden("Errors.NoPermissionViewNps");
         }
 
         // Validate date range

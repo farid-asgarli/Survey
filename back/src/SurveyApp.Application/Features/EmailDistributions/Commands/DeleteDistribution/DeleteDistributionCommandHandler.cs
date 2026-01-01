@@ -11,7 +11,7 @@ public class DeleteDistributionCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService
-) : IRequestHandler<DeleteDistributionCommand, Result<bool>>
+) : IRequestHandler<DeleteDistributionCommand, Result<Unit>>
 {
     private readonly IEmailDistributionRepository _distributionRepository = distributionRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -31,7 +31,7 @@ public class DeleteDistributionCommandHandler(
         DistributionStatus.Failed,
     ];
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteDistributionCommand request,
         CancellationToken cancellationToken
     )
@@ -39,13 +39,13 @@ public class DeleteDistributionCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Errors.NamespaceRequired");
+            return Result<Unit>.Failure("Errors.NamespaceRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("Errors.UserNotAuthenticated");
+            return Result<Unit>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get distribution with change tracking for delete
@@ -60,18 +60,18 @@ public class DeleteDistributionCommandHandler(
             || distribution.SurveyId != request.SurveyId
         )
         {
-            return Result<bool>.NotFound("Errors.DistributionNotFound");
+            return Result<Unit>.NotFound("Errors.DistributionNotFound");
         }
 
         // Validate status - prevent deletion of sent/sending distributions
         if (!DeletableStatuses.Contains(distribution.Status))
         {
-            return Result<bool>.Failure("Errors.CannotDeleteDistribution");
+            return Result<Unit>.Failure("Errors.CannotDeleteDistribution");
         }
 
         _distributionRepository.Delete(distribution);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

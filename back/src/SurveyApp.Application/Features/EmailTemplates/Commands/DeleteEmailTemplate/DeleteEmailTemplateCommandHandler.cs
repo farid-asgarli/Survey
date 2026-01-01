@@ -10,14 +10,14 @@ public class DeleteEmailTemplateCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService
-) : IRequestHandler<DeleteEmailTemplateCommand, Result<bool>>
+) : IRequestHandler<DeleteEmailTemplateCommand, Result<Unit>>
 {
     private readonly IEmailTemplateRepository _templateRepository = templateRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteEmailTemplateCommand request,
         CancellationToken cancellationToken
     )
@@ -25,13 +25,13 @@ public class DeleteEmailTemplateCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Errors.NamespaceRequired");
+            return Result<Unit>.Failure("Errors.NamespaceRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("Errors.UserNotAuthenticated");
+            return Result<Unit>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get existing template with change tracking for delete
@@ -41,18 +41,18 @@ public class DeleteEmailTemplateCommandHandler(
         );
         if (template == null)
         {
-            return Result<bool>.Failure("Errors.EmailTemplateNotFound");
+            return Result<Unit>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Verify namespace ownership
         if (template.NamespaceId != namespaceId.Value)
         {
-            return Result<bool>.Failure("Errors.EmailTemplateNotFound");
+            return Result<Unit>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         _templateRepository.Delete(template);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

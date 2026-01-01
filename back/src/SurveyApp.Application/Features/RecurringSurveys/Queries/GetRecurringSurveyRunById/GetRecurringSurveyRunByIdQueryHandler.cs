@@ -29,7 +29,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<RecurringSurveyRunDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         // Verify the recurring survey exists and belongs to this namespace
@@ -40,7 +40,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
 
         if (recurringSurvey == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Errors.RecurringSurveyNotFound");
+            return Result<RecurringSurveyRunDto>.NotFound("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != namespaceId.Value)
@@ -54,7 +54,7 @@ public class GetRecurringSurveyRunByIdQueryHandler(
         );
         if (run == null)
         {
-            return Result<RecurringSurveyRunDto>.Failure("Errors.RunNotFound");
+            return Result<RecurringSurveyRunDto>.NotFound("Errors.RunNotFound");
         }
 
         if (run.RecurringSurveyId != request.RecurringSurveyId)

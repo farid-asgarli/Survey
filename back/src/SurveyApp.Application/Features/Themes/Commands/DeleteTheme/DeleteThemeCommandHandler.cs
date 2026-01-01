@@ -13,13 +13,13 @@ public class DeleteThemeCommandHandler(
     ISurveyThemeRepository themeRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext
-) : IRequestHandler<DeleteThemeCommand, Result<bool>>
+) : IRequestHandler<DeleteThemeCommand, Result<Unit>>
 {
     private readonly ISurveyThemeRepository _themeRepository = themeRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteThemeCommand request,
         CancellationToken cancellationToken
     )
@@ -34,19 +34,19 @@ public class DeleteThemeCommandHandler(
         );
         if (theme == null)
         {
-            return Result<bool>.Failure("Handler.ThemeNotFound");
+            return Result<Unit>.NotFound("Errors.ThemeNotFound");
         }
 
         // Verify theme belongs to namespace
         if (theme.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Handler.ThemeNotFoundInNamespace");
+            return Result<Unit>.Failure("Errors.ThemeNotFoundInNamespace");
         }
 
         // Don't allow deleting default theme
         if (theme.IsDefault)
         {
-            return Result<bool>.Failure(
+            return Result<Unit>.Failure(
                 "Cannot delete the default theme. Set another theme as default first."
             );
         }
@@ -54,7 +54,7 @@ public class DeleteThemeCommandHandler(
         // Check if theme is in use
         if (theme.UsageCount > 0)
         {
-            return Result<bool>.Failure(
+            return Result<Unit>.Failure(
                 $"Cannot delete theme. It is currently used by {theme.UsageCount} survey(s)."
             );
         }
@@ -62,6 +62,6 @@ public class DeleteThemeCommandHandler(
         _themeRepository.Remove(theme);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

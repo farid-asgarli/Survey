@@ -38,7 +38,7 @@ public class UpdateSurveyCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check if survey can be edited

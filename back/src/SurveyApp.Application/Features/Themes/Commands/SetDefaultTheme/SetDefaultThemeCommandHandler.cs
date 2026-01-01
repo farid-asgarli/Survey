@@ -13,13 +13,13 @@ public class SetDefaultThemeCommandHandler(
     ISurveyThemeRepository themeRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext
-) : IRequestHandler<SetDefaultThemeCommand, Result<bool>>
+) : IRequestHandler<SetDefaultThemeCommand, Result<Unit>>
 {
     private readonly ISurveyThemeRepository _themeRepository = themeRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         SetDefaultThemeCommand request,
         CancellationToken cancellationToken
     )
@@ -34,19 +34,19 @@ public class SetDefaultThemeCommandHandler(
         );
         if (theme == null)
         {
-            return Result<bool>.Failure("Handler.ThemeNotFound");
+            return Result<Unit>.NotFound("Errors.ThemeNotFound");
         }
 
         // Verify theme belongs to namespace
         if (theme.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Handler.ThemeNotFoundInNamespace");
+            return Result<Unit>.Failure("Errors.ThemeNotFoundInNamespace");
         }
 
         // If already default, nothing to do
         if (theme.IsDefault)
         {
-            return Result<bool>.Success(true);
+            return Result<Unit>.Success(Unit.Value);
         }
 
         // Get current default theme and unset it
@@ -66,6 +66,6 @@ public class SetDefaultThemeCommandHandler(
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

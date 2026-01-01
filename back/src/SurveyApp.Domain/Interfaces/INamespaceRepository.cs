@@ -28,6 +28,16 @@ public interface INamespaceRepository
     Task<Namespace?> GetWithMembersAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets paginated members for a namespace.
+    /// </summary>
+    Task<(IReadOnlyList<NamespaceMembership> Items, int TotalCount)> GetMembersPagedAsync(
+        Guid namespaceId,
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Gets all namespaces.
     /// </summary>
     Task<IReadOnlyList<Namespace>> GetAllAsync(CancellationToken cancellationToken = default);

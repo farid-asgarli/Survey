@@ -37,14 +37,14 @@ public class CreateDistributionCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<EmailDistributionDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<EmailDistributionDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Verify survey exists and belongs to namespace
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<EmailDistributionDto>.Failure("Errors.SurveyNotFound");
+            return Result<EmailDistributionDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify template if provided
@@ -58,7 +58,7 @@ public class CreateDistributionCommandHandler(
 
             if (template == null || template.NamespaceId != namespaceId.Value)
             {
-                return Result<EmailDistributionDto>.Failure("Errors.EmailTemplateNotFound");
+                return Result<EmailDistributionDto>.NotFound("Errors.EmailTemplateNotFound");
             }
         }
 

@@ -37,7 +37,7 @@ public class UpdateNamespaceCommandHandler(
         );
         if (@namespace == null || @namespace.Id != ctx.NamespaceId)
         {
-            return Result<NamespaceDto>.Failure("Errors.NamespaceNotFound");
+            return Result<NamespaceDto>.NotFound("Errors.NamespaceNotFound");
         }
 
         @namespace.UpdateDetails(request.Name, request.Description, request.LogoUrl);

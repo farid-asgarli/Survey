@@ -178,11 +178,3 @@ public class ThemePreviewDto
     public SurveyThemeDto Theme { get; set; } = null!;
     public string GeneratedCss { get; set; } = null!;
 }
-
-/// <summary>
-/// DTO for applying theme to survey.
-/// </summary>
-public class ApplyThemeDto
-{
-    public Guid SurveyId { get; set; }
-}

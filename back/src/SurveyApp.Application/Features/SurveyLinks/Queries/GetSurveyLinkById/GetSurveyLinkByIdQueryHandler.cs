@@ -35,20 +35,20 @@ public class GetSurveyLinkByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyLinkDetailsDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyLinkDetailsDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyLinkDetailsDto>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)
@@ -60,7 +60,7 @@ public class GetSurveyLinkByIdQueryHandler(
         var link = await _surveyLinkRepository.GetByIdAsync(request.LinkId, cancellationToken);
         if (link == null)
         {
-            return Result<SurveyLinkDetailsDto>.Failure("Errors.SurveyLinkNotFound");
+            return Result<SurveyLinkDetailsDto>.NotFound("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)

@@ -717,5 +717,8 @@
   "Validation.Url.MaxLength": "{0} 2000 simvoldan çox ola bilməz.",
   "Validation.Url.MustBeValid": "{0} etibarlı HTTP və ya HTTPS URL olmalıdır.",
   "Validation.Url.Required": "{0} tələb olunur.",
-  "Validation.WelcomeMessage.MaxLength": "Xoş gəldin mesajı 1000 simvoldan çox ola bilməz."
+  "Validation.WelcomeMessage.MaxLength": "Xoş gəldin mesajı 1000 simvoldan çox ola bilməz.",
+
+  "Validation.Pagination.PageNumberMinValue": "Səhifə nömrəsi ən azı {0} olmalıdır.",
+  "Validation.Pagination.PageSizeRange": "Səhifə ölçüsü {0} ilə {1} arasında olmalıdır."
 }

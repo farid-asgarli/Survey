@@ -71,7 +71,7 @@ public class IdentityService(
         return await GenerateAuthenticationResultAsync(identityUser);
     }
 
-    public async Task<AuthenticationResult> LoginAsync(string email, string password)
+    public async Task<AuthenticationResult> LoginAsync(string email, string password, bool rememberMe = false)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -93,7 +93,7 @@ public class IdentityService(
             return AuthenticationResult.Failure("Infrastructure.Identity.InvalidEmailOrPassword");
         }
 
-        return await GenerateAuthenticationResultAsync(user);
+        return await GenerateAuthenticationResultAsync(user, rememberMe);
     }
 
     public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
@@ -197,7 +197,7 @@ public class IdentityService(
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
     }
 
-    private async Task<AuthenticationResult> GenerateAuthenticationResultAsync(ApplicationUser user)
+    private async Task<AuthenticationResult> GenerateAuthenticationResultAsync(ApplicationUser user, bool rememberMe = false)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
@@ -228,9 +228,12 @@ public class IdentityService(
         var refreshToken = GenerateRefreshToken();
 
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(
-            _jwtSettings.RefreshTokenExpirationInDays
-        );
+        // When rememberMe is true, use extended refresh token expiration (30 days by default)
+        // Otherwise, use standard expiration
+        var refreshTokenDays = rememberMe 
+            ? _jwtSettings.RefreshTokenExpirationInDays * 3 // Extended: 3x the normal duration
+            : _jwtSettings.RefreshTokenExpirationInDays;
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(refreshTokenDays);
         await _userManager.UpdateAsync(user);
 
         return AuthenticationResult.Success(

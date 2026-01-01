@@ -40,5 +40,8 @@
     <!-- Export Libraries -->
     <PackageVersion Include="ClosedXML" Version="0.102.2" />
     <PackageVersion Include="CsvHelper" Version="31.0.0" />
+    <!-- Specification Pattern -->
+    <PackageVersion Include="Ardalis.Specification" Version="8.0.0" />
+    <PackageVersion Include="Ardalis.Specification.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.QuestionLogic.Commands.AddQuestionLogic;
 using SurveyApp.Application.Features.QuestionLogic.Commands.RemoveQuestionLogic;
@@ -10,7 +9,6 @@ using SurveyApp.Application.Features.QuestionLogic.Commands.UpdateQuestionLogic;
 using SurveyApp.Application.Features.QuestionLogic.Queries.EvaluateLogic;
 using SurveyApp.Application.Features.QuestionLogic.Queries.GetQuestionLogic;
 using SurveyApp.Application.Features.QuestionLogic.Queries.GetSurveyLogicMap;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 
@@ -35,14 +33,9 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetQuestionLogic(Guid surveyId, Guid questionId)
     {
-        var result = await _mediator.Send(
-            new GetQuestionLogicQuery { SurveyId = surveyId, QuestionId = questionId }
-        );
+        var result = await _mediator.Send(new GetQuestionLogicQuery(surveyId, questionId));
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -50,7 +43,7 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="questionId">The question ID.</param>
-    /// <param name="request">The logic rule details.</param>
+    /// <param name="command">The logic rule command.</param>
     /// <returns>The created logic rule.</returns>
     [HttpPost("questions/{questionId:guid}/logic")]
     [ProducesResponseType(typeof(QuestionLogicDto), StatusCodes.Status201Created)]
@@ -59,31 +52,18 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> AddQuestionLogic(
         Guid surveyId,
         Guid questionId,
-        [FromBody] AddQuestionLogicRequest request
+        [FromBody] AddQuestionLogicCommand command
     )
     {
-        var command = new AddQuestionLogicCommand
-        {
-            SurveyId = surveyId,
-            QuestionId = questionId,
-            SourceQuestionId = request.SourceQuestionId,
-            Operator = request.Operator,
-            ConditionValue = request.ConditionValue,
-            Action = request.Action,
-            TargetQuestionId = request.TargetQuestionId,
-            Priority = request.Priority,
-        };
-
-        var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return CreatedAtAction(
-            nameof(GetQuestionLogic),
-            new { surveyId, questionId },
-            result.Value
+        var result = await _mediator.Send(
+            command with
+            {
+                SurveyId = surveyId,
+                QuestionId = questionId,
+            }
         );
+
+        return HandleCreatedResult(result, nameof(GetQuestionLogic), new { surveyId, questionId });
     }
 
     /// <summary>
@@ -92,7 +72,7 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="questionId">The question ID.</param>
     /// <param name="logicId">The logic rule ID.</param>
-    /// <param name="request">The updated logic rule details.</param>
+    /// <param name="command">The updated logic rule command.</param>
     /// <returns>The updated logic rule.</returns>
     [HttpPut("questions/{questionId:guid}/logic/{logicId:guid}")]
     [ProducesResponseType(typeof(QuestionLogicDto), StatusCodes.Status200OK)]
@@ -102,28 +82,18 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
         Guid surveyId,
         Guid questionId,
         Guid logicId,
-        [FromBody] UpdateQuestionLogicRequest request
+        [FromBody] UpdateQuestionLogicCommand command
     )
     {
-        var command = new UpdateQuestionLogicCommand
-        {
-            SurveyId = surveyId,
-            QuestionId = questionId,
-            LogicId = logicId,
-            SourceQuestionId = request.SourceQuestionId,
-            Operator = request.Operator,
-            ConditionValue = request.ConditionValue,
-            Action = request.Action,
-            TargetQuestionId = request.TargetQuestionId,
-            Priority = request.Priority,
-        };
-
-        var result = await _mediator.Send(command);
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        var result = await _mediator.Send(
+            command with
+            {
+                SurveyId = surveyId,
+                QuestionId = questionId,
+                LogicId = logicId,
+            }
+        );
+        return HandleResult(result);
     }
 
     /// <summary>
@@ -151,10 +121,7 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -162,7 +129,7 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="questionId">The question ID.</param>
-    /// <param name="request">The ordered list of logic IDs.</param>
+    /// <param name="command">The reorder command with logic IDs.</param>
     /// <returns>No content on success.</returns>
     [HttpPut("questions/{questionId:guid}/logic/reorder")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -171,22 +138,18 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> ReorderLogic(
         Guid surveyId,
         Guid questionId,
-        [FromBody] ReorderLogicRequest request
+        [FromBody] ReorderLogicPriorityCommand command
     )
     {
         var result = await _mediator.Send(
-            new ReorderLogicPriorityCommand
+            command with
             {
                 SurveyId = surveyId,
                 QuestionId = questionId,
-                LogicIds = request.LogicIds,
             }
         );
 
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return NoContent();
+        return HandleNoContentResult(result);
     }
 
     /// <summary>
@@ -199,19 +162,15 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSurveyLogicMap(Guid surveyId)
     {
-        var result = await _mediator.Send(new GetSurveyLogicMapQuery { SurveyId = surveyId });
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        var result = await _mediator.Send(new GetSurveyLogicMapQuery(surveyId));
+        return HandleResult(result);
     }
 
     /// <summary>
     /// Evaluate logic for given answers.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The evaluation request with answers.</param>
+    /// <param name="query">The evaluation query with answers.</param>
     /// <returns>The logic evaluation result.</returns>
     [HttpPost("evaluate-logic")]
     [AllowAnonymous]
@@ -219,124 +178,10 @@ public class QuestionLogicController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> EvaluateLogic(
         Guid surveyId,
-        [FromBody] EvaluateLogicRequest request
+        [FromBody] EvaluateLogicQuery query
     )
     {
-        var result = await _mediator.Send(
-            new EvaluateLogicQuery
-            {
-                SurveyId = surveyId,
-                CurrentQuestionId = request.CurrentQuestionId,
-                Answers = request.Answers,
-            }
-        );
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        return Ok(result.Value);
+        var result = await _mediator.Send(query with { SurveyId = surveyId });
+        return HandleResult(result);
     }
 }
-
-#region Request DTOs
-
-/// <summary>
-/// Request DTO for adding question logic.
-/// </summary>
-public class AddQuestionLogicRequest
-{
-    /// <summary>
-    /// The source question ID whose answer triggers this logic.
-    /// </summary>
-    public Guid SourceQuestionId { get; set; }
-
-    /// <summary>
-    /// The comparison operator.
-    /// </summary>
-    public LogicOperator Operator { get; set; }
-
-    /// <summary>
-    /// The value to compare against.
-    /// </summary>
-    public string ConditionValue { get; set; } = string.Empty;
-
-    /// <summary>
-    /// The action to take when condition is met.
-    /// </summary>
-    public LogicAction Action { get; set; }
-
-    /// <summary>
-    /// Optional target question ID for JumpTo action.
-    /// </summary>
-    public Guid? TargetQuestionId { get; set; }
-
-    /// <summary>
-    /// Optional priority for evaluation order.
-    /// </summary>
-    public int? Priority { get; set; }
-}
-
-/// <summary>
-/// Request DTO for updating question logic.
-/// </summary>
-public class UpdateQuestionLogicRequest
-{
-    /// <summary>
-    /// The source question ID whose answer triggers this logic.
-    /// </summary>
-    public Guid SourceQuestionId { get; set; }
-
-    /// <summary>
-    /// The comparison operator.
-    /// </summary>
-    public LogicOperator Operator { get; set; }
-
-    /// <summary>
-    /// The value to compare against.
-    /// </summary>
-    public string ConditionValue { get; set; } = string.Empty;
-
-    /// <summary>
-    /// The action to take when condition is met.
-    /// </summary>
-    public LogicAction Action { get; set; }
-
-    /// <summary>
-    /// Optional target question ID for JumpTo action.
-    /// </summary>
-    public Guid? TargetQuestionId { get; set; }
-
-    /// <summary>
-    /// Priority for evaluation order.
-    /// </summary>
-    public int Priority { get; set; }
-}
-
-/// <summary>
-/// Request DTO for reordering logic rules.
-/// </summary>
-public class ReorderLogicRequest
-{
-    /// <summary>
-    /// The ordered list of logic IDs (first = highest priority).
-    /// </summary>
-    public List<Guid> LogicIds { get; set; } = [];
-}
-
-/// <summary>
-/// Request DTO for evaluating logic.
-/// </summary>
-public class EvaluateLogicRequest
-{
-    /// <summary>
-    /// Optional current question ID (for determining next question).
-    /// </summary>
-    public Guid? CurrentQuestionId { get; set; }
-
-    /// <summary>
-    /// The answers to evaluate against.
-    /// </summary>
-    public List<AnswerForEvaluationDto> Answers { get; set; } = [];
-}
-
-#endregion

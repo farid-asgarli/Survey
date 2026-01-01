@@ -3,10 +3,7 @@ using SurveyApp.Application.Common;
 
 namespace SurveyApp.Application.Features.Files.Queries.DownloadFile;
 
-public record DownloadFileQuery : IRequest<Result<FileDownloadResult>>
-{
-    public required string FileId { get; init; }
-}
+public record DownloadFileQuery(string FileId) : IRequest<Result<FileDownloadResult>>;
 
 public record FileDownloadResult
 {

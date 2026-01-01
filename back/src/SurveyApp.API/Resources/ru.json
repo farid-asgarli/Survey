@@ -717,5 +717,8 @@
   "Validation.Url.MaxLength": "{0} не может превышать 2000 символов.",
   "Validation.Url.MustBeValid": "{0} должен быть действительным HTTP или HTTPS URL.",
   "Validation.Url.Required": "{0} обязателен.",
-  "Validation.WelcomeMessage.MaxLength": "Приветственное сообщение не может превышать 1000 символов."
+  "Validation.WelcomeMessage.MaxLength": "Приветственное сообщение не может превышать 1000 символов.",
+
+  "Validation.Pagination.PageNumberMinValue": "Номер страницы должен быть не менее {0}.",
+  "Validation.Pagination.PageSizeRange": "Размер страницы должен быть от {0} до {1}."
 }

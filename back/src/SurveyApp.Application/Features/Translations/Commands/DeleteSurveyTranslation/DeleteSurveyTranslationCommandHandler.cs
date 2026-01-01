@@ -36,7 +36,7 @@ public class DeleteSurveyTranslationCommandHandler(
         );
         if (survey == null)
         {
-            return Result.Failure("Errors.SurveyNotFound");
+            return Result.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)
@@ -54,7 +54,7 @@ public class DeleteSurveyTranslationCommandHandler(
         var translation = survey.GetTranslation(request.LanguageCode);
         if (translation == null)
         {
-            return Result.Failure("Errors.TranslationNotFound");
+            return Result.NotFound("Errors.TranslationNotFound");
         }
 
         // Remove the translation

@@ -25,7 +25,7 @@ public class GetUserNamespacesQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<IReadOnlyList<NamespaceDto>>.Failure("Errors.UserNotAuthenticated");
+            return Result<IReadOnlyList<NamespaceDto>>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var namespaces = await _namespaceRepository.GetByUserIdAsync(

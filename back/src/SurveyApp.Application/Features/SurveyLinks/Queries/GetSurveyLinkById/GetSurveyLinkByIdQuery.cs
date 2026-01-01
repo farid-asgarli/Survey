@@ -7,8 +7,7 @@ namespace SurveyApp.Application.Features.SurveyLinks.Queries.GetSurveyLinkById;
 /// <summary>
 /// Query to get a survey link by ID.
 /// </summary>
-public record GetSurveyLinkByIdQuery : IRequest<Result<SurveyLinkDetailsDto>>
-{
-    public Guid SurveyId { get; init; }
-    public Guid LinkId { get; init; }
-}
+/// <param name="SurveyId">The survey ID.</param>
+/// <param name="LinkId">The link ID.</param>
+public record GetSurveyLinkByIdQuery(Guid SurveyId, Guid LinkId)
+    : IRequest<Result<SurveyLinkDetailsDto>>;

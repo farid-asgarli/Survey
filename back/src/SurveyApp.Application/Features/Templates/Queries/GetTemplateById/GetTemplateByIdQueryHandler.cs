@@ -25,7 +25,7 @@ public class GetTemplateByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyTemplateDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyTemplateDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var template = await _templateRepository.GetByIdWithQuestionsAsync(
@@ -35,7 +35,7 @@ public class GetTemplateByIdQueryHandler(
 
         if (template == null || template.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyTemplateDto>.Failure("Errors.TemplateNotFound");
+            return Result<SurveyTemplateDto>.NotFound("Errors.TemplateNotFound");
         }
 
         var dto = _mapper.Map<SurveyTemplateDto>(template);

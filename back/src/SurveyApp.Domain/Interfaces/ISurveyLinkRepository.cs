@@ -48,6 +48,17 @@ public interface ISurveyLinkRepository
     );
 
     /// <summary>
+    /// Gets paginated survey links for a survey.
+    /// </summary>
+    Task<(IReadOnlyList<SurveyLink> Items, int TotalCount)> GetBySurveyIdPagedAsync(
+        Guid surveyId,
+        int pageNumber,
+        int pageSize,
+        bool? isActive = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Adds a new survey link.
     /// </summary>
     Task AddAsync(SurveyLink link, CancellationToken cancellationToken = default);

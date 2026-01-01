@@ -32,14 +32,14 @@ public class UpdateMemberRoleCommandHandler(
         );
         if (@namespace == null)
         {
-            return Result<UpdateMemberRoleResult>.Failure("Errors.NamespaceNotFound");
+            return Result<UpdateMemberRoleResult>.NotFound("Errors.NamespaceNotFound");
         }
 
         // Verify current user is authenticated
         var currentUserId = _currentUserService.UserId;
         if (!currentUserId.HasValue)
         {
-            return Result<UpdateMemberRoleResult>.Failure("Errors.UserNotAuthenticated");
+            return Result<UpdateMemberRoleResult>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get current user's membership to check permissions
@@ -51,7 +51,7 @@ public class UpdateMemberRoleCommandHandler(
             || !currentMembership.HasPermission(NamespacePermission.ManageMembers)
         )
         {
-            return Result<UpdateMemberRoleResult>.Failure("Errors.NoPermissionUpdateMemberRole");
+            return Result<UpdateMemberRoleResult>.Forbidden("Errors.NoPermissionUpdateMemberRole");
         }
 
         // Find the membership to update
@@ -60,7 +60,7 @@ public class UpdateMemberRoleCommandHandler(
         );
         if (membershipToUpdate == null)
         {
-            return Result<UpdateMemberRoleResult>.Failure("Errors.MembershipNotFound");
+            return Result<UpdateMemberRoleResult>.NotFound("Errors.MembershipNotFound");
         }
 
         // Cannot change the role of an owner (ownership must be transferred separately)

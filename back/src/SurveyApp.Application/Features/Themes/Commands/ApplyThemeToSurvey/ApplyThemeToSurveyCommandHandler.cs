@@ -40,7 +40,7 @@ public class ApplyThemeToSurveyCommandHandler(
         );
         if (survey == null)
         {
-            return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify survey belongs to namespace
@@ -52,7 +52,7 @@ public class ApplyThemeToSurveyCommandHandler(
         // Validate that only one theme type is specified
         if (request.ThemeId.HasValue && !string.IsNullOrEmpty(request.PresetThemeId))
         {
-            return Result<SurveyDto>.Failure("Handler.CannotApplyBothThemeTypes");
+            return Result<SurveyDto>.Failure("Errors.CannotApplyBothThemeTypes");
         }
 
         // Decrement usage count of old theme (only for saved themes)
@@ -78,13 +78,13 @@ public class ApplyThemeToSurveyCommandHandler(
             );
             if (theme == null)
             {
-                return Result<SurveyDto>.Failure("Handler.ThemeNotFound");
+                return Result<SurveyDto>.NotFound("Errors.ThemeNotFound");
             }
 
             // Verify theme belongs to namespace
             if (theme.NamespaceId != ctx.NamespaceId)
             {
-                return Result<SurveyDto>.Failure("Handler.ThemeNotFoundInNamespace");
+                return Result<SurveyDto>.Failure("Errors.ThemeNotFoundInNamespace");
             }
 
             // Increment usage count

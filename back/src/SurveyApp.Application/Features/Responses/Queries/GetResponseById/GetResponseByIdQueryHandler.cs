@@ -32,7 +32,7 @@ public class GetResponseByIdQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyResponseDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyResponseDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var response = await _responseRepository.GetByIdWithAnswersAsync(
@@ -41,21 +41,21 @@ public class GetResponseByIdQueryHandler(
         );
         if (response == null)
         {
-            return Result<SurveyResponseDto>.Failure("Errors.ResponseNotFound");
+            return Result<SurveyResponseDto>.NotFound("Errors.ResponseNotFound");
         }
 
         // Verify response belongs to a survey in the namespace
         var survey = await _surveyRepository.GetByIdAsync(response.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyResponseDto>.Failure("Errors.ResponseNotFound");
+            return Result<SurveyResponseDto>.NotFound("Errors.ResponseNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyResponseDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyResponseDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(

@@ -24,7 +24,7 @@ public class UpdateUserPreferencesCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<UserPreferencesDto>.Failure("Handler.UserNotAuthenticated");
+            return Result<UserPreferencesDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get or create preferences with change tracking for updates
@@ -36,7 +36,7 @@ public class UpdateUserPreferencesCommandHandler(
         // If preferences is null, the user doesn't exist in the domain Users table
         if (preferences == null)
         {
-            return Result<UserPreferencesDto>.Failure("Errors.UserProfileNotFound");
+            return Result<UserPreferencesDto>.NotFound("Errors.UserProfileNotFound");
         }
 
         try

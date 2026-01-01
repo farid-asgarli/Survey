@@ -39,13 +39,13 @@ public class UpdateThemeCommandHandler(
         );
         if (theme == null)
         {
-            return Result<SurveyThemeDto>.Failure("Handler.ThemeNotFound");
+            return Result<SurveyThemeDto>.NotFound("Errors.ThemeNotFound");
         }
 
         // Verify theme belongs to namespace
         if (theme.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyThemeDto>.Failure("Handler.ThemeNotFoundInNamespace");
+            return Result<SurveyThemeDto>.Failure("Errors.ThemeNotFoundInNamespace");
         }
 
         // Check for duplicate name (excluding current theme)

@@ -38,7 +38,7 @@ public class AddQuestionLogicCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<QuestionLogicDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<QuestionLogicDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get survey with questions
@@ -48,7 +48,7 @@ public class AddQuestionLogicCommandHandler(
         );
         if (survey == null)
         {
-            return Result<QuestionLogicDto>.Failure("Errors.SurveyNotFound");
+            return Result<QuestionLogicDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify survey belongs to namespace

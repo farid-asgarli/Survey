@@ -23,18 +23,9 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     [HttpPost("register")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
-        var result = await _mediator.Send(
-            new RegisterCommand
-            {
-                Email = request.Email,
-                Password = request.Password,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-            }
-        );
-
+        var result = await _mediator.Send(command);
         return HandleResult(result);
     }
 
@@ -44,12 +35,9 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     [HttpPost("login")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
-        var result = await _mediator.Send(
-            new LoginCommand { Email = request.Email, Password = request.Password }
-        );
-
+        var result = await _mediator.Send(command);
         return HandleResult(result);
     }
 
@@ -59,12 +47,9 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     [HttpPost("refresh")]
     [ProducesResponseType(typeof(TokenRefreshResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+    public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
     {
-        var result = await _mediator.Send(
-            new RefreshTokenCommand { Token = request.Token, RefreshToken = request.RefreshToken }
-        );
-
+        var result = await _mediator.Send(command);
         return HandleResult(result);
     }
 
@@ -73,10 +58,9 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     /// </summary>
     [HttpPost("forgot-password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
     {
-        var result = await _mediator.Send(new ForgotPasswordCommand { Email = request.Email });
-
+        var result = await _mediator.Send(command);
         return HandleNoContentResult(result);
     }
 
@@ -86,17 +70,9 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     [HttpPost("reset-password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
     {
-        var result = await _mediator.Send(
-            new ResetPasswordCommand
-            {
-                Email = request.Email,
-                Token = request.Token,
-                NewPassword = request.NewPassword,
-            }
-        );
-
+        var result = await _mediator.Send(command);
         return HandleNoContentResult(result);
     }
 
@@ -110,17 +86,6 @@ public class AuthController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> Logout()
     {
         var result = await _mediator.Send(new LogoutCommand());
-
         return HandleNoContentResult(result);
     }
 }
-
-public record RegisterRequest(string Email, string Password, string FirstName, string LastName);
-
-public record LoginRequest(string Email, string Password);
-
-public record RefreshTokenRequest(string Token, string RefreshToken);
-
-public record ForgotPasswordRequest(string Email);
-
-public record ResetPasswordRequest(string Email, string Token, string NewPassword);

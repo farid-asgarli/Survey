@@ -8,10 +8,8 @@ namespace SurveyApp.Application.Features.Translations.Queries.GetSurveyTranslati
 /// <summary>
 /// Query to get all translations for a survey.
 /// </summary>
-public record GetSurveyTranslationsQuery : IRequest<Result<SurveyTranslationsDto>>
-{
-    public Guid SurveyId { get; init; }
-}
+/// <param name="SurveyId">The survey ID.</param>
+public record GetSurveyTranslationsQuery(Guid SurveyId) : IRequest<Result<SurveyTranslationsDto>>;
 
 /// <summary>
 /// DTO containing all translations for a survey.

@@ -40,13 +40,13 @@ public class GenerateBulkLinksCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<BulkLinkGenerationResultDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<BulkLinkGenerationResultDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         if (request.Count <= 0)
@@ -65,7 +65,7 @@ public class GenerateBulkLinksCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<BulkLinkGenerationResultDto>.Failure("Handler.SurveyNotFound");
+            return Result<BulkLinkGenerationResultDto>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

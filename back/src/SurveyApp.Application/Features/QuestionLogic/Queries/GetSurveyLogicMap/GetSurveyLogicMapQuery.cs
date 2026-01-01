@@ -7,10 +7,5 @@ namespace SurveyApp.Application.Features.QuestionLogic.Queries.GetSurveyLogicMap
 /// <summary>
 /// Query to get the complete logic map for a survey.
 /// </summary>
-public record GetSurveyLogicMapQuery : IRequest<Result<SurveyLogicMapDto>>
-{
-    /// <summary>
-    /// The survey ID.
-    /// </summary>
-    public Guid SurveyId { get; init; }
-}
+/// <param name="SurveyId">The survey ID.</param>
+public record GetSurveyLogicMapQuery(Guid SurveyId) : IRequest<Result<SurveyLogicMapDto>>;

@@ -6,7 +6,7 @@ namespace SurveyApp.Application.Features.SurveyLinks.Commands.DeactivateSurveyLi
 /// <summary>
 /// Command to deactivate a survey link.
 /// </summary>
-public record DeactivateSurveyLinkCommand : IRequest<Result<bool>>
+public record DeactivateSurveyLinkCommand : IRequest<Result<Unit>>
 {
     public Guid SurveyId { get; init; }
     public Guid LinkId { get; init; }

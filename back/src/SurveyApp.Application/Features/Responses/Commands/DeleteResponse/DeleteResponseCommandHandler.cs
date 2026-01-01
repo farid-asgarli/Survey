@@ -14,14 +14,14 @@ public class DeleteResponseCommandHandler(
     ISurveyRepository surveyRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext
-) : IRequestHandler<DeleteResponseCommand, Result<bool>>
+) : IRequestHandler<DeleteResponseCommand, Result<Unit>>
 {
     private readonly ISurveyResponseRepository _responseRepository = responseRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteResponseCommand request,
         CancellationToken cancellationToken
     )
@@ -35,19 +35,19 @@ public class DeleteResponseCommandHandler(
         );
         if (response == null)
         {
-            return Result<bool>.Failure("Errors.ResponseNotFound");
+            return Result<Unit>.NotFound("Errors.ResponseNotFound");
         }
 
         // Verify the response belongs to a survey in the current namespace
         var survey = await _surveyRepository.GetByIdAsync(response.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Errors.ResponseNotFound");
+            return Result<Unit>.NotFound("Errors.ResponseNotFound");
         }
 
         _responseRepository.Delete(response);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

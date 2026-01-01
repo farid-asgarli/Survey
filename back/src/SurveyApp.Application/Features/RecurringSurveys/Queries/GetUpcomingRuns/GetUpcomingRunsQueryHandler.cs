@@ -29,7 +29,7 @@ public class GetUpcomingRunsQueryHandler(
         if (!namespaceId.HasValue)
         {
             return Result<IReadOnlyList<UpcomingRunDto>>.Failure(
-                "Handler.NamespaceContextRequired"
+                "Errors.NamespaceContextRequired"
             );
         }
 

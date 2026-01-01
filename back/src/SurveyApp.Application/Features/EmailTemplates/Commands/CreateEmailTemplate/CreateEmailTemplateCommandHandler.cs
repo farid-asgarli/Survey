@@ -35,14 +35,14 @@ public class CreateEmailTemplateCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<EmailTemplateDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Check if namespace exists
         var ns = await _namespaceRepository.GetByIdAsync(namespaceId.Value, cancellationToken);
         if (ns == null)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.NamespaceNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.NamespaceNotFound");
         }
 
         // Check for duplicate name

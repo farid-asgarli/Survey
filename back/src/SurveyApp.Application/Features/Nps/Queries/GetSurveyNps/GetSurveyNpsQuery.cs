@@ -7,10 +7,5 @@ namespace SurveyApp.Application.Features.Nps.Queries.GetSurveyNps;
 /// <summary>
 /// Query to get NPS score for an entire survey.
 /// </summary>
-public record GetSurveyNpsQuery : IRequest<Result<SurveyNpsSummaryDto>>
-{
-    /// <summary>
-    /// Gets or sets the survey ID.
-    /// </summary>
-    public Guid SurveyId { get; init; }
-}
+/// <param name="SurveyId">The survey ID.</param>
+public record GetSurveyNpsQuery(Guid SurveyId) : IRequest<Result<SurveyNpsSummaryDto>>;

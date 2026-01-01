@@ -1,16 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.EmailDistributions.Commands.CancelDistribution;
 using SurveyApp.Application.Features.EmailDistributions.Commands.CreateDistribution;
 using SurveyApp.Application.Features.EmailDistributions.Commands.DeleteDistribution;
 using SurveyApp.Application.Features.EmailDistributions.Commands.ScheduleDistribution;
 using SurveyApp.Application.Features.EmailDistributions.Commands.SendDistribution;
-using SurveyApp.Application.Features.EmailDistributions.Commands.TrackClick;
-using SurveyApp.Application.Features.EmailDistributions.Commands.TrackOpen;
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionById;
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionRecipients;
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributions;
@@ -33,30 +30,20 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     /// Gets all distributions for a survey.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="pageNumber">Page number (default: 1).</param>
-    /// <param name="pageSize">Page size (default: 20).</param>
+    /// <param name="query">Query parameters for pagination.</param>
     /// <returns>List of distributions.</returns>
     [HttpGet]
     [ProducesResponseType(
-        typeof(IReadOnlyList<EmailDistributionSummaryDto>),
+        typeof(PagedResponse<EmailDistributionSummaryDto>),
         StatusCodes.Status200OK
     )]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetDistributions(
         Guid surveyId,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 20
+        [FromQuery] GetDistributionsQuery query
     )
     {
-        var query = new GetDistributionsQuery
-        {
-            SurveyId = surveyId,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-        };
-
-        var result = await _mediator.Send(query);
-
+        var result = await _mediator.Send(query with { SurveyId = surveyId });
         return HandleResult(result);
     }
 
@@ -80,28 +67,17 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     /// Creates a new email distribution.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The distribution data.</param>
+    /// <param name="command">The distribution command.</param>
     /// <returns>The created distribution.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDistribution(
         Guid surveyId,
-        [FromBody] CreateEmailDistributionDto request
+        [FromBody] CreateDistributionCommand command
     )
     {
-        var command = new CreateDistributionCommand
-        {
-            SurveyId = surveyId,
-            EmailTemplateId = request.EmailTemplateId,
-            Subject = request.Subject,
-            Body = request.Body,
-            SenderName = request.SenderName,
-            SenderEmail = request.SenderEmail,
-            Recipients = request.Recipients,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
         return HandleCreatedResult(
             result,
@@ -115,7 +91,7 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="distId">The distribution ID.</param>
-    /// <param name="request">The schedule data.</param>
+    /// <param name="command">The schedule command.</param>
     /// <returns>The updated distribution.</returns>
     [HttpPost("{distId:guid}/schedule")]
     [ProducesResponseType(typeof(EmailDistributionDto), StatusCodes.Status200OK)]
@@ -124,17 +100,16 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     public async Task<IActionResult> ScheduleDistribution(
         Guid surveyId,
         Guid distId,
-        [FromBody] ScheduleDistributionDto request
+        [FromBody] ScheduleDistributionCommand command
     )
     {
-        var command = new ScheduleDistributionCommand
-        {
-            SurveyId = surveyId,
-            DistributionId = distId,
-            ScheduledAt = request.ScheduledAt,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(
+            command with
+            {
+                SurveyId = surveyId,
+                DistributionId = distId,
+            }
+        );
 
         return HandleResult(result);
     }
@@ -210,9 +185,7 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="distId">The distribution ID.</param>
-    /// <param name="pageNumber">Page number (default: 1).</param>
-    /// <param name="pageSize">Page size (default: 50).</param>
-    /// <param name="status">Optional filter by recipient status.</param>
+    /// <param name="query">Query parameters for filtering and pagination.</param>
     /// <returns>List of recipients.</returns>
     [HttpGet("{distId:guid}/recipients")]
     [ProducesResponseType(typeof(IReadOnlyList<EmailRecipientDto>), StatusCodes.Status200OK)]
@@ -220,75 +193,16 @@ public class EmailDistributionsController(IMediator mediator) : ApiControllerBas
     public async Task<IActionResult> GetDistributionRecipients(
         Guid surveyId,
         Guid distId,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 50,
-        [FromQuery] RecipientStatus? status = null
+        [FromQuery] GetDistributionRecipientsQuery query
     )
     {
-        var query = new GetDistributionRecipientsQuery
-        {
-            SurveyId = surveyId,
-            DistributionId = distId,
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            Status = status,
-        };
-
-        var result = await _mediator.Send(query);
-
-        return HandleResult(result);
-    }
-}
-
-/// <summary>
-/// Controller for email tracking endpoints.
-/// Rate limited to prevent abuse such as token enumeration, metric inflation, and DoS attacks.
-/// </summary>
-[ApiController]
-[Route("api/track")]
-[EnableRateLimiting("tracking")]
-public class EmailTrackingController(IMediator mediator) : ControllerBase
-{
-    private readonly IMediator _mediator = mediator;
-
-    /// <summary>
-    /// Tracks an email open event (1x1 pixel).
-    /// </summary>
-    /// <param name="token">The tracking token.</param>
-    /// <returns>A 1x1 transparent pixel.</returns>
-    [HttpGet("open/{token}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-    public async Task<IActionResult> TrackOpen(string token)
-    {
-        await _mediator.Send(new TrackOpenCommand(token));
-
-        // Return a 1x1 transparent GIF
-        var transparentPixel = Convert.FromBase64String(
-            "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        var result = await _mediator.Send(
+            query with
+            {
+                SurveyId = surveyId,
+                DistributionId = distId,
+            }
         );
-
-        return File(transparentPixel, "image/gif");
-    }
-
-    /// <summary>
-    /// Tracks a link click event and redirects to the survey.
-    /// </summary>
-    /// <param name="token">The tracking token.</param>
-    /// <returns>Redirect to the survey.</returns>
-    [HttpGet("click/{token}")]
-    [ProducesResponseType(StatusCodes.Status302Found)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
-    public async Task<IActionResult> TrackClick(string token)
-    {
-        var result = await _mediator.Send(new TrackClickCommand(token));
-
-        if (!result.IsSuccess)
-            return result.ToProblemDetails(HttpContext);
-
-        // Redirect to the public survey URL
-        var surveyUrl = $"/survey/{result.Value}";
-        return Redirect(surveyUrl);
+        return HandleResult(result);
     }
 }

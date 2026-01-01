@@ -13,14 +13,14 @@ public class DeleteRecurringSurveyCommandHandler(
     IRecurringSurveyRepository recurringSurveyRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext
-) : IRequestHandler<DeleteRecurringSurveyCommand, Result<bool>>
+) : IRequestHandler<DeleteRecurringSurveyCommand, Result<Unit>>
 {
     private readonly IRecurringSurveyRepository _recurringSurveyRepository =
         recurringSurveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteRecurringSurveyCommand request,
         CancellationToken cancellationToken
     )
@@ -35,17 +35,17 @@ public class DeleteRecurringSurveyCommandHandler(
         );
         if (recurringSurvey == null)
         {
-            return Result<bool>.Failure("Errors.RecurringSurveyNotFound");
+            return Result<Unit>.NotFound("Errors.RecurringSurveyNotFound");
         }
 
         if (recurringSurvey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Errors.RecurringSurveyNotInNamespace");
+            return Result<Unit>.Failure("Errors.RecurringSurveyNotInNamespace");
         }
 
         await _recurringSurveyRepository.DeleteAsync(recurringSurvey, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

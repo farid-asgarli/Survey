@@ -24,7 +24,7 @@ public class GetUserPreferencesQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<UserPreferencesDto>.Failure("Handler.UserNotAuthenticated");
+            return Result<UserPreferencesDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get or create preferences (creates default if not exists)

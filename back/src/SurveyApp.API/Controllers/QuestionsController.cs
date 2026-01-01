@@ -33,7 +33,7 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetQuestions(Guid surveyId)
     {
-        var result = await _mediator.Send(new GetQuestionsQuery { SurveyId = surveyId });
+        var result = await _mediator.Send(new GetQuestionsQuery(surveyId));
 
         return HandleResult(result);
     }
@@ -49,9 +49,7 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetQuestion(Guid surveyId, Guid questionId)
     {
-        var result = await _mediator.Send(
-            new GetQuestionByIdQuery { SurveyId = surveyId, QuestionId = questionId }
-        );
+        var result = await _mediator.Send(new GetQuestionByIdQuery(surveyId, questionId));
 
         return HandleResult(result);
     }
@@ -60,7 +58,7 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     /// Create a new question in a survey.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The question data.</param>
+    /// <param name="command">The question command.</param>
     /// <returns>The created question.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(QuestionDto), StatusCodes.Status201Created)]
@@ -68,23 +66,10 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateQuestion(
         Guid surveyId,
-        [FromBody] CreateQuestionRequest request
+        [FromBody] CreateQuestionCommand command
     )
     {
-        var command = new CreateQuestionCommand
-        {
-            SurveyId = surveyId,
-            Text = request.Text,
-            Description = request.Description,
-            Type = request.Type,
-            IsRequired = request.IsRequired,
-            Order = request.Order,
-            Settings = request.Settings,
-            IsNpsQuestion = request.IsNpsQuestion,
-            NpsType = request.NpsType,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
         return HandleCreatedResult(
             result,
@@ -98,7 +83,7 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
     /// <param name="questionId">The question ID.</param>
-    /// <param name="request">The updated question data.</param>
+    /// <param name="command">The updated question command.</param>
     /// <returns>The updated question.</returns>
     [HttpPut("{questionId:guid}")]
     [ProducesResponseType(typeof(QuestionDto), StatusCodes.Status200OK)]
@@ -107,24 +92,16 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     public async Task<IActionResult> UpdateQuestion(
         Guid surveyId,
         Guid questionId,
-        [FromBody] UpdateQuestionRequest request
+        [FromBody] UpdateQuestionCommand command
     )
     {
-        var command = new UpdateQuestionCommand
-        {
-            SurveyId = surveyId,
-            QuestionId = questionId,
-            Text = request.Text,
-            Description = request.Description,
-            Type = request.Type,
-            IsRequired = request.IsRequired,
-            Order = request.Order,
-            Settings = request.Settings,
-            IsNpsQuestion = request.IsNpsQuestion,
-            NpsType = request.NpsType,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(
+            command with
+            {
+                SurveyId = surveyId,
+                QuestionId = questionId,
+            }
+        );
 
         return HandleResult(result);
     }
@@ -151,19 +128,17 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     /// Reorder questions in a survey.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The new question order.</param>
+    /// <param name="command">The reorder command with question IDs.</param>
     [HttpPut("reorder")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ReorderQuestions(
         Guid surveyId,
-        [FromBody] ReorderQuestionsRequest request
+        [FromBody] ReorderQuestionsCommand command
     )
     {
-        var result = await _mediator.Send(
-            new ReorderQuestionsCommand { SurveyId = surveyId, QuestionIds = request.QuestionIds }
-        );
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
         return HandleNoContentResult(result);
     }
@@ -174,7 +149,7 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     /// This is more efficient than making multiple individual API calls.
     /// </summary>
     /// <param name="surveyId">The survey ID.</param>
-    /// <param name="request">The batch sync data.</param>
+    /// <param name="command">The batch sync command.</param>
     /// <returns>Result of the batch sync operation including ID mappings.</returns>
     [HttpPost("sync")]
     [ProducesResponseType(typeof(BatchSyncQuestionsResult), StatusCodes.Status200OK)]
@@ -182,152 +157,11 @@ public class QuestionsController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> BatchSyncQuestions(
         Guid surveyId,
-        [FromBody] BatchSyncQuestionsRequest request
+        [FromBody] BatchSyncQuestionsCommand command
     )
     {
-        var command = new BatchSyncQuestionsCommand
-        {
-            SurveyId = surveyId,
-            ToCreate =
-            [
-                .. request.ToCreate.Select(c => new CreateQuestionData
-                {
-                    TempId = c.TempId,
-                    Text = c.Text,
-                    Description = c.Description,
-                    Type = c.Type,
-                    IsRequired = c.IsRequired,
-                    Order = c.Order,
-                    Settings = c.Settings,
-                    IsNpsQuestion = c.IsNpsQuestion,
-                    NpsType = c.NpsType,
-                    LanguageCode = c.LanguageCode,
-                }),
-            ],
-            ToUpdate =
-            [
-                .. request.ToUpdate.Select(u => new UpdateQuestionData
-                {
-                    QuestionId = u.QuestionId,
-                    Text = u.Text,
-                    Description = u.Description,
-                    Type = u.Type,
-                    IsRequired = u.IsRequired,
-                    Order = u.Order,
-                    Settings = u.Settings,
-                    IsNpsQuestion = u.IsNpsQuestion,
-                    NpsType = u.NpsType,
-                    LanguageCode = u.LanguageCode,
-                }),
-            ],
-            ToDelete = request.ToDelete,
-            FinalOrder = request.FinalOrder,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command with { SurveyId = surveyId });
 
         return HandleResult(result);
     }
-}
-
-/// <summary>
-/// Request body for creating a question.
-/// </summary>
-public class CreateQuestionRequest
-{
-    public string Text { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public QuestionType Type { get; set; }
-    public bool IsRequired { get; set; }
-    public int? Order { get; set; }
-    public QuestionSettingsDto? Settings { get; set; }
-    public bool IsNpsQuestion { get; set; }
-    public NpsQuestionType? NpsType { get; set; }
-}
-
-/// <summary>
-/// Request body for updating a question.
-/// </summary>
-public class UpdateQuestionRequest
-{
-    public string Text { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public QuestionType Type { get; set; }
-    public bool IsRequired { get; set; }
-    public int? Order { get; set; }
-    public QuestionSettingsDto? Settings { get; set; }
-    public bool IsNpsQuestion { get; set; }
-    public NpsQuestionType? NpsType { get; set; }
-}
-
-/// <summary>
-/// Request body for reordering questions.
-/// </summary>
-public class ReorderQuestionsRequest
-{
-    public List<Guid> QuestionIds { get; set; } = [];
-}
-
-/// <summary>
-/// Request body for batch syncing questions.
-/// </summary>
-public class BatchSyncQuestionsRequest
-{
-    /// <summary>
-    /// Questions to create (new questions with temporary client-side IDs).
-    /// </summary>
-    public List<BatchCreateQuestionData> ToCreate { get; set; } = [];
-
-    /// <summary>
-    /// Questions to update (existing questions with real IDs).
-    /// </summary>
-    public List<BatchUpdateQuestionData> ToUpdate { get; set; } = [];
-
-    /// <summary>
-    /// Question IDs to delete.
-    /// </summary>
-    public List<Guid> ToDelete { get; set; } = [];
-
-    /// <summary>
-    /// The final order of question IDs after sync.
-    /// Temporary IDs (starting with "temp_") will be mapped to real IDs.
-    /// </summary>
-    public List<string> FinalOrder { get; set; } = [];
-}
-
-/// <summary>
-/// Data for creating a question in batch sync.
-/// </summary>
-public class BatchCreateQuestionData
-{
-    /// <summary>
-    /// Temporary ID used by the client to track this question.
-    /// </summary>
-    public string TempId { get; set; } = string.Empty;
-    public string Text { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public QuestionType Type { get; set; }
-    public bool IsRequired { get; set; }
-    public int? Order { get; set; }
-    public QuestionSettingsDto? Settings { get; set; }
-    public bool IsNpsQuestion { get; set; }
-    public NpsQuestionType? NpsType { get; set; }
-    public string? LanguageCode { get; set; }
-}
-
-/// <summary>
-/// Data for updating a question in batch sync.
-/// </summary>
-public class BatchUpdateQuestionData
-{
-    public Guid QuestionId { get; set; }
-    public string Text { get; set; } = string.Empty;
-    public string? Description { get; set; }
-    public QuestionType Type { get; set; }
-    public bool IsRequired { get; set; }
-    public int? Order { get; set; }
-    public QuestionSettingsDto? Settings { get; set; }
-    public bool IsNpsQuestion { get; set; }
-    public NpsQuestionType? NpsType { get; set; }
-    public string? LanguageCode { get; set; }
 }

@@ -37,7 +37,7 @@ public class DuplicateSurveyCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var namespaceId = _namespaceContext.CurrentNamespaceId;
@@ -67,7 +67,7 @@ public class DuplicateSurveyCommandHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.CreateSurveys))
         {
-            return Result<SurveyDto>.Failure("Errors.NoPermissionCreateSurveys");
+            return Result<SurveyDto>.Forbidden("Errors.NoPermissionCreateSurveys");
         }
 
         // Check survey limits

@@ -43,13 +43,13 @@ public class CreateNamespaceCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<NamespaceDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<NamespaceDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var user = await _userRepository.GetByIdAsync(userId.Value, cancellationToken);
         if (user == null)
         {
-            return Result<NamespaceDto>.Failure("Errors.UserNotFound");
+            return Result<NamespaceDto>.NotFound("Errors.UserNotFound");
         }
 
         // Create namespace slug

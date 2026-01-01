@@ -38,7 +38,7 @@ public class SendDistributionCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<EmailDistributionDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<EmailDistributionDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get distribution with recipients

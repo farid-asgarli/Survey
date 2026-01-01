@@ -33,7 +33,7 @@ public class UpdateEmailTemplateCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<EmailTemplateDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get existing template with change tracking for updates
@@ -43,13 +43,13 @@ public class UpdateEmailTemplateCommandHandler(
         );
         if (template == null)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Verify namespace ownership
         if (template.NamespaceId != namespaceId.Value)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Check for duplicate name if name is being changed

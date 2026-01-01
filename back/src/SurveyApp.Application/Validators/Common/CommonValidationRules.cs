@@ -458,4 +458,43 @@ public static class CommonValidationRules
     }
 
     #endregion
+
+    #region Pagination Validation
+
+    /// <summary>
+    /// Validates a page number field (must be >= 1).
+    /// </summary>
+    public static IRuleBuilderOptions<T, int> ValidPageNumber<T>(
+        this IRuleBuilder<T, int> ruleBuilder
+    )
+    {
+        return ruleBuilder
+            .GreaterThanOrEqualTo(PaginationDefaults.DefaultPageNumber)
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Pagination.PageNumberMinValue,
+                    PaginationDefaults.DefaultPageNumber
+                )
+            );
+    }
+
+    /// <summary>
+    /// Validates a page size field (must be between MinPageSize and MaxPageSize).
+    /// </summary>
+    public static IRuleBuilderOptions<T, int> ValidPageSize<T>(
+        this IRuleBuilder<T, int> ruleBuilder
+    )
+    {
+        return ruleBuilder
+            .InclusiveBetween(PaginationDefaults.MinPageSize, PaginationDefaults.MaxPageSize)
+            .WithMessage(
+                string.Format(
+                    LocalizationKeys.Validation.Pagination.PageSizeRange,
+                    PaginationDefaults.MinPageSize,
+                    PaginationDefaults.MaxPageSize
+                )
+            );
+    }
+
+    #endregion
 }

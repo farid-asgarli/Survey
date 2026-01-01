@@ -8,12 +8,11 @@ namespace SurveyApp.Application.Features.Themes.Commands.SetDefaultTheme;
 /// <summary>
 /// Command to set a theme as the default for a namespace.
 /// </summary>
-public record SetDefaultThemeCommand : IRequest<Result<bool>>, INamespaceCommand
+/// <param name="ThemeId">The theme ID to set as default.</param>
+public record SetDefaultThemeCommand(Guid ThemeId) : IRequest<Result<Unit>>, INamespaceCommand
 {
     /// <summary>
     /// The permission required to execute this command.
     /// </summary>
     public static NamespacePermission RequiredPermission => NamespacePermission.ManageSettings;
-
-    public Guid ThemeId { get; init; }
 }

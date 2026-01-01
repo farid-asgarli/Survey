@@ -39,20 +39,20 @@ public class DuplicateEmailTemplateCommandHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<EmailTemplateDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get the original template
         var original = await _templateRepository.GetByIdAsync(request.Id, cancellationToken);
         if (original == null)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Verify the template belongs to the current namespace
         if (original.NamespaceId != namespaceId.Value)
         {
-            return Result<EmailTemplateDto>.Failure("Errors.EmailTemplateNotFound");
+            return Result<EmailTemplateDto>.NotFound("Errors.EmailTemplateNotFound");
         }
 
         // Generate new name

@@ -4,7 +4,4 @@ using SurveyApp.Application.DTOs;
 
 namespace SurveyApp.Application.Features.Surveys.Queries.GetSurveyById;
 
-public record GetSurveyByIdQuery : IRequest<Result<SurveyDetailsDto>>
-{
-    public Guid SurveyId { get; init; }
-}
+public record GetSurveyByIdQuery(Guid SurveyId) : IRequest<Result<SurveyDetailsDto>>;

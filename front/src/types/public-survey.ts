@@ -84,16 +84,29 @@ export interface PublicSurveyTheme {
   backgroundColor?: string;
   textColor?: string;
 
-  // Other
+  // Typography
   fontFamily?: string;
+  headingFontFamily?: string;
+  baseFontSize?: number;
+
+  // Button styling
+  buttonStyle?: number;
+  buttonTextColor?: string;
+
+  // Branding
   logoUrl?: string;
   logoSize?: number;
   showLogoBackground?: boolean;
   logoBackgroundColor?: string;
   brandingTitle?: string;
   brandingSubtitle?: string;
+  showPoweredBy?: boolean;
+
+  // Layout
   backgroundImageUrl?: string;
   backgroundPosition?: string;
+  showProgressBar?: boolean;
+  progressBarStyle?: number;
 }
 
 // ============ Response Submission Types ============

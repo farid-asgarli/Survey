@@ -25,7 +25,7 @@ public class GetSurveyLogicMapQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<SurveyLogicMapDto>.Failure("Handler.NamespaceContextRequired");
+            return Result<SurveyLogicMapDto>.Failure("Errors.NamespaceContextRequired");
         }
 
         // Get survey with questions
@@ -35,7 +35,7 @@ public class GetSurveyLogicMapQueryHandler(
         );
         if (survey == null)
         {
-            return Result<SurveyLogicMapDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyLogicMapDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify survey belongs to namespace

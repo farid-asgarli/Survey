@@ -28,14 +28,14 @@ public class GetNamespaceByIdQueryHandler(
         );
         if (@namespace == null)
         {
-            return Result<NamespaceDetailsDto>.Failure("Errors.NamespaceNotFound");
+            return Result<NamespaceDetailsDto>.NotFound("Errors.NamespaceNotFound");
         }
 
         // Check if user has access
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<NamespaceDetailsDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<NamespaceDetailsDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var membership = @namespace.Memberships.FirstOrDefault(m => m.UserId == userId.Value);

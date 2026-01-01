@@ -13,13 +13,13 @@ public class DeleteSurveyCommandHandler(
     ISurveyRepository surveyRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext
-) : IRequestHandler<DeleteSurveyCommand, Result<bool>>
+) : IRequestHandler<DeleteSurveyCommand, Result<Unit>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeleteSurveyCommand request,
         CancellationToken cancellationToken
     )
@@ -33,13 +33,13 @@ public class DeleteSurveyCommandHandler(
         );
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<bool>.Failure("Handler.SurveyNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyNotFound");
         }
 
         // Soft delete survey
         _surveyRepository.Delete(survey);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

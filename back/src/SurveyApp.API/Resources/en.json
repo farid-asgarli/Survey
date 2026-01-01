@@ -798,5 +798,8 @@
   "Sample.SurveyTitle": "Sample Survey",
   "Sample.SurveyDescription": "This is a sample survey description.",
   "Sample.SenderName": "Survey Team",
-  "Sample.OrganizationName": "Sample Organization"
+  "Sample.OrganizationName": "Sample Organization",
+
+  "Validation.Pagination.PageNumberMinValue": "Page number must be at least {0}.",
+  "Validation.Pagination.PageSizeRange": "Page size must be between {0} and {1}."
 }

@@ -1,4 +1,3 @@
-using System.Text.Json;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -92,7 +91,7 @@ public class SubmitSurveyResponseCommandHandler(
                 "DEBUG: GetByIdForUpdateAsync returned NULL for ResponseId: {ResponseId}",
                 request.ResponseId
             );
-            return Result<SurveyResponseDto>.Failure("Handler.ResponseNotFound");
+            return Result<SurveyResponseDto>.NotFound("Errors.ResponseNotFound");
         }
 
         _logger.LogWarning(
@@ -113,7 +112,7 @@ public class SubmitSurveyResponseCommandHandler(
             cancellationToken
         );
         if (survey == null)
-            return Result<SurveyResponseDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyResponseDto>.NotFound("Errors.SurveyNotFound");
 
         _logger.LogWarning(
             "DEBUG: Survey loaded. Id={SurveyId}, QuestionCount={QuestionCount}",
@@ -245,7 +244,7 @@ public class SubmitSurveyResponseCommandHandler(
             cancellationToken
         );
         if (survey == null)
-            return Result<SurveyResponseDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyResponseDto>.NotFound("Errors.SurveyNotFound");
 
         if (!survey.IsAcceptingResponses)
             return Result<SurveyResponseDto>.Failure("Application.Survey.NotAcceptingResponses");
@@ -316,7 +315,7 @@ public class SubmitSurveyResponseCommandHandler(
         return Result<SurveyResponseDto>.Success(_mapper.Map<SurveyResponseDto>(response));
     }
 
-    private Task<Result<bool>> ValidateAndAddAnswers(
+    private Task<Result<Unit>> ValidateAndAddAnswers(
         Survey survey,
         SurveyResponse response,
         List<SubmitAnswerDto> answers
@@ -339,7 +338,7 @@ public class SubmitSurveyResponseCommandHandler(
                 .Questions.Where(q => missingRequired.Contains(q.Id))
                 .Select(q => q.Text);
             return Task.FromResult(
-                Result<bool>.Failure(
+                Result<Unit>.Failure(
                     $"Application.Response.RequiredQuestionsNotAnswered|{string.Join(", ", missingQuestions)}"
                 )
             );
@@ -358,7 +357,7 @@ public class SubmitSurveyResponseCommandHandler(
             var (answerValue, validationError) = BuildAnswerValue(question, settings, answerDto);
             if (validationError != null)
                 return Task.FromResult(
-                    Result<bool>.Failure(
+                    Result<Unit>.Failure(
                         $"Application.Response.InvalidAnswerForQuestion|{question.Text}|{validationError}"
                     )
                 );
@@ -367,7 +366,7 @@ public class SubmitSurveyResponseCommandHandler(
                 response.AddAnswer(answerDto.QuestionId, answerValue.ToJson());
         }
 
-        return Task.FromResult(Result<bool>.Success(true));
+        return Task.FromResult(Result<Unit>.Success(Unit.Value));
     }
 
     private static bool HasAnswer(SubmitAnswerDto answer)

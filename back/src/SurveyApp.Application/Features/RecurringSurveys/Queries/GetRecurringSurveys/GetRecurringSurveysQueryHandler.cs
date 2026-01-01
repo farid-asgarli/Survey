@@ -3,7 +3,11 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
+using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
+using SurveyApp.Domain.Specifications.RecurringSurveys;
 
 namespace SurveyApp.Application.Features.RecurringSurveys.Queries.GetRecurringSurveys;
 
@@ -11,19 +15,19 @@ namespace SurveyApp.Application.Features.RecurringSurveys.Queries.GetRecurringSu
 /// Handler for GetRecurringSurveysQuery.
 /// </summary>
 public class GetRecurringSurveysQueryHandler(
-    IRecurringSurveyRepository recurringSurveyRepository,
+    ISpecificationRepository<RecurringSurvey> recurringSurveyRepository,
     ISurveyRepository surveyRepository,
     INamespaceContext namespaceContext,
     IMapper mapper
-) : IRequestHandler<GetRecurringSurveysQuery, Result<PagedList<RecurringSurveyListItemDto>>>
+) : IRequestHandler<GetRecurringSurveysQuery, Result<PagedResponse<RecurringSurveyListItemDto>>>
 {
-    private readonly IRecurringSurveyRepository _recurringSurveyRepository =
+    private readonly ISpecificationRepository<RecurringSurvey> _recurringSurveyRepository =
         recurringSurveyRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<PagedList<RecurringSurveyListItemDto>>> Handle(
+    public async Task<Result<PagedResponse<RecurringSurveyListItemDto>>> Handle(
         GetRecurringSurveysQuery request,
         CancellationToken cancellationToken
     )
@@ -31,17 +35,23 @@ public class GetRecurringSurveysQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<PagedList<RecurringSurveyListItemDto>>.Failure(
-                "Handler.NamespaceContextRequired"
+            return Result<PagedResponse<RecurringSurveyListItemDto>>.Failure(
+                "Errors.NamespaceContextRequired"
             );
         }
 
+        // Use specification pattern for querying
+        var criteria = new RecurringSurveyFilterCriteria
+        {
+            NamespaceId = namespaceId.Value,
+            SearchTerm = request.SearchTerm,
+            IsActive = request.IsActive,
+            Paging = PagingParameters.Create(request.PageNumber, request.PageSize),
+        };
+
+        var spec = new RecurringSurveysFilteredSpec(criteria);
         var (items, totalCount) = await _recurringSurveyRepository.GetPagedAsync(
-            namespaceId.Value,
-            request.PageNumber,
-            request.PageSize,
-            request.SearchTerm,
-            request.IsActive,
+            spec,
             cancellationToken
         );
 
@@ -67,13 +77,13 @@ public class GetRecurringSurveysQueryHandler(
             })
             .ToList();
 
-        var pagedList = new PagedList<RecurringSurveyListItemDto>(
+        var pagedResponse = PagedResponse<RecurringSurveyListItemDto>.Create(
             dtos,
-            totalCount,
             request.PageNumber,
-            request.PageSize
+            request.PageSize,
+            totalCount
         );
 
-        return Result<PagedList<RecurringSurveyListItemDto>>.Success(pagedList);
+        return Result<PagedResponse<RecurringSurveyListItemDto>>.Success(pagedResponse);
     }
 }

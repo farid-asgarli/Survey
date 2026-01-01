@@ -43,7 +43,7 @@ public class GetQuestionNpsQueryHandler(
         );
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<NpsScoreDto>.Failure("Errors.SurveyNotFound");
+            return Result<NpsScoreDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify question exists in survey
@@ -57,7 +57,7 @@ public class GetQuestionNpsQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<NpsScoreDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<NpsScoreDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
@@ -67,7 +67,7 @@ public class GetQuestionNpsQueryHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.ViewResponses))
         {
-            return Result<NpsScoreDto>.Failure("Errors.NoPermissionViewNps");
+            return Result<NpsScoreDto>.Forbidden("Errors.NoPermissionViewNps");
         }
 
         // Get analytics data and extract answers for this question

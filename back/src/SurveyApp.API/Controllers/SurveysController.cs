@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using SurveyApp.API.Extensions;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.Nps.Queries.GetNpsTrend;
 using SurveyApp.Application.Features.Nps.Queries.GetQuestionNps;
 using SurveyApp.Application.Features.Nps.Queries.GetSurveyNps;
@@ -36,28 +36,10 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Get all surveys in the current namespace
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetSurveys(
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10,
-        [FromQuery] SurveyStatus? status = null,
-        [FromQuery] string? searchTerm = null,
-        [FromQuery] string? sortBy = null,
-        [FromQuery] bool sortDescending = true
-    )
+    [ProducesResponseType(typeof(PagedResponse<SurveyListItemDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSurveys([FromQuery] GetSurveysQuery query)
     {
-        var result = await _mediator.Send(
-            new GetSurveysQuery
-            {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                Status = status,
-                SearchTerm = searchTerm,
-                SortBy = sortBy,
-                SortDescending = sortDescending,
-            }
-        );
-
+        var result = await _mediator.Send(query);
         return HandleResult(result);
     }
 
@@ -65,11 +47,11 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Get a survey by ID
     /// </summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetSurveyByIdQuery { SurveyId = id });
+        var result = await _mediator.Send(new GetSurveyByIdQuery(id));
         return HandleResult(result);
     }
 
@@ -79,11 +61,11 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [HttpGet("public/{shareToken}")]
     [AllowAnonymous]
     [OutputCache(PolicyName = "PublicSurvey")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PublicSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPublicSurvey(string shareToken)
     {
-        var result = await _mediator.Send(new GetPublicSurveyQuery { ShareToken = shareToken });
+        var result = await _mediator.Send(new GetPublicSurveyQuery(shareToken));
         return HandleResult(result);
     }
 
@@ -91,7 +73,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Create a new survey
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(SurveyDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateSurveyCommand command)
     {
@@ -103,7 +85,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Update a survey
     /// </summary>
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSurveyCommand command)
@@ -123,7 +105,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Publish(Guid id)
     {
-        var result = await _mediator.Send(new PublishSurveyCommand { SurveyId = id });
+        var result = await _mediator.Send(new PublishSurveyCommand(id));
         return HandleResult(result);
     }
 
@@ -136,11 +118,14 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Duplicate(
         Guid id,
-        [FromBody] DuplicateSurveyRequest? request = null
+        [FromBody] DuplicateSurveyCommand? command = null
     )
     {
         var result = await _mediator.Send(
-            new DuplicateSurveyCommand { SurveyId = id, NewTitle = request?.NewTitle }
+            (command ?? new DuplicateSurveyCommand()) with
+            {
+                SurveyId = id,
+            }
         );
         return HandleCreatedResult(result, nameof(GetById), v => new { id = v.Id });
     }
@@ -153,7 +138,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Close(Guid id)
     {
-        var result = await _mediator.Send(new CloseSurveyCommand { SurveyId = id });
+        var result = await _mediator.Send(new CloseSurveyCommand(id));
         return HandleResult(result);
     }
 
@@ -166,7 +151,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _mediator.Send(new DeleteSurveyCommand { SurveyId = id });
+        var result = await _mediator.Send(new DeleteSurveyCommand(id));
         return HandleNoContentResult(result);
     }
 
@@ -179,7 +164,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAnalytics(Guid id)
     {
-        var result = await _mediator.Send(new GetSurveyAnalyticsQuery { SurveyId = id });
+        var result = await _mediator.Send(new GetSurveyAnalyticsQuery(id));
         return HandleResult(result);
     }
 
@@ -187,26 +172,18 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Export survey responses
     /// </summary>
     /// <param name="id">The survey ID.</param>
-    /// <param name="request">Export request parameters.</param>
+    /// <param name="command">Export command parameters.</param>
     /// <returns>File download with exported data.</returns>
     [HttpPost("{id:guid}/export")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ExportResponses(Guid id, [FromBody] ExportRequestDto request)
+    public async Task<IActionResult> ExportResponses(
+        Guid id,
+        [FromBody] ExportResponsesCommand command
+    )
     {
-        var command = new ExportResponsesCommand
-        {
-            SurveyId = id,
-            Format = request.Format,
-            Filter = request.Filter,
-            QuestionIds = request.QuestionIds,
-            IncludeMetadata = request.IncludeMetadata,
-            IncludeIncomplete = request.IncludeIncomplete,
-            TimezoneId = request.TimezoneId,
-        };
-
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command with { SurveyId = id });
         return HandleFileResult(result, v => v.Data, v => v.ContentType, v => v.FileName);
     }
 
@@ -221,7 +198,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetExportPreview(Guid id)
     {
-        var result = await _mediator.Send(new GetExportPreviewQuery { SurveyId = id });
+        var result = await _mediator.Send(new GetExportPreviewQuery(id));
         return HandleResult(result);
     }
 
@@ -229,22 +206,17 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Apply a theme to a survey
     /// </summary>
     /// <param name="id">The survey ID.</param>
-    /// <param name="request">The theme ID to apply (null to remove theme).</param>
+    /// <param name="command">The theme command (null ThemeId to remove theme).</param>
     [HttpPut("{id:guid}/theme")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ApplyTheme(Guid id, [FromBody] ApplySurveyThemeRequest request)
+    public async Task<IActionResult> ApplyTheme(
+        Guid id,
+        [FromBody] ApplyThemeToSurveyCommand command
+    )
     {
-        var result = await _mediator.Send(
-            new ApplyThemeToSurveyCommand
-            {
-                SurveyId = id,
-                ThemeId = request.ThemeId,
-                PresetThemeId = request.PresetThemeId,
-                ThemeCustomizations = request.ThemeCustomizations,
-            }
-        );
+        var result = await _mediator.Send(command with { SurveyId = id });
         return HandleResult(result);
     }
 
@@ -259,7 +231,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetNps(Guid id)
     {
-        var result = await _mediator.Send(new GetSurveyNpsQuery { SurveyId = id });
+        var result = await _mediator.Send(new GetSurveyNpsQuery(id));
         return HandleResult(result);
     }
 
@@ -267,21 +239,28 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// Get NPS trend over time for a survey
     /// </summary>
     /// <param name="id">The survey ID.</param>
-    /// <param name="request">Trend request parameters.</param>
+    /// <param name="fromDate">Start date for the trend analysis. Defaults to 3 months ago.</param>
+    /// <param name="toDate">End date for the trend analysis. Defaults to current date.</param>
+    /// <param name="groupBy">How to group the trend data (Day, Week, Month). Defaults to Week.</param>
     /// <returns>NPS trend data with data points over time.</returns>
     [HttpGet("{id:guid}/nps/trend")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetNpsTrend(Guid id, [FromQuery] NpsTrendRequest request)
+    public async Task<IActionResult> GetNpsTrend(
+        Guid id,
+        [FromQuery] DateTime? fromDate = null,
+        [FromQuery] DateTime? toDate = null,
+        [FromQuery] NpsTrendGroupBy? groupBy = null
+    )
     {
         var result = await _mediator.Send(
             new GetNpsTrendQuery
             {
                 SurveyId = id,
-                FromDate = request.FromDate ?? DateTime.UtcNow.AddMonths(-3),
-                ToDate = request.ToDate ?? DateTime.UtcNow,
-                GroupBy = request.GroupBy ?? NpsTrendGroupBy.Week,
+                FromDate = fromDate ?? DateTime.UtcNow.AddMonths(-3),
+                ToDate = toDate ?? DateTime.UtcNow,
+                GroupBy = groupBy ?? NpsTrendGroupBy.Week,
             }
         );
         return HandleResult(result);
@@ -298,99 +277,7 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetQuestionNps(Guid id, Guid questionId)
     {
-        var result = await _mediator.Send(
-            new GetQuestionNpsQuery { SurveyId = id, QuestionId = questionId }
-        );
+        var result = await _mediator.Send(new GetQuestionNpsQuery(id, questionId));
         return HandleResult(result);
     }
-}
-
-/// <summary>
-/// Request body for applying theme to a survey.
-/// </summary>
-public class ApplySurveyThemeRequest
-{
-    /// <summary>
-    /// The saved theme ID (Guid) to apply custom themes.
-    /// </summary>
-    public Guid? ThemeId { get; set; }
-
-    /// <summary>
-    /// The preset theme identifier (e.g., "midnight", "ocean") to apply preset themes.
-    /// </summary>
-    public string? PresetThemeId { get; set; }
-
-    /// <summary>
-    /// Optional JSON string containing theme customizations.
-    /// </summary>
-    public string? ThemeCustomizations { get; set; }
-}
-
-/// <summary>
-/// Request body for exporting survey responses.
-/// </summary>
-public class ExportRequestDto
-{
-    /// <summary>
-    /// The export format (Csv, Excel, Json).
-    /// </summary>
-    public Application.DTOs.ExportFormat Format { get; set; }
-
-    /// <summary>
-    /// Optional filter for the export.
-    /// </summary>
-    public ExportFilter? Filter { get; set; }
-
-    /// <summary>
-    /// Specific question IDs to include (null = all questions).
-    /// </summary>
-    public List<Guid>? QuestionIds { get; set; }
-
-    /// <summary>
-    /// Whether to include metadata (IP, UserAgent, etc.).
-    /// </summary>
-    public bool IncludeMetadata { get; set; }
-
-    /// <summary>
-    /// Whether to include incomplete responses.
-    /// </summary>
-    public bool IncludeIncomplete { get; set; }
-
-    /// <summary>
-    /// Timezone ID for date formatting.
-    /// </summary>
-    public string? TimezoneId { get; set; }
-}
-
-/// <summary>
-/// Request parameters for NPS trend query.
-/// </summary>
-public class NpsTrendRequest
-{
-    /// <summary>
-    /// Start date for the trend analysis. Defaults to 3 months ago.
-    /// </summary>
-    public DateTime? FromDate { get; set; }
-
-    /// <summary>
-    /// End date for the trend analysis. Defaults to current date.
-    /// </summary>
-    public DateTime? ToDate { get; set; }
-
-    /// <summary>
-    /// How to group the trend data (Day, Week, Month). Defaults to Week.
-    /// </summary>
-    public NpsTrendGroupBy? GroupBy { get; set; }
-}
-
-/// <summary>
-/// Request parameters for duplicating a survey.
-/// </summary>
-public class DuplicateSurveyRequest
-{
-    /// <summary>
-    /// Optional new title for the duplicated survey.
-    /// If not provided, will append "(Copy)" to the original title.
-    /// </summary>
-    public string? NewTitle { get; set; }
 }

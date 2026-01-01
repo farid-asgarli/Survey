@@ -6,4 +6,4 @@ namespace SurveyApp.Application.Features.EmailTemplates.Commands.DeleteEmailTemp
 /// <summary>
 /// Command to delete an email template.
 /// </summary>
-public record DeleteEmailTemplateCommand(Guid Id) : IRequest<Result<bool>>;
+public record DeleteEmailTemplateCommand(Guid Id) : IRequest<Result<Unit>>;

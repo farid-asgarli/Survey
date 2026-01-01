@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using SurveyApp.Application.Common.Interfaces;
-using SurveyApp.Domain.Entities;
 using SurveyApp.Infrastructure.Persistence;
 
 namespace SurveyApp.Infrastructure.Services;

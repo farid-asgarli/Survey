@@ -1034,8 +1034,38 @@
 }
 
 /* ================================== */
-/* EXPRESSIVE ANIMATIONS              */
+/* PUBLIC SURVEY THEME OVERRIDES      */
 /* ================================== */
+/* When in survey mode, apply dynamic button border radius from CSS variable */
+:root[data-survey-mode='true'] {
+  /* Define default button radius if not set by theme */
+  --button-border-radius: 9999px;
+  /* Input border radius (capped for pill style) */
+  --input-border-radius: 8px;
+}
+
+/* Override button border radius in survey mode */
+:root[data-survey-mode='true'] button:not([data-radix-menu-content] button):not([role='menuitem']),
+:root[data-survey-mode='true'] [role='button']:not([data-radix-menu-content] [role='button']) {
+  border-radius: var(--button-border-radius) !important;
+}
+
+/* Ensure input fields also respect the theme styling */
+:root[data-survey-mode='true'] input[type='text'],
+:root[data-survey-mode='true'] input[type='email'],
+:root[data-survey-mode='true'] input[type='tel'],
+:root[data-survey-mode='true'] input[type='number'],
+:root[data-survey-mode='true'] textarea,
+:root[data-survey-mode='true'] select {
+  border-radius: var(--input-border-radius) !important;
+}
+
+/* ================================== */
+/* M3 EXPRESSIVE ANIMATIONS           */
+/* NO scale/translate for elevation   */
+/* ================================== */
+
+/* Simple float - gentle movement */
 @keyframes float {
   0%,
   100% {
@@ -1046,6 +1076,7 @@
   }
 }
 
+/* Effects - smooth opacity transitions only */
 @keyframes pulse-soft {
   0%,
   100% {
@@ -1056,6 +1087,7 @@
   }
 }
 
+/* Shimmer effect */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -1065,6 +1097,7 @@
   }
 }
 
+/* Simple slide up - opacity + translate for entrance */
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -1112,8 +1145,9 @@
   animation: shimmer 1.5s infinite;
 }
 
+/* Simple slide up animation */
 .animate-slide-up {
-  animation: slide-up 0.3s ease-out;
+  animation: slide-up 0.3s ease-out both;
 }
 
 .animate-slide-down {
@@ -1124,8 +1158,9 @@
   animation: scale-in 0.2s ease-out;
 }
 
+/* Simple fade in */
 .animate-fade-in {
-  animation: fade-in 0.4s ease-out;
+  animation: fade-in 0.4s ease-out both;
 }
 
 .animate-bounce-in {

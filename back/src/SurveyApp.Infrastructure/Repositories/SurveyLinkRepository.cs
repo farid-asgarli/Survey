@@ -89,6 +89,32 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
         return await query.OrderByDescending(l => l.CreatedAt).ToListAsync(cancellationToken);
     }
 
+    public async Task<(IReadOnlyList<SurveyLink> Items, int TotalCount)> GetBySurveyIdPagedAsync(
+        Guid surveyId,
+        int pageNumber,
+        int pageSize,
+        bool? isActive = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = _context.SurveyLinks.AsNoTracking().Where(l => l.SurveyId == surveyId);
+
+        if (isActive.HasValue)
+        {
+            query = query.Where(l => l.IsActive == isActive.Value);
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .OrderByDescending(l => l.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public async Task AddAsync(SurveyLink link, CancellationToken cancellationToken = default)
     {
         await _context.SurveyLinks.AddAsync(link, cancellationToken);

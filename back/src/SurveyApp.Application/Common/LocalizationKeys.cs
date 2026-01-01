@@ -121,5 +121,20 @@ public static class LocalizationKeys
             /// </summary>
             public const string InvalidHexFormat = "Validation.Color.MustBeValid";
         }
+
+        public static class Pagination
+        {
+            /// <summary>
+            /// Key: "Validation.Pagination.PageNumberMinValue"
+            /// Format: "Page number must be at least {0}."
+            /// </summary>
+            public const string PageNumberMinValue = "Validation.Pagination.PageNumberMinValue";
+
+            /// <summary>
+            /// Key: "Validation.Pagination.PageSizeRange"
+            /// Format: "Page size must be between {0} and {1}."
+            /// </summary>
+            public const string PageSizeRange = "Validation.Pagination.PageSizeRange";
+        }
     }
 }

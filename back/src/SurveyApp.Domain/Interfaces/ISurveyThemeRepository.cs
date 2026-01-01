@@ -53,6 +53,17 @@ public interface ISurveyThemeRepository
     );
 
     /// <summary>
+    /// Gets paginated public themes for a namespace.
+    /// </summary>
+    Task<(IReadOnlyList<SurveyTheme> Items, int TotalCount)> GetPublicThemesPagedAsync(
+        Guid namespaceId,
+        int pageNumber,
+        int pageSize,
+        string? searchTerm = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// Checks if a theme with the given name exists in the namespace.
     /// </summary>
     Task<bool> ExistsByNameAsync(

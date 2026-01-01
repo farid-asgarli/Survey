@@ -140,6 +140,12 @@ public class PublicSurveyThemeDto
 
     // Typography
     public string? FontFamily { get; set; }
+    public string? HeadingFontFamily { get; set; }
+    public int? BaseFontSize { get; set; }
+
+    // Button styling
+    public int ButtonStyle { get; set; }
+    public string? ButtonTextColor { get; set; }
 
     // Branding
     public string? LogoUrl { get; set; }
@@ -152,4 +158,9 @@ public class PublicSurveyThemeDto
     // Layout
     public string? BackgroundImageUrl { get; set; }
     public string? BackgroundPosition { get; set; }
+    public bool ShowProgressBar { get; set; } = true;
+    public int ProgressBarStyle { get; set; }
+
+    // Additional branding
+    public bool ShowPoweredBy { get; set; } = true;
 }

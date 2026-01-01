@@ -31,7 +31,7 @@ public class GetLinkByTokenQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(link.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<LinkByTokenResult>.Failure("Handler.SurveyNotFound");
+            return Result<LinkByTokenResult>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check validity

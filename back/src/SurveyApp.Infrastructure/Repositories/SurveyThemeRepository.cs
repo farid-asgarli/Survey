@@ -147,6 +147,45 @@ public class SurveyThemeRepository(ApplicationDbContext context) : ISurveyThemeR
         return (items, totalCount);
     }
 
+    public async Task<(IReadOnlyList<SurveyTheme> Items, int TotalCount)> GetPublicThemesPagedAsync(
+        Guid namespaceId,
+        int pageNumber,
+        int pageSize,
+        string? searchTerm = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = _context
+            .SurveyThemes.AsNoTracking()
+            .Include(t => t.Translations)
+            .Where(t => t.NamespaceId == namespaceId && t.IsPublic);
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var matchingThemeIds = await _context
+                .SurveyThemeTranslations.Where(t =>
+                    t.Name.Contains(searchTerm)
+                    || (t.Description != null && t.Description.Contains(searchTerm))
+                )
+                .Select(t => t.ThemeId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            query = query.Where(t => matchingThemeIds.Contains(t.Id));
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .OrderByDescending(t => t.IsDefault)
+            .ThenByDescending(t => t.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public void Add(SurveyTheme theme)
     {
         _context.SurveyThemes.Add(theme);

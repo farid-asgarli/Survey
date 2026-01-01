@@ -14,7 +14,7 @@ public class DeactivateSurveyLinkCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService
-) : IRequestHandler<DeactivateSurveyLinkCommand, Result<bool>>
+) : IRequestHandler<DeactivateSurveyLinkCommand, Result<Unit>>
 {
     private readonly ISurveyLinkRepository _surveyLinkRepository = surveyLinkRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
@@ -22,7 +22,7 @@ public class DeactivateSurveyLinkCommandHandler(
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         DeactivateSurveyLinkCommand request,
         CancellationToken cancellationToken
     )
@@ -30,43 +30,43 @@ public class DeactivateSurveyLinkCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Handler.NamespaceContextRequired");
+            return Result<Unit>.Failure("Errors.NamespaceContextRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("Errors.UserNotAuthenticated");
+            return Result<Unit>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get the survey and verify it belongs to the namespace
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<bool>.Failure("Handler.SurveyNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<bool>.Failure("Errors.SurveyNotInNamespace");
+            return Result<Unit>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get the link
         var link = await _surveyLinkRepository.GetByIdAsync(request.LinkId, cancellationToken);
         if (link == null)
         {
-            return Result<bool>.Failure("Errors.SurveyLinkNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyLinkNotFound");
         }
 
         if (link.SurveyId != request.SurveyId)
         {
-            return Result<bool>.Failure("Errors.SurveyLinkNotBelongToSurvey");
+            return Result<Unit>.Failure("Errors.SurveyLinkNotBelongToSurvey");
         }
 
         link.Deactivate();
         _surveyLinkRepository.Update(link);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

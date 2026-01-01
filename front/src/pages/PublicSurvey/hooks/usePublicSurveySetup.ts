@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { usePublicSurveyStore } from '@/stores';
 import { applySurveyTheme, clearSurveyTheme } from '@/utils/themeApplication';
 import { hasProgress } from '@/utils/autoSave';
@@ -15,15 +15,18 @@ interface UsePublicSurveySetupParams {
 export function usePublicSurveySetup({ fetchedSurvey, shareToken, isError, fetchError, onShowResumeDialog }: UsePublicSurveySetupParams) {
   const { setSurvey, setShareToken, setError, reset } = usePublicSurveyStore();
 
+  // Apply survey theme BEFORE paint using useLayoutEffect
+  // This prevents FOUC (Flash of Unstyled Content) with default app colors
+  useLayoutEffect(() => {
+    if (fetchedSurvey?.theme) {
+      applySurveyTheme(fetchedSurvey.theme);
+    }
+  }, [fetchedSurvey?.theme]);
+
   // Initialize store when survey is fetched
   useEffect(() => {
     if (fetchedSurvey) {
       setSurvey(fetchedSurvey);
-
-      // Apply survey theme
-      if (fetchedSurvey.theme) {
-        applySurveyTheme(fetchedSurvey.theme);
-      }
 
       // Check for saved progress
       if (shareToken && hasProgress(shareToken)) {
@@ -45,8 +48,8 @@ export function usePublicSurveySetup({ fetchedSurvey, shareToken, isError, fetch
     }
   }, [isError, fetchError, setError]);
 
-  // Cleanup on unmount
-  useEffect(() => {
+  // Cleanup on unmount - use useLayoutEffect for synchronous cleanup
+  useLayoutEffect(() => {
     return () => {
       clearSurveyTheme();
       reset();

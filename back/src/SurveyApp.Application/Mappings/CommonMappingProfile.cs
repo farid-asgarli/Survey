@@ -1,5 +1,4 @@
 using AutoMapper;
-using SurveyApp.Application.Common;
 using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Common;
 
@@ -16,36 +15,7 @@ public class CommonMappingProfile : Profile
     /// </summary>
     public CommonMappingProfile()
     {
-        // PagedList to PagedResponse mapping
-        CreateMap(typeof(PagedList<>), typeof(PagedResponse<>))
-            .ConvertUsing(typeof(PagedListToPagedResponseConverter<,>));
-    }
-}
-
-/// <summary>
-/// Converter for PagedList to PagedResponse.
-/// </summary>
-/// <typeparam name="TSource">Source type.</typeparam>
-/// <typeparam name="TDestination">Destination type.</typeparam>
-public class PagedListToPagedResponseConverter<TSource, TDestination>
-    : ITypeConverter<PagedList<TSource>, PagedResponse<TDestination>>
-{
-    /// <inheritdoc />
-    public PagedResponse<TDestination> Convert(
-        PagedList<TSource> source,
-        PagedResponse<TDestination> destination,
-        ResolutionContext context
-    )
-    {
-        var mappedItems = context.Mapper.Map<IReadOnlyList<TDestination>>(source.Items);
-
-        return new PagedResponse<TDestination>
-        {
-            Items = mappedItems,
-            PageNumber = source.PageNumber,
-            PageSize = source.PageSize,
-            TotalCount = source.TotalCount,
-        };
+        // No common mappings needed - PagedResponse is used directly
     }
 }
 

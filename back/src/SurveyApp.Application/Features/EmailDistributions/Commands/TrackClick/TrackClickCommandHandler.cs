@@ -31,7 +31,7 @@ public class TrackClickCommandHandler(
 
         if (recipient == null)
         {
-            return Result<string?>.Failure("Errors.RecipientNotFound");
+            return Result<string?>.NotFound("Errors.RecipientNotFound");
         }
 
         recipient.MarkAsClicked();
@@ -44,7 +44,7 @@ public class TrackClickCommandHandler(
 
         if (distribution == null)
         {
-            return Result<string?>.Failure("Errors.DistributionNotFound");
+            return Result<string?>.NotFound("Errors.DistributionNotFound");
         }
 
         distribution.RefreshCounts();

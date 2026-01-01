@@ -11,7 +11,7 @@ public class RemoveQuestionLogicCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService
-) : IRequestHandler<RemoveQuestionLogicCommand, Result<bool>>
+) : IRequestHandler<RemoveQuestionLogicCommand, Result<Unit>>
 {
     private readonly IQuestionLogicRepository _questionLogicRepository = questionLogicRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
@@ -19,7 +19,7 @@ public class RemoveQuestionLogicCommandHandler(
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         RemoveQuestionLogicCommand request,
         CancellationToken cancellationToken
     )
@@ -27,26 +27,26 @@ public class RemoveQuestionLogicCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Errors.NamespaceRequired");
+            return Result<Unit>.Failure("Errors.NamespaceRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("Errors.UserNotAuthenticated");
+            return Result<Unit>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get survey
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
         {
-            return Result<bool>.Failure("Errors.SurveyNotFound");
+            return Result<Unit>.NotFound("Errors.SurveyNotFound");
         }
 
         // Verify survey belongs to namespace
         if (survey.NamespaceId != namespaceId.Value)
         {
-            return Result<bool>.Failure("Errors.SurveyNotInNamespace");
+            return Result<Unit>.Failure("Errors.SurveyNotInNamespace");
         }
 
         // Get existing logic
@@ -56,18 +56,18 @@ public class RemoveQuestionLogicCommandHandler(
         );
         if (questionLogic == null)
         {
-            return Result<bool>.Failure("Errors.QuestionLogicNotFound");
+            return Result<Unit>.NotFound("Errors.QuestionLogicNotFound");
         }
 
         // Verify logic belongs to the question
         if (questionLogic.QuestionId != request.QuestionId)
         {
-            return Result<bool>.Failure("Errors.LogicNotBelongToQuestion");
+            return Result<Unit>.Failure("Errors.LogicNotBelongToQuestion");
         }
 
         _questionLogicRepository.Remove(questionLogic);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

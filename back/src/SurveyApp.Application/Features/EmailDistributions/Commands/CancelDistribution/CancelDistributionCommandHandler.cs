@@ -11,7 +11,7 @@ public class CancelDistributionCommandHandler(
     IUnitOfWork unitOfWork,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService
-) : IRequestHandler<CancelDistributionCommand, Result<bool>>
+) : IRequestHandler<CancelDistributionCommand, Result<Unit>>
 {
     private readonly IEmailDistributionRepository _distributionRepository = distributionRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -28,7 +28,7 @@ public class CancelDistributionCommandHandler(
         DistributionStatus.Scheduled,
     ];
 
-    public async Task<Result<bool>> Handle(
+    public async Task<Result<Unit>> Handle(
         CancelDistributionCommand request,
         CancellationToken cancellationToken
     )
@@ -36,13 +36,13 @@ public class CancelDistributionCommandHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<bool>.Failure("Errors.NamespaceRequired");
+            return Result<Unit>.Failure("Errors.NamespaceRequired");
         }
 
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<bool>.Failure("Errors.UserNotAuthenticated");
+            return Result<Unit>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get distribution
@@ -57,13 +57,13 @@ public class CancelDistributionCommandHandler(
             || distribution.SurveyId != request.SurveyId
         )
         {
-            return Result<bool>.NotFound("Errors.DistributionNotFound");
+            return Result<Unit>.NotFound("Errors.DistributionNotFound");
         }
 
         // Validate status - return localized error key instead of domain exception
         if (!CancellableStatuses.Contains(distribution.Status))
         {
-            return Result<bool>.Failure("Errors.CannotCancelDistribution");
+            return Result<Unit>.Failure("Errors.CannotCancelDistribution");
         }
 
         distribution.Cancel();
@@ -71,6 +71,6 @@ public class CancelDistributionCommandHandler(
         _distributionRepository.Update(distribution);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<bool>.Success(true);
+        return Result<Unit>.Success(Unit.Value);
     }
 }

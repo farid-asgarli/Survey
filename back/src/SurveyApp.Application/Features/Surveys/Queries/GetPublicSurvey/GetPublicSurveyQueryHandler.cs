@@ -4,15 +4,19 @@ using SurveyApp.Application.Common;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
+using SurveyApp.Domain.Specifications.Surveys;
 
 namespace SurveyApp.Application.Features.Surveys.Queries.GetPublicSurvey;
 
 public class GetPublicSurveyQueryHandler(
+    ISpecificationRepository<Survey> surveySpecRepository,
     ISurveyRepository surveyRepository,
     ISurveyLinkRepository surveyLinkRepository,
     IMapper mapper
 ) : IRequestHandler<GetPublicSurveyQuery, Result<PublicSurveyDto>>
 {
+    private readonly ISpecificationRepository<Survey> _surveySpecRepository = surveySpecRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly ISurveyLinkRepository _surveyLinkRepository = surveyLinkRepository;
     private readonly IMapper _mapper = mapper;
@@ -23,10 +27,8 @@ public class GetPublicSurveyQueryHandler(
     )
     {
         // First, try to find the survey by its AccessToken (direct share token)
-        var survey = await _surveyRepository.GetByShareTokenAsync(
-            request.ShareToken,
-            cancellationToken
-        );
+        var spec = new SurveyByAccessTokenSpec(request.ShareToken, includeTheme: true);
+        var survey = await _surveySpecRepository.FirstOrDefaultAsync(spec, cancellationToken);
 
         // If not found, check if it's a SurveyLink token
         if (survey == null)
@@ -62,8 +64,9 @@ public class GetPublicSurveyQueryHandler(
                 }
 
                 // Get the survey associated with this link
-                survey = await _surveyRepository.GetByIdForPublicAsync(
-                    surveyLink.SurveyId,
+                var publicSpec = new SurveyForPublicSpec(surveyLink.SurveyId);
+                survey = await _surveySpecRepository.FirstOrDefaultAsync(
+                    publicSpec,
                     cancellationToken
                 );
             }
@@ -71,7 +74,7 @@ public class GetPublicSurveyQueryHandler(
 
         if (survey == null)
         {
-            return Result<PublicSurveyDto>.Failure("Handler.SurveyNotFound");
+            return Result<PublicSurveyDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check if survey is accepting responses
@@ -148,6 +151,11 @@ public class GetPublicSurveyQueryHandler(
                 TextColor = survey.Theme.TextColor,
                 // Typography
                 FontFamily = survey.Theme.FontFamily,
+                HeadingFontFamily = survey.Theme.HeadingFontFamily,
+                BaseFontSize = survey.Theme.BaseFontSize,
+                // Button styling
+                ButtonStyle = (int)survey.Theme.ButtonStyle,
+                ButtonTextColor = survey.Theme.ButtonTextColor,
                 // Branding
                 LogoUrl = survey.Theme.LogoUrl,
                 LogoSize = (int)survey.Theme.LogoSize,
@@ -155,9 +163,12 @@ public class GetPublicSurveyQueryHandler(
                 LogoBackgroundColor = survey.Theme.LogoBackgroundColor,
                 BrandingTitle = survey.Theme.BrandingTitle,
                 BrandingSubtitle = survey.Theme.BrandingSubtitle,
+                ShowPoweredBy = survey.Theme.ShowPoweredBy,
                 // Layout
                 BackgroundImageUrl = survey.Theme.BackgroundImageUrl,
                 BackgroundPosition = survey.Theme.BackgroundPosition.ToString(),
+                ShowProgressBar = survey.Theme.ShowProgressBar,
+                ProgressBarStyle = (int)survey.Theme.ProgressBarStyle,
             };
         }
 

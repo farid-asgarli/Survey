@@ -32,7 +32,7 @@ public class StartResponseCommandHandler(
         // Get the survey
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null)
-            return Result<StartResponseResult>.Failure("Handler.SurveyNotFound");
+            return Result<StartResponseResult>.NotFound("Errors.SurveyNotFound");
 
         // Check if survey is accepting responses
         if (!survey.IsAcceptingResponses)

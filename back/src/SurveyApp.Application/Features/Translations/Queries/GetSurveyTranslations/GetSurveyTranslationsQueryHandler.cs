@@ -35,7 +35,7 @@ public class GetSurveyTranslationsQueryHandler(
 
         if (survey == null)
         {
-            return Result<SurveyTranslationsDto>.Failure("Errors.SurveyNotFound");
+            return Result<SurveyTranslationsDto>.NotFound("Errors.SurveyNotFound");
         }
 
         if (survey.NamespaceId != namespaceId.Value)

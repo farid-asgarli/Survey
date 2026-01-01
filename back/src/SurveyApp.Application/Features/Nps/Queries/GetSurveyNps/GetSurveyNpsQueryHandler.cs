@@ -40,14 +40,14 @@ public class GetSurveyNpsQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<SurveyNpsSummaryDto>.Failure("Errors.SurveyNotFound");
+            return Result<SurveyNpsSummaryDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<SurveyNpsSummaryDto>.Failure("Errors.UserNotAuthenticated");
+            return Result<SurveyNpsSummaryDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
@@ -57,7 +57,7 @@ public class GetSurveyNpsQueryHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.ViewResponses))
         {
-            return Result<SurveyNpsSummaryDto>.Failure("Errors.NoPermissionViewNps");
+            return Result<SurveyNpsSummaryDto>.Forbidden("Errors.NoPermissionViewNps");
         }
 
         try

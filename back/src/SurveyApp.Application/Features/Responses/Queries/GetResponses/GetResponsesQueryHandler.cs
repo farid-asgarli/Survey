@@ -3,28 +3,32 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
+using SurveyApp.Domain.Specifications.Responses;
 
 namespace SurveyApp.Application.Features.Responses.Queries.GetResponses;
 
 public class GetResponsesQueryHandler(
-    ISurveyResponseRepository responseRepository,
+    ISpecificationRepository<SurveyResponse> responseSpecRepository,
     ISurveyRepository surveyRepository,
     INamespaceRepository namespaceRepository,
     INamespaceContext namespaceContext,
     ICurrentUserService currentUserService,
     IMapper mapper
-) : IRequestHandler<GetResponsesQuery, Result<PagedList<ResponseListItemDto>>>
+) : IRequestHandler<GetResponsesQuery, Result<PagedResponse<ResponseListItemDto>>>
 {
-    private readonly ISurveyResponseRepository _responseRepository = responseRepository;
+    private readonly ISpecificationRepository<SurveyResponse> _responseSpecRepository =
+        responseSpecRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<Result<PagedList<ResponseListItemDto>>> Handle(
+    public async Task<Result<PagedResponse<ResponseListItemDto>>> Handle(
         GetResponsesQuery request,
         CancellationToken cancellationToken
     )
@@ -32,8 +36,8 @@ public class GetResponsesQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure(
-                "Handler.NamespaceContextRequired"
+            return Result<PagedResponse<ResponseListItemDto>>.Failure(
+                "Errors.NamespaceContextRequired"
             );
         }
 
@@ -41,14 +45,16 @@ public class GetResponsesQueryHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != namespaceId.Value)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure("Handler.SurveyNotFound");
+            return Result<PagedResponse<ResponseListItemDto>>.NotFound("Errors.SurveyNotFound");
         }
 
         // Check permission
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure("Errors.UserNotAuthenticated");
+            return Result<PagedResponse<ResponseListItemDto>>.Failure(
+                "Errors.UserNotAuthenticated"
+            );
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
@@ -58,18 +64,25 @@ public class GetResponsesQueryHandler(
         var membership = @namespace?.Memberships.FirstOrDefault(m => m.UserId == userId.Value);
         if (membership == null || !membership.HasPermission(NamespacePermission.ViewResponses))
         {
-            return Result<PagedList<ResponseListItemDto>>.Failure(
+            return Result<PagedResponse<ResponseListItemDto>>.Failure(
                 "You do not have permission to view responses."
             );
         }
 
-        var (responses, totalCount) = await _responseRepository.GetPagedAsync(
-            request.SurveyId,
-            request.PageNumber,
-            request.PageSize,
-            request.IsComplete,
-            request.FromDate,
-            request.ToDate,
+        // Build specification with filter criteria
+        var filterCriteria = new ResponseFilterCriteria
+        {
+            SurveyId = request.SurveyId,
+            IsComplete = request.IsComplete,
+            FromDate = request.FromDate,
+            ToDate = request.ToDate,
+            Paging = PagingParameters.Create(request.PageNumber, request.PageSize),
+            IncludeAnswers = true,
+        };
+
+        var spec = new ResponsesFilteredSpec(filterCriteria);
+        var (responses, totalCount) = await _responseSpecRepository.GetPagedAsync(
+            spec,
             cancellationToken
         );
 
@@ -89,12 +102,12 @@ public class GetResponsesQueryHandler(
             })
             .ToList();
 
-        var pagedList = new PagedList<ResponseListItemDto>(
+        var pagedResponse = PagedResponse<ResponseListItemDto>.Create(
             dtos,
-            totalCount,
             request.PageNumber,
-            request.PageSize
+            request.PageSize,
+            totalCount
         );
-        return Result<PagedList<ResponseListItemDto>>.Success(pagedList);
+        return Result<PagedResponse<ResponseListItemDto>>.Success(pagedResponse);
     }
 }

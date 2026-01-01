@@ -9,7 +9,8 @@ namespace SurveyApp.Application.Features.RecurringSurveys.Commands.TriggerRecurr
 /// <summary>
 /// Command to trigger an immediate run of a recurring survey.
 /// </summary>
-public record TriggerRecurringSurveyCommand
+/// <param name="Id">The recurring survey ID to trigger.</param>
+public record TriggerRecurringSurveyCommand(Guid Id)
     : IRequest<Result<RecurringSurveyRunDto>>,
         INamespaceCommand
 {
@@ -17,9 +18,4 @@ public record TriggerRecurringSurveyCommand
     /// The permission required to execute this command.
     /// </summary>
     public static NamespacePermission RequiredPermission => NamespacePermission.EditSurveys;
-
-    /// <summary>
-    /// The recurring survey ID to trigger.
-    /// </summary>
-    public Guid Id { get; init; }
 }

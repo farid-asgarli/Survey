@@ -2,6 +2,7 @@ using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 
@@ -10,12 +11,12 @@ namespace SurveyApp.Application.Features.Themes.Queries.GetThemes;
 public class GetThemesQueryHandler(
     ISurveyThemeRepository themeRepository,
     INamespaceContext namespaceContext
-) : IRequestHandler<GetThemesQuery, Result<IReadOnlyList<SurveyThemeSummaryDto>>>
+) : IRequestHandler<GetThemesQuery, Result<PagedResponse<SurveyThemeSummaryDto>>>
 {
     private readonly ISurveyThemeRepository _themeRepository = themeRepository;
     private readonly INamespaceContext _namespaceContext = namespaceContext;
 
-    public async Task<Result<IReadOnlyList<SurveyThemeSummaryDto>>> Handle(
+    public async Task<Result<PagedResponse<SurveyThemeSummaryDto>>> Handle(
         GetThemesQuery request,
         CancellationToken cancellationToken
     )
@@ -23,12 +24,12 @@ public class GetThemesQueryHandler(
         var namespaceId = _namespaceContext.CurrentNamespaceId;
         if (!namespaceId.HasValue)
         {
-            return Result<IReadOnlyList<SurveyThemeSummaryDto>>.Failure(
-                "Handler.NamespaceContextRequired"
+            return Result<PagedResponse<SurveyThemeSummaryDto>>.Failure(
+                "Errors.NamespaceContextRequired"
             );
         }
 
-        var (themes, _) = await _themeRepository.GetPagedAsync(
+        var (themes, totalCount) = await _themeRepository.GetPagedAsync(
             namespaceId.Value,
             request.PageNumber,
             request.PageSize,
@@ -38,7 +39,14 @@ public class GetThemesQueryHandler(
 
         var dtos = themes.Select(MapToSummaryDto).ToList();
 
-        return Result<IReadOnlyList<SurveyThemeSummaryDto>>.Success(dtos);
+        var pagedResponse = PagedResponse<SurveyThemeSummaryDto>.Create(
+            dtos,
+            request.PageNumber,
+            request.PageSize,
+            totalCount
+        );
+
+        return Result<PagedResponse<SurveyThemeSummaryDto>>.Success(pagedResponse);
     }
 
     private static SurveyThemeSummaryDto MapToSummaryDto(SurveyTheme theme)

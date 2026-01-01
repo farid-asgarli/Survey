@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.Services;
 using SurveyApp.Domain.Interfaces;
+using SurveyApp.Domain.Specifications;
 using SurveyApp.Infrastructure.Identity;
 using SurveyApp.Infrastructure.Persistence;
 using SurveyApp.Infrastructure.Repositories;
@@ -96,6 +97,9 @@ public static class DependencyInjection
         services.AddScoped<IEmailDistributionRepository, EmailDistributionRepository>();
         services.AddScoped<ISurveyLinkRepository, SurveyLinkRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        // Generic specification repository (open generic registration)
+        services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
 
         // Services
         services.AddScoped<IIdentityService, IdentityService>();

@@ -34,7 +34,7 @@ public class CloseSurveyCommandHandler(
         var survey = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
         if (survey == null || survey.NamespaceId != ctx.NamespaceId)
         {
-            return Result<SurveyDto>.Failure("Handler.SurveyNotFound");
+            return Result<SurveyDto>.NotFound("Errors.SurveyNotFound");
         }
 
         // Close survey

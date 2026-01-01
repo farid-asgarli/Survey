@@ -11,7 +11,7 @@ public interface IIdentityService
         string firstName,
         string lastName
     );
-    Task<AuthenticationResult> LoginAsync(string email, string password);
+    Task<AuthenticationResult> LoginAsync(string email, string password, bool rememberMe = false);
     Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
     Task<bool> RevokeTokenAsync(string userId);
     Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
