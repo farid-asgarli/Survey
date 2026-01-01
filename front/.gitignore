@@ -60,7 +60,6 @@ out/
 
 # Gatsby (if using)
 .cache/
-public/
 
 # Vite (if using)
 dist-ssr/
