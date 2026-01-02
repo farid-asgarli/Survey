@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore, usePreferencesStore, useNamespaceStore } from '@/stores';
 import { useNamespacesList, useUserPreferences } from '@/hooks';
-import { AppLoadingScreen, OnboardingWizard } from '@/components/ui';
+import { AppLoadingScreen, OnboardingWizard, GettingStartedWizard } from '@/components/ui';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -25,6 +25,7 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
 
   // Preferences state - track if preferences belong to current user
   const onboardingStatus = usePreferencesStore((s) => s.preferences?.onboarding?.status);
+  const hasCompletedGettingStarted = usePreferencesStore((s) => s.preferences?.onboarding?.hasCompletedGettingStarted);
   const preferencesHydrated = usePreferencesStore((s) => s._hasHydrated);
   const storedUserId = usePreferencesStore((s) => s.userId);
   const hasFetchedFromServer = usePreferencesStore((s) => s.hasFetchedFromServer);
@@ -32,35 +33,40 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
   // Fetch user preferences from server - this ensures we have the correct user's preferences
   const { isLoading: preferencesLoading, isFetched: preferencesFetched } = useUserPreferences();
 
-  // Track if user has dismissed onboarding in this session
+  // Track if user has dismissed wizards in this session
   const [dismissedOnboarding, setDismissedOnboarding] = useState(false);
+  const [dismissedGettingStarted, setDismissedGettingStarted] = useState(false);
 
   // Determine if we're dealing with a different user's cached preferences
   const isPreferencesForCurrentUser = storedUserId === currentUserId;
 
-  // Compute if onboarding should be shown (derived state, not effect-driven)
-  // IMPORTANT: Only show onboarding after preferences have been fetched from server for the current user
-  const shouldShowOnboarding = useMemo(() => {
-    if (dismissedOnboarding) return false;
+  // Check if preferences are ready to make wizard decisions
+  const preferencesReady = useMemo(() => {
     if (!preferencesHydrated || !isAuthenticated) return false;
-
-    // Wait until preferences are fetched from server and belong to current user
-    // This prevents showing wrong onboarding state from a previous user's cached data
     if (!preferencesFetched || preferencesLoading) return false;
     if (!isPreferencesForCurrentUser || !hasFetchedFromServer) return false;
+    return true;
+  }, [preferencesHydrated, isAuthenticated, preferencesFetched, preferencesLoading, isPreferencesForCurrentUser, hasFetchedFromServer]);
 
+  // Compute if onboarding wizard should be shown (user preferences setup)
+  // IMPORTANT: Only show after preferences have been fetched from server for the current user
+  const shouldShowOnboarding = useMemo(() => {
+    if (dismissedOnboarding) return false;
+    if (!preferencesReady) return false;
     if (!onboardingStatus) return false; // Guard against undefined
     return onboardingStatus === 'not_started' || onboardingStatus === 'in_progress';
-  }, [
-    dismissedOnboarding,
-    preferencesHydrated,
-    isAuthenticated,
-    onboardingStatus,
-    preferencesFetched,
-    preferencesLoading,
-    isPreferencesForCurrentUser,
-    hasFetchedFromServer,
-  ]);
+  }, [dismissedOnboarding, preferencesReady, onboardingStatus]);
+
+  // Compute if getting started wizard should be shown (survey workflow guide)
+  // Shows after onboarding is complete/skipped, and user hasn't completed the guide
+  const shouldShowGettingStarted = useMemo(() => {
+    if (dismissedGettingStarted) return false;
+    if (!preferencesReady) return false;
+    // Don't show if onboarding is still pending
+    if (onboardingStatus === 'not_started' || onboardingStatus === 'in_progress') return false;
+    // Show if onboarding done but getting started not completed
+    return !hasCompletedGettingStarted && (onboardingStatus === 'completed' || onboardingStatus === 'skipped');
+  }, [dismissedGettingStarted, preferencesReady, onboardingStatus, hasCompletedGettingStarted]);
 
   const handleOnboardingComplete = useCallback(() => {
     setDismissedOnboarding(true);
@@ -68,6 +74,14 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
 
   const handleOnboardingSkip = useCallback(() => {
     setDismissedOnboarding(true);
+  }, []);
+
+  const handleGettingStartedComplete = useCallback(() => {
+    setDismissedGettingStarted(true);
+  }, []);
+
+  const handleGettingStartedSkip = useCallback(() => {
+    setDismissedGettingStarted(true);
   }, []);
 
   // Show beautiful loading screen while hydrating persisted state
@@ -96,6 +110,7 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
     <>
       {children}
       {shouldShowOnboarding && <OnboardingWizard onComplete={handleOnboardingComplete} onSkip={handleOnboardingSkip} />}
+      {shouldShowGettingStarted && <GettingStartedWizard onComplete={handleGettingStartedComplete} onSkip={handleGettingStartedSkip} />}
     </>
   );
 }
