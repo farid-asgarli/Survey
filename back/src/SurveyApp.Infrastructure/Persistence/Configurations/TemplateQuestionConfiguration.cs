@@ -8,7 +8,7 @@ public class TemplateQuestionConfiguration : IEntityTypeConfiguration<TemplateQu
 {
     public void Configure(EntityTypeBuilder<TemplateQuestion> builder)
     {
-        builder.ToTable("TemplateQuestions");
+        builder.ToTable("template_questions", DbSchemas.Templates);
 
         builder.HasKey(q => q.Id);
 
@@ -19,7 +19,7 @@ public class TemplateQuestionConfiguration : IEntityTypeConfiguration<TemplateQu
         // DefaultLanguage is now a computed property inherited from Template, not stored
         builder.Ignore(q => q.DefaultLanguage);
 
-        builder.Property(q => q.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Property(q => q.Type).IsRequired();
 
         builder.Property(q => q.Order).IsRequired();
 

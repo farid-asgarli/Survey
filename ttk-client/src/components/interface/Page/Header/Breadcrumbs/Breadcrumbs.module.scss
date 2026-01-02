@@ -1,0 +1,33 @@
+.page_header_breadcrumbs {
+  list-style: none;
+  padding: unset;
+  display: flex;
+  flex-flow: row;
+  .item {
+    font-size: var(--mantine-font-size-sm);
+    &-link {
+      color: inherit;
+      transition: text-decoration-color ease var(--timeout-short);
+      text-decoration: underline;
+      text-decoration-thickness: 0.03em;
+      text-underline-offset: 0.1em;
+      text-decoration-color: transparent;
+      border-radius: var(--mantine-radius-sm);
+      padding: 5px 0;
+      &:focus-within {
+        outline: 2px solid var(--color-primary);
+      }
+    }
+    &:hover {
+      .item-link {
+        text-decoration-color: inherit;
+      }
+    }
+    &-divider {
+      margin-inline: 0.5rem;
+    }
+    &-current {
+      color: inherit;
+    }
+  }
+}

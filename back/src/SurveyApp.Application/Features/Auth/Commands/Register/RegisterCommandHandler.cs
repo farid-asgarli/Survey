@@ -37,8 +37,16 @@ public class RegisterCommandHandler(IIdentityService identityService)
                 {
                     Id = result.UserId!,
                     Email = result.Email!,
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
+                    FirstName = result.FirstName!,
+                    LastName = result.LastName!,
+                    FullName = result.FullName!,
+                    EmailConfirmed = result.EmailConfirmed,
+                    AvatarUrl = result.AvatarUrl,
+                    ProfilePictureUrl = result.ProfilePictureUrl,
+                    LastLoginAt = result.LastLoginAt,
+                    IsActive = result.IsActive,
+                    CreatedAt = result.CreatedAt!.Value,
+                    UpdatedAt = result.UpdatedAt,
                 },
             }
         );

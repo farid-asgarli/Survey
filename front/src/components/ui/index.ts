@@ -4,6 +4,9 @@
 export { Button, buttonVariants } from './Button';
 export type { ButtonProps } from './Button';
 
+// Azure AD Login Button
+export { AzureAdLoginButton } from './AzureAdLoginButton';
+
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, cardVariants } from './Card';
 
 export { Input, inputVariants } from './Input';

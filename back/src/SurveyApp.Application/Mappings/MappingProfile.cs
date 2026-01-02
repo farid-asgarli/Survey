@@ -2,6 +2,7 @@ using AutoMapper;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Common;
 using SurveyApp.Domain.Entities;
+using SurveyApp.Domain.Enums;
 using SurveyApp.Domain.ValueObjects;
 
 namespace SurveyApp.Application.Mappings;
@@ -142,6 +143,14 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.DisplayValue,
                 opt => opt.MapFrom(s => MapAnswerDisplayValue(s.AnswerValue))
+            )
+            .ForMember(
+                d => d.FileUrls,
+                opt => opt.MapFrom(s => MapAnswerFileUrls(s.AnswerValue, s.Question))
+            )
+            .ForMember(
+                d => d.MatrixAnswers,
+                opt => opt.MapFrom(s => MapAnswerMatrixAnswers(s.AnswerValue, s.Question))
             );
 
         // Question Logic mappings
@@ -405,5 +414,51 @@ public class MappingProfile : Profile
             return string.Empty;
         var answer = AnswerValue.FromJson(answerValue);
         return answer.GetDisplayText();
+    }
+
+    private static List<string>? MapAnswerFileUrls(string? answerValue, Question? question)
+    {
+        if (string.IsNullOrEmpty(answerValue) || question?.Type != QuestionType.FileUpload)
+            return null;
+
+        var answer = AnswerValue.FromJson(answerValue);
+        if (string.IsNullOrEmpty(answer.Text))
+            return null;
+
+        try
+        {
+            // FileUpload stores URLs as JSON array in Text field
+            return System.Text.Json.JsonSerializer.Deserialize<List<string>>(answer.Text);
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            // If not valid JSON array, treat as single URL
+            return [answer.Text];
+        }
+    }
+
+    private static Dictionary<string, string>? MapAnswerMatrixAnswers(
+        string? answerValue,
+        Question? question
+    )
+    {
+        if (string.IsNullOrEmpty(answerValue) || question?.Type != QuestionType.Matrix)
+            return null;
+
+        var answer = AnswerValue.FromJson(answerValue);
+        if (string.IsNullOrEmpty(answer.Text))
+            return null;
+
+        try
+        {
+            // Matrix stores row->column mapping as JSON object in Text field
+            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
+                answer.Text
+            );
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            return null;
+        }
     }
 }

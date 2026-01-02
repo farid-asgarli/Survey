@@ -8,7 +8,7 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 {
     public void Configure(EntityTypeBuilder<Question> builder)
     {
-        builder.ToTable("Questions");
+        builder.ToTable("questions", DbSchemas.Survey);
 
         builder.HasKey(q => q.Id);
 
@@ -16,7 +16,7 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.Ignore(q => q.Text);
         builder.Ignore(q => q.Description);
 
-        builder.Property(q => q.Type).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Property(q => q.Type).IsRequired();
 
         builder.Property(q => q.IsRequired).IsRequired().HasDefaultValue(false);
 
@@ -27,7 +27,7 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         // NPS properties
         builder.Property(q => q.IsNpsQuestion).IsRequired().HasDefaultValue(false);
 
-        builder.Property(q => q.NpsType).HasConversion<string>().HasMaxLength(30);
+        builder.Property(q => q.NpsType);
 
         // DefaultLanguage is computed from Survey, ignore it
         builder.Ignore(q => q.DefaultLanguage);

@@ -8,7 +8,7 @@ public class QuestionTranslationConfiguration : IEntityTypeConfiguration<Questio
 {
     public void Configure(EntityTypeBuilder<QuestionTranslation> builder)
     {
-        builder.ToTable("QuestionTranslations");
+        builder.ToTable("question_translations", DbSchemas.I18n);
 
         builder.HasKey(t => t.Id);
 

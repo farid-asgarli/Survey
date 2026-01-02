@@ -1,0 +1,58 @@
+$button-border: 1px solid var(--mantine-color-indigo-5);
+
+.rich-text-toolbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  .list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    background: var(--mantine-color-gray-1);
+    border: 1px solid var(--mantine-color-gray-5);
+    border-radius: var(--mantine-radius-md);
+    transform: translateY(-5px);
+    width: 100%;
+    &-group {
+      display: flex;
+      gap: 5px;
+      position: relative;
+      &:not(:last-of-type)::after {
+        content: '';
+        border-right: 1px solid var(--mantine-color-gray-5);
+        position: absolute;
+        top: 0;
+        right: -10px;
+        height: 100%;
+      }
+    }
+  }
+  .toolbar-button {
+    border-radius: var(--mantine-radius-sm);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--timeout-short) background ease, var(--timeout-short) color ease;
+    &.active {
+      background: var(--mantine-color-primary-4);
+      color: var(--mantine-color-gray-1);
+    }
+    &:hover {
+      background: var(--mantine-color-primary-3);
+      color: var(--mantine-color-gray-1);
+    }
+  }
+  &:not(.disabled) {
+    position: sticky;
+    top: 0;
+  }
+  &.fixed {
+    .list {
+      width: fit-content;
+    }
+  }
+}

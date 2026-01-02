@@ -11,7 +11,7 @@ public class LinkClickConfiguration : IEntityTypeConfiguration<LinkClick>
 {
     public void Configure(EntityTypeBuilder<LinkClick> builder)
     {
-        builder.ToTable("LinkClicks");
+        builder.ToTable("link_clicks", DbSchemas.Distribution);
 
         builder.HasKey(c => c.Id);
 

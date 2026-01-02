@@ -8,7 +8,7 @@ public class SurveyResponseConfiguration : IEntityTypeConfiguration<SurveyRespon
 {
     public void Configure(EntityTypeBuilder<SurveyResponse> builder)
     {
-        builder.ToTable("SurveyResponses");
+        builder.ToTable("survey_responses", DbSchemas.Survey);
 
         builder.HasKey(r => r.Id);
 

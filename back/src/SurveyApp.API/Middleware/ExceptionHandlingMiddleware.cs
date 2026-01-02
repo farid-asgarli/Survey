@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SurveyApp.API.Constants;
 using SurveyApp.Application.Common.Exceptions;
 using SurveyApp.Domain.Common;
 
@@ -45,7 +46,7 @@ public class ExceptionHandlingMiddleware(
         {
             DomainException domainException => new ProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Type = ProblemDetailsTypes.BadRequest,
                 Title = _localizer["Errors.BusinessRuleViolation"],
                 Status = (int)HttpStatusCode.BadRequest,
                 Detail =
@@ -62,7 +63,7 @@ public class ExceptionHandlingMiddleware(
                 validationException.Errors
             )
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Type = ProblemDetailsTypes.BadRequest,
                 Title = _localizer["Errors.ValidationErrors"],
                 Status = (int)HttpStatusCode.BadRequest,
                 Instance = context.Request.Path,
@@ -70,7 +71,7 @@ public class ExceptionHandlingMiddleware(
 
             NotFoundException notFoundException => new ProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Type = ProblemDetailsTypes.NotFound,
                 Title = _localizer["Errors.ResourceNotFound"],
                 Status = (int)HttpStatusCode.NotFound,
                 Detail = LocalizeMessage(notFoundException.Message),
@@ -79,7 +80,7 @@ public class ExceptionHandlingMiddleware(
 
             ForbiddenAccessException => new ProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+                Type = ProblemDetailsTypes.Forbidden,
                 Title = _localizer["Errors.AccessDenied"],
                 Status = (int)HttpStatusCode.Forbidden,
                 Detail = _localizer["Errors.PermissionDenied"],
@@ -88,7 +89,7 @@ public class ExceptionHandlingMiddleware(
 
             NamespaceException namespaceException => new ProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Type = ProblemDetailsTypes.BadRequest,
                 Title = _localizer["Errors.NamespaceError"],
                 Status = (int)HttpStatusCode.BadRequest,
                 Detail = LocalizeMessage(namespaceException.Message),
@@ -97,7 +98,7 @@ public class ExceptionHandlingMiddleware(
 
             UnauthorizedAccessException => new ProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Type = ProblemDetailsTypes.Unauthorized,
                 Title = _localizer["Errors.Unauthorized"],
                 Status = (int)HttpStatusCode.Unauthorized,
                 Detail = _localizer["Errors.AuthenticationRequired"],
@@ -164,7 +165,7 @@ public class ExceptionHandlingMiddleware(
 
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Type = ProblemDetailsTypes.InternalServerError,
             Title = _localizer["Errors.InternalError"],
             Status = (int)HttpStatusCode.InternalServerError,
             Detail = _localizer["Errors.UnexpectedError"],

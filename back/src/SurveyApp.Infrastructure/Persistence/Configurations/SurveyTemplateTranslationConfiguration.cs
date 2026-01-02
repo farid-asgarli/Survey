@@ -9,7 +9,7 @@ public class SurveyTemplateTranslationConfiguration
 {
     public void Configure(EntityTypeBuilder<SurveyTemplateTranslation> builder)
     {
-        builder.ToTable("SurveyTemplateTranslations");
+        builder.ToTable("survey_template_translations", DbSchemas.I18n);
 
         builder.HasKey(t => t.Id);
 

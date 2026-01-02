@@ -31,6 +31,16 @@ public record SurveyFilterCriteria
     public Guid? CreatorId { get; init; }
 
     /// <summary>
+    /// Filter surveys created on or after this date (inclusive).
+    /// </summary>
+    public DateTime? FromDate { get; init; }
+
+    /// <summary>
+    /// Filter surveys created on or before this date (inclusive).
+    /// </summary>
+    public DateTime? ToDate { get; init; }
+
+    /// <summary>
     /// Gets or sets the sorting parameters.
     /// </summary>
     public SortingParameters Sorting { get; init; } = SortingParameters.Default;
@@ -90,6 +100,19 @@ public sealed class SurveysFilteredSpec : NamespaceScopedSpecification<Survey>
                     || (t.Description != null && t.Description.ToLower().Contains(searchTerm))
                 )
             );
+        }
+
+        // Apply date range filter on CreatedAt
+        if (criteria.FromDate.HasValue)
+        {
+            Query.Where(s => s.CreatedAt >= criteria.FromDate.Value);
+        }
+
+        if (criteria.ToDate.HasValue)
+        {
+            // Include the entire day for ToDate
+            var endOfDay = criteria.ToDate.Value.Date.AddDays(1).AddTicks(-1);
+            Query.Where(s => s.CreatedAt <= endOfDay);
         }
 
         // Apply sorting

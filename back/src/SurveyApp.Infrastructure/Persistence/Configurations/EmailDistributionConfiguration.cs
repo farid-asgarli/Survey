@@ -9,7 +9,7 @@ public class EmailDistributionConfiguration : IEntityTypeConfiguration<EmailDist
 {
     public void Configure(EntityTypeBuilder<EmailDistribution> builder)
     {
-        builder.ToTable("EmailDistributions");
+        builder.ToTable("email_distributions", DbSchemas.Distribution);
 
         builder.HasKey(x => x.Id);
 
@@ -31,12 +31,7 @@ public class EmailDistributionConfiguration : IEntityTypeConfiguration<EmailDist
 
         builder.Property(x => x.SentAt);
 
-        builder
-            .Property(x => x.Status)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasMaxLength(50)
-            .HasDefaultValue(DistributionStatus.Draft);
+        builder.Property(x => x.Status).IsRequired().HasDefaultValue(DistributionStatus.Draft);
 
         builder.Property(x => x.TotalRecipients).IsRequired().HasDefaultValue(0);
 
@@ -84,6 +79,6 @@ public class EmailDistributionConfiguration : IEntityTypeConfiguration<EmailDist
         builder.HasIndex(x => x.SurveyId);
         builder.HasIndex(x => x.NamespaceId);
         builder.HasIndex(x => x.Status);
-        builder.HasIndex(x => x.ScheduledAt).HasFilter("\"Status\" = 'Scheduled'");
+        builder.HasIndex(x => x.ScheduledAt).HasFilter("\"Status\" = 1"); // 1 = DistributionStatus.Scheduled
     }
 }

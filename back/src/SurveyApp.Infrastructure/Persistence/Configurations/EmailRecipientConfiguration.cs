@@ -9,7 +9,7 @@ public class EmailRecipientConfiguration : IEntityTypeConfiguration<EmailRecipie
 {
     public void Configure(EntityTypeBuilder<EmailRecipient> builder)
     {
-        builder.ToTable("EmailRecipients");
+        builder.ToTable("email_recipients", DbSchemas.Distribution);
 
         builder.HasKey(x => x.Id);
 
@@ -19,12 +19,7 @@ public class EmailRecipientConfiguration : IEntityTypeConfiguration<EmailRecipie
 
         builder.Property(x => x.Name).HasMaxLength(200);
 
-        builder
-            .Property(x => x.Status)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasMaxLength(50)
-            .HasDefaultValue(RecipientStatus.Pending);
+        builder.Property(x => x.Status).IsRequired().HasDefaultValue(RecipientStatus.Pending);
 
         builder.Property(x => x.SentAt);
 

@@ -9,7 +9,7 @@ public class SurveyThemeConfiguration : IEntityTypeConfiguration<SurveyTheme>
 {
     public void Configure(EntityTypeBuilder<SurveyTheme> builder)
     {
-        builder.ToTable("SurveyThemes");
+        builder.ToTable("survey_themes", DbSchemas.Themes);
 
         builder.HasKey(x => x.Id);
 
@@ -56,43 +56,32 @@ public class SurveyThemeConfiguration : IEntityTypeConfiguration<SurveyTheme>
         builder.Property(x => x.BaseFontSize).HasDefaultValue(16);
 
         // Layout
-        builder
-            .Property(x => x.Layout)
-            .IsRequired()
-            .HasDefaultValue(ThemeLayout.Classic)
-            .HasConversion<string>();
+        builder.Property(x => x.Layout).IsRequired().HasDefaultValue(ThemeLayout.Classic);
 
         builder.Property(x => x.BackgroundImageUrl).HasMaxLength(500);
 
         builder
             .Property(x => x.BackgroundPosition)
             .IsRequired()
-            .HasDefaultValue(BackgroundImagePosition.Cover)
-            .HasConversion<string>();
+            .HasDefaultValue(BackgroundImagePosition.Cover);
 
         builder.Property(x => x.ShowProgressBar).IsRequired().HasDefaultValue(true);
 
-        // Note: Not using HasDefaultValue for enum stored as string to avoid sentinel value warning.
-        // Default value is set in the SurveyTheme entity constructor instead.
-        builder.Property(x => x.ProgressBarStyle).IsRequired().HasConversion<string>();
+        builder
+            .Property(x => x.ProgressBarStyle)
+            .IsRequired()
+            .HasDefaultValue(ProgressBarStyle.Bar)
+            .HasSentinel(ProgressBarStyle.None); // Tell EF Core that None means "use database default"
 
         // Branding
         builder.Property(x => x.LogoUrl).HasMaxLength(500);
 
-        builder
-            .Property(x => x.LogoPosition)
-            .IsRequired()
-            .HasDefaultValue(LogoPosition.TopLeft)
-            .HasConversion<string>();
+        builder.Property(x => x.LogoPosition).IsRequired().HasDefaultValue(LogoPosition.TopLeft);
 
         builder.Property(x => x.ShowPoweredBy).IsRequired().HasDefaultValue(true);
 
         // Button styling
-        builder
-            .Property(x => x.ButtonStyle)
-            .IsRequired()
-            .HasDefaultValue(ButtonStyle.Rounded)
-            .HasConversion<string>();
+        builder.Property(x => x.ButtonStyle).IsRequired().HasDefaultValue(ButtonStyle.Rounded);
 
         builder.Property(x => x.ButtonTextColor).HasMaxLength(20).HasDefaultValue("#FFFFFF");
 

@@ -63,13 +63,31 @@ public record QuestionSettingsDto
     public string? MaxLabel { get; init; }
     public IReadOnlyList<string>? AllowedFileTypes { get; init; }
     public long? MaxFileSize { get; init; }
+
+    /// <summary>
+    /// Maximum number of files allowed for file upload questions.
+    /// </summary>
+    public int? MaxFiles { get; init; }
+
     public IReadOnlyList<string>? MatrixRows { get; init; }
     public IReadOnlyList<string>? MatrixColumns { get; init; }
     public string? Placeholder { get; init; }
     public bool AllowOther { get; init; }
+
+    /// <summary>
+    /// Custom label for the "Other" option when AllowOther is true.
+    /// </summary>
+    public string? OtherLabel { get; init; }
+
     public int? MaxLength { get; init; }
     public int? MinLength { get; init; }
     public int? MaxSelections { get; init; }
+
+    /// <summary>
+    /// Whether to randomize the order of options when displaying.
+    /// </summary>
+    public bool RandomizeOptions { get; init; }
+
     public string? ValidationPattern { get; init; }
     public string? ValidationMessage { get; init; }
     public string? ValidationPreset { get; init; }

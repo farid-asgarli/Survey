@@ -6,17 +6,17 @@ import { useCallback } from 'react';
 import { FileStack } from 'lucide-react';
 import { GridSkeleton, EmptyState, ListContainer } from '@/components/ui';
 import { TemplateCard } from '@/components/features/templates';
-import type { SurveyTemplate } from '@/types';
+import type { SurveyTemplateSummary } from '@/types';
 import { useTranslation } from 'react-i18next';
 
 interface TemplatesContentProps {
-  templates: SurveyTemplate[];
+  templates: SurveyTemplateSummary[];
   isLoading: boolean;
   error?: Error | null;
   hasActiveFilters: boolean;
-  onUseTemplate: (template: SurveyTemplate) => void;
-  onPreviewTemplate: (template: SurveyTemplate) => void;
-  onDeleteTemplate: (template: SurveyTemplate) => void;
+  onUseTemplate: (template: SurveyTemplateSummary) => void;
+  onPreviewTemplate: (template: SurveyTemplateSummary) => void;
+  onDeleteTemplate: (template: SurveyTemplateSummary) => void;
   onNoTemplatesAction?: () => void;
 }
 
@@ -33,21 +33,21 @@ export function TemplatesContent({
   const { t } = useTranslation();
 
   const handleUseTemplate = useCallback(
-    (template: SurveyTemplate) => {
+    (template: SurveyTemplateSummary) => {
       onUseTemplate(template);
     },
     [onUseTemplate]
   );
 
   const handlePreviewTemplate = useCallback(
-    (template: SurveyTemplate) => {
+    (template: SurveyTemplateSummary) => {
       onPreviewTemplate(template);
     },
     [onPreviewTemplate]
   );
 
   const handleDeleteTemplate = useCallback(
-    (template: SurveyTemplate) => {
+    (template: SurveyTemplateSummary) => {
       onDeleteTemplate(template);
     },
     [onDeleteTemplate]
@@ -56,30 +56,25 @@ export function TemplatesContent({
   return (
     <ListContainer items={templates} isLoading={isLoading} hasError={!!error}>
       <ListContainer.Loading>
-        <GridSkeleton count={6} gridHeight="h-48" />
+        <GridSkeleton count={6} gridHeight='h-48' />
       </ListContainer.Loading>
 
       <ListContainer.Error>
-        <EmptyState
-          icon={<FileStack className="h-7 w-7" />}
-          title={t('templates.loadError')}
-          description={t('templates.loadErrorDesc')}
-          iconVariant="muted"
-        />
+        <EmptyState icon={<FileStack className='h-7 w-7' />} title={t('templates.loadError')} description={t('templates.loadErrorDesc')} iconVariant='muted' />
       </ListContainer.Error>
 
       <ListContainer.Empty>
         <EmptyState
-          icon={<FileStack className="h-7 w-7" />}
+          icon={<FileStack className='h-7 w-7' />}
           title={t('templates.noFound')}
           description={hasActiveFilters ? t('templates.noFoundFilters') : t('templates.noFoundDesc')}
-          iconVariant="primary"
+          iconVariant='primary'
           action={
             !hasActiveFilters && onNoTemplatesAction
               ? {
                   label: t('templates.createTemplate'),
                   onClick: onNoTemplatesAction,
-                  icon: <FileStack className="h-4 w-4" />,
+                  icon: <FileStack className='h-4 w-4' />,
                 }
               : undefined
           }
@@ -87,7 +82,7 @@ export function TemplatesContent({
       </ListContainer.Empty>
 
       <ListContainer.Content>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className='grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {templates.map((template) => (
             <TemplateCard
               key={template.id}
@@ -95,7 +90,7 @@ export function TemplatesContent({
               onUse={() => handleUseTemplate(template)}
               onPreview={() => handlePreviewTemplate(template)}
               onDelete={() => handleDeleteTemplate(template)}
-              isOwner={!!template.namespaceId}
+              isOwner={true}
             />
           ))}
         </div>

@@ -4,7 +4,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { templatesApi } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import { surveyKeys } from './useSurveys';
-import type { CreateTemplateRequest, CreateTemplateFromSurveyRequest, UpdateTemplateRequest, CreateSurveyFromTemplateRequest } from '@/types';
+import type {
+  CreateTemplateRequest,
+  CreateTemplateFromSurveyRequest,
+  UpdateTemplateRequest,
+  CreateSurveyFromTemplateRequest,
+  SurveyTemplateSummary,
+} from '@/types';
 import { createQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys
@@ -18,8 +24,9 @@ export interface TemplateFilters {
 }
 
 /**
- * Hook to fetch templates list.
+ * Hook to fetch templates list (summaries without questions).
  * Maps frontend filters to backend GetTemplatesQuery parameters.
+ * Returns SurveyTemplateSummary[] (no questions array for performance).
  */
 export function useTemplatesList(filters?: TemplateFilters) {
   const { activeNamespace } = useNamespaceStore();
@@ -39,7 +46,7 @@ export function useTemplatesList(filters?: TemplateFilters) {
     params.isPublic = false;
   }
 
-  return useQuery({
+  return useQuery<SurveyTemplateSummary[]>({
     queryKey: templateKeys.list(filters),
     queryFn: async () => {
       const response = await templatesApi.list(params);
@@ -52,7 +59,7 @@ export function useTemplatesList(filters?: TemplateFilters) {
 
 /**
  * Hook to fetch a single template by ID.
- * Returns SurveyTemplateDto with full questions array.
+ * Returns full SurveyTemplate with questions array.
  */
 export function useTemplateDetail(id: string | undefined) {
   return useQuery({

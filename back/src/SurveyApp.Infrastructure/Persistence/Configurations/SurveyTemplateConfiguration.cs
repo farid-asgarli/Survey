@@ -8,7 +8,7 @@ public class SurveyTemplateConfiguration : IEntityTypeConfiguration<SurveyTempla
 {
     public void Configure(EntityTypeBuilder<SurveyTemplate> builder)
     {
-        builder.ToTable("SurveyTemplates");
+        builder.ToTable("survey_templates", DbSchemas.Templates);
 
         builder.HasKey(t => t.Id);
 

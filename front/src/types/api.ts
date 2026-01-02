@@ -3,20 +3,14 @@
 import type {
   User,
   AuthTokens,
-  Namespace,
   NamespaceMembership,
   Survey,
-  Question,
-  QuestionLogic,
   SurveyLink,
-  EmailDistribution,
   EmailDistributionSummary,
   DistributionRecipient,
   DistributionStats,
-  EmailTemplate,
   EmailTemplateSummary,
-  SurveyTheme,
-  SurveyTemplate,
+  SurveyTemplateSummary,
   ResponseListItem,
 } from './models';
 import type { ExportFormat, LogicOperator, LogicAction } from './enums';
@@ -70,59 +64,73 @@ export interface RefreshTokenResponse {
   tokens: AuthTokens;
 }
 
+// ============ Azure AD SSO Types ============
+
+/**
+ * Azure AD configuration for frontend MSAL initialization.
+ * Returned by GET /api/auth/azure-ad/config
+ */
+export interface AzureAdConfig {
+  /** Whether Azure AD authentication is enabled on the backend */
+  enabled: boolean;
+  /** Azure AD Application (Client) ID */
+  clientId?: string;
+  /** Azure AD Tenant (Directory) ID */
+  tenantId?: string;
+  /** Azure AD authority URL for authentication */
+  authority?: string;
+  /** OAuth redirect URI for the frontend application */
+  redirectUri?: string;
+  /** OAuth scopes to request during authentication */
+  scopes?: string[];
+}
+
+/**
+ * Request body for Azure AD login.
+ * POST /api/auth/azure-ad/login
+ */
+export interface AzureAdLoginRequest {
+  /** ID token from Azure AD authentication */
+  idToken: string;
+  /** Optional access token from Azure AD */
+  accessToken?: string;
+}
+
+/**
+ * Request body for linking Azure AD account.
+ * POST /api/auth/azure-ad/link
+ */
+export interface AzureAdLinkRequest {
+  /** ID token from Azure AD authentication */
+  idToken: string;
+}
+
 // ============ Namespace API Types ============
-
-export interface NamespaceResponse {
-  namespace: Namespace;
-}
-
-/** @deprecated Use PaginatedResponse<NamespaceMembership> instead - backend returns paginated response */
-export interface MembersResponse {
-  members: NamespaceMembership[];
-}
 
 /** Paginated response for namespace members */
 export type MembersPaginatedResponse = PaginatedResponse<NamespaceMembership>;
 
 // ============ Survey API Types ============
+/**
+ * Query parameters for listing surveys.
+ * Matches backend GetSurveysQuery.
+ */
 export interface SurveyListParams extends PaginationParams {
+  /** Filter by survey status (numeric enum value) */
   status?: string;
-  searchTerm?: string; // Backend expects searchTerm parameter
+  /** Search term for filtering surveys by title/description */
+  searchTerm?: string;
+  /** Filter surveys created on or after this date (ISO 8601 format) */
   fromDate?: string;
+  /** Filter surveys created on or before this date (ISO 8601 format) */
   toDate?: string;
+  /** Field to sort by */
   sortBy?: 'title' | 'createdAt' | 'updatedAt' | 'status' | 'responseCount' | 'questionCount';
+  /** Sort in descending order (default: true) */
   sortDescending?: boolean;
 }
 
-/** Request body for duplicating a survey */
-export interface DuplicateSurveyRequest {
-  /** Optional new title for the duplicated survey. If not provided, appends "(Copy)" to original. */
-  newTitle?: string;
-}
-
 export type SurveysResponse = PaginatedResponse<Survey>;
-
-export interface SurveyDetailResponse {
-  survey: Survey;
-}
-
-// ============ Question API Types ============
-export interface QuestionsResponse {
-  questions: Question[];
-}
-
-export interface QuestionResponse {
-  question: Question;
-}
-
-export interface ReorderQuestionsRequest {
-  questionIds: string[];
-}
-
-// ============ Logic API Types ============
-export interface LogicResponse {
-  rules: QuestionLogic[];
-}
 
 /**
  * Represents a node (question) in the logic map visualization.
@@ -162,14 +170,10 @@ export interface LogicMapResponse {
 }
 
 // ============ Links API Types ============
-export interface LinksResponse {
-  links: SurveyLink[];
-}
 
-export interface LinkResponse {
-  link: SurveyLink;
-}
-
+/**
+ * Link analytics response matching backend LinkAnalyticsDto.
+ */
 export interface LinkAnalyticsResponse {
   linkId: string;
   linkName: string;
@@ -233,9 +237,6 @@ export type SurveyLinksResponse = PaginatedResponse<SurveyLink>;
 /** Paginated response of distribution summaries for list endpoint */
 export type DistributionsResponse = PaginatedResponse<EmailDistributionSummary>;
 
-/** Single distribution detail response */
-export type DistributionResponse = EmailDistribution;
-
 /** Paginated recipients response */
 export type DistributionRecipientsResponse = PaginatedResponse<DistributionRecipient>;
 
@@ -246,9 +247,6 @@ export type DistributionStatsResponse = DistributionStats;
 
 /** Paginated response of email template summaries for list endpoint */
 export type EmailTemplatesResponse = PaginatedResponse<EmailTemplateSummary>;
-
-/** Single email template response is the template directly */
-export type EmailTemplateResponse = EmailTemplate;
 
 /** Request body for duplicating an email template */
 export interface DuplicateEmailTemplateRequest {
@@ -261,33 +259,24 @@ export interface EmailTemplateListParams extends PaginationParams {
   type?: number;
 }
 
-// Survey Templates use paginated response
-export type SurveyTemplatesResponse = PaginatedResponse<SurveyTemplate>;
-
-export interface SurveyTemplateResponse {
-  template: SurveyTemplate;
-}
-
-export interface SurveyTemplateListParams extends PaginationParams {
-  category?: string;
-  searchTerm?: string; // Backend expects searchTerm parameter
-  isPublic?: boolean;
-}
-
-// ============ Theme API Types ============
-export interface ThemesResponse {
-  themes: SurveyTheme[];
-}
-
-export interface ThemeResponse {
-  theme: SurveyTheme;
-}
+// Survey Templates use paginated response with summary type (no questions array)
+export type SurveyTemplatesResponse = PaginatedResponse<SurveyTemplateSummary>;
 
 // ============ Response API Types ============
+
+/**
+ * Query parameters for listing responses.
+ * Matches backend GetResponsesQuery.
+ */
 export interface ResponsesListParams extends PaginationParams {
+  /** Filter by completion status */
   isComplete?: boolean;
+  /** Filter responses created on or after this date (ISO 8601 format) */
   fromDate?: string;
+  /** Filter responses created on or before this date (ISO 8601 format) */
   toDate?: string;
+  /** Search term for filtering responses */
+  searchTerm?: string;
 }
 
 /**
@@ -447,17 +436,6 @@ export interface NpsTrendParams {
   groupBy?: NpsTrendGroupBy;
 }
 
-export interface ResponseTrendParams {
-  fromDate: string;
-  toDate: string;
-}
-
-export interface ExportAnalyticsParams {
-  format: ExportFormat;
-  includeOpenEnded?: boolean;
-  includeMetadata?: boolean;
-}
-
 // ============ Recurring Surveys API Types ============
 import type { RecurringSurveyListItem, RecurringRun } from './models';
 
@@ -495,6 +473,7 @@ export type {
   UpdateEmailTemplateRequest,
   SurveyTheme,
   SurveyTemplate,
+  SurveyTemplateSummary,
   TemplateQuestion,
   TemplateCategory,
   CreateTemplateRequest,

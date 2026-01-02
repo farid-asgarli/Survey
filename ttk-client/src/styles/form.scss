@@ -1,0 +1,19 @@
+$p: pfx('dialog_segregated_form');
+
+#{$p} {
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    &-set {
+      all: unset;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      &-divided {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  }
+}

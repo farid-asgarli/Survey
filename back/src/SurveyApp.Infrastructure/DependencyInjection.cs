@@ -23,17 +23,20 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        // Database contexts (PostgreSQL)
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        // Database contexts (PostgreSQL) - Single database with multiple schemas
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"),
+                connectionString,
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
             )
         );
 
+        // Identity context uses the same database but with "identity" schema
         services.AddDbContext<ApplicationIdentityDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString("IdentityConnection"),
+                connectionString,
                 b => b.MigrationsAssembly(typeof(ApplicationIdentityDbContext).Assembly.FullName)
             )
         );
@@ -59,6 +62,11 @@ public static class DependencyInjection
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
+        // Azure AD Settings (optional - only if configured)
+        var azureAdSettings = new AzureAdSettings();
+        configuration.Bind(AzureAdSettings.SectionName, azureAdSettings);
+        services.Configure<AzureAdSettings>(configuration.GetSection(AzureAdSettings.SectionName));
 
         services
             .AddAuthentication(options =>

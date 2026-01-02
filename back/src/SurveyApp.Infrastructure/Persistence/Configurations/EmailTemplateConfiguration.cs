@@ -9,7 +9,7 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
 {
     public void Configure(EntityTypeBuilder<EmailTemplate> builder)
     {
-        builder.ToTable("EmailTemplates");
+        builder.ToTable("email_templates", DbSchemas.Distribution);
 
         builder.HasKey(x => x.Id);
 
@@ -28,7 +28,7 @@ public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate
 
         builder.Property(x => x.NamespaceId).IsRequired();
 
-        builder.Property(x => x.Type).IsRequired().HasConversion<string>().HasMaxLength(50);
+        builder.Property(x => x.Type).IsRequired();
 
         builder.Property(x => x.IsDefault).IsRequired().HasDefaultValue(false);
 

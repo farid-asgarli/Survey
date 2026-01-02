@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { usersApi } from '@/services';
 import { useAuthStore } from '@/stores';
-import type { UpdateProfileRequest, ChangePasswordRequest, User } from '@/types';
+import type { UpdateProfileRequest, ChangePasswordRequest, User, UserProfile } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
 // Query keys - user only has a current key (no list/detail pattern)
@@ -63,7 +63,7 @@ export function useUploadAvatar() {
     mutationFn: (file: File) => usersApi.uploadAvatar(file),
     onSuccess: (response) => {
       // Update the user with the new avatar URL
-      const currentUser = queryClient.getQueryData<User>(userKeys.current());
+      const currentUser = queryClient.getQueryData<UserProfile>(userKeys.current());
       if (currentUser) {
         const updatedUser = { ...currentUser, avatarUrl: response.avatarUrl };
         queryClient.setQueryData(userKeys.current(), updatedUser);
@@ -84,7 +84,7 @@ export function useDeleteAvatar() {
     mutationFn: () => usersApi.deleteAvatar(),
     onSuccess: () => {
       // Remove the avatar URL from the user
-      const currentUser = queryClient.getQueryData<User>(userKeys.current());
+      const currentUser = queryClient.getQueryData<UserProfile>(userKeys.current());
       if (currentUser) {
         const updatedUser = { ...currentUser, avatarUrl: undefined };
         queryClient.setQueryData(userKeys.current(), updatedUser);

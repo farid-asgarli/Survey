@@ -42,7 +42,9 @@ public class GetSurveysQueryHandler(
         var userId = _currentUserService.UserId;
         if (!userId.HasValue)
         {
-            return Result<PagedResponse<SurveyListItemDto>>.Unauthorized("Errors.UserNotAuthenticated");
+            return Result<PagedResponse<SurveyListItemDto>>.Unauthorized(
+                "Errors.UserNotAuthenticated"
+            );
         }
 
         var @namespace = await _namespaceRepository.GetByIdAsync(
@@ -63,6 +65,8 @@ public class GetSurveysQueryHandler(
             NamespaceId = namespaceId.Value,
             Status = request.Status,
             SearchTerm = request.SearchTerm,
+            FromDate = request.FromDate,
+            ToDate = request.ToDate,
             Sorting = SortingParameters.Create(request.SortBy, request.SortDescending),
             Paging = PagingParameters.Create(request.PageNumber, request.PageSize),
             IncludeResponses = true,

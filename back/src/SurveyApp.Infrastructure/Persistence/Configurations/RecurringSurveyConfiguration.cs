@@ -12,7 +12,7 @@ public class RecurringSurveyConfiguration : IEntityTypeConfiguration<RecurringSu
 {
     public void Configure(EntityTypeBuilder<RecurringSurvey> builder)
     {
-        builder.ToTable("RecurringSurveys");
+        builder.ToTable("recurring_surveys", DbSchemas.Scheduling);
 
         builder.HasKey(r => r.Id);
 
@@ -21,7 +21,7 @@ public class RecurringSurveyConfiguration : IEntityTypeConfiguration<RecurringSu
         builder.Property(r => r.IsActive).IsRequired().HasDefaultValue(false);
 
         // Schedule properties
-        builder.Property(r => r.Pattern).IsRequired().HasConversion<string>().HasMaxLength(20);
+        builder.Property(r => r.Pattern).IsRequired();
 
         builder.Property(r => r.CronExpression).HasMaxLength(100);
 
@@ -50,11 +50,7 @@ public class RecurringSurveyConfiguration : IEntityTypeConfiguration<RecurringSu
         builder.Property(r => r.DayOfMonth);
 
         // Audience properties
-        builder
-            .Property(r => r.AudienceType)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasMaxLength(30);
+        builder.Property(r => r.AudienceType).IsRequired();
 
         builder
             .Property(r => r.RecipientEmails)

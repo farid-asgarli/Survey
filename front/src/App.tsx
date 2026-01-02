@@ -2,10 +2,11 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ProtectedRoute, PublicOnlyRoute } from '@/components/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { AzureAdProvider } from '@/components/AzureAdProvider';
 import { OfflineIndicator, PageTransitionLoader } from '@/components/ui';
 
 // Eager load auth pages for better UX
-import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, NotFoundPage, RouteErrorPage } from '@/pages';
+import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, AzureCallbackPage, NotFoundPage, RouteErrorPage } from '@/pages';
 
 // Lazy load main app pages for code splitting
 const DashboardPage = lazy(() => import('@/pages/Dashboard/DashboardPage').then((m) => ({ default: m.DashboardPage })));
@@ -18,15 +19,11 @@ const TemplatesPage = lazy(() => import('@/pages/Templates/TemplatesPage').then(
 const ThemesPage = lazy(() => import('@/pages/Themes/ThemesPage').then((m) => ({ default: m.ThemesPage })));
 const DistributionsPage = lazy(() => import('@/pages/Distributions/DistributionsPage').then((m) => ({ default: m.DistributionsPage })));
 const EmailTemplatesPage = lazy(() => import('@/pages/EmailTemplates/EmailTemplatesPage').then((m) => ({ default: m.EmailTemplatesPage })));
-const EmailTemplateEditorPage = lazy(() =>
-  import('@/pages/EmailTemplateEditor/EmailTemplateEditorPage').then((m) => ({ default: m.EmailTemplateEditorPage }))
-);
+const EmailTemplateEditorPage = lazy(() => import('@/pages/EmailTemplateEditor/EmailTemplateEditorPage').then((m) => ({ default: m.EmailTemplateEditorPage })));
 const RecurringSurveysPage = lazy(() => import('@/pages/RecurringSurveys/RecurringSurveysPage').then((m) => ({ default: m.RecurringSurveysPage })));
 const SettingsPage = lazy(() => import('@/pages/Settings/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 const NamespacesPage = lazy(() => import('@/pages/Namespaces/NamespacesPage').then((m) => ({ default: m.NamespacesPage })));
-const NamespaceSettingsPage = lazy(() =>
-  import('@/pages/NamespaceSettings/NamespaceSettingsPage').then((m) => ({ default: m.NamespaceSettingsPage }))
-);
+const NamespaceSettingsPage = lazy(() => import('@/pages/NamespaceSettings/NamespaceSettingsPage').then((m) => ({ default: m.NamespaceSettingsPage })));
 
 // Public survey page (no auth required)
 const PublicSurveyPage = lazy(() => import('@/pages/PublicSurvey/PublicSurveyPage').then((m) => ({ default: m.PublicSurveyPage })));
@@ -49,7 +46,7 @@ function RootLayout() {
   return (
     <ErrorBoundary>
       <Outlet />
-      <OfflineIndicator position="bottom" />
+      <OfflineIndicator position='bottom' />
     </ErrorBoundary>
   );
 }
@@ -102,6 +99,12 @@ const router = createBrowserRouter([
             <ResetPasswordPage />
           </PublicOnlyRoute>
         ),
+      },
+
+      // Azure AD SSO callback route
+      {
+        path: '/auth/azure-callback',
+        element: <AzureCallbackPage />,
       },
 
       // Protected routes (require authentication)
@@ -291,14 +294,18 @@ const router = createBrowserRouter([
       // Catch-all redirect to 404
       {
         path: '*',
-        element: <Navigate to="/404" replace />,
+        element: <Navigate to='/404' replace />,
       },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AzureAdProvider>
+      <RouterProvider router={router} />
+    </AzureAdProvider>
+  );
 }
 
 export default App;

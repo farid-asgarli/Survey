@@ -1,12 +1,12 @@
 // React Query hooks for Survey Themes operations
 
 import { useQuery } from '@tanstack/react-query';
-import { themesApi, type CreateThemeRequest, type UpdateThemeRequest } from '@/services';
+import { themesApi, type CreateThemeRequest, type UpdateThemeRequest, type DuplicateThemeRequest } from '@/services';
 import { useNamespaceStore } from '@/stores';
 import { createExtendedQueryKeys, useInvalidatingMutation, useUpdatingMutation, STALE_TIMES } from './queryUtils';
 
 // Re-export types for consumers
-export type { CreateThemeRequest, UpdateThemeRequest, ThemePreviewResponse } from '@/services';
+export type { CreateThemeRequest, UpdateThemeRequest, DuplicateThemeRequest, ThemePreviewResponse } from '@/services';
 
 // Query keys - using the utility with custom keys for preview/css
 export const themeKeys = createExtendedQueryKeys('themes', (base) => ({
@@ -111,7 +111,7 @@ export function useDeleteTheme() {
  * Hook to duplicate a theme
  */
 export function useDuplicateTheme() {
-  return useInvalidatingMutation(themeKeys, (id: string) => themesApi.duplicate(id));
+  return useInvalidatingMutation(themeKeys, ({ id, request }: { id: string; request?: DuplicateThemeRequest }) => themesApi.duplicate(id, request));
 }
 
 /**

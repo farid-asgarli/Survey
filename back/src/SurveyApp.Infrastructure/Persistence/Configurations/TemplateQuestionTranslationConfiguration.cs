@@ -9,7 +9,7 @@ public class TemplateQuestionTranslationConfiguration
 {
     public void Configure(EntityTypeBuilder<TemplateQuestionTranslation> builder)
     {
-        builder.ToTable("TemplateQuestionTranslations");
+        builder.ToTable("template_question_translations", DbSchemas.I18n);
 
         builder.HasKey(t => t.Id);
 

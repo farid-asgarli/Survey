@@ -1,6 +1,6 @@
 // Types for public survey (respondent-facing)
 
-import type { QuestionType, QuestionOption } from './models';
+import type { QuestionType, QuestionOption, NpsQuestionType, RatingStyle, YesNoStyle } from './models';
 
 // ============ Public Survey Types ============
 
@@ -11,18 +11,23 @@ export interface PublicSurveySettings {
   maxLabel?: string;
   placeholder?: string;
   maxLength?: number;
+  minLength?: number;
   /** Options with stable IDs for choice questions */
   options?: QuestionOption[];
   matrixRows?: string[];
   matrixColumns?: string[];
   allowedFileTypes?: string[];
   maxFileSize?: number;
+  maxFiles?: number;
+  maxSelections?: number;
   allowOther?: boolean;
+  otherLabel?: string;
+  randomizeOptions?: boolean;
   validationPattern?: string;
   validationMessage?: string;
   validationPreset?: string;
-  ratingStyle?: number;
-  yesNoStyle?: number;
+  ratingStyle?: RatingStyle;
+  yesNoStyle?: YesNoStyle;
 }
 
 export interface PublicQuestion {
@@ -34,7 +39,7 @@ export interface PublicQuestion {
   description?: string;
   settings?: PublicSurveySettings;
   isNpsQuestion?: boolean;
-  npsType?: string;
+  npsType?: NpsQuestionType;
 }
 
 export interface PublicSurvey {

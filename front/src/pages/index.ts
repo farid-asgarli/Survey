@@ -5,6 +5,7 @@ export { LoginPage } from './Login/LoginPage';
 export { RegisterPage } from './Register/RegisterPage';
 export { ForgotPasswordPage } from './ForgotPassword/ForgotPasswordPage';
 export { ResetPasswordPage } from './ResetPassword/ResetPasswordPage';
+export { AzureCallbackPage } from './AzureCallback';
 
 // Main app pages
 export { DashboardPage } from './Dashboard/DashboardPage';

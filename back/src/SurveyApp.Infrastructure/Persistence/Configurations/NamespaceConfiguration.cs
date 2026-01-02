@@ -8,7 +8,7 @@ public class NamespaceConfiguration : IEntityTypeConfiguration<Namespace>
 {
     public void Configure(EntityTypeBuilder<Namespace> builder)
     {
-        builder.ToTable("Namespaces");
+        builder.ToTable("namespaces", DbSchemas.Core);
 
         builder.HasKey(n => n.Id);
 
@@ -21,11 +21,7 @@ public class NamespaceConfiguration : IEntityTypeConfiguration<Namespace>
 
         builder.Property(n => n.LogoUrl).HasMaxLength(500);
 
-        builder
-            .Property(n => n.SubscriptionTier)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasMaxLength(20);
+        builder.Property(n => n.SubscriptionTier).IsRequired();
 
         builder.Property(n => n.MaxSurveys).IsRequired().HasDefaultValue(10);
         builder.Property(n => n.MaxUsers).IsRequired().HasDefaultValue(10);

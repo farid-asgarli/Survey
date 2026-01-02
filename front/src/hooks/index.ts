@@ -1,4 +1,5 @@
 export { useAuth } from './useAuth';
+export { useAzureAuth, useAzureAdEnabled } from './useAzureAuth';
 export { useNamespace } from './useNamespace';
 export { useViewTransitionNavigate } from './useViewTransitionNavigate';
 export { useConfirmDialog, useDeleteConfirm } from './useConfirmDialog';
@@ -43,13 +44,7 @@ export {
   STALE_TIMES,
   GC_TIMES,
 } from './queries/queryUtils';
-export type {
-  EntityQueryKeys,
-  InvalidatingMutationOptions,
-  UpdatingMutationOptions,
-  OptimisticMutationOptions,
-  ApiProblemDetails,
-} from './queries/queryUtils';
+export type { EntityQueryKeys, InvalidatingMutationOptions, UpdatingMutationOptions, OptimisticMutationOptions, ApiProblemDetails } from './queries/queryUtils';
 
 // React Query hooks
 export * from './queries/useUser';

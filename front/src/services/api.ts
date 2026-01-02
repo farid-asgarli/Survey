@@ -4,7 +4,7 @@ import axios, { type AxiosInstance, type AxiosError, type InternalAxiosRequestCo
 import { getApiBaseUrl, API_ENDPOINTS } from '@/config/api';
 import { getAccessToken, useAuthStore, getActiveNamespaceId } from '@/stores';
 import { toast } from '@/components/ui';
-import { getErrorMessage, isProblemDetails, getCurrentISOTimestamp } from '@/utils';
+import { getErrorMessage, isProblemDetails } from '@/utils';
 import { getCurrentLanguage } from '@/i18n';
 import type {
   LoginRequest,
@@ -14,6 +14,8 @@ import type {
   UpdateProfileRequest,
   ChangePasswordRequest,
   UploadAvatarResponse,
+  MessageResponse,
+  UserProfile,
   CreateNamespaceRequest,
   InviteMemberRequest,
   InviteMemberResponse,
@@ -24,6 +26,9 @@ import type {
   BatchSyncQuestionsRequest,
   BatchSyncQuestionsResult,
   CreateLogicRequest,
+  UpdateLogicRequest,
+  EvaluateLogicRequest,
+  EvaluateLogicResponse,
   CreateLinkRequest,
   UpdateLinkRequest,
   CreateDistributionRequest,
@@ -58,6 +63,7 @@ import type {
   EmailDistribution,
   EmailTemplate,
   SurveyTheme,
+  SurveyThemeSummary,
   SurveyTemplate,
   ExportFormat,
   RecipientStatus,
@@ -68,6 +74,9 @@ import type {
   LinkByTokenResult,
   LinkAccessRequest,
   RecordLinkClickResult,
+  AzureAdConfig,
+  AzureAdLoginRequest,
+  AzureAdLinkRequest,
 } from '@/types';
 
 // Create axios instance with base configuration
@@ -236,7 +245,10 @@ export const apiClient = createApiClient();
 
 // ============ Auth API ============
 
-// Raw API response types (as returned by backend)
+/**
+ * Raw API response types (as returned by backend).
+ * Backend now returns complete user data.
+ */
 interface RawAuthResponse {
   token: string;
   refreshToken: string;
@@ -246,19 +258,35 @@ interface RawAuthResponse {
     email: string;
     firstName: string;
     lastName: string;
-    avatarUrl?: string;
-    createdAt?: string;
-    updatedAt?: string;
+    fullName: string;
+    emailConfirmed: boolean;
+    avatarUrl: string | null;
+    profilePictureUrl: string | null;
+    lastLoginAt: string | null;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string | null;
   };
 }
 
-// Transform raw auth response to expected format
+/**
+ * Transform raw auth response to expected format.
+ * Backend now returns complete user data, so minimal transformation is needed.
+ */
 const transformAuthResponse = (raw: RawAuthResponse): LoginResponse => ({
   user: {
-    ...raw.user,
-    // Provide defaults for optional fields not returned by API
-    createdAt: raw.user.createdAt || getCurrentISOTimestamp(),
-    updatedAt: raw.user.updatedAt || getCurrentISOTimestamp(),
+    id: raw.user.id,
+    email: raw.user.email,
+    firstName: raw.user.firstName,
+    lastName: raw.user.lastName,
+    fullName: raw.user.fullName,
+    emailConfirmed: raw.user.emailConfirmed,
+    avatarUrl: raw.user.avatarUrl ?? undefined,
+    profilePictureUrl: raw.user.profilePictureUrl ?? undefined,
+    lastLoginAt: raw.user.lastLoginAt ?? undefined,
+    isActive: raw.user.isActive,
+    createdAt: raw.user.createdAt,
+    updatedAt: raw.user.updatedAt ?? undefined,
   },
   tokens: {
     accessToken: raw.token,
@@ -322,17 +350,62 @@ export const authApi = {
   resetPassword: async (data: ResetPasswordRequest): Promise<void> => {
     await apiClient.post(API_ENDPOINTS.auth.resetPassword, data);
   },
+
+  // Azure AD SSO methods
+
+  /**
+   * Get Azure AD configuration for MSAL initialization.
+   * Returns whether SSO is enabled and necessary config values.
+   */
+  getAzureAdConfig: async (): Promise<AzureAdConfig> => {
+    try {
+      const response = await apiClient.get<AzureAdConfig>(API_ENDPOINTS.auth.azureAdConfig, {
+        headers: {
+          'X-Suppress-Toast': 'true',
+        },
+      });
+      return response.data;
+    } catch {
+      // Return disabled config if endpoint fails
+      return { enabled: false };
+    }
+  },
+
+  /**
+   * Authenticate with Azure AD ID token.
+   * Creates or links user account automatically.
+   */
+  azureAdLogin: async (data: AzureAdLoginRequest): Promise<LoginResponse> => {
+    const response = await apiClient.post<RawAuthResponse>(API_ENDPOINTS.auth.azureAdLogin, data, {
+      headers: {
+        'X-Suppress-Toast': 'true',
+      },
+    });
+    return transformAuthResponse(response.data);
+  },
+
+  /**
+   * Link Azure AD account to current authenticated user.
+   * Enables SSO for users who registered with email/password.
+   */
+  linkAzureAd: async (data: AzureAdLinkRequest): Promise<LoginResponse> => {
+    const response = await apiClient.post<RawAuthResponse>(API_ENDPOINTS.auth.azureAdLink, data);
+    return transformAuthResponse(response.data);
+  },
+
+  /**
+   * Unlink Azure AD account from current user.
+   * Requires user to have a password set.
+   */
+  unlinkAzureAd: async (): Promise<void> => {
+    await apiClient.post(API_ENDPOINTS.auth.azureAdUnlink);
+  },
 };
 
 // ============ Users API ============
 export const usersApi = {
-  getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<User>(API_ENDPOINTS.users.me);
-    return response.data;
-  },
-
-  updateCurrentUser: async (data: Partial<User>): Promise<User> => {
-    const response = await apiClient.put<User>(API_ENDPOINTS.users.me, data);
+  getCurrentUser: async (): Promise<UserProfile> => {
+    const response = await apiClient.get<UserProfile>(API_ENDPOINTS.users.me);
     return response.data;
   },
 
@@ -341,13 +414,14 @@ export const usersApi = {
     return response.data;
   },
 
-  changePassword: async (data: ChangePasswordRequest): Promise<void> => {
-    await apiClient.post(API_ENDPOINTS.users.changePassword, data);
+  changePassword: async (data: ChangePasswordRequest): Promise<MessageResponse> => {
+    const response = await apiClient.post<MessageResponse>(API_ENDPOINTS.users.changePassword, data);
+    return response.data;
   },
 
   uploadAvatar: async (file: File): Promise<UploadAvatarResponse> => {
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append('file', file);
     const response = await apiClient.post<UploadAvatarResponse>(API_ENDPOINTS.users.avatar, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -356,8 +430,9 @@ export const usersApi = {
     return response.data;
   },
 
-  deleteAvatar: async (): Promise<void> => {
-    await apiClient.delete(API_ENDPOINTS.users.avatar);
+  deleteAvatar: async (): Promise<MessageResponse> => {
+    const response = await apiClient.delete<MessageResponse>(API_ENDPOINTS.users.avatar);
+    return response.data;
   },
 };
 
@@ -423,10 +498,7 @@ export const namespacesApi = {
   },
 
   inviteMember: async (id: string, data: InviteMemberRequest): Promise<InviteMemberResponse> => {
-    const response = await apiClient.post<InviteMemberResponse>(API_ENDPOINTS.namespaces.members(id), {
-      ...data,
-      namespaceId: id,
-    });
+    const response = await apiClient.post<InviteMemberResponse>(API_ENDPOINTS.namespaces.members(id), data);
     return response.data;
   },
 
@@ -584,13 +656,23 @@ export const questionsApi = {
 // ============ Question Logic API ============
 
 // Transform frontend CreateLogicRequest to backend format
-const transformLogicRequest = (data: CreateLogicRequest): Record<string, unknown> => ({
+const transformCreateLogicRequest = (data: CreateLogicRequest): Record<string, unknown> => ({
   sourceQuestionId: data.sourceQuestionId,
   operator: data.operator,
-  conditionValue: data.conditionValue || '',
+  conditionValue: data.conditionValue ?? '',
   action: data.action,
   targetQuestionId: data.targetQuestionId,
-  priority: data.priority ?? 0,
+  priority: data.priority,
+});
+
+// Transform frontend UpdateLogicRequest to backend format
+const transformUpdateLogicRequest = (data: UpdateLogicRequest): Record<string, unknown> => ({
+  sourceQuestionId: data.sourceQuestionId,
+  operator: data.operator,
+  conditionValue: data.conditionValue ?? '',
+  action: data.action,
+  targetQuestionId: data.targetQuestionId,
+  priority: data.priority,
 });
 
 export const logicApi = {
@@ -600,14 +682,14 @@ export const logicApi = {
   },
 
   create: async (surveyId: string, questionId: string, data: CreateLogicRequest): Promise<QuestionLogic> => {
-    const response = await apiClient.post<QuestionLogic>(API_ENDPOINTS.surveys.questionLogic(surveyId, questionId), transformLogicRequest(data));
+    const response = await apiClient.post<QuestionLogic>(API_ENDPOINTS.surveys.questionLogic(surveyId, questionId), transformCreateLogicRequest(data));
     return response.data;
   },
 
-  update: async (surveyId: string, questionId: string, logicId: string, data: Partial<CreateLogicRequest>): Promise<QuestionLogic> => {
+  update: async (surveyId: string, questionId: string, logicId: string, data: UpdateLogicRequest): Promise<QuestionLogic> => {
     const response = await apiClient.put<QuestionLogic>(
       `${API_ENDPOINTS.surveys.questionLogic(surveyId, questionId)}/${logicId}`,
-      transformLogicRequest(data as CreateLogicRequest)
+      transformUpdateLogicRequest(data)
     );
     return response.data;
   },
@@ -626,25 +708,12 @@ export const logicApi = {
   },
 
   /**
-   * Evaluate logic on the server for validation, preview, or analytics
+   * Evaluate logic on the server for validation, preview, or analytics.
    * @param surveyId - Survey ID
-   * @param answers - Array of {questionId, value} pairs
-   * @param currentQuestionId - Optional current question for next-question calculation
+   * @param request - Evaluation request with answers and optional current question
    */
-  evaluateLogic: async (
-    surveyId: string,
-    answers: { questionId: string; value: string }[],
-    currentQuestionId?: string
-  ): Promise<{
-    visibleQuestionIds: string[];
-    hiddenQuestionIds: string[];
-    nextQuestionId?: string;
-    shouldEndSurvey: boolean;
-  }> => {
-    const response = await apiClient.post(API_ENDPOINTS.surveys.evaluateLogic(surveyId), {
-      currentQuestionId,
-      answers,
-    });
+  evaluateLogic: async (surveyId: string, request: EvaluateLogicRequest): Promise<EvaluateLogicResponse> => {
+    const response = await apiClient.post<EvaluateLogicResponse>(API_ENDPOINTS.surveys.evaluateLogic(surveyId), request);
     return response.data;
   },
 };
@@ -808,38 +877,24 @@ export const distributionsApi = {
 
 import type { ThemeColors, ThemeTypography, ThemeLayoutDto, ThemeBranding, ThemeButton } from '@/types';
 
-// Issue 15: ThemePreviewResponse matching backend ThemePreviewDto
+// ThemePreviewResponse matching backend ThemePreviewDto
 export interface ThemePreviewResponse {
   theme: SurveyTheme;
-  generatedCss: string; // Backend uses generatedCss, not css
-  // Note: previewHtml is frontend-only, not returned by backend
+  generatedCss: string;
 }
 
+// Paginated response for theme summaries (list view)
 export interface ThemesListResponse {
-  items: SurveyTheme[];
+  items: SurveyThemeSummary[];
   totalCount: number;
   pageNumber: number;
   pageSize: number;
+  totalPages: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
 }
 
-// Helper to normalize theme list response (backend returns array directly)
-function normalizeThemesResponse(data: SurveyTheme[] | ThemesListResponse): ThemesListResponse {
-  if (Array.isArray(data)) {
-    return {
-      items: data,
-      totalCount: data.length,
-      pageNumber: 1,
-      pageSize: data.length,
-      hasNextPage: false,
-      hasPreviousPage: false,
-    };
-  }
-  return data;
-}
-
-// Issue 16: CreateThemeRequest matching backend CreateThemeDto (nested structure)
+// CreateThemeRequest matching backend CreateThemeCommand
 export interface CreateThemeRequest {
   name: string;
   description?: string;
@@ -854,22 +909,37 @@ export interface CreateThemeRequest {
   customCss?: string;
 }
 
-// Issue 17: DuplicateThemeRequest matching backend
-export interface DuplicateThemeRequest {
-  newName: string;
+// UpdateThemeRequest matching backend UpdateThemeCommand
+// All nested objects are required when updating
+export interface UpdateThemeRequest {
+  name: string;
+  description?: string;
+  isPublic: boolean;
+  /** Language code for the translation to update */
+  languageCode?: string;
+  colors: ThemeColors;
+  typography: ThemeTypography;
+  layout: ThemeLayoutDto;
+  branding: ThemeBranding;
+  button: ThemeButton;
+  customCss?: string;
 }
 
-export type UpdateThemeRequest = Partial<CreateThemeRequest>;
+// DuplicateThemeRequest matching backend DuplicateThemeCommand
+export interface DuplicateThemeRequest {
+  newName?: string;
+  languageCode?: string;
+}
 
 export const themesApi = {
   list: async (params?: { pageNumber?: number; pageSize?: number; searchTerm?: string }): Promise<ThemesListResponse> => {
-    const response = await apiClient.get<SurveyTheme[] | ThemesListResponse>(API_ENDPOINTS.themes.list, { params });
-    return normalizeThemesResponse(response.data);
+    const response = await apiClient.get<ThemesListResponse>(API_ENDPOINTS.themes.list, { params });
+    return response.data;
   },
 
-  listPublic: async (): Promise<ThemesListResponse> => {
-    const response = await apiClient.get<SurveyTheme[] | ThemesListResponse>(API_ENDPOINTS.themes.public);
-    return normalizeThemesResponse(response.data);
+  listPublic: async (params?: { pageNumber?: number; pageSize?: number; searchTerm?: string }): Promise<ThemesListResponse> => {
+    const response = await apiClient.get<ThemesListResponse>(API_ENDPOINTS.themes.public, { params });
+    return response.data;
   },
 
   getById: async (id: string): Promise<SurveyTheme> => {
@@ -915,10 +985,8 @@ export const themesApi = {
     await apiClient.delete(API_ENDPOINTS.themes.byId(id));
   },
 
-  // Issue 17: Fixed to send DuplicateThemeRequest body
-  duplicate: async (id: string, newName?: string): Promise<SurveyTheme> => {
-    const body: DuplicateThemeRequest | undefined = newName ? { newName } : undefined;
-    const response = await apiClient.post<SurveyTheme>(API_ENDPOINTS.themes.duplicate(id), body);
+  duplicate: async (id: string, request?: DuplicateThemeRequest): Promise<SurveyTheme> => {
+    const response = await apiClient.post<SurveyTheme>(API_ENDPOINTS.themes.duplicate(id), request);
     return response.data;
   },
 
@@ -940,6 +1008,7 @@ export const templatesApi = {
   /**
    * List templates with pagination and filtering.
    * Backend: GET /api/templates with query params from GetTemplatesQuery
+   * Returns PagedResponse<SurveyTemplateSummaryDto> (summary without questions array)
    */
   list: async (params?: {
     category?: string;
@@ -958,8 +1027,8 @@ export const templatesApi = {
   },
 
   /**
-   * Get a single template by ID.
-   * Backend: GET /api/templates/{id} returns SurveyTemplateDto
+   * Get a single template by ID with full details including questions.
+   * Backend: GET /api/templates/{id} returns SurveyTemplateDto (full details)
    */
   getById: async (id: string): Promise<SurveyTemplate> => {
     const response = await apiClient.get<SurveyTemplate>(API_ENDPOINTS.templates.byId(id));
@@ -1325,6 +1394,14 @@ export const recurringSurveysApi = {
     const response = await apiClient.get<RecurringRunsResponse>(API_ENDPOINTS.recurringSurveys.runs(id), {
       params,
     });
+    return response.data;
+  },
+
+  /**
+   * Get a specific run by ID
+   */
+  getRunById: async (id: string, runId: string): Promise<RecurringRun> => {
+    const response = await apiClient.get<RecurringRun>(API_ENDPOINTS.recurringSurveys.runById(id, runId));
     return response.data;
   },
 };

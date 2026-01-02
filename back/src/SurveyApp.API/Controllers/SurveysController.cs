@@ -21,7 +21,6 @@ using SurveyApp.Application.Features.Surveys.Queries.GetSurveyById;
 using SurveyApp.Application.Features.Surveys.Queries.GetSurveys;
 using SurveyApp.Application.Features.Themes.Commands.ApplyThemeToSurvey;
 using SurveyApp.Application.Services;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 

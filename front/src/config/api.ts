@@ -53,6 +53,11 @@ export const API_ENDPOINTS = {
     logout: '/api/auth/logout',
     forgotPassword: '/api/auth/forgot-password',
     resetPassword: '/api/auth/reset-password',
+    // Azure AD SSO endpoints
+    azureAdConfig: '/api/auth/azure-ad/config',
+    azureAdLogin: '/api/auth/azure-ad/login',
+    azureAdLink: '/api/auth/azure-ad/link',
+    azureAdUnlink: '/api/auth/azure-ad/unlink',
   },
   // Public survey endpoints (no auth required)
   publicSurvey: {
@@ -157,6 +162,7 @@ export const API_ENDPOINTS = {
     resume: (id: string) => `/api/recurring-surveys/${id}/resume`,
     trigger: (id: string) => `/api/recurring-surveys/${id}/trigger`,
     runs: (id: string) => `/api/recurring-surveys/${id}/runs`,
+    runById: (id: string, runId: string) => `/api/recurring-surveys/${id}/runs/${runId}`,
   },
   // Translation management endpoints
   translations: {

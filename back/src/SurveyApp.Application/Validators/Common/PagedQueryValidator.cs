@@ -1,6 +1,4 @@
-using FluentValidation;
 using Microsoft.Extensions.Localization;
-using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 
 namespace SurveyApp.Application.Validators.Common;

@@ -1,0 +1,46 @@
+// TODO Adjust variables, migrate to Mantine.
+
+// #{$dark_mode} {
+//   .mantine-Input-input {
+//     border-color: #ced4da;
+//   }
+// }
+
+#tsparticles {
+  height: 100%;
+}
+
+.mantine-Input-wrapper {
+  margin-bottom: unset;
+}
+
+.mantine-InputWrapper-root {
+  margin-top: unset;
+  position: relative;
+}
+
+.mantine-Select-dropdown {
+  z-index: 999999999 !important;
+}
+
+.mantine-InputWrapper-error {
+  position: absolute;
+  bottom: -20px;
+  animation-name: slide-down;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  animation-duration: var(--timeout-short);
+  animation-fill-mode: forwards;
+}
+
+.mantine-InputWrapper-label {
+  margin-bottom: 5px;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

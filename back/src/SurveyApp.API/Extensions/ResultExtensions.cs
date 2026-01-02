@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SurveyApp.API.Constants;
 using SurveyApp.Application.Common;
 
 namespace SurveyApp.API.Extensions;
@@ -41,7 +42,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = LocalizeError(context, "Errors.BadRequest"),
             Status = StatusCodes.Status400BadRequest,
             Detail = LocalizeError(context, detailKey),
@@ -66,7 +67,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.Unauthorized,
             Title = LocalizeError(context, titleKey),
             Status = StatusCodes.Status401Unauthorized,
             Detail = detailKey != null ? LocalizeError(context, detailKey) : null,
@@ -91,7 +92,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = LocalizeError(context, titleKey),
             Status = StatusCodes.Status400BadRequest,
             Detail = detailKey != null ? LocalizeError(context, detailKey) : null,
@@ -148,7 +149,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+            Type = ProblemDetailsTypes.NotFound,
             Title = LocalizeError(context, "Errors.ResourceNotFound"),
             Status = StatusCodes.Status404NotFound,
             Detail = LocalizeError(context, result.Error),
@@ -162,7 +163,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+            Type = ProblemDetailsTypes.NotFound,
             Title = LocalizeError(context, "Errors.ResourceNotFound"),
             Status = StatusCodes.Status404NotFound,
             Detail = LocalizeError(context, result.Error),
@@ -179,7 +180,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.Unauthorized,
             Title = "Unauthorized.",
             Status = StatusCodes.Status401Unauthorized,
             Detail = LocalizeError(context, result.Error),
@@ -196,7 +197,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.Unauthorized,
             Title = "Unauthorized.",
             Status = StatusCodes.Status401Unauthorized,
             Detail = LocalizeError(context, result.Error),
@@ -210,7 +211,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+            Type = ProblemDetailsTypes.Forbidden,
             Title = "Access denied.",
             Status = StatusCodes.Status403Forbidden,
             Detail = LocalizeError(context, result.Error),
@@ -224,7 +225,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+            Type = ProblemDetailsTypes.Forbidden,
             Title = "Access denied.",
             Status = StatusCodes.Status403Forbidden,
             Detail = LocalizeError(context, result.Error),
@@ -243,7 +244,7 @@ public static class ResultExtensions
             result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value) ?? []
         )
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = "One or more validation errors occurred.",
             Status = StatusCodes.Status400BadRequest,
             Detail = LocalizeError(context, result.Error),
@@ -262,7 +263,7 @@ public static class ResultExtensions
             result.ValidationErrors?.ToDictionary(x => x.Key, x => x.Value) ?? []
         )
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = "One or more validation errors occurred.",
             Status = StatusCodes.Status400BadRequest,
             Detail = LocalizeError(context, result.Error),
@@ -279,7 +280,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = "Bad request.",
             Status = StatusCodes.Status400BadRequest,
             Detail = LocalizeError(context, result.Error),
@@ -301,7 +302,7 @@ public static class ResultExtensions
     {
         var problemDetails = new ProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Type = ProblemDetailsTypes.BadRequest,
             Title = "Bad request.",
             Status = StatusCodes.Status400BadRequest,
             Detail = LocalizeError(context, result.Error),

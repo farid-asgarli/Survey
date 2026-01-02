@@ -40,4 +40,17 @@ public class AnswerDto
     public string DisplayValue { get; set; } = null!;
 
     public DateTime AnsweredAt { get; set; }
+
+    /// <summary>
+    /// File URLs for file upload questions.
+    /// Parsed from Text field when question type is FileUpload.
+    /// </summary>
+    public List<string>? FileUrls { get; set; }
+
+    /// <summary>
+    /// Matrix answers for matrix questions.
+    /// Key is row label, value is selected column label.
+    /// Parsed from Text field when question type is Matrix.
+    /// </summary>
+    public Dictionary<string, string>? MatrixAnswers { get; set; }
 }

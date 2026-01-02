@@ -15,27 +15,38 @@ public class ApplicationDbContext(
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IDateTimeService _dateTimeService = dateTimeService;
 
+    // Core schema entities
     public DbSet<Namespace> Namespaces => Set<Namespace>();
     public DbSet<User> Users => Set<User>();
     public DbSet<NamespaceMembership> NamespaceMemberships => Set<NamespaceMembership>();
+    public DbSet<UserPreferences> UserPreferences => Set<UserPreferences>();
+
+    // Survey schema entities
     public DbSet<Survey> Surveys => Set<Survey>();
     public DbSet<Question> Questions => Set<Question>();
     public DbSet<QuestionLogic> QuestionLogics => Set<QuestionLogic>();
-    public DbSet<SurveyTheme> SurveyThemes => Set<SurveyTheme>();
     public DbSet<SurveyResponse> SurveyResponses => Set<SurveyResponse>();
     public DbSet<Answer> Answers => Set<Answer>();
+
+    // Templates schema entities
     public DbSet<SurveyTemplate> SurveyTemplates => Set<SurveyTemplate>();
     public DbSet<TemplateQuestion> TemplateQuestions => Set<TemplateQuestion>();
+
+    // Themes schema entities
+    public DbSet<SurveyTheme> SurveyThemes => Set<SurveyTheme>();
+
+    // Scheduling schema entities
     public DbSet<RecurringSurvey> RecurringSurveys => Set<RecurringSurvey>();
     public DbSet<RecurringSurveyRun> RecurringSurveyRuns => Set<RecurringSurveyRun>();
+
+    // Distribution schema entities
     public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
     public DbSet<EmailDistribution> EmailDistributions => Set<EmailDistribution>();
     public DbSet<EmailRecipient> EmailRecipients => Set<EmailRecipient>();
     public DbSet<SurveyLink> SurveyLinks => Set<SurveyLink>();
     public DbSet<LinkClick> LinkClicks => Set<LinkClick>();
-    public DbSet<UserPreferences> UserPreferences => Set<UserPreferences>();
 
-    // Translation tables
+    // I18n schema entities (translations)
     public DbSet<SurveyTranslation> SurveyTranslations => Set<SurveyTranslation>();
     public DbSet<QuestionTranslation> QuestionTranslations => Set<QuestionTranslation>();
     public DbSet<SurveyTemplateTranslation> SurveyTemplateTranslations =>

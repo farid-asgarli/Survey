@@ -11,13 +11,13 @@ public class SurveyLinkConfiguration : IEntityTypeConfiguration<SurveyLink>
 {
     public void Configure(EntityTypeBuilder<SurveyLink> builder)
     {
-        builder.ToTable("SurveyLinks");
+        builder.ToTable("survey_links", DbSchemas.Distribution);
 
         builder.HasKey(l => l.Id);
 
         builder.Property(l => l.Token).IsRequired().HasMaxLength(50);
 
-        builder.Property(l => l.Type).IsRequired().HasConversion<string>().HasMaxLength(20);
+        builder.Property(l => l.Type).IsRequired();
 
         builder.Property(l => l.Name).HasMaxLength(100);
 

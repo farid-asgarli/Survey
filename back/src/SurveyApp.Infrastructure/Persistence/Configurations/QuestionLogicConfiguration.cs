@@ -8,7 +8,7 @@ public class QuestionLogicConfiguration : IEntityTypeConfiguration<QuestionLogic
 {
     public void Configure(EntityTypeBuilder<QuestionLogic> builder)
     {
-        builder.ToTable("QuestionLogics");
+        builder.ToTable("question_logics", DbSchemas.Survey);
 
         builder.HasKey(ql => ql.Id);
 
@@ -16,11 +16,11 @@ public class QuestionLogicConfiguration : IEntityTypeConfiguration<QuestionLogic
 
         builder.Property(ql => ql.SourceQuestionId).IsRequired();
 
-        builder.Property(ql => ql.Operator).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Property(ql => ql.Operator).IsRequired();
 
         builder.Property(ql => ql.ConditionValue).IsRequired().HasMaxLength(1000);
 
-        builder.Property(ql => ql.Action).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Property(ql => ql.Action).IsRequired();
 
         builder.Property(ql => ql.TargetQuestionId);
 

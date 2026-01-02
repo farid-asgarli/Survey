@@ -9,7 +9,6 @@ using SurveyApp.Application.Features.Questions.Commands.ReorderQuestions;
 using SurveyApp.Application.Features.Questions.Commands.UpdateQuestion;
 using SurveyApp.Application.Features.Questions.Queries.GetQuestionById;
 using SurveyApp.Application.Features.Questions.Queries.GetQuestions;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 

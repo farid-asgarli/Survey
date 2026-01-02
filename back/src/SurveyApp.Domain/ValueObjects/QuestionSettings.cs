@@ -45,6 +45,11 @@ public sealed class QuestionSettings : ValueObject
     public long? MaxFileSize { get; }
 
     /// <summary>
+    /// Maximum number of files allowed for file upload questions.
+    /// </summary>
+    public int? MaxFiles { get; }
+
+    /// <summary>
     /// Rows for matrix questions.
     /// </summary>
     public IReadOnlyList<string>? MatrixRows { get; }
@@ -65,6 +70,11 @@ public sealed class QuestionSettings : ValueObject
     public bool AllowOther { get; }
 
     /// <summary>
+    /// Custom label for the "Other" option when AllowOther is true.
+    /// </summary>
+    public string? OtherLabel { get; }
+
+    /// <summary>
     /// Maximum character length for text questions.
     /// </summary>
     public int? MaxLength { get; }
@@ -78,6 +88,11 @@ public sealed class QuestionSettings : ValueObject
     /// Maximum selections for multiple choice questions.
     /// </summary>
     public int? MaxSelections { get; }
+
+    /// <summary>
+    /// Whether to randomize the order of options when displaying.
+    /// </summary>
+    public bool RandomizeOptions { get; }
 
     /// <summary>
     /// Custom regex validation pattern.
@@ -112,13 +127,16 @@ public sealed class QuestionSettings : ValueObject
         string? maxLabel = null,
         IReadOnlyList<string>? allowedFileTypes = null,
         long? maxFileSize = null,
+        int? maxFiles = null,
         IReadOnlyList<string>? matrixRows = null,
         IReadOnlyList<string>? matrixColumns = null,
         string? placeholder = null,
         bool allowOther = false,
+        string? otherLabel = null,
         int? maxLength = null,
         int? minLength = null,
         int? maxSelections = null,
+        bool randomizeOptions = false,
         string? validationPattern = null,
         string? validationMessage = null,
         string? validationPreset = null,
@@ -133,13 +151,16 @@ public sealed class QuestionSettings : ValueObject
         MaxLabel = maxLabel;
         AllowedFileTypes = allowedFileTypes;
         MaxFileSize = maxFileSize;
+        MaxFiles = maxFiles;
         MatrixRows = matrixRows;
         MatrixColumns = matrixColumns;
         Placeholder = placeholder;
         AllowOther = allowOther;
+        OtherLabel = otherLabel;
         MaxLength = maxLength;
         MinLength = minLength;
         MaxSelections = maxSelections;
+        RandomizeOptions = randomizeOptions;
         ValidationPattern = validationPattern;
         ValidationMessage = validationMessage;
         ValidationPreset = validationPreset;
@@ -302,13 +323,16 @@ public sealed class QuestionSettings : ValueObject
         string? maxLabel = null,
         IReadOnlyList<string>? allowedFileTypes = null,
         long? maxFileSize = null,
+        int? maxFiles = null,
         IReadOnlyList<string>? matrixRows = null,
         IReadOnlyList<string>? matrixColumns = null,
         string? placeholder = null,
         bool allowOther = false,
+        string? otherLabel = null,
         int? maxLength = null,
         int? minLength = null,
         int? maxSelections = null,
+        bool randomizeOptions = false,
         string? validationPattern = null,
         string? validationMessage = null,
         string? validationPreset = null,
@@ -324,13 +348,16 @@ public sealed class QuestionSettings : ValueObject
             maxLabel: maxLabel,
             allowedFileTypes: allowedFileTypes,
             maxFileSize: maxFileSize,
+            maxFiles: maxFiles,
             matrixRows: matrixRows,
             matrixColumns: matrixColumns,
             placeholder: placeholder,
             allowOther: allowOther,
+            otherLabel: otherLabel,
             maxLength: maxLength,
             minLength: minLength,
             maxSelections: maxSelections,
+            randomizeOptions: randomizeOptions,
             validationPattern: validationPattern,
             validationMessage: validationMessage,
             validationPreset: validationPreset,
@@ -382,13 +409,16 @@ public sealed class QuestionSettings : ValueObject
             MaxLabel = MaxLabel,
             AllowedFileTypes = AllowedFileTypes?.ToList(),
             MaxFileSize = MaxFileSize,
+            MaxFiles = MaxFiles,
             MatrixRows = MatrixRows?.ToList(),
             MatrixColumns = MatrixColumns?.ToList(),
             Placeholder = Placeholder,
             AllowOther = AllowOther,
+            OtherLabel = OtherLabel,
             MaxLength = MaxLength,
             MinLength = MinLength,
             MaxSelections = MaxSelections,
+            RandomizeOptions = RandomizeOptions,
             ValidationPattern = ValidationPattern,
             ValidationMessage = ValidationMessage,
             ValidationPreset = ValidationPreset,
@@ -422,13 +452,16 @@ public sealed class QuestionSettings : ValueObject
                 maxLabel: dto.MaxLabel,
                 allowedFileTypes: dto.AllowedFileTypes,
                 maxFileSize: dto.MaxFileSize,
+                maxFiles: dto.MaxFiles,
                 matrixRows: dto.MatrixRows,
                 matrixColumns: dto.MatrixColumns,
                 placeholder: dto.Placeholder,
                 allowOther: dto.AllowOther,
+                otherLabel: dto.OtherLabel,
                 maxLength: dto.MaxLength,
                 minLength: dto.MinLength,
                 maxSelections: dto.MaxSelections,
+                randomizeOptions: dto.RandomizeOptions,
                 validationPattern: dto.ValidationPattern,
                 validationMessage: dto.ValidationMessage,
                 validationPreset: dto.ValidationPreset,
@@ -457,13 +490,16 @@ public sealed class QuestionSettings : ValueObject
         public string? MaxLabel { get; set; }
         public List<string>? AllowedFileTypes { get; set; }
         public long? MaxFileSize { get; set; }
+        public int? MaxFiles { get; set; }
         public List<string>? MatrixRows { get; set; }
         public List<string>? MatrixColumns { get; set; }
         public string? Placeholder { get; set; }
         public bool AllowOther { get; set; }
+        public string? OtherLabel { get; set; }
         public int? MaxLength { get; set; }
         public int? MinLength { get; set; }
         public int? MaxSelections { get; set; }
+        public bool RandomizeOptions { get; set; }
         public string? ValidationPattern { get; set; }
         public string? ValidationMessage { get; set; }
         public string? ValidationPreset { get; set; }
@@ -535,13 +571,16 @@ public sealed class QuestionSettings : ValueObject
         yield return MaxLabel;
         yield return AllowedFileTypes != null ? string.Join(",", AllowedFileTypes) : null;
         yield return MaxFileSize;
+        yield return MaxFiles;
         yield return MatrixRows != null ? string.Join(",", MatrixRows) : null;
         yield return MatrixColumns != null ? string.Join(",", MatrixColumns) : null;
         yield return Placeholder;
         yield return AllowOther;
+        yield return OtherLabel;
         yield return MaxLength;
         yield return MinLength;
         yield return MaxSelections;
+        yield return RandomizeOptions;
         yield return ValidationPattern;
         yield return ValidationMessage;
         yield return ValidationPreset;

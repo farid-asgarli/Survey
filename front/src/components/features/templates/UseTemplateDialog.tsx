@@ -5,13 +5,13 @@ import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, 
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { useTemplateSchema, type UseTemplateFormData } from '@/lib/validations';
 import { getCategoryInfo } from './templateUtils';
-import type { SurveyTemplate, TemplateCategory } from '@/types';
+import type { SurveyTemplateSummary, TemplateCategory } from '@/types';
 import { LANGUAGES, getCurrentLanguage, type LanguageCode } from '@/i18n';
 
 interface UseTemplateDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  template: SurveyTemplate | null;
+  template: SurveyTemplateSummary | null;
   onSubmit: (data: { title: string; description?: string; languageCode: string }) => void | Promise<void>;
   isLoading?: boolean;
 }
@@ -22,7 +22,7 @@ function UseTemplateForm({
   onCancel,
   isLoading,
 }: {
-  template: SurveyTemplate;
+  template: SurveyTemplateSummary;
   onSubmit: (data: { title: string; description?: string; languageCode: string }) => void | Promise<void>;
   onCancel: () => void;
   isLoading: boolean;
@@ -57,16 +57,16 @@ function UseTemplateForm({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
-      <DialogBody className="space-y-4">
+      <DialogBody className='space-y-4'>
         {/* Template info card */}
-        <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/30">
-          <div className="flex items-start gap-3">
+        <div className='p-4 rounded-xl bg-surface-container border border-outline-variant/30'>
+          <div className='flex items-start gap-3'>
             <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-container-high ${categoryInfo.color}`}>
-              <CategoryIcon className="h-5 w-5" />
+              <CategoryIcon className='h-5 w-5' />
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-on-surface truncate">{template.name}</p>
-              <p className="text-xs text-on-surface-variant">
+            <div className='flex-1 min-w-0'>
+              <p className='font-medium text-on-surface truncate'>{template.name}</p>
+              <p className='text-xs text-on-surface-variant'>
                 {template.questionCount} questions • {categoryInfo.label}
               </p>
             </div>
@@ -94,26 +94,26 @@ function UseTemplateForm({
           />
         ) : (
           <button
-            type="button"
+            type='button'
             onClick={() => setShowDescription(true)}
-            className="text-sm text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+            className='text-sm text-primary hover:text-primary/80 transition-colors flex items-center gap-1'
             disabled={isLoading}
           >
-            <Sparkles className="h-4 w-4" />
+            <Sparkles className='h-4 w-4' />
             {t('templates.useTemplateDialog.addDescription')}
           </button>
         )}
 
         {/* Language selector */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="survey-language" className="text-sm text-on-surface-variant">
+        <div className='flex items-center gap-2'>
+          <label htmlFor='survey-language' className='text-sm text-on-surface-variant'>
             {t('templates.useTemplateDialog.language')}
           </label>
           <select
-            id="survey-language"
+            id='survey-language'
             value={languageCode}
             onChange={(e) => setLanguageCode(e.target.value as LanguageCode)}
-            className="h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className='h-9 px-3 rounded-md border border-outline-variant bg-surface text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/50'
             disabled={isLoading}
           >
             {LANGUAGES.map((lang) => (
@@ -124,15 +124,15 @@ function UseTemplateForm({
           </select>
         </div>
 
-        <p className="text-xs text-on-surface-variant text-center">{t('templates.useTemplateDialog.infoMessage')}</p>
+        <p className='text-xs text-on-surface-variant text-center'>{t('templates.useTemplateDialog.infoMessage')}</p>
       </DialogBody>
 
-      <DialogFooter className="pt-4">
-        <Button type="button" variant="text" onClick={onCancel} disabled={isLoading}>
+      <DialogFooter className='pt-4'>
+        <Button type='button' variant='text' onClick={onCancel} disabled={isLoading}>
           {t('common.cancel')}
         </Button>
-        <Button type="submit" variant="filled" disabled={!isValid || isLoading} loading={isLoading}>
-          <Copy className="h-4 w-4 mr-2" />
+        <Button type='submit' variant='filled' disabled={!isValid || isLoading} loading={isLoading}>
+          <Copy className='h-4 w-4 mr-2' />
           {t('templates.useTemplateDialog.createButton')}
         </Button>
       </DialogFooter>
@@ -146,10 +146,10 @@ export function UseTemplateDialog({ open, onOpenChange, template, onSubmit, isLo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent size="default" showClose={false}>
+      <DialogContent size='default' showClose={false}>
         <DialogHeader
           hero
-          icon={<FileStack className="h-7 w-7" />}
+          icon={<FileStack className='h-7 w-7' />}
           title={t('templates.useTemplateDialog.title')}
           description={t('templates.useTemplateDialog.description')}
           showClose

@@ -8,7 +8,7 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
 {
     public void Configure(EntityTypeBuilder<Answer> builder)
     {
-        builder.ToTable("Answers");
+        builder.ToTable("answers", DbSchemas.Survey);
 
         builder.HasKey(a => a.Id);
 

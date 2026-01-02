@@ -5,6 +5,7 @@ using SurveyApp.API.Models;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.DTOs.Common;
 using SurveyApp.Application.Features.Namespaces.Commands.CreateNamespace;
+using SurveyApp.Application.Features.Namespaces.Commands.DeleteNamespace;
 using SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 using SurveyApp.Application.Features.Namespaces.Commands.RemoveMember;
 using SurveyApp.Application.Features.Namespaces.Commands.UpdateMemberRole;
@@ -89,6 +90,24 @@ public class NamespacesController(IMediator mediator) : ApiControllerBase
 
         var result = await _mediator.Send(command);
         return HandleResult(result);
+    }
+
+    /// <summary>
+    /// Delete a namespace
+    /// </summary>
+    /// <remarks>
+    /// Only the namespace owner can delete a namespace.
+    /// This action is irreversible and will delete all associated data.
+    /// </remarks>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteNamespaceCommand { NamespaceId = id });
+        return HandleNoContentResult(result);
     }
 
     /// <summary>

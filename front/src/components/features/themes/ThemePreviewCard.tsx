@@ -3,10 +3,18 @@ import { cn } from '@/lib/utils';
 import { Check, Star, MoreVertical, Copy, Trash2, Edit, Globe, Lock, Palette, Sparkles } from 'lucide-react';
 import { Menu, MenuItem, MenuSeparator, IconButton, Badge } from '@/components/ui';
 import { ButtonStyle } from '@/types';
-import type { SurveyTheme } from '@/types';
+import type { SurveyTheme, SurveyThemeSummary } from '@/types';
+
+/** Theme data that can be displayed in the preview card (summary or full theme) */
+type ThemePreviewData = SurveyThemeSummary | SurveyTheme;
+
+/** Type guard to check if this is a full SurveyTheme with nested objects */
+function isFullTheme(theme: ThemePreviewData): theme is SurveyTheme {
+  return 'colors' in theme && theme.colors !== undefined;
+}
 
 interface ThemePreviewCardProps {
-  theme: SurveyTheme;
+  theme: ThemePreviewData;
   isDefault?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
@@ -69,14 +77,14 @@ export function ThemePreviewCard({
 }: ThemePreviewCardProps) {
   const { t } = useTranslation();
 
-  // Extract colors from nested or flat structure
-  const primaryColor = theme.colors?.primary || theme.primaryColor || '#6750a4';
-  const secondaryColor = theme.colors?.secondary || theme.secondaryColor || '#625b71';
-  const backgroundColor = theme.colors?.background || theme.backgroundColor || '#ffffff';
-  const textColor = theme.colors?.text || theme.textColor;
-  const logoUrl = theme.branding?.logoUrl || theme.logoUrl;
-  const buttonStyle = theme.button?.style || theme.buttonStyle;
-  const fontFamily = theme.typography?.fontFamily || theme.fontFamily;
+  // Extract colors - handle both summary (flat) and full theme (nested) types
+  const primaryColor = isFullTheme(theme) ? theme.colors.primary : theme.primaryColor;
+  const secondaryColor = isFullTheme(theme) ? theme.colors.secondary : theme.secondaryColor;
+  const backgroundColor = isFullTheme(theme) ? theme.colors.background : theme.backgroundColor;
+  const textColor = isFullTheme(theme) ? theme.colors.text : undefined;
+  const logoUrl = isFullTheme(theme) ? theme.branding.logoUrl : undefined;
+  const buttonStyle = isFullTheme(theme) ? theme.button.style : undefined;
+  const fontFamily = isFullTheme(theme) ? theme.typography.fontFamily : undefined;
 
   const buttonRadius = getButtonRadius(buttonStyle);
   const bgIsLight = isLightColor(backgroundColor);
@@ -98,102 +106,102 @@ export function ThemePreviewCard({
         onClick={onSelect}
       >
         {/* Mini theme preview */}
-        <div className="relative h-14 w-24 rounded-xl overflow-hidden shrink-0 border border-outline-variant/30" style={{ backgroundColor }}>
+        <div className='relative h-14 w-24 rounded-xl overflow-hidden shrink-0 border border-outline-variant/30' style={{ backgroundColor }}>
           {/* Header mockup */}
-          <div className="flex items-center gap-1.5 p-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: primaryColor }} />
-            <div className="h-1 w-8 rounded-full" style={{ backgroundColor: displayTextColor, opacity: 0.4 }} />
+          <div className='flex items-center gap-1.5 p-2'>
+            <div className='w-3 h-3 rounded-full' style={{ backgroundColor: primaryColor }} />
+            <div className='h-1 w-8 rounded-full' style={{ backgroundColor: displayTextColor, opacity: 0.4 }} />
           </div>
           {/* Button mockups */}
-          <div className="absolute bottom-1.5 left-2 flex gap-1">
-            <div className="h-3 w-8" style={{ backgroundColor: primaryColor, borderRadius: buttonRadius }} />
-            <div className="h-3 w-6 border" style={{ borderColor: primaryColor, borderRadius: buttonRadius }} />
+          <div className='absolute bottom-1.5 left-2 flex gap-1'>
+            <div className='h-3 w-8' style={{ backgroundColor: primaryColor, borderRadius: buttonRadius }} />
+            <div className='h-3 w-6 border' style={{ borderColor: primaryColor, borderRadius: buttonRadius }} />
           </div>
           {/* Decorative circle */}
-          <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full opacity-20" style={{ backgroundColor: secondaryColor }} />
+          <div className='absolute -bottom-2 -right-2 w-8 h-8 rounded-full opacity-20' style={{ backgroundColor: secondaryColor }} />
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <h3 className="font-semibold text-on-surface truncate">{theme.name}</h3>
+        <div className='flex-1 min-w-0'>
+          <div className='flex items-center gap-2 mb-0.5'>
+            <h3 className='font-semibold text-on-surface truncate'>{theme.name}</h3>
             {theme.isPublic ? (
-              <Globe className="h-3.5 w-3.5 text-on-surface-variant/60 shrink-0" />
+              <Globe className='h-3.5 w-3.5 text-on-surface-variant/60 shrink-0' />
             ) : (
-              <Lock className="h-3.5 w-3.5 text-on-surface-variant/60 shrink-0" />
+              <Lock className='h-3.5 w-3.5 text-on-surface-variant/60 shrink-0' />
             )}
           </div>
-          <p className="text-sm text-on-surface-variant flex items-center gap-2">
-            <span className="flex items-center gap-1">
+          <p className='text-sm text-on-surface-variant flex items-center gap-2'>
+            <span className='flex items-center gap-1'>
               {theme.isSystem ? (
                 <>
-                  <Palette className="w-3 h-3" /> {t('themes.system')}
+                  <Palette className='w-3 h-3' /> {t('themes.system')}
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-3 h-3" /> {t('themes.custom')}
+                  <Sparkles className='w-3 h-3' /> {t('themes.custom')}
                 </>
               )}
             </span>
             {fontFamily && (
               <>
-                <span className="text-on-surface-variant/40">·</span>
-                <span className="truncate">{fontFamily.split(',')[0]}</span>
+                <span className='text-on-surface-variant/40'>·</span>
+                <span className='truncate'>{fontFamily.split(',')[0]}</span>
               </>
             )}
           </p>
         </div>
 
         {/* Color Swatches */}
-        <div className="hidden sm:flex -space-x-1 shrink-0">
-          <ColorSwatch color={primaryColor} ringColor={backgroundColor} size="sm" />
-          <ColorSwatch color={secondaryColor} ringColor={backgroundColor} size="sm" />
+        <div className='hidden sm:flex -space-x-1 shrink-0'>
+          <ColorSwatch color={primaryColor} ringColor={backgroundColor} size='sm' />
+          <ColorSwatch color={secondaryColor} ringColor={backgroundColor} size='sm' />
         </div>
 
         {/* Status Badge */}
         {isDefault && (
-          <Badge variant="success" size="sm" className="shrink-0">
-            <Check className="h-3 w-3 mr-1" />
+          <Badge variant='success' size='sm' className='shrink-0'>
+            <Check className='h-3 w-3 mr-1' />
             {t('themes.default')}
           </Badge>
         )}
         {isSelected && !isDefault && (
-          <Badge variant="info" size="sm" className="shrink-0">
-            <Check className="h-3 w-3 mr-1" />
+          <Badge variant='info' size='sm' className='shrink-0'>
+            <Check className='h-3 w-3 mr-1' />
             {t('themes.selected')}
           </Badge>
         )}
 
         {/* Actions */}
         {hasActions && (
-          <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+          <div className='flex items-center' onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')}>
-                  <MoreVertical className="h-4 w-4" />
+                <IconButton variant='standard' size='sm' aria-label={t('a11y.moreOptions')}>
+                  <MoreVertical className='h-4 w-4' />
                 </IconButton>
               }
-              align="end"
+              align='end'
             >
               {onEdit && !theme.isSystem && (
-                <MenuItem onClick={onEdit} icon={<Edit className="h-4 w-4" />}>
+                <MenuItem onClick={onEdit} icon={<Edit className='h-4 w-4' />}>
                   {t('common.edit')}
                 </MenuItem>
               )}
               {onDuplicate && (
-                <MenuItem onClick={onDuplicate} icon={<Copy className="h-4 w-4" />}>
+                <MenuItem onClick={onDuplicate} icon={<Copy className='h-4 w-4' />}>
                   {t('common.duplicate')}
                 </MenuItem>
               )}
               {onSetDefault && !isDefault && (
-                <MenuItem onClick={onSetDefault} icon={<Star className="h-4 w-4" />}>
+                <MenuItem onClick={onSetDefault} icon={<Star className='h-4 w-4' />}>
                   {t('themes.setAsDefault')}
                 </MenuItem>
               )}
               {onDelete && !theme.isSystem && (
                 <>
                   <MenuSeparator />
-                  <MenuItem onClick={onDelete} destructive icon={<Trash2 className="h-4 w-4" />}>
+                  <MenuItem onClick={onDelete} destructive icon={<Trash2 className='h-4 w-4' />}>
                     {t('common.delete')}
                   </MenuItem>
                 </>
@@ -217,75 +225,69 @@ export function ThemePreviewCard({
       style={{ backgroundColor }}
     >
       {/* Theme Preview Area */}
-      <div className="relative p-4 pb-3 overflow-hidden">
+      <div className='relative p-4 pb-3 overflow-hidden'>
         {/* Header mockup */}
-        <div className="flex items-center gap-2.5 mb-4">
+        <div className='flex items-center gap-2.5 mb-4'>
           {logoUrl ? (
-            <img src={logoUrl} alt="" className="h-6 w-6 rounded-lg object-contain" style={{ backgroundColor: `${primaryColor}20` }} />
+            <img src={logoUrl} alt='' className='h-6 w-6 rounded-lg object-contain' style={{ backgroundColor: `${primaryColor}20` }} />
           ) : (
-            <div className="h-6 w-6 rounded-lg" style={{ backgroundColor: primaryColor }} />
+            <div className='h-6 w-6 rounded-lg' style={{ backgroundColor: primaryColor }} />
           )}
-          <div className="flex-1 space-y-1.5">
-            <div className="h-2 w-20 rounded-full" style={{ backgroundColor: displayTextColor, opacity: 0.5 }} />
-            <div className="h-1.5 w-14 rounded-full" style={{ backgroundColor: displayTextColor, opacity: 0.3 }} />
+          <div className='flex-1 space-y-1.5'>
+            <div className='h-2 w-20 rounded-full' style={{ backgroundColor: displayTextColor, opacity: 0.5 }} />
+            <div className='h-1.5 w-14 rounded-full' style={{ backgroundColor: displayTextColor, opacity: 0.3 }} />
           </div>
         </div>
 
         {/* Progress bar mockup */}
-        <div className="h-1.5 rounded-full mb-4 overflow-hidden" style={{ backgroundColor: `${primaryColor}20` }}>
-          <div className="h-full rounded-full w-3/5" style={{ backgroundColor: primaryColor }} />
+        <div className='h-1.5 rounded-full mb-4 overflow-hidden' style={{ backgroundColor: `${primaryColor}20` }}>
+          <div className='h-full rounded-full w-3/5' style={{ backgroundColor: primaryColor }} />
         </div>
 
         {/* Button mockups */}
-        <div className="flex gap-2">
-          <div className="h-7 px-4 flex items-center justify-center" style={{ backgroundColor: primaryColor, borderRadius: buttonRadius }}>
-            <div
-              className="h-1.5 w-8 rounded-full"
-              style={{ backgroundColor: isLightColor(primaryColor) ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)' }}
-            />
+        <div className='flex gap-2'>
+          <div className='h-7 px-4 flex items-center justify-center' style={{ backgroundColor: primaryColor, borderRadius: buttonRadius }}>
+            <div className='h-1.5 w-8 rounded-full' style={{ backgroundColor: isLightColor(primaryColor) ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)' }} />
           </div>
-          <div
-            className="h-7 px-4 flex items-center justify-center border-2"
-            style={{ borderColor: `${primaryColor}50`, borderRadius: buttonRadius }}
-          >
-            <div className="h-1.5 w-6 rounded-full" style={{ backgroundColor: primaryColor, opacity: 0.8 }} />
+          <div className='h-7 px-4 flex items-center justify-center border-2' style={{ borderColor: `${primaryColor}50`, borderRadius: buttonRadius }}>
+            <div className='h-1.5 w-6 rounded-full' style={{ backgroundColor: primaryColor, opacity: 0.8 }} />
           </div>
         </div>
 
         {/* Decorative accent circle */}
-        <div className="absolute -bottom-6 -right-6 w-20 h-20 rounded-full opacity-20" style={{ backgroundColor: secondaryColor }} />
+        <div className='absolute -bottom-6 -right-6 w-20 h-20 rounded-full opacity-20' style={{ backgroundColor: secondaryColor }} />
       </div>
 
       {/* Theme Info Footer */}
       <div
-        className="px-4 py-3 border-t flex items-center gap-3"
+        className='px-4 py-3 border-t flex items-center gap-3'
         style={{
           borderColor: bgIsLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)',
           backgroundColor: bgIsLight ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.03)',
         }}
       >
         {/* Color dots */}
-        <div className="flex -space-x-1">
-          <ColorSwatch color={primaryColor} ringColor={backgroundColor} size="sm" />
-          <ColorSwatch color={secondaryColor} ringColor={backgroundColor} size="sm" />
+        <div className='flex -space-x-1'>
+          <ColorSwatch color={primaryColor} ringColor={backgroundColor} size='sm' />
+          <ColorSwatch color={secondaryColor} ringColor={backgroundColor} size='sm' />
         </div>
 
         {/* Name & type */}
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold truncate" style={{ color: displayTextColor }}>
+        <div className='flex-1 min-w-0'>
+          <h3 className='text-sm font-semibold truncate' style={{ color: displayTextColor }}>
             {theme.name}
           </h3>
-          <p className="text-[11px] flex items-center gap-1" style={{ color: displayTextColor, opacity: 0.6 }}>
+          <p className='text-[11px] flex items-center gap-1' style={{ color: displayTextColor, opacity: 0.6 }}>
             {theme.isSystem ? (
               <>
-                <Palette className="w-2.5 h-2.5" /> {t('themes.system')}
+                <Palette className='w-2.5 h-2.5' /> {t('themes.system')}
               </>
             ) : (
               <>
-                <Sparkles className="w-2.5 h-2.5" /> {t('themes.custom')}
+                <Sparkles className='w-2.5 h-2.5' /> {t('themes.custom')}
               </>
             )}
-            {theme.isPublic ? <Globe className="w-2.5 h-2.5 ml-1" /> : <Lock className="w-2.5 h-2.5 ml-1" />}
+            {theme.isPublic ? <Globe className='w-2.5 h-2.5 ml-1' /> : <Lock className='w-2.5 h-2.5 ml-1' />}
           </p>
         </div>
 
@@ -294,31 +296,31 @@ export function ThemePreviewCard({
           <div onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" className="h-7 w-7" aria-label={t('a11y.moreOptions')}>
-                  <MoreVertical className="h-3.5 w-3.5" style={{ color: displayTextColor, opacity: 0.6 }} />
+                <IconButton variant='standard' size='sm' className='h-7 w-7' aria-label={t('a11y.moreOptions')}>
+                  <MoreVertical className='h-3.5 w-3.5' style={{ color: displayTextColor, opacity: 0.6 }} />
                 </IconButton>
               }
-              align="end"
+              align='end'
             >
               {onEdit && !theme.isSystem && (
-                <MenuItem onClick={onEdit} icon={<Edit className="h-4 w-4" />}>
+                <MenuItem onClick={onEdit} icon={<Edit className='h-4 w-4' />}>
                   {t('common.edit')}
                 </MenuItem>
               )}
               {onDuplicate && (
-                <MenuItem onClick={onDuplicate} icon={<Copy className="h-4 w-4" />}>
+                <MenuItem onClick={onDuplicate} icon={<Copy className='h-4 w-4' />}>
                   {t('common.duplicate')}
                 </MenuItem>
               )}
               {onSetDefault && !isDefault && (
-                <MenuItem onClick={onSetDefault} icon={<Star className="h-4 w-4" />}>
+                <MenuItem onClick={onSetDefault} icon={<Star className='h-4 w-4' />}>
                   {t('themes.setAsDefault')}
                 </MenuItem>
               )}
               {onDelete && !theme.isSystem && (
                 <>
                   <MenuSeparator />
-                  <MenuItem onClick={onDelete} destructive icon={<Trash2 className="h-4 w-4" />}>
+                  <MenuItem onClick={onDelete} destructive icon={<Trash2 className='h-4 w-4' />}>
                     {t('common.delete')}
                   </MenuItem>
                 </>
@@ -330,13 +332,13 @@ export function ThemePreviewCard({
 
       {/* Selection/Default badge - positioned top right */}
       {isSelected && (
-        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-          <Check className="w-3.5 h-3.5 text-on-primary" strokeWidth={3} />
+        <div className='absolute top-3 right-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center'>
+          <Check className='w-3.5 h-3.5 text-on-primary' strokeWidth={3} />
         </div>
       )}
       {isDefault && !isSelected && (
         <div
-          className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+          className='absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-semibold'
           style={{ backgroundColor: primaryColor, color: isLightColor(primaryColor) ? '#1f2937' : '#ffffff' }}
         >
           {t('themes.default')}

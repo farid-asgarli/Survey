@@ -20,6 +20,7 @@ public class SurveyTemplateDto
     public int UsageCount { get; set; }
     public int QuestionCount { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public Guid? CreatedBy { get; set; }
     public IReadOnlyList<TemplateQuestionDto> Questions { get; set; } = [];
 
@@ -85,6 +86,7 @@ public class SurveyTemplateSummaryDto
     public int UsageCount { get; set; }
     public int QuestionCount { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     // Localization metadata
     public string DefaultLanguage { get; set; } = "en";

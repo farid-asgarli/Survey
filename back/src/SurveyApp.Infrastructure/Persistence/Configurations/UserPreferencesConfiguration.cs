@@ -8,7 +8,7 @@ public class UserPreferencesConfiguration : IEntityTypeConfiguration<UserPrefere
 {
     public void Configure(EntityTypeBuilder<UserPreferences> builder)
     {
-        builder.ToTable("UserPreferences");
+        builder.ToTable("user_preferences", DbSchemas.Core);
 
         builder.HasKey(up => up.Id);
 

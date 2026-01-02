@@ -8,11 +8,11 @@ public class NamespaceMembershipConfiguration : IEntityTypeConfiguration<Namespa
 {
     public void Configure(EntityTypeBuilder<NamespaceMembership> builder)
     {
-        builder.ToTable("NamespaceMemberships");
+        builder.ToTable("namespace_memberships", DbSchemas.Core);
 
         builder.HasKey(m => m.Id);
 
-        builder.Property(m => m.Role).IsRequired().HasConversion<string>().HasMaxLength(20);
+        builder.Property(m => m.Role).IsRequired();
 
         builder.Property(m => m.JoinedAt).IsRequired();
 

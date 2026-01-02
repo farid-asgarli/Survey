@@ -1,0 +1,101 @@
+@mixin mount-anim {
+  animation-name: mount;
+  animation-duration: var(--timeout-short);
+  animation-timing-function: $anim-fn;
+  animation-fill-mode: forwards;
+}
+
+.aside {
+  &.expanded {
+    min-width: $side-menu-expanded-width;
+    width: $side-menu-expanded-width;
+    padding: 20px 10px;
+    .section-top {
+      padding-left: 5px;
+    }
+    .section-mid {
+      .menu {
+        .route-highlight {
+          left: -9%;
+        }
+      }
+    }
+    .section-bottom {
+      padding-left: 5px;
+      .profile-box {
+        .profile-content {
+          display: flex;
+          @include mount-anim;
+        }
+      }
+    }
+  }
+  min-width: $side-menu-collapsed-width;
+  width: $side-menu-collapsed-width;
+  transition: var(--timeout-short) $anim-fn min-width, var(--timeout-short) $anim-fn width, var(--timeout-short) $anim-fn padding;
+  padding: 20px 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .section-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1;
+    padding: 25px 0;
+    overflow-y: auto;
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  .section-bottom {
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 99;
+      padding: 10px 5px;
+      width: 100%;
+      overflow: hidden;
+      .profile-content {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        width: 80%;
+        .profile-name {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          width: 100%;
+          font-weight: 600;
+        }
+        .profile-description {
+          font-size: 14px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @keyframes mount {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

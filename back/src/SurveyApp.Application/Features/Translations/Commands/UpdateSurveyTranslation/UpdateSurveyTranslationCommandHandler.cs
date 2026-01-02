@@ -1,7 +1,7 @@
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
-using SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
+using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Interfaces;
 using SurveyApp.Domain.ValueObjects;
 

@@ -50,7 +50,6 @@ export function ProfileSection() {
     await updateProfile.mutateAsync({
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      email: email.trim(),
     });
   };
 
@@ -80,21 +79,21 @@ export function ProfileSection() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Hero Profile Card */}
-      <Card variant="highlighted" shape="rounded" className="overflow-hidden">
-        <div className="relative">
+      <Card variant='highlighted' shape='rounded' className='overflow-hidden'>
+        <div className='relative'>
           {/* Gradient background banner */}
-          <div className="h-24 bg-linear-to-br from-primary via-primary/80 to-tertiary/60" />
+          <div className='h-24 bg-linear-to-br from-primary via-primary/80 to-tertiary/60' />
 
           {/* Avatar overlay */}
-          <div className="absolute -bottom-12 left-6">
-            <div className="relative group">
+          <div className='absolute -bottom-12 left-6'>
+            <div className='relative group'>
               <Avatar
                 src={user?.avatarUrl}
                 fallback={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || '?' : '?'}
-                size="xl"
-                className="ring-4 ring-surface shadow-lg h-24 w-24 text-xl"
+                size='xl'
+                className='ring-4 ring-surface shadow-lg h-24 w-24 text-xl'
               />
               <button
                 onClick={handleAvatarClick}
@@ -104,49 +103,43 @@ export function ProfileSection() {
                   'cursor-pointer'
                 )}
               >
-                <Camera className="h-6 w-6 text-inverse-on-surface" />
+                <Camera className='h-6 w-6 text-inverse-on-surface' />
               </button>
-              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+              <input ref={fileInputRef} type='file' accept='image/*' onChange={handleFileChange} className='hidden' />
             </div>
           </div>
 
           {/* Delete avatar button */}
           {user?.avatarUrl && (
-            <Button
-              variant="destructive-tonal"
-              size="sm"
-              className="absolute bottom-2 right-4"
-              onClick={handleDeleteAvatar}
-              loading={deleteAvatar.isPending}
-            >
-              <Trash2 className="h-4 w-4" />
+            <Button variant='destructive-tonal' size='sm' className='absolute bottom-2 right-4' onClick={handleDeleteAvatar} loading={deleteAvatar.isPending}>
+              <Trash2 className='h-4 w-4' />
               {t('profile.avatar.remove')}
             </Button>
           )}
         </div>
 
-        <CardContent className="pt-16 pb-6">
-          <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-2xl font-bold text-on-surface">
+        <CardContent className='pt-16 pb-6'>
+          <div className='flex items-center gap-2 mb-1'>
+            <h2 className='text-2xl font-bold text-on-surface'>
               {user?.firstName} {user?.lastName}
             </h2>
-            {user && <Sparkles className="h-5 w-5 text-primary" />}
+            {user && <Sparkles className='h-5 w-5 text-primary' />}
           </div>
-          <p className="text-on-surface-variant">{user?.email}</p>
+          <p className='text-on-surface-variant'>{user?.email}</p>
         </CardContent>
       </Card>
 
       {/* Edit Profile Form */}
-      <Card variant="elevated" shape="rounded">
+      <Card variant='elevated' shape='rounded'>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" />
+          <CardTitle className='flex items-center gap-2'>
+            <User className='h-5 w-5 text-primary' />
             {t('profile.title')}
           </CardTitle>
           <CardDescription>{t('profile.description')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className='space-y-4'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <Input
               label={t('profile.firstName')}
               value={firstName}
@@ -164,17 +157,17 @@ export function ProfileSection() {
           </div>
           <Input
             label={t('profile.email')}
-            type="email"
+            type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
             placeholder={t('profile.emailPlaceholder')}
-            startIcon={<Mail className="h-4 w-4" />}
+            startIcon={<Mail className='h-4 w-4' />}
           />
         </CardContent>
-        <CardFooter className="justify-end">
+        <CardFooter className='justify-end'>
           <Button onClick={handleSave} loading={updateProfile.isPending} disabled={!isDirty}>
-            <Save className="h-4 w-4" />
+            <Save className='h-4 w-4' />
             {t('profile.saveChanges')}
           </Button>
         </CardFooter>

@@ -61,6 +61,8 @@ public class GetTemplatesQueryHandler(
                 UsageCount = t.UsageCount,
                 QuestionCount = t.Questions.Count,
                 CreatedAt = t.CreatedAt,
+                UpdatedAt = t.UpdatedAt,
+                DefaultLanguage = t.DefaultLanguage,
             })
             .ToList();
 

@@ -28,7 +28,11 @@
  */
 
 import type { AnswerValue } from '@/types/public-survey';
+import type { EvaluateLogicRequest, EvaluateLogicResponse, AnswerForEvaluation } from '@/types';
 import { LogicOperator, LogicAction } from '@/types/enums';
+
+// Re-export types for backward compatibility
+export type { EvaluateLogicRequest, EvaluateLogicResponse, AnswerForEvaluation };
 
 // ============ Types ============
 
@@ -53,34 +57,6 @@ export interface VisibilityResult {
   skipTo?: string;
   jumpTo?: string;
   endSurvey?: boolean;
-}
-
-// ============ Backend API Types ============
-// These types match the backend DTOs in QuestionLogicDto.cs
-
-/**
- * Request payload for server-side logic evaluation
- * @see backend: EvaluateLogicRequest, AnswerForEvaluationDto
- */
-export interface EvaluateLogicRequest {
-  currentQuestionId?: string;
-  answers: AnswerForEvaluation[];
-}
-
-export interface AnswerForEvaluation {
-  questionId: string;
-  value: string;
-}
-
-/**
- * Response from server-side logic evaluation
- * @see backend: LogicEvaluationResultDto
- */
-export interface LogicEvaluationResult {
-  visibleQuestionIds: string[];
-  hiddenQuestionIds: string[];
-  nextQuestionId?: string;
-  shouldEndSurvey: boolean;
 }
 
 // ============ Helper Functions ============
@@ -248,11 +224,7 @@ function evaluateVisibilityRules(rules: LogicRule[], answers: Record<string, Ans
  * Evaluates all logic rules for a question and determines its visibility
  * Returns: visibility result with potential navigation actions
  */
-export function evaluateQuestionVisibility(
-  questionId: string,
-  allQuestions: QuestionWithLogic[],
-  answers: Record<string, AnswerValue>
-): VisibilityResult {
+export function evaluateQuestionVisibility(questionId: string, allQuestions: QuestionWithLogic[], answers: Record<string, AnswerValue>): VisibilityResult {
   // Build a lookup map for efficient question access
   const questionMap = new Map(allQuestions.map((q) => [q.id, q]));
   const question = questionMap.get(questionId);
@@ -416,7 +388,7 @@ export async function evaluateLogicOnServer(
   surveyId: string,
   answers: Record<string, AnswerValue>,
   currentQuestionId?: string
-): Promise<LogicEvaluationResult> {
+): Promise<EvaluateLogicResponse> {
   // Dynamic import to avoid circular dependency with api module
   const { API_ENDPOINTS } = await import('@/config/api');
 

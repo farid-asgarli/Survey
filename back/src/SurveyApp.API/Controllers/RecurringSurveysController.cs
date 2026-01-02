@@ -116,7 +116,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Pause a recurring survey.
     /// </summary>
     [HttpPost("{id:guid}/pause")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Pause(Guid id)
     {
@@ -129,7 +129,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Resume a paused recurring survey.
     /// </summary>
     [HttpPost("{id:guid}/resume")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Resume(Guid id)
     {
@@ -142,7 +142,7 @@ public class RecurringSurveysController(IMediator mediator) : ApiControllerBase
     /// Trigger an immediate run of a recurring survey.
     /// </summary>
     [HttpPost("{id:guid}/trigger")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecurringSurveyRunDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Trigger(Guid id)
     {

@@ -1,15 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using SurveyApp.Application.DTOs;
 using SurveyApp.Application.Features.Files.Commands.DeleteFile;
 using SurveyApp.Application.Features.Files.Commands.UploadImage;
 using SurveyApp.Application.Features.Files.Commands.UploadImages;
 using SurveyApp.Application.Features.Files.Queries.DownloadFile;
 using SurveyApp.Application.Features.Files.Queries.GetFileInfo;
-using SurveyApp.Application.Services.Files;
 
 namespace SurveyApp.API.Controllers;
 
@@ -20,37 +17,26 @@ namespace SurveyApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class FilesController(
-    IMediator mediator,
-    IOptions<FileValidationOptions> options,
-    IStringLocalizer<FilesController> localizer
-) : ApiControllerBase
+public class FilesController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly FileValidationOptions _options = options.Value;
-    private readonly IStringLocalizer<FilesController> _localizer = localizer;
 
     /// <summary>
     /// Upload an image file (for logos, backgrounds, etc.)
     /// </summary>
-    /// <param name="file">The image file to upload</param>
-    /// <param name="category">Optional category for organization (logo, background, question)</param>
-    /// <returns>The uploaded file information including URL</returns>
+    /// <param name="file">The image file to upload.</param>
+    /// <param name="category">Optional category for organization (logo, background, question).</param>
+    /// <returns>The uploaded file information including URL.</returns>
     [HttpPost("images")]
-    [ProducesResponseType(typeof(FileUploadResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(FileUploadResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status413PayloadTooLarge)]
-    [DisableRequestSizeLimit] // Limit is enforced via options
+    [DisableRequestSizeLimit]
     public async Task<IActionResult> UploadImage(
         IFormFile file,
         [FromQuery] string? category = null,
         CancellationToken cancellationToken = default
     )
     {
-        var validationError = ValidateFile(file);
-        if (validationError != null)
-            return validationError;
-
         await using var stream = file.OpenReadStream();
 
         var result = await _mediator.Send(
@@ -65,27 +51,25 @@ public class FilesController(
             cancellationToken
         );
 
-        return HandleResult(result);
+        return HandleCreatedResult(result, nameof(GetFileInfo), v => new { fileId = v.FileId });
     }
 
     /// <summary>
-    /// Upload multiple image files at once
+    /// Upload multiple image files at once.
     /// </summary>
+    /// <param name="files">The image files to upload.</param>
+    /// <param name="category">Optional category for organization.</param>
+    /// <returns>Bulk upload results with success/failure counts.</returns>
     [HttpPost("images/bulk")]
     [ProducesResponseType(typeof(BulkFileUploadResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [DisableRequestSizeLimit] // Limit is enforced via options
+    [DisableRequestSizeLimit]
     public async Task<IActionResult> UploadImages(
         IFormFileCollection files,
         [FromQuery] string? category = null,
         CancellationToken cancellationToken = default
     )
     {
-        var validationError = ValidateFiles(files);
-        if (validationError != null)
-            return validationError;
-
-        // Create file upload items from form files
         var uploadItems = new List<FileUploadItem>();
         var streams = new List<Stream>();
 
@@ -94,7 +78,7 @@ public class FilesController(
             foreach (var file in files)
             {
                 var stream = file.OpenReadStream();
-                streams.Add(stream); // Track for disposal
+                streams.Add(stream);
 
                 uploadItems.Add(
                     new FileUploadItem
@@ -116,7 +100,6 @@ public class FilesController(
         }
         finally
         {
-            // Dispose all streams
             foreach (var stream in streams)
             {
                 await stream.DisposeAsync();
@@ -125,42 +108,46 @@ public class FilesController(
     }
 
     /// <summary>
-    /// Get file information by ID
+    /// Get file information by ID.
     /// </summary>
+    /// <param name="fileId">The file identifier.</param>
+    /// <returns>The file information.</returns>
     [HttpGet("{fileId}")]
     [ProducesResponseType(typeof(FileInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AllowAnonymous] // Allow public access to files
+    [AllowAnonymous]
     public async Task<IActionResult> GetFileInfo(
         string fileId,
         CancellationToken cancellationToken = default
     )
     {
         var result = await _mediator.Send(new GetFileInfoQuery(fileId), cancellationToken);
-
         return HandleResult(result);
     }
 
     /// <summary>
-    /// Download/serve a file by ID
+    /// Download/serve a file by ID.
     /// </summary>
+    /// <param name="fileId">The file identifier.</param>
+    /// <returns>The file content.</returns>
     [HttpGet("{fileId}/download")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [AllowAnonymous] // Allow public access to files (for survey display)
+    [AllowAnonymous]
     public async Task<IActionResult> DownloadFile(
         string fileId,
         CancellationToken cancellationToken = default
     )
     {
         var result = await _mediator.Send(new DownloadFileQuery(fileId), cancellationToken);
-
         return HandleStreamFileResult(result, v => v.Stream, v => v.ContentType, v => v.FileName);
     }
 
     /// <summary>
-    /// Delete a file by ID
+    /// Delete a file by ID.
     /// </summary>
+    /// <param name="fileId">The file identifier.</param>
+    /// <returns>No content.</returns>
     [HttpDelete("{fileId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -170,111 +157,6 @@ public class FilesController(
     )
     {
         var result = await _mediator.Send(new DeleteFileCommand(fileId), cancellationToken);
-
         return HandleNoContentResult(result);
     }
-
-    #region Private Validation Methods
-
-    private IActionResult? ValidateFile(IFormFile? file)
-    {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.InvalidFile"],
-                    Detail = _localizer["Errors.FileEmptyOrNotProvided"],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
-
-        if (file.Length > _options.MaxFileSizeBytes)
-        {
-            return StatusCode(
-                StatusCodes.Status413PayloadTooLarge,
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.FileTooLarge"],
-                    Detail = _localizer[
-                        "Errors.FileTooLargeDetail",
-                        _options.MaxFileSizeBytes / (1024 * 1024)
-                    ],
-                    Status = StatusCodes.Status413PayloadTooLarge,
-                }
-            );
-        }
-
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (!_options.AllowedImageExtensions.Contains(extension))
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.InvalidFileType"],
-                    Detail = _localizer[
-                        "Errors.AllowedExtensions",
-                        string.Join(", ", _options.AllowedImageExtensions)
-                    ],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
-
-        if (!_options.AllowedImageTypes.Contains(file.ContentType))
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.InvalidContentType"],
-                    Detail = _localizer[
-                        "Errors.AllowedContentTypes",
-                        string.Join(", ", _options.AllowedImageTypes)
-                    ],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
-
-        return null;
-    }
-
-    private IActionResult? ValidateFiles(IFormFileCollection? files)
-    {
-        if (files == null || files.Count == 0)
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.NoFilesProvided"],
-                    Detail = _localizer["Errors.AtLeastOneFileRequired"],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
-
-        if (files.Count > _options.MaxBulkUploadFiles)
-        {
-            return BadRequest(
-                new ProblemDetails
-                {
-                    Title = _localizer["Errors.TooManyFiles"],
-                    Detail = _localizer["Errors.MaxFilesAllowed", _options.MaxBulkUploadFiles],
-                    Status = StatusCodes.Status400BadRequest,
-                }
-            );
-        }
-
-        foreach (var file in files)
-        {
-            var validationError = ValidateFile(file);
-            if (validationError != null)
-                return validationError;
-        }
-
-        return null;
-    }
-
-    #endregion
 }

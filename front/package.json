@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^3.27.0",
+    "@azure/msal-react": "^2.1.1",
     "@hookform/resolvers": "^5.2.2",
     "@microsoft/signalr": "^8.0.7",
     "@radix-ui/react-slot": "^1.2.4",

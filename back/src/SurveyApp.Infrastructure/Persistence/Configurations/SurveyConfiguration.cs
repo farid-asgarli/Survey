@@ -8,7 +8,7 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
 {
     public void Configure(EntityTypeBuilder<Survey> builder)
     {
-        builder.ToTable("Surveys");
+        builder.ToTable("surveys", DbSchemas.Survey);
 
         builder.HasKey(s => s.Id);
 
@@ -18,16 +18,11 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
         builder.Ignore(s => s.WelcomeMessage);
         builder.Ignore(s => s.ThankYouMessage);
 
-        builder
-            .Property(s => s.Type)
-            .IsRequired()
-            .HasConversion<string>()
-            .HasMaxLength(30)
-            .HasDefaultValue(Domain.Enums.SurveyType.Classic);
+        builder.Property(s => s.Type).IsRequired().HasDefaultValue(Domain.Enums.SurveyType.Classic);
 
-        builder.Property(s => s.CxMetricType).HasConversion<string>().HasMaxLength(20);
+        builder.Property(s => s.CxMetricType);
 
-        builder.Property(s => s.Status).IsRequired().HasConversion<string>().HasMaxLength(20);
+        builder.Property(s => s.Status).IsRequired();
 
         builder.Property(s => s.AccessToken).HasMaxLength(100);
 

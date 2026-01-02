@@ -2,7 +2,16 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { logicApi } from '@/services';
-import type { CreateLogicRequest, QuestionLogic, LogicMapResponse, LogicNodeDto, LogicEdgeDto } from '@/types';
+import type {
+  CreateLogicRequest,
+  UpdateLogicRequest,
+  EvaluateLogicRequest,
+  EvaluateLogicResponse,
+  QuestionLogic,
+  LogicMapResponse,
+  LogicNodeDto,
+  LogicEdgeDto,
+} from '@/types';
 import { QuestionType, LogicOperator, LogicAction } from '@/types/enums';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
@@ -137,7 +146,7 @@ export function useUpdateLogic(surveyId: string, questionId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ logicId, data }: { logicId: string; data: Partial<CreateLogicRequest> }) => logicApi.update(surveyId, questionId, logicId, data),
+    mutationFn: ({ logicId, data }: { logicId: string; data: UpdateLogicRequest }) => logicApi.update(surveyId, questionId, logicId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: logicKeys.list(surveyId, questionId),
@@ -234,8 +243,7 @@ export function useReorderLogic(surveyId: string, questionId: string) {
  */
 export function useEvaluateLogic(surveyId: string) {
   return useMutation({
-    mutationFn: ({ answers, currentQuestionId }: { answers: { questionId: string; value: string }[]; currentQuestionId?: string }) =>
-      logicApi.evaluateLogic(surveyId, answers, currentQuestionId),
+    mutationFn: (request: EvaluateLogicRequest): Promise<EvaluateLogicResponse> => logicApi.evaluateLogic(surveyId, request),
   });
 }
 

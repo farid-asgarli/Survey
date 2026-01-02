@@ -5,6 +5,7 @@ namespace SurveyApp.Application.Common.Interfaces;
 /// </summary>
 public interface IIdentityService
 {
+    // Standard authentication methods
     Task<AuthenticationResult> RegisterAsync(
         string email,
         string password,
@@ -19,6 +20,36 @@ public interface IIdentityService
     Task<string> GeneratePasswordResetTokenAsync(string email);
     Task<bool> ConfirmEmailAsync(string userId, string token);
     Task<string> GenerateEmailConfirmationTokenAsync(string userId);
+
+    // Azure AD SSO methods
+    /// <summary>
+    /// Authenticates a user using an Azure AD ID token.
+    /// Creates or links the user account as needed.
+    /// </summary>
+    /// <param name="idToken">The ID token from Azure AD authentication.</param>
+    /// <param name="accessToken">Optional access token for additional claims.</param>
+    /// <returns>Authentication result with JWT tokens if successful.</returns>
+    Task<AuthenticationResult> AuthenticateWithAzureAdAsync(
+        string idToken,
+        string? accessToken = null
+    );
+
+    /// <summary>
+    /// Links an existing user account to an Azure AD identity using an ID token.
+    /// Allows users who registered with email/password to add SSO capability.
+    /// </summary>
+    /// <param name="userId">The local user ID to link.</param>
+    /// <param name="idToken">The Azure AD ID token containing the identity claims.</param>
+    /// <returns>Authentication result with updated user info.</returns>
+    Task<AuthenticationResult> LinkAzureAdAccountAsync(string userId, string idToken);
+
+    /// <summary>
+    /// Unlinks an Azure AD identity from a user account.
+    /// Only succeeds if the user has a password set (alternative login method).
+    /// </summary>
+    /// <param name="userId">The user ID to unlink.</param>
+    /// <returns>True if unlinking succeeded, false otherwise.</returns>
+    Task<bool> UnlinkAzureAdAccountAsync(string userId);
 }
 
 /// <summary>
@@ -34,6 +65,14 @@ public record AuthenticationResult
     public string? Email { get; init; }
     public string? FirstName { get; init; }
     public string? LastName { get; init; }
+    public string? FullName { get; init; }
+    public bool EmailConfirmed { get; init; }
+    public string? AvatarUrl { get; init; }
+    public string? ProfilePictureUrl { get; init; }
+    public DateTime? LastLoginAt { get; init; }
+    public bool IsActive { get; init; }
+    public DateTime? CreatedAt { get; init; }
+    public DateTime? UpdatedAt { get; init; }
     public IEnumerable<string> Errors { get; init; } = [];
 
     public static AuthenticationResult Success(
@@ -43,7 +82,15 @@ public record AuthenticationResult
         string userId,
         string email,
         string firstName,
-        string lastName
+        string lastName,
+        string fullName,
+        bool emailConfirmed,
+        string? avatarUrl,
+        string? profilePictureUrl,
+        DateTime? lastLoginAt,
+        bool isActive,
+        DateTime createdAt,
+        DateTime? updatedAt
     ) =>
         new()
         {
@@ -55,6 +102,14 @@ public record AuthenticationResult
             Email = email,
             FirstName = firstName,
             LastName = lastName,
+            FullName = fullName,
+            EmailConfirmed = emailConfirmed,
+            AvatarUrl = avatarUrl,
+            ProfilePictureUrl = profilePictureUrl,
+            LastLoginAt = lastLoginAt,
+            IsActive = isActive,
+            CreatedAt = createdAt,
+            UpdatedAt = updatedAt,
         };
 
     public static AuthenticationResult Failure(params string[] errors) =>

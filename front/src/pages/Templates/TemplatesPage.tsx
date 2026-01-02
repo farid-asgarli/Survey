@@ -23,7 +23,7 @@ import {
   type TemplateFilters,
 } from '@/hooks/queries/useTemplates';
 import { useListPage, useFilteredList, useEntityActions, useDialogState, FilterMatchers, type FilterConfig } from '@/hooks';
-import type { SurveyTemplate, TemplateCategory } from '@/types';
+import type { SurveyTemplateSummary, TemplateCategory } from '@/types';
 import { TemplatesHeader, TemplatesToolbar, TemplatesContent } from './sections';
 
 type VisibilityFilter = 'all' | 'public' | 'private';
@@ -60,7 +60,7 @@ export function TemplatesPage() {
   // Dialog state using reusable hooks
   const createDialog = useDialogState();
   const previewDrawer = useDialogState<string>(); // stores template ID
-  const useTemplateDialog = useDialogState<SurveyTemplate>();
+  const useTemplateDialog = useDialogState<SurveyTemplateSummary>();
 
   // Build filters for API
   const apiFilters: TemplateFilters = useMemo(
@@ -86,7 +86,7 @@ export function TemplatesPage() {
     filterConfigs: [
       {
         key: 'visibility',
-        getValue: (t: SurveyTemplate) => t.isPublic,
+        getValue: (t: SurveyTemplateSummary) => t.isPublic,
         matches: (isPublic: unknown, filter: unknown): boolean => {
           if (filter === 'all') return true;
           return filter === 'public' ? Boolean(isPublic) : !isPublic;
@@ -95,7 +95,7 @@ export function TemplatesPage() {
       },
       {
         key: 'category',
-        getValue: (t: SurveyTemplate) => t.category,
+        getValue: (t: SurveyTemplateSummary) => t.category,
         matches: (itemValue: unknown, filterValue: unknown): boolean => FilterMatchers.equalOrAll(itemValue as string, filterValue as string | 'all'),
         defaultValue: 'all',
       },
@@ -107,7 +107,7 @@ export function TemplatesPage() {
   });
 
   // Use the new useEntityActions hook for CRUD operations
-  const { handleDelete, ConfirmDialog } = useEntityActions<SurveyTemplate>({
+  const { handleDelete, ConfirmDialog } = useEntityActions<SurveyTemplateSummary>({
     entityName: 'template',
     getDisplayName: (t) => t.name,
     delete: {
@@ -143,14 +143,14 @@ export function TemplatesPage() {
   };
 
   const handlePreviewTemplate = useCallback(
-    (template: SurveyTemplate) => {
+    (template: SurveyTemplateSummary) => {
       previewDrawer.open(template.id);
     },
     [previewDrawer]
   );
 
   const handleUseTemplateClick = useCallback(
-    (template: SurveyTemplate) => {
+    (template: SurveyTemplateSummary) => {
       useTemplateDialog.open(template);
       previewDrawer.close();
     },

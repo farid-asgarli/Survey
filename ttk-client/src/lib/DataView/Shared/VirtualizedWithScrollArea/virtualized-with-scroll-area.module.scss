@@ -1,0 +1,29 @@
+.virtual-list-wrapper {
+  .scrollbar-mask {
+    position: absolute;
+    width: var(--scrollbar-width);
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: inherit;
+    z-index: 1;
+    opacity: 1;
+    transition: var(--timeout-short) ease-in-out opacity;
+  }
+  &:hover {
+    .scrollbar-mask {
+      opacity: 0;
+      animation-name: zIndexTransformation;
+      animation-delay: var(--timeout-short);
+      animation-fill-mode: forwards;
+      will-change: z-index;
+    }
+  }
+
+  @keyframes zIndexTransformation {
+    to {
+      z-index: -1;
+    }
+  }
+}

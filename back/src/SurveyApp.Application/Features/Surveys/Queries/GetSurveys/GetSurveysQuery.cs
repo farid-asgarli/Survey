@@ -11,6 +11,17 @@ public record GetSurveysQuery : PagedQuery, IRequest<Result<PagedResponse<Survey
 {
     public SurveyStatus? Status { get; init; }
     public string? SearchTerm { get; init; }
+
+    /// <summary>
+    /// Filter surveys created on or after this date (inclusive).
+    /// </summary>
+    public DateTime? FromDate { get; init; }
+
+    /// <summary>
+    /// Filter surveys created on or before this date (inclusive).
+    /// </summary>
+    public DateTime? ToDate { get; init; }
+
     public string? SortBy { get; init; }
     public bool SortDescending { get; init; } = true;
 }

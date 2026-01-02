@@ -4,19 +4,19 @@
 
 import { ListContainer, ListGrid, GridSkeleton } from '@/components/ui';
 import { ThemePreviewCard } from '@/components/features/themes';
-import type { SurveyTheme } from '@/types';
+import type { SurveyThemeSummary } from '@/types';
 
 interface ThemesContentProps {
-  themes: SurveyTheme[];
+  themes: SurveyThemeSummary[];
   isLoading: boolean;
   viewMode: 'grid' | 'list';
-  defaultTheme?: SurveyTheme;
+  defaultTheme?: SurveyThemeSummary;
   hasActiveFilters: boolean;
   emptyStateElement: React.ReactNode;
-  onEdit: (theme: SurveyTheme) => void;
-  onDuplicate: (theme: SurveyTheme) => void;
-  onDelete: (theme: SurveyTheme) => void;
-  onSetDefault: (theme: SurveyTheme) => void;
+  onEdit: (theme: SurveyThemeSummary) => void;
+  onDuplicate: (theme: SurveyThemeSummary) => void;
+  onDelete: (theme: SurveyThemeSummary) => void;
+  onSetDefault: (theme: SurveyThemeSummary) => void;
 }
 
 export function ThemesContent({
@@ -33,7 +33,7 @@ export function ThemesContent({
   return (
     <ListContainer items={themes} isLoading={isLoading} viewMode={viewMode}>
       <ListContainer.Loading>
-        <GridSkeleton viewMode={viewMode} count={6} gridHeight="h-56" listHeight="h-32" />
+        <GridSkeleton viewMode={viewMode} count={6} gridHeight='h-56' listHeight='h-32' />
       </ListContainer.Loading>
 
       <ListContainer.Empty>{emptyStateElement}</ListContainer.Empty>

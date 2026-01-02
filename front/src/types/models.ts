@@ -95,6 +95,8 @@ import {
   CxMetricType,
   QuestionType,
   NpsQuestionType,
+  RatingStyle,
+  YesNoStyle,
   LogicOperator,
   LogicAction,
   LinkType,
@@ -186,6 +188,11 @@ export interface ChangePasswordRequest {
 
 export interface UploadAvatarResponse {
   avatarUrl: string;
+}
+
+/** Standard message response from API endpoints */
+export interface MessageResponse {
+  message: string;
 }
 
 // ============ Namespace ============
@@ -300,14 +307,28 @@ export interface CreateSurveyRequest {
   description?: string;
   type?: SurveyType;
   cxMetricType?: CxMetricType;
-  themeId?: string;
+  /** Welcome message shown at the start of the survey */
+  welcomeMessage?: string;
+  /** Thank you message shown after completion */
+  thankYouMessage?: string;
+  /** Whether the survey allows anonymous responses */
+  isAnonymous?: boolean;
+  /** Maximum number of responses allowed */
+  maxResponses?: number;
+  /** Start date for the survey (ISO 8601 format) */
+  startDate?: string;
+  /** End date for the survey (ISO 8601 format) */
+  endDate?: string;
+  /** Initial questions to create with the survey */
+  questions?: CreateQuestionRequest[];
   /** Language code for the initial translation */
   languageCode: string;
 }
 
 export interface UpdateSurveyRequest {
   surveyId: string;
-  title?: string;
+  /** Title is required by the backend */
+  title: string;
   description?: string;
   welcomeMessage?: string;
   thankYouMessage?: string;
@@ -317,7 +338,7 @@ export interface UpdateSurveyRequest {
   startsAt?: string;
   endsAt?: string;
   /** Language code for the translation to update */
-  languageCode: string;
+  languageCode?: string;
 }
 
 // ============ Question ============
@@ -378,7 +399,7 @@ export interface QuestionSettings {
   maxSelections?: number;
   allowOther?: boolean;
 
-  // Other settings (frontend only)
+  // Other settings
   randomizeOptions?: boolean;
   otherLabel?: string;
   validationPattern?: string;
@@ -386,10 +407,10 @@ export interface QuestionSettings {
   validationPreset?: string;
 
   // Rating style (stars, hearts, thumbs, smileys, numbers)
-  ratingStyle?: number;
+  ratingStyle?: RatingStyle;
 
   // Yes/No style (text, thumbs, toggle, checkX)
-  yesNoStyle?: number;
+  yesNoStyle?: YesNoStyle;
 }
 
 export interface CreateQuestionRequest {
@@ -399,19 +420,30 @@ export interface CreateQuestionRequest {
   isRequired?: boolean;
   order?: number;
   settings?: QuestionSettings;
+  /** Whether this is an NPS question */
+  isNpsQuestion?: boolean;
+  /** NPS question type (Standard, CustomerSatisfaction, CustomerEffort) */
+  npsType?: NpsQuestionType;
   /** Language code for the initial translation */
-  languageCode: string;
+  languageCode?: string;
 }
 
 export interface UpdateQuestionRequest {
-  type?: QuestionType;
-  text?: string;
+  /** Question type (required by backend) */
+  type: QuestionType;
+  /** Question text (required by backend) */
+  text: string;
   description?: string;
-  isRequired?: boolean;
+  /** Whether the question is required (required by backend) */
+  isRequired: boolean;
   order?: number;
   settings?: QuestionSettings;
+  /** Whether this is an NPS question */
+  isNpsQuestion?: boolean;
+  /** NPS question type (Standard, CustomerSatisfaction, CustomerEffort) */
+  npsType?: NpsQuestionType;
   /** Language code for the translation to update */
-  languageCode: string;
+  languageCode?: string;
 }
 
 // ============ Question Batch Sync ============
@@ -434,7 +466,7 @@ export interface BatchCreateQuestionData {
   order?: number;
   settings?: QuestionSettings;
   isNpsQuestion?: boolean;
-  npsType?: string;
+  npsType?: NpsQuestionType;
   languageCode?: string;
 }
 
@@ -448,7 +480,7 @@ export interface BatchUpdateQuestionData {
   order?: number;
   settings?: QuestionSettings;
   isNpsQuestion?: boolean;
-  npsType?: string;
+  npsType?: NpsQuestionType;
   languageCode?: string;
 }
 
@@ -486,10 +518,55 @@ export interface QuestionLogic {
 export interface CreateLogicRequest {
   sourceQuestionId: string;
   operator: LogicOperator;
-  conditionValue: string;
+  /** Condition value - required unless operator is IsEmpty, IsNotEmpty, IsAnswered, or IsNotAnswered */
+  conditionValue?: string;
   action: LogicAction;
   targetQuestionId?: string;
   priority?: number;
+}
+
+/**
+ * Request to update an existing logic rule.
+ * Matches backend UpdateQuestionLogicCommand (priority is required for updates).
+ */
+export interface UpdateLogicRequest {
+  sourceQuestionId: string;
+  operator: LogicOperator;
+  /** Condition value - required unless operator is IsEmpty, IsNotEmpty, IsAnswered, or IsNotAnswered */
+  conditionValue?: string;
+  action: LogicAction;
+  targetQuestionId?: string;
+  /** Priority is required when updating a logic rule */
+  priority: number;
+}
+
+/**
+ * Request to evaluate logic rules for a set of answers.
+ * Matches backend EvaluateLogicQuery.
+ */
+export interface EvaluateLogicRequest {
+  currentQuestionId?: string;
+  answers: AnswerForEvaluation[];
+}
+
+/**
+ * Individual answer for logic evaluation.
+ * Matches backend AnswerForEvaluationDto.
+ */
+export interface AnswerForEvaluation {
+  questionId: string;
+  value: string;
+}
+
+/**
+ * Response from logic evaluation.
+ * Matches backend LogicEvaluationResultDto.
+ */
+export interface EvaluateLogicResponse {
+  visibleQuestionIds: string[];
+  hiddenQuestionIds: string[];
+  nextQuestionId?: string;
+  shouldEndSurvey: boolean;
 }
 
 // ============ Survey Links ============
@@ -767,34 +844,52 @@ export interface ThemeButton {
   textColor: string;
 }
 
-export interface SurveyTheme {
+/**
+ * Summary/list item for themes.
+ * Matches backend SurveyThemeSummaryDto - used in list views.
+ */
+export interface SurveyThemeSummary {
   id: string;
-  namespaceId?: string;
   name: string;
   description?: string;
   isDefault: boolean;
   isPublic: boolean;
   isSystem: boolean;
   isDark: boolean;
-  colors?: ThemeColors;
-  typography?: ThemeTypography;
-  layout?: ThemeLayoutDto;
-  branding?: ThemeBranding;
-  button?: ThemeButton;
+  /** Primary color (flat field for list display) */
+  primaryColor: string;
+  /** Secondary color (flat field for list display) */
+  secondaryColor: string;
+  /** Background color (flat field for list display) */
+  backgroundColor: string;
+  /** Layout type */
+  layout: ThemeLayout;
+  usageCount: number;
+  createdAt: string;
+}
+
+/**
+ * Full theme details.
+ * Matches backend SurveyThemeDto - used in detail/edit views.
+ */
+export interface SurveyTheme {
+  id: string;
+  namespaceId: string;
+  name: string;
+  description?: string;
+  isDefault: boolean;
+  isPublic: boolean;
+  isSystem: boolean;
+  isDark: boolean;
+  colors: ThemeColors;
+  typography: ThemeTypography;
+  layout: ThemeLayoutDto;
+  branding: ThemeBranding;
+  button: ThemeButton;
   customCss?: string;
   usageCount: number;
   createdAt: string;
   updatedAt?: string;
-  // Flat fields (from list/summary endpoint)
-  primaryColor?: string;
-  secondaryColor?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  fontFamily?: string;
-  fontSize?: number;
-  logoUrl?: string;
-  backgroundImageUrl?: string;
-  buttonStyle?: ButtonStyle;
 
   // Localization - added for translation-only architecture
   /** The default language code for this theme */
@@ -822,6 +917,28 @@ export interface TemplateQuestion {
   defaultLanguage: string;
 }
 
+/**
+ * Summary DTO for template listings (list endpoint).
+ * Matches backend SurveyTemplateSummaryDto - no questions array for performance.
+ */
+export interface SurveyTemplateSummary {
+  id: string;
+  name: string;
+  description?: string;
+  category?: string;
+  isPublic: boolean;
+  usageCount: number;
+  questionCount: number;
+  createdAt: string;
+  updatedAt?: string;
+  /** The default language code for this template */
+  defaultLanguage: string;
+}
+
+/**
+ * Full template DTO with questions (detail endpoint).
+ * Matches backend SurveyTemplateDto.
+ */
 export interface SurveyTemplate {
   id: string;
   namespaceId: string;
@@ -831,14 +948,14 @@ export interface SurveyTemplate {
   isPublic: boolean;
   welcomeMessage?: string;
   thankYouMessage?: string;
-  defaultAllowAnonymous?: boolean;
-  defaultAllowMultipleResponses?: boolean;
+  defaultAllowAnonymous: boolean;
+  defaultAllowMultipleResponses: boolean;
   usageCount: number;
   questionCount: number;
   createdAt: string;
+  updatedAt?: string;
   createdBy?: string;
   questions: TemplateQuestion[];
-  updatedAt?: string;
 
   // Localization - added for translation-only architecture
   /** The default language code for this template */
@@ -925,21 +1042,23 @@ export interface CreateSurveyFromTemplateRequest {
 }
 
 // ============ Responses ============
+/**
+ * Full survey response with all answers.
+ * Matches backend SurveyResponseDto.
+ * Note: IP addresses are not exposed for GDPR compliance.
+ */
 export interface SurveyResponse {
   id: string;
   surveyId: string;
-  surveyTitle?: string;
-  respondentId?: string;
+  /** Survey title - always present from backend */
+  surveyTitle: string;
   respondentEmail?: string;
   respondentName?: string;
-  linkId?: string;
   isComplete: boolean;
   startedAt: string;
   submittedAt?: string;
   timeSpentSeconds?: number;
-  ipAddress?: string;
   answers: Answer[];
-  metadata?: Record<string, unknown>;
 }
 
 export interface ResponseListItem {
@@ -966,6 +1085,10 @@ export interface SelectedOption {
   text: string;
 }
 
+/**
+ * Answer data.
+ * Matches backend AnswerDto.
+ */
 export interface Answer {
   id: string;
   questionId: string;
@@ -976,7 +1099,9 @@ export interface Answer {
   /** Display text (computed from options + text) */
   displayValue: string;
   answeredAt: string;
+  /** File URLs for file upload questions */
   fileUrls?: string[];
+  /** Matrix answers - key is row label, value is selected column label */
   matrixAnswers?: Record<string, string>;
 }
 

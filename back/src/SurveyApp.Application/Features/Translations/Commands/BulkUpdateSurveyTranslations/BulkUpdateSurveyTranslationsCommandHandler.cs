@@ -1,6 +1,7 @@
 using MediatR;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
+using SurveyApp.Application.DTOs;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 using SurveyApp.Domain.ValueObjects;

@@ -27,7 +27,7 @@ import {
   type ExtendedFilterConfig,
 } from '@/hooks';
 import { ThemeEditorDrawer, type ThemeFormData } from '@/components/features/themes';
-import type { SurveyTheme } from '@/types';
+import type { SurveyThemeSummary } from '@/types';
 import { ThemeLayout, LogoPosition, LogoSize, BackgroundImagePosition } from '@/types/enums';
 import { ThemesHeader, ThemesToolbar, ThemesContent, ThemesEmptyState } from './sections';
 import { getCurrentLanguage } from '@/i18n';
@@ -39,20 +39,20 @@ type ThemeListFilters = {
 };
 
 /** Filter configuration for the themes list page */
-const FILTER_CONFIGS: ExtendedFilterConfig<SurveyTheme, unknown>[] = [
+const FILTER_CONFIGS: ExtendedFilterConfig<SurveyThemeSummary, unknown>[] = [
   {
     key: 'filter',
     defaultValue: 'all' as const,
     label: 'Type',
     formatValue: (v) => (v === 'system' ? 'System' : 'Custom'),
-    getValue: (theme: SurveyTheme) => (theme.isSystem ? 'system' : 'custom'),
+    getValue: (theme: SurveyThemeSummary) => (theme.isSystem ? 'system' : 'custom'),
     matches: (itemValue: unknown, filterValue: unknown): boolean => FilterMatchers.equalOrAll(itemValue as string, filterValue as ThemeFilter),
   },
 ];
 
 export function ThemesPage() {
   // Editor drawer state using reusable hook
-  const editorDrawer = useDrawerState<SurveyTheme>();
+  const editorDrawer = useDrawerState<SurveyThemeSummary>();
 
   // Track the ID of theme being edited to fetch full details
   const [editingThemeId, setEditingThemeId] = useState<string | undefined>(undefined);
@@ -69,8 +69,9 @@ export function ThemesPage() {
   // Fetch full theme details when editing (includes branding, logo, etc.)
   const { data: fullThemeData, isLoading: isLoadingFullTheme } = useThemeDetail(editingThemeId);
 
-  // Use full theme data when available, otherwise fall back to drawer state
-  const themeForEditor = editingThemeId && fullThemeData ? fullThemeData : editorDrawer.editingItem;
+  // Only use full theme data for the editor - don't fallback to summary
+  // When creating new theme, this will be undefined (which is correct)
+  const themeForEditor = editingThemeId ? fullThemeData : undefined;
 
   // Reset editingThemeId when drawer closes - this is intentional state sync
   useEffect(() => {
@@ -86,7 +87,7 @@ export function ThemesPage() {
     const publicThemes = publicThemesData?.items || [];
 
     // Use a Map to deduplicate themes by ID, namespace themes take priority
-    const themeMap = new Map<string, SurveyTheme>();
+    const themeMap = new Map<string, SurveyThemeSummary>();
     namespaceThemes.forEach((t) => themeMap.set(t.id, t));
     publicThemes.forEach((t) => {
       if (!themeMap.has(t.id)) {
@@ -109,7 +110,7 @@ export function ThemesPage() {
     clearAllFilters,
     filteredItems: filteredThemes,
     hasActiveFilters,
-  } = useListPageState<SurveyTheme, ThemeListFilters>({
+  } = useListPageState<SurveyThemeSummary, ThemeListFilters>({
     initialFilters: { filter: 'all' },
     filterConfigs: FILTER_CONFIGS,
     items: allThemes,
@@ -127,14 +128,14 @@ export function ThemesPage() {
   const isLoading = isLoadingThemes || isLoadingPublic;
 
   // Use entity actions hook for CRUD operations
-  const { handleDelete, handleDuplicate, ConfirmDialog } = useEntityActions<SurveyTheme>({
+  const { handleDelete, handleDuplicate, ConfirmDialog } = useEntityActions<SurveyThemeSummary>({
     entityName: 'theme',
     getDisplayName: (t) => t.name,
     delete: {
       action: (theme) => deleteTheme.mutateAsync(theme.id),
     },
     duplicate: {
-      action: (theme) => duplicateTheme.mutateAsync(theme.id),
+      action: (theme) => duplicateTheme.mutateAsync({ id: theme.id }),
     },
   });
 
@@ -145,7 +146,7 @@ export function ThemesPage() {
   }, [editorDrawer]);
 
   const handleEditTheme = useCallback(
-    (theme: SurveyTheme) => {
+    (theme: SurveyThemeSummary) => {
       setEditingThemeId(theme.id);
       editorDrawer.openEdit(theme);
     },
@@ -153,7 +154,7 @@ export function ThemesPage() {
   );
 
   const handleSetDefault = useCallback(
-    async (theme: SurveyTheme) => {
+    async (theme: SurveyThemeSummary) => {
       await setDefaultTheme.mutateAsync(theme.id);
     },
     [setDefaultTheme]
@@ -166,7 +167,7 @@ export function ThemesPage() {
         const themeData = {
           name: data.name,
           isPublic: true,
-          languageCode: editorDrawer.editingItem?.id ? editorDrawer.editingItem.defaultLanguage : getCurrentLanguage(),
+          languageCode: fullThemeData?.defaultLanguage || getCurrentLanguage(),
           colors: {
             primary: data.primaryColor,
             secondary: data.secondaryColor,
@@ -222,9 +223,9 @@ export function ThemesPage() {
           customCss: data.customCss || undefined,
         };
 
-        if (editorDrawer.editingItem?.id) {
+        if (editingThemeId) {
           await updateTheme.mutateAsync({
-            id: editorDrawer.editingItem.id,
+            id: editingThemeId,
             data: themeData,
           });
         } else {
@@ -235,7 +236,7 @@ export function ThemesPage() {
         throw new Error('Save failed');
       }
     },
-    [editorDrawer, createTheme, updateTheme]
+    [editingThemeId, fullThemeData, editorDrawer, createTheme, updateTheme]
   );
 
   return (
@@ -264,18 +265,16 @@ export function ThemesPage() {
           viewMode={viewMode}
           defaultTheme={defaultTheme}
           hasActiveFilters={hasActiveFilters}
-          emptyStateElement={
-            <ThemesEmptyState hasActiveFilters={hasActiveFilters} onClearFilters={clearAllFilters} onCreateItem={handleCreateTheme} />
-          }
+          emptyStateElement={<ThemesEmptyState hasActiveFilters={hasActiveFilters} onClearFilters={clearAllFilters} onCreateItem={handleCreateTheme} />}
           onEdit={handleEditTheme}
-          onDuplicate={(theme: SurveyTheme) => handleDuplicate?.(theme)}
-          onDelete={(theme: SurveyTheme) => handleDelete?.(theme)}
+          onDuplicate={(theme: SurveyThemeSummary) => handleDuplicate?.(theme)}
+          onDelete={(theme: SurveyThemeSummary) => handleDelete?.(theme)}
           onSetDefault={handleSetDefault}
         />
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={handleCreateTheme} />
+      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={handleCreateTheme} />
 
       {/* Theme Editor Drawer */}
       <ThemeEditorDrawer

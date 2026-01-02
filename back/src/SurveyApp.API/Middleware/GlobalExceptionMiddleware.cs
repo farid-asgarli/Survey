@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SurveyApp.API.Constants;
 using SurveyApp.Domain.Common;
 
 namespace SurveyApp.API.Middleware;
@@ -112,16 +113,7 @@ public class GlobalExceptionMiddleware(
     }
 
     private static string GetProblemType(int statusCode) =>
-        statusCode switch
-        {
-            400 => "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-            401 => "https://tools.ietf.org/html/rfc7235#section-3.1",
-            403 => "https://tools.ietf.org/html/rfc7231#section-6.5.3",
-            404 => "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            409 => "https://tools.ietf.org/html/rfc7231#section-6.5.8",
-            500 => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-            _ => "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-        };
+        ProblemDetailsTypes.GetTypeForStatusCode(statusCode);
 
     private string GetTitle(int statusCode) =>
         statusCode switch

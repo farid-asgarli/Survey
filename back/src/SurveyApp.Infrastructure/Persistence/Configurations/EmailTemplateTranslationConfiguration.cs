@@ -9,7 +9,7 @@ public class EmailTemplateTranslationConfiguration
 {
     public void Configure(EntityTypeBuilder<EmailTemplateTranslation> builder)
     {
-        builder.ToTable("EmailTemplateTranslations");
+        builder.ToTable("email_template_translations", DbSchemas.I18n);
 
         builder.HasKey(t => t.Id);
 

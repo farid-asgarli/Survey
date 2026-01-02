@@ -11,7 +11,7 @@ public class RecurringSurveyRunConfiguration : IEntityTypeConfiguration<Recurrin
 {
     public void Configure(EntityTypeBuilder<RecurringSurveyRun> builder)
     {
-        builder.ToTable("RecurringSurveyRuns");
+        builder.ToTable("recurring_survey_runs", DbSchemas.Scheduling);
 
         builder.HasKey(r => r.Id);
 
@@ -23,7 +23,7 @@ public class RecurringSurveyRunConfiguration : IEntityTypeConfiguration<Recurrin
 
         builder.Property(r => r.CompletedAt);
 
-        builder.Property(r => r.Status).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Property(r => r.Status).IsRequired();
 
         builder.Property(r => r.RecipientsCount).HasDefaultValue(0);
 

@@ -2,15 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Button, LoadingIndicator, toast } from '@/components/ui';
-import {
-  useSurveyDetail,
-  useViewTransitionNavigate,
-  useThemeDetail,
-  useDialogState,
-  useCopyToClipboard,
-  useEscapeKey,
-  useSurveyTranslations,
-} from '@/hooks';
+import { useSurveyDetail, useViewTransitionNavigate, useThemeDetail, useDialogState, useCopyToClipboard, useEscapeKey, useSurveyTranslations } from '@/hooks';
 import { useLogicMap } from '@/hooks/queries/useQuestionLogic';
 import { useNamespaceStore } from '@/stores';
 import type { AnswerValue, PublicSurveyViewMode, PublicSurveyTheme } from '@/types/public-survey';
@@ -117,7 +109,7 @@ export function SurveyPreviewPage() {
     const survey = surveyToPublicSurvey(surveyData);
 
     // Add theme data if available with full M3 color support
-    if (themeData && themeData.colors) {
+    if (themeData) {
       survey.theme = {
         // Primary
         primaryColor: themeData.colors.primary,
@@ -145,17 +137,25 @@ export function SurveyPreviewPage() {
         backgroundColor: themeData.colors.background || themeData.colors.surface,
         textColor: themeData.colors.text || themeData.colors.onSurface,
         // Typography
-        fontFamily: themeData.typography?.fontFamily,
+        fontFamily: themeData.typography.fontFamily,
+        headingFontFamily: themeData.typography.headingFontFamily,
+        baseFontSize: themeData.typography.baseFontSize,
+        // Button
+        buttonStyle: themeData.button.style,
+        buttonTextColor: themeData.button.textColor,
         // Branding
-        logoUrl: themeData.branding?.logoUrl || themeData.logoUrl,
-        logoSize: themeData.branding?.logoSize,
-        showLogoBackground: themeData.branding?.showLogoBackground,
-        logoBackgroundColor: themeData.branding?.logoBackgroundColor,
-        brandingTitle: themeData.branding?.brandingTitle,
-        brandingSubtitle: themeData.branding?.brandingSubtitle,
+        logoUrl: themeData.branding.logoUrl,
+        logoSize: themeData.branding.logoSize,
+        showLogoBackground: themeData.branding.showLogoBackground,
+        logoBackgroundColor: themeData.branding.logoBackgroundColor,
+        brandingTitle: themeData.branding.brandingTitle,
+        brandingSubtitle: themeData.branding.brandingSubtitle,
+        showPoweredBy: themeData.branding.showPoweredBy,
         // Layout
-        backgroundImageUrl: themeData.layout?.backgroundImageUrl || themeData.backgroundImageUrl,
-        backgroundPosition: themeData.layout?.backgroundPosition,
+        backgroundImageUrl: themeData.layout.backgroundImageUrl,
+        backgroundPosition: themeData.layout.backgroundPosition !== undefined ? String(themeData.layout.backgroundPosition) : undefined,
+        showProgressBar: themeData.layout.showProgressBar,
+        progressBarStyle: themeData.layout.progressBarStyle,
       } as PublicSurveyTheme;
 
       // Apply theme customizations if they exist
@@ -175,38 +175,6 @@ export function SurveyPreviewPage() {
           }
 
           // Apply custom font if present
-          if (customizations.fontFamily) {
-            survey.theme.fontFamily = customizations.fontFamily;
-          }
-        } catch (error) {
-          console.error('Failed to parse theme customizations in preview:', error);
-        }
-      }
-    } else if (themeData) {
-      // Fallback for old theme structure
-      survey.theme = {
-        primaryColor: themeData.primaryColor || '#6750A4',
-        secondaryColor: themeData.secondaryColor || '#625B71',
-        backgroundColor: themeData.backgroundColor,
-        textColor: themeData.textColor,
-        fontFamily: themeData.fontFamily,
-        logoUrl: themeData.branding?.logoUrl || themeData.logoUrl,
-        logoSize: themeData.branding?.logoSize,
-        showLogoBackground: themeData.branding?.showLogoBackground,
-        logoBackgroundColor: themeData.branding?.logoBackgroundColor,
-        brandingTitle: themeData.branding?.brandingTitle,
-        brandingSubtitle: themeData.branding?.brandingSubtitle,
-        backgroundImageUrl: themeData.layout?.backgroundImageUrl || themeData.backgroundImageUrl,
-        backgroundPosition: themeData.layout?.backgroundPosition,
-      } as PublicSurveyTheme;
-
-      // Apply theme customizations even for old structure
-      if (surveyData.themeCustomizations) {
-        try {
-          const customizations = JSON.parse(surveyData.themeCustomizations);
-          if (customizations.colors?.background) {
-            survey.theme.backgroundColor = customizations.colors.background;
-          }
           if (customizations.fontFamily) {
             survey.theme.fontFamily = customizations.fontFamily;
           }
@@ -496,8 +464,8 @@ export function SurveyPreviewPage() {
   // Loading state
   if (!activeNamespace || isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-surface">
-        <LoadingIndicator size="lg" label={t('surveyPreview.loadingPreview')} />
+      <div className='h-screen flex items-center justify-center bg-surface'>
+        <LoadingIndicator size='lg' label={t('surveyPreview.loadingPreview')} />
       </div>
     );
   }
@@ -505,8 +473,8 @@ export function SurveyPreviewPage() {
   // Error state
   if (error || !surveyData || !publicSurvey) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center bg-surface gap-4">
-        <div className="text-error text-lg">{t('surveys.unknown')}</div>
+      <div className='h-screen flex flex-col items-center justify-center bg-surface gap-4'>
+        <div className='text-error text-lg'>{t('surveys.unknown')}</div>
         <Button onClick={() => navigate('/surveys')}>{t('surveyBuilder.backToSurveys')}</Button>
       </div>
     );
@@ -558,7 +526,7 @@ export function SurveyPreviewPage() {
       />
 
       {/* Preview Area */}
-      <main className="flex-1 flex overflow-hidden bg-surface-container-low">
+      <main className='flex-1 flex overflow-hidden bg-surface-container-low'>
         {/* Device Preview */}
         <DevicePreview
           survey={publicSurvey}

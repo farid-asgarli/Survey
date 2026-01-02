@@ -1,6 +1,6 @@
 using MediatR;
 using SurveyApp.Application.Common;
-using SurveyApp.Application.Features.Translations.Commands.BulkUpdateSurveyTranslations;
+using SurveyApp.Application.DTOs;
 
 namespace SurveyApp.Application.Features.Translations.Commands.UpdateSurveyTranslation;
 

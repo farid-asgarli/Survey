@@ -12,7 +12,6 @@ using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionB
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionRecipients;
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributions;
 using SurveyApp.Application.Features.EmailDistributions.Queries.GetDistributionStats;
-using SurveyApp.Domain.Enums;
 
 namespace SurveyApp.API.Controllers;
 

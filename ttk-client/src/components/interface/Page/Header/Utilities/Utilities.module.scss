@@ -1,0 +1,15 @@
+.page_header_utilities {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: unset;
+  padding: 5px;
+  border-radius: 16px;
+  .button-nav-list {
+    margin: auto 10px;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+}
