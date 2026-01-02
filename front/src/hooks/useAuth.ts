@@ -4,6 +4,7 @@ import { useAuthStore, getAccessToken, useTokenExpirationWarning, usePreferences
 import { authApi, usersApi, preferencesApi } from '@/services';
 import type { LoginRequest, RegisterRequest, ForgotPasswordRequest, ResetPasswordRequest, LoginResponse, RegisterResponse, User } from '@/types';
 import { defaultDashboard, defaultSurveyBuilder } from '@/stores/preferencesStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * Authentication state and error types
@@ -97,8 +98,11 @@ export interface UseAuthReturn {
  */
 export function useAuth(): UseAuthReturn {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { user, tokens, isAuthenticated, isLoading, login: setAuth, logout: clearAuth, updateUser, setTokens, checkTokenExpiration } = useAuthStore();
   const setPreferences = usePreferencesStore((s) => s.setPreferences);
+  const clearPreferencesForLogout = usePreferencesStore((s) => s.clearForLogout);
+  const storedUserId = usePreferencesStore((s) => s.userId);
 
   const { showWarning: tokenExpiringSoon, expiresIn: tokenExpiresIn } = useTokenExpirationWarning();
 
@@ -173,9 +177,11 @@ export function useAuth(): UseAuthReturn {
   /**
    * Helper to sync preferences from server after login.
    * Uses AbortSignal for cancellation support.
+   * @param userId - The ID of the user whose preferences to sync
+   * @param signal - Optional AbortSignal for cancellation
    */
   const syncPreferencesFromServer = useCallback(
-    async (signal?: AbortSignal) => {
+    async (userId: string, signal?: AbortSignal) => {
       try {
         // Check if aborted before making request
         if (signal?.aborted) return;
@@ -191,7 +197,8 @@ export function useAuth(): UseAuthReturn {
           dashboard: preferences.dashboard || defaultDashboard,
           surveyBuilder: preferences.surveyBuilder || defaultSurveyBuilder,
         };
-        setPreferences(normalizedPreferences);
+        // Pass userId to associate preferences with the current user
+        setPreferences(normalizedPreferences, userId);
       } catch (error) {
         // Only log if not aborted
         if (!signal?.aborted) {
@@ -219,10 +226,15 @@ export function useAuth(): UseAuthReturn {
           throw new Error('Component unmounted');
         }
 
+        // If logging in as a different user, clear old preferences first
+        if (storedUserId && storedUserId !== response.user.id) {
+          clearPreferencesForLogout();
+        }
+
         setAuth(response.user, response.tokens);
 
-        // Sync preferences in background (non-blocking)
-        syncPreferencesFromServer(abortController.signal);
+        // Sync preferences in background (non-blocking) - pass userId
+        syncPreferencesFromServer(response.user.id, abortController.signal);
 
         safeSetAuthState({ isLoggingIn: false });
         return response;
@@ -232,7 +244,7 @@ export function useAuth(): UseAuthReturn {
         throw error;
       }
     },
-    [setAuth, syncPreferencesFromServer, safeSetAuthState, extractError]
+    [setAuth, syncPreferencesFromServer, safeSetAuthState, extractError, storedUserId, clearPreferencesForLogout]
   );
 
   /**
@@ -252,10 +264,15 @@ export function useAuth(): UseAuthReturn {
           throw new Error('Component unmounted');
         }
 
+        // Clear any old user's preferences before setting new auth
+        if (storedUserId && storedUserId !== response.user.id) {
+          clearPreferencesForLogout();
+        }
+
         setAuth(response.user, response.tokens);
 
-        // Sync preferences in background (non-blocking)
-        syncPreferencesFromServer(abortController.signal);
+        // Sync preferences in background (non-blocking) - pass userId
+        syncPreferencesFromServer(response.user.id, abortController.signal);
 
         safeSetAuthState({ isRegistering: false });
         return response;
@@ -265,7 +282,7 @@ export function useAuth(): UseAuthReturn {
         throw error;
       }
     },
-    [setAuth, syncPreferencesFromServer, safeSetAuthState, extractError]
+    [setAuth, syncPreferencesFromServer, safeSetAuthState, extractError, storedUserId, clearPreferencesForLogout]
   );
 
   /**
@@ -280,9 +297,16 @@ export function useAuth(): UseAuthReturn {
 
     // Clear local auth state
     clearAuth();
+
+    // Clear user preferences to prevent leaking to next user
+    clearPreferencesForLogout();
+
+    // Clear all query cache to prevent data leakage between users
+    queryClient.clear();
+
     safeSetAuthState({ isLoggingOut: false });
     navigate('/login');
-  }, [clearAuth, navigate, safeSetAuthState]);
+  }, [clearAuth, clearPreferencesForLogout, queryClient, navigate, safeSetAuthState]);
 
   /**
    * Request a password reset email

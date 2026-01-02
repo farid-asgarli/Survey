@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.Extensions.Logging;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
@@ -9,12 +10,14 @@ namespace SurveyApp.Application.Features.Users.Commands.UpdateUserPreferences;
 public class UpdateUserPreferencesCommandHandler(
     IUserPreferencesRepository preferencesRepository,
     ICurrentUserService currentUserService,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    ILogger<UpdateUserPreferencesCommandHandler> logger
 ) : IRequestHandler<UpdateUserPreferencesCommand, Result<UserPreferencesDto>>
 {
     private readonly IUserPreferencesRepository _preferencesRepository = preferencesRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ILogger<UpdateUserPreferencesCommandHandler> _logger = logger;
 
     public async Task<Result<UserPreferencesDto>> Handle(
         UpdateUserPreferencesCommand request,
@@ -22,20 +25,41 @@ public class UpdateUserPreferencesCommandHandler(
     )
     {
         var userId = _currentUserService.UserId;
+        _logger.LogInformation(
+            "[DEBUG] UpdateUserPreferences started for UserId: {UserId}",
+            userId
+        );
+
         if (!userId.HasValue)
         {
+            _logger.LogWarning("[DEBUG] UserId is null - user not authenticated");
             return Result<UserPreferencesDto>.Unauthorized("Errors.UserNotAuthenticated");
         }
 
         // Get or create preferences with change tracking for updates
-        var preferences = await _preferencesRepository.GetOrCreateForUpdateAsync(
+        _logger.LogInformation(
+            "[DEBUG] Calling GetOrCreateForUpdateAsync for UserId: {UserId}",
+            userId.Value
+        );
+        var (preferences, isNewlyCreated) = await _preferencesRepository.GetOrCreateForUpdateAsync(
             userId.Value,
             cancellationToken
+        );
+
+        _logger.LogInformation(
+            "[DEBUG] GetOrCreateForUpdateAsync returned - Preferences: {PreferencesId}, IsNewlyCreated: {IsNewlyCreated}, UserId: {UserId}",
+            preferences?.Id,
+            isNewlyCreated,
+            preferences?.UserId
         );
 
         // If preferences is null, the user doesn't exist in the domain Users table
         if (preferences == null)
         {
+            _logger.LogWarning(
+                "[DEBUG] Preferences is null - user profile not found for UserId: {UserId}",
+                userId.Value
+            );
             return Result<UserPreferencesDto>.NotFound("Errors.UserProfileNotFound");
         }
 
@@ -149,8 +173,33 @@ public class UpdateUserPreferencesCommandHandler(
                 }
             }
 
-            _preferencesRepository.Update(preferences);
+            // Only call Update if this is an existing record (not newly created)
+            // Newly created records are already tracked by EF Core from AddAsync
+            if (!isNewlyCreated)
+            {
+                _logger.LogInformation(
+                    "[DEBUG] Calling Update for existing preferences Id: {PreferencesId}",
+                    preferences.Id
+                );
+                _preferencesRepository.Update(preferences);
+            }
+            else
+            {
+                _logger.LogInformation(
+                    "[DEBUG] Skipping Update - preferences were newly created and already tracked, Id: {PreferencesId}",
+                    preferences.Id
+                );
+            }
+
+            _logger.LogInformation(
+                "[DEBUG] Calling SaveChangesAsync for preferences Id: {PreferencesId}",
+                preferences.Id
+            );
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation(
+                "[DEBUG] SaveChangesAsync completed successfully for preferences Id: {PreferencesId}",
+                preferences.Id
+            );
 
             var dto = MapToDto(preferences);
             return Result<UserPreferencesDto>.Success(dto);

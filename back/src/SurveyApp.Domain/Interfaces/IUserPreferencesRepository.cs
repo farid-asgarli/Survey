@@ -57,8 +57,9 @@ public interface IUserPreferencesRepository
     /// Gets or creates user preferences for a user with change tracking enabled for updates.
     /// Creates default preferences if none exist.
     /// Returns null if the user doesn't exist in the Users table.
+    /// Returns a tuple with the preferences and a boolean indicating if it was newly created.
     /// </summary>
-    Task<UserPreferences?> GetOrCreateForUpdateAsync(
+    Task<(UserPreferences? Preferences, bool IsNewlyCreated)> GetOrCreateForUpdateAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     );

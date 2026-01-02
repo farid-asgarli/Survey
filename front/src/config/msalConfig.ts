@@ -29,7 +29,7 @@ export const createMsalConfig = (config: AzureAdConfig): Configuration => ({
   auth: {
     clientId: config.clientId || '',
     authority: config.authority || 'https://login.microsoftonline.com/common',
-    redirectUri: config.redirectUri || `${window.location.origin}/auth/azure-callback`,
+    redirectUri: config.redirectUri || window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     navigateToLoginRequestUrl: true,
   },

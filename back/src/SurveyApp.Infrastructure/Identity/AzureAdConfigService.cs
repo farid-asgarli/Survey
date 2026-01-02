@@ -33,7 +33,7 @@ public class AzureAdConfigService(IConfiguration configuration) : IAzureAdConfig
             Authority = singleTenant
                 ? $"https://login.microsoftonline.com/{tenantId}"
                 : "https://login.microsoftonline.com/common",
-            RedirectUri = $"{frontendUrl}/auth/azure-callback",
+            RedirectUri = frontendUrl + "/",
             Scopes = ["openid", "profile", "email"],
         };
     }

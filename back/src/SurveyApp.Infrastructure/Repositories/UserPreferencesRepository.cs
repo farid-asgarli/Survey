@@ -1,13 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 using SurveyApp.Infrastructure.Persistence;
 
 namespace SurveyApp.Infrastructure.Repositories;
 
-public class UserPreferencesRepository(ApplicationDbContext context) : IUserPreferencesRepository
+public class UserPreferencesRepository(
+    ApplicationDbContext context,
+    ILogger<UserPreferencesRepository> logger
+) : IUserPreferencesRepository
 {
     private readonly ApplicationDbContext _context = context;
+    private readonly ILogger<UserPreferencesRepository> _logger = logger;
 
     public async Task<UserPreferences?> GetByUserIdAsync(
         Guid userId,
@@ -90,29 +95,73 @@ public class UserPreferencesRepository(ApplicationDbContext context) : IUserPref
         return preferences;
     }
 
-    public async Task<UserPreferences?> GetOrCreateForUpdateAsync(
-        Guid userId,
-        CancellationToken cancellationToken = default
-    )
+    public async Task<(
+        UserPreferences? Preferences,
+        bool IsNewlyCreated
+    )> GetOrCreateForUpdateAsync(Guid userId, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation(
+            "[DEBUG REPO] GetOrCreateForUpdateAsync called for UserId: {UserId}",
+            userId
+        );
+
         // Use ForUpdate version for proper change tracking
         var existing = await GetByUserIdForUpdateAsync(userId, cancellationToken);
         if (existing != null)
         {
-            return existing;
+            _logger.LogInformation(
+                "[DEBUG REPO] Found existing preferences - Id: {Id}, UserId: {UserId}, EntityState will be Unchanged",
+                existing.Id,
+                existing.UserId
+            );
+
+            // Log the entity state
+            var entry = _context.Entry(existing);
+            _logger.LogInformation("[DEBUG REPO] Entity state: {State}", entry.State);
+
+            return (existing, false);
         }
+
+        _logger.LogInformation(
+            "[DEBUG REPO] No existing preferences found for UserId: {UserId}, checking if user exists",
+            userId
+        );
 
         // Check if the user exists in the Users table before creating preferences
         var userExists = await _context.Users.AnyAsync(u => u.Id == userId, cancellationToken);
+        _logger.LogInformation(
+            "[DEBUG REPO] User exists in domain Users table: {UserExists} for UserId: {UserId}",
+            userExists,
+            userId
+        );
+
         if (!userExists)
         {
             // User doesn't exist in domain Users table - can't create preferences
             // This can happen if the user exists in Identity but not in domain
-            return null;
+            _logger.LogWarning(
+                "[DEBUG REPO] User does not exist in domain Users table, returning null for UserId: {UserId}",
+                userId
+            );
+            return (null, false);
         }
 
         var preferences = UserPreferences.CreateDefault(userId);
+        _logger.LogInformation(
+            "[DEBUG REPO] Created new default preferences - Id: {Id}, UserId: {UserId}",
+            preferences.Id,
+            preferences.UserId
+        );
+
         await _context.UserPreferences.AddAsync(preferences, cancellationToken);
-        return preferences;
+
+        // Log the entity state after Add
+        var newEntry = _context.Entry(preferences);
+        _logger.LogInformation(
+            "[DEBUG REPO] New preferences entity state after AddAsync: {State}",
+            newEntry.State
+        );
+
+        return (preferences, true);
     }
 }

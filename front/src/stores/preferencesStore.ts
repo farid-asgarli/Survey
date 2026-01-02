@@ -132,6 +132,10 @@ export const COMMON_TIMEZONES = [
 
 interface PreferencesState {
   preferences: UserPreferences;
+  /** The user ID these preferences belong to - used to detect user changes */
+  userId: string | null;
+  /** Whether preferences have been fetched from the server for the current user */
+  hasFetchedFromServer: boolean;
   isLoading: boolean;
   isSaving: boolean;
   lastSyncedAt: string | null;
@@ -140,9 +144,13 @@ interface PreferencesState {
 
 interface PreferencesActions {
   // Initialization
-  setPreferences: (preferences: UserPreferences) => void;
+  setPreferences: (preferences: UserPreferences, userId?: string) => void;
   resetToDefaults: () => void;
   setHasHydrated: (state: boolean) => void;
+  /** Clear preferences when user logs out - resets to defaults and clears userId */
+  clearForLogout: () => void;
+  /** Mark that preferences have been fetched from server */
+  setHasFetchedFromServer: (fetched: boolean) => void;
 
   // Appearance
   setThemeMode: (mode: ThemeMode) => void;
@@ -299,14 +307,22 @@ export const usePreferencesStore = create<PreferencesStore>()(
       (set, get) => ({
         // Initial state
         preferences: defaultPreferences,
+        userId: null,
+        hasFetchedFromServer: false,
         isLoading: false,
         isSaving: false,
         lastSyncedAt: null,
         _hasHydrated: false,
 
         // Initialization
-        setPreferences: (preferences) => {
-          set({ preferences, lastSyncedAt: new Date().toISOString() });
+        setPreferences: (preferences, userId) => {
+          set({
+            preferences,
+            lastSyncedAt: new Date().toISOString(),
+            hasFetchedFromServer: true,
+            // Update userId if provided
+            ...(userId !== undefined && { userId }),
+          });
           // Apply all settings
           applyThemeToDocument(preferences.themeMode, preferences.colorPalette);
           applyAccessibilityToDocument(preferences.accessibility);
@@ -314,10 +330,26 @@ export const usePreferencesStore = create<PreferencesStore>()(
         },
 
         resetToDefaults: () => {
-          set({ preferences: defaultPreferences });
+          set({ preferences: defaultPreferences, hasFetchedFromServer: false });
           applyThemeToDocument(defaultPreferences.themeMode, defaultPreferences.colorPalette);
           applyAccessibilityToDocument(defaultPreferences.accessibility);
           applyLanguage(defaultPreferences.regional.language);
+        },
+
+        clearForLogout: () => {
+          set({
+            preferences: defaultPreferences,
+            userId: null,
+            hasFetchedFromServer: false,
+            lastSyncedAt: null,
+          });
+          applyThemeToDocument(defaultPreferences.themeMode, defaultPreferences.colorPalette);
+          applyAccessibilityToDocument(defaultPreferences.accessibility);
+          applyLanguage(defaultPreferences.regional.language);
+        },
+
+        setHasFetchedFromServer: (fetched) => {
+          set({ hasFetchedFromServer: fetched });
         },
 
         setHasHydrated: (state) => {
@@ -632,6 +664,8 @@ export const usePreferencesStore = create<PreferencesStore>()(
         name: 'survey-user-preferences',
         partialize: (state) => ({
           preferences: state.preferences,
+          userId: state.userId,
+          hasFetchedFromServer: state.hasFetchedFromServer,
           lastSyncedAt: state.lastSyncedAt,
         }),
         onRehydrateStorage: () => (state) => {

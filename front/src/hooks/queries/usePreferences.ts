@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { preferencesApi } from '@/services';
-import { usePreferencesStore, defaultDashboard, defaultSurveyBuilder } from '@/stores';
+import { usePreferencesStore, useAuthStore, defaultDashboard, defaultSurveyBuilder } from '@/stores';
 import { toast } from '@/components/ui';
 import type { UserPreferences, UpdateUserPreferencesRequest } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
@@ -15,11 +15,12 @@ export const preferencesKeys = createExtendedQueryKeys('preferences', (base) => 
 
 /**
  * Hook to fetch current user preferences
- * Automatically syncs with local store
+ * Automatically syncs with local store and associates with current user
  */
 export function useUserPreferences() {
   const setPreferences = usePreferencesStore((s) => s.setPreferences);
   const setLoading = usePreferencesStore((s) => s.setLoading);
+  const currentUserId = useAuthStore((s) => s.user?.id);
 
   return useQuery({
     queryKey: preferencesKeys.current(),
@@ -33,7 +34,8 @@ export function useUserPreferences() {
           dashboard: preferences.dashboard || defaultDashboard,
           surveyBuilder: preferences.surveyBuilder || defaultSurveyBuilder,
         };
-        setPreferences(normalizedPreferences);
+        // Pass currentUserId to associate these preferences with the user
+        setPreferences(normalizedPreferences, currentUserId);
         return normalizedPreferences;
       } finally {
         setLoading(false);
@@ -41,6 +43,8 @@ export function useUserPreferences() {
     },
     staleTime: STALE_TIMES.LONG,
     gcTime: STALE_TIMES.STATIC,
+    // Only fetch if user is authenticated
+    enabled: !!currentUserId,
   });
 }
 
@@ -133,13 +137,13 @@ export function useUpdatePreferences() {
  * @example
  * const syncPreferences = useSyncPreferencesOnLogin();
  * // After successful login:
- * await syncPreferences();
+ * await syncPreferences(userId);
  */
 export function useSyncPreferencesOnLogin() {
   const queryClient = useQueryClient();
   const setPreferences = usePreferencesStore((s) => s.setPreferences);
 
-  return async () => {
+  return async (userId: string) => {
     try {
       const preferences = await preferencesApi.getPreferences();
       const normalizedPreferences: UserPreferences = {
@@ -147,7 +151,8 @@ export function useSyncPreferencesOnLogin() {
         dashboard: preferences.dashboard || defaultDashboard,
         surveyBuilder: preferences.surveyBuilder || defaultSurveyBuilder,
       };
-      setPreferences(normalizedPreferences);
+      // Pass userId to associate preferences with the current user
+      setPreferences(normalizedPreferences, userId);
       queryClient.setQueryData(preferencesKeys.current(), normalizedPreferences);
     } catch (error) {
       // If fetching fails, keep local preferences
