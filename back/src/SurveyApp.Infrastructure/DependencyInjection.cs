@@ -111,6 +111,7 @@ public static class DependencyInjection
 
         // Services
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddSingleton<IAzureAdConfigService, AzureAdConfigService>();
         services.AddSingleton<IDateTimeService, DateTimeService>();
         services.AddScoped<INotificationService, EmailNotificationService>();
 

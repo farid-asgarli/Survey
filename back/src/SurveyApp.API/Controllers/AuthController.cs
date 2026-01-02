@@ -11,15 +11,15 @@ using SurveyApp.Application.Features.Auth.Commands.RefreshToken;
 using SurveyApp.Application.Features.Auth.Commands.Register;
 using SurveyApp.Application.Features.Auth.Commands.ResetPassword;
 using SurveyApp.Application.Features.Auth.Commands.UnlinkAzureAd;
+using SurveyApp.Application.Features.Auth.Queries.GetAzureAdConfig;
 
 namespace SurveyApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IMediator mediator, IConfiguration configuration) : ApiControllerBase
+public class AuthController(IMediator mediator) : ApiControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly IConfiguration _configuration = configuration;
 
     /// <summary>
     /// Register a new user
@@ -101,34 +101,11 @@ public class AuthController(IMediator mediator, IConfiguration configuration) : 
     /// </summary>
     [HttpGet("azure-ad/config")]
     [ProducesResponseType(typeof(AzureAdConfigDto), StatusCodes.Status200OK)]
-    public IActionResult GetAzureAdConfig()
+    public async Task<IActionResult> GetAzureAdConfig()
     {
-        var clientId = _configuration["AzureAd:ClientId"];
-        var tenantId = _configuration["AzureAd:TenantId"];
-        var singleTenant = _configuration.GetValue("AzureAd:SingleTenant", true);
-
-        if (string.IsNullOrEmpty(clientId))
-        {
-            return Ok(new AzureAdConfigDto { Enabled = false });
-        }
-
         var baseUrl = $"{Request.Scheme}://{Request.Host}";
-        var frontendUrl =
-            _configuration["AllowedOrigins"]?.Split(',').FirstOrDefault()?.Trim() ?? baseUrl;
-
-        return Ok(
-            new AzureAdConfigDto
-            {
-                Enabled = true,
-                ClientId = clientId,
-                TenantId = tenantId,
-                Authority = singleTenant
-                    ? $"https://login.microsoftonline.com/{tenantId}"
-                    : "https://login.microsoftonline.com/common",
-                RedirectUri = $"{frontendUrl}/auth/azure-callback",
-                Scopes = ["openid", "profile", "email"],
-            }
-        );
+        var result = await _mediator.Send(new GetAzureAdConfigQuery(baseUrl));
+        return HandleResult(result);
     }
 
     /// <summary>
