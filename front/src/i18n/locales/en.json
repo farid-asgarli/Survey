@@ -104,24 +104,24 @@
     "themeFallback": "Theme",
     "userFallback": "User",
     "greetingFallback": "there",
-    "dragToReorder": "TODO-Translate",
-    "moveUp": "TODO-Translate",
-    "moveDown": "TODO-Translate",
-    "undo": "TODO-Translate",
-    "redo": "TODO-Translate",
-    "complete": "TODO-Translate",
-    "reset": "TODO-Translate",
-    "other": "TODO-Translate",
-    "copied": "TODO-Translate",
-    "copyFailed": "TODO-Translate",
-    "operationFailed": "TODO-Translate",
-    "entityDeletedSuccess": "TODO-Translate",
-    "entityDeleteFailed": "TODO-Translate",
-    "entityDuplicatedSuccess": "TODO-Translate",
-    "entityDuplicateFailed": "TODO-Translate",
-    "item": "TODO-Translate",
-    "items": "TODO-Translate",
-    "apply": "TODO-Translate"
+    "dragToReorder": "Drag to reorder",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "undo": "Undo",
+    "redo": "Redo",
+    "complete": "Complete",
+    "reset": "Reset",
+    "other": "Other",
+    "copied": "Copied to clipboard",
+    "copyFailed": "Failed to copy",
+    "operationFailed": "Operation failed",
+    "entityDeletedSuccess": "{{entity}} deleted successfully",
+    "entityDeleteFailed": "Failed to delete {{entity}}",
+    "entityDuplicatedSuccess": "{{entity}} duplicated successfully",
+    "entityDuplicateFailed": "Failed to duplicate {{entity}}",
+    "item": "item",
+    "items": "items",
+    "apply": "Apply"
   },
   "theme": {
     "palette": {
@@ -189,7 +189,7 @@
     "description": "Quick actions for power users",
     "noShortcuts": "No shortcuts registered",
     "pressEscToClose": "Press Esc to close",
-    "willAppear": "TODO-Translate"
+    "willAppear": "Shortcuts will appear here"
   },
   "datePicker": {
     "selectDate": "Select date",
@@ -301,12 +301,12 @@
     "emailPlaceholder": "you@example.com",
     "forgotPasswordEmailPlaceholder": "you@example.com",
     "tagline": "Create and manage surveys with ease",
-    "signingIn": "TODO-Translate",
-    "signInWithMicrosoft": "TODO-Translate",
-    "authenticationFailed": "TODO-Translate",
-    "returnToLogin": "TODO-Translate",
-    "completingSignIn": "TODO-Translate",
-    "orContinueWith": "TODO-Translate"
+    "signingIn": "Signing in...",
+    "signInWithMicrosoft": "Sign in with Microsoft",
+    "authenticationFailed": "Authentication failed",
+    "returnToLogin": "Return to login",
+    "completingSignIn": "Completing sign in...",
+    "orContinueWith": "Or continue with"
   },
   "imageUploader": {
     "upload": "Upload",
@@ -520,42 +520,42 @@
       "comingSoon": "This feature is coming soon!",
       "comingSoonDescription": "We're working hard to bring this feature to you. Stay tuned!"
     },
-    "language": "TODO-Translate",
+    "language": "Language",
     "preview": {
-      "features": "TODO-Translate",
-      "scale": "TODO-Translate",
+      "features": "Features",
+      "scale": "Scale",
       "classic": {
-        "question": "TODO-Translate",
-        "option1": "TODO-Translate",
-        "option2": "TODO-Translate",
-        "option3": "TODO-Translate",
-        "option4": "TODO-Translate"
+        "question": "What is your favorite feature?",
+        "option1": "Easy to use",
+        "option2": "Great design",
+        "option3": "Fast performance",
+        "option4": "Excellent support"
       },
-      "progress": "TODO-Translate",
+      "progress": "Progress",
       "conversational": {
-        "botMessage": "TODO-Translate",
-        "userMessage": "TODO-Translate",
-        "followUp": "TODO-Translate",
-        "placeholder": "TODO-Translate"
+        "botMessage": "Hi! How can I help you today?",
+        "userMessage": "I'd like to share my feedback",
+        "followUp": "That's great! Tell me more...",
+        "placeholder": "Type your message..."
       },
       "research": {
-        "title": "TODO-Translate",
-        "subtitle": "TODO-Translate"
+        "title": "Research Study",
+        "subtitle": "Advanced analytics and insights"
       },
       "assessment": {
-        "title": "TODO-Translate",
-        "self": "TODO-Translate",
-        "manager": "TODO-Translate",
-        "peers": "TODO-Translate",
-        "reports": "TODO-Translate"
+        "title": "360° Feedback",
+        "self": "Self",
+        "manager": "Manager",
+        "peers": "Peers",
+        "reports": "Direct Reports"
       },
       "nps": {
-        "detractors": "TODO-Translate",
-        "passives": "TODO-Translate",
-        "promoters": "TODO-Translate"
+        "detractors": "Detractors (0-6)",
+        "passives": "Passives (7-8)",
+        "promoters": "Promoters (9-10)"
       },
       "csat": {
-        "rating": "TODO-Translate"
+        "rating": "Satisfaction Rating"
       }
     }
   },
@@ -669,7 +669,7 @@
         "survey": "From Survey",
         "surveyDescription": "Copy an existing survey"
       },
-      "language": "TODO-Translate"
+      "language": "Language"
     }
   },
   "themes": {
@@ -742,14 +742,14 @@
     "displayOptions": "Display Options",
     "customTheme": "Custom theme",
     "untitled": "Untitled Theme",
-    "brandColors": "TODO-Translate",
-    "surfaceColors": "TODO-Translate",
-    "surface": "TODO-Translate",
-    "textPrimary": "TODO-Translate",
-    "bodyFont": "TODO-Translate",
-    "layoutSpacing": "TODO-Translate",
-    "containerWidth": "TODO-Translate",
-    "spacing": "TODO-Translate"
+    "brandColors": "Brand Colors",
+    "surfaceColors": "Surface Colors",
+    "surface": "Surface",
+    "textPrimary": "Primary Text",
+    "bodyFont": "Body Font",
+    "layoutSpacing": "Layout & Spacing",
+    "containerWidth": "Container Width",
+    "spacing": "Spacing"
   },
   "distributions": {
     "title": "Distribute",
@@ -824,7 +824,7 @@
     "failed": "Failed",
     "recipients": "Recipients",
     "totalRecipients": "{{count}} total recipients",
-    "sentCountLabel": "TODO-Translate"
+    "sentCountLabel": "{{count}} sent"
   },
   "recipientImporter": {
     "enterEmail": "Please enter an email address",
@@ -1197,8 +1197,8 @@
       "pageBreakPerQuestion": "One Question Per Page",
       "pageBreakPerQuestionDesc": "Each question appears on its own page"
     },
-    "keyCopied": "TODO-Translate",
-    "copyFailed": "TODO-Translate"
+    "keyCopied": "API key copied to clipboard",
+    "copyFailed": "Failed to copy API key"
   },
   "workspaces": {
     "title": "Workspaces",
@@ -1673,38 +1673,38 @@
       "welcomeMessage": "Welcome Message",
       "thankYouMessage": "Thank You Message"
     },
-    "defaultLanguage": "TODO-Translate",
-    "disabled": "TODO-Translate",
-    "source": "TODO-Translate",
-    "questionsLabel": "TODO-Translate",
-    "needsWork": "TODO-Translate",
-    "editTranslations": "TODO-Translate",
-    "disable": "TODO-Translate",
-    "enable": "TODO-Translate",
-    "noLanguages": "TODO-Translate",
-    "editingTranslation": "TODO-Translate",
-    "questions": "TODO-Translate",
-    "surveyFieldsProgress": "TODO-Translate",
-    "noQuestions": "TODO-Translate",
-    "noQuestionsDesc": "TODO-Translate",
-    "languagesDescription": "TODO-Translate",
-    "export": "TODO-Translate",
-    "import": "TODO-Translate",
-    "noLanguagesDesc": "TODO-Translate",
-    "totalLanguages": "TODO-Translate",
-    "questionsCount": "TODO-Translate",
-    "untitledQuestion": "TODO-Translate",
-    "translationComplete": "TODO-Translate",
-    "translationIncomplete": "TODO-Translate",
-    "questionText": "TODO-Translate",
-    "description": "TODO-Translate",
-    "ratingLabels": "TODO-Translate",
-    "lowRatingLabel": "TODO-Translate",
-    "highRatingLabel": "TODO-Translate",
-    "optionsCount": "TODO-Translate",
-    "optionsTranslationHint": "TODO-Translate",
-    "questionsProgress": "TODO-Translate",
-    "editingFallback": "TODO-Translate"
+    "defaultLanguage": "Default Language",
+    "disabled": "Disabled",
+    "source": "Source",
+    "questionsLabel": "Questions",
+    "needsWork": "Needs work",
+    "editTranslations": "Edit Translations",
+    "disable": "Disable",
+    "enable": "Enable",
+    "noLanguages": "No languages added",
+    "editingTranslation": "Editing Translation",
+    "questions": "Questions",
+    "surveyFieldsProgress": "Survey Fields Progress",
+    "noQuestions": "No questions yet",
+    "noQuestionsDesc": "Add questions to your survey to translate them",
+    "languagesDescription": "Manage survey languages and translations",
+    "export": "Export",
+    "import": "Import",
+    "noLanguagesDesc": "Add languages to make your survey multilingual",
+    "totalLanguages": "{{count}} language(s)",
+    "questionsCount": "{{count}} question(s)",
+    "untitledQuestion": "Untitled Question",
+    "translationComplete": "Translation complete",
+    "translationIncomplete": "Translation incomplete",
+    "questionText": "Question Text",
+    "description": "Description",
+    "ratingLabels": "Rating Labels",
+    "lowRatingLabel": "Low Rating Label",
+    "highRatingLabel": "High Rating Label",
+    "optionsCount": "{{count}} option(s)",
+    "optionsTranslationHint": "Translate each option below",
+    "questionsProgress": "{{completed}}/{{total}} questions translated",
+    "editingFallback": "Editing"
   },
   "surveyBuilder": {
     "title": "Survey Builder",
@@ -1734,14 +1734,14 @@
     "toggleThemePanel": "Toggle theme panel",
     "readOnlyBanner": "This survey is published and cannot be edited. You are viewing it in read-only mode.",
     "viewOnly": "View Only",
-    "selectQuestion": "TODO-Translate",
-    "selectQuestionDesc": "TODO-Translate",
-    "add": "TODO-Translate",
-    "dragToReorder": "TODO-Translate",
-    "addFirstQuestionDesc": "TODO-Translate",
+    "selectQuestion": "Select a question",
+    "selectQuestionDesc": "Choose a question from the list to edit",
+    "add": "Add",
+    "dragToReorder": "Drag to reorder",
+    "addFirstQuestionDesc": "Click the button above to add your first question",
     "tabs": {
-      "questions": "TODO-Translate",
-      "languages": "TODO-Translate"
+      "questions": "Questions",
+      "languages": "Languages"
     }
   },
   "surveyPreview": {
@@ -1808,14 +1808,14 @@
     "completeRequired": "Please complete all required questions",
     "width": "Width",
     "height": "Height",
-    "switchPreviewLanguage": "TODO-Translate",
-    "selectLanguage": "TODO-Translate",
-    "previewLanguage": "TODO-Translate",
-    "testModeOff": "TODO-Translate"
+    "switchPreviewLanguage": "Switch preview language",
+    "selectLanguage": "Select language",
+    "previewLanguage": "Preview Language",
+    "testModeOff": "Test mode off"
   },
   "questionPreview": {
     "interactiveMode": "Interactive preview - try it out!",
-    "questionText": "TODO-Translate"
+    "questionText": "Enter your question"
   },
   "questionEditor": {
     "addQuestion": "Add Question",
@@ -2010,7 +2010,10 @@
       "columns": "Columns",
       "addRow": "Add Row",
       "addColumn": "Add Column"
-    }
+    },
+    "logic": "Logic",
+    "livePreview": "Live Preview",
+    "previewDescription": "See how your question will appear to respondents"
   },
   "conditionalLogic": {
     "title": "Conditional Logic",
@@ -2200,10 +2203,10 @@
       "orClick": "or click to browse",
       "invalidType": "Please select an image file",
       "tooLarge": "Image must be less than 5MB",
-      "updated": "TODO-Translate",
-      "removed": "TODO-Translate",
-      "title": "TODO-Translate",
-      "description": "TODO-Translate"
+      "updated": "Avatar updated successfully",
+      "removed": "Avatar removed successfully",
+      "title": "Profile Photo",
+      "description": "Choose your profile picture"
     },
     "accountInfo": "Account Information",
     "memberSince": "Member since",
@@ -2769,9 +2772,9 @@
       "fontFamily": "Font Family",
       "contentWidth": "Content Width",
       "borderRadius": "Border Radius",
-      "colors": "TODO-Translate",
-      "typography": "TODO-Translate",
-      "layout": "TODO-Translate"
+      "colors": "Colors",
+      "typography": "Typography",
+      "layout": "Layout"
     },
     "placeholders": "Placeholders",
     "placeholdersHelp": "Click to copy, then paste into text blocks",
@@ -2815,23 +2818,23 @@
       "unsubscribeText": "Unsubscribe Text",
       "unsubscribeUrl": "Unsubscribe URL",
       "columnsInfo": "Edit columns in the canvas",
-      "logo": "TODO-Translate",
-      "htmlContent": "TODO-Translate",
-      "typography": "TODO-Translate",
-      "colors": "TODO-Translate",
-      "image": "TODO-Translate",
-      "layout": "TODO-Translate",
-      "button": "TODO-Translate",
-      "vertical": "TODO-Translate",
-      "horizontal": "TODO-Translate",
-      "divider": "TODO-Translate",
-      "spacer": "TODO-Translate",
-      "preview": "TODO-Translate",
-      "columns": "TODO-Translate",
-      "stackOnMobile": "TODO-Translate",
-      "companyInfo": "TODO-Translate",
-      "address": "TODO-Translate",
-      "unsubscribe": "TODO-Translate"
+      "logo": "Logo",
+      "htmlContent": "HTML Content",
+      "typography": "Typography",
+      "colors": "Colors",
+      "image": "Image",
+      "layout": "Layout",
+      "button": "Button",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "divider": "Divider",
+      "spacer": "Spacer",
+      "preview": "Preview",
+      "columns": "Columns",
+      "stackOnMobile": "Stack on Mobile",
+      "companyInfo": "Company Info",
+      "address": "Address",
+      "unsubscribe": "Unsubscribe"
     },
     "preview": {
       "headerPlaceholder": "Header Block",
@@ -2845,38 +2848,38 @@
       "nameRequired": "Template name is required",
       "subjectRequired": "Subject is required",
       "saveFailed": "Failed to save template",
-      "loadFailed": "TODO-Translate",
-      "loadFailedDescription": "TODO-Translate",
-      "noTemplate": "TODO-Translate",
-      "noTemplateDescription": "TODO-Translate"
+      "loadFailed": "Failed to load template",
+      "loadFailedDescription": "Something went wrong while loading the template. Please try again.",
+      "noTemplate": "No template found",
+      "noTemplateDescription": "The template you're looking for doesn't exist or has been deleted."
     },
-    "blockToolbar": "TODO-Translate",
-    "columns": "TODO-Translate",
-    "addBlockHint": "TODO-Translate",
+    "blockToolbar": "Block Toolbar",
+    "columns": "Columns",
+    "addBlockHint": "Drag blocks here to add content",
     "dividerStyles": {
-      "solid": "TODO-Translate",
-      "dashed": "TODO-Translate",
-      "dotted": "TODO-Translate"
+      "solid": "Solid",
+      "dashed": "Dashed",
+      "dotted": "Dotted"
     },
-    "noBlockSelected": "TODO-Translate",
-    "selectBlockHint": "TODO-Translate",
-    "blockSettings": "TODO-Translate",
-    "toolbar": "TODO-Translate",
-    "copyHtml": "TODO-Translate",
-    "downloadHtml": "TODO-Translate",
-    "templateNameLabel": "TODO-Translate",
-    "typeLabel": "TODO-Translate",
-    "subjectLabel": "TODO-Translate",
-    "subjectPlaceholder": "TODO-Translate",
-    "preheaderTooltip": "TODO-Translate",
-    "preheaderLabel": "TODO-Translate",
-    "preheaderPlaceholder": "TODO-Translate",
-    "previewWithSampleData": "TODO-Translate",
-    "sampleDataInfo": "TODO-Translate",
-    "hideSettings": "TODO-Translate",
-    "showSettings": "TODO-Translate",
-    "placeholderCopied": "TODO-Translate",
-    "modeSwitched": "TODO-Translate"
+    "noBlockSelected": "No block selected",
+    "selectBlockHint": "Select a block to edit its settings",
+    "blockSettings": "Block Settings",
+    "toolbar": "Toolbar",
+    "copyHtml": "Copy HTML",
+    "downloadHtml": "Download HTML",
+    "templateNameLabel": "Template Name",
+    "typeLabel": "Type",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Enter email subject...",
+    "preheaderTooltip": "Preview text shown in email clients before opening",
+    "preheaderLabel": "Preheader",
+    "preheaderPlaceholder": "Enter preheader text...",
+    "previewWithSampleData": "Preview with sample data",
+    "sampleDataInfo": "Placeholders will be replaced with sample values",
+    "hideSettings": "Hide Settings",
+    "showSettings": "Show Settings",
+    "placeholderCopied": "Placeholder copied to clipboard",
+    "modeSwitched": "Editor mode switched"
   },
   "emailTemplates": {
     "title": "Email Templates",
@@ -2969,8 +2972,8 @@
       },
       "saveSuccess": "Template saved successfully",
       "saveError": "Failed to save template",
-      "visual": "TODO-Translate",
-      "code": "TODO-Translate"
+      "visual": "Visual",
+      "code": "Code"
     },
     "placeholders": {
       "recipientName": "Recipient's name",
@@ -2995,7 +2998,7 @@
     "createError": "Failed to create template",
     "updateError": "Failed to update template",
     "deleteError": "Failed to delete template",
-    "backToTemplates": "TODO-Translate"
+    "backToTemplates": "Back to Templates"
   },
   "resetPassword": {
     "title": "Reset Password",
@@ -3653,10 +3656,10 @@
         "name": "Password Protected",
         "description": "Requires password to access"
       },
-      "campaign": "TODO-Translate",
-      "campaignDescription": "TODO-Translate",
-      "qrCode": "TODO-Translate",
-      "qrCodeDescription": "TODO-Translate"
+      "campaign": "Campaign Link",
+      "campaignDescription": "Track responses by campaign source",
+      "qrCode": "QR Code",
+      "qrCodeDescription": "Scannable QR code for easy access"
     },
     "status": {
       "active": "Active",
@@ -3849,7 +3852,7 @@
       "typography": "Typography",
       "branding": "Branding",
       "advanced": "Advanced",
-      "layout": "TODO-Translate"
+      "layout": "Layout"
     },
     "quickPresets": "Quick Presets",
     "presets": {
@@ -3865,8 +3868,8 @@
       "secondary": "Secondary Color",
       "background": "Background Color",
       "text": "Text Color",
-      "accent": "TODO-Translate",
-      "surface": "TODO-Translate"
+      "accent": "Accent Color",
+      "surface": "Surface Color"
     },
     "typography": {
       "fontFamily": "Font Family",
@@ -3916,15 +3919,15 @@
     "livePreviewHint": "Changes update in real-time",
     "saveSuccess": "Theme saved successfully",
     "saveError": "Failed to save theme",
-    "brandColors": "TODO-Translate",
-    "surfaceColors": "TODO-Translate",
-    "bodyFont": "TODO-Translate",
-    "headingFont": "TODO-Translate",
-    "cornerRadius": "TODO-Translate",
-    "containerWidth": "TODO-Translate",
-    "spacing": "TODO-Translate",
-    "progressIndicator": "TODO-Translate",
-    "questionNumbers": "TODO-Translate"
+    "brandColors": "Brand Colors",
+    "surfaceColors": "Surface Colors",
+    "bodyFont": "Body Font",
+    "headingFont": "Heading Font",
+    "cornerRadius": "Corner Radius",
+    "containerWidth": "Container Width",
+    "spacing": "Spacing",
+    "progressIndicator": "Progress Indicator",
+    "questionNumbers": "Question Numbers"
   },
   "themePreview": {
     "surveyTitle": "Sample Survey",
@@ -4151,8 +4154,8 @@
     "questions_plural": "questions",
     "minutes": "min",
     "startSurvey": "Start Survey",
-    "starting": "TODO-Translate",
-    "anonymousNote": "TODO-Translate"
+    "starting": "Starting...",
+    "anonymousNote": "Your responses are anonymous"
   },
   "questionRenderers": {
     "other": "Other",
@@ -4605,10 +4608,10 @@
   "dialogs": {
     "deleteTitle": "Delete {{itemName}}?",
     "deleteDescription": "This action cannot be undone. Are you sure you want to delete this {{itemName}}?",
-    "deleteEntityTitle": "TODO-Translate",
-    "deleteEntityDescription": "TODO-Translate",
-    "confirmDescription": "TODO-Translate",
-    "confirmAction": "TODO-Translate"
+    "deleteEntityTitle": "Delete {{entity}}?",
+    "deleteEntityDescription": "This action cannot be undone. Are you sure you want to delete this {{entity}}?",
+    "confirmDescription": "Please confirm your action",
+    "confirmAction": "Confirm"
   },
   "a11y": {
     "close": "Close",
@@ -4633,15 +4636,15 @@
     "member": "Member"
   },
   "search": {
-    "placeholder": "TODO-Translate",
-    "results": "TODO-Translate",
-    "recent": "TODO-Translate",
-    "noResults": "TODO-Translate",
-    "tryDifferentKeywords": "TODO-Translate",
-    "noRecentItems": "TODO-Translate",
-    "startTyping": "TODO-Translate",
-    "toSelect": "TODO-Translate",
-    "toNavigate": "TODO-Translate",
-    "toClose": "TODO-Translate"
+    "placeholder": "Search...",
+    "results": "Results",
+    "recent": "Recent",
+    "noResults": "No results found",
+    "tryDifferentKeywords": "Try different keywords",
+    "noRecentItems": "No recent items",
+    "startTyping": "Start typing to search",
+    "toSelect": "to select",
+    "toNavigate": "to navigate",
+    "toClose": "to close"
   }
 }

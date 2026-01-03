@@ -48,7 +48,13 @@ export {
   STALE_TIMES,
   GC_TIMES,
 } from './queries/queryUtils';
-export type { EntityQueryKeys, InvalidatingMutationOptions, UpdatingMutationOptions, OptimisticMutationOptions, ApiProblemDetails } from './queries/queryUtils';
+export type {
+  EntityQueryKeys,
+  InvalidatingMutationOptions,
+  UpdatingMutationOptions,
+  OptimisticMutationOptions,
+  ApiProblemDetails,
+} from './queries/queryUtils';
 
 // React Query hooks
 export * from './queries/useUser';
@@ -74,3 +80,14 @@ export * from './useQuestionEditorTranslation';
 // Date/Time formatting
 export { useDateTimeFormatter, getDateTimePreferences } from './useDateTimeFormatter';
 export type { DateTimeFormatterFunctions } from './useDateTimeFormatter';
+
+// Media Query / Responsive hooks
+export {
+  useMediaQuery,
+  useIsMobile,
+  useIsTablet,
+  useIsDesktop,
+  useIsLargeDesktop,
+  usePrefersReducedMotion,
+  usePrefersDarkMode,
+} from './useMediaQuery';

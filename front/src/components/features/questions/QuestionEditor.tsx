@@ -1,10 +1,13 @@
 // Question Editor - M3 Expressive Design
 // Features:
-// - Shape morphing cards (rounded-2xl base)
+// - Separated cards layout (desktop: grid, mobile: tabs)
+// - Shape morphing cards with varying corner radii for hierarchy
 // - No shadows (uses border and color elevation)
 // - Semantic color tokens
 // - Rounded-full action buttons
+// - Live preview alongside editor on desktop
 
+import { useState } from 'react';
 import { useSurveyBuilderStore } from '@/stores';
 import { useDialogState, useQuestionEditorTranslation } from '@/hooks';
 import { QuestionTypeIcon, getQuestionTypeLabel } from './QuestionTypeInfo';
@@ -29,10 +32,11 @@ import {
   YesNoEditor,
 } from './editors';
 import { Switch, IconButton, Tabs, TabsList, TabsTrigger, TabsContent, Button, Tooltip, Badge } from '@/components/ui';
-import { Trash2, Copy, Eye, GitBranch, Pencil, Languages } from 'lucide-react';
+import { Trash2, Copy, Eye, GitBranch, Pencil, Languages, ChevronDown, ChevronUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { QuestionType } from '@/types';
 import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks';
 
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 
@@ -44,6 +48,8 @@ interface QuestionEditorProps {
 export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorProps) {
   const { t } = useTranslation();
   const logicDialog = useDialogState();
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const [isLogicExpanded, setIsLogicExpanded] = useState(false);
   const { survey, updateQuestion, deleteQuestion, duplicateQuestion, addOption, updateOption, deleteOption, reorderOptions } =
     useSurveyBuilderStore();
 
@@ -67,7 +73,8 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
     if ('text' in updates && updates.text !== undefined && handlers) {
       handlers.updateText(updates.text);
       // Remove text from updates to avoid double-update
-      const { text, ...rest } = updates;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { text: _, ...rest } = updates;
       if (Object.keys(rest).length > 0) {
         handlers.updateSettings(rest);
       }
@@ -76,7 +83,8 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
     if ('description' in updates && updates.description !== undefined && handlers) {
       handlers.updateDescription(updates.description);
       // Remove description from updates to avoid double-update
-      const { description, ...rest } = updates;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { description: __, ...rest } = updates;
       if (Object.keys(rest).length > 0) {
         handlers.updateSettings(rest);
       }
@@ -236,67 +244,230 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
     }
   };
 
+  // Shared values for rendering
+  const canConfigureLogic = survey?.id && !question.id.startsWith('temp_');
+
+  // ============================================================================
+  // RENDER FUNCTIONS (not components - avoids re-creation on render)
+  // ============================================================================
+
+  const renderQuestionHeader = (showLogicInline = false) => (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div
+          className={cn(
+            'w-10 h-10 rounded-2xl flex items-center justify-center transition-colors',
+            isReadOnly ? 'bg-surface-container text-on-surface-variant' : 'bg-primary-container text-on-primary-container'
+          )}
+        >
+          <QuestionTypeIcon type={question.type} className="w-5 h-5" />
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-on-surface">{getQuestionTypeLabel(question.type)}</h3>
+            {translated?.isEditingTranslation && (
+              <Badge variant={translated.isUsingFallback ? 'warning' : 'info'} size="sm" className="gap-1">
+                <Languages className="w-3 h-3" />
+                {translated.isUsingFallback
+                  ? t('localization.editingFallback', 'Editing (fallback)')
+                  : t('localization.editingTranslation', 'Editing {{lang}}', { lang: translated.editingLanguage.toUpperCase() })}
+              </Badge>
+            )}
+          </div>
+          <p className="text-xs text-on-surface-variant">
+            {t('questionEditor.questionNumber', 'Question {{number}}', { number: question.order + 1 })}
+            {question.isRequired && <span className="text-error ml-1">*</span>}
+          </p>
+        </div>
+      </div>
+
+      {!isReadOnly && (
+        <div className="flex items-center gap-2">
+          {/* Inline Logic Button - Desktop only */}
+          {showLogicInline && canConfigureLogic && (
+            <div className="flex items-center gap-2">
+              <LogicSummaryBadge questionId={question.id} surveyId={survey!.id} />
+              <Tooltip content={t('questionEditor.conditionalLogic')}>
+                <Button
+                  variant="tonal"
+                  size="sm"
+                  onClick={() => logicDialog.open()}
+                  className="bg-tertiary-container/50 text-on-tertiary-container hover:bg-tertiary-container"
+                >
+                  <GitBranch className="w-4 h-4 mr-1.5" />
+                  {t('questionEditor.logic', 'Logic')}
+                </Button>
+              </Tooltip>
+            </div>
+          )}
+          {showLogicInline && !canConfigureLogic && (
+            <Tooltip content={t('questionEditor.saveFirst')}>
+              <Button variant="tonal" size="sm" disabled className="opacity-50">
+                <GitBranch className="w-4 h-4 mr-1.5" />
+                {t('questionEditor.logic', 'Logic')}
+              </Button>
+            </Tooltip>
+          )}
+
+          {/* Duplicate/Delete Actions */}
+          <div className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full">
+            <Tooltip content={t('common.duplicate', 'Duplicate')}>
+              <IconButton
+                variant="standard"
+                size="sm"
+                aria-label={t('questionEditor.duplicateQuestion')}
+                onClick={() => duplicateQuestion(question.id)}
+              >
+                <Copy className="w-4 h-4" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content={t('common.delete', 'Delete')}>
+              <IconButton
+                variant="standard"
+                size="sm"
+                aria-label={t('questionEditor.deleteQuestion')}
+                onClick={() => deleteQuestion(question.id)}
+                className="hover:text-error hover:bg-error/8"
+              >
+                <Trash2 className="w-4 h-4" />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderEditorCard = () => (
+    <div className="bg-surface rounded-3xl border-2 border-outline-variant/40 overflow-hidden transition-all">
+      <div className="p-5">{renderEditor()}</div>
+      <div className="border-t border-outline-variant/20 bg-surface-container/30 p-4">
+        <Switch
+          label={t('questionEditor.requiredQuestion')}
+          description={t('questionEditor.requiredDescription')}
+          checked={question.isRequired}
+          onChange={(e) => handleUpdateQuestion({ isRequired: e.target.checked })}
+        />
+      </div>
+    </div>
+  );
+
+  const renderPreviewCard = (compact = false) => (
+    <div className={cn('bg-surface-container rounded-2xl border border-outline-variant/30 overflow-hidden transition-all', compact ? '' : 'h-full')}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-outline-variant/20 bg-surface-container-low/50">
+        <div className="w-8 h-8 rounded-xl bg-secondary-container flex items-center justify-center">
+          <Eye className="w-4 h-4 text-on-secondary-container" />
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-on-surface">{t('questionEditor.livePreview', 'Live Preview')}</p>
+          <p className="text-xs text-on-surface-variant">{t('questionEditor.previewDescription', 'How respondents will see this')}</p>
+        </div>
+      </div>
+      <div className={cn('p-4', compact ? '' : 'overflow-auto')}>
+        <QuestionPreview question={displayQuestion} />
+      </div>
+    </div>
+  );
+
+  const renderLogicCard = (compact = false) => {
+    if (!canConfigureLogic) {
+      return (
+        <div className="bg-surface-container-high/50 rounded-2xl border border-outline-variant/30 p-4 transition-all">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center">
+              <GitBranch className="w-4 h-4 text-on-surface-variant/50" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-on-surface-variant">{t('questionEditor.conditionalLogic')}</p>
+              <p className="text-xs text-on-surface-variant/70">{t('questionEditor.saveFirst')}</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        className={cn(
+          'bg-tertiary-container/30 rounded-2xl border border-tertiary/20 overflow-hidden transition-all',
+          isLogicExpanded && !compact ? 'ring-2 ring-tertiary/30' : ''
+        )}
+      >
+        <button
+          onClick={() => !compact && setIsLogicExpanded(!isLogicExpanded)}
+          className={cn(
+            'w-full flex items-center justify-between px-4 py-3 text-left transition-colors',
+            !compact && 'hover:bg-tertiary-container/50'
+          )}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-tertiary-container flex items-center justify-center">
+              <GitBranch className="w-4 h-4 text-on-tertiary-container" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-on-surface">{t('questionEditor.conditionalLogic')}</p>
+              <p className="text-xs text-on-surface-variant">{t('questionEditor.controlWhenAppears')}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <LogicSummaryBadge questionId={question.id} surveyId={survey!.id} />
+            {!compact &&
+              (isLogicExpanded ? (
+                <ChevronUp className="w-4 h-4 text-on-surface-variant" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-on-surface-variant" />
+              ))}
+          </div>
+        </button>
+
+        {(isLogicExpanded || compact) && (
+          <div className="px-4 pb-4 pt-2 border-t border-tertiary/10">
+            <Button variant="tonal" size="sm" onClick={() => logicDialog.open()} className="w-full justify-center">
+              <GitBranch className="w-4 h-4 mr-1.5" />
+              {t('questionEditor.configure')}
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // ============================================================================
+  // DESKTOP LAYOUT - Separated cards in grid
+  // ============================================================================
+  if (isDesktop && !isReadOnly) {
+    return (
+      <div className="h-full flex flex-col bg-surface-container-lowest">
+        {/* Header with inline Logic button */}
+        <div className="shrink-0 bg-surface border-b border-outline-variant/30 p-4">{renderQuestionHeader(true)}</div>
+
+        {/* Scrollable Content - Editor + Preview side by side */}
+        <div className="flex-1 overflow-auto p-4">
+          <div className="grid grid-cols-5 gap-4 h-full">
+            {/* Left Column - Editor (Hero) - takes 3/5 */}
+            <div className="col-span-3">{renderEditorCard()}</div>
+
+            {/* Right Column - Preview - takes 2/5 */}
+            <div className="col-span-2">{renderPreviewCard()}</div>
+          </div>
+        </div>
+
+        {/* Logic Builder Dialog */}
+        {canConfigureLogic && (
+          <LogicBuilderDialog open={logicDialog.isOpen} onOpenChange={logicDialog.setOpen} questionId={question.id} surveyId={survey!.id} />
+        )}
+      </div>
+    );
+  }
+
+  // ============================================================================
+  // MOBILE/TABLET LAYOUT - Tabbed interface (original behavior)
+  // ============================================================================
   return (
     <Tabs defaultValue={isReadOnly ? 'preview' : 'edit'} className="h-full flex flex-col bg-surface-container-lowest">
       {/* Header - Clean card-style header */}
       <div className="shrink-0 bg-surface border-b border-outline-variant/30">
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-3">
-            <div
-              className={cn(
-                'w-10 h-10 rounded-2xl flex items-center justify-center transition-colors',
-                isReadOnly ? 'bg-surface-container text-on-surface-variant' : 'bg-primary-container text-on-primary-container'
-              )}
-            >
-              <QuestionTypeIcon type={question.type} className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-on-surface">{getQuestionTypeLabel(question.type)}</h3>
-                {/* Translation indicator */}
-                {translated?.isEditingTranslation && (
-                  <Badge variant={translated.isUsingFallback ? 'warning' : 'info'} size="sm" className="gap-1">
-                    <Languages className="w-3 h-3" />
-                    {translated.isUsingFallback
-                      ? t('localization.editingFallback', 'Editing (fallback)')
-                      : t('localization.editingTranslation', 'Editing {{lang}}', { lang: translated.editingLanguage.toUpperCase() })}
-                  </Badge>
-                )}
-              </div>
-              <p className="text-xs text-on-surface-variant">
-                {t('questionEditor.questionNumber', 'Question {{number}}', { number: question.order + 1 })}
-                {question.isRequired && <span className="text-error ml-1">*</span>}
-              </p>
-            </div>
-          </div>
-
-          {/* Actions toolbar - hidden in read-only mode */}
-          {!isReadOnly && (
-            <div className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full">
-              <Tooltip content={t('common.duplicate', 'Duplicate')}>
-                <IconButton
-                  variant="standard"
-                  size="sm"
-                  aria-label={t('questionEditor.duplicateQuestion')}
-                  onClick={() => duplicateQuestion(question.id)}
-                >
-                  <Copy className="w-4 h-4" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip content={t('common.delete', 'Delete')}>
-                <IconButton
-                  variant="standard"
-                  size="sm"
-                  aria-label={t('questionEditor.deleteQuestion')}
-                  onClick={() => deleteQuestion(question.id)}
-                  className="hover:text-error hover:bg-error/8"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </IconButton>
-              </Tooltip>
-            </div>
-          )}
-        </div>
+        <div className="p-4">{renderQuestionHeader()}</div>
 
         {/* Tabs - M3 Expressive Pill style */}
         <div className="px-4 pb-3">
@@ -317,76 +488,39 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
               <Eye className="w-4 h-4" />
               {t('questionEditor.preview')}
             </TabsTrigger>
+            {!isReadOnly && (
+              <TabsTrigger
+                value="logic"
+                className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-tertiary data-[state=active]:text-on-tertiary"
+              >
+                <GitBranch className="w-4 h-4" />
+                {t('questionEditor.logic', 'Logic')}
+              </TabsTrigger>
+            )}
           </TabsList>
         </div>
       </div>
 
       {/* Content Area - Edit tab only in edit mode */}
       {!isReadOnly && (
-        <TabsContent value="edit" className="flex-1 overflow-auto">
-          {/* Editor Card - M3 shape */}
-          <div className="p-4">
-            <div className="bg-surface rounded-2xl border-2 border-outline-variant/40 overflow-hidden">
-              <div className="p-5">{renderEditor()}</div>
-
-              {/* Settings Section */}
-              <div className="border-t border-outline-variant/20 bg-surface-container/30 p-4 space-y-4">
-                {/* Required Toggle */}
-                <Switch
-                  label={t('questionEditor.requiredQuestion')}
-                  description={t('questionEditor.requiredDescription')}
-                  checked={question.isRequired}
-                  onChange={(e) => handleUpdateQuestion({ isRequired: e.target.checked })}
-                />
-
-                {/* Conditional Logic Button */}
-                {survey?.id && !question.id.startsWith('temp_') && (
-                  <div className="pt-3 border-t border-outline-variant/20">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-2xl bg-tertiary-container flex items-center justify-center">
-                          <GitBranch className="w-4 h-4 text-on-tertiary-container" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-on-surface">{t('questionEditor.conditionalLogic')}</p>
-                          <p className="text-xs text-on-surface-variant">{t('questionEditor.controlWhenAppears')}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <LogicSummaryBadge questionId={question.id} surveyId={survey.id} />
-                        <Button variant="tonal" size="sm" onClick={() => logicDialog.open()}>
-                          <GitBranch className="w-4 h-4 mr-1.5" />
-                          {t('questionEditor.configure')}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Info for unsaved questions */}
-                {question.id.startsWith('temp_') && (
-                  <div className="p-3 bg-surface-container-high/50 rounded-2xl text-sm text-on-surface-variant flex items-center gap-2">
-                    <GitBranch className="w-4 h-4 text-on-surface-variant/50 shrink-0" />
-                    <span>{t('questionEditor.saveFirst')}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        <TabsContent value="edit" className="flex-1 overflow-auto p-4">
+          {renderEditorCard()}
         </TabsContent>
       )}
 
       <TabsContent value="preview" className="flex-1 overflow-auto p-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-surface rounded-2xl border-2 border-outline-variant/40 p-6">
-            <QuestionPreview question={displayQuestion} />
-          </div>
-        </div>
+        <div className="max-w-2xl mx-auto">{renderPreviewCard(true)}</div>
       </TabsContent>
 
+      {!isReadOnly && (
+        <TabsContent value="logic" className="flex-1 overflow-auto p-4">
+          <div className="max-w-2xl mx-auto">{renderLogicCard(true)}</div>
+        </TabsContent>
+      )}
+
       {/* Logic Builder Dialog - only in edit mode */}
-      {!isReadOnly && survey?.id && !question.id.startsWith('temp_') && (
-        <LogicBuilderDialog open={logicDialog.isOpen} onOpenChange={logicDialog.setOpen} questionId={question.id} surveyId={survey.id} />
+      {!isReadOnly && canConfigureLogic && (
+        <LogicBuilderDialog open={logicDialog.isOpen} onOpenChange={logicDialog.setOpen} questionId={question.id} surveyId={survey!.id} />
       )}
     </Tabs>
   );

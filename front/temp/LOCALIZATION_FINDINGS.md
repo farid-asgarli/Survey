@@ -10,10 +10,7 @@ Import
 
 Features
 
-Language
-200+ templates
-All question types
-Advanced logic
+SURVEY_CATEGORIES
 
 1
 How satisfied are you with our service?
