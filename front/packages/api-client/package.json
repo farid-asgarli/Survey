@@ -1,0 +1,34 @@
+{
+  "name": "@survey/api-client",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "clean": "rimraf dist .turbo tsconfig.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'No lint configured for api-client package'"
+  },
+  "dependencies": {
+    "@survey/types": "workspace:*"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1",
+    "typescript": "~5.8.3"
+  }
+}

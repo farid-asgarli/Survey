@@ -1,0 +1,4701 @@
+{
+  "common": {
+    "appName": "Inquiro",
+    "loading": "Loading...",
+    "loadingApp": "Loading",
+    "signingIn": "Signing you in",
+    "loadingWorkspace": "Loading workspace",
+    "loadingPreferences": "Loading preferences",
+    "initializing": "Initializing",
+    "loadingResources": "Loading resources",
+    "preparingWorkspace": "Preparing your workspace",
+    "almostReady": "Almost ready",
+    "saving": "Saving...",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "refresh": "Refresh",
+    "viewAll": "View All",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "time": "Time",
+    "name": "Name",
+    "description": "Description",
+    "title": "Title",
+    "type": "Type",
+    "required": "Required",
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No",
+    "all": "All",
+    "none": "None",
+    "unknown": "Unknown",
+    "unknownError": "An unknown error occurred",
+    "noResults": "No results found",
+    "noOptionsFound": "No options found",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "duplicate": "Duplicate",
+    "updated": "Updated",
+    "remove": "Remove",
+    "add": "Add",
+    "clearAll": "Clear All",
+    "continue": "Continue",
+    "clearSearch": "Clear search",
+    "dismissNotification": "Dismiss notification",
+    "changeLanguage": "Change language",
+    "selectLanguage": "Select language",
+    "closeDrawer": "Close drawer",
+    "viewMode": "View mode",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "progress": "Progress",
+    "breadcrumb": "Breadcrumb",
+    "openMenu": "Open menu",
+    "notifications": "Notifications",
+    "workspaceOptions": "Workspace options",
+    "example": "Example",
+    "clearFilters": "Clear Filters",
+    "tryAgain": "Try Again",
+    "retry": "Retry",
+    "failedToLoad": "Failed to load",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "saved": "All changes saved",
+    "clickToInsert": "click to insert",
+    "insert": "Insert",
+    "done": "Done",
+    "copy": "Copy",
+    "default": "Default",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "comingSoon": "Coming Soon",
+    "disconnect": "Disconnect",
+    "connect": "Connect",
+    "email": "Email",
+    "loadMore": "Load More",
+    "select": "Select...",
+    "searchDots": "Search...",
+    "hour": "Hour",
+    "minute": "Minute",
+    "recent": "Recent",
+    "showLess": "Show less",
+    "showMore": "Show {{count}} more",
+    "public": "Public",
+    "private": "Private",
+    "timezone": "Timezone",
+    "appTitle": "Inquiro",
+    "surveyFallback": "Survey",
+    "templateFallback": "Template",
+    "themeFallback": "Theme",
+    "userFallback": "User",
+    "greetingFallback": "there",
+    "dragToReorder": "Drag to reorder",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "undo": "Undo",
+    "redo": "Redo",
+    "complete": "Complete",
+    "reset": "Reset",
+    "other": "Other",
+    "copied": "Copied to clipboard",
+    "copyFailed": "Failed to copy",
+    "operationFailed": "Operation failed",
+    "entityDeletedSuccess": "{{entity}} deleted successfully",
+    "entityDeleteFailed": "Failed to delete {{entity}}",
+    "entityDuplicatedSuccess": "{{entity}} duplicated successfully",
+    "entityDuplicateFailed": "Failed to duplicate {{entity}}",
+    "item": "item",
+    "items": "items",
+    "apply": "Apply"
+  },
+  "theme": {
+    "palette": {
+      "lavender": "Lavender",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "sunset": "Sunset",
+      "rose": "Rose",
+      "aqua": "Aqua",
+      "amber": "Amber",
+      "indigo": "Indigo",
+      "coral": "Coral",
+      "midnight": "Midnight",
+      "monochrome": "Monochrome",
+      "slate": "Slate"
+    },
+    "mode": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "lightDesc": "Always use light mode",
+      "darkDesc": "Always use dark mode",
+      "systemDesc": "Match system preference"
+    }
+  },
+  "emptyState": {
+    "surveys": {
+      "title": "Create your first survey",
+      "titleFiltered": "No surveys found",
+      "description": "Start collecting feedback by creating a new survey",
+      "descriptionFiltered": "Try adjusting your filters or search query",
+      "createButton": "Create Survey"
+    },
+    "responses": {
+      "title": "No responses yet",
+      "titleFiltered": "No responses found",
+      "description": "Responses will appear here once people start taking your survey",
+      "descriptionFiltered": "Try adjusting your filters or date range"
+    },
+    "templates": {
+      "title": "No templates yet",
+      "titleFiltered": "No templates found",
+      "description": "Create reusable templates to speed up survey creation",
+      "descriptionFiltered": "Try adjusting your search or category filter",
+      "createButton": "Create Template"
+    },
+    "search": {
+      "title": "No results found",
+      "description": "Try a different search term",
+      "descriptionWithQuery": "No results for \"{{query}}\"",
+      "placeholder": "Search surveys, templates, themes...",
+      "results": "Search Results",
+      "recent": "Recent",
+      "noResults": "No results found",
+      "tryDifferentKeywords": "Try searching with different keywords",
+      "noRecentItems": "No recent items",
+      "startTyping": "Start typing to search",
+      "toSelect": "to select",
+      "toNavigate": "to navigate",
+      "toClose": "to close",
+      "closeSearch": "Close search",
+      "openWith": "Open with"
+    }
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "description": "Quick actions for power users",
+    "noShortcuts": "No shortcuts registered",
+    "pressEscToClose": "Press Esc to close",
+    "willAppear": "Shortcuts will appear here"
+  },
+  "datePicker": {
+    "selectDate": "Select date",
+    "selectDateRange": "Select date range",
+    "noDate": "No date",
+    "dateRange": "Date range",
+    "backToCalendar": "Back to Calendar",
+    "presets": "Presets",
+    "custom": "Custom",
+    "year": "Year",
+    "clearDate": "Clear date",
+    "clearDateFilter": "Clear date filter",
+    "previousMonth": "Previous month",
+    "switchToInput": "Switch to text input",
+    "switchToCalendar": "Switch to calendar",
+    "dateFormat": "Date (YYYY-MM-DD)",
+    "invalidDate": "Invalid date format",
+    "nextMonth": "Next month",
+    "presetLabels": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7days": "Last 7 days",
+      "last30days": "Last 30 days",
+      "thisMonth": "This month",
+      "lastMonth": "Last month"
+    },
+    "weekDays": {
+      "sun": "S",
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F",
+      "sat": "S"
+    },
+    "weekDaysFull": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "monthsShort": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
+  "auth": {
+    "backToLogin": "Back to Login",
+    "signIn": "Sign in",
+    "signOut": "Log out",
+    "signUp": "Sign up",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "newPassword": "New Password",
+    "currentPassword": "Current Password",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "enterCredentials": "Enter your credentials to access your account",
+    "createYourAccount": "Create your account to get started",
+    "welcomeBack": "Welcome back",
+    "signInToContinue": "Sign in to continue to your account",
+    "joinUs": "Join thousands of teams creating better surveys",
+    "illustrationTitle": "Create surveys that inspire",
+    "illustrationSubtitle": "Gather insights, understand your audience, and make data-driven decisions.",
+    "registerIllustrationTitle": "Join our community",
+    "registerIllustrationSubtitle": "Create, distribute, and analyze surveys with powerful tools designed for teams.",
+    "loginFailed": "Login failed",
+    "invalidCredentials": "Invalid email or password",
+    "passwordResetSent": "Password reset link sent to your email",
+    "passwordResetSuccess": "Password reset successfully",
+    "registrationSuccess": "Registration successful",
+    "emailPlaceholder": "you@example.com",
+    "forgotPasswordEmailPlaceholder": "you@example.com",
+    "tagline": "Create and manage surveys with ease",
+    "signingIn": "Signing in...",
+    "signInWithMicrosoft": "Sign in with Microsoft",
+    "authenticationFailed": "Authentication failed",
+    "returnToLogin": "Return to login",
+    "completingSignIn": "Completing sign in...",
+    "orContinueWith": "Or continue with"
+  },
+  "imageUploader": {
+    "upload": "Upload",
+    "url": "URL",
+    "apply": "Apply",
+    "remove": "Remove image",
+    "selectFile": "Select file",
+    "uploading": "Uploading...",
+    "dragDrop": "Drag & drop or click to upload",
+    "maxSize": "Max {{size}}MB",
+    "errors": {
+      "invalidType": "Invalid file type. Please upload an image.",
+      "tooLarge": "File is too large. Maximum size is {{maxSize}}MB.",
+      "uploadFailed": "Upload failed. Please try again.",
+      "noUploadFunction": "Upload is not available. Please enter a URL instead."
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "surveys": "Surveys",
+    "responses": "Responses",
+    "analytics": "Analytics",
+    "templates": "Templates",
+    "themes": "Themes",
+    "distributions": "Distribute",
+    "emailTemplates": "Email Templates",
+    "recurringSurveys": "Recurring Surveys",
+    "settings": "Settings",
+    "workspaces": "Workspaces",
+    "profile": "Profile",
+    "appearance": "Appearance",
+    "openMenu": "Open menu"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "subtitle": "Here's what's happening with your surveys today.",
+    "personalWorkspace": "Personal Workspace",
+    "stats": {
+      "totalSurveys": "Total Surveys",
+      "activeSurveys": "Active Surveys",
+      "draftSurveys": "Draft Surveys",
+      "totalResponses": "Total Responses",
+      "allTimeSurveys": "All time surveys created",
+      "currentlyCollecting": "Currently collecting responses",
+      "readyToPublish": "Ready to be published",
+      "acrossAllSurveys": "Across all surveys"
+    },
+    "recentSurveys": "Recent Surveys",
+    "quickActions": "Quick Actions",
+    "createSurvey": "Create Survey",
+    "newSurvey": "New Survey",
+    "startFromScratch": "Start from scratch",
+    "useTemplate": "Use Template",
+    "preBuiltTemplates": "Pre-built templates",
+    "distribute": "Distribute",
+    "shareYourSurveys": "Share your surveys",
+    "viewAnalytics": "View Analytics",
+    "insightsReports": "Insights & reports",
+    "noSurveysYet": "No surveys yet",
+    "createFirstSurvey": "Create your first survey to get started"
+  },
+  "surveys": {
+    "title": "Surveys",
+    "description": "Create and manage your surveys",
+    "createSurvey": "Create Survey",
+    "newSurvey": "New Survey",
+    "editSurvey": "Edit Survey",
+    "deleteSurvey": "Delete Survey",
+    "duplicateSurvey": "Duplicate Survey",
+    "publishSurvey": "Publish Survey",
+    "closeSurvey": "Close Survey",
+    "archiveSurvey": "Archive Survey",
+    "surveyTitle": "Survey Title",
+    "surveyDescription": "Survey Description",
+    "questions": "Questions",
+    "responses": "responses",
+    "unknown": "Unknown Survey",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "active": "Active",
+      "closed": "Closed",
+      "archived": "Archived"
+    },
+    "empty": {
+      "title": "No surveys yet",
+      "description": "Start collecting feedback by creating a new survey",
+      "searchTitle": "No surveys found",
+      "searchDescription": "Try adjusting your search or filters"
+    },
+    "deleteConfirm": {
+      "title": "Delete Survey",
+      "description": "Are you sure you want to delete this survey? This action cannot be undone."
+    },
+    "filters": {
+      "all": "All",
+      "draft": "Drafts",
+      "published": "Published",
+      "closed": "Closed"
+    },
+    "form": {
+      "titlePlaceholder": "Enter survey title",
+      "descriptionPlaceholder": "Enter survey description (optional)",
+      "descriptionLabel": "Description (optional)",
+      "addDescription": "Add description",
+      "getStarted": "Give your survey a name to get started",
+      "createButton": "Create Survey",
+      "updateButton": "Update Survey"
+    },
+    "suggestions": {
+      "title": "Quick start suggestions",
+      "customerSatisfaction": "Customer Satisfaction Survey",
+      "employeeFeedback": "Employee Feedback Form",
+      "eventRegistration": "Event Registration",
+      "productFeedback": "Product Feedback",
+      "npsSurvey": "NPS Survey",
+      "marketResearch": "Market Research"
+    },
+    "searchPlaceholder": "Search surveys...",
+    "count": "{{count}} survey(s)",
+    "showingAll": "Showing all {{count}} surveys",
+    "showingOf": "Showing {{shown}} of {{total}} surveys",
+    "publishConfirm": "Are you sure you want to publish \"{{title}}\"? Once published, the survey will be accessible via a shareable link and can start collecting responses.",
+    "closeConfirm": "Are you sure you want to close \"{{title}}\"? The survey will stop accepting new responses.",
+    "publishSuccess": "Survey published successfully",
+    "publishError": "Failed to publish survey",
+    "closeSuccess": "Survey closed successfully",
+    "closeError": "Failed to close survey"
+  },
+  "createSurvey": {
+    "title": "Create New Survey",
+    "subtitle": "Choose a survey type to get started",
+    "selectType": "Survey Type",
+    "selectMetric": "Choose Metric",
+    "sampleQuestion": "Sample question:",
+    "categories": {
+      "classic": {
+        "name": "Classic",
+        "description": "Traditional form-style survey with all question types"
+      },
+      "customerExperience": {
+        "name": "Customer Experience",
+        "description": "Measure customer loyalty and satisfaction"
+      },
+      "conversational": {
+        "name": "Conversational",
+        "description": "Chat-style surveys for higher engagement"
+      },
+      "research": {
+        "name": "Research",
+        "description": "Advanced research methods and analysis"
+      },
+      "assessment360": {
+        "name": "360 Assessment",
+        "description": "Multi-rater employee evaluations"
+      }
+    },
+    "cxMetrics": {
+      "nps": {
+        "name": "NPS",
+        "description": "Measures customer loyalty",
+        "question": "How likely are you to recommend us to a friend?",
+        "minLabel": "Not at all likely",
+        "maxLabel": "Extremely likely"
+      },
+      "ces": {
+        "name": "CES",
+        "description": "Measures ease of experience",
+        "question": "How easy was it to resolve your issue?",
+        "minLabel": "Very difficult",
+        "maxLabel": "Very easy"
+      },
+      "csat": {
+        "name": "CSAT",
+        "description": "Measures overall satisfaction",
+        "question": "How satisfied are you with our service?",
+        "minLabel": "Very dissatisfied",
+        "maxLabel": "Very satisfied"
+      }
+    },
+    "actions": {
+      "createSurvey": "Create Survey",
+      "startMetricSurvey": "Start {{metric}} Survey",
+      "startBlank": "Start Blank",
+      "startNewMetricSurvey": "Start New {{metric}} Survey",
+      "startNewAssessment": "Start New Assessment",
+      "createNew": "Create New",
+      "wingItWithAI": "Wing It With AI",
+      "browseTemplates": "curated templates",
+      "chooseFrom": "Choose from",
+      "or": "Or,",
+      "learnMore360": "Learn more about creating a powerful 360 Assessment.",
+      "quickStart": "Quick Start {{metric}}"
+    },
+    "cxSelection": {
+      "title": "Choose Your Metric",
+      "description": "Select a customer experience metric to measure loyalty, effort, or satisfaction"
+    },
+    "defaults": {
+      "npsTitle": "Net Promoter Score Survey",
+      "cesTitle": "Customer Effort Score Survey",
+      "csatTitle": "Customer Satisfaction Survey",
+      "untitledSurvey": "Untitled {{type}} Survey"
+    },
+    "messages": {
+      "comingSoon": "This feature is coming soon!",
+      "comingSoonDescription": "We're working hard to bring this feature to you. Stay tuned!"
+    },
+    "language": "Language",
+    "preview": {
+      "features": "Features",
+      "scale": "Scale",
+      "classic": {
+        "question": "What is your favorite feature?",
+        "option1": "Easy to use",
+        "option2": "Great design",
+        "option3": "Fast performance",
+        "option4": "Excellent support"
+      },
+      "progress": "Progress",
+      "conversational": {
+        "botMessage": "Hi! How can I help you today?",
+        "userMessage": "I'd like to share my feedback",
+        "followUp": "That's great! Tell me more...",
+        "placeholder": "Type your message..."
+      },
+      "research": {
+        "title": "Research Study",
+        "subtitle": "Advanced analytics and insights"
+      },
+      "assessment": {
+        "title": "360° Feedback",
+        "self": "Self",
+        "manager": "Manager",
+        "peers": "Peers",
+        "reports": "Direct Reports"
+      },
+      "nps": {
+        "detractors": "Detractors (0-6)",
+        "passives": "Passives (7-8)",
+        "promoters": "Promoters (9-10)"
+      },
+      "csat": {
+        "rating": "Satisfaction Rating"
+      }
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Survey performance insights and response data",
+    "overview": "Overview",
+    "responseRate": "Response Rate",
+    "completionRate": "Completion Rate",
+    "averageTime": "Average Time",
+    "totalViews": "Total Views",
+    "noData": "No analytics data available",
+    "selectSurvey": "Select a survey...",
+    "selectSurveyTitle": "Select a survey",
+    "selectSurveyDesc": "Choose a survey from the dropdown to view analytics and response data",
+    "loadError": "Failed to load analytics",
+    "loadErrorDesc": "There was an error loading the analytics data. Please try again.",
+    "noResponses": "No responses yet",
+    "noResponsesDesc": "This survey hasn't received any responses. Share it to start collecting data!",
+    "viewSurvey": "View Survey",
+    "responseTrend": "Response Trend",
+    "responseTrendDesc": "Daily responses over time",
+    "responseDistribution": "Response Distribution",
+    "completionBreakdown": "Completion status breakdown",
+    "completed": "Completed",
+    "partial": "Partial",
+    "questionInsights": "Question Insights",
+    "npsQuestions": "NPS Questions",
+    "npsScore": "NPS Score",
+    "npsDescription": "Net Promoter Score breakdown",
+    "noNpsData": "No NPS data available",
+    "detractors": "Detractors",
+    "passives": "Passives",
+    "promoters": "Promoters",
+    "noTextResponses": "No text responses yet",
+    "noMatrixData": "No matrix data available",
+    "noResponseData": "No response data available",
+    "totalResponses": "Total responses",
+    "responsesCount": "{{count}} responses",
+    "matrixQuestion": "Matrix question",
+    "visualizationNotAvailable": "Analytics visualization not available for this question type",
+    "npsScoreLabel": "NPS Score",
+    "basedOnResponses": "Based on {{count}} response(s)",
+    "responseIntensity": "Response intensity:"
+  },
+  "templates": {
+    "title": "Templates",
+    "description": "Start from pre-built survey templates",
+    "useTemplate": "Use Template",
+    "preview": "Preview",
+    "createTemplate": "Create Template",
+    "searchPlaceholder": "Search templates...",
+    "public": "Public",
+    "myTemplates": "My Templates",
+    "noFound": "No templates found",
+    "noFoundFilters": "Try adjusting your filters",
+    "noFoundDesc": "Create your first template to get started",
+    "loadError": "Failed to load template",
+    "loadErrorDesc": "Please try refreshing the page",
+    "noQuestions": "No questions yet",
+    "questionsWillAppear": "Questions will appear here once added",
+    "useThis": "Use This Template",
+    "untitledQuestion": "Untitled question",
+    "useTemplateDialog": {
+      "title": "Use Template",
+      "description": "Create a new survey from this template",
+      "surveyTitle": "Survey Title",
+      "surveyTitlePlaceholder": "Enter a title for your new survey",
+      "descriptionOptional": "Description (optional)",
+      "descriptionPlaceholder": "Add a description for your survey...",
+      "addDescription": "Add description",
+      "language": "Language:",
+      "createButton": "Create Survey",
+      "infoMessage": "A new survey will be created with all questions from this template. You can customize it after creation.",
+      "questionCount": "{{count}} questions"
+    },
+    "categories": {
+      "all": "All",
+      "feedback": "Feedback",
+      "research": "Research",
+      "hr": "HR",
+      "education": "Education",
+      "marketing": "Marketing"
+    },
+    "empty": {
+      "title": "No templates available",
+      "description": "Templates will be added soon"
+    },
+    "form": {
+      "title": "Create Template",
+      "description": "Create a reusable survey template",
+      "name": "Template Name",
+      "namePlaceholder": "e.g., Customer Satisfaction Survey",
+      "templateDescription": "Description",
+      "descriptionPlaceholder": "Describe what this template is for...",
+      "descriptionHelperText": "Optional - helps others understand when to use this template",
+      "category": "Category",
+      "selectSurvey": "Select Survey",
+      "loadingSurveys": "Loading surveys...",
+      "chooseSurvey": "Choose a survey to copy",
+      "questions": "{{count}} questions",
+      "visibility": {
+        "public": "Public Template",
+        "private": "Private Template",
+        "publicDescription": "Anyone in your organization can use this",
+        "privateDescription": "Only you can see and use this template"
+      },
+      "modes": {
+        "scratch": "From Scratch",
+        "scratchDescription": "Start with a blank template",
+        "survey": "From Survey",
+        "surveyDescription": "Copy an existing survey"
+      },
+      "language": "Language"
+    }
+  },
+  "themes": {
+    "title": "Themes",
+    "description": "Customize the look and feel of your surveys",
+    "default": "Default",
+    "selected": "Selected",
+    "createTheme": "Create Theme",
+    "editTheme": "Edit Theme",
+    "deleteTheme": "Delete Theme",
+    "applyTheme": "Apply Theme",
+    "themeName": "Theme Name",
+    "preview": "Preview",
+    "colors": "Colors",
+    "primaryColor": "Primary Color",
+    "backgroundColor": "Background Color",
+    "textColor": "Text Color",
+    "searchPlaceholder": "Search themes...",
+    "system": "System",
+    "custom": "Custom",
+    "setAsDefault": "Set as Default",
+    "buttons": "buttons",
+    "theme": "theme",
+    "themes": "Themes",
+    "emptyDescription": "Create your first custom theme to personalize your surveys",
+    "empty": {
+      "title": "No themes yet",
+      "description": "Create custom themes for your surveys"
+    },
+    "appearance": "Appearance",
+    "customizeLook": "Customize your survey look",
+    "resetToDefaults": "Reset to defaults",
+    "presets": "Presets",
+    "customize": "Customize",
+    "saved": "Saved",
+    "colorPalettes": "Color Palettes",
+    "light": "Light",
+    "dark": "Dark",
+    "quickOptions": "Quick Options",
+    "progressIndicator": "Progress indicator",
+    "showProgressBar": "Show completion progress bar",
+    "questionNumbers": "Question numbers",
+    "displayQuestionNumbers": "Display Q1, Q2, etc.",
+    "typography": "Typography",
+    "cornerRadius": "Corner Radius",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "accent": "Accent",
+    "background": "Background",
+    "applySuccess": "Theme applied successfully",
+    "applyError": "Failed to apply theme",
+    "savedThemes": "Saved Themes",
+    "noSavedThemes": "No saved themes yet",
+    "createThemeDesc": "Create a custom theme to save it here",
+    "applyToSurvey": "Apply to Survey",
+    "applied": "Applied",
+    "saveAsNewTheme": "Save as New Theme",
+    "saveTheme": "Save Theme",
+    "saveThemeDesc": "Create a new theme from your customizations",
+    "themeNamePlaceholder": "My Custom Theme",
+    "saveAndApply": "Save & Apply",
+    "createSuccess": "Theme created successfully",
+    "createError": "Failed to create theme",
+    "nameRequired": "Theme name is required",
+    "saveCustomizationsFirst": "Save your customizations as a new theme first",
+    "presetNeedsSave": "Save this preset as a theme to apply it to your survey",
+    "customized": "Customized",
+    "basedOn": "Based on",
+    "reset": "Reset",
+    "displayOptions": "Display Options",
+    "customTheme": "Custom theme",
+    "untitled": "Untitled Theme",
+    "brandColors": "Brand Colors",
+    "surfaceColors": "Surface Colors",
+    "surface": "Surface",
+    "textPrimary": "Primary Text",
+    "bodyFont": "Body Font",
+    "layoutSpacing": "Layout & Spacing",
+    "containerWidth": "Container Width",
+    "spacing": "Spacing"
+  },
+  "distributions": {
+    "title": "Distribute",
+    "description": "Survey links and email campaigns",
+    "shareLink": "Share Link",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard",
+    "emailCampaign": "Email Campaign",
+    "qrCode": "QR Code",
+    "embedCode": "Embed Code",
+    "socialShare": "Share on Social Media",
+    "surveyLinks": "Survey Links",
+    "emailCampaigns": "Email Campaigns",
+    "selectSurvey": "Select survey",
+    "selectASurvey": "Select a survey",
+    "selectSurveyForLinks": "Choose a survey from the dropdown to manage distribution links",
+    "selectSurveyForEmail": "Choose a survey from the dropdown to manage email distributions",
+    "searchPlaceholder": "Search...",
+    "newDistribution": "New Distribution",
+    "untitledDistribution": "Untitled Distribution",
+    "created": "Created",
+    "viewDetails": "View Details",
+    "cancelSchedule": "Cancel Schedule",
+    "sendNow": "Send Now",
+    "sending": "Sending...",
+    "openRate": "Open rate",
+    "clickRate": "Click rate",
+    "scheduledFor": "Scheduled for",
+    "readyToSend": "Ready to send to {{count}} recipients",
+    "recipientsCount": "{{count}} recipients",
+    "statusDraft": "Draft",
+    "statusScheduled": "Scheduled",
+    "statusSending": "Sending",
+    "statusSent": "Sent",
+    "statusFailed": "Failed",
+    "statusCancelled": "Cancelled",
+    "statusAll": "All",
+    "statusPending": "Pending",
+    "statusDelivered": "Delivered",
+    "statusOpened": "Opened",
+    "statusClicked": "Clicked",
+    "statusBounced": "Bounced",
+    "noRecipients": "No recipients match your search",
+    "sendDistribution": "Send Distribution",
+    "sendConfirm": "Are you sure you want to send this distribution now? This action cannot be undone.",
+    "sendSuccess": "Distribution sent successfully",
+    "sendError": "Failed to send distribution",
+    "cancelDistribution": "Cancel Distribution",
+    "cancelConfirm": "Are you sure you want to cancel this scheduled distribution?",
+    "cancelSuccess": "Distribution cancelled successfully",
+    "cancelError": "Failed to cancel distribution",
+    "deleteDistribution": "Delete Distribution",
+    "deleteConfirm": "Are you sure you want to delete this distribution? This action cannot be undone.",
+    "deleteSuccess": "Distribution deleted successfully",
+    "deleteError": "Failed to delete distribution",
+    "noFound": "No distributions found",
+    "tryAdjustFilters": "Try adjusting your filters",
+    "createFirst": "Create your first distribution",
+    "createFirstDesc": "Send surveys via email to collect responses",
+    "distributionDetails": "Distribution Details",
+    "analytics": "Distribution Analytics",
+    "sent": "Sent",
+    "delivered": "Delivered",
+    "opened": "Opened",
+    "clicked": "Clicked",
+    "deliveryFunnel": "Delivery Funnel",
+    "performanceBreakdown": "Email performance breakdown",
+    "performanceRates": "Performance Rates",
+    "metricsComparison": "Key metrics comparison",
+    "deliveryRate": "Delivery Rate",
+    "bounced": "Bounced",
+    "failed": "Failed",
+    "recipients": "Recipients",
+    "totalRecipients": "{{count}} total recipients",
+    "sentCountLabel": "{{count}} sent"
+  },
+  "recipientImporter": {
+    "enterEmail": "Please enter an email address",
+    "invalidEmail": "Please enter a valid email address",
+    "duplicateEmail": "This email is already in the list",
+    "maxRecipientsError": "Maximum {{max}} recipients allowed",
+    "emailPlaceholder": "Enter email address...",
+    "dropCsvHere": "Drop your CSV file here",
+    "orClickToBrowse": "or click to browse",
+    "browseFiles": "Browse Files",
+    "recipientCount": "{{count}} recipient",
+    "recipientCount_plural": "{{count}} recipients",
+    "moreRecipients": "+{{count}} more",
+    "importTitle": "Import Recipients",
+    "importDescription": "Review the import results before adding to your list",
+    "validEmails": "{{count}} valid email",
+    "validEmails_plural": "{{count}} valid emails",
+    "willBeAdded": "Will be added to your recipient list",
+    "duplicatesSkipped": "{{count}} duplicate skipped",
+    "duplicatesSkipped_plural": "{{count}} duplicates skipped",
+    "alreadyInList": "Already in your list",
+    "invalidEmails": "{{count}} invalid email",
+    "invalidEmails_plural": "{{count}} invalid emails",
+    "moreInvalid": "+{{count}} more",
+    "importButton": "Import {{count}} Emails"
+  },
+  "createDistribution": {
+    "title": "Create Email Distribution",
+    "description": "Create a new email campaign to distribute your survey",
+    "descriptionWithTitle": "Distribute \"{{title}}\" via email",
+    "steps": {
+      "recipients": "Recipients",
+      "recipientsDesc": "Who receives this?",
+      "content": "Content",
+      "contentDesc": "Customize your email",
+      "schedule": "Schedule",
+      "scheduleDesc": "When to send"
+    },
+    "addRecipients": "Add Recipients",
+    "importOrAddManually": "Import emails or add them manually",
+    "noRecipientsYet": "No recipients yet",
+    "noRecipientsDesc": "Add email addresses manually or import them from a CSV file to get started",
+    "recipientsAdded": "{{count}} recipient added",
+    "recipientsAdded_plural": "{{count}} recipients added",
+    "readyToProceed": "Ready to proceed to the next step",
+    "emailContent": "Email Content",
+    "customizeMessage": "Customize your email message",
+    "chooseTemplate": "Choose a Template",
+    "senderDetails": "Sender Details",
+    "namePlaceholder": "Your Name or Company",
+    "emailPlaceholder": "reply@example.com",
+    "subjectLine": "Subject Line",
+    "subjectPlaceholder": "Enter email subject...",
+    "subjectRequired": "Subject is required",
+    "emailBody": "Email Body",
+    "bodyPlaceholder": "Write your email content...",
+    "bodyRequired": "Email body is required",
+    "surveyLinkHint": "Use {{surveyLink}} as a placeholder — it will be replaced with the actual survey link",
+    "whenToSend": "When to Send",
+    "chooseWhenEmailsGoOut": "Choose when your emails go out",
+    "sendNow": "Send Now",
+    "deliverImmediately": "Deliver immediately",
+    "scheduleLabel": "Schedule",
+    "pickDateTime": "Pick a date & time",
+    "selectDateTime": "Select Date & Time",
+    "scheduledFor": "Scheduled for",
+    "summary": "Distribution Summary",
+    "summaryRecipients": "Recipients",
+    "summarySubject": "Subject",
+    "summarySendTime": "Send Time",
+    "now": "Now",
+    "creating": "Creating...",
+    "scheduleSuccess": "Distribution scheduled successfully!",
+    "createSuccess": "Distribution created and sending!",
+    "createError": "Failed to create distribution. Please try again."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account and preferences",
+    "groups": {
+      "account": "Account",
+      "preferences": "Preferences",
+      "personalization": "Personalization",
+      "about": "About"
+    },
+    "about": {
+      "title": "About",
+      "description": "App information and onboarding",
+      "version": "Version {{version}}",
+      "buildDate": "Build Date",
+      "appInfo": "Application Info",
+      "onboardingSection": "Onboarding",
+      "onboardingDescription": "Manage your onboarding experience",
+      "onboardingStatus": "Status",
+      "onboardingCompleted": "Onboarding completed",
+      "onboardingSkipped": "Onboarding skipped",
+      "onboardingNotStarted": "Not Started",
+      "onboardingInProgress": "In Progress",
+      "restartOnboarding": "Restart Onboarding",
+      "restartOnboardingDesc": "Take the welcome tour again and reconfigure your preferences",
+      "restartSuccess": "Onboarding restarted successfully",
+      "madeWith": "Made with ❤️ by the Inquiro team",
+      "setupWizard": "Setup Wizard",
+      "setupWizardDescription": "Restart the initial setup experience",
+      "restart": "Restart",
+      "resources": "Resources",
+      "resourcesDescription": "Helpful links and documentation",
+      "documentation": "Documentation",
+      "support": "Support",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your personal information",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "avatar": {
+        "title": "Avatar",
+        "description": "Choose your profile avatar",
+        "updated": "Avatar updated successfully",
+        "removed": "Avatar removed successfully"
+      },
+      "changeAvatar": "Change Avatar",
+      "removeAvatar": "Remove Avatar",
+      "saveChanges": "Save Changes",
+      "updateSuccess": "Profile updated successfully"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Manage your account security",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDesc": "Add an extra layer of security",
+      "apiKeys": "API Keys",
+      "apiKeysDesc": "Manage your API keys",
+      "createApiKey": "Create API Key",
+      "createKey": "Create Key",
+      "apiKeyCreated": "API Key Created",
+      "apiKeyCreatedDesc": "Copy your API key now. You won't be able to see it again!",
+      "apiKeyWarning": "Make sure to copy your API key now. You won't be able to see it again.",
+      "copyKey": "Copy Key",
+      "keyCopied": "API key copied to clipboard",
+      "keyName": "Key Name",
+      "keyNamePlaceholder": "Enter a name for this key",
+      "keyScopes": "Permissions",
+      "noApiKeys": "No API keys",
+      "noApiKeysDesc": "Create your first API key to integrate with external services",
+      "deleteKey": "Delete API Key",
+      "deleteKeyConfirm": "Are you sure you want to delete this API key? This action cannot be undone.",
+      "passwordChanged": "Password changed successfully",
+      "scopes": {
+        "surveysRead": "Read Surveys",
+        "surveysReadDesc": "View survey details and questions",
+        "surveysWrite": "Write Surveys",
+        "surveysWriteDesc": "Create, edit, and delete surveys",
+        "responsesRead": "Read Responses",
+        "responsesReadDesc": "View survey responses",
+        "responsesWrite": "Write Responses",
+        "responsesWriteDesc": "Submit responses via API",
+        "analyticsRead": "Read Analytics",
+        "analyticsReadDesc": "Access survey analytics data"
+      }
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize how the app looks",
+      "theme": "Theme",
+      "lightMode": "Light",
+      "darkMode": "Dark",
+      "systemMode": "System",
+      "alwaysLight": "Always use light mode",
+      "alwaysDark": "Always use dark mode",
+      "matchSystem": "Match system preference",
+      "colorPalette": "Color Palette",
+      "colorDesc": "Pick your accent color for the interface",
+      "lavender": "Lavender",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "sunset": "Sunset",
+      "rose": "Rose",
+      "aqua": "Aqua",
+      "amber": "Amber",
+      "indigo": "Indigo",
+      "coral": "Coral",
+      "midnight": "Midnight"
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "description": "Customize accessibility features for a better experience",
+      "visual": {
+        "title": "Visual Settings",
+        "description": "Adjust visual elements to improve readability"
+      },
+      "highContrast": {
+        "title": "High Contrast Mode",
+        "description": "Increase contrast for better visibility"
+      },
+      "screenReader": {
+        "title": "Screen Reader Optimizations",
+        "description": "Enhanced focus indicators and ARIA support"
+      },
+      "motion": {
+        "title": "Motion & Animation",
+        "description": "Control animations and motion effects"
+      },
+      "reducedMotion": {
+        "title": "Reduce Motion",
+        "description": "Minimize animations and transitions"
+      },
+      "font": {
+        "title": "Font Customization",
+        "description": "Choose fonts optimized for readability"
+      },
+      "fontSize": {
+        "title": "Text Size"
+      },
+      "fontSizes": {
+        "small": "Small",
+        "medium": "Normal",
+        "large": "Large",
+        "extraLarge": "Extra Large"
+      },
+      "dyslexiaFont": {
+        "title": "Dyslexia-Friendly Font",
+        "description": "Use OpenSans font with increased spacing for easier reading"
+      },
+      "preview": {
+        "title": "Preview",
+        "sampleTitle": "Sample Heading",
+        "sampleText": "This is how your text will appear with current accessibility settings. Adjust the options above to customize your reading experience."
+      }
+    },
+    "regional": {
+      "title": "Language & Regional",
+      "description": "Set your preferred language and regional formats",
+      "language": {
+        "title": "Language",
+        "description": "Choose your preferred interface language"
+      },
+      "dateTime": {
+        "title": "Date & Time",
+        "description": "Configure how dates and times are displayed"
+      },
+      "dateFormat": {
+        "title": "Date Format"
+      },
+      "timeFormat": {
+        "title": "Time Format"
+      },
+      "timeFormats": {
+        "12h": "12-hour",
+        "24h": "24-hour"
+      },
+      "timezone": {
+        "title": "Timezone",
+        "placeholder": "Select timezone...",
+        "helper": "Used for scheduling and displaying dates/times"
+      },
+      "numbers": {
+        "title": "Number Formats",
+        "description": "Configure how numbers are displayed"
+      },
+      "decimal": {
+        "title": "Decimal Separator",
+        "dot": "Period (1.5)",
+        "comma": "Comma (1,5)"
+      },
+      "thousands": {
+        "title": "Thousands Separator",
+        "comma": "Comma",
+        "dot": "Period",
+        "space": "Space",
+        "none": "None"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configure notification preferences",
+      "emailNotifications": "Email Notifications",
+      "pushNotifications": "Push Notifications",
+      "responseAlerts": "Response Alerts",
+      "weeklyDigest": "Weekly Digest"
+    },
+    "dashboard": {
+      "title": "Dashboard & UI",
+      "description": "Customize how the app displays content",
+      "viewMode": "Default View Mode",
+      "viewModeDesc": "Choose how surveys and lists are displayed by default",
+      "gridView": "Grid View",
+      "listView": "List View",
+      "listingPreferences": "Listing Preferences",
+      "listingPreferencesDesc": "Configure how items are displayed in lists",
+      "itemsPerPage": "Items Per Page",
+      "itemsPerPageHint": "More items means more content at once, but may affect performance",
+      "sortBy": "Sort By",
+      "sortOrder": "Order",
+      "sortByUpdated": "Last Updated",
+      "sortByCreated": "Date Created",
+      "sortByTitle": "Title",
+      "sortByStatus": "Status",
+      "sortByResponses": "Response Count",
+      "ascending": "Ascending (A-Z, Old-New)",
+      "descending": "Descending (Z-A, New-Old)",
+      "items6": "6 items",
+      "items12": "12 items",
+      "items18": "18 items",
+      "items24": "24 items",
+      "items36": "36 items",
+      "items48": "48 items",
+      "sidebarBehavior": "Sidebar Behavior",
+      "sidebarBehaviorDesc": "Control sidebar default state",
+      "collapsedByDefault": "Collapsed by Default",
+      "collapsedByDefaultDesc": "Start with the sidebar minimized for more content space",
+      "homeWidgets": "Home Page Widgets",
+      "homeWidgetsDesc": "Choose which widgets to display on your dashboard",
+      "widgetStats": "Statistics Overview",
+      "widgetStatsDesc": "Show survey counts and response totals",
+      "widgetRecent": "Recent Surveys",
+      "widgetRecentDesc": "Quick access to recently updated surveys",
+      "widgetQuickActions": "Quick Actions",
+      "widgetQuickActionsDesc": "Buttons for common tasks like creating surveys",
+      "widgetPinned": "Pinned Surveys",
+      "widgetPinnedDesc": "Show your pinned surveys for quick access",
+      "widgetAnalytics": "Analytics Summary",
+      "widgetAnalyticsDesc": "Overview of response trends and metrics"
+    },
+    "surveyBuilder": {
+      "title": "Survey Builder",
+      "description": "Set defaults for creating new surveys",
+      "questionDefaults": "Question Defaults",
+      "questionDefaultsDesc": "Default settings applied to new questions",
+      "requiredByDefault": "Required by Default",
+      "requiredByDefaultDesc": "New questions will be marked as required",
+      "showDescriptions": "Show Question Descriptions",
+      "showDescriptionsDesc": "Display description field for each question",
+      "numberingStyle": "Question Numbering",
+      "numberingStyleDesc": "Choose how questions are numbered in surveys",
+      "numberingNumbers": "Numbers (1, 2, 3...)",
+      "numberingLetters": "Letters (A, B, C...)",
+      "numberingNone": "No Numbering",
+      "defaultTheme": "Default Theme",
+      "defaultThemeDesc": "Theme automatically applied to new surveys",
+      "selectTheme": "Select a theme...",
+      "noDefaultTheme": "No default (use system theme)",
+      "defaultMessages": "Default Messages",
+      "defaultMessagesDesc": "Pre-fill welcome and thank you messages for new surveys",
+      "welcomeMessage": "Welcome Message",
+      "welcomeMessagePlaceholder": "Enter default welcome message for new surveys...",
+      "thankYouMessage": "Thank You Message",
+      "thankYouMessagePlaceholder": "Enter default thank you message for new surveys...",
+      "autoSave": "Auto-Save",
+      "autoSaveDesc": "Automatically save changes while editing surveys",
+      "autoSaveDisabled": "Disabled",
+      "autoSave15s": "Every 15 seconds",
+      "autoSave30s": "Every 30 seconds",
+      "autoSave1m": "Every 1 minute",
+      "autoSave2m": "Every 2 minutes",
+      "autoSave5m": "Every 5 minutes",
+      "pageBreakBehavior": "Page Break Behavior",
+      "pageBreakBehaviorDesc": "Control how survey pages are structured",
+      "pageBreakAuto": "Automatic",
+      "pageBreakAutoDesc": "System decides optimal page breaks based on question count",
+      "pageBreakManual": "Manual",
+      "pageBreakManualDesc": "Only add page breaks where you explicitly place them",
+      "pageBreakPerQuestion": "One Question Per Page",
+      "pageBreakPerQuestionDesc": "Each question appears on its own page"
+    },
+    "keyCopied": "API key copied to clipboard",
+    "copyFailed": "Failed to copy API key"
+  },
+  "workspaces": {
+    "title": "Workspaces",
+    "description": "Manage your workspaces and teams",
+    "workspace": "workspace",
+    "workspaces": "workspaces",
+    "createWorkspace": "Create Workspace",
+    "createNewWorkspace": "Create New Workspace",
+    "newWorkspace": "New Workspace",
+    "editWorkspace": "Edit Workspace",
+    "deleteWorkspace": "Delete Workspace",
+    "workspaceName": "Workspace Name",
+    "selectWorkspace": "Select Workspace",
+    "selectWorkspaceDesc": "Choose a workspace from the sidebar to view and manage surveys",
+    "members": "Members",
+    "inviteMember": "Invite Member",
+    "role": "Role",
+    "active": "Active",
+    "settings": "Workspace settings",
+    "switchTo": "Switch to this workspace",
+    "switchedTo": "Switched to {{name}}",
+    "welcome": "Welcome!",
+    "welcomeDescription": "Create your first workspace to start building surveys and collaborating with your team.",
+    "createFirst": "Create Your First Workspace",
+    "tryAdjustSearch": "Try adjusting your search terms",
+    "searchPlaceholder": "Search workspaces...",
+    "loadError": "Failed to load workspaces",
+    "loadErrorDesc": "Something went wrong. Please try again.",
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    },
+    "empty": {
+      "title": "No workspaces yet",
+      "description": "Create a workspace to collaborate with your team"
+    },
+    "create": {
+      "title": "Create New Workspace",
+      "description": "Set up a new workspace to organize your surveys and collaborate with your team.",
+      "nameLabel": "Workspace Name",
+      "namePlaceholder": "My Awesome Workspace",
+      "urlLabel": "Workspace URL",
+      "urlHelper": "This will be used in your workspace URL",
+      "descriptionLabel": "Description (Optional)",
+      "descriptionPlaceholder": "Brief description of this workspace...",
+      "proTip": "Pro tip",
+      "proTipText": "You can invite team members to your workspace after it's created from the workspace settings.",
+      "creating": "Creating...",
+      "success": "Workspace created successfully!",
+      "error": "Failed to create workspace"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name must be less than 100 characters",
+      "slugRequired": "Slug is required",
+      "slugFormat": "Slug can only contain lowercase letters, numbers, and hyphens",
+      "slugMinLength": "Slug must be at least 2 characters",
+      "slugMaxLength": "Slug must be less than 50 characters"
+    },
+    "team": {
+      "title": "Team Members",
+      "description": "Manage who has access to this workspace",
+      "invite": "Invite Member",
+      "inviteTitle": "Invite Team Member",
+      "inviteDescription": "Send an invitation to join this workspace",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "colleague@example.com",
+      "roleLabel": "Role",
+      "selectRole": "Select a role",
+      "roleDescriptions": {
+        "admin": "Admins can manage surveys and view all responses",
+        "member": "Members can create and manage their own surveys",
+        "viewer": "Viewers can only view surveys and responses"
+      },
+      "sendInvitation": "Send Invitation",
+      "sending": "Sending...",
+      "invitationSent": "Invitation sent to {{email}}",
+      "inviteError": "Failed to send invitation",
+      "removeTitle": "Remove Member",
+      "removeConfirm": "Are you sure you want to remove {{name}} from this workspace? They will lose access to all resources.",
+      "removeFromWorkspace": "Remove from workspace",
+      "removeSuccess": "Member removed successfully",
+      "removeError": "Failed to remove member",
+      "noMembers": "No team members yet",
+      "noMembersDesc": "Invite team members to collaborate on this workspace",
+      "inviteFirst": "Invite your first member",
+      "failedToLoad": "Failed to load members",
+      "tryAgain": "Try again",
+      "you": "(You)"
+    }
+  },
+  "questions": {
+    "title": "Questions",
+    "addQuestion": "Add Question",
+    "editQuestion": "Edit Question",
+    "deleteQuestion": "Delete Question",
+    "questionText": "Question Text",
+    "questionType": "Question Type",
+    "required": "Required",
+    "types": {
+      "text": "Text",
+      "textarea": "Long Text",
+      "number": "Number",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "select": "Dropdown",
+      "radio": "Multiple Choice",
+      "checkbox": "Checkboxes",
+      "rating": "Rating",
+      "scale": "Scale",
+      "file": "File Upload"
+    },
+    "options": "Options",
+    "addOption": "Add Option",
+    "placeholder": "Placeholder"
+  },
+  "publicSurvey": {
+    "submit": "Submit",
+    "submitSuccess": "Thank you for your response!",
+    "submitError": "Failed to submit. Please try again.",
+    "required": "Required",
+    "requiredField": "This field is required",
+    "surveyNotFound": "Survey not found",
+    "surveyClosed": "This survey is closed",
+    "alreadySubmitted": "You have already submitted a response",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Thank you for taking the time to complete this survey. Your feedback is valuable to us!",
+    "continue": "Continue",
+    "closeMessage": "You can safely close this window.",
+    "questionCount": "{{count}} questions",
+    "questionOfTotal": "Question {{current}} of {{total}}",
+    "answeredCount": "{{count}} answered",
+    "submitting": "Submitting...",
+    "submitSurvey": "Submit Survey",
+    "fixErrors": "Please fix the errors above before submitting.",
+    "back": "Back",
+    "next": "Next",
+    "errorTitle": "Survey Not Available",
+    "errorMessage": "This survey is either not found, has expired, or is no longer accepting responses.",
+    "resumeTitle": "Continue Where You Left Off?",
+    "resumeDescription": "We found your previous progress on this survey. Would you like to continue from where you left off, or start fresh?",
+    "continueSurvey": "Continue Survey",
+    "startFresh": "Start Fresh",
+    "placeholders": {
+      "yourAnswer": "Your answer"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "notFound": "Page not found",
+    "notFoundDesc": "The page you're looking for doesn't exist",
+    "unauthorized": "Unauthorized",
+    "unauthorizedDesc": "You don't have permission to access this page",
+    "accessDenied": "Access Denied",
+    "accessDeniedDesc": "You don't have permission to access this resource",
+    "networkError": "Network error",
+    "networkErrorDesc": "Please check your internet connection",
+    "serverError": "Server Error",
+    "serverErrorDesc": "An unexpected error has occurred. Please try again later.",
+    "goHome": "Go Home",
+    "goBack": "Go Back",
+    "tryAgain": "Try Again",
+    "showDetails": "Show Technical Details",
+    "hideDetails": "Hide Technical Details",
+    "thinkBug": "Think this is a bug?",
+    "reportIssue": "Report this issue",
+    "errorId": "Error ID",
+    "unsupportedQuestionType": "Unsupported question type: {{type}}"
+  },
+  "validation": {
+    "required": "This field is required",
+    "fieldRequired": "{{field}} is required",
+    "questionRequired": "This question is required",
+    "email": "Please enter a valid email address",
+    "emailRequired": "Email is required",
+    "phone": "Please enter a valid phone number",
+    "url": "Please enter a valid URL",
+    "number": "Please enter a valid number",
+    "minLength": "Must be at least {{count}} characters",
+    "maxLength": "Must be no more than {{count}} characters",
+    "maxCharacters": "Maximum {{max}} characters allowed",
+    "minValue": "Value must be at least {{min}}",
+    "maxValue": "Value must be at most {{max}}",
+    "valueBetween": "Value must be between {{min}} and {{max}}",
+    "mustBeBetween": "Must be between {{min}} and {{max}}",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordUppercase": "Password must contain an uppercase letter",
+    "passwordLowercase": "Password must contain a lowercase letter",
+    "passwordNumber": "Password must contain a number",
+    "passwordSpecial": "Password must contain a special character",
+    "passwordMismatch": "Passwords do not match",
+    "confirmPasswordRequired": "Please confirm your password",
+    "currentPasswordRequired": "Current password is required",
+    "invalidFormat": "Invalid format",
+    "invalidTimeFormat": "Invalid time format",
+    "invalidEmail": "Invalid email",
+    "invalidPhone": "Invalid phone number",
+    "invalidUrl": "Invalid URL",
+    "invalidAnswer": "Invalid answer",
+    "selectAtLeastOne": "Please select at least one option",
+    "answerAllRows": "Please answer all rows",
+    "operatorRequired": "Operator is required",
+    "actionRequired": "Action is required",
+    "titleRequired": "Title is required",
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "nameMaxLength": "Name must be less than {{max}} characters",
+    "categoryRequired": "Category is required",
+    "templateNameRequired": "Template name is required",
+    "keyNameRequired": "Key name is required",
+    "scopeRequired": "At least one scope is required",
+    "slugRequired": "URL slug is required",
+    "slugMinLength": "Slug must be at least 2 characters",
+    "slugMaxLength": "Slug must be less than {{max}} characters",
+    "slugFormat": "Slug must be lowercase alphanumeric with hyphens",
+    "linksRequired": "Number of links is required",
+    "primaryColorRequired": "Primary color is required",
+    "backgroundColorRequired": "Background color is required"
+  },
+  "password": {
+    "requirements": {
+      "minChars": "At least 8 characters",
+      "uppercase": "Contains uppercase letter",
+      "lowercase": "Contains lowercase letter",
+      "number": "Contains number",
+      "specialChar": "Contains special character (!@#$%^&*)"
+    },
+    "strength": {
+      "veryWeak": "Very weak",
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "validation": {
+      "confirmRequired": "Please confirm your password",
+      "mismatch": "Passwords do not match",
+      "currentRequired": "Current password is required",
+      "newRequired": "New password is required",
+      "requirements": "Password must be at least 8 characters with uppercase, lowercase, and number"
+    },
+    "toast": {
+      "success": "Password updated successfully",
+      "failed": "Failed to update password",
+      "failedTitle": "Password Update Failed"
+    },
+    "title": "Change Password",
+    "description": "Update your password to keep your account secure",
+    "successMessage": "Your password has been changed successfully!",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "updating": "Updating...",
+    "updatePassword": "Update Password"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "daysAgo": "{{count}} days ago",
+    "weeksAgo": "{{count}} weeks ago",
+    "monthsAgo": "{{count}} months ago"
+  },
+  "recurringSurveys": {
+    "title": "Recurring Surveys",
+    "description": "Schedule surveys to run automatically on a recurring basis",
+    "createSchedule": "Create Schedule",
+    "editSchedule": "Edit Schedule",
+    "searchPlaceholder": "Search recurring surveys...",
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "paused": "Paused",
+      "totalRuns": "Total Runs"
+    },
+    "upcomingRuns": "Upcoming Runs",
+    "soon": "Soon",
+    "noUpcoming": "No upcoming runs scheduled",
+    "runNow": "Run Now",
+    "pause": "Pause",
+    "resume": "Resume",
+    "viewHistory": "View History",
+    "runHistory": "Run History",
+    "responsesCollected": "Responses collected",
+    "loadHistoryError": "Failed to load history",
+    "loadHistoryErrorDesc": "Something went wrong while loading the run history.",
+    "noRuns": "No runs yet",
+    "noRunsDesc": "This recurring survey hasn't run yet. The first run will be triggered according to the schedule.",
+    "recipientCount": "{{count}} recipient(s)",
+    "nextRun": "Next Run",
+    "lastRun": "Last Run",
+    "totalRuns": "Total Runs",
+    "pauseTooltip": "Pause recurring survey",
+    "resumeTooltip": "Resume recurring survey",
+    "triggerTooltip": "Trigger immediate run",
+    "viewHistoryTooltip": "View run history",
+    "cronExpression": "Cron Expression",
+    "cronHelp": "Use standard cron format: minute hour day-of-month month day-of-week",
+    "timeSettings": "Time Settings",
+    "sendTimeInfo": "The survey will be sent at {{time}} in the {{timezone}} timezone.",
+    "audience": "Audience",
+    "pausedStateHint": "If unchecked, the schedule will be created in a paused state",
+    "deleteConfirm": {
+      "title": "Delete Recurring Survey",
+      "description": "Are you sure you want to delete this recurring survey? This action cannot be undone."
+    },
+    "triggerConfirm": {
+      "title": "Trigger Immediate Run",
+      "description": "This will start a new survey run immediately. Are you sure?"
+    },
+    "tabs": {
+      "all": "All",
+      "active": "Active",
+      "paused": "Paused"
+    },
+    "empty": {
+      "title": "No recurring surveys",
+      "description": "Create a recurring survey to automatically send surveys on a schedule."
+    },
+    "loadError": "Failed to load recurring surveys",
+    "loadErrorDesc": "Something went wrong. Please try again.",
+    "notRunYet": "This recurring survey hasn't run yet. It will start collecting responses on its scheduled date.",
+    "editTitle": "Edit Recurring Schedule",
+    "editDescription": "Update the schedule settings for this recurring survey.",
+    "createTitle": "Create Recurring Survey",
+    "createDescription": "Set up a survey to run automatically on a schedule.",
+    "form": {
+      "selectSurvey": "Select a survey",
+      "surveyRequired": "Please select a survey",
+      "scheduleName": "Schedule Name",
+      "scheduleNamePlaceholder": "e.g., Weekly Customer Feedback",
+      "nameRequired": "Name is required",
+      "frequency": "Frequency",
+      "startDate": "Start date",
+      "endDate": "End Date",
+      "time": "Time",
+      "sendTime": "Send Time",
+      "timezone": "Timezone",
+      "daysOfWeekHelper": "Select one or more days",
+      "dayOfMonth": "Day of Month",
+      "daysAfterSend": "Days After Initial Send",
+      "maxReminders": "Max Reminders",
+      "maxRuns": "Max Runs",
+      "maxRunsPlaceholder": "Unlimited",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "biWeekly": "Bi-weekly (every 2 weeks)",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly (every 3 months)",
+      "custom": "Custom (cron expression)",
+      "activeByDefault": "Active by default",
+      "activeByDefaultDesc": "If unchecked, the schedule will be created in paused state",
+      "validation": {
+        "selectSurvey": "Please select a survey",
+        "validTime": "Please enter a valid time (HH:mm)"
+      },
+      "daysOfWeek": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "audienceType": {
+        "staticList": "Static Email List",
+        "allContacts": "All Contacts"
+      },
+      "timezones": {
+        "utc": "UTC",
+        "eastern": "Eastern Time (ET)",
+        "central": "Central Time (CT)",
+        "mountain": "Mountain Time (MT)",
+        "pacific": "Pacific Time (PT)",
+        "london": "London (GMT/BST)",
+        "paris": "Paris (CET/CEST)",
+        "berlin": "Berlin (CET/CEST)",
+        "tokyo": "Tokyo (JST)",
+        "shanghai": "Shanghai (CST)",
+        "singapore": "Singapore (SGT)",
+        "sydney": "Sydney (AEST/AEDT)"
+      }
+    }
+  },
+  "localization": {
+    "switchLanguage": "Switch editing language",
+    "selectLanguage": "Select language",
+    "surveyLanguages": "Survey Languages",
+    "languageCount": "{{count}} language(s)",
+    "languageCount_one": "{{count}} language",
+    "languageCount_other": "{{count}} languages",
+    "questionCount": "{{count}} question(s)",
+    "questionCount_one": "{{count}} question",
+    "questionCount_other": "{{count}} questions",
+    "default": "Default",
+    "fallback": "Fallback",
+    "addLanguage": "Add Language",
+    "manageLanguages": "Manage Languages",
+    "manageLanguagesDesc": "Add and manage survey translations",
+    "editingIn": "Editing in {{language}}",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "notTranslated": "Not translated",
+    "translationProgress": "Translation Progress",
+    "fieldsTranslated": "{{count}} of {{total}} fields translated",
+    "overallProgress": "{{percent}}% translated",
+    "fullyTranslated": "Fully translated",
+    "translatingFrom": "Translating from {{source}}",
+    "surveyFields": "Survey: {{translated}}/{{total}}",
+    "questionFields": "Questions: {{translated}}/{{total}}",
+    "clickToEdit": "Click on a language to edit its translations",
+    "addLanguageTitle": "Add Language",
+    "addLanguageDescription": "Add a new language translation to this survey",
+    "selectLanguageToAdd": "Select language to add",
+    "searchLanguages": "Search languages...",
+    "popularLanguages": "Popular Languages",
+    "allLanguages": "All Languages",
+    "autoTranslate": "Auto-translate from default language",
+    "autoTranslateDesc": "Use machine translation to create initial translations (you can edit them later)",
+    "languageAlreadyExists": "This language already exists",
+    "addLanguageSuccess": "Language added successfully",
+    "addLanguageError": "Failed to add language",
+    "removeLanguage": "Remove Language",
+    "removeLanguageConfirm": "Are you sure you want to remove {{language}}? All translations for this language will be deleted.",
+    "removeLanguageSuccess": "Language removed successfully",
+    "setAsDefault": "Set as Default",
+    "setAsDefaultConfirm": "Are you sure you want to set {{language}} as the default language?",
+    "setAsDefaultSuccess": "Default language changed successfully",
+    "cannotRemoveDefault": "Cannot remove the default language",
+    "cannotRemoveOnlyLanguage": "Cannot remove the only language",
+    "languageEnabled": "Enabled",
+    "languageDisabled": "Disabled",
+    "enableLanguage": "Enable for respondents",
+    "disableLanguage": "Disable for respondents",
+    "missingTranslations": "Missing: {{fields}}",
+    "allFieldsTranslated": "All fields translated",
+    "languages": {
+      "en": "English",
+      "es": "Spanish",
+      "fr": "French",
+      "de": "German",
+      "it": "Italian",
+      "pt": "Portuguese",
+      "nl": "Dutch",
+      "pl": "Polish",
+      "ru": "Russian",
+      "az": "Azerbaijani",
+      "zh": "Chinese",
+      "ja": "Japanese",
+      "ko": "Korean",
+      "ar": "Arabic",
+      "hi": "Hindi",
+      "tr": "Turkish"
+    },
+    "editTranslation": "Edit Translation...",
+    "translateTo": "Translate to {{language}}",
+    "sourceLanguage": "Source: {{language}}",
+    "noContent": "No content",
+    "needsTranslation": "Needs translation",
+    "enterTranslation": "Enter translation...",
+    "surveyDetails": "Survey Details",
+    "autoTranslateHint": "Auto-translate feature coming soon!",
+    "loadingTranslations": "Loading translations...",
+    "errorLoading": "Failed to load translations",
+    "errorLoadingDesc": "Please try again later",
+    "noTranslation": "Translation not found",
+    "noTranslationDesc": "This language translation does not exist yet",
+    "editTranslationDesc": "Translate survey content from the default language",
+    "fieldsLabel": "fields",
+    "surveyFieldsTooltip": "Survey title, description, messages",
+    "questionsTooltip": "Question text and options",
+    "fields": {
+      "title": "Survey Title",
+      "description": "Description",
+      "welcomeMessage": "Welcome Message",
+      "thankYouMessage": "Thank You Message"
+    },
+    "defaultLanguage": "Default Language",
+    "disabled": "Disabled",
+    "source": "Source",
+    "questionsLabel": "Questions",
+    "needsWork": "Needs work",
+    "editTranslations": "Edit Translations",
+    "disable": "Disable",
+    "enable": "Enable",
+    "noLanguages": "No languages added",
+    "editingTranslation": "Editing Translation",
+    "questions": "Questions",
+    "surveyFieldsProgress": "Survey Fields Progress",
+    "noQuestions": "No questions yet",
+    "noQuestionsDesc": "Add questions to your survey to translate them",
+    "languagesDescription": "Manage survey languages and translations",
+    "export": "Export",
+    "import": "Import",
+    "noLanguagesDesc": "Add languages to make your survey multilingual",
+    "totalLanguages": "{{count}} language(s)",
+    "questionsCount": "{{count}} question(s)",
+    "untitledQuestion": "Untitled Question",
+    "translationComplete": "Translation complete",
+    "translationIncomplete": "Translation incomplete",
+    "questionText": "Question Text",
+    "description": "Description",
+    "ratingLabels": "Rating Labels",
+    "lowRatingLabel": "Low Rating Label",
+    "highRatingLabel": "High Rating Label",
+    "optionsCount": "{{count}} option(s)",
+    "optionsTranslationHint": "Translate each option below",
+    "questionsProgress": "{{completed}}/{{total}} questions translated",
+    "editingFallback": "Editing"
+  },
+  "surveyBuilder": {
+    "title": "Survey Builder",
+    "backToSurveys": "Back to Surveys",
+    "questions": "Questions",
+    "noQuestions": "No questions yet",
+    "addFirstQuestion": "Click the + button to add your first question",
+    "unsavedChanges": "Unsaved Changes",
+    "unsavedChangesDesc": "You have unsaved changes. Are you sure you want to leave?",
+    "discardChanges": "Discard Changes",
+    "keepEditing": "Keep Editing",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "unsaved": "Unsaved",
+    "settings": "Survey Settings",
+    "settingsAriaLabel": "Settings",
+    "welcomeMessage": "Welcome Message",
+    "welcomeMessageDesc": "Shown to respondents before they start the survey",
+    "thankYouMessage": "Thank You Message",
+    "thankYouMessageDesc": "Shown to respondents after they submit",
+    "preview": "Preview",
+    "undo": "Undo",
+    "redo": "Redo",
+    "themes": "Themes",
+    "addQuestion": "Add Question",
+    "untitledSurvey": "Untitled Survey",
+    "toggleThemePanel": "Toggle theme panel",
+    "readOnlyBanner": "This survey is published and cannot be edited. You are viewing it in read-only mode.",
+    "viewOnly": "View Only",
+    "selectQuestion": "Select a question",
+    "selectQuestionDesc": "Choose a question from the list to edit",
+    "add": "Add",
+    "dragToReorder": "Drag to reorder",
+    "addFirstQuestionDesc": "Click the button above to add your first question",
+    "tabs": {
+      "questions": "Questions",
+      "languages": "Languages"
+    }
+  },
+  "surveyPreview": {
+    "title": "Preview",
+    "backToEditor": "Back to editor",
+    "testMode": "Test Mode",
+    "displayMode": "Display Mode",
+    "displayModeDesc": "How questions appear to respondents",
+    "testModeDesc": "No data is saved",
+    "keyboardHintsDesc": "Show keyboard shortcuts",
+    "resetPreview": "Reset preview",
+    "submitPreview": "Submit preview",
+    "responsivePreview": "Responsive preview",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile",
+    "testSubmitSuccess": "Test submission successful! In a real survey, this response would be saved.",
+    "testSubmitError": "Test submission failed",
+    "loadingPreview": "Loading preview...",
+    "previewSettings": "Preview settings",
+    "oneByOne": "One by One",
+    "allAtOnce": "All at Once",
+    "testModeLabel": "Test Mode",
+    "questionCount": "{{count}} questions",
+    "questionProgress": "Question {{current}} of {{total}}",
+    "answeredCount": "{{count}} answered",
+    "responseRecorded": "Your response has been recorded",
+    "testSubmissionMessage": "This is a test submission. No data has been saved.",
+    "previewAgain": "Preview Again",
+    "customDimensions": "Custom Dimensions",
+    "toggleOrientation": "Toggle orientation",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset zoom",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "mode": "mode",
+    "showQRCode": "Show QR code",
+    "captureScreenshot": "Capture screenshot",
+    "keyboardMode": "Keyboard navigation mode",
+    "keyboardHints": "Show keyboard hints",
+    "toggleResponses": "Toggle response summary",
+    "toggleFullscreen": "Toggle fullscreen",
+    "responseSummary": "Response Summary",
+    "answered": "answered",
+    "notAnswered": "Not answered yet",
+    "noQuestions": "No questions in this survey",
+    "progress": "Progress",
+    "qrCodeTitle": "Preview on Device",
+    "qrCodeDescription": "Scan this QR code to test the survey on your phone or tablet",
+    "scanOrCopy": "Scan the code or copy the link below",
+    "copyLink": "Copy Link",
+    "openInNewTab": "Open in New Tab",
+    "linkCopied": "Link copied to clipboard",
+    "linkCopyError": "Failed to copy link",
+    "screenshotInfo": "Screenshot feature",
+    "screenshotSuccess": "Screenshot saved successfully",
+    "screenshotHint": "For full screenshot support, install html2canvas package",
+    "screenshotError": "Failed to capture screenshot",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "nextField": "Next field",
+    "submit": "Submit",
+    "navigate": "Navigate",
+    "completeRequired": "Please complete all required questions",
+    "width": "Width",
+    "height": "Height",
+    "switchPreviewLanguage": "Switch preview language",
+    "selectLanguage": "Select language",
+    "previewLanguage": "Preview Language",
+    "testModeOff": "Test mode off"
+  },
+  "questionPreview": {
+    "interactiveMode": "Interactive preview - try it out!",
+    "questionText": "Enter your question",
+    "answered": "Answer recorded"
+  },
+  "preview": {
+    "responsive": "Responsive",
+    "desktop": "Desktop",
+    "mobile": "Mobile"
+  },
+  "questionEditor": {
+    "addQuestion": "Add Question",
+    "closeMenu": "Close menu",
+    "searchTypes": "Search question types...",
+    "noTypesFound": "No question types found",
+    "tryDifferentSearch": "Try a different search term",
+    "dragToReorder": "Drag to reorder",
+    "toggleOptions": "Toggle options",
+    "required": "Required",
+    "conditionalLogic": "Conditional Logic",
+    "controlWhenAppears": "Control when this question appears",
+    "questionText": "Question text",
+    "questionDescription": "Question description (optional)",
+    "placeholder": "Placeholder text",
+    "question": "Question",
+    "questionNumber": "Question {{number}}",
+    "duplicateQuestion": "Duplicate question",
+    "deleteQuestion": "Delete question",
+    "edit": "Edit",
+    "preview": "Preview",
+    "configure": "Configure",
+    "requiredQuestion": "Required question",
+    "requiredDescription": "Respondents must answer this question",
+    "saveFirst": "Save the survey first to add conditional logic to this question",
+    "unknownType": "Unknown question type: {{type}}",
+    "helperText": {
+      "text": "Short answer text input",
+      "textarea": "Multi-line text for longer responses",
+      "number": "Numeric input only",
+      "email": "Email address with validation",
+      "phone": "Phone number input",
+      "date": "Date picker",
+      "time": "Time picker",
+      "select": "Dropdown with single selection",
+      "radio": "Single choice from options",
+      "checkbox": "Multiple choices allowed",
+      "rating": "Star or numeric rating",
+      "scale": "Linear scale selection",
+      "ranking": "Drag to reorder items by preference",
+      "matrix": "Grid of questions with same options",
+      "file": "File upload"
+    },
+    "common": {
+      "enterQuestion": "Enter your question",
+      "addHelpText": "Add help text or context",
+      "textBelowQuestion": "This text appears below the question",
+      "placeholderLabel": "Placeholder text",
+      "enterPlaceholder": "Enter placeholder text",
+      "shownInsideField": "Shown inside the input field",
+      "shownInsideTextArea": "Shown inside the text area",
+      "maxCharacters": "Maximum characters",
+      "maxCharsAllowed": "Maximum number of characters allowed",
+      "descriptionOptional": "Description (optional)"
+    },
+    "text": {
+      "placeholderDefault": "Enter placeholder text"
+    },
+    "email": {
+      "placeholderDefault": "Enter email address",
+      "validationMessage": "Validation message",
+      "validationPlaceholder": "Please enter a valid email address",
+      "validationHelper": "Shown when email validation fails"
+    },
+    "phone": {
+      "formatLabel": "Phone Number Format",
+      "validationMessage": "Validation message",
+      "validationPlaceholder": "Please enter a valid phone number",
+      "validationHelper": "Shown when phone validation fails",
+      "customPatternHelper": "Leave empty to use the selected preset",
+      "formats": {
+        "international": "International",
+        "internationalDesc": "International format with country code (e.g., +1 234 567 8900)",
+        "usCanada": "US/Canada",
+        "usCanadaDesc": "US/Canada format (e.g., (555) 123-4567)",
+        "uk": "UK",
+        "ukDesc": "UK format (e.g., 07911 123456)",
+        "european": "European",
+        "europeanDesc": "General European format",
+        "digitsOnly": "Digits Only",
+        "digitsOnlyDesc": "Only digits, 7-15 characters (e.g., 5551234567)",
+        "flexible": "Flexible",
+        "flexibleDesc": "Allows various formats with optional country code",
+        "anyFormat": "Any format"
+      }
+    },
+    "url": {
+      "placeholderDefault": "https://example.com",
+      "validationMessage": "Validation message",
+      "validationPlaceholder": "Please enter a valid URL",
+      "validationHelper": "Shown when URL validation fails",
+      "customPatternHelper": "Leave empty to use the selected preset",
+      "formats": {
+        "standard": "Standard URL",
+        "standardDesc": "Full URL with protocol (e.g., https://example.com)",
+        "flexible": "Flexible URL",
+        "flexibleDesc": "URL with optional protocol"
+      }
+    },
+    "number": {
+      "placeholderDefault": "Enter a number",
+      "minValue": "Minimum value",
+      "maxValue": "Maximum value",
+      "noMinimum": "No minimum",
+      "noMaximum": "No maximum",
+      "leaveEmptyMin": "Leave empty for no minimum",
+      "leaveEmptyMax": "Leave empty for no maximum",
+      "formats": {
+        "integer": "Integer",
+        "integerDesc": "Whole numbers only",
+        "decimal": "Decimal",
+        "decimalDesc": "Numbers with optional decimal places",
+        "positive": "Positive Number",
+        "positiveDesc": "Positive numbers only"
+      }
+    },
+    "validation": {
+      "presets": {
+        "usZipCode": "US Zip Code",
+        "usZipCodeDesc": "5-digit or ZIP+4 format",
+        "ukPostcode": "UK Postcode",
+        "ukPostcodeDesc": "UK postcode format",
+        "alphanumeric": "Alphanumeric",
+        "alphanumericDesc": "Letters and numbers only",
+        "lettersOnly": "Letters Only",
+        "lettersOnlyDesc": "Only letters (no numbers or special characters)"
+      }
+    },
+    "rating": {
+      "lowLabel": "Low rating label",
+      "lowPlaceholder": "Poor",
+      "highLabel": "High rating label",
+      "highPlaceholder": "Excellent",
+      "style": "Rating Style",
+      "styles": {
+        "stars": "Stars",
+        "hearts": "Hearts",
+        "thumbs": "Thumbs",
+        "smileys": "Smileys",
+        "numbers": "Numbers"
+      }
+    },
+    "yesNo": {
+      "style": "Display Style",
+      "styles": {
+        "text": "Text",
+        "thumbs": "Thumbs Up/Down",
+        "toggle": "Toggle Switch",
+        "checkX": "Check/X"
+      }
+    },
+    "scale": {
+      "minValue": "Minimum value",
+      "maxValue": "Maximum value",
+      "lowLabel": "Low end label",
+      "lowPlaceholder": "Not at all likely",
+      "highLabel": "High end label",
+      "highPlaceholder": "Extremely likely"
+    },
+    "ranking": {
+      "randomize": "Randomize initial order",
+      "randomizeDesc": "Start with options in random order"
+    },
+    "choice": {
+      "randomize": "Randomize options",
+      "randomizeDesc": "Show options in random order",
+      "addOther": "Add \"Other\" option",
+      "addOtherDesc": "Allow respondents to enter a custom answer",
+      "otherLabel": "Other option label",
+      "otherPlaceholder": "Other"
+    },
+    "file": {
+      "maxFiles": "Max files",
+      "maxFilesHelper": "Maximum files per response",
+      "maxSizeHelper": "Per file limit"
+    },
+    "options": {
+      "addOption": "Add Option",
+      "optionPlaceholder": "Option {{number}}",
+      "allowOther": "Allow 'Other' option",
+      "minValue": "Minimum value",
+      "maxValue": "Maximum value",
+      "step": "Step",
+      "minLabel": "Minimum label",
+      "maxLabel": "Maximum label",
+      "maxRating": "Maximum rating",
+      "ratingStyle": "Rating style",
+      "stars": "Stars",
+      "numbers": "Numbers",
+      "hearts": "Hearts",
+      "rows": "Rows",
+      "columns": "Columns",
+      "addRow": "Add Row",
+      "addColumn": "Add Column"
+    },
+    "logic": "Logic",
+    "livePreview": "Live Preview",
+    "previewDescription": "See how your question will appear to respondents"
+  },
+  "conditionalLogic": {
+    "title": "Conditional Logic",
+    "description": "Add rules to control when this question appears based on previous answers",
+    "currentQuestion": "Current Question",
+    "unknownQuestion": "Unknown Question",
+    "enableLogic": "Enable conditional logic",
+    "logicRules": "Logic Rules",
+    "noRules": "No logic rules defined",
+    "addRuleToStart": "Add rules to control when this question appears",
+    "addFirstRule": "Add First Rule",
+    "dragToReorder": "Drag rules to reorder execution priority",
+    "validationIssues": "Logic Validation Issues",
+    "addRule": "Add Rule",
+    "saveRule": "Save Rule",
+    "deleteRule": "Delete rule",
+    "editRule": "Edit rule",
+    "if": "If",
+    "then": "Then",
+    "and": "And",
+    "or": "Or",
+    "show": "Show",
+    "hide": "Hide",
+    "skip": "Skip",
+    "jumpTo": "Jump to",
+    "equals": "equals",
+    "notEquals": "not equals",
+    "contains": "contains",
+    "greaterThan": "greater than",
+    "lessThan": "less than",
+    "isEmpty": "is empty",
+    "isNotEmpty": "is not empty",
+    "isAnswered": "is answered",
+    "isNotAnswered": "is not answered",
+    "after": "After",
+    "before": "Before",
+    "legend": "Legend",
+    "operators": {
+      "equals": "Equals",
+      "notEquals": "Does not equal",
+      "contains": "Contains",
+      "notContains": "Does not contain",
+      "greaterThan": "Greater than",
+      "greaterThanOrEquals": "Greater than or equals",
+      "lessThan": "Less than",
+      "lessThanOrEquals": "Less than or equals",
+      "isEmpty": "Is empty",
+      "isNotEmpty": "Is not empty",
+      "isAnswered": "Is answered",
+      "isNotAnswered": "Is not answered",
+      "after": "After",
+      "onOrAfter": "On or after",
+      "before": "Before",
+      "onOrBefore": "On or before"
+    },
+    "operatorLabels": {
+      "equals": "equals",
+      "notEquals": "does not equal",
+      "contains": "contains",
+      "notContains": "does not contain",
+      "greaterThan": "is greater than",
+      "greaterThanOrEquals": "is greater than or equal to",
+      "lessThan": "is less than",
+      "lessThanOrEquals": "is less than or equal to",
+      "isEmpty": "is empty",
+      "isNotEmpty": "is not empty",
+      "isAnswered": "is answered",
+      "isNotAnswered": "is not answered"
+    },
+    "actionLabels": {
+      "show": "Show question",
+      "hide": "Hide question",
+      "skip": "Skip question",
+      "jumpTo": "Jump to question",
+      "endSurvey": "End survey"
+    },
+    "actions": {
+      "show": "Show this question",
+      "hide": "Hide this question",
+      "skip": "Skip to question",
+      "jumpTo": "Jump to question",
+      "endSurvey": "End survey"
+    },
+    "form": {
+      "ifAnswerTo": "If answer to",
+      "condition": "Condition",
+      "value": "Value",
+      "action": "Action",
+      "targetQuestion": "Target Question",
+      "skipTo": "Skip to",
+      "selectQuestion": "Select a question...",
+      "selectCondition": "Select condition...",
+      "selectValue": "Select a value...",
+      "enterValue": "Enter value...",
+      "selectAction": "Select action...",
+      "selectTargetQuestion": "Select question...",
+      "conditionSection": "Define the condition",
+      "actionSection": "Define the action"
+    }
+  },
+  "apiKeys": {
+    "title": "API Keys",
+    "description": "Manage API keys for programmatic access to your account",
+    "createKey": "Create API Key",
+    "createNew": "Create New Key",
+    "createDesc": "Create a new API key for programmatic access",
+    "createSuccess": "API key created successfully",
+    "deleteSuccess": "API key deleted",
+    "keyName": "Key Name",
+    "keyNamePlaceholder": "Enter a name for this key",
+    "permissions": "Permissions",
+    "selectScopes": "Select at least one scope",
+    "noKeys": "No API keys",
+    "noKeysDesc": "Create your first API key to integrate with external services",
+    "keyCreated": "API Key Created",
+    "keyCreatedDesc": "Copy your API key now. You won't be able to see it again!",
+    "copyKey": "Copy Key",
+    "keyCopied": "API key copied to clipboard",
+    "deleteKey": "Delete API Key",
+    "deleteKeyConfirm": "Are you sure you want to delete this API key? This action cannot be undone.",
+    "keyDeleted": "API key deleted",
+    "validation": {
+      "nameRequired": "Please enter a name for the API key",
+      "scopeRequired": "Please select at least one scope"
+    },
+    "scopes": {
+      "surveys:read": "Read surveys",
+      "surveys:write": "Create and edit surveys",
+      "responses:read": "Read responses",
+      "responses:write": "Submit responses",
+      "analytics:read": "Read analytics"
+    },
+    "documentation": "API Documentation",
+    "documentationDesc": "Learn how to use the Survey API to create surveys, collect responses, and access analytics programmatically.",
+    "viewDocs": "View Documentation"
+  },
+  "twoFactor": {
+    "title": "Two-Factor Authentication",
+    "description": "Add an extra layer of security to your account",
+    "enabled": "2FA is enabled",
+    "disabled": "Disabled",
+    "notEnabled": "2FA is not enabled",
+    "recommendation": "We strongly recommend enabling two-factor authentication for added security",
+    "enable": "Enable Two-Factor Authentication",
+    "disable": "Disable 2FA",
+    "enableTitle": "Enable Two-Factor Authentication",
+    "enableDesc": "Choose your preferred method for two-factor authentication",
+    "disableTitle": "Disable Two-Factor Authentication",
+    "disableDesc": "This will make your account less secure. Are you sure you want to disable 2FA?",
+    "authenticatorApp": "Authenticator App",
+    "authenticatorAppDesc": "Use Google Authenticator or similar apps",
+    "sms": "SMS",
+    "smsDesc": "Receive codes via text message",
+    "emailMethod": "Email",
+    "emailMethodDesc": "Receive codes via email",
+    "enabledSuccess": "Two-factor authentication enabled",
+    "disabledSuccess": "Two-factor authentication disabled",
+    "usingMethod": "Using {{method}} verification",
+    "backupCodesRemaining": "{{count}} backup codes remaining",
+    "regenerateBackupCodes": "Regenerate Backup Codes"
+  },
+  "profile": {
+    "title": "Personal Information",
+    "description": "Update your personal details and email address",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "john@example.com",
+    "saveChanges": "Save Changes",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile",
+    "toast": {
+      "updateSuccess": "Profile updated successfully",
+      "updateFailed": "Failed to update profile",
+      "updateFailedTitle": "Profile Update Failed",
+      "avatarUpdated": "Avatar updated successfully",
+      "avatarRemoved": "Avatar removed successfully"
+    },
+    "emailChangeNotice": "Changing your email will require verification",
+    "editProfile": "Edit Profile",
+    "avatar": {
+      "change": "Change Avatar",
+      "remove": "Remove",
+      "dragDrop": "Drag and drop your image here",
+      "orClick": "or click to browse",
+      "invalidType": "Please select an image file",
+      "tooLarge": "Image must be less than 5MB",
+      "updated": "Avatar updated successfully",
+      "removed": "Avatar removed successfully",
+      "title": "Profile Photo",
+      "description": "Choose your profile picture"
+    },
+    "accountInfo": "Account Information",
+    "memberSince": "Member since",
+    "lastUpdated": "Last updated"
+  },
+  "offline": {
+    "message": "You're offline. Some features may be unavailable.",
+    "backOnline": "You're back online!",
+    "retry": "Retry",
+    "dismiss": "Dismiss"
+  },
+  "passwordChange": {
+    "title": "Change Password",
+    "description": "Use a strong password with at least 8 characters including uppercase, lowercase, and numbers",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "changeButton": "Update Password",
+    "success": "Password changed successfully",
+    "error": "Password change failed",
+    "placeholders": {
+      "current": "Enter current password",
+      "new": "Enter new password",
+      "confirm": "Confirm new password"
+    },
+    "strength": {
+      "tooShort": "Too short",
+      "addMore": "Add uppercase, lowercase, and numbers",
+      "good": "Good - add special characters for extra security",
+      "strong": "Strong password"
+    },
+    "validation": {
+      "currentRequired": "Current password is required",
+      "newRequired": "New password is required",
+      "minLength": "Password must be at least 8 characters",
+      "complexity": "Password must contain uppercase, lowercase, and number",
+      "confirmRequired": "Please confirm your password",
+      "mismatch": "Passwords do not match"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "description": "Manage your email notification preferences",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications",
+    "allDisabled": "All email notifications disabled",
+    "aboutTitle": "About Notifications",
+    "aboutDescription": "We'll never send you spam. You can unsubscribe from any notification at any time. Critical security notifications cannot be disabled.",
+    "settings": {
+      "allEmails": {
+        "title": "All Email Notifications",
+        "description": "Master toggle for all email notifications"
+      },
+      "responseAlerts": {
+        "title": "Survey Response Alerts",
+        "description": "Get notified when someone responds to your survey"
+      },
+      "completionAlerts": {
+        "title": "Survey Completion Alerts",
+        "description": "Get notified when someone completes your survey"
+      },
+      "newResponses": {
+        "title": "New Responses",
+        "description": "Get notified when someone completes your survey"
+      },
+      "weeklyDigest": {
+        "title": "Weekly Summary Digest",
+        "description": "Receive a weekly summary of your survey performance"
+      },
+      "distributionReports": {
+        "title": "Distribution Reports",
+        "description": "Get delivery reports for email distributions"
+      },
+      "marketing": {
+        "title": "Marketing & Updates",
+        "description": "Tips, product updates, and occasional promotional content"
+      },
+      "surveyMilestones": {
+        "title": "Survey Milestones",
+        "description": "Get notified when surveys reach response milestones"
+      },
+      "teamActivity": {
+        "title": "Team Activity",
+        "description": "Updates about team member actions in shared workspaces"
+      },
+      "productUpdates": {
+        "title": "Product Updates",
+        "description": "Learn about new features and improvements"
+      },
+      "securityAlerts": {
+        "title": "Security Alerts",
+        "description": "Important notifications about your account security"
+      }
+    },
+    "saveSuccess": "Notification preferences saved"
+  },
+  "surveyLinks": {
+    "title": "Survey Links",
+    "createLink": "Create Survey Link",
+    "generateLink": "Generate Link",
+    "bulkGenerate": "Bulk Generate",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard",
+    "linkCopyError": "Failed to copy link",
+    "expirationDate": "Expiration Date",
+    "noExpiration": "No expiration",
+    "responseLimit": "Response Limit",
+    "responseLimitDesc": "Maximum number of responses for this link",
+    "unlimited": "Unlimited",
+    "passwordProtection": "Password Protection",
+    "passwordProtectionDesc": "Require a password to access the survey",
+    "password": "Password",
+    "trackCampaign": "Track campaign performance",
+    "utmParameters": "UTM Parameters",
+    "utmSource": "UTM Source",
+    "utmMedium": "UTM Medium",
+    "utmCampaign": "UTM Campaign",
+    "bulkLinks": {
+      "title": "Generate Bulk Links",
+      "description": "Create multiple unique links at once",
+      "numberOfLinks": "Number of Links",
+      "prefix": "Link prefix (optional)",
+      "generate": "Generate Links",
+      "download": "Download CSV"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "expired": "Expired",
+      "limitReached": "Limit reached"
+    },
+    "deleteConfirm": {
+      "title": "Delete Link",
+      "description": "Are you sure you want to delete this link? This action cannot be undone."
+    },
+    "deactivateConfirm": {
+      "title": "Deactivate Link",
+      "description": "Are you sure you want to deactivate this link? It can be reactivated later."
+    }
+  },
+  "qrCode": {
+    "title": "QR Code",
+    "download": "Download QR Code",
+    "print": "Print QR Code",
+    "style": {
+      "light": "Light",
+      "dark": "Dark",
+      "brand": "Brand"
+    },
+    "filename": "Filename",
+    "filenamePlaceholder": "survey-qr-code",
+    "downloadAs": "Download as PNG",
+    "printQR": "Print",
+    "close": "Close",
+    "tips": {
+      "title": "Tips for printing",
+      "tip1": "Use high-quality paper for best scanning results",
+      "tip2": "Ensure good contrast between QR code and background",
+      "tip3": "Test the QR code before distributing",
+      "tip4": "Minimum recommended size: 2cm x 2cm"
+    }
+  },
+  "qrCodeDialog": {
+    "sizes": {
+      "small": "Small (200px)",
+      "medium": "Medium (300px)",
+      "large": "Large (400px)",
+      "xlarge": "X-Large (500px)"
+    },
+    "toast": {
+      "copied": "QR code copied to clipboard",
+      "copyFailed": "Failed to copy QR code",
+      "downloaded": "QR code downloaded",
+      "downloadFailed": "Failed to download QR code"
+    },
+    "title": "QR Code",
+    "description": "Download or share the QR code for your survey",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "brand": "Brand"
+    },
+    "downloadSize": "Download Size",
+    "selectSize": "Select size",
+    "downloadPNG": "Download PNG",
+    "openSurvey": "Open Survey",
+    "tips": {
+      "title": "Tips for QR Codes",
+      "tip1": "Use X-Large size for posters and banners",
+      "tip2": "Ensure good contrast between QR and background",
+      "tip3": "Test the code before printing",
+      "tip4": "Minimum recommended size: 2cm x 2cm"
+    }
+  },
+  "emailDistribution": {
+    "title": "Email Distribution",
+    "createNew": "New Distribution",
+    "steps": {
+      "recipients": "Recipients",
+      "compose": "Compose",
+      "schedule": "Schedule",
+      "review": "Review"
+    },
+    "recipients": {
+      "title": "Add Recipients",
+      "description": "Add email addresses to send the survey to",
+      "noRecipients": "No recipients yet",
+      "addManually": "Add manually or import from CSV",
+      "importCsv": "Import CSV",
+      "dropCsv": "Drop your CSV file here",
+      "orClickBrowse": "or click to browse",
+      "alreadyInList": "Already in your list",
+      "invalidEmail": "Invalid email address",
+      "duplicateEmail": "Duplicate email"
+    },
+    "compose": {
+      "title": "Compose Email",
+      "description": "Customize your email message",
+      "subject": "Subject",
+      "fromName": "From Name",
+      "fromNamePlaceholder": "Your Name or Company",
+      "replyTo": "Reply-to Email",
+      "preview": "Preview Email"
+    },
+    "schedule": {
+      "title": "Schedule Delivery",
+      "description": "Choose when to send your survey",
+      "sendNow": "Send immediately",
+      "sendLater": "Schedule for later",
+      "scheduledFor": "Scheduled for"
+    }
+  },
+  "linkAnalytics": {
+    "title": "Link Analytics",
+    "description": "Performance metrics for this link",
+    "clicks": "Clicks",
+    "responses": "Responses",
+    "conversion": "Conversion Rate",
+    "error": {
+      "title": "Failed to load analytics",
+      "description": "Something went wrong. Please try again."
+    },
+    "uniqueClicks": "Unique Clicks",
+    "topCountries": "Top Countries",
+    "clicksOverTime": "Clicks Over Time",
+    "tabs": {
+      "geography": "Geography",
+      "device": "Device",
+      "referrer": "Referrer"
+    },
+    "geoDistribution": "Geographic Distribution",
+    "noGeoData": "No geographic data available yet",
+    "deviceBreakdown": "Device Breakdown",
+    "noDeviceData": "No device data available yet",
+    "noReferrerData": "No referrer data available yet",
+    "direct": "Direct",
+    "details": {
+      "created": "Created",
+      "type": "Type",
+      "name": "Name",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "expires": "Expires",
+      "maxResponses": "Max Responses",
+      "passwordProtected": "Password Protected",
+      "utmSource": "UTM Source",
+      "utmMedium": "UTM Medium",
+      "utmCampaign": "UTM Campaign"
+    },
+    "loading": "Loading analytics...",
+    "geographic": "Geographic Distribution",
+    "devices": "Device Breakdown",
+    "trafficSources": "Traffic Sources",
+    "linkDetails": "Link Details",
+    "created": "Created",
+    "lastAccessed": "Last accessed",
+    "name": "Name",
+    "noDataYet": "No data available yet"
+  },
+  "accessibility": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleSidebar": "Toggle sidebar",
+    "notifications": "Notifications",
+    "userMenu": "User menu",
+    "search": "Search",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "viewMode": "View mode",
+    "dragHandle": "Drag handle",
+    "sortable": "Sortable",
+    "expandSection": "Expand section",
+    "collapseSection": "Collapse section",
+    "selectLanguage": "Select language",
+    "changeLanguage": "Change language"
+  },
+  "devTest": {
+    "like": "Like",
+    "favorite": "Favorite",
+    "notifications": "Notifications",
+    "settings": "Settings"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "description": "An unexpected error has occurred",
+    "viewStackTrace": "View stack trace",
+    "refreshMessage": "Please try refreshing the page. If the problem persists, contact support.",
+    "goHome": "Go Home",
+    "tryAgain": "Try Again",
+    "message": "Message",
+    "stack": "Stack"
+  },
+  "workspaceSettings": {
+    "title": "Workspace Settings",
+    "back": "Back",
+    "backToWorkspaces": "Back to Workspaces",
+    "errors": {
+      "loadFailed": "Failed to load workspace settings",
+      "loadFailedDescription": "There was an error loading the workspace. Please try again."
+    },
+    "tabs": {
+      "general": "General",
+      "members": "Members",
+      "integrations": "Integrations",
+      "billing": "Billing"
+    },
+    "general": {
+      "title": "General Settings",
+      "description": "Basic information about your workspace",
+      "errors": {
+        "nameRequired": "Name is required",
+        "nameMinLength": "Name must be at least 2 characters",
+        "invalidUrl": "Please enter a valid URL"
+      },
+      "logoAlt": "Workspace Logo",
+      "logoHelperText": "Square image recommended. Max 256x256px.",
+      "url": "Workspace URL",
+      "urlHelperText": "This will be used as your workspace identifier",
+      "logo": "Workspace Logo",
+      "logoHelper": "Enter a URL to your logo image. Recommended size: 256×256px. Supports PNG, JPG, SVG.",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "name": "Workspace Name",
+      "slug": "Workspace URL",
+      "slugHelper": "Workspace URL cannot be changed after creation",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Add a description for your workspace...",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes",
+      "updateSuccess": "Workspace settings updated successfully",
+      "updateError": "Failed to update workspace settings"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "slugRequired": "Slug is required"
+    },
+    "billing": {
+      "title": "Current Plan",
+      "description": "Manage your subscription and billing",
+      "currentPlan": "Current Plan",
+      "upgradePlan": "Upgrade Plan (Coming Soon)",
+      "tiers": {
+        "free": {
+          "label": "Free",
+          "description": "For individuals getting started",
+          "features": {
+            "surveys": "Up to 3 surveys",
+            "responses": "Up to 100 responses/month",
+            "analytics": "Basic analytics",
+            "teamMembers": "1 team member"
+          }
+        },
+        "pro": {
+          "label": "Pro",
+          "description": "For growing teams",
+          "features": {
+            "surveys": "Unlimited surveys",
+            "responses": "Up to 10,000 responses/month",
+            "analytics": "Advanced analytics",
+            "teamMembers": "Up to 10 team members",
+            "branding": "Custom branding",
+            "support": "Priority support"
+          }
+        },
+        "enterprise": {
+          "label": "Enterprise",
+          "description": "For large organizations",
+          "features": {
+            "unlimited": "Unlimited everything",
+            "integrations": "Custom integrations",
+            "support": "Dedicated support",
+            "security": "SSO & advanced security",
+            "sla": "Custom SLA"
+          }
+        }
+      },
+      "tierDescriptions": {
+        "free": "For individuals and small teams getting started",
+        "pro": "For growing teams with advanced needs",
+        "enterprise": "For large organizations with custom requirements"
+      },
+      "features": {
+        "surveys3": "Up to 3 surveys",
+        "responses100": "Up to 100 responses/month",
+        "basicAnalytics": "Basic analytics",
+        "teamMembers1": "1 team member",
+        "unlimitedSurveys": "Unlimited surveys",
+        "responses10000": "Up to 10,000 responses/month",
+        "advancedAnalytics": "Advanced analytics",
+        "teamMembers10": "Up to 10 team members",
+        "customBranding": "Custom branding",
+        "prioritySupport": "Priority support",
+        "unlimitedEverything": "Unlimited everything",
+        "customIntegrations": "Custom integrations",
+        "dedicatedSupport": "Dedicated support",
+        "ssoSecurity": "SSO & advanced security",
+        "customSla": "Custom SLA"
+      }
+    },
+    "integrations": {
+      "apiKeys": {
+        "title": "API Keys",
+        "description": "Manage API keys for programmatic access to your workspace",
+        "createKey": "Create API Key",
+        "noKeys": "No API keys yet",
+        "noKeysDesc": "Create an API key to integrate with external services",
+        "lastUsed": "Last used:",
+        "never": "Never",
+        "revoke": "Revoke",
+        "regenerate": "Regenerate",
+        "regenerateComingSoon": "Regenerate key (coming soon)",
+        "createComingSoon": "Create key (coming soon)",
+        "emptyTitle": "No API Keys",
+        "emptyDescription": "Create an API key to integrate with external services",
+        "copied": "API key copied to clipboard",
+        "revoked": "API key revoked",
+        "comingSoon": "API key creation coming soon"
+      },
+      "apps": {
+        "slack": "Get notifications about survey responses in your Slack channels",
+        "zapier": "Connect your surveys with 5,000+ apps via Zapier",
+        "googleSheets": "Automatically sync survey responses to Google Sheets",
+        "salesforce": "Integrate survey data with your Salesforce CRM"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Receive real-time notifications when survey events occur",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "endpointUrl": "Endpoint URL",
+        "endpointPlaceholder": "https://your-app.com/webhooks/surveys",
+        "testWebhook": "Test Webhook",
+        "events": "Events:",
+        "eventsList": "response.created, survey.published, survey.closed",
+        "disabledTitle": "Webhooks Disabled",
+        "disabledDescription": "Enable webhooks to receive real-time event notifications",
+        "noWebhooks": "No webhooks configured",
+        "noWebhooksDesc": "Enable webhooks above to receive real-time event notifications"
+      },
+      "connectedApps": {
+        "title": "Connected Apps",
+        "description": "Connect your workspace with third-party services",
+        "comingSoon": "Coming Soon",
+        "connect": "Connect",
+        "disconnect": "Disconnect",
+        "apps": {
+          "slack": {
+            "name": "Slack",
+            "description": "Get notifications about survey responses in your Slack channels"
+          },
+          "zapier": {
+            "name": "Zapier",
+            "description": "Connect your surveys with 5,000+ apps via Zapier"
+          },
+          "googleSheets": {
+            "name": "Google Sheets",
+            "description": "Automatically sync survey responses to Google Sheets"
+          },
+          "salesforce": {
+            "name": "Salesforce",
+            "description": "Integrate survey data with your Salesforce CRM"
+          }
+        }
+      }
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "description": "Irreversible and destructive actions",
+      "deleteTitle": "Delete this workspace",
+      "deleteWarning": "Once deleted, all data will be permanently removed.",
+      "deleteConfirmation": "Type the workspace name to confirm deletion",
+      "deleteWorkspace": "Delete Workspace",
+      "deleting": "Deleting...",
+      "deleteButton": "Delete Workspace",
+      "deleteConfirm": {
+        "title": "Delete Workspace",
+        "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone and all data will be permanently deleted.",
+        "confirm": "Delete Workspace"
+      }
+    },
+    "loadError": {
+      "title": "Failed to load workspace",
+      "description": "There was an error loading the workspace settings. Please try again.",
+      "backButton": "Back to Workspaces"
+    }
+  },
+  "emailEditor": {
+    "title": "Visual Email Editor",
+    "unsavedChanges": "Unsaved changes",
+    "addBlock": "Add Block",
+    "emptyCanvas": "Drag blocks here or click to add",
+    "addFirstBlock": "Add your first block",
+    "blockAdded": "Block added",
+    "blockDeleted": "Block deleted",
+    "blockDuplicated": "Block duplicated",
+    "saved": "Template saved successfully",
+    "htmlCopied": "HTML copied to clipboard",
+    "htmlDownloaded": "HTML file downloaded",
+    "generatedHtml": "Generated HTML (Outlook Compatible)",
+    "previewTitle": "Email Preview",
+    "blocks": {
+      "header": "Header",
+      "headerDesc": "Logo and title section",
+      "text": "Text",
+      "textDesc": "Rich text content",
+      "image": "Image",
+      "imageDesc": "Single image with optional link",
+      "button": "Button",
+      "buttonDesc": "Call-to-action button",
+      "divider": "Divider",
+      "dividerDesc": "Horizontal line separator",
+      "spacer": "Spacer",
+      "spacerDesc": "Empty vertical space",
+      "columns": "Columns",
+      "columnsDesc": "Multi-column layout",
+      "social": "Social Links",
+      "socialDesc": "Social media icons",
+      "footer": "Footer",
+      "footerDesc": "Company info & unsubscribe"
+    },
+    "views": {
+      "edit": "Edit",
+      "preview": "Preview",
+      "code": "HTML Code"
+    },
+    "device": {
+      "desktop": "Desktop Preview",
+      "mobile": "Mobile Preview"
+    },
+    "panels": {
+      "blocks": "Blocks",
+      "styles": "Styles",
+      "placeholders": "Variables"
+    },
+    "globalStyles": "Global Styles",
+    "styles": {
+      "backgroundColor": "Page Background",
+      "contentBackground": "Content Background",
+      "textColor": "Text Color",
+      "linkColor": "Link Color",
+      "fontFamily": "Font Family",
+      "contentWidth": "Content Width",
+      "borderRadius": "Border Radius",
+      "colors": "Colors",
+      "typography": "Typography",
+      "layout": "Layout"
+    },
+    "placeholders": "Placeholders",
+    "placeholdersHelp": "Click to copy, then paste into text blocks",
+    "templateName": "Template name",
+    "subject": "Email subject line",
+    "preheader": "Preheader text (preview)",
+    "settings": {
+      "logoUrl": "Logo URL",
+      "logoWidth": "Logo Width",
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "alignment": "Alignment",
+      "backgroundColor": "Background",
+      "textColor": "Text Color",
+      "padding": "Padding",
+      "content": "Content",
+      "htmlSupport": "Supports HTML: <p>, <strong>, <em>, <a>, <ul>, <ol>",
+      "fontSize": "Font Size",
+      "lineHeight": "Line Height",
+      "imageUrl": "Image URL",
+      "altText": "Alt Text",
+      "linkUrl": "Link URL (optional)",
+      "width": "Width",
+      "borderRadius": "Border Radius",
+      "buttonText": "Button Text",
+      "url": "URL",
+      "buttonColor": "Button Color",
+      "paddingV": "Padding V",
+      "paddingH": "Padding H",
+      "fullWidth": "Full Width",
+      "color": "Color",
+      "thickness": "Thickness",
+      "style": "Style",
+      "height": "Height",
+      "socialLinks": "Social Links",
+      "addPlatform": "Add platform...",
+      "iconSize": "Icon Size",
+      "gap": "Gap",
+      "companyName": "Company Name",
+      "addressPlaceholder": "Company address...",
+      "unsubscribeText": "Unsubscribe Text",
+      "unsubscribeUrl": "Unsubscribe URL",
+      "columnsInfo": "Edit columns in the canvas",
+      "logo": "Logo",
+      "htmlContent": "HTML Content",
+      "typography": "Typography",
+      "colors": "Colors",
+      "image": "Image",
+      "layout": "Layout",
+      "button": "Button",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "divider": "Divider",
+      "spacer": "Spacer",
+      "preview": "Preview",
+      "columns": "Columns",
+      "stackOnMobile": "Stack on Mobile",
+      "companyInfo": "Company Info",
+      "address": "Address",
+      "unsubscribe": "Unsubscribe"
+    },
+    "preview": {
+      "headerPlaceholder": "Header Block",
+      "textPlaceholder": "Text content...",
+      "imagePlaceholder": "Add image URL",
+      "columnsPlaceholder": "Columns Layout",
+      "socialPlaceholder": "Add social links",
+      "footerPlaceholder": "Footer content"
+    },
+    "errors": {
+      "nameRequired": "Template name is required",
+      "subjectRequired": "Subject is required",
+      "saveFailed": "Failed to save template",
+      "loadFailed": "Failed to load template",
+      "loadFailedDescription": "Something went wrong while loading the template. Please try again.",
+      "noTemplate": "No template found",
+      "noTemplateDescription": "The template you're looking for doesn't exist or has been deleted."
+    },
+    "blockToolbar": "Block Toolbar",
+    "columns": "Columns",
+    "addBlockHint": "Drag blocks here to add content",
+    "dividerStyles": {
+      "solid": "Solid",
+      "dashed": "Dashed",
+      "dotted": "Dotted"
+    },
+    "noBlockSelected": "No block selected",
+    "selectBlockHint": "Select a block to edit its settings",
+    "blockSettings": "Block Settings",
+    "toolbar": "Toolbar",
+    "copyHtml": "Copy HTML",
+    "downloadHtml": "Download HTML",
+    "templateNameLabel": "Template Name",
+    "typeLabel": "Type",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Enter email subject...",
+    "preheaderTooltip": "Preview text shown in email clients before opening",
+    "preheaderLabel": "Preheader",
+    "preheaderPlaceholder": "Enter preheader text...",
+    "previewWithSampleData": "Preview with sample data",
+    "sampleDataInfo": "Placeholders will be replaced with sample values",
+    "hideSettings": "Hide Settings",
+    "showSettings": "Show Settings",
+    "placeholderCopied": "Placeholder copied to clipboard",
+    "modeSwitched": "Editor mode switched"
+  },
+  "emailTemplates": {
+    "title": "Email Templates",
+    "description": "Create and manage reusable email templates for survey distributions",
+    "newTemplate": "New Template",
+    "searchPlaceholder": "Search templates...",
+    "retry": "Retry",
+    "errors": {
+      "cannotDeleteDefault": "Cannot delete the default template",
+      "loadFailed": "Failed to load email templates",
+      "loadFailedDescription": "Something went wrong. Please try again."
+    },
+    "tabs": {
+      "all": "All",
+      "invitation": "Invitation",
+      "reminder": "Reminder",
+      "thankYou": "Thank You",
+      "custom": "Custom"
+    },
+    "empty": {
+      "title": "No email templates",
+      "description": "Create your first email template to streamline survey distribution and maintain consistent messaging.",
+      "createButton": "Create Template"
+    },
+    "loadError": {
+      "title": "Failed to load templates",
+      "description": "Something went wrong. Please try again."
+    },
+    "defaultBadge": "Default",
+    "form": {
+      "title": "Create Email Template",
+      "description": "Create a new email template for your survey distributions.",
+      "name": "Template Name",
+      "namePlaceholder": "Enter template name",
+      "type": "Template Type",
+      "defaultContentInfo": "Default content will be added",
+      "defaultContentDesc": "You can customize the email content after creation.",
+      "createButton": "Create Template"
+    },
+    "types": {
+      "invitation": "Invitation",
+      "reminder": "Reminder",
+      "thankYou": "Thank You",
+      "custom": "Custom"
+    },
+    "editor": {
+      "title": "Edit Template",
+      "templateName": "Template Name",
+      "templateNamePlaceholder": "Template name",
+      "availablePlaceholders": "Available Placeholders",
+      "subject": "Subject",
+      "subjectPlaceholder": "Email subject line",
+      "body": "Body",
+      "preview": "Preview",
+      "split": "Split",
+      "back": "Back",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "unsavedChanges": "Unsaved changes",
+      "visualMode": "Visual Editor (Drag & Drop)",
+      "codeMode": "Code Editor (Raw HTML)",
+      "viewModes": {
+        "edit": "Edit",
+        "preview": "Preview",
+        "split": "Split"
+      },
+      "contentModes": {
+        "html": "HTML",
+        "plainText": "Plain Text"
+      },
+      "toolbar": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "underline": "Underline",
+        "link": "Link",
+        "bulletList": "Bulleted List",
+        "numberedList": "Numbered List",
+        "undo": "Undo",
+        "redo": "Redo"
+      },
+      "placeholderInserted": "Inserted {{placeholder}}",
+      "placeholderCopied": "Copied \"{{placeholder}}\" to clipboard",
+      "plainTextFallback": "optional fallback for non-HTML clients",
+      "htmlPlaceholder": "Enter your HTML email content here...\n\nExample:\n<h1>Hello {{firstName}}!</h1>\n<p>Thank you for your interest in our survey.</p>\n<p><a href='{{surveyLink}}'>Click here to take the survey</a></p>",
+      "plainTextPlaceholder": "Enter plain text version of your email...\n\nExample:\nHello {{firstName}}!\n\nThank you for your interest in our survey.\n\nTake the survey: {{surveyLink}}",
+      "validation": {
+        "nameRequired": "Template name is required",
+        "subjectRequired": "Subject is required",
+        "bodyRequired": "Email body is required"
+      },
+      "saveSuccess": "Template saved successfully",
+      "saveError": "Failed to save template",
+      "visual": "Visual",
+      "code": "Code"
+    },
+    "placeholders": {
+      "recipientName": "Recipient's name",
+      "surveyTitle": "Survey title",
+      "surveyLink": "Survey link URL",
+      "companyName": "Your company name",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "senderName": "Sender Name",
+      "unsubscribeLink": "Unsubscribe Link"
+    },
+    "preview": {
+      "from": "From",
+      "to": "To",
+      "yourCompany": "Your Company",
+      "placeholderReference": "Placeholder Reference"
+    },
+    "createSuccess": "Template created successfully",
+    "updateSuccess": "Template updated successfully",
+    "deleteSuccess": "Template deleted successfully",
+    "createError": "Failed to create template",
+    "updateError": "Failed to update template",
+    "deleteError": "Failed to delete template",
+    "backToTemplates": "Back to Templates"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "subtitle": "Create a new password for your account",
+    "newPassword": "New Password",
+    "description": "Choose a strong password to protect your account",
+    "newPasswordLabel": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "submit": "Reset Password",
+    "successTitle": "Password reset successful!",
+    "successDescription": "Your password has been reset. You can now log in with your new password.",
+    "errors": {
+      "meetRequirements": "Please meet all password requirements",
+      "failed": "Password reset failed",
+      "resetFailed": "Failed to reset password. Please try again."
+    },
+    "invalidLink": {
+      "title": "Invalid reset link",
+      "description": "This password reset link is invalid or has expired. Please request a new one.",
+      "requestNew": "Request new link",
+      "requestNewLink": "Request a new link",
+      "backToLogin": "Back to login"
+    },
+    "form": {
+      "title": "Create new password",
+      "description": "Choose a strong password to protect your account",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter new password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm new password",
+      "submit": "Reset Password",
+      "meetsRequirements": "Please meet all password requirements"
+    },
+    "success": {
+      "title": "Password reset successful!",
+      "description": "Your password has been reset successfully. You can now log in with your new password.",
+      "goToLogin": "Go to Login"
+    },
+    "error": {
+      "title": "Reset failed",
+      "generic": "An error occurred while resetting your password"
+    }
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "We'll send you reset instructions",
+    "toast": {
+      "success": "Reset link sent",
+      "successDescription": "Check your email for the reset link",
+      "error": "Request failed",
+      "requestFailed": "Failed to send reset link. Please try again."
+    },
+    "emailSent": {
+      "title": "Check your email",
+      "description": "We've sent a password reset link to your email",
+      "expiry": "The link will expire in 24 hours",
+      "tryAgain": "Didn't receive it? Try again"
+    },
+    "cardTitle": "Reset your password",
+    "cardDescription": "Enter your email and we'll send you a reset link",
+    "sendResetLink": "Send Reset Link",
+    "form": {
+      "title": "Reset your password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Send reset link",
+      "backToLogin": "Back to login"
+    },
+    "success": {
+      "title": "Reset link sent",
+      "description": "Check your inbox for {{email}}",
+      "instruction": "The link will expire in 24 hours. If you don't see the email, check your spam folder.",
+      "tryAgain": "Didn't receive the email? Try again",
+      "backToLogin": "Back to Login"
+    },
+    "error": {
+      "title": "Request failed",
+      "generic": "Failed to send reset link"
+    }
+  },
+  "register": {
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "createPassword": "Create a password",
+    "form": {
+      "firstName": "First Name",
+      "firstNamePlaceholder": "John",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Doe",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "meetsRequirements": "Please meet all password requirements"
+    },
+    "validation": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required"
+    }
+  },
+  "publicSurveyPage": {
+    "loading": "Loading survey...",
+    "notAvailable": "This survey is not available.",
+    "submitError": "Failed to submit. Please try again.",
+    "poweredBy": "Powered by Inquiro",
+    "defaultTitle": "Survey"
+  },
+  "teamMembers": {
+    "title": "Team Members",
+    "description": "Manage who has access to this workspace",
+    "inviteMember": "Invite Member",
+    "you": "(You)",
+    "roles": {
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer"
+    },
+    "removeConfirm": {
+      "title": "Remove Member",
+      "description": "Are you sure you want to remove {{name}} from this workspace? They will lose access to all workspace resources.",
+      "confirm": "Remove"
+    },
+    "inviteSuccess": "Invitation sent successfully",
+    "removeSuccess": "Member removed successfully",
+    "inviteError": "Failed to send invitation",
+    "removeError": "Failed to remove member",
+    "loadError": "Failed to load team members",
+    "tryAgain": "Try again",
+    "empty": {
+      "title": "No team members yet",
+      "description": "Invite team members to collaborate on surveys"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address"
+    }
+  },
+  "workspaceForm": {
+    "title": "Create New Workspace",
+    "description": "Create a workspace to organize your surveys and collaborate with your team.",
+    "name": "Workspace Name",
+    "namePlaceholder": "My Awesome Workspace",
+    "slug": "Workspace URL",
+    "slugPlaceholder": "my-awesome-workspace",
+    "slugHelper": "This will be used in your workspace URL",
+    "descriptionLabel": "Description (Optional)",
+    "descriptionPlaceholder": "Brief description of this workspace...",
+    "proTip": "Pro tip",
+    "proTipText": "You can invite team members to your workspace after creation.",
+    "createButton": "Create Workspace",
+    "creating": "Creating...",
+    "createSuccess": "Workspace created successfully!",
+    "createError": "Failed to create workspace",
+    "validation": {
+      "nameRequired": "Workspace name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name must be less than 100 characters",
+      "slugRequired": "Workspace URL is required",
+      "slugFormat": "Slug can only contain lowercase letters, numbers, and hyphens",
+      "slugMinLength": "Slug must be at least 2 characters",
+      "slugMaxLength": "Slug must be less than 50 characters"
+    }
+  },
+  "responses": {
+    "title": "Responses",
+    "description": "View and manage survey responses",
+    "noResponses": "No responses yet",
+    "noResponsesDesc": "Responses will appear here once participants submit surveys",
+    "noFound": "No responses found",
+    "noFoundDesc": "Try adjusting your filters or search query",
+    "responseDetails": "Response Details",
+    "submittedAt": "Submitted at",
+    "submitted": "Submitted",
+    "respondent": "Respondent",
+    "anonymous": "Anonymous",
+    "export": "Export",
+    "exportAll": "Export All",
+    "complete": "Complete",
+    "partial": "Partial",
+    "incomplete": "Incomplete",
+    "allSurveys": "All Surveys",
+    "selectSurvey": "Select a survey...",
+    "selectSurveyTitle": "Select a survey",
+    "selectSurveyDesc": "Choose a survey from the dropdown to view responses",
+    "searchPlaceholder": "Search responses...",
+    "responseCount": "{{count}} responses",
+    "selected": "{{count}} selected",
+    "deleteSelected": "Delete Selected",
+    "deleteResponses": "Delete Responses",
+    "deleteConfirm": "Are you sure you want to delete {{count}} response(s)? This action cannot be undone.",
+    "duration": "Duration",
+    "responseInfo": "Response Info",
+    "responseId": "Response ID",
+    "started": "Started",
+    "device": "Device",
+    "location": "Location",
+    "answers": "Answers",
+    "noAnswers": "No answers recorded",
+    "deleteResponse": {
+      "title": "Delete Response",
+      "description": "Are you sure you want to delete this response? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "deleteSuccess": "Response deleted successfully",
+    "deleteError": "Failed to delete response",
+    "loadError": "Failed to load response",
+    "unknownQuestion": "Unknown Question",
+    "na": "N/A",
+    "direct": "Direct",
+    "noFiles": "No files uploaded",
+    "exportDialog": {
+      "title": "Export Responses",
+      "description": "Export survey responses in your preferred format",
+      "descriptionWithTitle": "Export \"{{title}}\" responses in your preferred format",
+      "format": "Export Format",
+      "dateRange": "Date Range",
+      "columns": "Select Columns",
+      "columnsToExport": "Columns to Export",
+      "selectedCount": "{{count}} selected",
+      "filters": "Filters",
+      "includeIncomplete": "Include incomplete responses",
+      "includeIncompleteDesc": "Export responses that weren't fully completed",
+      "includeMetadata": "Include metadata",
+      "includeMetadataDesc": "Include submission time, duration, device info, etc.",
+      "questions": "Questions",
+      "systemFields": "System Fields",
+      "metadata": "Metadata",
+      "exportSummary": "Export Summary",
+      "responsesCount": "{{count}} responses",
+      "columnsCount": "{{count}} columns",
+      "formatLabel": "{{format}} format",
+      "loadColumnsError": "Failed to load column options",
+      "exporting": "Exporting...",
+      "exportButton": "Export {{count}} Responses",
+      "formats": {
+        "csv": "CSV",
+        "csvDesc": "Comma-separated values, opens in any spreadsheet",
+        "excel": "Excel",
+        "excelDesc": "Microsoft Excel format with formatting",
+        "pdf": "PDF",
+        "pdfDesc": "Portable document for sharing and printing"
+      },
+      "selectColumns": "Please select at least one column to export",
+      "exportSuccess": "Export downloaded as {{fileName}}",
+      "exportError": "Failed to export responses"
+    }
+  },
+  "questionCategories": {
+    "popular": "Popular",
+    "text": "Text",
+    "textInput": "Text Input",
+    "choice": "Choice",
+    "input": "Input",
+    "date": "Date & Time",
+    "dateTime": "Date & Time",
+    "ratingScale": "Rating & Scale",
+    "advanced": "Advanced"
+  },
+  "questionDefaults": {
+    "rating": {
+      "minLabel": "Poor",
+      "maxLabel": "Excellent"
+    },
+    "scale": {
+      "minLabel": "Not likely",
+      "maxLabel": "Very likely"
+    },
+    "nps": {
+      "minLabel": "Not at all likely",
+      "maxLabel": "Extremely likely"
+    },
+    "matrix": {
+      "row": "Row {{number}}",
+      "column": "Column {{number}}"
+    },
+    "placeholders": {
+      "text": "Enter your answer...",
+      "email": "Enter your email address...",
+      "emailExample": "email@example.com",
+      "enterPhone": "Enter phone number",
+      "enterNumber": "Enter a number",
+      "number": "Enter a number...",
+      "longText": "Enter your detailed response..."
+    },
+    "options": {
+      "option": "Option {{number}}",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "questionTypes": {
+    "text": {
+      "name": "Short Text",
+      "description": "Single line text input"
+    },
+    "textarea": {
+      "name": "Long Text",
+      "description": "Multi-line text area"
+    },
+    "number": {
+      "name": "Number",
+      "description": "Numeric input"
+    },
+    "email": {
+      "name": "Email",
+      "description": "Email address with validation"
+    },
+    "phone": {
+      "name": "Phone",
+      "description": "Phone number input"
+    },
+    "date": {
+      "name": "Date",
+      "description": "Date picker"
+    },
+    "time": {
+      "name": "Time",
+      "description": "Time picker"
+    },
+    "select": {
+      "name": "Dropdown",
+      "description": "Single selection dropdown"
+    },
+    "radio": {
+      "name": "Multiple Choice",
+      "description": "Single choice from options"
+    },
+    "checkbox": {
+      "name": "Checkboxes",
+      "description": "Multiple selections allowed"
+    },
+    "rating": {
+      "name": "Rating",
+      "description": "Star or numeric rating"
+    },
+    "scale": {
+      "name": "Linear Scale",
+      "description": "Numeric scale selection",
+      "scaleType": "Scale Type",
+      "presets": {
+        "nps": "NPS (0-10)",
+        "1-5": "1-5 Scale",
+        "1-7": "1-7 Scale",
+        "1-10": "1-10 Scale"
+      }
+    },
+    "matrix": {
+      "name": "Matrix",
+      "description": "Grid of questions"
+    },
+    "file": {
+      "name": "File Upload",
+      "description": "Upload files"
+    },
+    "nps": {
+      "name": "NPS",
+      "description": "Net Promoter Score"
+    },
+    "options": {
+      "title": "Options",
+      "placeholder": "Enter option text",
+      "remove": "Remove this option",
+      "add": "Add Option"
+    },
+    "ranking": {
+      "name": "Ranking",
+      "description": "Drag to rank items",
+      "helper": "Drag items to rank by preference",
+      "previewLabel": "Preview - Drag to reorder"
+    }
+  },
+  "editors": {
+    "common": {
+      "questionText": "Question text",
+      "questionTextPlaceholder": "Enter your question",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "Add help text or context",
+      "descriptionHelper": "Provide additional context or instructions",
+      "placeholder": "Placeholder text",
+      "placeholderInput": "Enter placeholder text",
+      "placeholderHelper": "Shown when field is empty",
+      "maxCharacters": "Maximum characters",
+      "maxCharactersHelper": "Maximum number of characters allowed",
+      "preview": "Preview"
+    },
+    "text": {
+      "helper": "Short answer text input"
+    },
+    "textarea": {
+      "helper": "Multi-line text for longer responses",
+      "placeholderHelper": "Shown inside the text area"
+    },
+    "number": {
+      "helper": "Numeric input only",
+      "placeholderDefault": "Enter a number",
+      "minValue": "Minimum value (optional)",
+      "minPlaceholder": "No minimum",
+      "minHelper": "Leave empty for no minimum",
+      "maxValue": "Maximum value (optional)",
+      "maxPlaceholder": "No maximum",
+      "maxHelper": "Leave empty for no maximum"
+    },
+    "email": {
+      "helper": "Email address with validation",
+      "placeholderDefault": "you@example.com",
+      "errorMessage": "Error message",
+      "errorPlaceholder": "Please enter a valid email address",
+      "errorHelper": "Shown when email validation fails"
+    },
+    "phone": {
+      "helper": "Phone number input",
+      "format": "Phone Number Format",
+      "placeholderDefault": "Enter phone number",
+      "advancedRegex": "Advanced: Custom Regex Pattern",
+      "regexPattern": "Custom Pattern",
+      "regexHelper": "Leave empty to use the selected format",
+      "errorMessage": "Error message",
+      "errorPlaceholder": "Please enter a valid phone number",
+      "errorHelper": "Shown when phone validation fails"
+    },
+    "url": {
+      "helper": "URL with validation",
+      "format": "URL Format",
+      "placeholderDefault": "https://example.com",
+      "advancedRegex": "Advanced: Custom Regex Pattern",
+      "regexPattern": "Custom Pattern",
+      "regexHelper": "Leave empty to use the selected format",
+      "errorMessage": "Error message",
+      "errorPlaceholder": "Please enter a valid URL",
+      "errorHelper": "Shown when URL validation fails"
+    },
+    "date": {
+      "helper": "Date picker"
+    },
+    "choice": {
+      "helper": "Single choice from options",
+      "allowOther": "Allow 'Other' option",
+      "allowOtherDesc": "Let respondents enter a custom answer"
+    },
+    "checkbox": {
+      "helper": "Multiple choices allowed"
+    },
+    "rating": {
+      "helper": "Star or numeric rating",
+      "maxRating": "Maximum rating",
+      "minLabel": "Minimum label",
+      "minPlaceholder": "Poor",
+      "maxLabel": "Maximum label",
+      "maxPlaceholder": "Excellent"
+    },
+    "scale": {
+      "helper": "Linear scale selection",
+      "presets": "Scale Presets",
+      "presetLabels": {
+        "1-5": "1-5",
+        "1-7": "1-7",
+        "1-10": "1-10"
+      },
+      "minValue": "Minimum value",
+      "maxValue": "Maximum value",
+      "step": "Step",
+      "minLabel": "Minimum label",
+      "minPlaceholder": "Not at all likely",
+      "maxLabel": "Maximum label",
+      "maxPlaceholder": "Extremely likely"
+    },
+    "ranking": {
+      "helper": "Drag items to rank by preference",
+      "items": "Ranking Items",
+      "itemsDesc": "Add items for respondents to rank",
+      "previewLabel": "Preview - Drag to reorder"
+    },
+    "matrix": {
+      "rows": "Rows (Questions)",
+      "rowPlaceholder": "Row {{number}}",
+      "removeRow": "Remove row",
+      "addRow": "Add Row",
+      "columns": "Columns (Options)",
+      "columnPlaceholder": "Column {{number}}",
+      "removeColumn": "Remove column",
+      "addColumn": "Add Column"
+    },
+    "file": {
+      "allowedTypes": "Allowed File Types",
+      "fileTypes": {
+        "images": "Images",
+        "documents": "Documents",
+        "spreadsheets": "Spreadsheets",
+        "all": "All Files"
+      },
+      "maxFiles": "Maximum files",
+      "maxFilesHelper": "Maximum number of files allowed",
+      "maxSize": "Max file size (MB)",
+      "maxSizeHelper": "Per file limit",
+      "dropZone": "Drop files here or click to upload",
+      "maxSizeLabel": "Max {{size}}MB each"
+    },
+    "options": {
+      "title": "Options",
+      "placeholder": "Option {{number}}",
+      "remove": "Remove option",
+      "add": "Add Option",
+      "allowOther": "Allow 'Other' option",
+      "allowOtherDesc": "Let respondents enter a custom answer",
+      "otherLabel": "Other option label",
+      "otherPlaceholder": "Other"
+    },
+    "addQuestion": "Add Question",
+    "searchQuestionTypes": "Search question types...",
+    "noQuestionTypesFound": "No question types found",
+    "tryDifferentSearch": "Try a different search term",
+    "resultsFound": "{{count}} results found",
+    "typesCount": "{{count}} types",
+    "pressEscToClose": "Press to close",
+    "untitledQuestion": "Untitled question",
+    "required": "Required"
+  },
+  "createLinkDialog": {
+    "types": {
+      "standard": "Standard Link",
+      "standardDescription": "Basic shareable link with optional settings",
+      "unique": "Unique Link",
+      "uniqueDescription": "One-time use link for individual tracking",
+      "embedded": "Embedded Link",
+      "embeddedDescription": "Embed survey in your website or app"
+    },
+    "toast": {
+      "success": "Link created successfully",
+      "error": "Failed to create link"
+    },
+    "title": "Create Survey Link",
+    "descriptionWithTitle": "Create a shareable link for \"{{title}}\"",
+    "description": "Create a shareable link to collect responses",
+    "linkType": "Link Type",
+    "expirationDate": "Expiration Date",
+    "expirationDateDescription": "Link will stop working after this date",
+    "responseLimit": "Response Limit",
+    "responseLimitDescription": "Maximum number of responses allowed",
+    "maxResponsesPlaceholder": "Enter max responses",
+    "passwordProtection": "Password Protection",
+    "passwordProtectionDescription": "Require a password to access the survey",
+    "passwordPlaceholder": "Enter password",
+    "advancedOptions": "Advanced Options",
+    "utmParameters": "UTM Parameters",
+    "utmTooltip": "Track link performance with UTM tags",
+    "utmDescription": "Add tracking parameters for analytics",
+    "utmSourcePlaceholder": "e.g., newsletter",
+    "utmSource": "UTM Source",
+    "utmMediumPlaceholder": "e.g., email",
+    "utmMedium": "UTM Medium",
+    "utmCampaignPlaceholder": "e.g., summer-campaign",
+    "utmCampaign": "UTM Campaign",
+    "creating": "Creating...",
+    "create": "Create Link"
+  },
+  "bulkLinkDialog": {
+    "toast": {
+      "copyFailed": "Failed to copy links",
+      "allCopied": "All links copied to clipboard",
+      "downloaded": "Links downloaded as CSV",
+      "invalidCount": "Please enter a number between 1 and 1000",
+      "generated": "Successfully generated {{count}} links",
+      "error": "Failed to generate links"
+    },
+    "generatedCount": "{{count}} links generated",
+    "copyAll": "Copy All",
+    "downloadCSV": "Download CSV",
+    "title": "Bulk Generate Links",
+    "descriptionWithTitle": "Generate multiple unique links for \"{{title}}\"",
+    "description": "Generate multiple unique links at once",
+    "numberOfLinks": "Number of Links",
+    "numberOfLinksPlaceholder": "Enter number (1-1000)",
+    "numberOfLinksHint": "Maximum 1000 links per batch",
+    "namePrefix": "Name Prefix",
+    "namePrefixPlaceholder": "e.g., campaign-",
+    "namePrefixHint": "Links will be named: prefix-1, prefix-2, etc.",
+    "expirationDate": "Expiration Date",
+    "expirationDateDescription": "All links will expire on this date",
+    "advancedOptions": "Advanced Options",
+    "utmParameters": "UTM Parameters",
+    "utmTooltip": "Track bulk link performance",
+    "utmDescription": "Add tracking parameters for all generated links",
+    "utmSourcePlaceholder": "e.g., newsletter",
+    "utmSource": "UTM Source",
+    "utmMediumPlaceholder": "e.g., email",
+    "utmMedium": "UTM Medium",
+    "utmCampaignPlaceholder": "e.g., summer-campaign",
+    "utmCampaign": "UTM Campaign",
+    "generating": "Generating...",
+    "generate": "Generate Links"
+  },
+  "linksPanel": {
+    "title": "Survey Links",
+    "description": "Manage and share links to collect responses",
+    "bulkGenerate": "Bulk Generate",
+    "createLink": "Create Link",
+    "newLink": "New Link",
+    "error": "Failed to load links",
+    "activeLinks": "Active Links",
+    "inactiveLinks": "Inactive Links",
+    "passwordProtected": "Password protected",
+    "totalClicks": "Total clicks",
+    "responses": "responses",
+    "expiresAt": "Expires {{date}}",
+    "showQRCode": "Show QR Code",
+    "openLink": "Open Link",
+    "viewAnalytics": "View Analytics",
+    "copyLink": "Copy Link",
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate",
+    "emptyState": {
+      "title": "No links yet",
+      "description": "Create your first link to start collecting responses"
+    },
+    "toast": {
+      "copied": "Link copied to clipboard",
+      "copyFailed": "Failed to copy link",
+      "deactivated": "Link deactivated successfully",
+      "deactivateFailed": "Failed to deactivate link",
+      "reactivated": "Link reactivated successfully",
+      "reactivateFailed": "Failed to reactivate link"
+    },
+    "confirm": {
+      "deactivateTitle": "Deactivate Link",
+      "deactivateDescription": "This link will no longer accept responses. You can reactivate it later.",
+      "reactivateTitle": "Reactivate Link",
+      "reactivateDescription": "This link will start accepting responses again."
+    },
+    "types": {
+      "standard": "Standard Link",
+      "standardDescription": "Basic shareable link",
+      "unique": "Unique Link",
+      "uniqueDescription": "One-time use link for tracking",
+      "embedded": "Embedded Link",
+      "embeddedDescription": "Embed in website or app",
+      "standardObj": {
+        "name": "Standard Link",
+        "description": "Basic survey link"
+      },
+      "anonymous": {
+        "name": "Anonymous Link",
+        "description": "No respondent tracking"
+      },
+      "tracked": {
+        "name": "Tracked Link",
+        "description": "Full analytics tracking"
+      },
+      "passwordProtected": {
+        "name": "Password Protected",
+        "description": "Requires password to access"
+      },
+      "campaign": "Campaign Link",
+      "campaignDescription": "Track responses by campaign source",
+      "qrCode": "QR Code",
+      "qrCodeDescription": "Scannable QR code for easy access"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "expired": "Expired",
+      "limitReached": "Limit reached"
+    },
+    "tooltips": {
+      "passwordProtected": "Password protected",
+      "copyLink": "Copy link",
+      "responses": "Responses",
+      "expires": "Expires: {{date}}",
+      "expired": "Expired",
+      "viewAnalytics": "View analytics",
+      "editLink": "Edit link"
+    },
+    "menu": {
+      "viewAnalytics": "View Analytics",
+      "copyLink": "Copy Link",
+      "editLink": "Edit Link",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate"
+    },
+    "empty": {
+      "title": "No links yet",
+      "description": "Create your first link to start collecting responses"
+    },
+    "linkCopied": "Link copied to clipboard",
+    "linkCopyError": "Failed to copy link",
+    "deactivateConfirm": {
+      "title": "Deactivate Link",
+      "description": "This link will no longer accept responses. You can reactivate it later.",
+      "confirm": "Deactivate"
+    },
+    "reactivateConfirm": {
+      "title": "Reactivate Link",
+      "description": "This link will start accepting responses again.",
+      "confirm": "Reactivate"
+    },
+    "deactivateSuccess": "Link deactivated successfully",
+    "deactivateError": "Failed to deactivate link",
+    "reactivateSuccess": "Link reactivated successfully",
+    "reactivateError": "Failed to reactivate link",
+    "loadError": "Failed to load links"
+  },
+  "linkGenerator": {
+    "title": "Create Survey Link",
+    "description": "Create a shareable link for \"{{surveyName}}\"",
+    "linkName": "Link Name",
+    "expiration": "Expiration Date",
+    "expirationDesc": "Link will expire on this date",
+    "responseLimit": "Response Limit",
+    "responseLimitDesc": "Maximum number of responses allowed",
+    "responseLimitPlaceholder": "Enter max responses",
+    "passwordProtection": "Password Protection",
+    "passwordProtectionDesc": "Require a password to access the survey",
+    "passwordPlaceholder": "Enter password",
+    "createSuccess": "Link created successfully",
+    "createError": "Failed to create link"
+  },
+  "qrGenerator": {
+    "title": "QR Code",
+    "description": "Download or print a QR code for your survey link",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "brand": "Brand"
+    },
+    "sizes": {
+      "small": "Small (200px)",
+      "medium": "Medium (300px)",
+      "large": "Large (400px)",
+      "xlarge": "X-Large (500px)"
+    },
+    "filename": "Filename",
+    "filenamePlaceholder": "survey-qr-code",
+    "download": "Download as PNG",
+    "print": "Print",
+    "printTips": {
+      "title": "Tips for printing",
+      "tip1": "Use X-Large size for large posters and banners",
+      "tip2": "Ensure good contrast between QR code and background",
+      "tip3": "Test the QR code before distributing",
+      "tip4": "Minimum recommended size: 2cm x 2cm"
+    },
+    "downloadSuccess": "QR code downloaded",
+    "downloadError": "Failed to download QR code",
+    "printError": "Failed to print QR code"
+  },
+  "linkAnalyticsPanel": {
+    "title": "Link Analytics",
+    "description": "Performance metrics for your survey link",
+    "views": "views",
+    "unique": "unique",
+    "geographic": "Geographic Distribution",
+    "noGeographicData": "No geographic data available yet",
+    "devices": "Device Breakdown",
+    "noDeviceData": "No device data available yet",
+    "trafficSources": "Traffic Sources",
+    "noReferrerData": "No referrer data available yet",
+    "directTraffic": "Direct",
+    "loadError": {
+      "title": "Failed to load analytics",
+      "description": "Something went wrong. Please try again.",
+      "retry": "Try Again"
+    }
+  },
+  "distributionAnalytics": {
+    "title": "Distribution Analytics",
+    "refresh": "Refresh",
+    "status": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "sent": "Sent",
+      "failed": "Failed",
+      "cancelled": "Cancelled",
+      "partiallyFailed": "Partially Failed"
+    },
+    "stats": {
+      "delivered": "Delivered",
+      "deliveryRate": "Delivery Rate",
+      "openRate": "Open Rate",
+      "clickRate": "Click Rate"
+    }
+  },
+  "emailWizard": {
+    "title": "Create Email Distribution",
+    "description": "Send your survey via email to collect responses",
+    "steps": {
+      "recipients": {
+        "title": "Recipients",
+        "description": "Who receives the survey"
+      },
+      "content": {
+        "title": "Content",
+        "description": "Email message"
+      },
+      "schedule": {
+        "title": "Schedule",
+        "description": "When to send"
+      }
+    },
+    "scheduleSuccess": "Distribution scheduled successfully!",
+    "sendSuccess": "Distribution created and sending!",
+    "createError": "Failed to create distribution"
+  },
+  "recipientInput": {
+    "placeholder": "Enter email address...",
+    "errors": {
+      "empty": "Please enter an email address",
+      "invalid": "Please enter a valid email address",
+      "duplicate": "This email is already in the list",
+      "maxReached": "Maximum {{max}} recipients allowed"
+    }
+  },
+  "themeEditor": {
+    "validation": {
+      "nameRequired": "Theme name is required",
+      "primaryColorRequired": "Primary color is required",
+      "backgroundColorRequired": "Background color is required"
+    },
+    "toast": {
+      "validationError": "Please fix the validation errors"
+    },
+    "editTitle": "Edit Theme",
+    "createTitle": "Create Theme",
+    "editDescription": "Customize your theme settings",
+    "createDescription": "Create a new custom theme",
+    "themeNamePlaceholder": "Enter theme name",
+    "fontFamily": "Font Family",
+    "baseFontSize": "Base Font Size",
+    "buttonStyle": "Button Style",
+    "logoUrl": "Logo URL",
+    "logoUrlHelperText": "Square image recommended. Max 256x256px.",
+    "backgroundImageUrl": "Background Image URL",
+    "backgroundImageUrlHelperText": "High resolution image recommended.",
+    "customCss": "Custom CSS",
+    "customCssPlaceholder": "/* Add your custom CSS here */",
+    "customCssHelperText": "Advanced: Override default styles",
+    "generatedCssPreview": "Generated CSS Preview",
+    "saveChanges": "Save Changes",
+    "createTheme": "Create Theme",
+    "title": "Edit Theme",
+    "themeName": "Theme Name",
+    "namePlaceholder": "My Custom Theme",
+    "tabs": {
+      "colors": "Colors",
+      "typography": "Typography",
+      "branding": "Branding",
+      "advanced": "Advanced",
+      "layout": "Layout"
+    },
+    "quickPresets": "Quick Presets",
+    "presets": {
+      "violet": "Violet",
+      "ocean": "Ocean",
+      "forest": "Forest",
+      "sunset": "Sunset",
+      "minimal": "Minimal",
+      "dark": "Dark"
+    },
+    "colors": {
+      "primary": "Primary Color",
+      "secondary": "Secondary Color",
+      "background": "Background Color",
+      "text": "Text Color",
+      "accent": "Accent Color",
+      "surface": "Surface Color"
+    },
+    "typography": {
+      "fontFamily": "Font Family",
+      "baseFontSize": "Base Font Size",
+      "buttonStyle": "Button Style",
+      "buttonStyles": {
+        "rounded": "Rounded",
+        "pill": "Pill",
+        "square": "Square"
+      },
+      "sizes": {
+        "small": "14px - Small",
+        "default": "16px - Default",
+        "large": "18px - Large",
+        "xlarge": "20px - Extra Large"
+      }
+    },
+    "branding": {
+      "logoUrl": "Logo URL",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "logoHelper": "Square image recommended. Max 256x256px.",
+      "logoSize": "Logo Size",
+      "sizes": {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "extraLarge": "Extra Large"
+      },
+      "showLogoBackground": "Show Logo Background",
+      "brandingTitle": "Branding Title",
+      "brandingTitlePlaceholder": "Company Name",
+      "brandingTitleHelper": "Optional title text shown alongside the logo",
+      "brandingSubtitle": "Branding Subtitle",
+      "brandingSubtitlePlaceholder": "Tagline or description",
+      "brandingSubtitleHelper": "Optional subtitle shown below the title",
+      "backgroundImage": "Background Image URL",
+      "backgroundPlaceholder": "https://example.com/background.jpg",
+      "backgroundHelper": "High resolution image recommended. Will be used as survey background."
+    },
+    "advanced": {
+      "customCss": "Custom CSS",
+      "cssPlaceholder": "/* Add your custom CSS here */",
+      "cssHelper": "Advanced: Add custom CSS to override default styles",
+      "cssPreview": "Generated CSS Preview"
+    },
+    "livePreview": "Live Preview",
+    "livePreviewHint": "Changes update in real-time",
+    "saveSuccess": "Theme saved successfully",
+    "saveError": "Failed to save theme",
+    "brandColors": "Brand Colors",
+    "surfaceColors": "Surface Colors",
+    "bodyFont": "Body Font",
+    "headingFont": "Heading Font",
+    "cornerRadius": "Corner Radius",
+    "containerWidth": "Container Width",
+    "spacing": "Spacing",
+    "progressIndicator": "Progress Indicator",
+    "questionNumbers": "Question Numbers"
+  },
+  "themePreview": {
+    "surveyTitle": "Sample Survey",
+    "surveyDescription": "This is how your survey will look",
+    "progress": "{{current}} of {{total}}",
+    "sampleQuestion1": "How satisfied are you with our service?",
+    "sampleQuestion2": "Would you recommend us to a friend?",
+    "option1": "Very Satisfied",
+    "option2": "Satisfied",
+    "option3": "Neutral",
+    "previous": "Previous",
+    "next": "Next",
+    "primaryBtn": "Primary Button",
+    "outlineBtn": "Outline Button"
+  },
+  "themeCard": {
+    "default": "Default",
+    "selected": "Selected",
+    "buttons": "buttons",
+    "outline": "Outline",
+    "menu": {
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "setDefault": "Set as Default",
+      "delete": "Delete"
+    }
+  },
+  "createTemplate": {
+    "title": "Create Template",
+    "modes": {
+      "scratch": {
+        "name": "From Scratch",
+        "description": "Start with a blank template"
+      },
+      "survey": {
+        "name": "From Survey",
+        "description": "Copy an existing survey"
+      }
+    },
+    "selectSurvey": "Select a survey",
+    "selectSurveyPlaceholder": "Choose a survey to copy",
+    "templateName": "Template Name",
+    "templateNamePlaceholder": "Enter template name",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe what this template is for...",
+    "descriptionHelper": "Help others understand when to use this template",
+    "category": "Category",
+    "visibility": {
+      "public": {
+        "name": "Public Template",
+        "description": "Anyone can use this template"
+      },
+      "private": {
+        "name": "Private Template",
+        "description": "Only you can use this template"
+      }
+    },
+    "createButton": "Create Template",
+    "createSuccess": "Template created successfully",
+    "createError": "Failed to create template"
+  },
+  "useTemplate": {
+    "title": "Use Template",
+    "description": "Create a new survey from this template",
+    "explanation": "This will create a new survey with all questions from the template. You can customize it after creation.",
+    "surveyName": "Survey Name",
+    "surveyNamePlaceholder": "Enter survey name",
+    "surveyDescription": "Description (optional)",
+    "surveyDescriptionPlaceholder": "Enter survey description",
+    "createButton": "Create Survey",
+    "info": "You can edit the survey after creation",
+    "createSuccess": "Survey created from template",
+    "createError": "Failed to create survey"
+  },
+  "templatePreview": {
+    "title": "Template Preview",
+    "uses": "uses",
+    "public": "Public",
+    "private": "Private",
+    "questions": "Questions",
+    "questionTypes": {
+      "text": "Short Text",
+      "textarea": "Long Text",
+      "number": "Number",
+      "email": "Email",
+      "phone": "Phone",
+      "date": "Date",
+      "time": "Time",
+      "select": "Dropdown",
+      "radio": "Multiple Choice",
+      "checkbox": "Checkboxes",
+      "rating": "Rating",
+      "scale": "Scale",
+      "ranking": "Ranking",
+      "matrix": "Matrix",
+      "file": "File Upload",
+      "nps": "NPS"
+    },
+    "empty": {
+      "title": "No questions yet",
+      "description": "Questions will appear here once added"
+    },
+    "useButton": "Use This Template"
+  },
+  "avatarUpload": {
+    "change": "Change",
+    "remove": "Remove",
+    "maxSize": "Max {{size}}MB.",
+    "title": "Upload Avatar",
+    "description": "Choose an image to use as your profile picture",
+    "errors": {
+      "tooLarge": "File is too large",
+      "invalidType": "Invalid file type",
+      "uploadFailed": "Failed to upload avatar",
+      "removeFailed": "Failed to remove avatar"
+    }
+  },
+  "avatar": {
+    "validation": {
+      "invalidType": "Please select a valid image file (PNG, JPG, GIF)",
+      "tooLarge": "Image must be less than 5MB"
+    },
+    "selectAvatar": "Select Avatar",
+    "changeAvatar": "Change Avatar",
+    "selectFromCollection": "Choose from our 3D character collection",
+    "removeAvatar": "Remove Avatar",
+    "confirm": "Confirm Selection",
+    "microsoftAccount": "Microsoft Account Photo",
+    "chooseCharacter": "3D Characters",
+    "selectorDialog": {
+      "title": "Choose Your Avatar",
+      "description": "Select a character from our collection or use your Microsoft account photo"
+    },
+    "preview": {
+      "selectOne": "Select an avatar",
+      "selected": "Selected",
+      "hover": "Preview",
+      "microsoftPhoto": "Microsoft Photo"
+    }
+  },
+  "profileForm": {
+    "title": "Profile",
+    "description": "Manage your personal information and profile picture",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile",
+    "removeAvatarSuccess": "Avatar removed successfully",
+    "removeAvatarError": "Failed to remove avatar"
+  },
+  "passwordForm": {
+    "title": "Change Password",
+    "description": "Update your password to keep your account secure",
+    "successMessage": "Your password has been changed successfully!",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "changeSuccess": "Password changed successfully",
+    "changeError": "Password change failed",
+    "genericError": "An error occurred"
+  },
+  "questionTypeLabels": {
+    "singleChoice": "Single Choice",
+    "multipleChoice": "Multiple Choice",
+    "shortText": "Short Text",
+    "longText": "Long Text",
+    "rating": "Rating",
+    "linearScale": "Linear Scale",
+    "matrix": "Matrix",
+    "date": "Date",
+    "fileUpload": "File Upload",
+    "ranking": "Ranking",
+    "dateTime": "Date & Time",
+    "yesNo": "Yes/No",
+    "dropdown": "Dropdown",
+    "nps": "Net Promoter Score",
+    "checkbox": "Checkbox",
+    "number": "Number",
+    "email": "Email",
+    "phone": "Phone Number",
+    "url": "Website URL",
+    "unknown": "Unknown"
+  },
+  "questionTypeDescriptions": {
+    "singleChoice": "Select one option from a list",
+    "multipleChoice": "Select multiple options from a list",
+    "shortText": "Single line text response",
+    "longText": "Multi-line text response",
+    "rating": "Star rating scale",
+    "linearScale": "Numeric scale (e.g., NPS)",
+    "matrix": "Grid of questions and options",
+    "date": "Date picker input",
+    "fileUpload": "Allow file attachments",
+    "ranking": "Drag to rank options",
+    "dateTime": "Date and time picker input",
+    "yesNo": "Simple yes or no question",
+    "dropdown": "Select from a dropdown list",
+    "nps": "NPS scale from 0-10",
+    "checkbox": "Multiple checkbox selection",
+    "number": "Numeric input field",
+    "email": "Email address input",
+    "phone": "Phone number with format validation",
+    "url": "Website URL with validation",
+    "unknown": "Unknown question type"
+  },
+  "logicVisualization": {
+    "loadError": "Failed to load logic map",
+    "noRules": "No logic rules defined",
+    "addLogicHint": "Add conditional logic to questions to see the flow diagram",
+    "issuesFound": "Logic Issues Found"
+  },
+  "analyticsSummary": {
+    "totalResponses": "Total Responses",
+    "completionRate": "Completion Rate",
+    "avgCompletionTime": "Avg. Completion Time",
+    "partialResponses": "Partial Responses",
+    "completed": "{{count}} completed",
+    "excellent": "Excellent",
+    "good": "Good",
+    "average": "Average",
+    "needsImprovement": "Needs improvement",
+    "incompleteSubmissions": "Incomplete submissions",
+    "none": "None"
+  },
+  "welcomeScreen": {
+    "questions": "question",
+    "questions_plural": "questions",
+    "minutes": "min",
+    "startSurvey": "Start Survey",
+    "starting": "Starting...",
+    "anonymousNote": "Your responses are anonymous"
+  },
+  "questionRenderers": {
+    "other": "Other",
+    "pleaseSpecify": "Please specify...",
+    "dropFilesHere": "Drop files here or click to upload",
+    "maxFiles": "Max {{count}} file(s) • {{size}}MB each",
+    "allowedTypes": "Allowed",
+    "dragToReorder": "Drag to reorder items by preference"
+  },
+  "charts": {
+    "noResponsesYet": "No responses yet",
+    "responseCount": "{{count}} response",
+    "responseCount_plural": "{{count}} responses",
+    "averageRatingOutOf": "Average rating out of {{max}}",
+    "moreOptions": "+{{count}} more options"
+  },
+  "timePicker": {
+    "selectTime": "Select time",
+    "enterTime": "Enter time",
+    "hour": "Hour",
+    "minute": "Minute",
+    "clearTime": "Clear time",
+    "switchToKeyboard": "Switch to keyboard input",
+    "switchToDial": "Switch to clock dial"
+  },
+  "enums": {
+    "subscriptionTier": {
+      "free": "Free",
+      "pro": "Pro",
+      "enterprise": "Enterprise"
+    },
+    "memberRole": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer",
+      "respondent": "Respondent"
+    },
+    "surveyStatus": {
+      "draft": "Draft",
+      "published": "Published",
+      "closed": "Closed",
+      "archived": "Archived"
+    },
+    "questionType": {
+      "singleChoice": "Single Choice",
+      "multipleChoice": "Multiple Choice",
+      "text": "Text",
+      "longText": "Long Text",
+      "rating": "Rating",
+      "scale": "Scale",
+      "matrix": "Matrix",
+      "date": "Date",
+      "dateTime": "Date & Time",
+      "fileUpload": "File Upload",
+      "yesNo": "Yes/No",
+      "dropdown": "Dropdown",
+      "nps": "Net Promoter Score",
+      "checkbox": "Checkbox",
+      "number": "Number",
+      "shortText": "Short Text",
+      "email": "Email",
+      "phone": "Phone",
+      "url": "URL",
+      "ranking": "Ranking"
+    },
+    "ratingStyle": {
+      "stars": "Stars",
+      "hearts": "Hearts",
+      "thumbs": "Thumbs",
+      "smileys": "Smileys",
+      "numbers": "Numbers"
+    },
+    "yesNoStyle": {
+      "text": "Text",
+      "thumbs": "Thumbs Up/Down",
+      "toggle": "Toggle Switch",
+      "checkX": "Check/X"
+    },
+    "logicOperator": {
+      "equals": "Equals",
+      "notEquals": "Does not equal",
+      "contains": "Contains",
+      "notContains": "Does not contain",
+      "greaterThan": "Greater than",
+      "lessThan": "Less than",
+      "greaterThanOrEquals": "Greater than or equal",
+      "lessThanOrEquals": "Less than or equal",
+      "isEmpty": "Is empty",
+      "isNotEmpty": "Is not empty",
+      "isAnswered": "Is answered",
+      "isNotAnswered": "Is not answered"
+    },
+    "logicAction": {
+      "show": "Show",
+      "hide": "Hide",
+      "skip": "Skip",
+      "jumpTo": "Jump to",
+      "endSurvey": "End survey"
+    },
+    "linkType": {
+      "public": "Public",
+      "unique": "Unique",
+      "campaign": "Campaign",
+      "embedded": "Embedded",
+      "qrCode": "QR Code"
+    },
+    "distributionStatus": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "sent": "Sent",
+      "partiallyFailed": "Partially Failed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "recipientStatus": {
+      "pending": "Pending",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "opened": "Opened",
+      "clicked": "Clicked",
+      "bounced": "Bounced",
+      "unsubscribed": "Unsubscribed",
+      "failed": "Failed"
+    },
+    "emailTemplateType": {
+      "surveyInvitation": "Survey Invitation",
+      "surveyReminder": "Survey Reminder",
+      "thankYou": "Thank You",
+      "custom": "Custom"
+    },
+    "buttonStyle": {
+      "rounded": "Rounded",
+      "square": "Square",
+      "pill": "Pill"
+    },
+    "themeLayout": {
+      "classic": "Classic",
+      "card": "Card",
+      "conversational": "Conversational",
+      "minimal": "Minimal"
+    },
+    "logoPosition": {
+      "topLeft": "Top Left",
+      "topCenter": "Top Center",
+      "topRight": "Top Right",
+      "bottomLeft": "Bottom Left",
+      "bottomCenter": "Bottom Center",
+      "bottomRight": "Bottom Right"
+    },
+    "progressBarStyle": {
+      "none": "None",
+      "bar": "Bar",
+      "percentage": "Percentage",
+      "steps": "Steps",
+      "dots": "Dots"
+    },
+    "recurrencePattern": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "biWeekly": "Bi-Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "custom": "Custom"
+    },
+    "runStatus": {
+      "scheduled": "Scheduled",
+      "running": "Running",
+      "completed": "Completed",
+      "partiallyCompleted": "Partially Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    },
+    "audienceType": {
+      "staticList": "Static List",
+      "dynamicList": "Dynamic List",
+      "allContacts": "All Contacts",
+      "previousRespondents": "Previous Respondents"
+    },
+    "npsCategory": {
+      "needsImprovement": "Needs Improvement",
+      "good": "Good",
+      "great": "Great",
+      "excellent": "Excellent"
+    },
+    "dayOfWeek": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "backgroundImagePosition": {
+      "cover": "Cover",
+      "contain": "Contain",
+      "tile": "Tile",
+      "center": "Center",
+      "topLeft": "Top Left",
+      "topRight": "Top Right"
+    }
+  },
+  "onboarding": {
+    "skip": "Skip for now",
+    "getStarted": "Get Started",
+    "defaultUser": "there",
+    "welcome": {
+      "title": "Welcome to Inquiro",
+      "description": "Let's personalize your experience in just a few steps",
+      "greeting": "Hi {{name}}! 👋",
+      "message": "We're excited to have you here. Let's set up your account so you can start creating amazing surveys and gathering valuable insights."
+    },
+    "profile": {
+      "title": "Complete Your Profile",
+      "description": "Tell us a bit about yourself",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNamePlaceholder": "Enter your last name",
+      "hint": "Your name will be displayed on surveys and reports"
+    },
+    "appearance": {
+      "title": "Customize Your Look",
+      "description": "Choose your preferred theme and colors",
+      "themeMode": "Theme Mode",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "colorPalette": "Color Palette",
+      "palette": {
+        "purple": "Purple",
+        "blue": "Blue",
+        "green": "Green",
+        "orange": "Orange",
+        "pink": "Pink",
+        "teal": "Teal",
+        "monochrome": "Monochrome"
+      }
+    },
+    "accessibility": {
+      "title": "Accessibility Settings",
+      "description": "Customize for your comfort and needs",
+      "intro": "Customize your experience for better accessibility",
+      "reducedMotion": "Reduce Motion",
+      "reducedMotionDesc": "Minimize animations and transitions",
+      "highContrast": "High Contrast",
+      "highContrastDesc": "Increase color contrast for better visibility",
+      "largeText": "Large Text",
+      "largeTextDesc": "Increase font size throughout the app",
+      "dyslexiaFont": "Dyslexia-Friendly Font",
+      "dyslexiaFontDesc": "Use a font designed for easier reading",
+      "hint": "You can adjust these settings anytime in Settings → Accessibility"
+    },
+    "language": {
+      "title": "Select Your Language",
+      "description": "Choose the language you're most comfortable with"
+    },
+    "notifications": {
+      "title": "Stay Informed",
+      "description": "Choose how you want to be notified",
+      "email": "Email Notifications",
+      "emailDesc": "Receive important updates via email",
+      "responses": "Response Alerts",
+      "responsesDesc": "Get notified when someone responds to your survey",
+      "digest": "Weekly Digest",
+      "digestDesc": "Receive a weekly summary of your survey performance",
+      "hint": "You can change these settings anytime in your account preferences"
+    },
+    "complete": {
+      "title": "You're All Set!",
+      "description": "Your account is ready to go",
+      "ready": "Awesome, {{name}}!",
+      "message": "Your workspace is all set up. Start creating surveys, analyzing responses, and sharing insights with your team.",
+      "createSurvey": "Create Survey",
+      "viewAnalytics": "View Analytics",
+      "distribute": "Distribute"
+    },
+    "features": {
+      "customize": "Customize",
+      "language": "Language",
+      "notifications": "Alerts"
+    },
+    "restartOnboarding": "Restart Setup Wizard",
+    "restartOnboardingDescription": "Go through the initial setup process again",
+    "completedSuccessfully": "Setup completed successfully!",
+    "skipAriaLabel": "Skip onboarding wizard",
+    "stepNavigation": "Wizard steps",
+    "stepLabel": "Step {{current}} of {{total}}",
+    "errors": {
+      "saveFailed": "Failed to save your preferences. Please try again."
+    }
+  },
+  "gettingStarted": {
+    "skip": "I'll explore on my own",
+    "skipAriaLabel": "Skip getting started guide",
+    "startCreating": "Start Creating",
+    "stepNavigation": "Guide steps",
+    "stepLabel": "Step {{current}} of {{total}}",
+    "completedSuccessfully": "You're ready to create amazing surveys!",
+    "defaultUser": "there",
+    "errors": {
+      "saveFailed": "Failed to save progress. Please try again."
+    },
+    "welcome": {
+      "title": "Your Survey Journey",
+      "description": "Let's walk through the essential workflow together",
+      "greeting": "Let's get you started, {{name}}!",
+      "message": "This quick guide will walk you through the essential steps to create, distribute, and analyze your surveys.",
+      "steps": {
+        "create": "Create",
+        "share": "Share",
+        "analyze": "Analyze"
+      }
+    },
+    "workspace": {
+      "title": "Organize with Workspaces",
+      "description": "Keep your surveys organized by team or project",
+      "intro": "Workspaces help you organize surveys by team, project, or client. Think of them as folders for your work.",
+      "benefits": {
+        "title": "Workspace Benefits",
+        "organize": "Organize surveys by project or team",
+        "collaborate": "Invite team members to collaborate",
+        "separate": "Keep client work separate"
+      },
+      "hint": "You can access workspaces from the sidebar or navigation menu."
+    },
+    "createSurvey": {
+      "title": "Create Your First Survey",
+      "description": "Choose how you want to start building",
+      "intro": "Ready to create? You have two options to get started:",
+      "methods": {
+        "scratch": {
+          "title": "Start from Scratch",
+          "desc": "Build a custom survey with full control"
+        },
+        "template": {
+          "title": "Use a Template",
+          "desc": "Start with pre-built survey templates"
+        }
+      },
+      "shortcut": "Pro tip: Press Ctrl+N to quickly create a new survey"
+    },
+    "questions": {
+      "title": "Add Questions",
+      "description": "Build your survey with 10+ question types",
+      "intro": "The Survey Builder supports 10+ question types. Here are some popular ones:",
+      "types": {
+        "multipleChoice": "Multiple Choice",
+        "text": "Text Answer",
+        "rating": "Rating Scale",
+        "nps": "NPS Score"
+      },
+      "builderFeatures": {
+        "title": "Builder Features",
+        "dragDrop": "Drag & drop to reorder questions",
+        "autosave": "Autosave keeps your work safe",
+        "undoRedo": "Undo/Redo with Ctrl+Z / Ctrl+Y"
+      }
+    },
+    "themes": {
+      "title": "Style Your Survey",
+      "description": "Make it beautiful with custom themes",
+      "intro": "Make your surveys visually appealing with custom themes. Matching your brand has never been easier.",
+      "customize": {
+        "title": "Customize Everything",
+        "colors": "Brand colors",
+        "fonts": "Typography",
+        "logo": "Logo placement",
+        "background": "Backgrounds"
+      },
+      "hint": "Access Themes from the sidebar to create reusable designs."
+    },
+    "preview": {
+      "title": "Preview Before Sharing",
+      "description": "Test your survey like a respondent would",
+      "intro": "Always preview your survey before sharing! See exactly what respondents will experience.",
+      "features": {
+        "title": "Preview Features",
+        "desktop": "Desktop & mobile views",
+        "test": "Test the survey as a respondent",
+        "logic": "Verify question logic flows"
+      },
+      "hint": "Click the Preview button in the Survey Builder toolbar."
+    },
+    "distribute": {
+      "title": "Share Your Survey",
+      "description": "Get your survey out to the world",
+      "intro": "Once your survey is ready, publish it and share with your audience.",
+      "methods": {
+        "link": {
+          "title": "Share Link",
+          "desc": "Copy and paste anywhere"
+        },
+        "email": {
+          "title": "Email Campaign",
+          "desc": "Send to your contact list"
+        }
+      },
+      "hint": "Access Distribute from the sidebar to manage all your survey links."
+    },
+    "responses": {
+      "title": "Track Responses",
+      "description": "Watch responses come in real-time",
+      "intro": "Watch responses come in real-time! Every submission is captured and stored securely.",
+      "features": {
+        "title": "Response Management",
+        "realtime": "Real-time response notifications",
+        "individual": "View individual responses",
+        "export": "Export to CSV or Excel"
+      }
+    },
+    "analytics": {
+      "title": "Analyze Results",
+      "description": "Turn data into actionable insights",
+      "intro": "Turn raw data into actionable insights with powerful analytics.",
+      "features": {
+        "charts": "Charts & Graphs",
+        "trends": "Trends Over Time",
+        "export": "Export Reports"
+      },
+      "insights": {
+        "title": "Get Insights On",
+        "completion": "Completion rates",
+        "response": "Response patterns",
+        "nps": "NPS scores & benchmarks"
+      }
+    },
+    "complete": {
+      "title": "You're Ready!",
+      "description": "You know the essentials - time to create",
+      "ready": "You're all set, {{name}}!",
+      "message": "You now know the essentials. Start creating surveys and gathering valuable insights!",
+      "shortcuts": {
+        "title": "Quick Navigation Shortcuts"
+      },
+      "actions": {
+        "surveys": "Surveys",
+        "templates": "Templates",
+        "analytics": "Analytics"
+      }
+    },
+    "trigger": {
+      "title": "Getting Started Guide",
+      "description": "Walk through the survey creation workflow",
+      "restart": "Start Guide",
+      "restartSuccess": "Guide restarted successfully"
+    }
+  },
+  "dialogs": {
+    "deleteTitle": "Delete {{itemName}}?",
+    "deleteDescription": "This action cannot be undone. Are you sure you want to delete this {{itemName}}?",
+    "deleteEntityTitle": "Delete {{entity}}?",
+    "deleteEntityDescription": "This action cannot be undone. Are you sure you want to delete this {{entity}}?",
+    "confirmDescription": "Please confirm your action",
+    "confirmAction": "Confirm"
+  },
+  "a11y": {
+    "close": "Close",
+    "closeSearch": "Close search",
+    "search": "Search",
+    "moreOptions": "More options",
+    "pauseRecurring": "Pause recurring survey",
+    "resumeRecurring": "Resume recurring survey",
+    "triggerRun": "Trigger immediate run",
+    "viewHistory": "View run history",
+    "memberActions": "Member actions",
+    "userMenu": "User menu",
+    "surveyLogo": "Survey logo",
+    "qrCode": "QR Code",
+    "preview": "Preview",
+    "logo": "Logo",
+    "avatarAlt": "Avatar",
+    "remove": "Remove",
+    "logoAlt": "Logo"
+  },
+  "roles": {
+    "member": "Member"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "results": "Results",
+    "recent": "Recent",
+    "noResults": "No results found",
+    "tryDifferentKeywords": "Try different keywords",
+    "noRecentItems": "No recent items",
+    "startTyping": "Start typing to search",
+    "toSelect": "to select",
+    "toNavigate": "to navigate",
+    "toClose": "to close"
+  },
+  "api": {
+    "success": {
+      "created": "{{resource}} created successfully",
+      "updated": "{{resource}} updated successfully",
+      "deleted": "{{resource}} deleted successfully",
+      "published": "{{resource}} published successfully",
+      "closed": "{{resource}} closed successfully",
+      "sent": "{{resource}} sent successfully",
+      "saved": "{{resource}} saved successfully",
+      "archived": "{{resource}} archived successfully",
+      "restored": "{{resource}} restored successfully",
+      "duplicated": "{{resource}} duplicated successfully",
+      "exported": "{{resource}} exported successfully",
+      "imported": "{{resource}} imported successfully"
+    },
+    "resources": {
+      "surveys": "Survey",
+      "survey": "Survey",
+      "users": "User",
+      "settings": "Settings",
+      "preferences": "Preferences",
+      "templates": "Template",
+      "responses": "Response",
+      "questions": "Question",
+      "namespaces": "Workspace",
+      "themes": "Theme",
+      "links": "Link",
+      "invitations": "Invitation",
+      "members": "Member",
+      "apikeys": "API Key"
+    }
+  }
+}

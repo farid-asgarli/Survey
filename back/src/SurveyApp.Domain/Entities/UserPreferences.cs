@@ -557,7 +557,9 @@ public class UserPreferences : Entity<Guid>
                 or "amber"
                 or "indigo"
                 or "coral"
-                or "midnight";
+                or "midnight"
+                or "monochrome"
+                or "slate";
 
     private static bool IsValidFontSizeScale(string scale) =>
         scale is "small" or "medium" or "large" or "extra-large";

@@ -1,0 +1,4701 @@
+{
+  "a11y": {
+    "avatarAlt": "Аватар",
+    "close": "Закрыть",
+    "closeSearch": "Закрыть поиск",
+    "logo": "Логотип",
+    "logoAlt": "Логотип",
+    "memberActions": "Действия с участником",
+    "moreOptions": "Дополнительные опции",
+    "pauseRecurring": "Приостановить периодический опрос",
+    "preview": "Предпросмотр",
+    "qrCode": "QR-код",
+    "remove": "Удалить",
+    "resumeRecurring": "Возобновить периодический опрос",
+    "search": "Поиск",
+    "surveyLogo": "Логотип опроса",
+    "triggerRun": "Запустить немедленно",
+    "userMenu": "Меню пользователя",
+    "viewHistory": "Просмотр истории"
+  },
+  "accessibility": {
+    "changeLanguage": "Изменить язык",
+    "closeMenu": "Закрыть меню",
+    "collapseSection": "Свернуть раздел",
+    "dragHandle": "Ручка перетаскивания",
+    "expandSection": "Развернуть раздел",
+    "gridView": "Сетка",
+    "listView": "Список",
+    "notifications": "Уведомления",
+    "openMenu": "Открыть меню",
+    "search": "Поиск",
+    "selectLanguage": "Выбрать язык",
+    "sortable": "Сортируемый",
+    "toggleSidebar": "Переключить боковую панель",
+    "userMenu": "Меню пользователя",
+    "viewMode": "Режим просмотра"
+  },
+  "analytics": {
+    "averageTime": "Среднее время",
+    "basedOnResponses": "На основе {{count}} ответов",
+    "completed": "Завершено",
+    "completionBreakdown": "Статус завершения",
+    "completionRate": "Процент завершения",
+    "description": "Статистика опросов и данные ответов",
+    "detractors": "Критики",
+    "loadError": "Не удалось загрузить аналитику",
+    "loadErrorDesc": "Произошла ошибка при загрузке данных. Попробуйте еще раз.",
+    "matrixQuestion": "Матричный вопрос",
+    "noData": "Нет данных аналитики",
+    "noMatrixData": "Нет данных матрицы",
+    "noNpsData": "Нет данных NPS",
+    "noResponseData": "Нет доступных данных ответов",
+    "noResponses": "Пока нет ответов",
+    "noResponsesDesc": "Этот опрос еще не получил ответов. Поделитесь им, чтобы начать сбор данных!",
+    "noTextResponses": "Пока нет текстовых ответов",
+    "npsDescription": "Распределение Net Promoter Score",
+    "npsQuestions": "NPS вопросы",
+    "npsScore": "Оценка NPS",
+    "npsScoreLabel": "NPS оценка",
+    "overview": "Обзор",
+    "partial": "Частично",
+    "passives": "Нейтральные",
+    "promoters": "Промоутеры",
+    "questionInsights": "Анализ вопросов",
+    "responseDistribution": "Распределение ответов",
+    "responseIntensity": "Интенсивность ответов:",
+    "responseRate": "Процент ответов",
+    "responseTrend": "Динамика ответов",
+    "responseTrendDesc": "Ответы по дням",
+    "responsesCount": "{{count}} ответов",
+    "selectSurvey": "Выберите опрос...",
+    "selectSurveyDesc": "Выберите опрос из списка для просмотра аналитики и данных ответов",
+    "selectSurveyTitle": "Выберите опрос",
+    "title": "Аналитика",
+    "totalResponses": "Всего ответов",
+    "totalViews": "Всего просмотров",
+    "viewSurvey": "Посмотреть опрос",
+    "visualizationNotAvailable": "Визуализация аналитики недоступна для этого типа вопроса"
+  },
+  "analyticsSummary": {
+    "average": "Средне",
+    "avgCompletionTime": "Среднее время завершения",
+    "completed": "{{count}} завершено",
+    "completionRate": "Процент завершения",
+    "excellent": "Отлично",
+    "good": "Хорошо",
+    "incompleteSubmissions": "Незавершённые отправки",
+    "needsImprovement": "Требует улучшения",
+    "none": "Нет",
+    "partialResponses": "Частичные ответы",
+    "totalResponses": "Всего ответов"
+  },
+  "apiKeys": {
+    "copyKey": "Копировать ключ",
+    "createDesc": "Создайте новый API-ключ для программного доступа",
+    "createKey": "Создать API-ключ",
+    "createNew": "Создать новый ключ",
+    "createSuccess": "API-ключ успешно создан",
+    "deleteKey": "Удалить API-ключ",
+    "deleteKeyConfirm": "Вы уверены, что хотите удалить этот API-ключ? Это действие нельзя отменить.",
+    "deleteSuccess": "API-ключ удалён",
+    "description": "Управляйте API-ключами для программного доступа к вашему аккаунту",
+    "documentation": "Документация API",
+    "documentationDesc": "Узнайте, как использовать Survey API для создания опросов, сбора ответов и программного доступа к аналитике.",
+    "keyCopied": "API-ключ скопирован в буфер обмена",
+    "keyCreated": "API-ключ создан",
+    "keyCreatedDesc": "Скопируйте API-ключ сейчас. Вы больше не сможете его увидеть!",
+    "keyDeleted": "API-ключ удалён",
+    "keyName": "Название ключа",
+    "keyNamePlaceholder": "Введите название для этого ключа",
+    "noKeys": "Нет API-ключей",
+    "noKeysDesc": "Создайте первый API-ключ для интеграции с внешними сервисами",
+    "permissions": "Разрешения",
+    "scopes": {
+      "analytics:read": "Чтение аналитики",
+      "responses:read": "Чтение ответов",
+      "responses:write": "Отправка ответов",
+      "surveys:read": "Чтение опросов",
+      "surveys:write": "Создание и редактирование опросов"
+    },
+    "selectScopes": "Выберите хотя бы одно разрешение",
+    "title": "API-ключи",
+    "validation": {
+      "nameRequired": "Пожалуйста, введите название API-ключа",
+      "scopeRequired": "Пожалуйста, выберите хотя бы одно разрешение"
+    },
+    "viewDocs": "Смотреть документацию"
+  },
+  "auth": {
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "authenticationFailed": "Ошибка аутентификации",
+    "backToLogin": "Вернуться к входу",
+    "completingSignIn": "Завершение входа...",
+    "confirmPassword": "Подтвердите пароль",
+    "createAccount": "Создать аккаунт",
+    "createYourAccount": "Создайте аккаунт, чтобы начать",
+    "currentPassword": "Текущий пароль",
+    "dontHaveAccount": "Нет аккаунта?",
+    "email": "Электронная почта",
+    "emailPlaceholder": "вы@пример.com",
+    "enterCredentials": "Введите данные для входа в аккаунт",
+    "firstName": "Имя",
+    "forgotPassword": "Забыли пароль?",
+    "forgotPasswordEmailPlaceholder": "вы@пример.com",
+    "illustrationSubtitle": "Собирайте данные, понимайте свою аудиторию и принимайте решения на основе данных.",
+    "illustrationTitle": "Создавайте вдохновляющие опросы",
+    "invalidCredentials": "Неверный email или пароль",
+    "joinUs": "Присоединяйтесь к тысячам команд, создающих лучшие опросы",
+    "lastName": "Фамилия",
+    "login": "Вход",
+    "loginFailed": "Ошибка входа",
+    "newPassword": "Новый пароль",
+    "orContinueWith": "Или продолжить с",
+    "password": "Пароль",
+    "passwordPlaceholder": "••••••••",
+    "passwordResetSent": "Ссылка для сброса пароля отправлена на почту",
+    "passwordResetSuccess": "Пароль успешно сброшен",
+    "register": "Зарегистрироваться",
+    "registerIllustrationSubtitle": "Создавайте, распространяйте и анализируйте опросы с помощью мощных инструментов для команд.",
+    "registerIllustrationTitle": "Присоединяйтесь к нашему сообществу",
+    "registrationSuccess": "Регистрация успешна",
+    "rememberMe": "Запомнить меня",
+    "resetPassword": "Сбросить пароль",
+    "returnToLogin": "Вернуться к входу",
+    "signIn": "Войти",
+    "signInToContinue": "Войдите, чтобы продолжить",
+    "signInWithMicrosoft": "Войти через Microsoft",
+    "signOut": "Выйти",
+    "signUp": "Регистрация",
+    "signingIn": "Вход в систему...",
+    "tagline": "Создавайте и управляйте опросами легко",
+    "welcomeBack": "С возвращением"
+  },
+  "avatar": {
+    "changeAvatar": "Изменить аватар",
+    "chooseCharacter": "3D-персонажи",
+    "confirm": "Подтвердить выбор",
+    "microsoftAccount": "Фото аккаунта Microsoft",
+    "preview": {
+      "hover": "Предпросмотр",
+      "microsoftPhoto": "Фото Microsoft",
+      "selectOne": "Выберите аватар",
+      "selected": "Выбрано"
+    },
+    "removeAvatar": "Удалить аватар",
+    "selectAvatar": "Выбрать аватар",
+    "selectFromCollection": "Выберите из нашей коллекции 3D-персонажей",
+    "selectorDialog": {
+      "description": "Выберите персонажа из нашей коллекции или используйте фото аккаунта Microsoft",
+      "title": "Выберите ваш аватар"
+    },
+    "validation": {
+      "invalidType": "Пожалуйста, выберите допустимый файл изображения (PNG, JPG, GIF)",
+      "tooLarge": "Изображение должно быть меньше 5МБ"
+    }
+  },
+  "avatarUpload": {
+    "change": "Изменить",
+    "description": "Выберите изображение для профиля",
+    "errors": {
+      "invalidType": "Неверный тип файла",
+      "removeFailed": "Не удалось удалить аватар",
+      "tooLarge": "Файл слишком большой",
+      "uploadFailed": "Не удалось загрузить аватар"
+    },
+    "maxSize": "Макс {{size}}МБ.",
+    "remove": "Удалить",
+    "title": "Загрузить аватар"
+  },
+  "bulkLinkDialog": {
+    "advancedOptions": "Расширенные настройки",
+    "copyAll": "Копировать все",
+    "description": "Сгенерируйте несколько уникальных ссылок сразу",
+    "descriptionWithTitle": "Сгенерируйте несколько уникальных ссылок для \"{{title}}\"",
+    "downloadCSV": "Скачать CSV",
+    "expirationDate": "Дата истечения",
+    "expirationDateDescription": "Все ссылки истекут в эту дату",
+    "generate": "Сгенерировать ссылки",
+    "generatedCount": "{{count}} ссылок сгенерировано",
+    "generating": "Генерация...",
+    "namePrefix": "Префикс названия",
+    "namePrefixHint": "Ссылки будут названы: префикс-1, префикс-2 и т.д.",
+    "namePrefixPlaceholder": "напр., кампания-",
+    "numberOfLinks": "Количество ссылок",
+    "numberOfLinksHint": "Максимум 1000 ссылок за раз",
+    "numberOfLinksPlaceholder": "Введите число (1-1000)",
+    "title": "Массовая генерация ссылок",
+    "toast": {
+      "allCopied": "Все ссылки скопированы в буфер обмена",
+      "copyFailed": "Не удалось скопировать ссылки",
+      "downloaded": "Ссылки скачаны как CSV",
+      "error": "Не удалось сгенерировать ссылки",
+      "generated": "Успешно сгенерировано {{count}} ссылок",
+      "invalidCount": "Введите число от 1 до 1000"
+    },
+    "utmCampaign": "UTM-кампания",
+    "utmCampaignPlaceholder": "напр., летняя-кампания",
+    "utmDescription": "Добавьте параметры отслеживания для всех сгенерированных ссылок",
+    "utmMedium": "UTM-канал",
+    "utmMediumPlaceholder": "напр., email",
+    "utmParameters": "UTM-параметры",
+    "utmSource": "UTM-источник",
+    "utmSourcePlaceholder": "напр., newsletter",
+    "utmTooltip": "Отслеживайте эффективность массовых ссылок"
+  },
+  "charts": {
+    "averageRatingOutOf": "Средний рейтинг из {{max}}",
+    "moreOptions": "+{{count}} других вариантов",
+    "noResponsesYet": "Пока нет ответов",
+    "responseCount": "{{count}} ответ",
+    "responseCount_plural": "{{count}} ответов"
+  },
+  "common": {
+    "actions": "Действия",
+    "add": "Добавить",
+    "all": "Все",
+    "almostReady": "Почти готово",
+    "appName": "Inquiro",
+    "appTitle": "Inquiro",
+    "apply": "Применить",
+    "back": "Назад",
+    "breadcrumb": "Навигация",
+    "cancel": "Отмена",
+    "changeLanguage": "Изменить язык",
+    "clearAll": "Очистить всё",
+    "clearFilters": "Очистить фильтры",
+    "clearSearch": "Очистить поиск",
+    "clickToInsert": "нажмите чтобы вставить",
+    "close": "Закрыть",
+    "closeDrawer": "Закрыть панель",
+    "comingSoon": "Скоро",
+    "complete": "Завершить",
+    "confirm": "Подтвердить",
+    "connect": "Подключить",
+    "continue": "Продолжить",
+    "copied": "Скопировано в буфер обмена",
+    "copy": "Копировать",
+    "copyFailed": "Не удалось скопировать",
+    "create": "Создать",
+    "date": "Дата",
+    "default": "По умолчанию",
+    "delete": "Удалить",
+    "deleting": "Удаление...",
+    "description": "Описание",
+    "disabled": "Отключено",
+    "disconnect": "Отключить",
+    "dismissNotification": "Закрыть уведомление",
+    "done": "Готово",
+    "dragToReorder": "Перетащите для изменения порядка",
+    "duplicate": "Дублировать",
+    "edit": "Редактировать",
+    "email": "Электронная почта",
+    "enabled": "Включено",
+    "entityDeleteFailed": "Не удалось удалить {{entity}}",
+    "entityDeletedSuccess": "{{entity}} успешно удалён",
+    "entityDuplicateFailed": "Не удалось дублировать {{entity}}",
+    "entityDuplicatedSuccess": "{{entity}} успешно дублирован",
+    "error": "Ошибка",
+    "example": "Пример",
+    "failedToLoad": "Не удалось загрузить",
+    "filter": "Фильтр",
+    "greetingFallback": "там",
+    "gridView": "Сетка",
+    "hour": "Час",
+    "info": "Информация",
+    "initializing": "Инициализация",
+    "insert": "Вставить",
+    "item": "элемент",
+    "items": "элементы",
+    "listView": "Список",
+    "loadMore": "Загрузить ещё",
+    "loading": "Загрузка...",
+    "loadingApp": "Загрузка",
+    "loadingPreferences": "Загрузка настроек",
+    "loadingResources": "Загрузка ресурсов",
+    "loadingWorkspace": "Загрузка рабочего пространства",
+    "minute": "Минута",
+    "moveDown": "Переместить вниз",
+    "moveUp": "Переместить вверх",
+    "name": "Название",
+    "next": "Далее",
+    "no": "Нет",
+    "noOptionsFound": "Варианты не найдены",
+    "noResults": "Результаты не найдены",
+    "none": "Нет",
+    "notifications": "Уведомления",
+    "openMenu": "Открыть меню",
+    "operationFailed": "Операция не выполнена",
+    "optional": "Необязательно",
+    "other": "Другое",
+    "preparingWorkspace": "Подготовка рабочего пространства",
+    "previous": "Предыдущий",
+    "private": "Приватный",
+    "progress": "Прогресс",
+    "public": "Публичный",
+    "recent": "Недавние",
+    "redo": "Повторить",
+    "refresh": "Обновить",
+    "remove": "Удалить",
+    "required": "Обязательно",
+    "reset": "Сбросить",
+    "retry": "Повторить",
+    "save": "Сохранить",
+    "saveChanges": "Сохранить изменения",
+    "saved": "Все изменения сохранены",
+    "saving": "Сохранение...",
+    "search": "Поиск",
+    "searchDots": "Поиск...",
+    "select": "Выбрать...",
+    "selectLanguage": "Выбрать язык",
+    "showLess": "Показать меньше",
+    "showMore": "Показать ещё {{count}}",
+    "signingIn": "Выполняется вход",
+    "somethingWentWrong": "Что-то пошло не так. Пожалуйста, попробуйте снова.",
+    "status": "Статус",
+    "submit": "Отправить",
+    "success": "Успешно",
+    "surveyFallback": "Опрос",
+    "templateFallback": "Шаблон",
+    "themeFallback": "Тема",
+    "time": "Время",
+    "timezone": "Часовой пояс",
+    "title": "Заголовок",
+    "tryAgain": "Попробовать снова",
+    "type": "Тип",
+    "undo": "Отменить",
+    "unknown": "Неизвестно",
+    "unknownError": "Произошла неизвестная ошибка",
+    "updated": "Обновлено",
+    "userFallback": "Пользователь",
+    "viewAll": "Смотреть все",
+    "viewMode": "Режим просмотра",
+    "warning": "Предупреждение",
+    "workspaceOptions": "Настройки рабочего пространства",
+    "yes": "Да"
+  },
+  "conditionalLogic": {
+    "actionLabels": {
+      "endSurvey": "Завершить опрос",
+      "hide": "Скрыть вопрос",
+      "jumpTo": "Перейти к вопросу",
+      "show": "Показать вопрос",
+      "skip": "Пропустить вопрос"
+    },
+    "actions": {
+      "endSurvey": "Завершить опрос",
+      "hide": "Скрыть этот вопрос",
+      "jumpTo": "Перейти к вопросу",
+      "show": "Показать этот вопрос",
+      "skip": "Пропустить к вопросу"
+    },
+    "addFirstRule": "Добавить первое правило",
+    "addRule": "Добавить правило",
+    "addRuleToStart": "Добавьте условную логику, чтобы управлять появлением этого вопроса на основе предыдущих ответов.",
+    "after": "После",
+    "and": "И",
+    "before": "До",
+    "contains": "содержит",
+    "currentQuestion": "Текущий вопрос",
+    "deleteRule": "Удалить правило",
+    "description": "Добавьте правила для управления появлением этого вопроса на основе предыдущих ответов",
+    "dragToReorder": "Перетащите правила для изменения порядка. Правила оцениваются по порядку.",
+    "editRule": "Редактировать правило",
+    "enableLogic": "Включить условную логику",
+    "equals": "равно",
+    "form": {
+      "action": "Действие",
+      "actionSection": "Определите действие",
+      "condition": "Условие",
+      "conditionSection": "Определите условие",
+      "enterValue": "Введите значение...",
+      "ifAnswerTo": "Если ответ на",
+      "selectAction": "Выберите действие...",
+      "selectCondition": "Выберите условие...",
+      "selectQuestion": "Выберите вопрос...",
+      "selectTargetQuestion": "Выберите вопрос...",
+      "selectValue": "Выберите значение...",
+      "skipTo": "Пропустить к",
+      "targetQuestion": "Целевой вопрос",
+      "value": "Значение"
+    },
+    "greaterThan": "больше чем",
+    "hide": "Скрыть",
+    "if": "Если",
+    "isAnswered": "отвечено",
+    "isEmpty": "пусто",
+    "isNotAnswered": "не отвечено",
+    "isNotEmpty": "не пусто",
+    "jumpTo": "Перейти к",
+    "legend": "Легенда",
+    "lessThan": "меньше чем",
+    "logicRules": "Правила логики",
+    "noRules": "Правила логики не определены",
+    "notEquals": "не равно",
+    "operatorLabels": {
+      "contains": "содержит",
+      "equals": "равно",
+      "greaterThan": "больше чем",
+      "greaterThanOrEquals": "больше или равно",
+      "isAnswered": "отвечено",
+      "isEmpty": "пусто",
+      "isNotAnswered": "не отвечено",
+      "isNotEmpty": "не пусто",
+      "lessThan": "меньше чем",
+      "lessThanOrEquals": "меньше или равно",
+      "notContains": "не содержит",
+      "notEquals": "не равно"
+    },
+    "operators": {
+      "after": "После",
+      "before": "До",
+      "contains": "Содержит",
+      "equals": "Равно",
+      "greaterThan": "Больше чем",
+      "greaterThanOrEquals": "Больше или равно",
+      "isAnswered": "Отвечено",
+      "isEmpty": "Пусто",
+      "isNotAnswered": "Не отвечено",
+      "isNotEmpty": "Не пусто",
+      "lessThan": "Меньше чем",
+      "lessThanOrEquals": "Меньше или равно",
+      "notContains": "Не содержит",
+      "notEquals": "Не равно",
+      "onOrAfter": "В или после",
+      "onOrBefore": "В или до"
+    },
+    "or": "Или",
+    "saveRule": "Сохранить правило",
+    "show": "Показать",
+    "skip": "Пропустить",
+    "then": "То",
+    "title": "Условная логика",
+    "unknownQuestion": "Неизвестный вопрос",
+    "validationIssues": "Проблемы валидации логики"
+  },
+  "createDistribution": {
+    "addRecipients": "Добавить Получателей",
+    "bodyPlaceholder": "Напишите текст письма...",
+    "bodyRequired": "Текст письма обязателен",
+    "chooseTemplate": "Выберите Шаблон",
+    "chooseWhenEmailsGoOut": "Выберите время отправки писем",
+    "createError": "Не удалось создать рассылку. Пожалуйста, попробуйте снова.",
+    "createSuccess": "Рассылка создана и отправляется!",
+    "creating": "Создание...",
+    "customizeMessage": "Настройте текст письма",
+    "deliverImmediately": "Доставить немедленно",
+    "description": "Создайте новую email кампанию для распространения опроса",
+    "descriptionWithTitle": "Распространить \"{{title}}\" по email",
+    "emailBody": "Текст Письма",
+    "emailContent": "Содержимое Email",
+    "emailPlaceholder": "reply@example.com",
+    "importOrAddManually": "Импортируйте email или добавьте вручную",
+    "namePlaceholder": "Ваше имя или компания",
+    "noRecipientsDesc": "Добавьте адреса электронной почты вручную или импортируйте из CSV файла",
+    "noRecipientsYet": "Пока нет получателей",
+    "now": "Сейчас",
+    "pickDateTime": "Выберите дату и время",
+    "readyToProceed": "Готово к следующему шагу",
+    "recipientsAdded": "{{count}} получатель добавлен",
+    "recipientsAdded_plural": "{{count}} получателей добавлено",
+    "scheduleLabel": "Запланировать",
+    "scheduleSuccess": "Рассылка успешно запланирована!",
+    "scheduledFor": "Запланировано на",
+    "selectDateTime": "Выберите Дату и Время",
+    "sendNow": "Отправить Сейчас",
+    "senderDetails": "Данные Отправителя",
+    "steps": {
+      "content": "Содержимое",
+      "contentDesc": "Настройте email",
+      "recipients": "Получатели",
+      "recipientsDesc": "Кто получит?",
+      "schedule": "Расписание",
+      "scheduleDesc": "Когда отправить"
+    },
+    "subjectLine": "Тема Письма",
+    "subjectPlaceholder": "Введите тему письма...",
+    "subjectRequired": "Тема обязательна",
+    "summary": "Сводка Рассылки",
+    "summaryRecipients": "Получатели",
+    "summarySendTime": "Время Отправки",
+    "summarySubject": "Тема",
+    "surveyLinkHint": "Используйте {{surveyLink}} как плейсхолдер — будет заменён на ссылку опроса",
+    "title": "Создать Email Рассылку",
+    "whenToSend": "Когда Отправить"
+  },
+  "createLinkDialog": {
+    "advancedOptions": "Расширенные настройки",
+    "create": "Создать ссылку",
+    "creating": "Создание...",
+    "description": "Создайте ссылку для сбора ответов",
+    "descriptionWithTitle": "Создайте ссылку для обмена \"{{title}}\"",
+    "expirationDate": "Дата истечения",
+    "expirationDateDescription": "Ссылка перестанет работать после этой даты",
+    "linkType": "Тип ссылки",
+    "maxResponsesPlaceholder": "Введите макс. ответов",
+    "passwordPlaceholder": "Введите пароль",
+    "passwordProtection": "Защита паролем",
+    "passwordProtectionDescription": "Требовать пароль для доступа к опросу",
+    "responseLimit": "Лимит ответов",
+    "responseLimitDescription": "Максимальное количество разрешённых ответов",
+    "title": "Создать ссылку на опрос",
+    "toast": {
+      "error": "Не удалось создать ссылку",
+      "success": "Ссылка успешно создана"
+    },
+    "types": {
+      "embedded": "Встраиваемая ссылка",
+      "embeddedDescription": "Встройте опрос в ваш сайт или приложение",
+      "standard": "Стандартная ссылка",
+      "standardDescription": "Базовая ссылка с дополнительными настройками",
+      "unique": "Уникальная ссылка",
+      "uniqueDescription": "Одноразовая ссылка для индивидуального отслеживания"
+    },
+    "utmCampaign": "UTM-кампания",
+    "utmCampaignPlaceholder": "напр., летняя-кампания",
+    "utmDescription": "Добавьте параметры отслеживания для аналитики",
+    "utmMedium": "UTM-канал",
+    "utmMediumPlaceholder": "напр., email",
+    "utmParameters": "UTM-параметры",
+    "utmSource": "UTM-источник",
+    "utmSourcePlaceholder": "напр., newsletter",
+    "utmTooltip": "Отслеживайте эффективность ссылки с UTM-метками"
+  },
+  "createSurvey": {
+    "actions": {
+      "browseTemplates": "готовых шаблонов",
+      "chooseFrom": "Выберите из",
+      "createNew": "Создать",
+      "createSurvey": "Создать опрос",
+      "learnMore360": "Узнать больше о создании мощной оценки 360°.",
+      "or": "Или,",
+      "quickStart": "Быстрый старт {{metric}}",
+      "startBlank": "Начать с нуля",
+      "startMetricSurvey": "Начать {{metric}} опрос",
+      "startNewAssessment": "Начать новую оценку",
+      "startNewMetricSurvey": "Начать новый {{metric}} опрос",
+      "wingItWithAI": "Создать с ИИ"
+    },
+    "categories": {
+      "assessment360": {
+        "description": "Многосторонняя оценка сотрудников",
+        "name": "Оценка 360°"
+      },
+      "classic": {
+        "description": "Традиционный опрос со всеми типами вопросов",
+        "name": "Классический"
+      },
+      "conversational": {
+        "description": "Опросы в стиле чата для высокой вовлеченности",
+        "name": "Диалоговый"
+      },
+      "customerExperience": {
+        "description": "Измеряйте лояльность и удовлетворенность клиентов",
+        "name": "Клиентский опыт"
+      },
+      "research": {
+        "description": "Продвинутые методы исследования и анализа",
+        "name": "Исследование"
+      }
+    },
+    "cxMetrics": {
+      "ces": {
+        "description": "Измеряет простоту взаимодействия",
+        "maxLabel": "Очень легко",
+        "minLabel": "Очень сложно",
+        "name": "CES",
+        "question": "Насколько легко было решить ваш вопрос?"
+      },
+      "csat": {
+        "description": "Измеряет общую удовлетворенность",
+        "maxLabel": "Очень доволен",
+        "minLabel": "Очень недоволен",
+        "name": "CSAT",
+        "question": "Насколько вы довольны нашим сервисом?"
+      },
+      "nps": {
+        "description": "Измеряет лояльность клиентов",
+        "maxLabel": "Очень вероятно",
+        "minLabel": "Совсем маловероятно",
+        "name": "NPS",
+        "question": "Насколько вероятно, что вы порекомендуете нас?"
+      }
+    },
+    "cxSelection": {
+      "description": "Выберите метрику клиентского опыта для измерения лояльности, усилий или удовлетворенности",
+      "title": "Выберите метрику"
+    },
+    "defaults": {
+      "cesTitle": "Опрос Customer Effort Score",
+      "csatTitle": "Опрос удовлетворенности клиентов",
+      "npsTitle": "Опрос Net Promoter Score",
+      "untitledSurvey": "{{type}} опрос без названия"
+    },
+    "language": "Язык",
+    "messages": {
+      "comingSoon": "Эта функция скоро появится!",
+      "comingSoonDescription": "Мы усердно работаем над этой функцией. Следите за обновлениями!"
+    },
+    "preview": {
+      "assessment": {
+        "manager": "Руководитель",
+        "peers": "Коллеги",
+        "reports": "Подчинённые",
+        "self": "Самооценка",
+        "title": "Оценка 360°"
+      },
+      "classic": {
+        "option1": "Простота использования",
+        "option2": "Отличный дизайн",
+        "option3": "Высокая производительность",
+        "option4": "Отличная поддержка",
+        "question": "Какая ваша любимая функция?"
+      },
+      "conversational": {
+        "botMessage": "Привет! Чем могу помочь сегодня?",
+        "followUp": "Отлично! Расскажите подробнее...",
+        "placeholder": "Введите сообщение...",
+        "userMessage": "Хочу поделиться отзывом"
+      },
+      "csat": {
+        "rating": "Оценка удовлетворённости"
+      },
+      "features": "Функции",
+      "nps": {
+        "detractors": "Критики (0-6)",
+        "passives": "Нейтральные (7-8)",
+        "promoters": "Промоутеры (9-10)"
+      },
+      "progress": "Прогресс",
+      "research": {
+        "subtitle": "Расширенная аналитика и статистика",
+        "title": "Исследование"
+      },
+      "scale": "Шкала"
+    },
+    "sampleQuestion": "Пример вопроса:",
+    "selectMetric": "Выберите метрику",
+    "selectType": "Тип опроса",
+    "subtitle": "Выберите тип опроса для начала",
+    "title": "Создать новый опрос"
+  },
+  "createTemplate": {
+    "category": "Категория",
+    "createButton": "Создать шаблон",
+    "createError": "Не удалось создать шаблон",
+    "createSuccess": "Шаблон успешно создан",
+    "description": "Описание",
+    "descriptionHelper": "Помогите другим понять, когда использовать этот шаблон",
+    "descriptionPlaceholder": "Опишите, для чего этот шаблон...",
+    "modes": {
+      "scratch": {
+        "description": "Начать с пустого шаблона",
+        "name": "С нуля"
+      },
+      "survey": {
+        "description": "Скопировать существующий опрос",
+        "name": "Из опроса"
+      }
+    },
+    "selectSurvey": "Выберите опрос",
+    "selectSurveyPlaceholder": "Выберите опрос для копирования",
+    "templateName": "Название шаблона",
+    "templateNamePlaceholder": "Введите название шаблона",
+    "title": "Создать шаблон",
+    "visibility": {
+      "private": {
+        "description": "Только вы можете использовать этот шаблон",
+        "name": "Приватный шаблон"
+      },
+      "public": {
+        "description": "Любой может использовать этот шаблон",
+        "name": "Публичный шаблон"
+      }
+    }
+  },
+  "dashboard": {
+    "createFirstSurvey": "Создайте первый опрос, чтобы начать",
+    "createSurvey": "Создать опрос",
+    "distribute": "Распространить",
+    "greeting": {
+      "afternoon": "Добрый день",
+      "evening": "Добрый вечер",
+      "morning": "Доброе утро"
+    },
+    "insightsReports": "Отчеты и статистика",
+    "newSurvey": "Новый опрос",
+    "noSurveysYet": "Пока нет опросов",
+    "personalWorkspace": "Личное пространство",
+    "preBuiltTemplates": "Готовые шаблоны",
+    "quickActions": "Быстрые действия",
+    "recentSurveys": "Недавние опросы",
+    "shareYourSurveys": "Поделитесь опросами",
+    "startFromScratch": "Начать с нуля",
+    "stats": {
+      "acrossAllSurveys": "По всем опросам",
+      "activeSurveys": "Активные опросы",
+      "allTimeSurveys": "Создано за все время",
+      "currentlyCollecting": "Сейчас собирают ответы",
+      "draftSurveys": "Черновики",
+      "readyToPublish": "Готовы к публикации",
+      "totalResponses": "Всего ответов",
+      "totalSurveys": "Всего опросов"
+    },
+    "subtitle": "Вот что происходит с вашими опросами сегодня.",
+    "title": "Панель управления",
+    "useTemplate": "Использовать шаблон",
+    "viewAnalytics": "Просмотр аналитики"
+  },
+  "datePicker": {
+    "backToCalendar": "Вернуться к календарю",
+    "clearDate": "Очистить дату",
+    "clearDateFilter": "Очистить фильтр даты",
+    "custom": "Настроить",
+    "dateFormat": "Дата (YYYY-MM-DD)",
+    "dateRange": "Диапазон дат",
+    "invalidDate": "Неверный формат даты",
+    "months": {
+      "april": "Апрель",
+      "august": "Август",
+      "december": "Декабрь",
+      "february": "Февраль",
+      "january": "Январь",
+      "july": "Июль",
+      "june": "Июнь",
+      "march": "Март",
+      "may": "Май",
+      "november": "Ноябрь",
+      "october": "Октябрь",
+      "september": "Сентябрь"
+    },
+    "monthsShort": {
+      "apr": "Апр",
+      "aug": "Авг",
+      "dec": "Дек",
+      "feb": "Фев",
+      "jan": "Янв",
+      "jul": "Июл",
+      "jun": "Июн",
+      "mar": "Мар",
+      "may": "Май",
+      "nov": "Ноя",
+      "oct": "Окт",
+      "sep": "Сен"
+    },
+    "nextMonth": "Следующий месяц",
+    "noDate": "Дата не выбрана",
+    "presetLabels": {
+      "last30days": "Последние 30 дней",
+      "last7days": "Последние 7 дней",
+      "lastMonth": "Прошлый месяц",
+      "thisMonth": "Этот месяц",
+      "today": "Сегодня",
+      "yesterday": "Вчера"
+    },
+    "presets": "Предустановки",
+    "previousMonth": "Предыдущий месяц",
+    "selectDate": "Выберите дату",
+    "selectDateRange": "Выберите диапазон дат",
+    "switchToCalendar": "Переключить на календарь",
+    "switchToInput": "Переключить на текстовый ввод",
+    "weekDays": {
+      "fri": "П",
+      "mon": "П",
+      "sat": "С",
+      "sun": "В",
+      "thu": "Ч",
+      "tue": "В",
+      "wed": "С"
+    },
+    "weekDaysFull": {
+      "fri": "Пт",
+      "mon": "Пн",
+      "sat": "Сб",
+      "sun": "Вс",
+      "thu": "Чт",
+      "tue": "Вт",
+      "wed": "Ср"
+    },
+    "year": "Год"
+  },
+  "devTest": {
+    "favorite": "Избранное",
+    "like": "Нравится",
+    "notifications": "Уведомления",
+    "settings": "Настройки"
+  },
+  "dialogs": {
+    "confirmAction": "Подтвердить",
+    "confirmDescription": "Пожалуйста, подтвердите действие",
+    "deleteDescription": "Это действие нельзя отменить. Вы уверены, что хотите удалить этот {{itemName}}?",
+    "deleteEntityDescription": "Это действие нельзя отменить. Вы уверены, что хотите удалить {{entity}}?",
+    "deleteEntityTitle": "Удалить {{entity}}?",
+    "deleteTitle": "Удалить {{itemName}}?"
+  },
+  "distributionAnalytics": {
+    "refresh": "Обновить",
+    "stats": {
+      "clickRate": "Процент кликов",
+      "delivered": "Доставлено",
+      "deliveryRate": "Процент доставки",
+      "openRate": "Процент открытий"
+    },
+    "status": {
+      "cancelled": "Отменено",
+      "draft": "Черновик",
+      "failed": "Ошибка",
+      "partiallyFailed": "Частично ошибка",
+      "scheduled": "Запланировано",
+      "sending": "Отправка",
+      "sent": "Отправлено"
+    },
+    "title": "Аналитика рассылки"
+  },
+  "distributions": {
+    "analytics": "Аналитика рассылок",
+    "bounced": "Возвращено",
+    "cancelConfirm": "Вы уверены, что хотите отменить эту запланированную рассылку?",
+    "cancelDistribution": "Отменить рассылку",
+    "cancelError": "Не удалось отменить рассылку",
+    "cancelSchedule": "Отменить расписание",
+    "cancelSuccess": "Рассылка успешно отменена",
+    "clickRate": "Процент кликов",
+    "clicked": "Кликнуто",
+    "copyLink": "Копировать ссылку",
+    "createFirst": "Создайте первую рассылку",
+    "createFirstDesc": "Отправляйте опросы по email для сбора ответов",
+    "created": "Создано",
+    "deleteConfirm": "Вы уверены, что хотите удалить эту рассылку? Это действие нельзя отменить.",
+    "deleteDistribution": "Удалить рассылку",
+    "deleteError": "Не удалось удалить рассылку",
+    "deleteSuccess": "Рассылка успешно удалена",
+    "delivered": "Доставлено",
+    "deliveryFunnel": "Воронка доставки",
+    "deliveryRate": "Процент доставки",
+    "description": "Ссылки на опросы и email-кампании",
+    "distributionDetails": "Детали рассылки",
+    "emailCampaign": "Email-кампания",
+    "emailCampaigns": "Email-кампании",
+    "embedCode": "Код для встраивания",
+    "failed": "Не удалось",
+    "linkCopied": "Ссылка скопирована в буфер обмена",
+    "metricsComparison": "Сравнение ключевых метрик",
+    "newDistribution": "Новая рассылка",
+    "noFound": "Рассылки не найдены",
+    "noRecipients": "Нет получателей, соответствующих поиску",
+    "openRate": "Процент открытий",
+    "opened": "Открыто",
+    "performanceBreakdown": "Разбивка производительности email",
+    "performanceRates": "Показатели производительности",
+    "qrCode": "QR-код",
+    "readyToSend": "Готово к отправке {{count}} получателям",
+    "recipients": "Получатели",
+    "recipientsCount": "{{count}} получателей",
+    "scheduledFor": "Запланировано на",
+    "searchPlaceholder": "Поиск...",
+    "selectASurvey": "Выберите опрос",
+    "selectSurvey": "Выберите опрос",
+    "selectSurveyForEmail": "Выберите опрос из списка для управления email-рассылками",
+    "selectSurveyForLinks": "Выберите опрос из списка для управления ссылками распространения",
+    "sendConfirm": "Вы уверены, что хотите отправить эту рассылку сейчас? Это действие нельзя отменить.",
+    "sendDistribution": "Отправить рассылку",
+    "sendError": "Не удалось отправить рассылку",
+    "sendNow": "Отправить сейчас",
+    "sendSuccess": "Рассылка успешно отправлена",
+    "sending": "Отправка...",
+    "sent": "Отправлено",
+    "sentCountLabel": "{{count}} отправлено",
+    "shareLink": "Поделиться ссылкой",
+    "socialShare": "Поделиться в соцсетях",
+    "statusAll": "Все",
+    "statusBounced": "Возвращено",
+    "statusCancelled": "Отменено",
+    "statusClicked": "Кликнуто",
+    "statusDelivered": "Доставлено",
+    "statusDraft": "Черновик",
+    "statusFailed": "Ошибка",
+    "statusOpened": "Открыто",
+    "statusPending": "Ожидает",
+    "statusScheduled": "Запланировано",
+    "statusSending": "Отправка",
+    "statusSent": "Отправлено",
+    "surveyLinks": "Ссылки на опросы",
+    "title": "Распространение",
+    "totalRecipients": "Всего {{count}} получателей",
+    "tryAdjustFilters": "Попробуйте изменить фильтры",
+    "untitledDistribution": "Без названия",
+    "viewDetails": "Подробнее"
+  },
+  "editors": {
+    "addQuestion": "Добавить вопрос",
+    "checkbox": {
+      "helper": "Разрешён множественный выбор"
+    },
+    "choice": {
+      "allowOther": "Разрешить вариант 'Другое'",
+      "allowOtherDesc": "Позвольте респондентам ввести свой вариант",
+      "helper": "Один выбор из вариантов"
+    },
+    "common": {
+      "description": "Описание (необязательно)",
+      "descriptionHelper": "Предоставьте дополнительный контекст или инструкции",
+      "descriptionPlaceholder": "Добавьте пояснение или контекст",
+      "maxCharacters": "Максимум символов",
+      "maxCharactersHelper": "Максимальное количество символов",
+      "placeholder": "Текст-заполнитель",
+      "placeholderHelper": "Показывается когда поле пустое",
+      "placeholderInput": "Введите текст-заполнитель",
+      "preview": "Предпросмотр",
+      "questionText": "Текст вопроса",
+      "questionTextPlaceholder": "Введите ваш вопрос"
+    },
+    "date": {
+      "helper": "Выбор даты"
+    },
+    "email": {
+      "errorHelper": "Показывается при ошибке валидации email",
+      "errorMessage": "Сообщение об ошибке",
+      "errorPlaceholder": "Введите корректный email адрес",
+      "helper": "Email адрес с проверкой",
+      "placeholderDefault": "вы@пример.com"
+    },
+    "file": {
+      "allowedTypes": "Разрешённые типы файлов",
+      "dropZone": "Перетащите файлы сюда или нажмите для загрузки",
+      "fileTypes": {
+        "all": "Все файлы",
+        "documents": "Документы",
+        "images": "Изображения",
+        "spreadsheets": "Таблицы"
+      },
+      "maxFiles": "Максимум файлов",
+      "maxFilesHelper": "Максимальное количество файлов",
+      "maxSize": "Макс. размер файла (МБ)",
+      "maxSizeHelper": "Лимит на файл",
+      "maxSizeLabel": "Макс {{size}}МБ каждый"
+    },
+    "matrix": {
+      "addColumn": "Добавить столбец",
+      "addRow": "Добавить строку",
+      "columnPlaceholder": "Столбец {{number}}",
+      "columns": "Столбцы (Варианты)",
+      "removeColumn": "Удалить столбец",
+      "removeRow": "Удалить строку",
+      "rowPlaceholder": "Строка {{number}}",
+      "rows": "Строки (Вопросы)"
+    },
+    "noQuestionTypesFound": "Типы вопросов не найдены",
+    "number": {
+      "helper": "Только числовой ввод",
+      "maxHelper": "Оставьте пустым для отсутствия максимума",
+      "maxPlaceholder": "Без максимума",
+      "maxValue": "Максимальное значение (необязательно)",
+      "minHelper": "Оставьте пустым для отсутствия минимума",
+      "minPlaceholder": "Без минимума",
+      "minValue": "Минимальное значение (необязательно)",
+      "placeholderDefault": "Введите число"
+    },
+    "options": {
+      "add": "Добавить вариант",
+      "allowOther": "Разрешить вариант 'Другое'",
+      "allowOtherDesc": "Позвольте респондентам ввести свой вариант",
+      "otherLabel": "Метка варианта 'Другое'",
+      "otherPlaceholder": "Другое",
+      "placeholder": "Вариант {{number}}",
+      "remove": "Удалить вариант",
+      "title": "Варианты"
+    },
+    "phone": {
+      "advancedRegex": "Расширенные: Пользовательский regex",
+      "errorHelper": "Показывается при ошибке валидации телефона",
+      "errorMessage": "Сообщение об ошибке",
+      "errorPlaceholder": "Введите корректный номер телефона",
+      "format": "Формат номера телефона",
+      "helper": "Ввод номера телефона",
+      "placeholderDefault": "Введите номер телефона",
+      "regexHelper": "Оставьте пустым для использования выбранного формата",
+      "regexPattern": "Пользовательский шаблон"
+    },
+    "pressEscToClose": "Нажмите для закрытия",
+    "ranking": {
+      "helper": "Перетащите элементы для упорядочивания по предпочтению",
+      "items": "Элементы для ранжирования",
+      "itemsDesc": "Добавьте элементы для ранжирования респондентами",
+      "previewLabel": "Предпросмотр - Перетащите для сортировки"
+    },
+    "rating": {
+      "helper": "Звёздочный или числовой рейтинг",
+      "maxLabel": "Метка максимума",
+      "maxPlaceholder": "Отлично",
+      "maxRating": "Максимальный рейтинг",
+      "minLabel": "Метка минимума",
+      "minPlaceholder": "Плохо"
+    },
+    "required": "Обязательный",
+    "resultsFound": "{{count}} результатов найдено",
+    "scale": {
+      "helper": "Выбор по линейной шкале",
+      "maxLabel": "Метка максимума",
+      "maxPlaceholder": "Очень вероятно",
+      "maxValue": "Максимальное значение",
+      "minLabel": "Метка минимума",
+      "minPlaceholder": "Совсем маловероятно",
+      "minValue": "Минимальное значение",
+      "presetLabels": {
+        "1-10": "1-10",
+        "1-5": "1-5",
+        "1-7": "1-7"
+      },
+      "presets": "Пресеты шкалы",
+      "step": "Шаг"
+    },
+    "searchQuestionTypes": "Поиск типов вопросов...",
+    "text": {
+      "helper": "Короткий текстовый ответ"
+    },
+    "textarea": {
+      "helper": "Многострочный текст для длинных ответов",
+      "placeholderHelper": "Показывается внутри текстового поля"
+    },
+    "tryDifferentSearch": "Попробуйте другой поисковый запрос",
+    "typesCount": "{{count}} типов",
+    "untitledQuestion": "Вопрос без названия",
+    "url": {
+      "advancedRegex": "Расширенные: Пользовательский regex",
+      "errorHelper": "Показывается при ошибке валидации URL",
+      "errorMessage": "Сообщение об ошибке",
+      "errorPlaceholder": "Введите корректный URL",
+      "format": "Формат URL",
+      "helper": "URL с проверкой",
+      "placeholderDefault": "https://example.com",
+      "regexHelper": "Оставьте пустым для использования выбранного формата",
+      "regexPattern": "Пользовательский шаблон"
+    }
+  },
+  "emailDistribution": {
+    "compose": {
+      "description": "Настройте текст вашего письма",
+      "fromName": "Имя отправителя",
+      "fromNamePlaceholder": "Ваше имя или компания",
+      "preview": "Предпросмотр письма",
+      "replyTo": "Email для ответа",
+      "subject": "Тема",
+      "title": "Написать письмо"
+    },
+    "createNew": "Новая рассылка",
+    "recipients": {
+      "addManually": "Добавьте вручную или импортируйте из CSV",
+      "alreadyInList": "Уже в вашем списке",
+      "description": "Добавьте email-адреса для отправки опроса",
+      "dropCsv": "Перетащите CSV-файл сюда",
+      "duplicateEmail": "Дублирующийся email",
+      "importCsv": "Импорт CSV",
+      "invalidEmail": "Неверный email-адрес",
+      "noRecipients": "Пока нет получателей",
+      "orClickBrowse": "или нажмите для выбора",
+      "title": "Добавить получателей"
+    },
+    "schedule": {
+      "description": "Выберите, когда отправить опрос",
+      "scheduledFor": "Запланировано на",
+      "sendLater": "Запланировать на позже",
+      "sendNow": "Отправить сразу",
+      "title": "Планирование отправки"
+    },
+    "steps": {
+      "compose": "Написать",
+      "recipients": "Получатели",
+      "review": "Проверка",
+      "schedule": "Расписание"
+    },
+    "title": "Email-рассылка"
+  },
+  "emailEditor": {
+    "addBlock": "Добавить блок",
+    "addBlockHint": "Перетащите блоки сюда для добавления контента",
+    "addFirstBlock": "Добавьте первый блок",
+    "blockAdded": "Блок добавлен",
+    "blockDeleted": "Блок удалён",
+    "blockDuplicated": "Блок продублирован",
+    "blockSettings": "Настройки блока",
+    "blockToolbar": "Панель блока",
+    "blocks": {
+      "button": "Кнопка",
+      "buttonDesc": "Кнопка призыва к действию",
+      "columns": "Колонки",
+      "columnsDesc": "Многоколоночный макет",
+      "divider": "Разделитель",
+      "dividerDesc": "Горизонтальная линия",
+      "footer": "Подвал",
+      "footerDesc": "Информация о компании и отписка",
+      "header": "Шапка",
+      "headerDesc": "Логотип и заголовок",
+      "image": "Изображение",
+      "imageDesc": "Изображение со ссылкой (опционально)",
+      "social": "Соцсети",
+      "socialDesc": "Иконки социальных сетей",
+      "spacer": "Отступ",
+      "spacerDesc": "Пустое вертикальное пространство",
+      "text": "Текст",
+      "textDesc": "Форматированный текст"
+    },
+    "columns": "Колонки",
+    "copyHtml": "Копировать HTML",
+    "device": {
+      "desktop": "Предпросмотр на ПК",
+      "mobile": "Предпросмотр на мобильном"
+    },
+    "dividerStyles": {
+      "dashed": "Пунктирная",
+      "dotted": "Точечная",
+      "solid": "Сплошная"
+    },
+    "downloadHtml": "Скачать HTML",
+    "emptyCanvas": "Перетащите блоки сюда или нажмите для добавления",
+    "errors": {
+      "loadFailed": "Не удалось загрузить шаблон",
+      "loadFailedDescription": "Произошла ошибка при загрузке шаблона. Пожалуйста, попробуйте снова.",
+      "nameRequired": "Название шаблона обязательно",
+      "noTemplate": "Шаблон не найден",
+      "noTemplateDescription": "Шаблон, который вы ищете, не существует или был удалён.",
+      "saveFailed": "Не удалось сохранить шаблон",
+      "subjectRequired": "Тема обязательна"
+    },
+    "generatedHtml": "Сгенерированный HTML (совместим с Outlook)",
+    "globalStyles": "Глобальные стили",
+    "hideSettings": "Скрыть настройки",
+    "htmlCopied": "HTML скопирован в буфер обмена",
+    "htmlDownloaded": "HTML-файл скачан",
+    "modeSwitched": "Режим редактора переключён",
+    "noBlockSelected": "Блок не выбран",
+    "panels": {
+      "blocks": "Блоки",
+      "placeholders": "Переменные",
+      "styles": "Стили"
+    },
+    "placeholderCopied": "Плейсхолдер скопирован в буфер обмена",
+    "placeholders": "Плейсхолдеры",
+    "placeholdersHelp": "Нажмите для копирования, затем вставьте в текстовые блоки",
+    "preheader": "Прехедер (превью)",
+    "preheaderLabel": "Прехедер",
+    "preheaderPlaceholder": "Введите текст прехедера...",
+    "preheaderTooltip": "Текст предпросмотра в почтовых клиентах до открытия письма",
+    "preview": {
+      "columnsPlaceholder": "Макет колонок",
+      "footerPlaceholder": "Содержимое подвала",
+      "headerPlaceholder": "Блок шапки",
+      "imagePlaceholder": "Добавить URL изображения",
+      "socialPlaceholder": "Добавить ссылки на соцсети",
+      "textPlaceholder": "Текстовое содержимое..."
+    },
+    "previewTitle": "Предпросмотр письма",
+    "previewWithSampleData": "Предпросмотр с тестовыми данными",
+    "sampleDataInfo": "Плейсхолдеры будут заменены тестовыми значениями",
+    "saved": "Шаблон успешно сохранён",
+    "selectBlockHint": "Выберите блок для редактирования настроек",
+    "settings": {
+      "addPlatform": "Добавить платформу...",
+      "address": "Адрес",
+      "addressPlaceholder": "Адрес компании...",
+      "alignment": "Выравнивание",
+      "altText": "Альтернативный текст",
+      "backgroundColor": "Фон",
+      "borderRadius": "Скругление углов",
+      "button": "Кнопка",
+      "buttonColor": "Цвет кнопки",
+      "buttonText": "Текст кнопки",
+      "color": "Цвет",
+      "colors": "Цвета",
+      "columns": "Колонки",
+      "columnsInfo": "Редактируйте колонки на холсте",
+      "companyInfo": "Информация о компании",
+      "companyName": "Название компании",
+      "content": "Содержимое",
+      "divider": "Разделитель",
+      "fontSize": "Размер шрифта",
+      "fullWidth": "Во всю ширину",
+      "gap": "Отступ",
+      "height": "Высота",
+      "horizontal": "Горизонтальный",
+      "htmlContent": "HTML-контент",
+      "htmlSupport": "Поддерживает HTML: <p>, <strong>, <em>, <a>, <ul>, <ol>",
+      "iconSize": "Размер иконки",
+      "image": "Изображение",
+      "imageUrl": "URL изображения",
+      "layout": "Макет",
+      "lineHeight": "Межстрочный интервал",
+      "linkUrl": "URL ссылки (опционально)",
+      "logo": "Логотип",
+      "logoUrl": "URL логотипа",
+      "logoWidth": "Ширина логотипа",
+      "padding": "Отступы",
+      "paddingH": "Отступ по горизонтали",
+      "paddingV": "Отступ по вертикали",
+      "preview": "Предпросмотр",
+      "socialLinks": "Ссылки на соцсети",
+      "spacer": "Отступ",
+      "stackOnMobile": "Стака на мобильных",
+      "style": "Стиль",
+      "subtitle": "Подзаголовок",
+      "textColor": "Цвет текста",
+      "thickness": "Толщина",
+      "title": "Заголовок",
+      "typography": "Типографика",
+      "unsubscribe": "Отписка",
+      "unsubscribeText": "Текст отписки",
+      "unsubscribeUrl": "URL отписки",
+      "url": "URL",
+      "vertical": "Вертикальный",
+      "width": "Ширина"
+    },
+    "showSettings": "Показать настройки",
+    "styles": {
+      "backgroundColor": "Фон страницы",
+      "borderRadius": "Скругление углов",
+      "colors": "Цвета",
+      "contentBackground": "Фон контента",
+      "contentWidth": "Ширина контента",
+      "fontFamily": "Шрифт",
+      "layout": "Макет",
+      "linkColor": "Цвет ссылок",
+      "textColor": "Цвет текста",
+      "typography": "Типографика"
+    },
+    "subject": "Тема письма",
+    "subjectLabel": "Тема",
+    "subjectPlaceholder": "Введите тему письма...",
+    "templateName": "Название шаблона",
+    "templateNameLabel": "Название шаблона",
+    "title": "Визуальный редактор email",
+    "toolbar": "Панель инструментов",
+    "typeLabel": "Тип",
+    "unsavedChanges": "Несохранённые изменения",
+    "views": {
+      "code": "HTML-код",
+      "edit": "Редактирование",
+      "preview": "Предпросмотр"
+    }
+  },
+  "emailTemplates": {
+    "backToTemplates": "Назад к шаблонам",
+    "createError": "Не удалось создать шаблон",
+    "createSuccess": "Шаблон успешно создан",
+    "defaultBadge": "По умолчанию",
+    "deleteError": "Не удалось удалить шаблон",
+    "deleteSuccess": "Шаблон успешно удалён",
+    "description": "Создавайте и управляйте многоразовыми email-шаблонами для рассылки опросов",
+    "editor": {
+      "availablePlaceholders": "Доступные переменные",
+      "back": "Назад",
+      "body": "Текст",
+      "code": "Код",
+      "codeMode": "Редактор кода (HTML)",
+      "contentModes": {
+        "html": "HTML",
+        "plainText": "Обычный текст"
+      },
+      "htmlPlaceholder": "Введите HTML содержимое письма...\n\nПример:\n<h1>Здравствуйте, {{firstName}}!</h1>\n<p>Благодарим за интерес к нашему опросу.</p>\n<p><a href='{{surveyLink}}'>Нажмите здесь чтобы пройти опрос</a></p>",
+      "placeholderCopied": "\"{{placeholder}}\" скопировано в буфер обмена",
+      "placeholderInserted": "Вставлено {{placeholder}}",
+      "plainTextFallback": "опциональный резерв для клиентов без поддержки HTML",
+      "plainTextPlaceholder": "Введите текстовую версию письма...\n\nПример:\nЗдравствуйте, {{firstName}}!\n\nБлагодарим за интерес к нашему опросу.\n\nПройти опрос: {{surveyLink}}",
+      "preview": "Предпросмотр",
+      "saveChanges": "Сохранить изменения",
+      "saveError": "Не удалось сохранить шаблон",
+      "saveSuccess": "Шаблон успешно сохранён",
+      "saving": "Сохранение...",
+      "split": "Разделённый",
+      "subject": "Тема",
+      "subjectPlaceholder": "Тема письма",
+      "templateName": "Название шаблона",
+      "templateNamePlaceholder": "Название шаблона",
+      "title": "Редактировать шаблон",
+      "toolbar": {
+        "bold": "Жирный",
+        "bulletList": "Маркированный список",
+        "italic": "Курсив",
+        "link": "Ссылка",
+        "numberedList": "Нумерованный список",
+        "redo": "Повторить",
+        "underline": "Подчёркнутый",
+        "undo": "Отменить"
+      },
+      "unsavedChanges": "Несохранённые изменения",
+      "validation": {
+        "bodyRequired": "Текст письма обязателен",
+        "nameRequired": "Название шаблона обязательно",
+        "subjectRequired": "Тема обязательна"
+      },
+      "viewModes": {
+        "edit": "Редактирование",
+        "preview": "Предпросмотр",
+        "split": "Разделённый"
+      },
+      "visual": "Визуальный",
+      "visualMode": "Визуальный редактор (перетаскивание)"
+    },
+    "empty": {
+      "createButton": "Создать шаблон",
+      "description": "Создайте первый email-шаблон для упрощения рассылки опросов и единообразия сообщений.",
+      "title": "Нет email-шаблонов"
+    },
+    "errors": {
+      "cannotDeleteDefault": "Невозможно удалить шаблон по умолчанию",
+      "loadFailed": "Не удалось загрузить email-шаблоны",
+      "loadFailedDescription": "Что-то пошло не так. Попробуйте снова."
+    },
+    "form": {
+      "createButton": "Создать шаблон",
+      "defaultContentDesc": "Вы сможете настроить содержимое письма после создания.",
+      "defaultContentInfo": "Будет добавлено содержимое по умолчанию",
+      "description": "Создайте новый email-шаблон для рассылки опросов.",
+      "name": "Название шаблона",
+      "namePlaceholder": "Введите название шаблона",
+      "title": "Создать email-шаблон",
+      "type": "Тип шаблона"
+    },
+    "loadError": {
+      "description": "Что-то пошло не так. Попробуйте снова.",
+      "title": "Не удалось загрузить шаблоны"
+    },
+    "newTemplate": "Новый шаблон",
+    "placeholders": {
+      "companyName": "Название вашей компании",
+      "email": "Email",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "recipientName": "Имя получателя",
+      "senderName": "Имя отправителя",
+      "surveyLink": "URL ссылки на опрос",
+      "surveyTitle": "Название опроса",
+      "unsubscribeLink": "Ссылка отписки"
+    },
+    "preview": {
+      "from": "От",
+      "placeholderReference": "Справка по плейсхолдерам",
+      "to": "Кому",
+      "yourCompany": "Ваша компания"
+    },
+    "retry": "Повторить",
+    "searchPlaceholder": "Поиск шаблонов...",
+    "tabs": {
+      "all": "Все",
+      "custom": "Особый",
+      "invitation": "Приглашение",
+      "reminder": "Напоминание",
+      "thankYou": "Благодарность"
+    },
+    "title": "Email-шаблоны",
+    "types": {
+      "custom": "Особый",
+      "invitation": "Приглашение",
+      "reminder": "Напоминание",
+      "thankYou": "Благодарность"
+    },
+    "updateError": "Не удалось обновить шаблон",
+    "updateSuccess": "Шаблон успешно обновлён"
+  },
+  "emailWizard": {
+    "createError": "Не удалось создать рассылку",
+    "description": "Отправьте опрос по email для сбора ответов",
+    "scheduleSuccess": "Рассылка успешно запланирована!",
+    "sendSuccess": "Рассылка создана и отправляется!",
+    "steps": {
+      "content": {
+        "description": "Текст письма",
+        "title": "Содержимое"
+      },
+      "recipients": {
+        "description": "Кто получит опрос",
+        "title": "Получатели"
+      },
+      "schedule": {
+        "description": "Когда отправить",
+        "title": "Расписание"
+      }
+    },
+    "title": "Создать email-рассылку"
+  },
+  "emptyState": {
+    "responses": {
+      "description": "Ответы появятся здесь, когда люди начнут проходить ваш опрос",
+      "descriptionFiltered": "Попробуйте изменить фильтры или диапазон дат",
+      "title": "Пока нет ответов",
+      "titleFiltered": "Ответы не найдены"
+    },
+    "search": {
+      "closeSearch": "Закрыть поиск",
+      "description": "Попробуйте другой поисковый запрос",
+      "descriptionWithQuery": "Нет результатов для \"{{query}}\"",
+      "noRecentItems": "Нет недавних элементов",
+      "noResults": "Результаты не найдены",
+      "openWith": "Открыть с помощью",
+      "placeholder": "Поиск опросов, шаблонов, тем...",
+      "recent": "Недавние",
+      "results": "Результаты поиска",
+      "startTyping": "Начните вводить для поиска",
+      "title": "Результаты не найдены",
+      "toClose": "чтобы закрыть",
+      "toNavigate": "для навигации",
+      "toSelect": "чтобы выбрать",
+      "tryDifferentKeywords": "Попробуйте поиск с другими ключевыми словами"
+    },
+    "surveys": {
+      "createButton": "Создать опрос",
+      "description": "Начните собирать отзывы, создав новый опрос",
+      "descriptionFiltered": "Попробуйте изменить фильтры или поисковый запрос",
+      "title": "Создайте свой первый опрос",
+      "titleFiltered": "Опросы не найдены"
+    },
+    "templates": {
+      "createButton": "Создать шаблон",
+      "description": "Создавайте многоразовые шаблоны для ускорения создания опросов",
+      "descriptionFiltered": "Попробуйте изменить поиск или фильтр категории",
+      "title": "Пока нет шаблонов",
+      "titleFiltered": "Шаблоны не найдены"
+    }
+  },
+  "enums": {
+    "audienceType": {
+      "allContacts": "Все контакты",
+      "dynamicList": "Динамический список",
+      "previousRespondents": "Предыдущие респонденты",
+      "staticList": "Статический список"
+    },
+    "backgroundImagePosition": {
+      "center": "По центру",
+      "contain": "Вписать",
+      "cover": "Заполнить",
+      "tile": "Плитка",
+      "topLeft": "Сверху слева",
+      "topRight": "Сверху справа"
+    },
+    "buttonStyle": {
+      "pill": "Капсула",
+      "rounded": "Скруглённые",
+      "square": "Квадратные"
+    },
+    "dayOfWeek": {
+      "friday": "Пятница",
+      "monday": "Понедельник",
+      "saturday": "Суббота",
+      "sunday": "Воскресенье",
+      "thursday": "Четверг",
+      "tuesday": "Вторник",
+      "wednesday": "Среда"
+    },
+    "distributionStatus": {
+      "cancelled": "Отменено",
+      "draft": "Черновик",
+      "failed": "Ошибка",
+      "partiallyFailed": "Частично не удалось",
+      "scheduled": "Запланировано",
+      "sending": "Отправка",
+      "sent": "Отправлено"
+    },
+    "emailTemplateType": {
+      "custom": "Пользовательский",
+      "surveyInvitation": "Приглашение на опрос",
+      "surveyReminder": "Напоминание об опросе",
+      "thankYou": "Благодарность"
+    },
+    "linkType": {
+      "campaign": "Кампания",
+      "embedded": "Встроенная",
+      "public": "Публичная",
+      "qrCode": "QR-код",
+      "unique": "Уникальная"
+    },
+    "logicAction": {
+      "endSurvey": "Завершить опрос",
+      "hide": "Скрыть",
+      "jumpTo": "Перейти к",
+      "show": "Показать",
+      "skip": "Пропустить"
+    },
+    "logicOperator": {
+      "contains": "Содержит",
+      "equals": "Равно",
+      "greaterThan": "Больше",
+      "greaterThanOrEquals": "Больше или равно",
+      "isAnswered": "Ответ дан",
+      "isEmpty": "Пусто",
+      "isNotAnswered": "Ответ не дан",
+      "isNotEmpty": "Не пусто",
+      "lessThan": "Меньше",
+      "lessThanOrEquals": "Меньше или равно",
+      "notContains": "Не содержит",
+      "notEquals": "Не равно"
+    },
+    "logoPosition": {
+      "bottomCenter": "Снизу по центру",
+      "bottomLeft": "Снизу слева",
+      "bottomRight": "Снизу справа",
+      "topCenter": "Сверху по центру",
+      "topLeft": "Сверху слева",
+      "topRight": "Сверху справа"
+    },
+    "memberRole": {
+      "admin": "Администратор",
+      "member": "Участник",
+      "owner": "Владелец",
+      "respondent": "Респондент",
+      "viewer": "Наблюдатель"
+    },
+    "npsCategory": {
+      "excellent": "Превосходно",
+      "good": "Хорошо",
+      "great": "Отлично",
+      "needsImprovement": "Требует улучшения"
+    },
+    "progressBarStyle": {
+      "bar": "Полоса",
+      "dots": "Точки",
+      "none": "Нет",
+      "percentage": "Проценты",
+      "steps": "Шаги"
+    },
+    "questionType": {
+      "checkbox": "Чекбокс",
+      "date": "Дата",
+      "dateTime": "Дата и время",
+      "dropdown": "Выпадающий список",
+      "email": "Email",
+      "fileUpload": "Загрузка файла",
+      "longText": "Длинный текст",
+      "matrix": "Матрица",
+      "multipleChoice": "Множественный выбор",
+      "nps": "Индекс лояльности",
+      "number": "Число",
+      "phone": "Телефон",
+      "ranking": "Ранжирование",
+      "rating": "Рейтинг",
+      "scale": "Шкала",
+      "shortText": "Короткий текст",
+      "singleChoice": "Одиночный выбор",
+      "text": "Текст",
+      "url": "URL",
+      "yesNo": "Да/Нет"
+    },
+    "ratingStyle": {
+      "hearts": "Сердечки",
+      "numbers": "Цифры",
+      "smileys": "Смайлики",
+      "stars": "Звёзды",
+      "thumbs": "Лайки"
+    },
+    "recipientStatus": {
+      "bounced": "Возврат",
+      "clicked": "Переход",
+      "delivered": "Доставлено",
+      "failed": "Ошибка",
+      "opened": "Открыто",
+      "pending": "Ожидание",
+      "sent": "Отправлено",
+      "unsubscribed": "Отписан"
+    },
+    "recurrencePattern": {
+      "biWeekly": "Раз в две недели",
+      "custom": "Пользовательский",
+      "daily": "Ежедневно",
+      "monthly": "Ежемесячно",
+      "quarterly": "Ежеквартально",
+      "weekly": "Еженедельно"
+    },
+    "runStatus": {
+      "cancelled": "Отменено",
+      "completed": "Завершено",
+      "failed": "Ошибка",
+      "partiallyCompleted": "Частично завершено",
+      "running": "Выполняется",
+      "scheduled": "Запланировано"
+    },
+    "subscriptionTier": {
+      "enterprise": "Корпоративный",
+      "free": "Бесплатный",
+      "pro": "Про"
+    },
+    "surveyStatus": {
+      "archived": "В архиве",
+      "closed": "Закрыт",
+      "draft": "Черновик",
+      "published": "Опубликован"
+    },
+    "themeLayout": {
+      "card": "Карточки",
+      "classic": "Классический",
+      "conversational": "Диалоговый",
+      "minimal": "Минимальный"
+    },
+    "yesNoStyle": {
+      "checkX": "Галочка/Крестик",
+      "text": "Текст",
+      "thumbs": "Лайк/Дизлайк",
+      "toggle": "Переключатель"
+    }
+  },
+  "errorBoundary": {
+    "description": "Произошла непредвиденная ошибка",
+    "goHome": "На главную",
+    "message": "Сообщение",
+    "refreshMessage": "Попробуйте обновить страницу. Если проблема сохраняется, обратитесь в поддержку.",
+    "stack": "Стек",
+    "title": "Что-то пошло не так",
+    "tryAgain": "Попробовать снова",
+    "viewStackTrace": "Показать стек вызовов"
+  },
+  "errors": {
+    "accessDenied": "Доступ запрещен",
+    "accessDeniedDesc": "У вас нет прав для доступа к этому ресурсу",
+    "errorId": "ID ошибки",
+    "generic": "Что-то пошло не так",
+    "goBack": "Назад",
+    "goHome": "На главную",
+    "hideDetails": "Скрыть технические детали",
+    "networkError": "Ошибка сети",
+    "networkErrorDesc": "Проверьте подключение к интернету",
+    "notFound": "Страница не найдена",
+    "notFoundDesc": "Страница, которую вы ищете, не существует",
+    "reportIssue": "Сообщить о проблеме",
+    "serverError": "Ошибка сервера",
+    "serverErrorDesc": "Произошла непредвиденная ошибка. Попробуйте позже.",
+    "showDetails": "Показать технические детали",
+    "thinkBug": "Думаете, это ошибка?",
+    "tryAgain": "Повторить",
+    "unauthorized": "Нет доступа",
+    "unauthorizedDesc": "У вас нет прав для доступа к этой странице",
+    "unsupportedQuestionType": "Неподдерживаемый тип вопроса: {{type}}"
+  },
+  "forgotPassword": {
+    "cardDescription": "Введите email и мы отправим ссылку для сброса",
+    "cardTitle": "Сбросить пароль",
+    "emailSent": {
+      "description": "Мы отправили ссылку для сброса пароля на ваш email",
+      "expiry": "Ссылка действительна 24 часа",
+      "title": "Проверьте email",
+      "tryAgain": "Не получили? Попробуйте снова"
+    },
+    "error": {
+      "generic": "Не удалось отправить ссылку сброса",
+      "title": "Запрос не удался"
+    },
+    "form": {
+      "backToLogin": "Вернуться к входу",
+      "description": "Введите email и мы отправим ссылку для сброса пароля",
+      "email": "Email",
+      "emailPlaceholder": "вы@пример.com",
+      "submit": "Отправить ссылку сброса",
+      "title": "Сбросить пароль"
+    },
+    "sendResetLink": "Отправить ссылку сброса",
+    "subtitle": "Мы отправим вам инструкции по сбросу",
+    "success": {
+      "backToLogin": "Вернуться к входу",
+      "description": "Проверьте входящие для {{email}}",
+      "instruction": "Ссылка действительна 24 часа. Если не видите письмо, проверьте папку спам.",
+      "title": "Ссылка сброса отправлена",
+      "tryAgain": "Не получили письмо? Попробуйте снова"
+    },
+    "title": "Забыли пароль",
+    "toast": {
+      "error": "Запрос не удался",
+      "requestFailed": "Не удалось отправить ссылку сброса. Попробуйте снова.",
+      "success": "Ссылка сброса отправлена",
+      "successDescription": "Проверьте email для получения ссылки сброса"
+    }
+  },
+  "gettingStarted": {
+    "analytics": {
+      "description": "Превращайте данные в полезные инсайты",
+      "features": {
+        "charts": "Графики и диаграммы",
+        "export": "Экспорт отчётов",
+        "trends": "Тренды во времени"
+      },
+      "insights": {
+        "completion": "Процент завершения",
+        "nps": "NPS оценки и бенчмарки",
+        "response": "Паттерны ответов",
+        "title": "Получите инсайты о"
+      },
+      "intro": "Превращайте сырые данные в полезные инсайты с помощью мощной аналитики.",
+      "title": "Анализ результатов"
+    },
+    "complete": {
+      "actions": {
+        "analytics": "Аналитика",
+        "surveys": "Опросы",
+        "templates": "Шаблоны"
+      },
+      "description": "Вы знаете основы — пора создавать",
+      "message": "Теперь вы знаете основы. Начните создавать опросы и собирать ценные данные!",
+      "ready": "Всё готово, {{name}}!",
+      "shortcuts": {
+        "title": "Быстрые сочетания клавиш"
+      },
+      "title": "Вы готовы!"
+    },
+    "completedSuccessfully": "Вы готовы создавать отличные опросы!",
+    "createSurvey": {
+      "description": "Выберите, как вы хотите начать",
+      "intro": "Готовы создавать? У вас есть два варианта:",
+      "methods": {
+        "scratch": {
+          "desc": "Создайте собственный опрос с полным контролем",
+          "title": "С нуля"
+        },
+        "template": {
+          "desc": "Начните с готовых шаблонов опросов",
+          "title": "Использовать шаблон"
+        }
+      },
+      "shortcut": "Совет: нажмите Ctrl+N для быстрого создания нового опроса",
+      "title": "Создайте первый опрос"
+    },
+    "defaultUser": "друг",
+    "distribute": {
+      "description": "Распространите свой опрос",
+      "hint": "Откройте Распространение в боковом меню для управления ссылками на опросы.",
+      "intro": "Когда опрос готов, опубликуйте его и поделитесь с аудиторией.",
+      "methods": {
+        "email": {
+          "desc": "Отправьте своим контактам",
+          "title": "Email-кампания"
+        },
+        "link": {
+          "desc": "Скопируйте и вставьте куда угодно",
+          "title": "Поделиться ссылкой"
+        }
+      },
+      "title": "Поделитесь опросом"
+    },
+    "errors": {
+      "saveFailed": "Не удалось сохранить прогресс. Попробуйте снова."
+    },
+    "preview": {
+      "description": "Протестируйте опрос как респондент",
+      "features": {
+        "desktop": "Десктоп и мобильный вид",
+        "logic": "Проверьте логику вопросов",
+        "test": "Пройдите опрос как респондент",
+        "title": "Функции предпросмотра"
+      },
+      "hint": "Нажмите кнопку Предпросмотр на панели конструктора.",
+      "intro": "Всегда просматривайте опрос перед публикацией! Увидьте то, что увидят респонденты.",
+      "title": "Предпросмотр перед публикацией"
+    },
+    "questions": {
+      "builderFeatures": {
+        "autosave": "Автосохранение защищает вашу работу",
+        "dragDrop": "Перетаскивание для изменения порядка вопросов",
+        "title": "Функции конструктора",
+        "undoRedo": "Отмена/Повтор с Ctrl+Z / Ctrl+Y"
+      },
+      "description": "Создайте опрос с 10+ типами вопросов",
+      "intro": "Конструктор поддерживает 10+ типов вопросов. Вот самые популярные:",
+      "title": "Добавьте вопросы",
+      "types": {
+        "multipleChoice": "Множественный выбор",
+        "nps": "Оценка NPS",
+        "rating": "Шкала оценки",
+        "text": "Текстовый ответ"
+      }
+    },
+    "responses": {
+      "description": "Следите за ответами в реальном времени",
+      "features": {
+        "export": "Экспорт в CSV или Excel",
+        "individual": "Просмотр отдельных ответов",
+        "realtime": "Уведомления об ответах в реальном времени",
+        "title": "Управление ответами"
+      },
+      "intro": "Следите за ответами в реальном времени! Каждая отправка сохраняется надёжно.",
+      "title": "Отслеживайте ответы"
+    },
+    "skip": "Я изучу самостоятельно",
+    "skipAriaLabel": "Пропустить руководство по началу работы",
+    "startCreating": "Начать создание",
+    "stepLabel": "Шаг {{current}} из {{total}}",
+    "stepNavigation": "Шаги руководства",
+    "themes": {
+      "customize": {
+        "background": "Фоны",
+        "colors": "Цвета бренда",
+        "fonts": "Типографика",
+        "logo": "Размещение логотипа",
+        "title": "Настройте всё"
+      },
+      "description": "Сделайте красиво с помощью тем",
+      "hint": "Откройте Темы в боковом меню для создания многоразовых дизайнов.",
+      "intro": "Сделайте опросы визуально привлекательными. Соответствие бренду ещё никогда не было таким простым.",
+      "title": "Стилизуйте опрос"
+    },
+    "trigger": {
+      "description": "Пройдите по этапам создания опроса",
+      "restart": "Начать руководство",
+      "restartSuccess": "Руководство перезапущено",
+      "title": "Руководство по началу работы"
+    },
+    "welcome": {
+      "description": "Давайте вместе пройдём основные шаги",
+      "greeting": "Давайте начнём, {{name}}!",
+      "message": "Это краткое руководство проведёт вас по основным этапам создания, распространения и анализа опросов.",
+      "steps": {
+        "analyze": "Анализируйте",
+        "create": "Создайте",
+        "share": "Поделитесь"
+      },
+      "title": "Ваш путь с опросами"
+    },
+    "workspace": {
+      "benefits": {
+        "collaborate": "Приглашайте коллег для совместной работы",
+        "organize": "Организуйте опросы по проектам или командам",
+        "separate": "Разделяйте работу по клиентам",
+        "title": "Преимущества рабочих пространств"
+      },
+      "description": "Организуйте опросы по командам или проектам",
+      "hint": "Вы можете открыть рабочие пространства в боковом меню или навигации.",
+      "intro": "Рабочие пространства помогают организовывать опросы по командам, проектам или клиентам. Представьте их как папки для вашей работы.",
+      "title": "Организация с рабочими пространствами"
+    }
+  },
+  "imageUploader": {
+    "apply": "Применить",
+    "dragDrop": "Перетащите или нажмите для загрузки",
+    "errors": {
+      "invalidType": "Неверный тип файла. Загрузите изображение.",
+      "noUploadFunction": "Загрузка недоступна. Введите URL вместо этого.",
+      "tooLarge": "Файл слишком большой. Максимальный размер {{maxSize}}МБ.",
+      "uploadFailed": "Загрузка не удалась. Попробуйте снова."
+    },
+    "maxSize": "Макс {{size}}МБ",
+    "remove": "Удалить изображение",
+    "selectFile": "Выбрать файл",
+    "upload": "Загрузить",
+    "uploading": "Загрузка...",
+    "url": "URL"
+  },
+  "linkAnalytics": {
+    "clicks": "Клики",
+    "clicksOverTime": "Клики по времени",
+    "conversion": "{{rate}}% конверсия",
+    "created": "Создана",
+    "description": "Показатели эффективности этой ссылки",
+    "details": {
+      "active": "Активна",
+      "created": "Создана",
+      "expires": "Истекает",
+      "inactive": "Неактивна",
+      "maxResponses": "Макс. ответов",
+      "name": "Название",
+      "passwordProtected": "Защита паролем",
+      "status": "Статус",
+      "type": "Тип",
+      "utmCampaign": "UTM кампания",
+      "utmMedium": "UTM канал",
+      "utmSource": "UTM источник"
+    },
+    "deviceBreakdown": "Распределение по устройствам",
+    "devices": "Распределение по устройствам",
+    "direct": "Прямой переход",
+    "error": {
+      "description": "Произошла ошибка. Попробуйте снова.",
+      "title": "Не удалось загрузить аналитику"
+    },
+    "geoDistribution": "Географическое распределение",
+    "geographic": "Географическое распределение",
+    "lastAccessed": "Последний доступ",
+    "linkDetails": "Детали ссылки",
+    "loading": "Загрузка аналитики...",
+    "name": "Название",
+    "noDataYet": "Данные пока недоступны",
+    "noDeviceData": "Данные об устройствах пока недоступны",
+    "noGeoData": "Географические данные пока недоступны",
+    "noReferrerData": "Данные об источниках пока недоступны",
+    "responses": "Ответы",
+    "tabs": {
+      "device": "Устройство",
+      "geography": "География",
+      "referrer": "Источник"
+    },
+    "title": "Аналитика ссылок",
+    "topCountries": "Топ стран",
+    "trafficSources": "Источники трафика",
+    "uniqueClicks": "Уникальные клики"
+  },
+  "linkAnalyticsPanel": {
+    "description": "Метрики эффективности вашей ссылки на опрос",
+    "devices": "Распределение по устройствам",
+    "directTraffic": "Прямой",
+    "geographic": "Географическое распределение",
+    "loadError": {
+      "description": "Что-то пошло не так. Попробуйте снова.",
+      "retry": "Попробовать снова",
+      "title": "Не удалось загрузить аналитику"
+    },
+    "noDeviceData": "Данные об устройствах пока недоступны",
+    "noGeographicData": "Географические данные пока недоступны",
+    "noReferrerData": "Данные об источниках пока недоступны",
+    "title": "Аналитика ссылок",
+    "trafficSources": "Источники трафика",
+    "unique": "уникальных",
+    "views": "просмотров"
+  },
+  "linkGenerator": {
+    "createError": "Не удалось создать ссылку",
+    "createSuccess": "Ссылка успешно создана",
+    "description": "Создайте ссылку для обмена \"{{surveyName}}\"",
+    "expiration": "Дата истечения",
+    "expirationDesc": "Ссылка истечёт в эту дату",
+    "linkName": "Название ссылки",
+    "passwordPlaceholder": "Введите пароль",
+    "passwordProtection": "Защита паролем",
+    "passwordProtectionDesc": "Требовать пароль для доступа к опросу",
+    "responseLimit": "Лимит ответов",
+    "responseLimitDesc": "Максимальное количество ответов",
+    "responseLimitPlaceholder": "Введите макс. количество ответов",
+    "title": "Создать ссылку на опрос"
+  },
+  "linksPanel": {
+    "activeLinks": "Активные ссылки",
+    "bulkGenerate": "Массовая генерация",
+    "confirm": {
+      "deactivateDescription": "Эта ссылка больше не будет принимать ответы. Вы сможете активировать её позже.",
+      "deactivateTitle": "Деактивировать ссылку",
+      "reactivateDescription": "Эта ссылка снова начнёт принимать ответы.",
+      "reactivateTitle": "Активировать ссылку"
+    },
+    "copyLink": "Копировать ссылку",
+    "createLink": "Создать ссылку",
+    "deactivate": "Деактивировать",
+    "deactivateConfirm": {
+      "confirm": "Деактивировать",
+      "description": "Эта ссылка больше не будет принимать ответы. Вы сможете активировать её позже.",
+      "title": "Деактивировать ссылку"
+    },
+    "deactivateError": "Не удалось деактивировать ссылку",
+    "deactivateSuccess": "Ссылка успешно деактивирована",
+    "description": "Управляйте и делитесь ссылками для сбора ответов",
+    "empty": {
+      "description": "Создайте первую ссылку для начала сбора ответов",
+      "title": "Пока нет ссылок"
+    },
+    "emptyState": {
+      "description": "Создайте первую ссылку для начала сбора ответов",
+      "title": "Пока нет ссылок"
+    },
+    "error": "Не удалось загрузить ссылки",
+    "expiresAt": "Истекает: {{date}}",
+    "inactiveLinks": "Неактивные ссылки",
+    "linkCopied": "Ссылка скопирована в буфер обмена",
+    "linkCopyError": "Не удалось скопировать ссылку",
+    "loadError": "Не удалось загрузить ссылки",
+    "menu": {
+      "copyLink": "Копировать ссылку",
+      "deactivate": "Деактивировать",
+      "editLink": "Редактировать ссылку",
+      "reactivate": "Активировать",
+      "viewAnalytics": "Смотреть аналитику"
+    },
+    "newLink": "Новая ссылка",
+    "openLink": "Открыть ссылку",
+    "passwordProtected": "Защищена паролем",
+    "reactivate": "Активировать",
+    "reactivateConfirm": {
+      "confirm": "Активировать",
+      "description": "Эта ссылка снова начнёт принимать ответы.",
+      "title": "Активировать ссылку"
+    },
+    "reactivateError": "Не удалось активировать ссылку",
+    "reactivateSuccess": "Ссылка успешно активирована",
+    "responses": "ответов",
+    "showQRCode": "Показать QR-код",
+    "status": {
+      "active": "Активна",
+      "expired": "Истекла",
+      "inactive": "Неактивна",
+      "limitReached": "Лимит достигнут"
+    },
+    "title": "Ссылки на опрос",
+    "toast": {
+      "copied": "Ссылка скопирована в буфер обмена",
+      "copyFailed": "Не удалось скопировать ссылку",
+      "deactivateFailed": "Не удалось деактивировать ссылку",
+      "deactivated": "Ссылка успешно деактивирована",
+      "reactivateFailed": "Не удалось активировать ссылку",
+      "reactivated": "Ссылка успешно активирована"
+    },
+    "tooltips": {
+      "copyLink": "Копировать ссылку",
+      "editLink": "Редактировать ссылку",
+      "expired": "Истекла",
+      "expires": "Истекает: {{date}}",
+      "passwordProtected": "Защищена паролем",
+      "responses": "Ответы",
+      "viewAnalytics": "Смотреть аналитику"
+    },
+    "totalClicks": "Всего кликов",
+    "types": {
+      "anonymous": {
+        "description": "Без отслеживания респондентов",
+        "name": "Анонимная ссылка"
+      },
+      "campaign": "Ссылка кампании",
+      "campaignDescription": "Отслеживание ответов по источнику кампании",
+      "embedded": "Встраиваемая ссылка",
+      "embeddedDescription": "Встроить в сайт или приложение",
+      "passwordProtected": {
+        "description": "Требует пароль для доступа",
+        "name": "Защищённая паролем"
+      },
+      "qrCode": "QR-код",
+      "qrCodeDescription": "Сканируемый QR-код для быстрого доступа",
+      "standard": "Стандартная ссылка",
+      "standardDescription": "Базовая ссылка для обмена",
+      "standardObj": {
+        "description": "Базовая ссылка на опрос",
+        "name": "Стандартная ссылка"
+      },
+      "tracked": {
+        "description": "Полная аналитика",
+        "name": "Отслеживаемая ссылка"
+      },
+      "unique": "Уникальная ссылка",
+      "uniqueDescription": "Одноразовая ссылка для отслеживания"
+    },
+    "viewAnalytics": "Смотреть аналитику"
+  },
+  "localization": {
+    "addLanguage": "Добавить язык",
+    "addLanguageDescription": "Добавить новый перевод к этому опросу",
+    "addLanguageError": "Не удалось добавить язык",
+    "addLanguageSuccess": "Язык успешно добавлен",
+    "addLanguageTitle": "Добавить язык",
+    "allFieldsTranslated": "Все поля переведены",
+    "allLanguages": "Все языки",
+    "autoTranslate": "Автоматический перевод с языка по умолчанию",
+    "autoTranslateDesc": "Использовать машинный перевод для создания начальных переводов (вы сможете отредактировать их позже)",
+    "autoTranslateHint": "Функция автоперевода скоро появится!",
+    "cannotRemoveDefault": "Нельзя удалить язык по умолчанию",
+    "cannotRemoveOnlyLanguage": "Нельзя удалить единственный язык",
+    "complete": "Завершено",
+    "default": "По умолчанию",
+    "defaultLanguage": "Язык по умолчанию",
+    "description": "Описание",
+    "disable": "Отключить",
+    "disableLanguage": "Отключить для респондентов",
+    "disabled": "Отключено",
+    "editTranslation": "Редактировать перевод...",
+    "editTranslationDesc": "Переведите содержимое опроса с языка по умолчанию",
+    "editTranslations": "Редактировать переводы",
+    "editingFallback": "Редактирование",
+    "editingIn": "Редактирование на {{language}}",
+    "editingTranslation": "Редактирование перевода",
+    "enable": "Включить",
+    "enableLanguage": "Включить для респондентов",
+    "enterTranslation": "Введите перевод...",
+    "errorLoading": "Не удалось загрузить переводы",
+    "errorLoadingDesc": "Пожалуйста, попробуйте позже",
+    "export": "Экспорт",
+    "fallback": "Резервный",
+    "fields": {
+      "description": "Описание",
+      "thankYouMessage": "Сообщение благодарности",
+      "title": "Название опроса",
+      "welcomeMessage": "Приветственное сообщение"
+    },
+    "fieldsLabel": "полей",
+    "fieldsTranslated": "{{count}} из {{total}} полей переведено",
+    "highRatingLabel": "Метка высокой оценки",
+    "import": "Импорт",
+    "incomplete": "Не завершено",
+    "languageAlreadyExists": "Этот язык уже существует",
+    "languageCount": "{{count}} язык(ов)",
+    "languageCount_one": "{{count}} язык",
+    "languageCount_other": "{{count}} языков",
+    "languageDisabled": "Отключён",
+    "languageEnabled": "Включён",
+    "languages": {
+      "ar": "Арабский",
+      "az": "Азербайджанский",
+      "de": "Немецкий",
+      "en": "Английский",
+      "es": "Испанский",
+      "fr": "Французский",
+      "hi": "Хинди",
+      "it": "Итальянский",
+      "ja": "Японский",
+      "ko": "Корейский",
+      "nl": "Нидерландский",
+      "pl": "Польский",
+      "pt": "Португальский",
+      "ru": "Русский",
+      "tr": "Турецкий",
+      "zh": "Китайский"
+    },
+    "languagesDescription": "Управляйте языками и переводами опроса",
+    "loadingTranslations": "Загрузка переводов...",
+    "lowRatingLabel": "Метка низкой оценки",
+    "manageLanguages": "Управление языками",
+    "manageLanguagesDesc": "Добавить и управлять переводами опроса",
+    "missingTranslations": "Отсутствует: {{fields}}",
+    "needsTranslation": "Требуется перевод",
+    "needsWork": "Требует доработки",
+    "noContent": "Нет содержимого",
+    "noLanguages": "Языки не добавлены",
+    "noLanguagesDesc": "Добавьте языки, чтобы сделать опрос многоязычным",
+    "noQuestions": "Вопросов пока нет",
+    "noQuestionsDesc": "Добавьте вопросы в опрос для их перевода",
+    "noTranslation": "Перевод не найден",
+    "noTranslationDesc": "Перевод на этот язык ещё не существует",
+    "notTranslated": "Не переведено",
+    "optionsCount": "{{count}} вариант(ов)",
+    "optionsTranslationHint": "Переведите каждый вариант ниже",
+    "popularLanguages": "Популярные языки",
+    "questionText": "Текст вопроса",
+    "questions": "Вопросы",
+    "questionsCount": "{{count}} вопрос(ов)",
+    "questionsLabel": "Вопросы",
+    "questionsProgress": "{{completed}}/{{total}} вопросов переведено",
+    "questionsTooltip": "Текст вопросов и варианты",
+    "questionCount": "{{count}} вопросов",
+    "questionCount_one": "{{count}} вопрос",
+    "questionCount_other": "{{count}} вопросов",
+    "overallProgress": "{{percent}}% переведено",
+    "fullyTranslated": "Полностью переведено",
+    "translatingFrom": "Перевод с {{source}}",
+    "surveyFields": "Опрос: {{translated}}/{{total}}",
+    "questionFields": "Вопросы: {{translated}}/{{total}}",
+    "clickToEdit": "Нажмите на язык, чтобы редактировать переводы",
+    "ratingLabels": "Метки рейтинга",
+    "removeLanguage": "Удалить язык",
+    "removeLanguageConfirm": "Вы уверены, что хотите удалить {{language}}? Все переводы для этого языка будут удалены.",
+    "removeLanguageSuccess": "Язык успешно удалён",
+    "searchLanguages": "Поиск языков...",
+    "selectLanguage": "Выберите язык",
+    "selectLanguageToAdd": "Выберите язык для добавления",
+    "setAsDefault": "Установить по умолчанию",
+    "setAsDefaultConfirm": "Вы уверены, что хотите установить {{language}} языком по умолчанию?",
+    "setAsDefaultSuccess": "Язык по умолчанию успешно изменён",
+    "source": "Источник",
+    "sourceLanguage": "Источник: {{language}}",
+    "surveyDetails": "Детали опроса",
+    "surveyFieldsProgress": "Прогресс полей опроса",
+    "surveyFieldsTooltip": "Название опроса, описание, сообщения",
+    "surveyLanguages": "Языки опроса",
+    "switchLanguage": "Сменить язык редактирования",
+    "totalLanguages": "{{count}} язык(ов)",
+    "translateTo": "Перевести на {{language}}",
+    "translationComplete": "Перевод завершён",
+    "translationIncomplete": "Перевод не завершён",
+    "translationProgress": "Прогресс перевода",
+    "untitledQuestion": "Вопрос без названия"
+  },
+  "logicVisualization": {
+    "addLogicHint": "Добавьте условную логику к вопросам, чтобы увидеть диаграмму потока",
+    "issuesFound": "Обнаружены проблемы с логикой",
+    "loadError": "Не удалось загрузить карту логики",
+    "noRules": "Логические правила не определены"
+  },
+  "navigation": {
+    "analytics": "Аналитика",
+    "appearance": "Внешний вид",
+    "dashboard": "Панель управления",
+    "distributions": "Распространение",
+    "emailTemplates": "Email шаблоны",
+    "openMenu": "Открыть меню",
+    "profile": "Профиль",
+    "recurringSurveys": "Повторяющиеся опросы",
+    "responses": "Ответы",
+    "settings": "Настройки",
+    "surveys": "Опросы",
+    "templates": "Шаблоны",
+    "themes": "Темы",
+    "workspaces": "Рабочие пространства"
+  },
+  "notifications": {
+    "aboutDescription": "Мы никогда не будем отправлять спам. Вы можете отписаться от любого уведомления в любое время. Критические уведомления безопасности нельзя отключить.",
+    "aboutTitle": "Об уведомлениях",
+    "allDisabled": "Все email-уведомления отключены",
+    "description": "Управляйте настройками email-уведомлений",
+    "emailNotifications": "Email-уведомления",
+    "pushNotifications": "Push-уведомления",
+    "saveSuccess": "Настройки уведомлений сохранены",
+    "settings": {
+      "allEmails": {
+        "description": "Главный переключатель для всех email-уведомлений",
+        "title": "Все email-уведомления"
+      },
+      "completionAlerts": {
+        "description": "Получайте уведомления, когда кто-то завершает ваш опрос",
+        "title": "Уведомления о завершении"
+      },
+      "distributionReports": {
+        "description": "Получайте отчёты о доставке email-рассылок",
+        "title": "Отчёты о рассылке"
+      },
+      "marketing": {
+        "description": "Советы, обновления продукта и периодический промо-контент",
+        "title": "Маркетинг и обновления"
+      },
+      "newResponses": {
+        "description": "Получайте уведомления, когда кто-то заполняет ваш опрос",
+        "title": "Новые ответы"
+      },
+      "productUpdates": {
+        "description": "Узнавайте о новых функциях и улучшениях",
+        "title": "Обновления продукта"
+      },
+      "responseAlerts": {
+        "description": "Получайте уведомления, когда кто-то отвечает на ваш опрос",
+        "title": "Уведомления об ответах"
+      },
+      "securityAlerts": {
+        "description": "Важные уведомления о безопасности аккаунта",
+        "title": "Оповещения безопасности"
+      },
+      "surveyMilestones": {
+        "description": "Получайте уведомления о достижении этапов по ответам",
+        "title": "Этапы опроса"
+      },
+      "teamActivity": {
+        "description": "Обновления о действиях участников в общих пространствах",
+        "title": "Активность команды"
+      },
+      "weeklyDigest": {
+        "description": "Получайте еженедельный отчёт о производительности опросов",
+        "title": "Еженедельная сводка"
+      }
+    },
+    "title": "Уведомления"
+  },
+  "offline": {
+    "backOnline": "Вы снова онлайн!",
+    "dismiss": "Закрыть",
+    "message": "Вы офлайн. Некоторые функции могут быть недоступны.",
+    "retry": "Повторить"
+  },
+  "onboarding": {
+    "accessibility": {
+      "description": "Настройте под ваши потребности и удобство",
+      "dyslexiaFont": "Шрифт для дислексии",
+      "dyslexiaFontDesc": "Использовать шрифт, разработанный для облегчения чтения",
+      "highContrast": "Высокая контрастность",
+      "highContrastDesc": "Увеличить контрастность цветов для лучшей видимости",
+      "hint": "Эти настройки можно изменить в любое время в разделе Настройки → Доступность",
+      "intro": "Персонализируйте интерфейс для лучшей доступности",
+      "largeText": "Крупный текст",
+      "largeTextDesc": "Увеличить размер шрифта во всём приложении",
+      "reducedMotion": "Уменьшить движение",
+      "reducedMotionDesc": "Минимизировать анимации и переходы",
+      "title": "Настройки доступности"
+    },
+    "appearance": {
+      "colorPalette": "Цветовая палитра",
+      "dark": "Тёмная",
+      "description": "Выберите предпочитаемую тему и цвета",
+      "light": "Светлая",
+      "palette": {
+        "blue": "Синий",
+        "green": "Зелёный",
+        "monochrome": "Монохром",
+        "orange": "Оранжевый",
+        "pink": "Розовый",
+        "purple": "Фиолетовый",
+        "teal": "Бирюзовый"
+      },
+      "system": "Системная",
+      "themeMode": "Режим темы",
+      "title": "Настройте внешний вид"
+    },
+    "complete": {
+      "createSurvey": "Создать опрос",
+      "description": "Ваш аккаунт готов к работе",
+      "distribute": "Распространить",
+      "message": "Ваше рабочее пространство настроено. Начните создавать опросы, анализировать ответы и делиться выводами с командой.",
+      "ready": "Отлично, {{name}}!",
+      "title": "Всё готово!",
+      "viewAnalytics": "Аналитика"
+    },
+    "completedSuccessfully": "Настройка успешно завершена!",
+    "defaultUser": "пользователь",
+    "errors": {
+      "saveFailed": "Не удалось сохранить настройки. Попробуйте снова."
+    },
+    "features": {
+      "customize": "Настройка",
+      "language": "Язык",
+      "notifications": "Уведомления"
+    },
+    "getStarted": "Начать",
+    "language": {
+      "description": "Выберите наиболее удобный для вас язык",
+      "title": "Выберите язык"
+    },
+    "notifications": {
+      "description": "Выберите, как вы хотите получать уведомления",
+      "digest": "Еженедельный дайджест",
+      "digestDesc": "Получайте еженедельную сводку по эффективности ваших опросов",
+      "email": "Email уведомления",
+      "emailDesc": "Получайте важные обновления по email",
+      "hint": "Вы можете изменить эти настройки в любое время в настройках аккаунта",
+      "responses": "Уведомления об ответах",
+      "responsesDesc": "Получайте уведомления, когда кто-то отвечает на ваш опрос",
+      "title": "Будьте в курсе"
+    },
+    "profile": {
+      "description": "Расскажите немного о себе",
+      "firstName": "Имя",
+      "firstNamePlaceholder": "Введите ваше имя",
+      "hint": "Ваше имя будет отображаться в опросах и отчётах",
+      "lastName": "Фамилия",
+      "lastNamePlaceholder": "Введите вашу фамилию",
+      "title": "Заполните профиль"
+    },
+    "restartOnboarding": "Перезапустить мастер настройки",
+    "restartOnboardingDescription": "Пройти начальную настройку снова",
+    "skip": "Пропустить",
+    "skipAriaLabel": "Пропустить мастер настройки",
+    "stepLabel": "Шаг {{current}} из {{total}}",
+    "stepNavigation": "Шаги мастера",
+    "welcome": {
+      "description": "Давайте настроим ваш опыт за несколько шагов",
+      "greeting": "Привет, {{name}}! 👋",
+      "message": "Мы рады видеть вас здесь. Давайте настроим ваш аккаунт, чтобы вы могли создавать отличные опросы и собирать ценные данные.",
+      "title": "Добро пожаловать в Inquiro"
+    }
+  },
+  "password": {
+    "confirmPassword": "Подтвердите пароль",
+    "currentPassword": "Текущий пароль",
+    "description": "Обновите пароль для защиты вашего аккаунта",
+    "newPassword": "Новый пароль",
+    "requirements": {
+      "lowercase": "Содержит строчную букву",
+      "minChars": "Минимум 8 символов",
+      "number": "Содержит цифру",
+      "specialChar": "Содержит специальный символ (!@#$%^&*)",
+      "uppercase": "Содержит заглавную букву"
+    },
+    "strength": {
+      "fair": "Средний",
+      "good": "Хороший",
+      "strong": "Надёжный",
+      "veryWeak": "Очень слабый",
+      "weak": "Слабый"
+    },
+    "successMessage": "Ваш пароль успешно изменён!",
+    "title": "Изменить пароль",
+    "toast": {
+      "failed": "Не удалось обновить пароль",
+      "failedTitle": "Ошибка обновления пароля",
+      "success": "Пароль успешно обновлён"
+    },
+    "updatePassword": "Обновить пароль",
+    "updating": "Обновление...",
+    "validation": {
+      "confirmRequired": "Пожалуйста, подтвердите пароль",
+      "currentRequired": "Текущий пароль обязателен",
+      "mismatch": "Пароли не совпадают",
+      "newRequired": "Новый пароль обязателен",
+      "requirements": "Пароль должен содержать минимум 8 символов, включая заглавные, строчные буквы и цифры"
+    }
+  },
+  "passwordChange": {
+    "changeButton": "Обновить пароль",
+    "confirmPassword": "Подтвердите новый пароль",
+    "currentPassword": "Текущий пароль",
+    "description": "Используйте надёжный пароль минимум из 8 символов, включая заглавные, строчные буквы и цифры",
+    "error": "Не удалось изменить пароль",
+    "newPassword": "Новый пароль",
+    "placeholders": {
+      "confirm": "Подтвердите новый пароль",
+      "current": "Введите текущий пароль",
+      "new": "Введите новый пароль"
+    },
+    "strength": {
+      "addMore": "Добавьте заглавные, строчные буквы и цифры",
+      "good": "Хорошо - добавьте специальные символы для большей безопасности",
+      "strong": "Надёжный пароль",
+      "tooShort": "Слишком короткий"
+    },
+    "success": "Пароль успешно изменён",
+    "title": "Изменить пароль",
+    "validation": {
+      "complexity": "Пароль должен содержать заглавные, строчные буквы и цифру",
+      "confirmRequired": "Пожалуйста, подтвердите пароль",
+      "currentRequired": "Текущий пароль обязателен",
+      "minLength": "Пароль должен быть не менее 8 символов",
+      "mismatch": "Пароли не совпадают",
+      "newRequired": "Новый пароль обязателен"
+    }
+  },
+  "passwordForm": {
+    "changeError": "Не удалось изменить пароль",
+    "changeSuccess": "Пароль успешно изменён",
+    "currentPassword": "Текущий пароль",
+    "description": "Обновите пароль для защиты аккаунта",
+    "genericError": "Произошла ошибка",
+    "newPassword": "Новый пароль",
+    "successMessage": "Ваш пароль успешно изменён!",
+    "title": "Изменить пароль"
+  },
+  "profile": {
+    "accountInfo": "Информация об аккаунте",
+    "avatar": {
+      "change": "Изменить аватар",
+      "description": "Выберите фото профиля",
+      "dragDrop": "Перетащите изображение сюда",
+      "invalidType": "Пожалуйста, выберите файл изображения",
+      "orClick": "или нажмите для выбора",
+      "remove": "Удалить",
+      "removed": "Аватар успешно удалён",
+      "title": "Фото профиля",
+      "tooLarge": "Изображение должно быть меньше 5МБ",
+      "updated": "Аватар успешно обновлён"
+    },
+    "description": "Обновите личные данные и email адрес",
+    "editProfile": "Редактировать профиль",
+    "email": "Email адрес",
+    "emailChangeNotice": "Изменение email потребует подтверждения",
+    "emailPlaceholder": "иван@пример.com",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Иван",
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Петров",
+    "lastUpdated": "Последнее обновление",
+    "memberSince": "Участник с",
+    "saveChanges": "Сохранить изменения",
+    "title": "Личная информация",
+    "toast": {
+      "avatarRemoved": "Аватар успешно удалён",
+      "avatarUpdated": "Аватар успешно обновлён",
+      "updateFailed": "Не удалось обновить профиль",
+      "updateFailedTitle": "Ошибка обновления профиля",
+      "updateSuccess": "Профиль успешно обновлён"
+    },
+    "updateError": "Не удалось обновить профиль",
+    "updateSuccess": "Профиль успешно обновлён"
+  },
+  "profileForm": {
+    "description": "Управляйте личной информацией и фото профиля",
+    "removeAvatarError": "Не удалось удалить аватар",
+    "removeAvatarSuccess": "Аватар успешно удалён",
+    "title": "Профиль",
+    "updateError": "Не удалось обновить профиль",
+    "updateSuccess": "Профиль успешно обновлён"
+  },
+  "publicSurvey": {
+    "alreadySubmitted": "Вы уже отправили ответ",
+    "answeredCount": "{{count}} отвечено",
+    "back": "Назад",
+    "closeMessage": "Вы можете безопасно закрыть это окно.",
+    "continue": "Продолжить",
+    "continueSurvey": "Продолжить опрос",
+    "errorMessage": "Этот опрос либо не найден, либо истек срок его действия, либо он больше не принимает ответы.",
+    "errorTitle": "Опрос недоступен",
+    "fixErrors": "Пожалуйста, исправьте ошибки выше перед отправкой.",
+    "next": "Далее",
+    "placeholders": {
+      "yourAnswer": "Ваш ответ"
+    },
+    "questionCount": "{{count}} вопросов",
+    "questionOfTotal": "Вопрос {{current}} из {{total}}",
+    "required": "Обязательно",
+    "requiredField": "Это поле обязательно",
+    "resumeDescription": "Мы нашли ваш предыдущий прогресс в этом опросе. Хотите продолжить с того места, где остановились, или начать заново?",
+    "resumeTitle": "Продолжить с того места, где остановились?",
+    "startFresh": "Начать заново",
+    "submit": "Отправить",
+    "submitError": "Не удалось отправить. Попробуйте снова.",
+    "submitSuccess": "Спасибо за ваш ответ!",
+    "submitSurvey": "Отправить опрос",
+    "submitting": "Отправка...",
+    "surveyClosed": "Этот опрос закрыт",
+    "surveyNotFound": "Опрос не найден",
+    "thankYouMessage": "Благодарим вас за время, потраченное на заполнение этого опроса. Ваши ответы очень важны для нас!",
+    "thankYouTitle": "Спасибо!"
+  },
+  "publicSurveyPage": {
+    "defaultTitle": "Опрос",
+    "loading": "Загрузка опроса...",
+    "notAvailable": "Этот опрос недоступен.",
+    "poweredBy": "Работает на Inquiro",
+    "submitError": "Не удалось отправить. Попробуйте снова."
+  },
+  "qrCode": {
+    "close": "Закрыть",
+    "download": "Скачать QR-код",
+    "downloadAs": "Скачать как PNG",
+    "filename": "Имя файла",
+    "filenamePlaceholder": "qr-код-опроса",
+    "print": "Печать QR-кода",
+    "printQR": "Печать",
+    "style": {
+      "brand": "Брендовый",
+      "dark": "Тёмный",
+      "light": "Светлый"
+    },
+    "tips": {
+      "tip1": "Используйте качественную бумагу для лучшего сканирования",
+      "tip2": "Обеспечьте хороший контраст между QR-кодом и фоном",
+      "tip3": "Проверьте QR-код перед распространением",
+      "tip4": "Минимальный рекомендуемый размер: 2см x 2см",
+      "title": "Советы для печати"
+    },
+    "title": "QR-код"
+  },
+  "qrCodeDialog": {
+    "description": "Скачайте или поделитесь QR-кодом вашего опроса",
+    "downloadPNG": "Скачать PNG",
+    "downloadSize": "Размер скачивания",
+    "openSurvey": "Открыть опрос",
+    "selectSize": "Выберите размер",
+    "sizes": {
+      "large": "Большой (400px)",
+      "medium": "Средний (300px)",
+      "small": "Маленький (200px)",
+      "xlarge": "Очень большой (500px)"
+    },
+    "theme": "Тема",
+    "themes": {
+      "brand": "Брендовая",
+      "dark": "Тёмная",
+      "light": "Светлая"
+    },
+    "tips": {
+      "tip1": "Используйте очень большой размер для постеров и баннеров",
+      "tip2": "Обеспечьте хороший контраст между QR-кодом и фоном",
+      "tip3": "Протестируйте код перед печатью",
+      "tip4": "Минимальный рекомендуемый размер: 2см x 2см",
+      "title": "Советы по QR-кодам"
+    },
+    "title": "QR-код",
+    "toast": {
+      "copied": "QR-код скопирован в буфер обмена",
+      "copyFailed": "Не удалось скопировать QR-код",
+      "downloadFailed": "Не удалось скачать QR-код",
+      "downloaded": "QR-код скачан"
+    }
+  },
+  "qrGenerator": {
+    "description": "Скачайте или распечатайте QR-код для вашей ссылки на опрос",
+    "download": "Скачать как PNG",
+    "downloadError": "Не удалось скачать QR-код",
+    "downloadSuccess": "QR-код скачан",
+    "filename": "Имя файла",
+    "filenamePlaceholder": "qr-код-опроса",
+    "print": "Печать",
+    "printError": "Не удалось распечатать QR-код",
+    "printTips": {
+      "tip1": "Используйте очень большой размер для больших плакатов и баннеров",
+      "tip2": "Обеспечьте хороший контраст между QR-кодом и фоном",
+      "tip3": "Проверьте QR-код перед распространением",
+      "tip4": "Минимальный рекомендуемый размер: 2см x 2см",
+      "title": "Советы для печати"
+    },
+    "sizes": {
+      "large": "Большой (400px)",
+      "medium": "Средний (300px)",
+      "small": "Маленький (200px)",
+      "xlarge": "Очень большой (500px)"
+    },
+    "theme": "Тема",
+    "themes": {
+      "brand": "Брендовая",
+      "dark": "Тёмная",
+      "light": "Светлая"
+    },
+    "title": "QR-код"
+  },
+  "questionCategories": {
+    "advanced": "Расширенные",
+    "choice": "Выбор",
+    "date": "Дата и время",
+    "dateTime": "Дата и время",
+    "input": "Ввод",
+    "popular": "Популярные",
+    "ratingScale": "Рейтинг и шкала",
+    "text": "Текст",
+    "textInput": "Текстовый ввод"
+  },
+  "questionDefaults": {
+    "matrix": {
+      "column": "Столбец {{number}}",
+      "row": "Строка {{number}}"
+    },
+    "nps": {
+      "maxLabel": "Очень вероятно",
+      "minLabel": "Совсем маловероятно"
+    },
+    "options": {
+      "no": "Нет",
+      "option": "Вариант {{number}}",
+      "yes": "Да"
+    },
+    "placeholders": {
+      "email": "Введите ваш email...",
+      "emailExample": "email@example.com",
+      "enterNumber": "Введите число",
+      "enterPhone": "Введите номер телефона",
+      "longText": "Введите подробный ответ...",
+      "number": "Введите число...",
+      "text": "Введите ваш ответ..."
+    },
+    "rating": {
+      "maxLabel": "Отлично",
+      "minLabel": "Плохо"
+    },
+    "scale": {
+      "maxLabel": "Очень вероятно",
+      "minLabel": "Маловероятно"
+    }
+  },
+  "questionEditor": {
+    "addQuestion": "Добавить вопрос",
+    "choice": {
+      "addOther": "Добавить вариант \"Другое\"",
+      "addOtherDesc": "Позволить респондентам ввести свой ответ",
+      "otherLabel": "Метка варианта \"Другое\"",
+      "otherPlaceholder": "Другое",
+      "randomize": "Случайный порядок вариантов",
+      "randomizeDesc": "Показывать варианты в случайном порядке"
+    },
+    "closeMenu": "Закрыть меню",
+    "common": {
+      "addHelpText": "Добавьте пояснение или контекст",
+      "descriptionOptional": "Описание (необязательно)",
+      "enterPlaceholder": "Введите текст-заполнитель",
+      "enterQuestion": "Введите ваш вопрос",
+      "maxCharacters": "Максимум символов",
+      "maxCharsAllowed": "Максимальное количество символов",
+      "placeholderLabel": "Текст-заполнитель",
+      "shownInsideField": "Показывается внутри поля ввода",
+      "shownInsideTextArea": "Показывается внутри текстовой области",
+      "textBelowQuestion": "Этот текст появляется под вопросом"
+    },
+    "conditionalLogic": "Условная логика",
+    "configure": "Настроить",
+    "controlWhenAppears": "Управляйте, когда появляется этот вопрос",
+    "deleteQuestion": "Удалить вопрос",
+    "dragToReorder": "Перетащите для изменения порядка",
+    "duplicateQuestion": "Дублировать вопрос",
+    "edit": "Редактирование",
+    "email": {
+      "placeholderDefault": "Введите email адрес",
+      "validationHelper": "Показывается при ошибке валидации email",
+      "validationMessage": "Сообщение об ошибке",
+      "validationPlaceholder": "Введите корректный email адрес"
+    },
+    "file": {
+      "maxFiles": "Максимум файлов",
+      "maxFilesHelper": "Максимум файлов на ответ",
+      "maxSizeHelper": "Лимит на файл"
+    },
+    "helperText": {
+      "checkbox": "Разрешён множественный выбор",
+      "date": "Выбор даты",
+      "email": "Email адрес с проверкой",
+      "file": "Загрузка файла",
+      "matrix": "Сетка вопросов с одинаковыми вариантами",
+      "number": "Только числовой ввод",
+      "phone": "Ввод номера телефона",
+      "radio": "Один выбор из вариантов",
+      "ranking": "Перетащите для упорядочивания по предпочтению",
+      "rating": "Звёздочный или числовой рейтинг",
+      "scale": "Выбор по линейной шкале",
+      "select": "Выпадающий список с одним выбором",
+      "text": "Короткий текстовый ответ",
+      "textarea": "Многострочный текст для длинных ответов",
+      "time": "Выбор времени"
+    },
+    "livePreview": "Предпросмотр",
+    "logic": "Логика",
+    "noTypesFound": "Типы вопросов не найдены",
+    "number": {
+      "formats": {
+        "decimal": "Десятичное",
+        "decimalDesc": "Числа с необязательной десятичной частью",
+        "integer": "Целое число",
+        "integerDesc": "Только целые числа",
+        "positive": "Положительное число",
+        "positiveDesc": "Только положительные числа"
+      },
+      "leaveEmptyMax": "Оставьте пустым для отсутствия максимума",
+      "leaveEmptyMin": "Оставьте пустым для отсутствия минимума",
+      "maxValue": "Максимальное значение",
+      "minValue": "Минимальное значение",
+      "noMaximum": "Без максимума",
+      "noMinimum": "Без минимума",
+      "placeholderDefault": "Введите число"
+    },
+    "options": {
+      "addColumn": "Добавить столбец",
+      "addOption": "Добавить вариант",
+      "addRow": "Добавить строку",
+      "allowOther": "Разрешить вариант 'Другое'",
+      "columns": "Столбцы",
+      "hearts": "Сердечки",
+      "maxLabel": "Метка максимума",
+      "maxRating": "Максимальный рейтинг",
+      "maxValue": "Максимальное значение",
+      "minLabel": "Метка минимума",
+      "minValue": "Минимальное значение",
+      "numbers": "Цифры",
+      "optionPlaceholder": "Вариант {{number}}",
+      "ratingStyle": "Стиль рейтинга",
+      "rows": "Строки",
+      "stars": "Звёзды",
+      "step": "Шаг"
+    },
+    "phone": {
+      "customPatternHelper": "Оставьте пустым для использования выбранного пресета",
+      "formatLabel": "Формат номера телефона",
+      "formats": {
+        "anyFormat": "Любой формат",
+        "digitsOnly": "Только цифры",
+        "digitsOnlyDesc": "Только цифры, 7-15 символов (напр., 5551234567)",
+        "european": "Европейский",
+        "europeanDesc": "Общий европейский формат",
+        "flexible": "Гибкий",
+        "flexibleDesc": "Допускает различные форматы с необязательным кодом страны",
+        "international": "Международный",
+        "internationalDesc": "Международный формат с кодом страны (напр., +1 234 567 8900)",
+        "uk": "Великобритания",
+        "ukDesc": "Формат Великобритании (напр., 07911 123456)",
+        "usCanada": "США/Канада",
+        "usCanadaDesc": "Формат США/Канада (напр., (555) 123-4567)"
+      },
+      "validationHelper": "Показывается при ошибке валидации телефона",
+      "validationMessage": "Сообщение об ошибке",
+      "validationPlaceholder": "Введите корректный номер телефона"
+    },
+    "placeholder": "Текст-заполнитель",
+    "preview": "Предпросмотр",
+    "previewDescription": "Посмотрите, как ваш вопрос будет выглядеть для респондентов",
+    "question": "Вопрос",
+    "questionDescription": "Описание вопроса (необязательно)",
+    "questionNumber": "Вопрос {{number}}",
+    "questionText": "Текст вопроса",
+    "ranking": {
+      "randomize": "Случайный начальный порядок",
+      "randomizeDesc": "Начать с элементов в случайном порядке"
+    },
+    "rating": {
+      "highLabel": "Метка высокого рейтинга",
+      "highPlaceholder": "Отлично",
+      "lowLabel": "Метка низкого рейтинга",
+      "lowPlaceholder": "Плохо",
+      "style": "Стиль оценки",
+      "styles": {
+        "hearts": "Сердца",
+        "numbers": "Числа",
+        "smileys": "Смайлики",
+        "stars": "Звёзды",
+        "thumbs": "Пальцы"
+      }
+    },
+    "required": "Обязательный",
+    "requiredDescription": "Респонденты должны ответить на этот вопрос",
+    "requiredQuestion": "Обязательный вопрос",
+    "saveFirst": "Сначала сохраните опрос, чтобы добавить условную логику к этому вопросу",
+    "scale": {
+      "highLabel": "Метка верхнего значения",
+      "highPlaceholder": "Очень вероятно",
+      "lowLabel": "Метка нижнего значения",
+      "lowPlaceholder": "Совсем маловероятно",
+      "maxValue": "Максимальное значение",
+      "minValue": "Минимальное значение"
+    },
+    "searchTypes": "Поиск типов вопросов...",
+    "text": {
+      "placeholderDefault": "Введите текст-заполнитель"
+    },
+    "toggleOptions": "Показать/скрыть опции",
+    "tryDifferentSearch": "Попробуйте другой поисковый запрос",
+    "unknownType": "Неизвестный тип вопроса: {{type}}",
+    "url": {
+      "customPatternHelper": "Оставьте пустым для использования выбранного пресета",
+      "formats": {
+        "flexible": "Гибкий URL",
+        "flexibleDesc": "URL с необязательным протоколом",
+        "standard": "Стандартный URL",
+        "standardDesc": "Полный URL с протоколом (напр., https://example.com)"
+      },
+      "placeholderDefault": "https://example.com",
+      "validationHelper": "Показывается при ошибке валидации URL",
+      "validationMessage": "Сообщение об ошибке",
+      "validationPlaceholder": "Введите корректный URL"
+    },
+    "validation": {
+      "presets": {
+        "alphanumeric": "Буквенно-цифровой",
+        "alphanumericDesc": "Только буквы и цифры",
+        "lettersOnly": "Только буквы",
+        "lettersOnlyDesc": "Только буквы (без цифр и спецсимволов)",
+        "ukPostcode": "Почтовый индекс Великобритании",
+        "ukPostcodeDesc": "Формат почтового индекса Великобритании",
+        "usZipCode": "Почтовый индекс США",
+        "usZipCodeDesc": "5-значный или ZIP+4 формат"
+      }
+    },
+    "yesNo": {
+      "style": "Стиль отображения",
+      "styles": {
+        "checkX": "Галочка/Крестик",
+        "text": "Текст",
+        "thumbs": "Палец вверх/вниз",
+        "toggle": "Переключатель"
+      }
+    }
+  },
+  "questionPreview": {
+    "interactiveMode": "Интерактивный предпросмотр — попробуйте!",
+    "questionText": "Введите ваш вопрос",
+    "answered": "Ответ записан"
+  },
+  "preview": {
+    "responsive": "Адаптивный",
+    "desktop": "Компьютер",
+    "mobile": "Мобильный"
+  },
+  "questionRenderers": {
+    "allowedTypes": "Разрешено",
+    "dragToReorder": "Перетащите для сортировки по предпочтению",
+    "dropFilesHere": "Перетащите файлы сюда или нажмите для загрузки",
+    "maxFiles": "Макс. {{count}} файл(ов) • {{size}}МБ каждый",
+    "other": "Другое",
+    "pleaseSpecify": "Пожалуйста, уточните..."
+  },
+  "questionTypeDescriptions": {
+    "checkbox": "Множественный выбор флажками",
+    "date": "Выбор даты",
+    "dateTime": "Выбор даты и времени",
+    "dropdown": "Выбор из выпадающего списка",
+    "email": "Поле для email адреса",
+    "fileUpload": "Разрешить прикрепление файлов",
+    "linearScale": "Числовая шкала (напр., NPS)",
+    "longText": "Многострочный текстовый ответ",
+    "matrix": "Сетка вопросов и вариантов",
+    "multipleChoice": "Выберите несколько вариантов из списка",
+    "nps": "Шкала NPS от 0 до 10",
+    "number": "Поле для ввода числа",
+    "phone": "Номер телефона с проверкой формата",
+    "ranking": "Перетащите для ранжирования",
+    "rating": "Звёздочный рейтинг",
+    "shortText": "Однострочный текстовый ответ",
+    "singleChoice": "Выберите один вариант из списка",
+    "unknown": "Неизвестный тип вопроса",
+    "url": "URL сайта с проверкой",
+    "yesNo": "Простой вопрос да/нет"
+  },
+  "questionTypeLabels": {
+    "checkbox": "Флажок",
+    "date": "Дата",
+    "dateTime": "Дата и время",
+    "dropdown": "Выпадающий список",
+    "email": "Email",
+    "fileUpload": "Загрузка файла",
+    "linearScale": "Линейная шкала",
+    "longText": "Длинный текст",
+    "matrix": "Матрица",
+    "multipleChoice": "Множественный выбор",
+    "nps": "Net Promoter Score",
+    "number": "Число",
+    "phone": "Номер телефона",
+    "ranking": "Ранжирование",
+    "rating": "Рейтинг",
+    "shortText": "Короткий текст",
+    "singleChoice": "Один из списка",
+    "unknown": "Неизвестный",
+    "url": "URL сайта",
+    "yesNo": "Да/Нет"
+  },
+  "questionTypes": {
+    "checkbox": {
+      "description": "Разрешён множественный выбор",
+      "name": "Флажки"
+    },
+    "date": {
+      "description": "Выбор даты",
+      "name": "Дата"
+    },
+    "email": {
+      "description": "Email адрес с проверкой",
+      "name": "Email"
+    },
+    "file": {
+      "description": "Загрузка файлов",
+      "name": "Загрузка файла"
+    },
+    "matrix": {
+      "description": "Сетка вопросов",
+      "name": "Матрица"
+    },
+    "nps": {
+      "description": "Net Promoter Score",
+      "name": "NPS"
+    },
+    "number": {
+      "description": "Числовой ввод",
+      "name": "Число"
+    },
+    "options": {
+      "add": "Добавить вариант",
+      "placeholder": "Введите текст варианта",
+      "remove": "Удалить этот вариант",
+      "title": "Варианты"
+    },
+    "phone": {
+      "description": "Ввод номера телефона",
+      "name": "Телефон"
+    },
+    "radio": {
+      "description": "Один выбор из вариантов",
+      "name": "Множественный выбор"
+    },
+    "ranking": {
+      "description": "Перетащите для упорядочивания",
+      "helper": "Перетащите для упорядочивания по предпочтению",
+      "name": "Ранжирование",
+      "previewLabel": "Предпросмотр - Перетащите для изменения порядка"
+    },
+    "rating": {
+      "description": "Звёздочный или числовой рейтинг",
+      "name": "Рейтинг"
+    },
+    "scale": {
+      "description": "Выбор по числовой шкале",
+      "name": "Линейная шкала",
+      "presets": {
+        "1-10": "Шкала 1-10",
+        "1-5": "Шкала 1-5",
+        "1-7": "Шкала 1-7",
+        "nps": "NPS (0-10)"
+      },
+      "scaleType": "Тип шкалы"
+    },
+    "select": {
+      "description": "Выпадающий список с одним выбором",
+      "name": "Выпадающий список"
+    },
+    "text": {
+      "description": "Однострочный текстовый ввод",
+      "name": "Короткий текст"
+    },
+    "textarea": {
+      "description": "Многострочное текстовое поле",
+      "name": "Длинный текст"
+    },
+    "time": {
+      "description": "Выбор времени",
+      "name": "Время"
+    }
+  },
+  "questions": {
+    "addOption": "Добавить вариант",
+    "addQuestion": "Добавить вопрос",
+    "deleteQuestion": "Удалить вопрос",
+    "editQuestion": "Редактировать вопрос",
+    "options": "Варианты",
+    "placeholder": "Подсказка",
+    "questionText": "Текст вопроса",
+    "questionType": "Тип вопроса",
+    "required": "Обязательный",
+    "title": "Вопросы",
+    "types": {
+      "checkbox": "Флажки",
+      "date": "Дата",
+      "email": "Email",
+      "file": "Загрузка файла",
+      "number": "Число",
+      "phone": "Телефон",
+      "radio": "Один из списка",
+      "rating": "Рейтинг",
+      "scale": "Шкала",
+      "select": "Выпадающий список",
+      "text": "Текст",
+      "textarea": "Длинный текст",
+      "time": "Время"
+    }
+  },
+  "recipientImporter": {
+    "alreadyInList": "Уже в вашем списке",
+    "browseFiles": "Выбрать файлы",
+    "dropCsvHere": "Перетащите CSV файл сюда",
+    "duplicateEmail": "Этот email уже есть в списке",
+    "duplicatesSkipped": "{{count}} дубликат пропущен",
+    "duplicatesSkipped_plural": "{{count}} дубликатов пропущено",
+    "emailPlaceholder": "Введите адрес электронной почты...",
+    "enterEmail": "Пожалуйста, введите адрес электронной почты",
+    "importButton": "Импортировать {{count}} Email",
+    "importDescription": "Просмотрите результаты импорта перед добавлением в список",
+    "importTitle": "Импорт получателей",
+    "invalidEmail": "Пожалуйста, введите корректный адрес электронной почты",
+    "invalidEmails": "{{count}} некорректный email",
+    "invalidEmails_plural": "{{count}} некорректных email",
+    "maxRecipientsError": "Максимум {{max}} получателей разрешено",
+    "moreInvalid": "+{{count}} ещё",
+    "moreRecipients": "+{{count}} ещё",
+    "orClickToBrowse": "или нажмите для выбора",
+    "recipientCount": "{{count}} получатель",
+    "recipientCount_plural": "{{count}} получателей",
+    "validEmails": "{{count}} корректный email",
+    "validEmails_plural": "{{count}} корректных email",
+    "willBeAdded": "Будет добавлен в список получателей"
+  },
+  "recipientInput": {
+    "errors": {
+      "duplicate": "Этот email уже в списке",
+      "empty": "Введите email адрес",
+      "invalid": "Введите корректный email адрес",
+      "maxReached": "Максимум {{max}} получателей"
+    },
+    "placeholder": "Введите email адрес..."
+  },
+  "recurringSurveys": {
+    "audience": "Аудитория",
+    "createDescription": "Настройте автоматический запуск опроса по расписанию.",
+    "createSchedule": "Создать расписание",
+    "createTitle": "Создать повторяющийся опрос",
+    "cronExpression": "Cron-выражение",
+    "cronHelp": "Используйте стандартный формат cron: минута час день-месяца месяц день-недели",
+    "deleteConfirm": {
+      "description": "Вы уверены, что хотите удалить этот повторяющийся опрос? Это действие нельзя отменить.",
+      "title": "Удалить повторяющийся опрос"
+    },
+    "description": "Планируйте автоматический запуск опросов на регулярной основе",
+    "editDescription": "Обновите настройки расписания для этого повторяющегося опроса.",
+    "editSchedule": "Редактировать расписание",
+    "editTitle": "Редактировать расписание",
+    "empty": {
+      "description": "Создайте повторяющийся опрос для автоматической отправки по расписанию.",
+      "title": "Нет повторяющихся опросов"
+    },
+    "form": {
+      "activeByDefault": "Активно по умолчанию",
+      "activeByDefaultDesc": "Если не отмечено, расписание будет создано в приостановленном состоянии",
+      "audienceType": {
+        "allContacts": "Все контакты",
+        "staticList": "Статический список email"
+      },
+      "biWeekly": "Раз в две недели",
+      "custom": "Пользовательский (cron-выражение)",
+      "daily": "Ежедневно",
+      "dayOfMonth": "День месяца",
+      "daysAfterSend": "Дней после первой отправки",
+      "daysOfWeek": {
+        "fri": "Пт",
+        "mon": "Пн",
+        "sat": "Сб",
+        "sun": "Вс",
+        "thu": "Чт",
+        "tue": "Вт",
+        "wed": "Ср"
+      },
+      "daysOfWeekHelper": "Выберите один или несколько дней",
+      "endDate": "Дата окончания (необязательно)",
+      "frequency": "Частота",
+      "maxReminders": "Макс. напоминаний",
+      "maxRuns": "Макс. запусков",
+      "maxRunsPlaceholder": "Без ограничений",
+      "monthly": "Ежемесячно",
+      "nameRequired": "Название обязательно",
+      "quarterly": "Ежеквартально (каждые 3 месяца)",
+      "scheduleName": "Название расписания",
+      "scheduleNamePlaceholder": "напр., Еженедельный отзыв клиентов",
+      "selectSurvey": "Выберите опрос",
+      "sendTime": "Время отправки",
+      "startDate": "Дата начала",
+      "surveyRequired": "Пожалуйста, выберите опрос",
+      "time": "Время",
+      "timezone": "Часовой пояс",
+      "timezones": {
+        "berlin": "Берлин (CET/CEST)",
+        "central": "Центральное время (CT)",
+        "eastern": "Восточное время (ET)",
+        "london": "Лондон (GMT/BST)",
+        "mountain": "Горное время (MT)",
+        "pacific": "Тихоокеанское время (PT)",
+        "paris": "Париж (CET/CEST)",
+        "shanghai": "Шанхай (CST)",
+        "singapore": "Сингапур (SGT)",
+        "sydney": "Сидней (AEST/AEDT)",
+        "tokyo": "Токио (JST)",
+        "utc": "UTC"
+      },
+      "validation": {
+        "selectSurvey": "Пожалуйста, выберите опрос",
+        "validTime": "Пожалуйста, введите корректное время (ЧЧ:мм)"
+      },
+      "weekly": "Еженедельно"
+    },
+    "lastRun": "Последний запуск",
+    "loadError": "Не удалось загрузить повторяющиеся опросы",
+    "loadErrorDesc": "Что-то пошло не так. Попробуйте снова.",
+    "loadHistoryError": "Не удалось загрузить историю",
+    "loadHistoryErrorDesc": "Произошла ошибка при загрузке истории запусков.",
+    "nextRun": "Следующий запуск",
+    "noRuns": "Запусков пока нет",
+    "noRunsDesc": "Этот повторяющийся опрос ещё не запускался. Первый запуск будет выполнен по расписанию.",
+    "noUpcoming": "Нет запланированных запусков",
+    "notRunYet": "Этот повторяющийся опрос ещё не запускался. Сбор ответов начнётся в запланированную дату.",
+    "pause": "Приостановить",
+    "pauseTooltip": "Приостановить повторяющийся опрос",
+    "pausedStateHint": "Если не отмечено, расписание будет создано в приостановленном состоянии",
+    "recipientCount": "{{count}} получатель(ей)",
+    "responsesCollected": "Собранных ответов",
+    "resume": "Возобновить",
+    "resumeTooltip": "Возобновить повторяющийся опрос",
+    "runHistory": "История запусков",
+    "runNow": "Запустить сейчас",
+    "searchPlaceholder": "Поиск повторяющихся опросов...",
+    "sendTimeInfo": "Опрос будет отправлен в {{time}} по часовому поясу {{timezone}}.",
+    "soon": "Скоро",
+    "stats": {
+      "active": "Активные",
+      "paused": "На паузе",
+      "total": "Всего",
+      "totalRuns": "Всего запусков"
+    },
+    "tabs": {
+      "active": "Активные",
+      "all": "Все",
+      "paused": "На паузе"
+    },
+    "timeSettings": "Настройки времени",
+    "title": "Повторяющиеся опросы",
+    "totalRuns": "Всего запусков",
+    "triggerConfirm": {
+      "description": "Это запустит новый опрос немедленно. Вы уверены?",
+      "title": "Запустить немедленно"
+    },
+    "triggerTooltip": "Запустить немедленно",
+    "upcomingRuns": "Предстоящие запуски",
+    "viewHistory": "История запусков",
+    "viewHistoryTooltip": "Просмотреть историю запусков"
+  },
+  "register": {
+    "createPassword": "Создать пароль",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Введите ваше имя",
+    "form": {
+      "email": "Email",
+      "emailPlaceholder": "вы@пример.com",
+      "firstName": "Имя",
+      "firstNamePlaceholder": "Иван",
+      "lastName": "Фамилия",
+      "lastNamePlaceholder": "Иванов",
+      "meetsRequirements": "Пожалуйста, выполните все требования к паролю",
+      "password": "Пароль",
+      "passwordPlaceholder": "Создайте пароль"
+    },
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Введите вашу фамилию",
+    "validation": {
+      "firstNameRequired": "Имя обязательно",
+      "lastNameRequired": "Фамилия обязательна"
+    }
+  },
+  "resetPassword": {
+    "confirmPasswordLabel": "Подтвердите пароль",
+    "confirmPasswordPlaceholder": "Подтвердите ваш пароль",
+    "description": "Выберите надёжный пароль для защиты вашего аккаунта",
+    "error": {
+      "generic": "Произошла ошибка при сбросе пароля",
+      "title": "Сброс не удался"
+    },
+    "errors": {
+      "failed": "Сброс пароля не удался",
+      "meetRequirements": "Пожалуйста, выполните все требования к паролю",
+      "resetFailed": "Не удалось сбросить пароль. Попробуйте снова."
+    },
+    "form": {
+      "confirmPassword": "Подтвердите пароль",
+      "confirmPasswordPlaceholder": "Подтвердите новый пароль",
+      "description": "Выберите надёжный пароль для защиты аккаунта",
+      "meetsRequirements": "Пожалуйста, выполните все требования к паролю",
+      "newPassword": "Новый пароль",
+      "newPasswordPlaceholder": "Введите новый пароль",
+      "submit": "Сбросить пароль",
+      "title": "Создайте новый пароль"
+    },
+    "invalidLink": {
+      "backToLogin": "Вернуться к входу",
+      "description": "Эта ссылка для сброса пароля недействительна или истекла. Запросите новую.",
+      "requestNew": "Запросить новую ссылку",
+      "requestNewLink": "Запросить новую ссылку",
+      "title": "Недействительная ссылка сброса"
+    },
+    "newPassword": "Новый пароль",
+    "newPasswordLabel": "Новый пароль",
+    "newPasswordPlaceholder": "Введите новый пароль",
+    "submit": "Сбросить пароль",
+    "subtitle": "Создайте новый пароль для вашего аккаунта",
+    "success": {
+      "description": "Ваш пароль успешно сброшен. Теперь вы можете войти с новым паролем.",
+      "goToLogin": "Перейти к входу",
+      "title": "Пароль успешно сброшен!"
+    },
+    "successDescription": "Ваш пароль сброшен. Теперь вы можете войти с новым паролем.",
+    "successTitle": "Пароль успешно сброшен!",
+    "title": "Сброс пароля"
+  },
+  "responses": {
+    "allSurveys": "Все опросы",
+    "anonymous": "Анонимный",
+    "answers": "Ответы",
+    "complete": "Завершено",
+    "deleteConfirm": "Вы уверены, что хотите удалить {{count}} ответ(ов)? Это действие нельзя отменить.",
+    "deleteError": "Не удалось удалить ответ",
+    "deleteResponse": {
+      "cancel": "Отмена",
+      "confirm": "Удалить",
+      "description": "Вы уверены, что хотите удалить этот ответ? Это действие нельзя отменить.",
+      "title": "Удалить ответ"
+    },
+    "deleteResponses": "Удалить ответы",
+    "deleteSelected": "Удалить выбранные",
+    "deleteSuccess": "Ответ успешно удалён",
+    "description": "Просмотр и управление ответами на опросы",
+    "device": "Устройство",
+    "direct": "Прямой",
+    "duration": "Длительность",
+    "export": "Экспорт",
+    "exportAll": "Экспортировать всё",
+    "exportDialog": {
+      "columns": "Выберите столбцы",
+      "columnsCount": "{{count}} столбцов",
+      "columnsToExport": "Столбцы для экспорта",
+      "dateRange": "Диапазон дат",
+      "description": "Экспортируйте ответы на опрос в нужном формате",
+      "descriptionWithTitle": "Экспортируйте ответы \"{{title}}\" в нужном формате",
+      "exportButton": "Экспортировать {{count}} ответов",
+      "exportError": "Не удалось экспортировать ответы",
+      "exportSuccess": "Экспортировано как {{fileName}}",
+      "exportSummary": "Сводка экспорта",
+      "exporting": "Экспорт...",
+      "filters": "Фильтры",
+      "format": "Формат экспорта",
+      "formatLabel": "Формат {{format}}",
+      "formats": {
+        "csv": "CSV",
+        "csvDesc": "Значения через запятую, открывается в любой таблице",
+        "excel": "Excel",
+        "excelDesc": "Формат Microsoft Excel с форматированием",
+        "pdf": "PDF",
+        "pdfDesc": "Портативный документ для печати и обмена"
+      },
+      "includeIncomplete": "Включить незавершённые ответы",
+      "includeIncompleteDesc": "Экспортировать ответы, которые не были полностью заполнены",
+      "includeMetadata": "Включить метаданные",
+      "includeMetadataDesc": "Включить время отправки, длительность, информацию об устройстве и т.д.",
+      "loadColumnsError": "Не удалось загрузить параметры столбцов",
+      "metadata": "Метаданные",
+      "questions": "Вопросы",
+      "responsesCount": "{{count}} ответов",
+      "selectColumns": "Выберите хотя бы один столбец для экспорта",
+      "selectedCount": "{{count}} выбрано",
+      "systemFields": "Системные поля",
+      "title": "Экспорт ответов"
+    },
+    "incomplete": "Не завершено",
+    "loadError": "Не удалось загрузить ответ",
+    "location": "Местоположение",
+    "na": "Н/Д",
+    "noAnswers": "Ответы не записаны",
+    "noFiles": "Файлы не загружены",
+    "noFound": "Ответы не найдены",
+    "noFoundDesc": "Попробуйте изменить фильтры или поисковый запрос",
+    "noResponses": "Пока нет ответов",
+    "noResponsesDesc": "Ответы появятся здесь после того, как участники заполнят опросы",
+    "partial": "Частично",
+    "respondent": "Респондент",
+    "responseCount": "{{count}} ответов",
+    "responseDetails": "Детали ответа",
+    "responseId": "ID ответа",
+    "responseInfo": "Информация об ответе",
+    "searchPlaceholder": "Поиск ответов...",
+    "selectSurvey": "Выберите опрос...",
+    "selectSurveyDesc": "Выберите опрос из списка для просмотра ответов",
+    "selectSurveyTitle": "Выберите опрос",
+    "selected": "{{count}} выбрано",
+    "started": "Начат",
+    "submitted": "Отправлено",
+    "submittedAt": "Отправлено",
+    "title": "Ответы",
+    "unknownQuestion": "Неизвестный вопрос"
+  },
+  "roles": {
+    "member": "Участник"
+  },
+  "search": {
+    "noRecentItems": "Нет недавних элементов",
+    "noResults": "Результаты не найдены",
+    "placeholder": "Поиск...",
+    "recent": "Недавние",
+    "results": "Результаты",
+    "startTyping": "Начните вводить для поиска",
+    "toClose": "чтобы закрыть",
+    "toNavigate": "для навигации",
+    "toSelect": "чтобы выбрать",
+    "tryDifferentKeywords": "Попробуйте другие ключевые слова"
+  },
+  "settings": {
+    "about": {
+      "appInfo": "Информация о приложении",
+      "buildDate": "Дата сборки",
+      "description": "Информация о приложении и знакомство",
+      "documentation": "Документация",
+      "madeWith": "Создано с ❤️ командой Inquiro",
+      "onboardingCompleted": "Знакомство завершено",
+      "onboardingDescription": "Управление процессом знакомства",
+      "onboardingInProgress": "В процессе",
+      "onboardingNotStarted": "Не начато",
+      "onboardingSection": "Знакомство",
+      "onboardingSkipped": "Знакомство пропущено",
+      "onboardingStatus": "Статус",
+      "privacy": "Политика конфиденциальности",
+      "resources": "Ресурсы",
+      "resourcesDescription": "Полезные ссылки и документация",
+      "restart": "Перезапустить",
+      "restartOnboarding": "Повторить знакомство",
+      "restartOnboardingDesc": "Пройдите приветственный тур заново и перенастройте свои предпочтения",
+      "restartSuccess": "Знакомство успешно перезапущено",
+      "setupWizard": "Мастер настройки",
+      "setupWizardDescription": "Перезапустить начальную настройку",
+      "support": "Поддержка",
+      "terms": "Условия использования",
+      "title": "О приложении",
+      "version": "Версия {{version}}"
+    },
+    "accessibility": {
+      "description": "Настройте функции доступности для лучшего опыта",
+      "dyslexiaFont": {
+        "description": "Используйте шрифт OpenSans с увеличенным интервалом для облегчения чтения",
+        "title": "Шрифт для дислексии"
+      },
+      "font": {
+        "description": "Выберите шрифты, оптимизированные для читаемости",
+        "title": "Настройка шрифта"
+      },
+      "fontSize": {
+        "title": "Размер текста"
+      },
+      "fontSizes": {
+        "extraLarge": "Очень большой",
+        "large": "Большой",
+        "medium": "Обычный",
+        "small": "Маленький"
+      },
+      "highContrast": {
+        "description": "Увеличьте контраст для лучшей видимости",
+        "title": "Режим высокой контрастности"
+      },
+      "motion": {
+        "description": "Управление анимацией и эффектами движения",
+        "title": "Движение и анимация"
+      },
+      "preview": {
+        "sampleText": "Так будет выглядеть текст с текущими настройками доступности. Измените параметры выше, чтобы настроить чтение.",
+        "sampleTitle": "Пример заголовка",
+        "title": "Предпросмотр"
+      },
+      "reducedMotion": {
+        "description": "Минимизировать анимацию и переходы",
+        "title": "Уменьшить движение"
+      },
+      "screenReader": {
+        "description": "Улучшенные индикаторы фокуса и поддержка ARIA",
+        "title": "Оптимизация для экранного диктора"
+      },
+      "title": "Специальные возможности",
+      "visual": {
+        "description": "Настройте визуальные элементы для улучшения читаемости",
+        "title": "Визуальные настройки"
+      }
+    },
+    "appearance": {
+      "alwaysDark": "Всегда темная тема",
+      "alwaysLight": "Всегда светлая тема",
+      "amber": "Янтарный",
+      "aqua": "Аква",
+      "colorDesc": "Выберите акцентный цвет интерфейса",
+      "colorPalette": "Цветовая палитра",
+      "coral": "Коралловый",
+      "darkMode": "Темная",
+      "description": "Настройте внешний вид приложения",
+      "forest": "Лес",
+      "indigo": "Индиго",
+      "lavender": "Лавандовый",
+      "lightMode": "Светлая",
+      "matchSystem": "Системные настройки",
+      "midnight": "Полночь",
+      "ocean": "Океан",
+      "rose": "Роза",
+      "sunset": "Закат",
+      "systemMode": "Системная",
+      "theme": "Тема",
+      "title": "Внешний вид"
+    },
+    "copyFailed": "Не удалось скопировать API-ключ",
+    "dashboard": {
+      "ascending": "По возрастанию (А-Я, Старые-Новые)",
+      "collapsedByDefault": "Свёрнута по умолчанию",
+      "collapsedByDefaultDesc": "Запускать со свёрнутой боковой панелью для большего пространства контента",
+      "descending": "По убыванию (Я-А, Новые-Старые)",
+      "description": "Настройте отображение контента в приложении",
+      "gridView": "Сетка",
+      "homeWidgets": "Виджеты главной страницы",
+      "homeWidgetsDesc": "Выберите, какие виджеты отображать на панели управления",
+      "items12": "12 элементов",
+      "items18": "18 элементов",
+      "items24": "24 элементов",
+      "items36": "36 элементов",
+      "items48": "48 элементов",
+      "items6": "6 элементов",
+      "itemsPerPage": "Элементов на странице",
+      "itemsPerPageHint": "Больше элементов означает больше контента, но может повлиять на производительность",
+      "listView": "Список",
+      "listingPreferences": "Настройки списков",
+      "listingPreferencesDesc": "Настройте отображение элементов в списках",
+      "sidebarBehavior": "Поведение боковой панели",
+      "sidebarBehaviorDesc": "Управление состоянием боковой панели по умолчанию",
+      "sortBy": "Сортировать по",
+      "sortByCreated": "Дата создания",
+      "sortByResponses": "Количество ответов",
+      "sortByStatus": "Статус",
+      "sortByTitle": "Название",
+      "sortByUpdated": "Последнее обновление",
+      "sortOrder": "Порядок",
+      "title": "Панель и интерфейс",
+      "viewMode": "Режим отображения по умолчанию",
+      "viewModeDesc": "Выберите, как будут отображаться опросы и списки по умолчанию",
+      "widgetAnalytics": "Сводка аналитики",
+      "widgetAnalyticsDesc": "Обзор трендов ответов и метрик",
+      "widgetPinned": "Закреплённые опросы",
+      "widgetPinnedDesc": "Показывать закреплённые опросы для быстрого доступа",
+      "widgetQuickActions": "Быстрые действия",
+      "widgetQuickActionsDesc": "Кнопки для частых задач, таких как создание опросов",
+      "widgetRecent": "Последние опросы",
+      "widgetRecentDesc": "Быстрый доступ к недавно обновлённым опросам",
+      "widgetStats": "Обзор статистики",
+      "widgetStatsDesc": "Показывать количество опросов и общее число ответов"
+    },
+    "description": "Управляйте вашим аккаунтом и настройками",
+    "groups": {
+      "about": "О приложении",
+      "account": "Аккаунт",
+      "personalization": "Персонализация",
+      "preferences": "Настройки"
+    },
+    "keyCopied": "API-ключ скопирован в буфер обмена",
+    "notifications": {
+      "description": "Настройка параметров уведомлений",
+      "emailNotifications": "Email-уведомления",
+      "pushNotifications": "Push-уведомления",
+      "responseAlerts": "Оповещения об ответах",
+      "title": "Уведомления",
+      "weeklyDigest": "Еженедельная сводка"
+    },
+    "profile": {
+      "avatar": {
+        "description": "Выберите аватар профиля",
+        "removed": "Аватар успешно удалён",
+        "title": "Аватар",
+        "updated": "Аватар успешно обновлён"
+      },
+      "changeAvatar": "Изменить фото",
+      "description": "Управление личной информацией",
+      "email": "Электронная почта",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "removeAvatar": "Удалить фото",
+      "saveChanges": "Сохранить изменения",
+      "title": "Профиль",
+      "updateSuccess": "Профиль успешно обновлен"
+    },
+    "regional": {
+      "dateFormat": {
+        "title": "Формат даты"
+      },
+      "dateTime": {
+        "description": "Настройте отображение даты и времени",
+        "title": "Дата и время"
+      },
+      "decimal": {
+        "comma": "Запятая (1,5)",
+        "dot": "Точка (1.5)",
+        "title": "Десятичный разделитель"
+      },
+      "description": "Установите предпочтительный язык и региональные форматы",
+      "language": {
+        "description": "Выберите предпочтительный язык интерфейса",
+        "title": "Язык"
+      },
+      "numbers": {
+        "description": "Настройте отображение чисел",
+        "title": "Форматы чисел"
+      },
+      "thousands": {
+        "comma": "Запятая",
+        "dot": "Точка",
+        "none": "Нет",
+        "space": "Пробел",
+        "title": "Разделитель тысяч"
+      },
+      "timeFormat": {
+        "title": "Формат времени"
+      },
+      "timeFormats": {
+        "12h": "12-часовой",
+        "24h": "24-часовой"
+      },
+      "timezone": {
+        "helper": "Используется для планирования и отображения дат/времени",
+        "placeholder": "Выберите часовой пояс...",
+        "title": "Часовой пояс"
+      },
+      "title": "Язык и регион"
+    },
+    "security": {
+      "apiKeyCreated": "API-ключ создан",
+      "apiKeyCreatedDesc": "Скопируйте API-ключ сейчас. Вы больше не сможете его увидеть!",
+      "apiKeyWarning": "Обязательно скопируйте API-ключ сейчас. Вы больше не сможете его увидеть.",
+      "apiKeys": "API-ключи",
+      "apiKeysDesc": "Управление API-ключами",
+      "changePassword": "Изменить пароль",
+      "confirmPassword": "Подтвердите новый пароль",
+      "copyKey": "Копировать ключ",
+      "createApiKey": "Создать API-ключ",
+      "createKey": "Создать ключ",
+      "currentPassword": "Текущий пароль",
+      "deleteKey": "Удалить API-ключ",
+      "deleteKeyConfirm": "Вы уверены, что хотите удалить этот API-ключ? Это действие нельзя отменить.",
+      "description": "Управление безопасностью аккаунта",
+      "keyCopied": "API-ключ скопирован в буфер обмена",
+      "keyName": "Название ключа",
+      "keyNamePlaceholder": "Введите название для этого ключа",
+      "keyScopes": "Разрешения",
+      "newPassword": "Новый пароль",
+      "noApiKeys": "Нет API-ключей",
+      "noApiKeysDesc": "Создайте первый API-ключ для интеграции с внешними сервисами",
+      "passwordChanged": "Пароль успешно изменен",
+      "scopes": {
+        "analyticsRead": "Чтение аналитики",
+        "analyticsReadDesc": "Доступ к аналитическим данным опросов",
+        "responsesRead": "Чтение ответов",
+        "responsesReadDesc": "Просмотр ответов на опросы",
+        "responsesWrite": "Запись ответов",
+        "responsesWriteDesc": "Отправка ответов через API",
+        "surveysRead": "Чтение опросов",
+        "surveysReadDesc": "Просмотр деталей и вопросов опросов",
+        "surveysWrite": "Запись опросов",
+        "surveysWriteDesc": "Создание, редактирование и удаление опросов"
+      },
+      "title": "Безопасность",
+      "twoFactor": "Двухфакторная аутентификация",
+      "twoFactorDesc": "Добавьте дополнительный уровень защиты"
+    },
+    "surveyBuilder": {
+      "autoSave": "Автосохранение",
+      "autoSave15s": "Каждые 15 секунд",
+      "autoSave1m": "Каждую минуту",
+      "autoSave2m": "Каждые 2 минуты",
+      "autoSave30s": "Каждые 30 секунд",
+      "autoSave5m": "Каждые 5 минут",
+      "autoSaveDesc": "Автоматически сохранять изменения при редактировании опросов",
+      "autoSaveDisabled": "Отключено",
+      "defaultMessages": "Сообщения по умолчанию",
+      "defaultMessagesDesc": "Предзаполнить приветственное и благодарственное сообщения для новых опросов",
+      "defaultTheme": "Тема по умолчанию",
+      "defaultThemeDesc": "Тема, автоматически применяемая к новым опросам",
+      "description": "Установите настройки по умолчанию для создания новых опросов",
+      "noDefaultTheme": "Без темы (использовать системную)",
+      "numberingLetters": "Буквы (А, Б, В...)",
+      "numberingNone": "Без нумерации",
+      "numberingNumbers": "Цифры (1, 2, 3...)",
+      "numberingStyle": "Нумерация вопросов",
+      "numberingStyleDesc": "Выберите, как нумеровать вопросы в опросах",
+      "pageBreakAuto": "Автоматически",
+      "pageBreakAutoDesc": "Система определяет оптимальные разрывы страниц на основе количества вопросов",
+      "pageBreakBehavior": "Поведение разрывов страниц",
+      "pageBreakBehaviorDesc": "Управление структурой страниц опроса",
+      "pageBreakManual": "Вручную",
+      "pageBreakManualDesc": "Добавлять разрывы страниц только там, где вы их явно размещаете",
+      "pageBreakPerQuestion": "Один вопрос на страницу",
+      "pageBreakPerQuestionDesc": "Каждый вопрос отображается на отдельной странице",
+      "questionDefaults": "Настройки вопросов по умолчанию",
+      "questionDefaultsDesc": "Настройки, применяемые к новым вопросам по умолчанию",
+      "requiredByDefault": "Обязательный по умолчанию",
+      "requiredByDefaultDesc": "Новые вопросы будут отмечены как обязательные",
+      "selectTheme": "Выберите тему...",
+      "showDescriptions": "Показывать описания вопросов",
+      "showDescriptionsDesc": "Отображать поле описания для каждого вопроса",
+      "thankYouMessage": "Благодарственное сообщение",
+      "thankYouMessagePlaceholder": "Введите благодарственное сообщение по умолчанию для новых опросов...",
+      "title": "Конструктор опросов",
+      "welcomeMessage": "Приветственное сообщение",
+      "welcomeMessagePlaceholder": "Введите приветственное сообщение по умолчанию для новых опросов..."
+    },
+    "title": "Настройки"
+  },
+  "shortcuts": {
+    "description": "Быстрые действия для опытных пользователей",
+    "noShortcuts": "Нет зарегистрированных сочетаний клавиш",
+    "pressEscToClose": "Нажмите Esc для закрытия",
+    "title": "Сочетания клавиш",
+    "willAppear": "Сочетания клавиш появятся здесь"
+  },
+  "surveyBuilder": {
+    "add": "Добавить",
+    "addFirstQuestion": "Нажмите кнопку + чтобы добавить первый вопрос",
+    "addFirstQuestionDesc": "Нажмите кнопку выше, чтобы добавить первый вопрос",
+    "addQuestion": "Добавить вопрос",
+    "backToSurveys": "Назад к опросам",
+    "discardChanges": "Отменить изменения",
+    "dragToReorder": "Перетащите для изменения порядка",
+    "keepEditing": "Продолжить редактирование",
+    "noQuestions": "Пока нет вопросов",
+    "preview": "Предпросмотр",
+    "questions": "Вопросы",
+    "readOnlyBanner": "Этот опрос опубликован и не может быть изменён. Вы просматриваете его в режиме только для чтения.",
+    "redo": "Повторить",
+    "saved": "Сохранено",
+    "saving": "Сохранение...",
+    "selectQuestion": "Выберите вопрос",
+    "selectQuestionDesc": "Выберите вопрос из списка для редактирования",
+    "settings": "Настройки опроса",
+    "settingsAriaLabel": "Настройки",
+    "tabs": {
+      "languages": "Языки",
+      "questions": "Вопросы"
+    },
+    "thankYouMessage": "Сообщение благодарности",
+    "thankYouMessageDesc": "Показывается респондентам после отправки",
+    "themes": "Темы",
+    "title": "Редактор опросов",
+    "toggleThemePanel": "Переключить панель темы",
+    "undo": "Отменить",
+    "unsaved": "Не сохранено",
+    "unsavedChanges": "Несохранённые изменения",
+    "unsavedChangesDesc": "У вас есть несохранённые изменения. Вы уверены, что хотите уйти?",
+    "untitledSurvey": "Безымянный опрос",
+    "viewOnly": "Только просмотр",
+    "welcomeMessage": "Приветственное сообщение",
+    "welcomeMessageDesc": "Показывается респондентам перед началом опроса"
+  },
+  "surveyLinks": {
+    "bulkGenerate": "Массовая генерация",
+    "bulkLinks": {
+      "description": "Создайте несколько уникальных ссылок за раз",
+      "download": "Скачать CSV",
+      "generate": "Сгенерировать ссылки",
+      "numberOfLinks": "Количество ссылок",
+      "prefix": "Префикс ссылки (необязательно)",
+      "title": "Массовая генерация ссылок"
+    },
+    "copyLink": "Копировать ссылку",
+    "createLink": "Создать ссылку",
+    "deactivateConfirm": {
+      "description": "Вы уверены, что хотите деактивировать эту ссылку? Её можно будет активировать позже.",
+      "title": "Деактивировать ссылку"
+    },
+    "deleteConfirm": {
+      "description": "Вы уверены, что хотите удалить эту ссылку? Это действие нельзя отменить.",
+      "title": "Удалить ссылку"
+    },
+    "expirationDate": "Срок действия",
+    "generateLink": "Сгенерировать ссылку",
+    "linkCopied": "Ссылка скопирована в буфер обмена",
+    "linkCopyError": "Не удалось скопировать ссылку",
+    "noExpiration": "Без срока действия",
+    "password": "Пароль",
+    "passwordProtection": "Защита паролем",
+    "passwordProtectionDesc": "Требовать пароль для доступа к опросу",
+    "responseLimit": "Лимит ответов",
+    "responseLimitDesc": "Максимальное количество ответов для этой ссылки",
+    "status": {
+      "active": "Активна",
+      "expired": "Истекла",
+      "inactive": "Неактивна",
+      "limitReached": "Лимит достигнут"
+    },
+    "title": "Ссылки на опрос",
+    "trackCampaign": "Отслеживать эффективность кампании",
+    "unlimited": "Без ограничений",
+    "utmCampaign": "UTM-кампания",
+    "utmMedium": "UTM-канал",
+    "utmParameters": "UTM-параметры",
+    "utmSource": "UTM-источник"
+  },
+  "surveyPreview": {
+    "allAtOnce": "Все сразу",
+    "answered": "отвечено",
+    "answeredCount": "{{count}} отвечено",
+    "backToEditor": "Назад в редактор",
+    "captureScreenshot": "Сделать снимок",
+    "completeRequired": "Пожалуйста, заполните все обязательные вопросы",
+    "copyLink": "Копировать ссылку",
+    "customDimensions": "Пользовательские размеры",
+    "darkMode": "Тёмный режим",
+    "desktop": "Компьютер",
+    "displayMode": "Режим отображения",
+    "displayModeDesc": "Как вопросы отображаются респондентам",
+    "height": "Высота",
+    "keyboardHints": "Показать подсказки клавиатуры",
+    "keyboardHintsDesc": "Показывать горячие клавиши",
+    "keyboardMode": "Режим навигации с клавиатуры",
+    "keyboardShortcuts": "Горячие клавиши",
+    "lightMode": "Светлый режим",
+    "linkCopied": "Ссылка скопирована",
+    "linkCopyError": "Не удалось скопировать ссылку",
+    "loadingPreview": "Загрузка предпросмотра...",
+    "mobile": "Мобильный",
+    "mode": "режим",
+    "navigate": "Навигация",
+    "nextField": "Следующее поле",
+    "noQuestions": "В этом опросе нет вопросов",
+    "notAnswered": "Пока нет ответа",
+    "oneByOne": "По одному",
+    "openInNewTab": "Открыть в новой вкладке",
+    "previewAgain": "Предпросмотр снова",
+    "previewLanguage": "Язык предпросмотра",
+    "previewSettings": "Настройки предпросмотра",
+    "progress": "Прогресс",
+    "qrCodeDescription": "Отсканируйте QR-код для тестирования опроса на телефоне или планшете",
+    "qrCodeTitle": "Предпросмотр на устройстве",
+    "questionCount": "{{count}} вопросов",
+    "questionProgress": "Вопрос {{current}} из {{total}}",
+    "resetPreview": "Сбросить предпросмотр",
+    "resetZoom": "Сбросить масштаб",
+    "responseRecorded": "Ваш ответ был записан",
+    "responseSummary": "Сводка ответов",
+    "responsivePreview": "Адаптивный предпросмотр",
+    "scanOrCopy": "Отсканируйте код или скопируйте ссылку ниже",
+    "screenshotError": "Не удалось сделать снимок экрана",
+    "screenshotHint": "Для полной поддержки снимков установите пакет html2canvas",
+    "screenshotInfo": "Функция снимка экрана",
+    "screenshotSuccess": "Снимок экрана успешно сохранен",
+    "selectLanguage": "Выберите язык",
+    "showQRCode": "Показать QR-код",
+    "submit": "Отправить",
+    "submitPreview": "Отправить предпросмотр",
+    "switchPreviewLanguage": "Сменить язык предпросмотра",
+    "tablet": "Планшет",
+    "testMode": "Тестовый режим",
+    "testModeDesc": "Данные не сохраняются",
+    "testModeLabel": "Тестовый режим",
+    "testModeOff": "Тестовый режим выключен",
+    "testSubmissionMessage": "Это тестовая отправка. Данные не сохранены.",
+    "testSubmitError": "Тестовая отправка не удалась",
+    "testSubmitSuccess": "Тестовая отправка успешна! В реальном опросе этот ответ был бы сохранён.",
+    "title": "Предпросмотр",
+    "toggleFullscreen": "Полноэкранный режим",
+    "toggleOrientation": "Переключить ориентацию",
+    "toggleResponses": "Показать/скрыть ответы",
+    "width": "Ширина",
+    "zoomIn": "Увеличить",
+    "zoomOut": "Уменьшить"
+  },
+  "surveys": {
+    "archiveSurvey": "Архивировать опрос",
+    "closeConfirm": "Вы уверены, что хотите закрыть \"{{title}}\"? Опрос перестанет принимать новые ответы.",
+    "closeError": "Не удалось закрыть опрос",
+    "closeSuccess": "Опрос успешно закрыт",
+    "closeSurvey": "Закрыть опрос",
+    "count": "{{count}} опрос(ов)",
+    "createSurvey": "Создать опрос",
+    "deleteConfirm": {
+      "description": "Вы уверены, что хотите удалить этот опрос? Это действие нельзя отменить.",
+      "title": "Удалить опрос"
+    },
+    "deleteSurvey": "Удалить опрос",
+    "description": "Создавайте и управляйте опросами",
+    "duplicateSurvey": "Дублировать опрос",
+    "editSurvey": "Редактировать опрос",
+    "empty": {
+      "description": "Начните собирать отзывы, создав новый опрос",
+      "searchDescription": "Попробуйте изменить поиск или фильтры",
+      "searchTitle": "Опросы не найдены",
+      "title": "Пока нет опросов"
+    },
+    "filters": {
+      "all": "Все",
+      "closed": "Закрытые",
+      "draft": "Черновики",
+      "published": "Опубликованные"
+    },
+    "form": {
+      "addDescription": "Добавить описание",
+      "createButton": "Создать опрос",
+      "descriptionLabel": "Описание (необязательно)",
+      "descriptionPlaceholder": "Введите описание опроса (необязательно)",
+      "getStarted": "Дайте название вашему опросу, чтобы начать",
+      "titlePlaceholder": "Введите название опроса",
+      "updateButton": "Обновить опрос"
+    },
+    "newSurvey": "Новый опрос",
+    "publishConfirm": "Вы уверены, что хотите опубликовать \"{{title}}\"? После публикации опрос станет доступен по ссылке и начнет собирать ответы.",
+    "publishError": "Не удалось опубликовать опрос",
+    "publishSuccess": "Опрос успешно опубликован",
+    "publishSurvey": "Опубликовать опрос",
+    "questions": "Вопросы",
+    "responses": "ответов",
+    "searchPlaceholder": "Поиск опросов...",
+    "showingAll": "Показаны все {{count}} опросов",
+    "showingOf": "Показано {{shown}} из {{total}} опросов",
+    "status": {
+      "active": "Активный",
+      "archived": "В архиве",
+      "closed": "Закрыт",
+      "draft": "Черновик",
+      "published": "Опубликован"
+    },
+    "suggestions": {
+      "customerSatisfaction": "Опрос удовлетворенности клиентов",
+      "employeeFeedback": "Форма обратной связи сотрудников",
+      "eventRegistration": "Регистрация на мероприятие",
+      "marketResearch": "Маркетинговое исследование",
+      "npsSurvey": "NPS опрос",
+      "productFeedback": "Отзыв о продукте",
+      "title": "Быстрый старт"
+    },
+    "surveyDescription": "Описание опроса",
+    "surveyTitle": "Название опроса",
+    "title": "Опросы",
+    "unknown": "Неизвестный опрос"
+  },
+  "teamMembers": {
+    "description": "Управляйте доступом к этому рабочему пространству",
+    "empty": {
+      "description": "Пригласите участников для совместной работы над опросами",
+      "title": "Пока нет участников команды"
+    },
+    "inviteError": "Не удалось отправить приглашение",
+    "inviteMember": "Пригласить участника",
+    "inviteSuccess": "Приглашение успешно отправлено",
+    "loadError": "Не удалось загрузить участников команды",
+    "removeConfirm": {
+      "confirm": "Удалить",
+      "description": "Вы уверены, что хотите удалить {{name}} из этого рабочего пространства? Он потеряет доступ ко всем ресурсам.",
+      "title": "Удалить участника"
+    },
+    "removeError": "Не удалось удалить участника",
+    "removeSuccess": "Участник успешно удалён",
+    "roles": {
+      "admin": "Администратор",
+      "member": "Участник",
+      "viewer": "Наблюдатель"
+    },
+    "title": "Участники команды",
+    "tryAgain": "Попробовать снова",
+    "validation": {
+      "emailInvalid": "Введите корректный email адрес",
+      "emailRequired": "Email обязателен"
+    },
+    "you": "(Вы)"
+  },
+  "templatePreview": {
+    "empty": {
+      "description": "Вопросы появятся здесь после добавления",
+      "title": "Пока нет вопросов"
+    },
+    "private": "Приватный",
+    "public": "Публичный",
+    "questionTypes": {
+      "checkbox": "Флажки",
+      "date": "Дата",
+      "email": "Email",
+      "file": "Загрузка файла",
+      "matrix": "Матрица",
+      "nps": "NPS",
+      "number": "Число",
+      "phone": "Телефон",
+      "radio": "Множественный выбор",
+      "ranking": "Ранжирование",
+      "rating": "Рейтинг",
+      "scale": "Шкала",
+      "select": "Выпадающий список",
+      "text": "Короткий текст",
+      "textarea": "Длинный текст",
+      "time": "Время"
+    },
+    "questions": "Вопросы",
+    "title": "Предпросмотр шаблона",
+    "useButton": "Использовать этот шаблон",
+    "uses": "использований"
+  },
+  "templates": {
+    "categories": {
+      "all": "Все",
+      "education": "Образование",
+      "feedback": "Обратная связь",
+      "hr": "HR",
+      "marketing": "Маркетинг",
+      "research": "Исследования"
+    },
+    "createTemplate": "Создать шаблон",
+    "description": "Начните с готовых шаблонов опросов",
+    "empty": {
+      "description": "Шаблоны будут добавлены в ближайшее время",
+      "title": "Шаблоны недоступны"
+    },
+    "form": {
+      "category": "Категория",
+      "chooseSurvey": "Выберите опрос для копирования",
+      "description": "Создайте многоразовый шаблон опроса",
+      "descriptionHelperText": "Необязательно - помогает другим понять, когда использовать этот шаблон",
+      "descriptionPlaceholder": "Опишите, для чего предназначен этот шаблон...",
+      "language": "Язык",
+      "loadingSurveys": "Загрузка опросов...",
+      "modes": {
+        "scratch": "С нуля",
+        "scratchDescription": "Начните с пустого шаблона",
+        "survey": "Из опроса",
+        "surveyDescription": "Скопируйте существующий опрос"
+      },
+      "name": "Название шаблона",
+      "namePlaceholder": "напр., Опрос удовлетворённости клиентов",
+      "questions": "{{count}} вопросов",
+      "selectSurvey": "Выберите опрос",
+      "templateDescription": "Описание",
+      "title": "Создать шаблон",
+      "visibility": {
+        "private": "Частный шаблон",
+        "privateDescription": "Только вы можете видеть и использовать этот шаблон",
+        "public": "Публичный шаблон",
+        "publicDescription": "Любой в вашей организации может использовать это"
+      }
+    },
+    "loadError": "Не удалось загрузить шаблоны",
+    "loadErrorDesc": "Попробуйте обновить страницу",
+    "myTemplates": "Мои шаблоны",
+    "noFound": "Шаблоны не найдены",
+    "noFoundDesc": "Создайте первый шаблон, чтобы начать",
+    "noFoundFilters": "Попробуйте изменить фильтры",
+    "noQuestions": "Вопросов пока нет",
+    "preview": "Предпросмотр",
+    "public": "Публичные",
+    "questionsWillAppear": "Вопросы появятся здесь после добавления",
+    "searchPlaceholder": "Поиск шаблонов...",
+    "title": "Шаблоны",
+    "untitledQuestion": "Вопрос без названия",
+    "useTemplate": "Использовать шаблон",
+    "useTemplateDialog": {
+      "addDescription": "Добавить описание",
+      "createButton": "Создать опрос",
+      "description": "Создайте новый опрос на основе этого шаблона",
+      "descriptionOptional": "Описание (необязательно)",
+      "descriptionPlaceholder": "Добавьте описание для вашего опроса...",
+      "infoMessage": "Будет создан новый опрос со всеми вопросами из этого шаблона. Вы сможете настроить его после создания.",
+      "language": "Язык:",
+      "questionCount": "{{count}} вопросов",
+      "surveyTitle": "Название опроса",
+      "surveyTitlePlaceholder": "Введите название для нового опроса",
+      "title": "Использовать шаблон"
+    },
+    "useThis": "Использовать этот шаблон"
+  },
+  "theme": {
+    "mode": {
+      "dark": "Тёмная",
+      "darkDesc": "Всегда использовать тёмную тему",
+      "light": "Светлая",
+      "lightDesc": "Всегда использовать светлую тему",
+      "system": "Системная",
+      "systemDesc": "Использовать системные настройки"
+    },
+    "palette": {
+      "amber": "Янтарь",
+      "aqua": "Аква",
+      "coral": "Коралл",
+      "forest": "Лес",
+      "indigo": "Индиго",
+      "lavender": "Лаванда",
+      "midnight": "Полночь",
+      "monochrome": "Монохром",
+      "ocean": "Океан",
+      "rose": "Роза",
+      "slate": "Сланец",
+      "sunset": "Закат"
+    }
+  },
+  "themeCard": {
+    "buttons": "кнопки",
+    "default": "По умолчанию",
+    "menu": {
+      "delete": "Удалить",
+      "duplicate": "Дублировать",
+      "edit": "Редактировать",
+      "setDefault": "Сделать по умолчанию"
+    },
+    "outline": "Контур",
+    "selected": "Выбрана"
+  },
+  "themeEditor": {
+    "advanced": {
+      "cssHelper": "Расширенные: Добавьте пользовательский CSS для переопределения стилей",
+      "cssPlaceholder": "/* Добавьте свой CSS здесь */",
+      "cssPreview": "Предпросмотр сгенерированного CSS",
+      "customCss": "Пользовательский CSS"
+    },
+    "backgroundImageUrl": "URL фонового изображения",
+    "backgroundImageUrlHelperText": "Рекомендуется изображение высокого разрешения.",
+    "baseFontSize": "Базовый размер шрифта",
+    "bodyFont": "Шрифт текста",
+    "brandColors": "Цвета бренда",
+    "branding": {
+      "backgroundHelper": "Рекомендуется изображение высокого разрешения. Будет использоваться как фон опроса.",
+      "backgroundImage": "URL фонового изображения",
+      "backgroundPlaceholder": "https://example.com/background.jpg",
+      "brandingSubtitle": "Подзаголовок бренда",
+      "brandingSubtitleHelper": "Дополнительный подзаголовок под заголовком",
+      "brandingSubtitlePlaceholder": "Слоган или описание",
+      "brandingTitle": "Заголовок бренда",
+      "brandingTitleHelper": "Дополнительный текст заголовка рядом с логотипом",
+      "brandingTitlePlaceholder": "Название компании",
+      "logoHelper": "Рекомендуется квадратное изображение. Макс 256x256px.",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "logoSize": "Размер логотипа",
+      "logoUrl": "URL логотипа",
+      "showLogoBackground": "Показать фон логотипа",
+      "sizes": {
+        "extraLarge": "Очень большой",
+        "large": "Большой",
+        "medium": "Средний",
+        "small": "Маленький"
+      }
+    },
+    "buttonStyle": "Стиль кнопок",
+    "colors": {
+      "accent": "Акцентный цвет",
+      "background": "Цвет фона",
+      "primary": "Основной цвет",
+      "secondary": "Вторичный цвет",
+      "surface": "Цвет поверхности",
+      "text": "Цвет текста"
+    },
+    "containerWidth": "Ширина контейнера",
+    "cornerRadius": "Скругление углов",
+    "createDescription": "Создайте новую пользовательскую тему",
+    "createTheme": "Создать тему",
+    "createTitle": "Создать тему",
+    "customCss": "Пользовательский CSS",
+    "customCssHelperText": "Расширенные: Переопределите стили по умолчанию",
+    "customCssPlaceholder": "/* Добавьте свой CSS здесь */",
+    "editDescription": "Настройте параметры темы",
+    "editTitle": "Редактировать тему",
+    "fontFamily": "Семейство шрифтов",
+    "generatedCssPreview": "Предпросмотр сгенерированного CSS",
+    "headingFont": "Шрифт заголовков",
+    "livePreview": "Предпросмотр",
+    "livePreviewHint": "Изменения обновляются в реальном времени",
+    "logoUrl": "URL логотипа",
+    "logoUrlHelperText": "Рекомендуется квадратное изображение. Макс 256x256px.",
+    "namePlaceholder": "Моя тема",
+    "presets": {
+      "dark": "Тёмный",
+      "forest": "Лес",
+      "minimal": "Минимальный",
+      "ocean": "Океан",
+      "sunset": "Закат",
+      "violet": "Фиолетовый"
+    },
+    "progressIndicator": "Индикатор прогресса",
+    "questionNumbers": "Номера вопросов",
+    "quickPresets": "Быстрые пресеты",
+    "saveChanges": "Сохранить изменения",
+    "saveError": "Не удалось сохранить тему",
+    "saveSuccess": "Тема успешно сохранена",
+    "spacing": "Отступы",
+    "surfaceColors": "Цвета поверхности",
+    "tabs": {
+      "advanced": "Расширенные",
+      "branding": "Брендинг",
+      "colors": "Цвета",
+      "layout": "Макет",
+      "typography": "Типографика"
+    },
+    "themeName": "Название темы",
+    "themeNamePlaceholder": "Введите название темы",
+    "title": "Редактировать тему",
+    "toast": {
+      "validationError": "Пожалуйста, исправьте ошибки валидации"
+    },
+    "typography": {
+      "baseFontSize": "Базовый размер шрифта",
+      "buttonStyle": "Стиль кнопок",
+      "buttonStyles": {
+        "pill": "Капсула",
+        "rounded": "Скруглённые",
+        "square": "Квадратные"
+      },
+      "fontFamily": "Семейство шрифтов",
+      "sizes": {
+        "default": "16px - Обычный",
+        "large": "18px - Большой",
+        "small": "14px - Маленький",
+        "xlarge": "20px - Очень большой"
+      }
+    },
+    "validation": {
+      "backgroundColorRequired": "Цвет фона обязателен",
+      "nameRequired": "Название темы обязательно",
+      "primaryColorRequired": "Основной цвет обязателен"
+    }
+  },
+  "themePreview": {
+    "next": "Далее",
+    "option1": "Очень доволен",
+    "option2": "Доволен",
+    "option3": "Нейтрально",
+    "outlineBtn": "Кнопка контур",
+    "previous": "Назад",
+    "primaryBtn": "Основная кнопка",
+    "progress": "{{current}} из {{total}}",
+    "sampleQuestion1": "Насколько вы довольны нашим сервисом?",
+    "sampleQuestion2": "Порекомендовали бы вы нас другу?",
+    "surveyDescription": "Так будет выглядеть ваш опрос",
+    "surveyTitle": "Пример опроса"
+  },
+  "themes": {
+    "accent": "Акцентный",
+    "appearance": "Внешний вид",
+    "applied": "Применено",
+    "applyError": "Не удалось применить тему",
+    "applySuccess": "Тема успешно применена",
+    "applyTheme": "Применить тему",
+    "applyToSurvey": "Применить к опросу",
+    "background": "Фон",
+    "backgroundColor": "Цвет фона",
+    "basedOn": "На основе",
+    "bodyFont": "Шрифт текста",
+    "brandColors": "Цвета бренда",
+    "buttons": "кнопки",
+    "colorPalettes": "Цветовые палитры",
+    "colors": "Цвета",
+    "containerWidth": "Ширина контейнера",
+    "cornerRadius": "Радиус скругления",
+    "createError": "Не удалось создать тему",
+    "createSuccess": "Тема успешно создана",
+    "createTheme": "Создать тему",
+    "createThemeDesc": "Создайте пользовательскую тему, чтобы сохранить её здесь",
+    "custom": "Пользовательские",
+    "customTheme": "Пользовательская тема",
+    "customize": "Настроить",
+    "customizeLook": "Настройте внешний вид опроса",
+    "customized": "Настроено",
+    "dark": "Тёмные",
+    "default": "По умолчанию",
+    "deleteTheme": "Удалить тему",
+    "description": "Настройте внешний вид ваших опросов",
+    "displayOptions": "Опции отображения",
+    "displayQuestionNumbers": "Показать В1, В2 и т.д.",
+    "editTheme": "Редактировать тему",
+    "empty": {
+      "description": "Создайте пользовательские темы для опросов",
+      "title": "Пока нет тем"
+    },
+    "emptyDescription": "Создайте свою первую пользовательскую тему для персонализации опросов",
+    "layoutSpacing": "Макет и отступы",
+    "light": "Светлые",
+    "nameRequired": "Название темы обязательно",
+    "noSavedThemes": "Пока нет сохранённых тем",
+    "presetNeedsSave": "Сохраните этот пресет как тему, чтобы применить к опросу",
+    "presets": "Шаблоны",
+    "preview": "Предпросмотр",
+    "primary": "Основной",
+    "primaryColor": "Основной цвет",
+    "progressIndicator": "Индикатор прогресса",
+    "questionNumbers": "Номера вопросов",
+    "quickOptions": "Быстрые настройки",
+    "reset": "Сбросить",
+    "resetToDefaults": "Сбросить настройки",
+    "saveAndApply": "Сохранить и применить",
+    "saveAsNewTheme": "Сохранить как новую тему",
+    "saveCustomizationsFirst": "Сначала сохраните настройки как новую тему",
+    "saveTheme": "Сохранить тему",
+    "saveThemeDesc": "Создайте новую тему из ваших настроек",
+    "saved": "Сохранённые",
+    "savedThemes": "Сохранённые темы",
+    "searchPlaceholder": "Поиск тем...",
+    "secondary": "Вторичный",
+    "selected": "Выбрано",
+    "setAsDefault": "Установить по умолчанию",
+    "showProgressBar": "Показать прогресс заполнения",
+    "spacing": "Отступы",
+    "surface": "Поверхность",
+    "surfaceColors": "Цвета поверхности",
+    "system": "Системные",
+    "textColor": "Цвет текста",
+    "textPrimary": "Основной текст",
+    "theme": "тема",
+    "themeName": "Название темы",
+    "themeNamePlaceholder": "Моя пользовательская тема",
+    "themes": "темы",
+    "title": "Темы",
+    "typography": "Типографика",
+    "untitled": "Без названия"
+  },
+  "time": {
+    "daysAgo": "{{count}} дней назад",
+    "hoursAgo": "{{count}} часов назад",
+    "justNow": "Только что",
+    "minutesAgo": "{{count}} минут назад",
+    "monthsAgo": "{{count}} месяцев назад",
+    "weeksAgo": "{{count}} недель назад"
+  },
+  "timePicker": {
+    "clearTime": "Очистить время",
+    "enterTime": "Введите время",
+    "hour": "Час",
+    "minute": "Минута",
+    "selectTime": "Выберите время",
+    "switchToDial": "Переключить на циферблат",
+    "switchToKeyboard": "Переключить на клавиатуру"
+  },
+  "twoFactor": {
+    "authenticatorApp": "Приложение-аутентификатор",
+    "authenticatorAppDesc": "Используйте Google Authenticator или аналогичные приложения",
+    "backupCodesRemaining": "Осталось резервных кодов: {{count}}",
+    "description": "Добавьте дополнительный уровень защиты вашего аккаунта",
+    "disable": "Отключить 2FA",
+    "disableDesc": "Это сделает ваш аккаунт менее защищённым. Вы уверены, что хотите отключить 2FA?",
+    "disableTitle": "Отключить двухфакторную аутентификацию",
+    "disabled": "Отключена",
+    "disabledSuccess": "Двухфакторная аутентификация отключена",
+    "emailMethod": "Email",
+    "emailMethodDesc": "Получайте коды по электронной почте",
+    "enable": "Включить двухфакторную аутентификацию",
+    "enableDesc": "Выберите предпочтительный метод двухфакторной аутентификации",
+    "enableTitle": "Включить двухфакторную аутентификацию",
+    "enabled": "2FA включена",
+    "enabledSuccess": "Двухфакторная аутентификация включена",
+    "notEnabled": "2FA не включена",
+    "recommendation": "Мы настоятельно рекомендуем включить двухфакторную аутентификацию для дополнительной безопасности",
+    "regenerateBackupCodes": "Перегенерировать резервные коды",
+    "sms": "SMS",
+    "smsDesc": "Получайте коды через SMS",
+    "title": "Двухфакторная аутентификация",
+    "usingMethod": "Используется верификация {{method}}"
+  },
+  "useTemplate": {
+    "createButton": "Создать опрос",
+    "createError": "Не удалось создать опрос",
+    "createSuccess": "Опрос создан из шаблона",
+    "description": "Создать новый опрос из этого шаблона",
+    "explanation": "Это создаст новый опрос со всеми вопросами из шаблона. Вы сможете настроить его после создания.",
+    "info": "Вы сможете редактировать опрос после создания",
+    "surveyDescription": "Описание (необязательно)",
+    "surveyDescriptionPlaceholder": "Введите описание опроса",
+    "surveyName": "Название опроса",
+    "surveyNamePlaceholder": "Введите название опроса",
+    "title": "Использовать шаблон"
+  },
+  "validation": {
+    "actionRequired": "Действие обязательно",
+    "answerAllRows": "Ответьте на все строки",
+    "backgroundColorRequired": "Цвет фона обязателен",
+    "categoryRequired": "Категория обязательна",
+    "confirmPasswordRequired": "Подтвердите пароль",
+    "currentPasswordRequired": "Текущий пароль обязателен",
+    "email": "Введите корректный email адрес",
+    "emailRequired": "Email обязателен",
+    "fieldRequired": "{{field}} обязательно",
+    "invalidAnswer": "Неверный ответ",
+    "invalidEmail": "Пожалуйста, введите корректный email адрес",
+    "invalidFormat": "Неверный формат",
+    "invalidPhone": "Неверный номер телефона",
+    "invalidTimeFormat": "Неверный формат времени",
+    "invalidUrl": "Неверный URL",
+    "keyNameRequired": "Название ключа обязательно",
+    "linksRequired": "Количество ссылок обязательно",
+    "maxCharacters": "Максимум {{max}} символов",
+    "maxLength": "Максимум {{count}} символов",
+    "maxValue": "Значение должно быть не более {{max}}",
+    "minLength": "Минимум {{count}} символов",
+    "minValue": "Значение должно быть не менее {{min}}",
+    "mustBeBetween": "Должно быть от {{min}} до {{max}}",
+    "nameMaxLength": "Название должно быть менее {{max}} символов",
+    "nameMinLength": "Название должно содержать минимум 2 символа",
+    "nameRequired": "Название обязательно",
+    "number": "Введите корректное число",
+    "operatorRequired": "Оператор обязателен",
+    "passwordLowercase": "Пароль должен содержать строчную букву",
+    "passwordMinLength": "Пароль должен содержать минимум 8 символов",
+    "passwordMismatch": "Пароли не совпадают",
+    "passwordNumber": "Пароль должен содержать цифру",
+    "passwordRequired": "Пароль обязателен",
+    "passwordSpecial": "Пароль должен содержать специальный символ",
+    "passwordUppercase": "Пароль должен содержать заглавную букву",
+    "phone": "Введите корректный номер телефона",
+    "primaryColorRequired": "Основной цвет обязателен",
+    "questionRequired": "Этот вопрос обязателен",
+    "required": "Это поле обязательно",
+    "scopeRequired": "Требуется хотя бы одна область действия",
+    "selectAtLeastOne": "Выберите хотя бы один вариант",
+    "slugFormat": "Slug должен содержать только строчные буквы, цифры и дефисы",
+    "slugMaxLength": "Slug должен быть менее {{max}} символов",
+    "slugMinLength": "Slug должен содержать минимум 2 символа",
+    "slugRequired": "URL slug обязателен",
+    "templateNameRequired": "Название шаблона обязательно",
+    "titleRequired": "Заголовок обязателен",
+    "url": "Введите корректный URL",
+    "valueBetween": "Значение должно быть от {{min}} до {{max}}"
+  },
+  "welcomeScreen": {
+    "anonymousNote": "Ваши ответы анонимны",
+    "minutes": "мин",
+    "questions": "вопрос",
+    "questions_plural": "вопросов",
+    "startSurvey": "Начать опрос",
+    "starting": "Начинаем..."
+  },
+  "workspaceForm": {
+    "createButton": "Создать рабочее пространство",
+    "createError": "Не удалось создать рабочее пространство",
+    "createSuccess": "Рабочее пространство успешно создано!",
+    "creating": "Создание...",
+    "description": "Создайте рабочее пространство для организации опросов и совместной работы с командой.",
+    "descriptionLabel": "Описание (Необязательно)",
+    "descriptionPlaceholder": "Краткое описание этого рабочего пространства...",
+    "name": "Название рабочего пространства",
+    "namePlaceholder": "Моё потрясающее пространство",
+    "proTip": "Совет",
+    "proTipText": "После создания вы сможете пригласить участников команды в рабочее пространство.",
+    "slug": "URL рабочего пространства",
+    "slugHelper": "Будет использоваться в URL вашего рабочего пространства",
+    "slugPlaceholder": "moe-potryasayuschee-prostranstvo",
+    "title": "Создать рабочее пространство",
+    "validation": {
+      "nameMaxLength": "Название должно быть не более 100 символов",
+      "nameMinLength": "Название должно быть не менее 2 символов",
+      "nameRequired": "Название рабочего пространства обязательно",
+      "slugFormat": "Slug может содержать только строчные буквы, цифры и дефисы",
+      "slugMaxLength": "Slug должен быть не более 50 символов",
+      "slugMinLength": "Slug должен быть не менее 2 символов",
+      "slugRequired": "URL рабочего пространства обязателен"
+    }
+  },
+  "workspaceSettings": {
+    "back": "Назад",
+    "backToWorkspaces": "К рабочим пространствам",
+    "billing": {
+      "currentPlan": "Текущий план",
+      "description": "Управление подпиской и оплатой",
+      "features": {
+        "advancedAnalytics": "Расширенная аналитика",
+        "basicAnalytics": "Базовая аналитика",
+        "customBranding": "Собственный брендинг",
+        "customIntegrations": "Индивидуальные интеграции",
+        "customSla": "Индивидуальный SLA",
+        "dedicatedSupport": "Выделенная поддержка",
+        "prioritySupport": "Приоритетная поддержка",
+        "responses100": "До 100 ответов/месяц",
+        "responses10000": "До 10 000 ответов/месяц",
+        "ssoSecurity": "SSO и расширенная безопасность",
+        "surveys3": "До 3 опросов",
+        "teamMembers1": "1 участник команды",
+        "teamMembers10": "До 10 участников команды",
+        "unlimitedEverything": "Без ограничений",
+        "unlimitedSurveys": "Неограниченные опросы"
+      },
+      "tierDescriptions": {
+        "enterprise": "Для крупных организаций с индивидуальными требованиями",
+        "free": "Для индивидуальных пользователей и небольших команд",
+        "pro": "Для растущих команд с расширенными потребностями"
+      },
+      "tiers": {
+        "enterprise": {
+          "description": "Для крупных организаций",
+          "features": {
+            "integrations": "Индивидуальные интеграции",
+            "security": "SSO и расширенная безопасность",
+            "sla": "Индивидуальный SLA",
+            "support": "Выделенная поддержка",
+            "unlimited": "Без ограничений"
+          },
+          "label": "Корпоративный"
+        },
+        "free": {
+          "description": "Для начинающих пользователей",
+          "features": {
+            "analytics": "Базовая аналитика",
+            "responses": "До 100 ответов/месяц",
+            "surveys": "До 3 опросов",
+            "teamMembers": "1 участник команды"
+          },
+          "label": "Бесплатный"
+        },
+        "pro": {
+          "description": "Для растущих команд",
+          "features": {
+            "analytics": "Расширенная аналитика",
+            "branding": "Собственный брендинг",
+            "responses": "До 10 000 ответов/месяц",
+            "support": "Приоритетная поддержка",
+            "surveys": "Неограниченные опросы",
+            "teamMembers": "До 10 участников команды"
+          },
+          "label": "Pro"
+        }
+      },
+      "title": "Текущий план",
+      "upgradePlan": "Улучшить план (Скоро)"
+    },
+    "dangerZone": {
+      "deleteButton": "Удалить рабочее пространство",
+      "deleteConfirm": {
+        "confirm": "Удалить рабочее пространство",
+        "description": "Вы уверены, что хотите удалить \"{{name}}\"? Это действие нельзя отменить и все данные будут безвозвратно удалены.",
+        "title": "Удалить рабочее пространство"
+      },
+      "deleteConfirmation": "Введите название рабочего пространства для подтверждения удаления",
+      "deleteTitle": "Удалить это рабочее пространство",
+      "deleteWarning": "После удаления все данные будут безвозвратно удалены.",
+      "deleteWorkspace": "Удалить рабочее пространство",
+      "deleting": "Удаление...",
+      "description": "Необратимые и разрушительные действия",
+      "title": "Опасная зона"
+    },
+    "errors": {
+      "loadFailed": "Не удалось загрузить настройки рабочего пространства",
+      "loadFailedDescription": "При загрузке рабочего пространства произошла ошибка. Пожалуйста, попробуйте снова."
+    },
+    "general": {
+      "description": "Основная информация о вашем рабочем пространстве",
+      "descriptionLabel": "Описание",
+      "descriptionPlaceholder": "Добавьте описание рабочего пространства...",
+      "errors": {
+        "invalidUrl": "Пожалуйста, введите корректный URL",
+        "nameMinLength": "Название должно быть не менее 2 символов",
+        "nameRequired": "Название обязательно"
+      },
+      "logo": "Логотип рабочего пространства",
+      "logoAlt": "Логотип рабочего пространства",
+      "logoHelper": "Введите URL изображения логотипа. Рекомендуемый размер: 256×256px. Поддерживаются PNG, JPG, SVG.",
+      "logoHelperText": "Рекомендуется квадратное изображение. Макс. 256x256px.",
+      "logoPlaceholder": "https://example.com/logo.png",
+      "name": "Название рабочего пространства",
+      "saveChanges": "Сохранить изменения",
+      "saving": "Сохранение...",
+      "slug": "URL рабочего пространства",
+      "slugHelper": "URL рабочего пространства нельзя изменить после создания",
+      "title": "Общие настройки",
+      "updateError": "Не удалось обновить настройки рабочего пространства",
+      "updateSuccess": "Настройки рабочего пространства успешно обновлены",
+      "url": "URL рабочего пространства",
+      "urlHelperText": "Это будет использоваться как идентификатор рабочего пространства"
+    },
+    "integrations": {
+      "apiKeys": {
+        "comingSoon": "Создание API-ключей скоро",
+        "copied": "API-ключ скопирован в буфер обмена",
+        "createComingSoon": "Создание ключа (скоро)",
+        "createKey": "Создать API-ключ",
+        "description": "Управление API-ключами для программного доступа к рабочему пространству",
+        "emptyDescription": "Создайте API-ключ для интеграции с внешними сервисами",
+        "emptyTitle": "Нет API-ключей",
+        "lastUsed": "Последнее использование:",
+        "never": "Никогда",
+        "noKeys": "Пока нет API-ключей",
+        "noKeysDesc": "Создайте API-ключ для интеграции с внешними сервисами",
+        "regenerate": "Перегенерировать",
+        "regenerateComingSoon": "Перегенерация ключа (скоро)",
+        "revoke": "Отозвать",
+        "revoked": "API-ключ отозван",
+        "title": "API-ключи"
+      },
+      "apps": {
+        "googleSheets": "Автоматическая синхронизация ответов с Google Sheets",
+        "salesforce": "Интеграция данных опросов с Salesforce CRM",
+        "slack": "Получайте уведомления об ответах на опросы в Slack-каналах",
+        "zapier": "Подключайте опросы к 5,000+ приложениям через Zapier"
+      },
+      "connectedApps": {
+        "apps": {
+          "googleSheets": {
+            "description": "Автоматически синхронизируйте ответы с Google Sheets",
+            "name": "Google Sheets"
+          },
+          "salesforce": {
+            "description": "Интегрируйте данные опросов с Salesforce CRM",
+            "name": "Salesforce"
+          },
+          "slack": {
+            "description": "Получайте уведомления об ответах на опросы в каналах Slack",
+            "name": "Slack"
+          },
+          "zapier": {
+            "description": "Подключите опросы к 5000+ приложениям через Zapier",
+            "name": "Zapier"
+          }
+        },
+        "comingSoon": "Скоро",
+        "connect": "Подключить",
+        "description": "Подключите рабочее пространство к сторонним сервисам",
+        "disconnect": "Отключить",
+        "title": "Подключённые приложения"
+      },
+      "webhooks": {
+        "description": "Получайте уведомления в реальном времени при событиях опроса",
+        "disabled": "Отключено",
+        "disabledDescription": "Включите вебхуки для получения уведомлений о событиях в реальном времени",
+        "disabledTitle": "Вебхуки отключены",
+        "enabled": "Включено",
+        "endpointPlaceholder": "https://your-app.com/webhooks/surveys",
+        "endpointUrl": "URL конечной точки",
+        "events": "События:",
+        "eventsList": "response.created, survey.published, survey.closed",
+        "noWebhooks": "Вебхуки не настроены",
+        "noWebhooksDesc": "Включите вебхуки выше для получения уведомлений о событиях в реальном времени",
+        "testWebhook": "Тестировать вебхук",
+        "title": "Вебхуки"
+      }
+    },
+    "loadError": {
+      "backButton": "Назад к рабочим пространствам",
+      "description": "Произошла ошибка при загрузке настроек рабочего пространства. Попробуйте снова.",
+      "title": "Не удалось загрузить рабочее пространство"
+    },
+    "tabs": {
+      "billing": "Оплата",
+      "general": "Общие",
+      "integrations": "Интеграции",
+      "members": "Участники"
+    },
+    "title": "Настройки рабочего пространства",
+    "validation": {
+      "nameMinLength": "Название должно быть не менее 2 символов",
+      "nameRequired": "Название обязательно",
+      "slugRequired": "Slug обязателен"
+    }
+  },
+  "workspaces": {
+    "active": "Активное",
+    "create": {
+      "creating": "Создание...",
+      "description": "Настройте новое рабочее пространство для организации опросов и совместной работы с командой.",
+      "descriptionLabel": "Описание (необязательно)",
+      "descriptionPlaceholder": "Краткое описание этого пространства...",
+      "error": "Не удалось создать пространство",
+      "nameLabel": "Название пространства",
+      "namePlaceholder": "Моё классное пространство",
+      "proTip": "Совет",
+      "proTipText": "Вы можете пригласить участников команды в пространство после его создания в настройках.",
+      "success": "Пространство успешно создано!",
+      "title": "Создать новое пространство",
+      "urlHelper": "Это будет использоваться в URL вашего пространства",
+      "urlLabel": "URL пространства"
+    },
+    "createFirst": "Создать первое пространство",
+    "createNewWorkspace": "Создать новое пространство",
+    "createWorkspace": "Создать пространство",
+    "deleteWorkspace": "Удалить пространство",
+    "description": "Управление пространствами и командами",
+    "editWorkspace": "Редактировать пространство",
+    "empty": {
+      "description": "Создайте пространство для совместной работы с командой",
+      "title": "Пока нет пространств"
+    },
+    "inviteMember": "Пригласить участника",
+    "loadError": "Не удалось загрузить пространства",
+    "loadErrorDesc": "Что-то пошло не так. Попробуйте ещё раз.",
+    "members": "Участники",
+    "newWorkspace": "Новое пространство",
+    "role": "Роль",
+    "roles": {
+      "admin": "Администратор",
+      "member": "Участник",
+      "owner": "Владелец",
+      "viewer": "Наблюдатель"
+    },
+    "searchPlaceholder": "Поиск пространств...",
+    "selectWorkspace": "Выберите пространство",
+    "selectWorkspaceDesc": "Выберите рабочее пространство в боковой панели для просмотра и управления опросами",
+    "settings": "Настройки пространства",
+    "switchTo": "Переключиться на это пространство",
+    "switchedTo": "Переключено на {{name}}",
+    "team": {
+      "description": "Управляйте доступом к этому пространству",
+      "emailLabel": "Email адрес",
+      "emailPlaceholder": "коллега@example.com",
+      "failedToLoad": "Не удалось загрузить участников",
+      "invitationSent": "Приглашение отправлено на {{email}}",
+      "invite": "Пригласить участника",
+      "inviteDescription": "Отправить приглашение присоединиться к этому пространству",
+      "inviteError": "Не удалось отправить приглашение",
+      "inviteFirst": "Пригласить первого участника",
+      "inviteTitle": "Пригласить участника команды",
+      "noMembers": "Пока нет участников",
+      "noMembersDesc": "Пригласите участников команды для совместной работы в этом пространстве",
+      "removeConfirm": "Вы уверены, что хотите удалить {{name}} из этого пространства? Они потеряют доступ ко всем ресурсам.",
+      "removeError": "Не удалось удалить участника",
+      "removeFromWorkspace": "Удалить из пространства",
+      "removeSuccess": "Участник успешно удалён",
+      "removeTitle": "Удалить участника",
+      "roleDescriptions": {
+        "admin": "Администраторы могут управлять опросами и просматривать все ответы",
+        "member": "Участники могут создавать и управлять своими опросами",
+        "viewer": "Наблюдатели могут только просматривать опросы и ответы"
+      },
+      "roleLabel": "Роль",
+      "selectRole": "Выберите роль",
+      "sendInvitation": "Отправить приглашение",
+      "sending": "Отправка...",
+      "title": "Участники команды",
+      "tryAgain": "Попробовать снова",
+      "you": "(Вы)"
+    },
+    "title": "Рабочие пространства",
+    "tryAdjustSearch": "Попробуйте изменить поисковый запрос",
+    "validation": {
+      "nameMaxLength": "Название должно быть менее 100 символов",
+      "nameMinLength": "Название должно содержать минимум 2 символа",
+      "nameRequired": "Название обязательно",
+      "slugFormat": "Slug может содержать только строчные буквы, цифры и дефисы",
+      "slugMaxLength": "Slug должен быть менее 50 символов",
+      "slugMinLength": "Slug должен содержать минимум 2 символа",
+      "slugRequired": "Slug обязателен"
+    },
+    "welcome": "Добро пожаловать!",
+    "welcomeDescription": "Создайте своё первое рабочее пространство, чтобы начать создавать опросы и сотрудничать с командой.",
+    "workspace": "пространство",
+    "workspaceName": "Название пространства",
+    "workspaces": "пространства"
+  },
+  "api": {
+    "success": {
+      "created": "{{resource}} успешно создан(а)",
+      "updated": "{{resource}} успешно обновлен(а)",
+      "deleted": "{{resource}} успешно удален(а)",
+      "published": "{{resource}} успешно опубликован(а)",
+      "closed": "{{resource}} успешно закрыт(а)",
+      "sent": "{{resource}} успешно отправлен(а)",
+      "saved": "{{resource}} успешно сохранен(а)",
+      "archived": "{{resource}} успешно архивирован(а)",
+      "restored": "{{resource}} успешно восстановлен(а)",
+      "duplicated": "{{resource}} успешно дублирован(а)",
+      "exported": "{{resource}} успешно экспортирован(а)",
+      "imported": "{{resource}} успешно импортирован(а)"
+    },
+    "resources": {
+      "surveys": "Опрос",
+      "survey": "Опрос",
+      "users": "Пользователь",
+      "settings": "Настройки",
+      "preferences": "Предпочтения",
+      "templates": "Шаблон",
+      "responses": "Ответ",
+      "questions": "Вопрос",
+      "namespaces": "Рабочее пространство",
+      "themes": "Тема",
+      "links": "Ссылка",
+      "invitations": "Приглашение",
+      "members": "Участник",
+      "apikeys": "API ключ"
+    }
+  }
+}
