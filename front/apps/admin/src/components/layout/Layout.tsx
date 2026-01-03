@@ -36,6 +36,19 @@ function CompactUserProfile({ onSettingsClick, onLogoutClick }: { onSettingsClic
   const menuRef = useRef<HTMLDivElement>(null);
   const avatarUrl = useUserAvatarUrl();
 
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+
+  // Calculate menu position when menu opens
+  useEffect(() => {
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.top,
+        left: rect.right + 12, // 12px gap from button
+      });
+    }
+  }, [open]);
+
   // Close on click outside
   useEffect(() => {
     if (!open) return;
@@ -57,18 +70,6 @@ function CompactUserProfile({ onSettingsClick, onLogoutClick }: { onSettingsClic
   if (!user) return null;
 
   const userInitials = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email.charAt(0).toUpperCase();
-
-  // Calculate menu position based on button
-  const getMenuPosition = () => {
-    if (!triggerRef.current) return { top: 0, left: 0 };
-    const rect = triggerRef.current.getBoundingClientRect();
-    return {
-      top: rect.top,
-      left: rect.right + 12, // 12px gap from button
-    };
-  };
-
-  const menuPosition = open ? getMenuPosition() : { top: 0, left: 0 };
 
   return (
     <div className="relative">

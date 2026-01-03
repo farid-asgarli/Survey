@@ -25,11 +25,7 @@ export function ErrorView({ customMessage, t }: ErrorViewProps) {
   };
 
   return (
-    <section
-      className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-10 md:py-16"
-      aria-labelledby="error-title"
-      role="alert"
-    >
+    <section className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-10 md:py-16" aria-labelledby="error-title" role="alert">
       <div className="max-w-md w-full text-center">
         {/* Error icon */}
         <div className="mb-5 sm:mb-6 md:mb-8">
