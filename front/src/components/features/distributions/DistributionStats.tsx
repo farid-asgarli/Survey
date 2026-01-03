@@ -105,59 +105,6 @@ function SimpleBarChart({ data, maxValue }: { data: { label: string; value: numb
   );
 }
 
-// Fallback mock recipients data when API is not available
-const mockRecipients: DistributionRecipient[] = [
-  {
-    id: '1',
-    email: 'john.doe@example.com',
-    status: RecipientStatus.Opened,
-    sentAt: '2024-12-15T10:00:00',
-    openedAt: '2024-12-15T10:30:00',
-    openCount: 1,
-    clickCount: 0,
-  },
-  {
-    id: '2',
-    email: 'jane.smith@example.com',
-    status: RecipientStatus.Clicked,
-    sentAt: '2024-12-15T10:00:00',
-    openedAt: '2024-12-15T11:00:00',
-    clickedAt: '2024-12-15T11:05:00',
-    openCount: 2,
-    clickCount: 1,
-  },
-  {
-    id: '3',
-    email: 'bob.wilson@example.com',
-    status: RecipientStatus.Delivered,
-    sentAt: '2024-12-15T10:00:00',
-    deliveredAt: '2024-12-15T10:01:00',
-    openCount: 0,
-    clickCount: 0,
-  },
-  {
-    id: '4',
-    email: 'alice.johnson@example.com',
-    status: RecipientStatus.Bounced,
-    sentAt: '2024-12-15T10:00:00',
-    openCount: 0,
-    clickCount: 0,
-    errorMessage: 'Mailbox not found',
-  },
-  { id: '5', email: 'charlie.brown@example.com', status: RecipientStatus.Sent, sentAt: '2024-12-15T10:00:00', openCount: 0, clickCount: 0 },
-  {
-    id: '6',
-    email: 'diana.ross@example.com',
-    status: RecipientStatus.Opened,
-    sentAt: '2024-12-15T10:00:00',
-    openedAt: '2024-12-15T14:00:00',
-    openCount: 3,
-    clickCount: 0,
-  },
-  { id: '7', email: 'edward.king@example.com', status: RecipientStatus.Failed, openCount: 0, clickCount: 0, errorMessage: 'Connection timeout' },
-  { id: '8', email: 'fiona.green@example.com', status: RecipientStatus.Pending, openCount: 0, clickCount: 0 },
-];
-
 const recipientStatusConfig: Record<RecipientStatus, { color: string; icon: typeof Send }> = {
   [RecipientStatus.Pending]: { color: 'bg-surface-container text-on-surface-variant', icon: Clock },
   [RecipientStatus.Sent]: { color: 'bg-primary-container text-on-primary-container', icon: Send },
@@ -223,20 +170,16 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isError: recipientsError,
   } = useDistributionRecipients(surveyId, distributionId, {
     status: statusFilter !== 'all' ? statusFilter : undefined,
     pageSize: 20,
   });
 
   // Flatten paginated recipients data
-  const apiRecipients = useMemo(() => {
+  const recipients = useMemo(() => {
     if (!recipientsData?.pages) return [];
     return recipientsData.pages.flatMap((page) => page.items);
   }, [recipientsData]);
-
-  // Use API recipients if available, otherwise use mock data
-  const recipients = apiRecipients.length > 0 || !recipientsError ? apiRecipients : mockRecipients;
 
   // Filter recipients by search query (client-side filtering for already fetched data)
   const filteredRecipients = useMemo(() => {
@@ -256,19 +199,19 @@ export function DistributionStats({ surveyId, distributionId, className }: Distr
     }
   }, []);
 
-  // Use mock data if API not available
-  const displayStats: DistributionStatsType = stats || {
+  // Default empty stats when API data is not available
+  const displayStats: DistributionStatsType = stats ?? {
     distributionId,
-    totalRecipients: 500,
-    sent: 498,
-    delivered: 480,
-    opened: 245,
-    clicked: 180,
-    bounced: 12,
-    failed: 8,
-    deliveryRate: 96.4,
-    openRate: 51.0,
-    clickRate: 73.5,
+    totalRecipients: 0,
+    sent: 0,
+    delivered: 0,
+    opened: 0,
+    clicked: 0,
+    bounced: 0,
+    failed: 0,
+    deliveryRate: 0,
+    openRate: 0,
+    clickRate: 0,
   };
 
   const barChartData = [

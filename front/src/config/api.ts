@@ -17,8 +17,8 @@ const getDefaultBaseUrl = (): string => {
   if (isProduction) {
     return '';
   }
-  // In development, default to localhost:5000
-  return 'http://localhost:5000';
+  // In development, default to localhost:5001
+  return 'http://localhost:5001';
 };
 
 // Default configuration - can be overridden via environment variables

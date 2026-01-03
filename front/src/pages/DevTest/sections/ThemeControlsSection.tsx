@@ -3,24 +3,26 @@ import { useThemeStore } from '@/stores/themeStore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Badge } from '@/components/ui';
 import { Palette, Check } from 'lucide-react';
 import { colorPalettes, themeModes } from './constants';
+import { useTranslation } from 'react-i18next';
 
 export function ThemeControlsSection() {
+  const { t } = useTranslation();
   const { colorPalette, themeMode, isDark, setColorPalette, setThemeMode } = useThemeStore();
 
   return (
-    <Card variant="elevated" shape="rounded">
+    <Card variant='elevated' shape='rounded'>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Palette className="h-5 w-5 text-primary" />
+        <CardTitle className='flex items-center gap-2'>
+          <Palette className='h-5 w-5 text-primary' />
           Theme Controls
         </CardTitle>
         <CardDescription>Customize the application appearance</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className='space-y-6'>
         {/* Color Palette Selection */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-on-surface">Color Scheme</h3>
-          <div className="grid grid-cols-3 gap-3">
+        <div className='space-y-3'>
+          <h3 className='text-sm font-medium text-on-surface'>Color Scheme</h3>
+          <div className='grid grid-cols-3 gap-3'>
             {colorPalettes.map((palette) => (
               <button
                 key={palette.id}
@@ -33,15 +35,15 @@ export function ThemeControlsSection() {
                     : 'border-outline-variant/30 hover:border-outline-variant bg-surface-container-low'
                 )}
               >
-                <div className="flex gap-1">
+                <div className='flex gap-1'>
                   {palette.colors.map((color, i) => (
-                    <div key={i} className="w-5 h-5 rounded-full shadow-sm" style={{ backgroundColor: color }} />
+                    <div key={i} className='w-5 h-5 rounded-full shadow-sm' style={{ backgroundColor: color }} />
                   ))}
                 </div>
-                <span className="text-xs font-medium text-on-surface">{palette.label}</span>
+                <span className='text-xs font-medium text-on-surface'>{t(palette.labelKey)}</span>
                 {colorPalette === palette.id && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                    <Check className="w-3 h-3 text-on-primary" />
+                  <div className='absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center'>
+                    <Check className='w-3 h-3 text-on-primary' />
                   </div>
                 )}
               </button>
@@ -50,9 +52,9 @@ export function ThemeControlsSection() {
         </div>
 
         {/* Theme Mode Selection */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-on-surface">Theme Mode</h3>
-          <div className="flex gap-2">
+        <div className='space-y-3'>
+          <h3 className='text-sm font-medium text-on-surface'>Theme Mode</h3>
+          <div className='flex gap-2'>
             {themeModes.map((mode) => {
               const Icon = mode.icon;
               return (
@@ -68,8 +70,8 @@ export function ThemeControlsSection() {
                   )}
                 >
                   <Icon className={cn('h-6 w-6', themeMode === mode.id ? 'text-primary' : 'text-on-surface-variant')} />
-                  <span className="text-sm font-medium text-on-surface">{mode.label}</span>
-                  <span className="text-xs text-on-surface-variant">{mode.desc}</span>
+                  <span className='text-sm font-medium text-on-surface'>{t(mode.labelKey)}</span>
+                  <span className='text-xs text-on-surface-variant'>{t(mode.descKey)}</span>
                 </button>
               );
             })}
@@ -77,11 +79,11 @@ export function ThemeControlsSection() {
         </div>
 
         {/* Current State Display */}
-        <div className="p-4 bg-surface-container rounded-xl space-y-2">
-          <h3 className="text-sm font-medium text-on-surface">Current State</h3>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="default">Palette: {colorPalette}</Badge>
-            <Badge variant="secondary">Mode: {themeMode}</Badge>
+        <div className='p-4 bg-surface-container rounded-xl space-y-2'>
+          <h3 className='text-sm font-medium text-on-surface'>Current State</h3>
+          <div className='flex flex-wrap gap-2'>
+            <Badge variant='default'>Palette: {colorPalette}</Badge>
+            <Badge variant='secondary'>Mode: {themeMode}</Badge>
             <Badge variant={isDark ? 'default' : 'outline'}>{isDark ? 'Dark Active' : 'Light Active'}</Badge>
           </div>
         </div>

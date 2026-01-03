@@ -26,8 +26,10 @@ export interface SurveyFilters {
   toDate?: string;
   /** Sort field: 'title', 'createdAt', 'updatedAt', 'status', 'responseCount', 'questionCount' */
   sortBy?: SurveyListParams['sortBy'];
-  /** Sort direction: true for descending (default), false for ascending */
-  sortDescending?: boolean;
+  /** Sort direction: 'asc' for ascending, 'desc' for descending (default) */
+  sortOrder?: 'asc' | 'desc';
+  /** Number of items per page */
+  pageSize?: number;
 }
 
 /**
@@ -37,13 +39,13 @@ export interface SurveyFilters {
 function buildSurveyListParams(filters?: SurveyFilters, pageNumber?: number): SurveyListParams {
   return {
     ...(pageNumber !== undefined ? { pageNumber } : {}),
-    pageSize: 20,
+    pageSize: filters?.pageSize ?? 20,
     ...(filters?.status && filters.status !== 'all' ? { status: String(filters.status) } : {}),
     ...(filters?.search ? { searchTerm: filters.search } : {}),
     ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
     ...(filters?.toDate ? { toDate: filters.toDate } : {}),
     ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
-    ...(filters?.sortDescending !== undefined ? { sortDescending: filters.sortDescending } : {}),
+    ...(filters?.sortOrder ? { sortDescending: filters.sortOrder === 'desc' } : {}),
   };
 }
 
@@ -198,7 +200,5 @@ export function useCloseSurvey() {
  * ```
  */
 export function useDuplicateSurvey() {
-  return useInvalidatingMutation(surveyKeys, ({ surveyId, newTitle }: { surveyId: string; newTitle?: string }) =>
-    surveysApi.duplicate(surveyId, newTitle)
-  );
+  return useInvalidatingMutation(surveyKeys, ({ surveyId, newTitle }: { surveyId: string; newTitle?: string }) => surveysApi.duplicate(surveyId, newTitle));
 }

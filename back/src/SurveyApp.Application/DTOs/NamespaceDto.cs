@@ -34,10 +34,15 @@ public class NamespaceMemberDto
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string FullName { get; set; } = null!;
-    public string? AvatarUrl { get; set; }
+
+    /// <summary>
+    /// The ID of the user's selected avatar (e.g., "avatar-1", "avatar-32").
+    /// Frontend resolves this to an actual image URL.
+    /// </summary>
+    public string? AvatarId { get; set; }
+
     public NamespaceRole Role { get; set; }
     public DateTime JoinedAt { get; set; }
-    public string? ProfilePictureUrl { get; set; }
 }
 
 /// <summary>

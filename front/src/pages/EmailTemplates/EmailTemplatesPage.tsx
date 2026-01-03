@@ -17,29 +17,32 @@ import { renderPageIcon } from '@/config';
 import { Button, Card, Chip, Tabs, TabsList, TabsTrigger, ListContainer, GridSkeleton, EmptyState } from '@/components/ui';
 import { ListPageLayout } from '@/components/layout';
 import { EmailTemplateCard, CreateEmailTemplateDialog } from '@/components/features/email-templates';
-import { formatDate } from '@/utils';
 import { useEmailTemplates, useDeleteEmailTemplate, useSetDefaultEmailTemplate, useDuplicateEmailTemplate } from '@/hooks/queries/useEmailTemplates';
-import { useListPageState, useEntityActions, useDialogState, useViewTransitionNavigate } from '@/hooks';
-import type { EmailTemplateSummary } from '@/types';
+import { useListPageState, useEntityActions, useDialogState, useViewTransitionNavigate, useDateTimeFormatter } from '@/hooks';
+import { usePreferencesStore } from '@/stores';
+import type { EmailTemplateSummary, ViewMode } from '@/types';
 import { FILTER_CONFIGS, SEARCH_CONFIG, EmailTemplatesEmptyState } from './constants';
-import { mockTemplates } from './mocks';
 import type { FilterType, EmailTemplateFilters } from './types';
 
 export function EmailTemplatesPage() {
   const { t } = useTranslation();
   const navigate = useViewTransitionNavigate();
+  const { formatDate } = useDateTimeFormatter();
 
   // Dialog state using reusable hooks
   const createDialog = useDialogState();
 
   // Queries
   const { data: templatesResponse, isLoading, error } = useEmailTemplates();
-  const templates = templatesResponse?.items ?? mockTemplates;
+  const templates = templatesResponse?.items ?? [];
 
   // Mutations
   const deleteTemplate = useDeleteEmailTemplate();
   const setDefaultTemplate = useSetDefaultEmailTemplate();
   const duplicateTemplate = useDuplicateEmailTemplate();
+
+  // User preferences
+  const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
 
   // Use the combined list page state hook
   const {
@@ -58,6 +61,7 @@ export function EmailTemplatesPage() {
     filterConfigs: FILTER_CONFIGS,
     items: templates,
     searchConfig: SEARCH_CONFIG,
+    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
   });
 
   // Sort filtered templates: default first, then by created date

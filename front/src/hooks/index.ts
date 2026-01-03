@@ -1,5 +1,9 @@
 export { useAuth } from './useAuth';
 export { useAzureAuth, useAzureAdEnabled } from './useAzureAuth';
+export { useAzureAdPhoto } from './useAzureAdPhoto';
+export type { UseAzureAdPhotoReturn } from './useAzureAdPhoto';
+export { useUserAvatar, useUserAvatarUrl } from './useUserAvatarUrl';
+export type { UseUserAvatarReturn } from './useUserAvatarUrl';
 export { useNamespace } from './useNamespace';
 export { useViewTransitionNavigate } from './useViewTransitionNavigate';
 export { useConfirmDialog, useDeleteConfirm } from './useConfirmDialog';
@@ -66,3 +70,7 @@ export * from './queries/useTranslations';
 // Translation content hooks
 export * from './useTranslatedContent';
 export * from './useQuestionEditorTranslation';
+
+// Date/Time formatting
+export { useDateTimeFormatter, getDateTimePreferences } from './useDateTimeFormatter';
+export type { DateTimeFormatterFunctions } from './useDateTimeFormatter';

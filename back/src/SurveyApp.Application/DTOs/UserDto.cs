@@ -11,13 +11,13 @@ public class UserDto
     public string LastName { get; set; } = null!;
     public string FullName { get; set; } = null!;
     public bool EmailConfirmed { get; set; }
-    public string? ProfilePictureUrl { get; set; }
-    
+
     /// <summary>
-    /// Alias for ProfilePictureUrl for frontend compatibility.
+    /// The ID of the user's selected avatar (e.g., "avatar-1", "avatar-32").
+    /// Frontend resolves this to an actual image URL.
     /// </summary>
-    public string? AvatarUrl => ProfilePictureUrl;
-    
+    public string? AvatarId { get; set; }
+
     public DateTime? LastLoginAt { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }

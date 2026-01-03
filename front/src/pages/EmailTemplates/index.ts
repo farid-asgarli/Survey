@@ -7,4 +7,3 @@
 export { EmailTemplatesPage } from './EmailTemplatesPage';
 export * from './types';
 export * from './constants';
-export * from './mocks';

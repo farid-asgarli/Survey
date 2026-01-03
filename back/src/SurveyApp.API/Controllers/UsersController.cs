@@ -2,10 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SurveyApp.Application.Features.Users.Commands.ChangePassword;
-using SurveyApp.Application.Features.Users.Commands.DeleteAvatar;
+using SurveyApp.Application.Features.Users.Commands.SelectAvatar;
 using SurveyApp.Application.Features.Users.Commands.UpdateProfile;
 using SurveyApp.Application.Features.Users.Commands.UpdateUserPreferences;
-using SurveyApp.Application.Features.Users.Commands.UploadAvatar;
 using SurveyApp.Application.Features.Users.Queries.GetCurrentUser;
 using SurveyApp.Application.Features.Users.Queries.GetUserPreferences;
 
@@ -87,28 +86,18 @@ public class UsersController(IMediator mediator) : ApiControllerBase
     }
 
     /// <summary>
-    /// Upload a new avatar for the current user
+    /// Select an avatar from the predefined collection
     /// </summary>
+    /// <remarks>
+    /// Allows users to select an avatar from the predefined 3D avatar collection.
+    /// Pass avatarId as null to clear the current avatar.
+    /// Valid avatar IDs: avatar-01 through avatar-77
+    /// </remarks>
     [HttpPost("me/avatar")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    public async Task<IActionResult> SelectAvatar([FromBody] SelectAvatarCommand command)
     {
-        var userId = GetCurrentUserId();
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
-
-        var stream = file.OpenReadStream();
-        var command = new UploadAvatarCommand(
-            userId.Value,
-            stream,
-            file.FileName,
-            file.ContentType,
-            file.Length
-        );
-
         var result = await _mediator.Send(command);
 
         if (!result.Success)
@@ -116,30 +105,23 @@ public class UsersController(IMediator mediator) : ApiControllerBase
             return BadRequest(new { error = result.Error });
         }
 
-        return Ok(new { avatarUrl = result.AvatarUrl });
+        return Ok(new { avatarId = result.AvatarId });
     }
 
     /// <summary>
-    /// Delete the current user's avatar
+    /// Clear the current user's avatar
     /// </summary>
     [HttpDelete("me/avatar")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteAvatar()
+    public async Task<IActionResult> ClearAvatar()
     {
-        var userId = GetCurrentUserId();
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
-
-        var result = await _mediator.Send(new DeleteAvatarCommand(userId.Value));
+        var result = await _mediator.Send(new SelectAvatarCommand(null));
 
         if (!result.Success)
         {
             return BadRequest(new { error = result.Error });
         }
 
-        return Ok(new { message = "Avatar deleted successfully" });
+        return Ok(new { message = "Avatar cleared successfully" });
     }
 }

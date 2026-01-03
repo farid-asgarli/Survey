@@ -40,14 +40,10 @@ public class User : AggregateRoot<Guid>
     public bool EmailConfirmed { get; private set; }
 
     /// <summary>
-    /// Gets the URL of the user's profile picture.
+    /// Gets the ID of the user's selected avatar (e.g., "avatar-1", "avatar-32").
+    /// The frontend resolves this to an actual image URL.
     /// </summary>
-    public string? ProfilePictureUrl { get; private set; }
-
-    /// <summary>
-    /// Gets the avatar URL (alias for ProfilePictureUrl).
-    /// </summary>
-    public string? AvatarUrl => ProfilePictureUrl;
+    public string? AvatarId { get; private set; }
 
     /// <summary>
     /// Gets the date and time of the user's last login.
@@ -100,6 +96,29 @@ public class User : AggregateRoot<Guid>
     }
 
     /// <summary>
+    /// Creates a user with a specific ID. Used for recovery scenarios
+    /// where Identity user exists but domain user is missing.
+    /// </summary>
+    public static User CreateWithId(
+        Guid id,
+        string email,
+        string passwordHash,
+        string firstName,
+        string lastName
+    )
+    {
+        var emailVO = ValueObjects.Email.Create(email);
+
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new DomainException("Domain.User.FirstNameRequired");
+
+        if (string.IsNullOrWhiteSpace(lastName))
+            throw new DomainException("Domain.User.LastNameRequired");
+
+        return new User(id, emailVO.Value, passwordHash, firstName.Trim(), lastName.Trim());
+    }
+
+    /// <summary>
     /// Updates the user's email.
     /// </summary>
     public void UpdateEmail(string email)
@@ -138,18 +157,18 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// Updates the user's profile (name and avatar).
     /// </summary>
-    public void UpdateProfile(string firstName, string lastName, string? avatarUrl = null)
+    public void UpdateProfile(string firstName, string lastName, string? avatarId = null)
     {
         UpdateName(firstName, lastName);
-        UpdateProfilePicture(avatarUrl);
+        UpdateAvatarId(avatarId);
     }
 
     /// <summary>
-    /// Updates the user's profile picture URL.
+    /// Updates the user's avatar ID.
     /// </summary>
-    public void UpdateProfilePicture(string? profilePictureUrl)
+    public void UpdateAvatarId(string? avatarId)
     {
-        ProfilePictureUrl = profilePictureUrl;
+        AvatarId = avatarId;
     }
 
     /// <summary>

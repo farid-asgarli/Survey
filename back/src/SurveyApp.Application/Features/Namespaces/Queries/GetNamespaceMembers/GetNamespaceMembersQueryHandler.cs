@@ -65,8 +65,7 @@ public class GetNamespaceMembersQueryHandler(
                 LastName = m.User?.LastName ?? string.Empty,
                 FullName =
                     $"{m.User?.FirstName ?? string.Empty} {m.User?.LastName ?? string.Empty}".Trim(),
-                AvatarUrl = m.User?.AvatarUrl,
-                ProfilePictureUrl = m.User?.AvatarUrl,
+                AvatarId = m.User?.AvatarId,
                 Role = m.Role,
                 JoinedAt = m.JoinedAt,
             })

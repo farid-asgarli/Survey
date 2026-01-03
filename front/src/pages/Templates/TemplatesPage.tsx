@@ -23,7 +23,8 @@ import {
   type TemplateFilters,
 } from '@/hooks/queries/useTemplates';
 import { useListPage, useFilteredList, useEntityActions, useDialogState, FilterMatchers, type FilterConfig } from '@/hooks';
-import type { SurveyTemplateSummary, TemplateCategory } from '@/types';
+import { usePreferencesStore } from '@/stores';
+import type { SurveyTemplateSummary, TemplateCategory, ViewMode } from '@/types';
 import { TemplatesHeader, TemplatesToolbar, TemplatesContent } from './sections';
 
 type VisibilityFilter = 'all' | 'public' | 'private';
@@ -47,12 +48,15 @@ const FILTER_CONFIGS: FilterConfig<unknown>[] = [
 export function TemplatesPage() {
   const navigate = useViewTransitionNavigate();
 
+  // User preferences
+  const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
+
   // Use the reusable list page hook for common list page state
   const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters } = useListPage<{
     visibility: VisibilityFilter;
     category: TemplateCategory | 'all';
   }>({
-    initialViewMode: 'grid',
+    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
     initialFilters: { visibility: 'all', category: 'all' },
     filterConfigs: FILTER_CONFIGS,
   });

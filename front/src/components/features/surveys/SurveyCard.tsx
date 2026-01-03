@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { MoreVertical, Edit, Eye, Copy, ExternalLink, Trash2, Send, Archive, FileText, Users, BarChart3 } from 'lucide-react';
 import { Card, CardHeader, CardContent, IconButton, Menu, MenuItem, MenuSeparator, Tooltip } from '@/components/ui';
 import { SurveyStatusBadge } from './SurveyStatusBadge';
-import { useViewTransitionNavigate } from '@/hooks';
+import { useViewTransitionNavigate, useDateTimeFormatter } from '@/hooks';
 import { cn } from '@/lib/utils';
-import { formatRelativeTime, formatNumber } from '@/utils';
+import { formatNumber } from '@/utils';
 import { SurveyStatus } from '@/types';
 import type { Survey } from '@/types';
 
@@ -37,9 +37,9 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
   };
 
   return (
-    <Card variant="elevated" className={cn('group cursor-pointer', isArchived && 'opacity-70', className)} onClick={handleCardClick}>
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-2">
+    <Card variant='elevated' className={cn('group cursor-pointer', isArchived && 'opacity-70', className)} onClick={handleCardClick}>
+      <CardHeader className='pb-2'>
+        <div className='flex items-start justify-between gap-2'>
           <div
             className={cn(
               'flex h-9 w-9 items-center justify-center rounded-full shrink-0',
@@ -49,43 +49,43 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
               isArchived && 'bg-surface-container text-on-surface-variant/50'
             )}
           >
-            <FileText className="h-4 w-4" />
+            <FileText className='h-4 w-4' />
           </div>
-          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+          <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
             <Menu
               trigger={
-                <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')} className="h-8 w-8">
-                  <MoreVertical className="h-4 w-4" />
+                <IconButton variant='standard' size='sm' aria-label={t('a11y.moreOptions')} className='h-8 w-8'>
+                  <MoreVertical className='h-4 w-4' />
                 </IconButton>
               }
-              align="end"
+              align='end'
             >
-              <MenuItem onClick={() => onEdit?.()} icon={<Edit className="h-4 w-4" />}>
+              <MenuItem onClick={() => onEdit?.()} icon={<Edit className='h-4 w-4' />}>
                 {t('common.edit')}
               </MenuItem>
-              <MenuItem onClick={() => onPreview?.()} icon={<Eye className="h-4 w-4" />}>
+              <MenuItem onClick={() => onPreview?.()} icon={<Eye className='h-4 w-4' />}>
                 {t('templates.preview')}
               </MenuItem>
-              <MenuItem onClick={() => onDuplicate?.()} icon={<Copy className="h-4 w-4" />}>
+              <MenuItem onClick={() => onDuplicate?.()} icon={<Copy className='h-4 w-4' />}>
                 {t('common.duplicate')}
               </MenuItem>
               {isPublished && (
-                <MenuItem onClick={() => onShare?.()} icon={<ExternalLink className="h-4 w-4" />}>
+                <MenuItem onClick={() => onShare?.()} icon={<ExternalLink className='h-4 w-4' />}>
                   {t('distributions.shareLink')}
                 </MenuItem>
               )}
               <MenuSeparator />
               {isDraft && (
-                <MenuItem onClick={() => onPublish?.()} icon={<Send className="h-4 w-4" />}>
+                <MenuItem onClick={() => onPublish?.()} icon={<Send className='h-4 w-4' />}>
                   {t('surveys.publishSurvey')}
                 </MenuItem>
               )}
               {isPublished && (
-                <MenuItem onClick={() => onClose?.()} icon={<Archive className="h-4 w-4" />}>
+                <MenuItem onClick={() => onClose?.()} icon={<Archive className='h-4 w-4' />}>
                   {t('surveys.closeSurvey')}
                 </MenuItem>
               )}
-              <MenuItem onClick={() => onDelete?.()} destructive icon={<Trash2 className="h-4 w-4" />}>
+              <MenuItem onClick={() => onDelete?.()} destructive icon={<Trash2 className='h-4 w-4' />}>
                 {t('common.delete')}
               </MenuItem>
             </Menu>
@@ -94,21 +94,21 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
       </CardHeader>
 
       <CardContent>
-        <h3 className="font-medium text-on-surface mb-1 group-hover:text-primary transition-colors truncate">{survey.title}</h3>
-        {survey.description && <p className="text-sm text-on-surface-variant line-clamp-2 mb-3">{survey.description}</p>}
-        {!survey.description && <div className="mb-3" />}
-        <div className="flex items-center justify-between text-xs text-on-surface-variant">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
-              <FileText className="h-3 w-3" />
+        <h3 className='font-medium text-on-surface mb-1 group-hover:text-primary transition-colors truncate'>{survey.title}</h3>
+        {survey.description && <p className='text-sm text-on-surface-variant line-clamp-2 mb-3'>{survey.description}</p>}
+        {!survey.description && <div className='mb-3' />}
+        <div className='flex items-center justify-between text-xs text-on-surface-variant'>
+          <div className='flex items-center gap-3'>
+            <span className='flex items-center gap-1'>
+              <FileText className='h-3 w-3' />
               {survey.questionCount ?? survey.questions?.length ?? 0} {t('surveys.questions')}
             </span>
-            <span className="flex items-center gap-1">
-              <Users className="h-3 w-3" />
+            <span className='flex items-center gap-1'>
+              <Users className='h-3 w-3' />
               {formatNumber(survey.responseCount)} {t('surveys.responses')}
             </span>
           </div>
-          <SurveyStatusBadge status={survey.status} size="sm" />
+          <SurveyStatusBadge status={survey.status} size='sm' />
         </div>
       </CardContent>
     </Card>
@@ -121,6 +121,7 @@ type SurveyListItemProps = SurveyCardProps;
 export function SurveyListItem({ survey, onEdit, onPreview, onDuplicate, onShare, onPublish, onClose, onDelete, className }: SurveyListItemProps) {
   const { t } = useTranslation();
   const navigate = useViewTransitionNavigate();
+  const { formatRelativeTime } = useDateTimeFormatter();
   const isDraft = survey.status === SurveyStatus.Draft;
   const isPublished = survey.status === SurveyStatus.Published;
   const isClosed = survey.status === SurveyStatus.Closed;
@@ -167,11 +168,11 @@ export function SurveyListItem({ survey, onEdit, onPreview, onDuplicate, onShare
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
-          <h3 className="font-semibold text-on-surface truncate group-hover:text-primary transition-colors">{survey.title}</h3>
+      <div className='flex-1 min-w-0'>
+        <div className='flex items-center gap-2 mb-0.5'>
+          <h3 className='font-semibold text-on-surface truncate group-hover:text-primary transition-colors'>{survey.title}</h3>
         </div>
-        <p className="text-sm text-on-surface-variant flex items-center gap-3">
+        <p className='text-sm text-on-surface-variant flex items-center gap-3'>
           <span>
             {survey.questionCount ?? survey.questions?.length ?? 0} {t('surveys.questions')}
           </span>
@@ -190,49 +191,49 @@ export function SurveyListItem({ survey, onEdit, onPreview, onDuplicate, onShare
       <SurveyStatusBadge status={survey.status} />
 
       {/* Actions */}
-      <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+      <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
         {isPublished && (
           <Tooltip content={t('responses.title')}>
-            <IconButton variant="standard" size="sm" aria-label={t('responses.title')} onClick={() => navigate(`/surveys/${survey.id}/responses`)}>
-              <BarChart3 className="h-4 w-4" />
+            <IconButton variant='standard' size='sm' aria-label={t('responses.title')} onClick={() => navigate(`/surveys/${survey.id}/responses`)}>
+              <BarChart3 className='h-4 w-4' />
             </IconButton>
           </Tooltip>
         )}
 
         <Menu
           trigger={
-            <IconButton variant="standard" size="sm" aria-label={t('a11y.moreOptions')}>
-              <MoreVertical className="h-4 w-4" />
+            <IconButton variant='standard' size='sm' aria-label={t('a11y.moreOptions')}>
+              <MoreVertical className='h-4 w-4' />
             </IconButton>
           }
-          align="end"
+          align='end'
         >
-          <MenuItem onClick={() => onEdit?.()} icon={<Edit className="h-4 w-4" />}>
+          <MenuItem onClick={() => onEdit?.()} icon={<Edit className='h-4 w-4' />}>
             {t('common.edit')}
           </MenuItem>
-          <MenuItem onClick={() => onPreview?.()} icon={<Eye className="h-4 w-4" />}>
+          <MenuItem onClick={() => onPreview?.()} icon={<Eye className='h-4 w-4' />}>
             {t('templates.preview')}
           </MenuItem>
-          <MenuItem onClick={() => onDuplicate?.()} icon={<Copy className="h-4 w-4" />}>
+          <MenuItem onClick={() => onDuplicate?.()} icon={<Copy className='h-4 w-4' />}>
             {t('common.duplicate')}
           </MenuItem>
           {isPublished && (
-            <MenuItem onClick={() => onShare?.()} icon={<ExternalLink className="h-4 w-4" />}>
+            <MenuItem onClick={() => onShare?.()} icon={<ExternalLink className='h-4 w-4' />}>
               {t('distributions.shareLink')}
             </MenuItem>
           )}
           <MenuSeparator />
           {isDraft && (
-            <MenuItem onClick={() => onPublish?.()} icon={<Send className="h-4 w-4" />}>
+            <MenuItem onClick={() => onPublish?.()} icon={<Send className='h-4 w-4' />}>
               {t('surveys.publishSurvey')}
             </MenuItem>
           )}
           {isPublished && (
-            <MenuItem onClick={() => onClose?.()} icon={<Archive className="h-4 w-4" />}>
+            <MenuItem onClick={() => onClose?.()} icon={<Archive className='h-4 w-4' />}>
               {t('surveys.closeSurvey')}
             </MenuItem>
           )}
-          <MenuItem onClick={() => onDelete?.()} destructive icon={<Trash2 className="h-4 w-4" />}>
+          <MenuItem onClick={() => onDelete?.()} destructive icon={<Trash2 className='h-4 w-4' />}>
             {t('common.delete')}
           </MenuItem>
         </Menu>

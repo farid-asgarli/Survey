@@ -18,6 +18,7 @@ import {
   DialogBody,
   DialogFooter,
 } from '@/components/ui';
+import { getAvatarUrl } from '@/components/features/profile';
 import { UserPlus, MoreVertical, Mail, Shield, Crown, User, Trash2 } from 'lucide-react';
 import { useNamespaceMembers, useInviteMember, useRemoveMember, useDialogState } from '@/hooks';
 import { useConfirmDialog } from '@/hooks';
@@ -193,7 +194,7 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
                 return (
                   <div key={member.membershipId} className='flex items-center gap-4 px-5 py-3.5 hover:bg-surface-container-high transition-colors group'>
                     <Avatar
-                      src={member.avatarUrl}
+                      src={getAvatarUrl(member.avatarId)}
                       alt={`${member.firstName} ${member.lastName}`}
                       fallback={`${member.firstName[0]}${member.lastName[0]}`}
                       size='lg'

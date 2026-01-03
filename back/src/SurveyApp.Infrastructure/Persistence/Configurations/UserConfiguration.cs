@@ -21,7 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.PasswordHash).IsRequired();
 
-        builder.Property(u => u.ProfilePictureUrl).HasMaxLength(500);
+        // AvatarId stores the avatar identifier (e.g., "avatar-01"), not a URL
+        // Max length 20 is sufficient for "avatar-XX" format
+        builder.Property(u => u.AvatarId).HasMaxLength(20).HasColumnName("avatar_id");
 
         builder.Property(u => u.EmailConfirmed).IsRequired().HasDefaultValue(false);
 

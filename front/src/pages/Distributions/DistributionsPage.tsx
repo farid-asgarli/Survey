@@ -27,7 +27,6 @@ import { useSurveysList } from '@/hooks/queries/useSurveys';
 import { useDistributions } from '@/hooks/queries/useDistributions';
 import { DistributionCard } from './components/DistributionCard';
 import { useDistributionsPage } from './hooks/useDistributionsPage';
-import { mockDistributions } from './constants';
 import type { StatusFilter, DistributionTab } from './types';
 
 export function DistributionsPage() {
@@ -39,9 +38,9 @@ export function DistributionsPage() {
   const { data: surveysData, isLoading: surveysLoading } = useSurveysList({ status: 'all' });
   const surveys = surveysData?.items ?? [];
 
-  // Fetch distributions for selected survey - fallback to mock if API unavailable
+  // Fetch distributions for selected survey
   const { data: apiDistributionsData, isLoading: distributionsLoading } = useDistributions(selectedSurveyId || undefined);
-  const distributions = apiDistributionsData?.items ?? (selectedSurveyId ? mockDistributions : []);
+  const distributions = apiDistributionsData?.items ?? [];
 
   const selectedSurvey = surveys.find((s) => s.id === selectedSurveyId);
 

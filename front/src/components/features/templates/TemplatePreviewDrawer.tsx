@@ -23,8 +23,8 @@ import {
   Mail,
 } from 'lucide-react';
 import { useTemplateDetail } from '@/hooks/queries/useTemplates';
+import { useDateTimeFormatter } from '@/hooks';
 import { getCategoryInfo } from './templateUtils';
-import { formatDate } from '@/utils';
 import { QuestionType } from '@/types';
 import type { SurveyTemplate, SurveyTemplateSummary, TemplateCategory } from '@/types';
 import { cn } from '@/lib/utils';
@@ -119,6 +119,7 @@ function QuestionPreviewItem({
 
 function TemplatePreviewContent({ template, onUseTemplate, onClose }: { template: SurveyTemplate; onUseTemplate: () => void; onClose: () => void }) {
   const { t } = useTranslation();
+  const { formatDate } = useDateTimeFormatter();
   const categoryInfo = getCategoryInfo((template.category || 'other') as TemplateCategory);
   const CategoryIcon = categoryInfo.icon;
   const questions = template.questions || [];

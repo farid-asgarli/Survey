@@ -2,12 +2,11 @@ import { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, Loader2, Mail, User as UserIcon } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button } from '@/components/ui';
-import { AvatarUpload } from './AvatarUpload';
+import { AvatarSelector } from './AvatarSelector';
 import { useAuthStore } from '@/stores';
-import { useUpdateProfile, useUploadAvatar, useDeleteAvatar } from '@/hooks';
+import { useUpdateProfile, useSelectAvatar, useClearAvatar, useUserAvatar, useDateTimeFormatter } from '@/hooks';
 import { toast } from '@/components/ui/Toast';
 import { validateEmail, validateName } from '@/lib/validations';
-import { formatDateLong } from '@/utils';
 
 interface ProfileSettingsProps {
   className?: string;
@@ -16,6 +15,7 @@ interface ProfileSettingsProps {
 export function ProfileSettings({ className }: ProfileSettingsProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const { formatDateLong } = useDateTimeFormatter();
 
   // Track the user ID to detect when we need to reset form
   const [lastUserId, setLastUserId] = useState(user?.id);
@@ -49,8 +49,11 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
   }
 
   const updateProfileMutation = useUpdateProfile();
-  const uploadAvatarMutation = useUploadAvatar();
-  const deleteAvatarMutation = useDeleteAvatar();
+  const selectAvatarMutation = useSelectAvatar();
+  const clearAvatarMutation = useClearAvatar();
+
+  // Get centralized avatar data (selected avatar + Azure AD photo)
+  const { azureAdPhotoUrl, isAzureAdAvailable } = useUserAvatar();
 
   const validateForm = useCallback((): boolean => {
     const newErrors: Record<string, string> = {};
@@ -160,13 +163,13 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
     setTouched({});
   };
 
-  const handleAvatarUpload = async (file: File) => {
-    await uploadAvatarMutation.mutateAsync(file);
+  const handleAvatarSelect = async (avatarId: string) => {
+    await selectAvatarMutation.mutateAsync(avatarId);
     toast.success(t('profile.toast.avatarUpdated'));
   };
 
-  const handleAvatarRemove = async () => {
-    await deleteAvatarMutation.mutateAsync();
+  const handleAvatarClear = async () => {
+    await clearAvatarMutation.mutateAsync();
     toast.success(t('profile.toast.avatarRemoved'));
   };
 
@@ -188,13 +191,14 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
       </CardHeader>
       <CardContent className='space-y-6'>
         {/* Avatar Section */}
-        <AvatarUpload
-          currentAvatarUrl={user?.avatarUrl}
+        <AvatarSelector
+          currentAvatarId={user?.avatarId}
           fallback={initials}
-          onUpload={handleAvatarUpload}
-          onRemove={handleAvatarRemove}
-          isUploading={uploadAvatarMutation.isPending}
-          isRemoving={deleteAvatarMutation.isPending}
+          onSelect={handleAvatarSelect}
+          onClear={handleAvatarClear}
+          isLoading={selectAvatarMutation.isPending || clearAvatarMutation.isPending}
+          azureAdPhotoUrl={azureAdPhotoUrl || undefined}
+          showAzureAdOption={isAzureAdAvailable && !!azureAdPhotoUrl}
         />
 
         {/* Divider */}

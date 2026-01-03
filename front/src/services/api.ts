@@ -13,7 +13,7 @@ import type {
   ResetPasswordRequest,
   UpdateProfileRequest,
   ChangePasswordRequest,
-  UploadAvatarResponse,
+  SelectAvatarResponse,
   MessageResponse,
   UserProfile,
   CreateNamespaceRequest,
@@ -247,7 +247,7 @@ export const apiClient = createApiClient();
 
 /**
  * Raw API response types (as returned by backend).
- * Backend now returns complete user data.
+ * Backend returns complete user data with avatarId.
  */
 interface RawAuthResponse {
   token: string;
@@ -260,8 +260,8 @@ interface RawAuthResponse {
     lastName: string;
     fullName: string;
     emailConfirmed: boolean;
-    avatarUrl: string | null;
-    profilePictureUrl: string | null;
+    /** Avatar ID (e.g., "avatar-1", "avatar-32"). Frontend resolves to URL. */
+    avatarId: string | null;
     lastLoginAt: string | null;
     isActive: boolean;
     createdAt: string;
@@ -271,7 +271,6 @@ interface RawAuthResponse {
 
 /**
  * Transform raw auth response to expected format.
- * Backend now returns complete user data, so minimal transformation is needed.
  */
 const transformAuthResponse = (raw: RawAuthResponse): LoginResponse => ({
   user: {
@@ -281,8 +280,7 @@ const transformAuthResponse = (raw: RawAuthResponse): LoginResponse => ({
     lastName: raw.user.lastName,
     fullName: raw.user.fullName,
     emailConfirmed: raw.user.emailConfirmed,
-    avatarUrl: raw.user.avatarUrl ?? undefined,
-    profilePictureUrl: raw.user.profilePictureUrl ?? undefined,
+    avatarId: raw.user.avatarId ?? undefined,
     lastLoginAt: raw.user.lastLoginAt ?? undefined,
     isActive: raw.user.isActive,
     createdAt: raw.user.createdAt,
@@ -419,18 +417,19 @@ export const usersApi = {
     return response.data;
   },
 
-  uploadAvatar: async (file: File): Promise<UploadAvatarResponse> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = await apiClient.post<UploadAvatarResponse>(API_ENDPOINTS.users.avatar, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+  /**
+   * Select an avatar from the predefined collection.
+   * @param avatarId - Avatar ID (e.g., "avatar-1", "avatar-32", "avatar-77")
+   */
+  selectAvatar: async (avatarId: string): Promise<SelectAvatarResponse> => {
+    const response = await apiClient.post<SelectAvatarResponse>(API_ENDPOINTS.users.avatar, { avatarId });
     return response.data;
   },
 
-  deleteAvatar: async (): Promise<MessageResponse> => {
+  /**
+   * Clear/remove the current avatar.
+   */
+  clearAvatar: async (): Promise<MessageResponse> => {
     const response = await apiClient.delete<MessageResponse>(API_ENDPOINTS.users.avatar);
     return response.data;
   },

@@ -13,6 +13,11 @@ export const userKeys = createExtendedQueryKeys('user', (base) => ({
 
 /**
  * Hook to fetch current user profile
+ *
+ * Uses stale-while-revalidate pattern:
+ * - Shows cached data immediately from localStorage (via authStore)
+ * - Fetches fresh data in the background on mount and window focus
+ * - This ensures fast initial load while keeping data up-to-date
  */
 export function useCurrentUser() {
   const { isAuthenticated } = useAuthStore();
@@ -22,6 +27,8 @@ export function useCurrentUser() {
     queryFn: usersApi.getCurrentUser,
     enabled: isAuthenticated,
     staleTime: STALE_TIMES.LONG,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 }
 
@@ -53,19 +60,19 @@ export function useChangePassword() {
 }
 
 /**
- * Hook to upload avatar
+ * Hook to select an avatar from the predefined collection
  */
-export function useUploadAvatar() {
+export function useSelectAvatar() {
   const queryClient = useQueryClient();
   const { updateUser } = useAuthStore();
 
   return useMutation({
-    mutationFn: (file: File) => usersApi.uploadAvatar(file),
+    mutationFn: (avatarId: string) => usersApi.selectAvatar(avatarId),
     onSuccess: (response) => {
-      // Update the user with the new avatar URL
+      // Update the user with the new avatar ID
       const currentUser = queryClient.getQueryData<UserProfile>(userKeys.current());
       if (currentUser) {
-        const updatedUser = { ...currentUser, avatarUrl: response.avatarUrl };
+        const updatedUser = { ...currentUser, avatarId: response.avatarId };
         queryClient.setQueryData(userKeys.current(), updatedUser);
         updateUser(updatedUser);
       }
@@ -74,19 +81,19 @@ export function useUploadAvatar() {
 }
 
 /**
- * Hook to delete avatar
+ * Hook to clear/remove avatar
  */
-export function useDeleteAvatar() {
+export function useClearAvatar() {
   const queryClient = useQueryClient();
   const { updateUser } = useAuthStore();
 
   return useMutation({
-    mutationFn: () => usersApi.deleteAvatar(),
+    mutationFn: () => usersApi.clearAvatar(),
     onSuccess: () => {
-      // Remove the avatar URL from the user
+      // Remove the avatar ID from the user
       const currentUser = queryClient.getQueryData<UserProfile>(userKeys.current());
       if (currentUser) {
-        const updatedUser = { ...currentUser, avatarUrl: undefined };
+        const updatedUser = { ...currentUser, avatarId: undefined };
         queryClient.setQueryData(userKeys.current(), updatedUser);
         updateUser(updatedUser);
       }

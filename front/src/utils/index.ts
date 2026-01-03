@@ -1,2 +1,2 @@
 export * from './errorHandling';
-export * from './dateFormatters';
+export * from './dateTimeFormatter';

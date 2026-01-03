@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { formatDateTimeShort } from '@/utils';
+import { useDateTimeFormatter } from '@/hooks';
 import { MoreVertical, Eye, Trash2, Pause, Send, Users, Calendar } from 'lucide-react';
 import { Button, Card, CardContent, Chip, Menu, MenuItem, MenuSeparator } from '@/components/ui';
 import { statusConfigKeys } from '../constants';
@@ -20,6 +20,7 @@ interface DistributionCardProps {
 
 export function DistributionCard({ distribution, onView, onSend, onCancel, onDelete, isSending }: DistributionCardProps) {
   const { t } = useTranslation();
+  const { formatDateTimeShort } = useDateTimeFormatter();
   const config = statusConfigKeys[distribution.status];
   const StatusIcon = config.icon;
 

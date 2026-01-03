@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { History, CheckCircle2, XCircle, Clock, AlertTriangle, SkipForward, Loader2, RefreshCw, BarChart2, Mail, Users, CalendarClock } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerBody, OverlayHeader, Button, Badge, Skeleton, EmptyState, Tooltip } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { formatDateTime, formatDurationMs } from '@/utils';
+import { formatDurationMs } from '@/utils';
+import { useDateTimeFormatter } from '@/hooks';
 import { useRecurringRunsInfinite } from '@/hooks/queries/useRecurringSurveys';
 import { RunStatus, getRunStatusLabel } from '@/types/enums';
 import type { RecurringSurvey, RecurringSurveyListItem, RecurringRun } from '@/types';
@@ -42,6 +43,7 @@ const statusConfig: Record<RunStatus, { className: string; icon: typeof CheckCir
 };
 
 function RunHistoryItem({ run }: { run: RecurringRun }) {
+  const { formatDateTime } = useDateTimeFormatter();
   const status = statusConfig[run.status];
   const StatusIcon = status.icon;
 

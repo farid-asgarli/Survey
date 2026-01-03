@@ -66,10 +66,11 @@ export const createMsalConfig = (config: AzureAdConfig): Configuration => ({
 });
 
 /**
- * Default login request scopes
+ * Default login request scopes.
+ * User.Read is required to access profile photos from Microsoft Graph.
  */
 export const loginRequest = {
-  scopes: ['openid', 'profile', 'email'],
+  scopes: ['openid', 'profile', 'email', 'User.Read'],
 };
 
 // Singleton MSAL instance

@@ -9,6 +9,7 @@ import { renderPageIcon } from '@/config';
 import { RecurringSurveyCard, RecurringScheduleEditor, RunHistoryDrawer } from '@/components/features/recurring-surveys';
 import { cn } from '@/lib/utils';
 import { useConfirmDialog, useListPage, useDialogState } from '@/hooks';
+import { usePreferencesStore } from '@/stores';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
 import {
   useRecurringSurveys,
@@ -21,18 +22,22 @@ import {
   useTriggerRecurringSurvey,
 } from '@/hooks/queries/useRecurringSurveys';
 import { SurveyStatus } from '@/types';
-import type { CreateRecurringSurveyRequest, UpdateRecurringSurveyRequest } from '@/types';
+import type { CreateRecurringSurveyRequest, UpdateRecurringSurveyRequest, ViewMode } from '@/types';
 import { StatsCards, UpcomingRunsPreview } from './sections';
 import { FILTER_CONFIGS, RecurringSurveysEmptyState } from './constants';
 import type { StatusFilter } from './types';
 
 export function RecurringSurveysPage() {
   const { t } = useTranslation();
+
+  // User preferences
+  const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
+
   // Use the reusable list page hook for common list page state
   const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters } = useListPage<{
     status: StatusFilter;
   }>({
-    initialViewMode: 'grid',
+    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
     initialFilters: { status: 'all' },
     filterConfigs: FILTER_CONFIGS,
   });
@@ -170,8 +175,8 @@ export function RecurringSurveysPage() {
         description={t('recurringSurveys.description')}
         icon={renderPageIcon('recurring-surveys')}
         actions={
-          <Button className="hidden md:flex" onClick={() => createDialog.open()}>
-            <Plus className="h-4 w-4 mr-2" />
+          <Button className='hidden md:flex' onClick={() => createDialog.open()}>
+            <Plus className='h-4 w-4 mr-2' />
             {t('recurringSurveys.createSchedule')}
           </Button>
         }
@@ -179,11 +184,11 @@ export function RecurringSurveysPage() {
 
       {/* Toolbar with filters */}
       <ListPageLayout.Toolbar searchPlaceholder={t('recurringSurveys.searchPlaceholder')}>
-        <Tabs value={statusFilter} onValueChange={(v) => setFilter('status', v as StatusFilter)} variant="segmented">
+        <Tabs value={statusFilter} onValueChange={(v) => setFilter('status', v as StatusFilter)} variant='segmented'>
           <TabsList>
-            <TabsTrigger value="all">{t('recurringSurveys.tabs.all')}</TabsTrigger>
-            <TabsTrigger value="active">{t('recurringSurveys.tabs.active')}</TabsTrigger>
-            <TabsTrigger value="inactive">{t('recurringSurveys.tabs.paused')}</TabsTrigger>
+            <TabsTrigger value='all'>{t('recurringSurveys.tabs.all')}</TabsTrigger>
+            <TabsTrigger value='active'>{t('recurringSurveys.tabs.active')}</TabsTrigger>
+            <TabsTrigger value='inactive'>{t('recurringSurveys.tabs.paused')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </ListPageLayout.Toolbar>
@@ -202,15 +207,15 @@ export function RecurringSurveysPage() {
         {/* Content - Using ListContainer compound component */}
         <ListContainer items={recurringSurveys} isLoading={isLoading} hasError={isError} viewMode={viewMode}>
           <ListContainer.Loading>
-            <GridSkeleton viewMode={viewMode} count={6} gridHeight="h-52" listHeight="h-32" />
+            <GridSkeleton viewMode={viewMode} count={6} gridHeight='h-52' listHeight='h-32' />
           </ListContainer.Loading>
 
           <ListContainer.Error>
             <EmptyState
-              icon={<AlertCircle className="h-7 w-7" />}
+              icon={<AlertCircle className='h-7 w-7' />}
               title={t('recurringSurveys.loadError')}
               description={t('recurringSurveys.loadErrorDesc')}
-              iconVariant="muted"
+              iconVariant='muted'
               action={{
                 label: t('errors.tryAgain'),
                 onClick: () => refetch(),
@@ -220,11 +225,7 @@ export function RecurringSurveysPage() {
           </ListContainer.Error>
 
           <ListContainer.Empty>
-            <RecurringSurveysEmptyState
-              hasActiveFilters={hasActiveFilters}
-              onClearFilters={clearAllFilters}
-              onCreateItem={() => createDialog.open()}
-            />
+            <RecurringSurveysEmptyState hasActiveFilters={hasActiveFilters} onClearFilters={clearAllFilters} onCreateItem={() => createDialog.open()} />
           </ListContainer.Empty>
 
           <ListContainer.Content>
@@ -248,7 +249,7 @@ export function RecurringSurveysPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
       <ListPageLayout.Dialogs>

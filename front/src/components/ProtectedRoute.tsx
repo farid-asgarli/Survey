@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore, usePreferencesStore, useNamespaceStore } from '@/stores';
 import { useNamespacesList, useUserPreferences } from '@/hooks';
 import { AppLoadingScreen, OnboardingWizard, GettingStartedWizard } from '@/components/ui';
+import type { LoadingStage } from '@/components/ui/AppLoadingScreen';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -18,10 +19,9 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
 
   // Namespace state - wait for namespaces to load before rendering protected content
   const namespaceHydrated = useNamespaceStore((s) => s._hasHydrated);
-  const activeNamespace = useNamespaceStore((s) => s.activeNamespace);
 
   // Fetch namespaces when authenticated - this will auto-select the first one if none is active
-  const { isLoading: namespacesLoading, isFetched: namespacesFetched } = useNamespacesList();
+  const { isFetched: namespacesFetched } = useNamespacesList();
 
   // Preferences state - track if preferences belong to current user
   const onboardingStatus = usePreferencesStore((s) => s.preferences?.onboarding?.status);
@@ -47,6 +47,46 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
     if (!isPreferencesForCurrentUser || !hasFetchedFromServer) return false;
     return true;
   }, [preferencesHydrated, isAuthenticated, preferencesFetched, preferencesLoading, isPreferencesForCurrentUser, hasFetchedFromServer]);
+
+  // Unified loading stages for a cohesive experience
+  const loadingStages = useMemo((): LoadingStage[] => {
+    const authComplete = hasHydrated && !isLoading;
+    // Consider namespace loading complete if fetched, even if no namespaces exist (new user)
+    // This allows the user to proceed and create their first namespace
+    const namespaceComplete = namespaceHydrated && namespacesFetched;
+    const prefsComplete = preferencesFetched && hasFetchedFromServer;
+
+    // Determine which stage is currently active
+    const authActive = !authComplete;
+    const namespaceActive = authComplete && !namespaceComplete;
+    const prefsActive = authComplete && namespaceComplete && !prefsComplete;
+
+    return [
+      {
+        id: 'auth',
+        label: 'common.signingIn',
+        isComplete: authComplete,
+        isActive: authActive,
+      },
+      {
+        id: 'workspace',
+        label: 'common.loadingWorkspace',
+        isComplete: namespaceComplete,
+        isActive: namespaceActive,
+      },
+      {
+        id: 'preferences',
+        label: 'common.loadingPreferences',
+        isComplete: prefsComplete,
+        isActive: prefsActive,
+      },
+    ];
+  }, [hasHydrated, isLoading, namespaceHydrated, namespacesFetched, preferencesFetched, hasFetchedFromServer]);
+
+  // Check if any loading stage is still in progress
+  const isAnyStageLoading = useMemo(() => {
+    return !loadingStages.every((stage) => stage.isComplete);
+  }, [loadingStages]);
 
   // Compute if onboarding wizard should be shown (user preferences setup)
   // IMPORTANT: Only show after preferences have been fetched from server for the current user
@@ -84,9 +124,11 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
     setDismissedGettingStarted(true);
   }, []);
 
-  // Show beautiful loading screen while hydrating persisted state
+  // Show unified loading screen while any stage is in progress
+  // This provides a cohesive experience instead of multiple separate loading screens
   if (!hasHydrated || isLoading) {
-    return <AppLoadingScreen message='Signing you in' />;
+    // Not authenticated yet - show loading with stages
+    return <AppLoadingScreen stages={loadingStages} />;
   }
 
   if (!isAuthenticated) {
@@ -94,16 +136,9 @@ export function ProtectedRoute({ children, redirectTo = '/login' }: ProtectedRou
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
-  // Wait for namespaces to be loaded and an active namespace to be set
-  // This prevents API calls from failing due to missing namespace context
-  if (!namespaceHydrated || (namespacesLoading && !namespacesFetched) || (!activeNamespace && namespacesLoading)) {
-    return <AppLoadingScreen message='Loading workspace' />;
-  }
-
-  // Wait for preferences to be fetched for current user before rendering content
-  // This ensures onboarding decision is made with correct data
-  if (!preferencesFetched || (preferencesLoading && !hasFetchedFromServer)) {
-    return <AppLoadingScreen message='Loading preferences' />;
+  // Show unified loading screen for remaining stages (workspace, preferences)
+  if (isAnyStageLoading) {
+    return <AppLoadingScreen stages={loadingStages} />;
   }
 
   return (

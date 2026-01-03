@@ -27,7 +27,8 @@ import {
   type ExtendedFilterConfig,
 } from '@/hooks';
 import { ThemeEditorDrawer, type ThemeFormData } from '@/components/features/themes';
-import type { SurveyThemeSummary } from '@/types';
+import { usePreferencesStore } from '@/stores';
+import type { SurveyThemeSummary, ViewMode } from '@/types';
 import { ThemeLayout, LogoPosition, LogoSize, BackgroundImagePosition } from '@/types/enums';
 import { ThemesHeader, ThemesToolbar, ThemesContent, ThemesEmptyState } from './sections';
 import { getCurrentLanguage } from '@/i18n';
@@ -65,6 +66,9 @@ export function ThemesPage() {
   const deleteTheme = useDeleteTheme();
   const duplicateTheme = useDuplicateTheme();
   const setDefaultTheme = useSetDefaultTheme();
+
+  // User preferences
+  const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
 
   // Fetch full theme details when editing (includes branding, logo, etc.)
   const { data: fullThemeData, isLoading: isLoadingFullTheme } = useThemeDetail(editingThemeId);
@@ -117,6 +121,7 @@ export function ThemesPage() {
     searchConfig: {
       fields: ['name'],
     },
+    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
   });
 
   // Find default theme

@@ -7,9 +7,9 @@
 import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
-import { Plus, Layout, Eye, GripVertical, Sparkles } from 'lucide-react';
+import { Plus, Layout, Eye, GripVertical } from 'lucide-react';
 import { QuestionCard, AddQuestionButton } from '@/components/features/questions';
-import { Button } from '@/components/ui';
+import { Button, LogoIcon } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useTranslatedQuestions } from '@/hooks';
 import type { DraftQuestion } from '@/stores';
@@ -42,8 +42,8 @@ function DropZoneIndicator({ isActive, position }: { isActive: boolean; position
           transition={{ duration: 0.15 }}
           className={cn('absolute left-3 right-3 h-1 rounded-full bg-primary z-10', position === 'top' ? '-top-1' : '-bottom-1')}
         >
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-primary" />
+          <div className='absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-primary' />
+          <div className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-primary' />
         </motion.div>
       )}
     </AnimatePresence>
@@ -90,7 +90,7 @@ function DraggableQuestionItem({
 
   return (
     <div
-      className="relative"
+      className='relative'
       draggable={!isReadOnly}
       onDragStart={!isReadOnly ? onDragStart : undefined}
       onDragEnd={onDragEnd}
@@ -114,8 +114,8 @@ function DraggableQuestionItem({
         className={cn(isDragging && 'ring-2 ring-primary/30 rounded-2xl')}
       >
         {/* Drop zone indicators */}
-        <DropZoneIndicator isActive={dropIndicator === 'top'} position="top" />
-        <DropZoneIndicator isActive={dropIndicator === 'bottom'} position="bottom" />
+        <DropZoneIndicator isActive={dropIndicator === 'top'} position='top' />
+        <DropZoneIndicator isActive={dropIndicator === 'bottom'} position='bottom' />
 
         <QuestionCard
           question={question}
@@ -216,28 +216,26 @@ export function QuestionListSidebar({
 
   return (
     <aside
-      className="group/resize shrink-0 flex flex-col bg-surface border-r border-outline-variant/30 overflow-hidden relative"
+      className='group/resize shrink-0 flex flex-col bg-surface border-r border-outline-variant/30 overflow-hidden relative'
       style={{ width: 'var(--sidebar-width, 380px)', minWidth: '320px', maxWidth: '500px' }}
     >
       {/* Panel Header - Cleaner with icon */}
-      <div className="shrink-0 p-4 border-b border-outline-variant/30 bg-surface">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div
-              className={cn('w-9 h-9 rounded-full flex items-center justify-center', isReadOnly ? 'bg-surface-container' : 'bg-primary-container')}
-            >
-              {isReadOnly ? <Eye className="w-4 h-4 text-on-surface-variant" /> : <Layout className="w-4 h-4 text-on-primary-container" />}
+      <div className='shrink-0 p-4 border-b border-outline-variant/30 bg-surface'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center gap-2'>
+            <div className={cn('w-9 h-9 rounded-full flex items-center justify-center', isReadOnly ? 'bg-surface-container' : 'bg-primary-container')}>
+              {isReadOnly ? <Eye className='w-4 h-4 text-on-surface-variant' /> : <Layout className='w-4 h-4 text-on-primary-container' />}
             </div>
             <div>
-              <h2 className="font-semibold text-on-surface text-sm">{t('surveyBuilder.questions')}</h2>
-              <p className="text-xs text-on-surface-variant">
+              <h2 className='font-semibold text-on-surface text-sm'>{t('surveyBuilder.questions')}</h2>
+              <p className='text-xs text-on-surface-variant'>
                 {questions.length} {questions.length === 1 ? t('common.item', 'item') : t('common.items', 'items')}
               </p>
             </div>
           </div>
           {!isReadOnly && (
-            <Button variant="filled" size="sm" onClick={onAddQuestion} className="gap-1.5">
-              <Plus className="w-4 h-4" />
+            <Button variant='filled' size='sm' onClick={onAddQuestion} className='gap-1.5'>
+              <Plus className='w-4 h-4' />
               {t('surveyBuilder.add', 'Add')}
             </Button>
           )}
@@ -248,9 +246,9 @@ export function QuestionListSidebar({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="mt-3 flex items-center gap-2 text-xs text-on-surface-variant/60"
+            className='mt-3 flex items-center gap-2 text-xs text-on-surface-variant/60'
           >
-            <GripVertical className="w-3 h-3" />
+            <GripVertical className='w-3 h-3' />
             <span>{t('surveyBuilder.dragToReorder', 'Drag to reorder questions')}</span>
           </motion.div>
         )}
@@ -259,7 +257,7 @@ export function QuestionListSidebar({
       {/* Question List */}
       <div
         ref={listRef}
-        className="flex-1 overflow-auto p-3 space-y-2"
+        className='flex-1 overflow-auto p-3 space-y-2'
         onDragLeave={() => {
           setDropTargetIndex(null);
           setDropPosition(null);
@@ -270,16 +268,16 @@ export function QuestionListSidebar({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="flex flex-col items-center justify-center py-16 text-center px-4"
+            className='flex flex-col items-center justify-center py-16 text-center px-4'
           >
             {/* Icon container with subtle animation */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.4, ease: [0.2, 0, 0, 1] }}
-              className="w-20 h-20 rounded-[28px] bg-primary-container flex items-center justify-center mb-5 border-2 border-primary/20"
+              className='w-20 h-20 rounded-[28px] bg-primary-container flex items-center justify-center mb-5 border-2 border-primary/20'
             >
-              <Sparkles className="w-9 h-9 text-on-primary-container" />
+              <LogoIcon size='lg' />
             </motion.div>
 
             {/* Title */}
@@ -287,7 +285,7 @@ export function QuestionListSidebar({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.3 }}
-              className="text-on-surface font-bold text-lg mb-2"
+              className='text-on-surface font-bold text-lg mb-2'
             >
               {t('surveyBuilder.noQuestions')}
             </motion.p>
@@ -299,7 +297,7 @@ export function QuestionListSidebar({
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25, duration: 0.3 }}
-                  className="text-on-surface-variant text-sm mb-8 max-w-[240px] leading-relaxed"
+                  className='text-on-surface-variant text-sm mb-8 max-w-[240px] leading-relaxed'
                 >
                   {t('surveyBuilder.addFirstQuestionDesc', 'Start building your survey by adding your first question')}
                 </motion.p>
@@ -313,7 +311,7 @@ export function QuestionListSidebar({
           </motion.div>
         ) : (
           <>
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode='popLayout'>
               {questions.map((question, index) => {
                 const translation = translationMap.get(question.id);
                 return (
@@ -342,7 +340,7 @@ export function QuestionListSidebar({
 
             {/* Add Question Button - subtle at bottom (only in edit mode) */}
             {!isReadOnly && (
-              <motion.div className="pt-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+              <motion.div className='pt-4' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                 <motion.button
                   onClick={onAddQuestion}
                   whileHover={{ scale: 1.01, borderColor: 'var(--color-primary)' }}
@@ -355,7 +353,7 @@ export function QuestionListSidebar({
                     'transition-all duration-300'
                   )}
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className='w-4 h-4' />
                   {t('surveyBuilder.addQuestion')}
                 </motion.button>
               </motion.div>
@@ -366,7 +364,7 @@ export function QuestionListSidebar({
 
       {/* Resize Handle - more subtle */}
       <div
-        className="absolute top-0 right-0 w-1 h-full cursor-col-resize bg-transparent hover:bg-primary/30 active:bg-primary/50 transition-colors z-10"
+        className='absolute top-0 right-0 w-1 h-full cursor-col-resize bg-transparent hover:bg-primary/30 active:bg-primary/50 transition-colors z-10'
         onMouseDown={(e) => {
           e.preventDefault();
           const aside = e.currentTarget.parentElement;

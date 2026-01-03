@@ -1,5 +1,6 @@
 ﻿{
   "Application.Export.ExportFailed": "Экспорт не удался: {0}",
+  "Errors.NamespaceContextRequired": "Требуется контекст пространства имен.",
   "Application.Export.SurveyNotFoundInNamespace": "Опрос не найден в текущем пространстве имен.",
   "Application.Export.UnsupportedExportFormat": "Неподдерживаемый формат экспорта.",
   "Application.Question.NotFoundInSurvey": "Вопрос не найден в этом опросе.",
@@ -541,7 +542,7 @@
   "Swagger.NamespaceIdDescription": "Заголовок идентификатора пространства имен для мульти-арендного контекста",
   "Validation.Answer.QuestionIdRequired": "ID вопроса обязателен.",
   "Validation.Answer.ValueMaxLength": "Значение ответа не может превышать 10000 символов.",
-  "Validation.AvatarUrl.InvalidUrl": "URL аватара должен быть действительным URL.",
+  "Validation.AvatarId.Invalid": "Неверный ID аватара. Ожидаемый формат: avatar-XX (например, avatar-01).",
   "Validation.BodyRequired": "Требуется текст.",
   "Validation.Branding.InvalidLogoPosition": "Недопустимое значение позиции логотипа.",
   "Validation.Branding.LogoUrlInvalid": "URL логотипа должен быть действительным URL.",

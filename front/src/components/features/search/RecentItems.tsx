@@ -2,10 +2,9 @@
 
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { useViewTransitionNavigate } from '@/hooks';
+import { useViewTransitionNavigate, useDateTimeFormatter } from '@/hooks';
 import { useSearchStore, type RecentItem } from '@/stores/searchStore';
 import { getPageIcon } from '@/config';
-import { formatRelativeTime } from '@/utils';
 import { Clock, Send, X, Trash2, FileText, type LucideIcon } from 'lucide-react';
 
 // Icon mapping for item types - using centralized page icons
@@ -33,6 +32,7 @@ interface RecentItemRowProps {
 }
 
 function RecentItemRow({ item, onSelect, onRemove, compact = false }: RecentItemRowProps) {
+  const { formatRelativeTime } = useDateTimeFormatter();
   const Icon = typeIcons[item.type] || FileText;
   const timeAgo = formatRelativeTime(item.visitedAt);
 

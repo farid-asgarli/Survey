@@ -62,6 +62,26 @@ export const SUPPORTED_LANGUAGES: readonly LanguageInfo[] = [
 ] as const;
 
 /**
+ * UI-supported languages - the subset of languages that have translation files
+ * for the application interface. Keep in sync with i18n/locales/*.json files.
+ */
+export const UI_LANGUAGES: readonly LanguageInfo[] = [
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
+  { code: 'az', name: 'Azerbaijani', nativeName: 'Azərbaycan', flag: '🇦🇿' },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
+] as const;
+
+/**
+ * UI language codes type
+ */
+export type UILanguageCode = (typeof UI_LANGUAGES)[number]['code'];
+
+/**
+ * Default UI language code
+ */
+export const DEFAULT_UI_LANGUAGE: UILanguageCode = 'en';
+
+/**
  * Map of language codes to their info for O(1) lookup
  */
 export const LANGUAGE_INFO_MAP: Record<string, LanguageInfo> = Object.fromEntries(SUPPORTED_LANGUAGES.map((lang) => [lang.code, lang]));

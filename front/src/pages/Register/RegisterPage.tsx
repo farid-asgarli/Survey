@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useViewTransitionNavigate } from '@/hooks';
 import { useAuthStore } from '@/stores';
-import { toast, LanguageSwitcher } from '@/components/ui';
-import { Sparkles } from 'lucide-react';
+import { toast, LanguageSwitcher, LogoIcon } from '@/components/ui';
 import { getErrorMessage } from '@/utils';
 import { useForm, FormProvider, zodResolver, type SubmitHandler } from '@/lib/form';
 import { registerSchema, type RegisterFormData } from '@/lib/validations';
@@ -61,22 +60,22 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-surface">
+    <div className='min-h-screen flex bg-surface'>
       {/* Language Switcher - Top Right */}
-      <div className="absolute top-4 right-4 z-10">
-        <LanguageSwitcher variant="compact" />
+      <div className='absolute top-4 right-4 z-10'>
+        <LanguageSwitcher variant='compact' />
       </div>
 
       {/* Left Panel - Form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto">
-        <div className="w-full max-w-md">
+      <div className='flex-1 flex items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto'>
+        <div className='w-full max-w-md'>
           {/* Logo & Welcome */}
-          <div className="text-center mb-8">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-linear-to-br from-tertiary to-tertiary/80 shadow-lg shadow-tertiary/25 mb-6">
-              <Sparkles className="h-8 w-8 text-on-tertiary" />
+          <div className='text-center mb-8'>
+            <div className='inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-linear-to-br from-tertiary to-tertiary/80 shadow-lg shadow-tertiary/25 mb-6'>
+              <LogoIcon size='lg' className='h-10 w-10' />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-on-surface mb-2">{t('auth.createAccount')}</h1>
-            <p className="text-on-surface-variant text-lg">{t('auth.joinUs', 'Join thousands of teams creating better surveys')}</p>
+            <h1 className='text-3xl sm:text-4xl font-bold text-on-surface mb-2'>{t('auth.createAccount')}</h1>
+            <p className='text-on-surface-variant text-lg'>{t('auth.joinUs', 'Join thousands of teams creating better surveys')}</p>
           </div>
 
           {/* Form */}
@@ -87,14 +86,14 @@ export function RegisterPage() {
       </div>
 
       {/* Right Panel - Illustration (Hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-3/5 relative bg-linear-to-bl from-surface via-tertiary-container/20 to-primary-container/30 items-center justify-center p-12">
+      <div className='hidden lg:flex lg:w-1/2 xl:w-3/5 relative bg-linear-to-bl from-surface via-tertiary-container/20 to-primary-container/30 items-center justify-center p-12'>
         <DecorativeBlobs />
 
-        <div className="relative z-10 text-center max-w-lg">
+        <div className='relative z-10 text-center max-w-lg'>
           <CommunityIllustration />
 
-          <h2 className="text-3xl xl:text-4xl font-bold text-on-surface mt-8 mb-4">{t('auth.registerIllustrationTitle', 'Join our community')}</h2>
-          <p className="text-lg text-on-surface-variant">
+          <h2 className='text-3xl xl:text-4xl font-bold text-on-surface mt-8 mb-4'>{t('auth.registerIllustrationTitle', 'Join our community')}</h2>
+          <p className='text-lg text-on-surface-variant'>
             {t('auth.registerIllustrationSubtitle', 'Create, distribute, and analyze surveys with powerful tools designed for teams.')}
           </p>
         </div>

@@ -5,8 +5,8 @@
 // Uses container queries (@sm:, @md:) for proper preview responsiveness
 
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, IconContainer, Chip } from '@/components/ui';
-import { ArrowRight, Clock, HelpCircle, Sparkles } from 'lucide-react';
+import { Button, Card, CardContent, IconContainer, Chip, LogoIcon } from '@/components/ui';
+import { ArrowRight, Clock, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
@@ -137,7 +137,7 @@ export function WelcomeScreen({
               variant='primary'
               shape='rounded'
               className='border-2 border-primary/20 transition-[border-radius,border-color] duration-500 hover:border-primary/40 hover:rounded-3xl'
-              icon={<Sparkles strokeWidth={1.5} />}
+              icon={<LogoIcon size='xl' />}
             />
           )}
 

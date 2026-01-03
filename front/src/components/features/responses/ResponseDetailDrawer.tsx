@@ -6,9 +6,9 @@ import { User, Clock, Calendar, CheckCircle2, XCircle, Trash2, FileText, Hash, L
 import { Drawer, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, Button, Skeleton, Divider, OverlayHeader } from '@/components/ui';
 import { useResponseDetail, useDeleteResponse } from '@/hooks/queries/useResponses';
 import { useSurveyDetail } from '@/hooks/queries/useSurveys';
-import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useConfirmDialog, useDateTimeFormatter } from '@/hooks';
 import { toast } from '@/components/ui';
-import { formatDuration, formatDurationBetween, formatDateTime, formatDate } from '@/utils';
+import { formatDuration, formatDurationBetween } from '@/utils';
 import { QuestionType } from '@/types';
 import type { Answer, Question } from '@/types';
 
@@ -31,7 +31,12 @@ function getResponseDuration(response: { timeSpentSeconds?: number; startedAt: s
 }
 
 // Helper to get answer display value
-function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (key: string) => string): React.ReactNode {
+function getAnswerDisplay(
+  answer: Answer,
+  question: Question | undefined,
+  t: (key: string) => string,
+  formatDate: (dateStr: string | undefined | null) => string
+): React.ReactNode {
   if (!question) {
     // Fallback: use displayValue (computed by backend) or deprecated fields
     return answer.displayValue || answer.text || t('responses.na');
@@ -174,7 +179,19 @@ function getAnswerDisplay(answer: Answer, question: Question | undefined, t: (ke
 }
 
 // Answer Card Component
-function AnswerCard({ answer, question, index, t }: { answer: Answer; question: Question | undefined; index: number; t: (key: string) => string }) {
+function AnswerCard({
+  answer,
+  question,
+  index,
+  t,
+  formatDate,
+}: {
+  answer: Answer;
+  question: Question | undefined;
+  index: number;
+  t: (key: string) => string;
+  formatDate: (dateStr: string | undefined | null) => string;
+}) {
   return (
     <div className='bg-surface-container-low rounded-2xl p-4 space-y-2'>
       <div className='flex items-start gap-3'>
@@ -186,13 +203,14 @@ function AnswerCard({ answer, question, index, t }: { answer: Answer; question: 
           {question?.isRequired && <span className='text-xs text-error'>{t('common.required')}</span>}
         </div>
       </div>
-      <div className='pl-9 text-on-surface'>{getAnswerDisplay(answer, question, t)}</div>
+      <div className='pl-9 text-on-surface'>{getAnswerDisplay(answer, question, t, formatDate)}</div>
     </div>
   );
 }
 
 export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange, onDeleted }: ResponseDetailDrawerProps) {
   const { t } = useTranslation();
+  const { formatDate, formatDateTime } = useDateTimeFormatter();
   const { data: response, isLoading, error } = useResponseDetail(surveyId, responseId || undefined);
   const { data: survey } = useSurveyDetail(surveyId);
   const deleteResponse = useDeleteResponse(surveyId);
@@ -329,7 +347,7 @@ export function ResponseDetailDrawer({ surveyId, responseId, open, onOpenChange,
                       <div className='text-center py-8 text-on-surface-variant'>{t('responses.noAnswers')}</div>
                     ) : (
                       sortedAnswers.map((answer, index) => (
-                        <AnswerCard key={answer.id} answer={answer} question={questionsMap.get(answer.questionId)} index={index} t={t} />
+                        <AnswerCard key={answer.id} answer={answer} question={questionsMap.get(answer.questionId)} index={index} t={t} formatDate={formatDate} />
                       ))
                     )}
                   </div>

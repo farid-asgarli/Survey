@@ -1,18 +1,20 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button, Input, Avatar, toast } from '@/components/ui';
-import { User, Camera, Sparkles, Save, Trash2, Mail } from 'lucide-react';
+import { User, Sparkles, Save, Mail } from 'lucide-react';
 import { useAuthStore } from '@/stores';
-import { useUpdateProfile, useUploadAvatar, useDeleteAvatar } from '@/hooks';
-import { cn } from '@/lib/utils';
+import { useUpdateProfile, useSelectAvatar, useClearAvatar, useUserAvatar } from '@/hooks';
+import { AvatarSelector } from '@/components/features/profile';
 
 export function ProfileSection() {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const updateProfile = useUpdateProfile();
-  const uploadAvatar = useUploadAvatar();
-  const deleteAvatar = useDeleteAvatar();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const selectAvatar = useSelectAvatar();
+  const clearAvatar = useClearAvatar();
+
+  // Get centralized avatar data (selected avatar + Azure AD photo)
+  const { avatarUrl, azureAdPhotoUrl, isAzureAdAvailable } = useUserAvatar();
 
   const [firstName, setFirstName] = useState(user?.firstName || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
@@ -53,30 +55,17 @@ export function ProfileSection() {
     });
   };
 
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click();
+  const handleSelectAvatar = async (avatarId: string) => {
+    await selectAvatar.mutateAsync(avatarId);
+    toast.success(t('profile.avatar.updated'));
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type and size
-    if (!file.type.startsWith('image/')) {
-      toast.error(t('profile.avatar.invalidType'));
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error(t('profile.avatar.tooLarge'));
-      return;
-    }
-
-    await uploadAvatar.mutateAsync(file);
+  const handleClearAvatar = async () => {
+    await clearAvatar.mutateAsync();
+    toast.success(t('profile.avatar.removed'));
   };
 
-  const handleDeleteAvatar = async () => {
-    await deleteAvatar.mutateAsync();
-  };
+  const fullName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || '?' : '?';
 
   return (
     <div className='space-y-6'>
@@ -88,34 +77,8 @@ export function ProfileSection() {
 
           {/* Avatar overlay */}
           <div className='absolute -bottom-12 left-6'>
-            <div className='relative group'>
-              <Avatar
-                src={user?.avatarUrl}
-                fallback={user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || '?' : '?'}
-                size='xl'
-                className='ring-4 ring-surface shadow-lg h-24 w-24 text-xl'
-              />
-              <button
-                onClick={handleAvatarClick}
-                className={cn(
-                  'absolute inset-0 flex items-center justify-center rounded-full',
-                  'bg-scrim/50 opacity-0 group-hover:opacity-100 transition-opacity',
-                  'cursor-pointer'
-                )}
-              >
-                <Camera className='h-6 w-6 text-inverse-on-surface' />
-              </button>
-              <input ref={fileInputRef} type='file' accept='image/*' onChange={handleFileChange} className='hidden' />
-            </div>
+            <Avatar src={avatarUrl} fallback={fullName} size='xl' className='ring-4 ring-surface shadow-lg h-24 w-24 text-xl' />
           </div>
-
-          {/* Delete avatar button */}
-          {user?.avatarUrl && (
-            <Button variant='destructive-tonal' size='sm' className='absolute bottom-2 right-4' onClick={handleDeleteAvatar} loading={deleteAvatar.isPending}>
-              <Trash2 className='h-4 w-4' />
-              {t('profile.avatar.remove')}
-            </Button>
-          )}
         </div>
 
         <CardContent className='pt-16 pb-6'>
@@ -126,6 +89,28 @@ export function ProfileSection() {
             {user && <Sparkles className='h-5 w-5 text-primary' />}
           </div>
           <p className='text-on-surface-variant'>{user?.email}</p>
+        </CardContent>
+      </Card>
+
+      {/* Avatar Selection Card */}
+      <Card variant='elevated' shape='rounded'>
+        <CardHeader>
+          <CardTitle className='flex items-center gap-2'>
+            <Sparkles className='h-5 w-5 text-primary' />
+            {t('profile.avatar.title')}
+          </CardTitle>
+          <CardDescription>{t('profile.avatar.description')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AvatarSelector
+            currentAvatarId={user?.avatarId}
+            fallback={fullName}
+            onSelect={handleSelectAvatar}
+            onClear={handleClearAvatar}
+            isLoading={selectAvatar.isPending || clearAvatar.isPending}
+            azureAdPhotoUrl={azureAdPhotoUrl || undefined}
+            showAzureAdOption={isAzureAdAvailable && !!azureAdPhotoUrl}
+          />
         </CardContent>
       </Card>
 

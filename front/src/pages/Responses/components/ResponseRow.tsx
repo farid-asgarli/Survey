@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { User, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { Checkbox, Chip, ListItemIcon } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { formatDateTimeShort, formatDuration, formatDurationBetween } from '@/utils';
+import { formatDuration, formatDurationBetween } from '@/utils';
+import { useDateTimeFormatter } from '@/hooks';
 import type { ResponseListItem } from '@/types';
 
 interface ResponseRowProps {
@@ -15,6 +16,7 @@ interface ResponseRowProps {
 
 export const ResponseRow = memo(function ResponseRow({ response, isSelected, onSelect, onClick }: ResponseRowProps) {
   const { t } = useTranslation();
+  const { formatDateTimeShort } = useDateTimeFormatter();
 
   // Memoize event handlers to prevent unnecessary re-renders
   const handleCheckboxChange = useCallback(

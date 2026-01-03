@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail, Users, Clock, Send, Calendar, Type, FileText, User, AtSign, Sparkles, Check, ChevronRight, Zap, PenLine } from 'lucide-react';
+import { Mail, Users, Send, Calendar, Type, FileText, User, AtSign, Sparkles, Check, ChevronRight, Zap, PenLine, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Dialog,
@@ -39,56 +39,6 @@ interface CreateDistributionDialogProps {
   onSuccess?: () => void;
 }
 
-// Fallback templates when API templates are not available
-const fallbackTemplates: { id: string; name: string; subject: string; htmlBody: string; icon: typeof Mail }[] = [
-  {
-    id: 'default',
-    name: 'Default',
-    subject: 'We would love your feedback',
-    icon: Mail,
-    htmlBody: `<p>Hello,</p>
-
-<p>We're conducting a survey and would greatly appreciate your input. Your feedback helps us improve our services.</p>
-
-<p><a href="{{surveyLink}}">Click here to take the survey</a></p>
-
-<p>This survey should take about 5-10 minutes to complete.</p>
-
-<p>Thank you for your time!</p>`,
-  },
-  {
-    id: 'reminder',
-    name: 'Reminder',
-    subject: 'Reminder: Your feedback is valuable to us',
-    icon: Clock,
-    htmlBody: `<p>Hello,</p>
-
-<p>We noticed you haven't completed our survey yet. We'd really appreciate if you could take a few minutes to share your thoughts.</p>  
-
-<p><a href="{{surveyLink}}">Click here to take the survey</a></p>
-
-<p>Your input is invaluable to us.</p>
-
-<p>Best regards</p>`,
-  },
-  {
-    id: 'formal',
-    name: 'Formal',
-    subject: 'Survey Invitation',
-    icon: FileText,
-    htmlBody: `<p>Dear Participant,</p>
-
-<p>You have been selected to participate in our survey. Your responses will be kept confidential and will be used to improve our services.</p>
-
-<p>Please click the link below to access the survey:</p>
-<p><a href="{{surveyLink}}">{{surveyLink}}</a></p>
-
-<p>We appreciate your participation.</p>
-
-<p>Sincerely</p>`,
-  },
-];
-
 type SendOption = 'now' | 'schedule';
 
 export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenChange, onSuccess }: CreateDistributionDialogProps) {
@@ -122,17 +72,13 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
 
   // Fetch email templates from API
   const { data: templatesResponse, isLoading: templatesLoading } = useEmailTemplates();
-  const apiTemplates = templatesResponse?.items ?? [];
 
-  // Template options for selector (API templates + fallback)
+  // Memoize apiTemplates to prevent dependency array issues
+  const apiTemplates = useMemo(() => templatesResponse?.items ?? [], [templatesResponse?.items]);
+
+  // Template options for selector (API templates only)
   const templateOptions = useMemo(() => {
-    const options: { id: string; name: string; subject: string; icon?: typeof Mail }[] = [];
-    if (apiTemplates.length > 0) {
-      options.push(...apiTemplates.map((t) => ({ id: t.id, name: t.name, subject: t.subject })));
-    }
-    // Always add fallback templates as alternatives
-    options.push(...fallbackTemplates.map((t) => ({ id: t.id, name: t.name, subject: t.subject, icon: t.icon })));
-    return options;
+    return apiTemplates.map((t) => ({ id: t.id, name: t.name, subject: t.subject }));
   }, [apiTemplates]);
 
   // Fetch full template details when an API template is selected
@@ -148,10 +94,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
       // eslint-disable-next-line react-hooks/set-state-in-effect -- One-time initialization when templates load, guarded by ref
       setSelectedTemplateId(firstTemplate.id);
       setSubject(firstTemplate.subject);
-      const fallback = fallbackTemplates.find((t) => t.id === firstTemplate.id);
-      if (fallback) {
-        setBody(fallback.htmlBody);
-      }
+      // Body will be loaded when useEmailTemplate fetches the full template
     }
   }, [templateOptions]);
 
@@ -169,18 +112,11 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
   const handleTemplateChange = useCallback(
     (templateId: string) => {
       setSelectedTemplateId(templateId);
-      // Check if it's a fallback template first (for immediate feedback)
-      const fallback = fallbackTemplates.find((t) => t.id === templateId);
-      if (fallback) {
-        setSubject(fallback.subject);
-        setBody(fallback.htmlBody);
-      } else {
-        // For API template, set subject immediately, body will load via useEffect
-        const apiTemplate = apiTemplates.find((t) => t.id === templateId);
-        if (apiTemplate) {
-          setSubject(apiTemplate.subject);
-          // Body will be updated when useEmailTemplate fetches the full template
-        }
+      // Set subject immediately, body will load via useEffect when full template is fetched
+      const apiTemplate = apiTemplates.find((t) => t.id === templateId);
+      if (apiTemplate) {
+        setSubject(apiTemplate.subject);
+        // Body will be updated when useEmailTemplate fetches the full template
       }
     },
     [apiTemplates]
@@ -376,8 +312,6 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
                   <SelectionCardGroup columns={{ default: 3 }} gap={3}>
                     {templateOptions.map((template) => {
                       const isSelected = selectedTemplateId === template.id;
-                      const fallback = fallbackTemplates.find((t) => t.id === template.id);
-                      const TemplateIcon = fallback?.icon || FileText;
                       return (
                         <SelectionCard
                           key={template.id}
@@ -390,7 +324,7 @@ export function CreateDistributionDialog({ surveyId, surveyTitle, open, onOpenCh
                           showRing
                         >
                           <SelectionCardIcon isSelected={isSelected} size='md'>
-                            <TemplateIcon className='w-5 h-5' />
+                            <FileText className='w-5 h-5' />
                           </SelectionCardIcon>
                           <SelectionCardLabel isSelected={isSelected}>{template.name}</SelectionCardLabel>
                         </SelectionCard>

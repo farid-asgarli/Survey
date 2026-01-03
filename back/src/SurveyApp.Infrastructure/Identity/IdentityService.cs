@@ -263,8 +263,7 @@ public class IdentityService(
             domainUser?.LastName ?? user.LastName,
             domainUser?.FullName ?? $"{user.FirstName} {user.LastName}".Trim(),
             domainUser?.EmailConfirmed ?? false,
-            domainUser?.AvatarUrl,
-            domainUser?.ProfilePictureUrl,
+            domainUser?.AvatarId,
             domainUser?.LastLoginAt,
             domainUser?.IsActive ?? true,
             domainUser?.CreatedAt ?? DateTime.UtcNow,
@@ -448,6 +447,35 @@ public class IdentityService(
                 user.ExternalProvider = "AzureAD";
                 user.EmailConfirmed = true; // Azure AD emails are verified
                 await _userManager.UpdateAsync(user);
+            }
+
+            // Check if domain user exists (recovery for inconsistent state)
+            var domainUserExists = await _userRepository.GetByIdAsync(user.DomainUserId);
+            if (domainUserExists == null)
+            {
+                _logger.LogWarning(
+                    "Identity user {Email} exists but domain user {DomainUserId} is missing. Creating domain user.",
+                    email,
+                    user.DomainUserId
+                );
+
+                // Create the missing domain user with the same ID as DomainUserId
+                var domainUser = User.CreateWithId(
+                    user.DomainUserId,
+                    email,
+                    string.Empty,
+                    firstName,
+                    lastName
+                );
+                domainUser.ConfirmEmail();
+                await _userRepository.AddAsync(domainUser);
+                await _unitOfWork.SaveChangesAsync();
+
+                _logger.LogInformation(
+                    "Domain user created for existing Identity user: {Email}, DomainUserId: {DomainUserId}",
+                    email,
+                    user.DomainUserId
+                );
             }
 
             // Update last external login timestamp
@@ -647,10 +675,19 @@ public class IdentityService(
             return null;
         }
 
-        // Create domain user
+        // Create domain user FIRST and save it before creating Identity user
+        // This ensures we have a domain user even if Identity creation fails
         var domainUser = User.Create(emailVo.Value, string.Empty, firstName, lastName);
         domainUser.ConfirmEmail(); // Azure AD users are pre-verified
         await _userRepository.AddAsync(domainUser);
+
+        // Save domain user BEFORE creating Identity user to ensure consistency
+        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation(
+            "Domain user created and saved for Azure AD user: {Email}, DomainUserId: {DomainUserId}",
+            email,
+            domainUser.Id
+        );
 
         // Create identity user without password (SSO users don't have local passwords)
         var identityUser = new ApplicationUser
@@ -673,13 +710,20 @@ public class IdentityService(
         if (!result.Succeeded)
         {
             _logger.LogError(
-                "Failed to create Azure AD user: {Errors}",
-                string.Join(", ", result.Errors.Select(e => e.Description))
+                "Failed to create Azure AD identity user: {Errors}. Domain user {DomainUserId} was already created.",
+                string.Join(", ", result.Errors.Select(e => e.Description)),
+                domainUser.Id
             );
+            // Note: Domain user is already saved, but Identity creation failed.
+            // This is acceptable - the user can retry SSO login and it will find the existing email.
             return null;
         }
 
-        await _unitOfWork.SaveChangesAsync();
+        _logger.LogInformation(
+            "Azure AD user provisioned successfully: {Email}, DomainUserId: {DomainUserId}",
+            email,
+            domainUser.Id
+        );
         return identityUser;
     }
 

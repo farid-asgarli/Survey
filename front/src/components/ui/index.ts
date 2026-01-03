@@ -53,7 +53,7 @@ export { LinearProgress, CircularProgress, LoadingDots, LoadingIndicator } from 
 export { LoadingState, PageLoading, InlineLoading } from './LoadingState';
 export type { LoadingStateProps, PageLoadingProps, InlineLoadingProps } from './LoadingState';
 export { AppLoadingScreen, LoadingSpinner, PageTransitionLoader } from './AppLoadingScreen';
-export type { AppLoadingScreenProps, LoadingSpinnerProps } from './AppLoadingScreen';
+export type { AppLoadingScreenProps, LoadingSpinnerProps, LoadingStage } from './AppLoadingScreen';
 export {
   Skeleton,
   SkeletonText,
@@ -121,3 +121,7 @@ export { LanguageSwitcher } from './LanguageSwitcher';
 // Onboarding
 export { OnboardingWizard } from './OnboardingWizard';
 export { GettingStartedWizard } from './GettingStartedWizard';
+
+// Branding
+export { Logo, LogoIcon } from './Logo';
+export type { LogoProps, LogoVariant, LogoSize } from './Logo';

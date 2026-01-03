@@ -125,8 +125,8 @@ export interface User {
   lastName: string;
   fullName: string;
   emailConfirmed: boolean;
-  avatarUrl?: string;
-  profilePictureUrl?: string; // Backend field name (avatarUrl is alias)
+  /** Avatar ID from the predefined collection (e.g., "avatar-01") */
+  avatarId?: string | null;
   lastLoginAt?: string;
   isActive: boolean;
   createdAt: string;
@@ -178,7 +178,6 @@ export interface ResetPasswordRequest {
 export interface UpdateProfileRequest {
   firstName?: string;
   lastName?: string;
-  avatarUrl?: string;
 }
 
 export interface ChangePasswordRequest {
@@ -186,8 +185,8 @@ export interface ChangePasswordRequest {
   newPassword: string;
 }
 
-export interface UploadAvatarResponse {
-  avatarUrl: string;
+export interface SelectAvatarResponse {
+  avatarId: string | null;
 }
 
 /** Standard message response from API endpoints */
@@ -221,8 +220,8 @@ export interface NamespaceMembership {
   firstName: string;
   lastName: string;
   fullName: string;
-  avatarUrl?: string;
-  profilePictureUrl?: string;
+  /** The avatar ID (e.g., "avatar-01"). Frontend resolves to URL. */
+  avatarId?: string;
   role: MemberRole;
   joinedAt: string;
 }
@@ -1359,7 +1358,7 @@ export interface ResponseTrend {
 // ============ User Preferences/Settings ============
 
 export type ThemeMode = 'light' | 'dark' | 'system';
-export type ColorPalette = 'purple' | 'blue' | 'green' | 'orange' | 'pink' | 'teal';
+export type ColorPalette = 'purple' | 'blue' | 'green' | 'orange' | 'pink' | 'teal' | 'amber' | 'indigo' | 'coral' | 'midnight';
 export type FontSizeScale = 'small' | 'medium' | 'large' | 'extra-large';
 export type DateFormatOption = 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY-MM-DD';
 export type TimeFormatOption = '12h' | '24h';

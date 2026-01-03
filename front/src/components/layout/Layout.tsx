@@ -1,4 +1,5 @@
 import { type ReactNode, useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -6,24 +7,34 @@ import { NavigationRail, NavigationRailItem, NavigationBar, NavigationBarItem } 
 import { AppBar } from './AppBar';
 import { NamespaceSelector } from './NamespaceSelector';
 import { UserMenu } from './UserMenu';
-import { ToastContainer } from '@/components/ui';
+import { ToastContainer, Avatar, Divider, LanguageSwitcher } from '@/components/ui';
 import { CreateNamespaceDialog } from '@/components/features/namespaces';
 import { GlobalSearch, SearchButton, KeyboardShortcutsHelp } from '@/components/features/search';
-import { useNamespacesList, useViewTransitionNavigate, useTranslatedNavItems, useTranslatedPageConfig, useDialogState } from '@/hooks';
-import { useSearchStore, useShortcutsStore, useKeyboardShortcut, useGlobalKeyboardListener, useActiveNamespace } from '@/stores';
-import { Bell, Building2 } from 'lucide-react';
+import {
+  useNamespacesList,
+  useViewTransitionNavigate,
+  useTranslatedNavItems,
+  useTranslatedPageConfig,
+  useDialogState,
+  useCurrentUser,
+  useUserAvatarUrl,
+} from '@/hooks';
+import { useSearchStore, useShortcutsStore, useKeyboardShortcut, useGlobalKeyboardListener, useUser, useAuthStore } from '@/stores';
+import { Bell, User, Settings, LogOut } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-// Compact Namespace Selector for Navigation Rail
-function CompactNamespaceSelector() {
+// Compact User Profile for Navigation Rail
+function CompactUserProfile({ onSettingsClick, onLogoutClick }: { onSettingsClick?: () => void; onLogoutClick?: () => void }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const activeNamespace = useActiveNamespace();
+  const user = useUser();
+  const logout = useAuthStore((s) => s.logout);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const avatarUrl = useUserAvatarUrl();
 
   // Close on click outside
   useEffect(() => {
@@ -37,34 +48,117 @@ function CompactNamespaceSelector() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
-  // Get initials from namespace name
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const handleLogout = async () => {
+    setOpen(false);
+    await logout();
+    onLogoutClick?.();
   };
 
+  if (!user) return null;
+
+  const userInitials = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email.charAt(0).toUpperCase();
+
+  // Calculate menu position based on button
+  const getMenuPosition = () => {
+    if (!triggerRef.current) return { top: 0, left: 0 };
+    const rect = triggerRef.current.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.right + 12, // 12px gap from button
+    };
+  };
+
+  const menuPosition = open ? getMenuPosition() : { top: 0, left: 0 };
+
   return (
-    <div className="relative">
+    <div className='relative'>
       <button
+        ref={triggerRef}
+        onClick={() => setOpen(!open)}
+        aria-label={t('a11y.userMenu')}
+        aria-expanded={open}
+        aria-haspopup='menu'
         className={cn(
-          'flex h-11 w-11 items-center justify-center rounded-2xl',
-          'bg-primary-container text-on-primary-container',
-          'transition-all duration-200 hover:scale-105'
+          'flex h-11 w-11 items-center justify-center rounded-full',
+          'ring-2 ring-primary/20 hover:ring-primary/40',
+          'transition-all duration-200 hover:scale-105',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary'
         )}
-        title={activeNamespace?.name || t('workspaces.selectWorkspace')}
       >
-        {activeNamespace ? <span className="text-sm font-bold">{getInitials(activeNamespace.name)}</span> : <Building2 className="h-5 w-5" />}
+        <Avatar src={avatarUrl} fallback={userInitials} size='default' className='h-10 w-10' />
       </button>
+
+      {open &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{ top: menuPosition.top, left: menuPosition.left }}
+            className={cn(
+              'fixed w-64 py-2 rounded-2xl z-[9999]',
+              'bg-surface-container border-2 border-outline-variant shadow-lg',
+              'animate-in fade-in zoom-in-95 slide-in-from-left-2 duration-150'
+            )}
+          >
+            {/* User info */}
+            <div className='px-4 py-3'>
+              <div className='flex items-center gap-3'>
+                <Avatar src={avatarUrl} fallback={userInitials} size='lg' />
+                <div className='flex-1 min-w-0'>
+                  <p className='text-sm font-medium text-on-surface truncate'>
+                    {user.firstName || ''} {user.lastName || ''}
+                  </p>
+                  <p className='text-xs text-on-surface-variant truncate'>{user.email}</p>
+                </div>
+              </div>
+            </div>
+
+            <Divider className='my-1' />
+
+            {/* Menu items */}
+            <div className='py-1'>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  onSettingsClick?.();
+                }}
+                className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-on-surface hover:bg-on-surface/5 transition-colors')}
+              >
+                <User className='h-5 w-5 text-on-surface-variant' />
+                <span className='text-sm'>{t('navigation.profile')}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  onSettingsClick?.();
+                }}
+                className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-on-surface hover:bg-on-surface/5 transition-colors')}
+              >
+                <Settings className='h-5 w-5 text-on-surface-variant' />
+                <span className='text-sm'>{t('navigation.settings')}</span>
+              </button>
+
+              {/* Language Switcher */}
+              <div className='px-4 py-2.5'>
+                <LanguageSwitcher variant='default' />
+              </div>
+            </div>
+
+            <Divider className='my-1' />
+
+            {/* Logout */}
+            <div className='py-1'>
+              <button onClick={handleLogout} className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-error hover:bg-error/5 transition-colors')}>
+                <LogOut className='h-5 w-5' />
+                <span className='text-sm'>{t('auth.signOut')}</span>
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
-
-// Get navigation items from centralized config
-// (These will be used with translation hooks inside the component)
 
 export function Layout({ children }: LayoutProps) {
   const { t } = useTranslation();
@@ -79,6 +173,10 @@ export function Layout({ children }: LayoutProps) {
 
   // Fetch namespaces for the current user - this populates the namespace store
   useNamespacesList();
+
+  // Fetch current user profile in background (stale-while-revalidate)
+  // This ensures user data stays fresh while showing cached data immediately
+  useCurrentUser();
 
   // Global keyboard listener
   useGlobalKeyboardListener();
@@ -140,7 +238,7 @@ export function Layout({ children }: LayoutProps) {
     // Track survey builder visits
     const surveyMatch = path.match(/^\/surveys\/([^/]+)\/edit$/);
     if (surveyMatch) {
-      const title = document.title.replace(' - Survey App', '').replace('Edit: ', '');
+      const title = document.title.replace(' - Inquiro', '').replace('Edit: ', '');
       addRecentItem({
         id: surveyMatch[1],
         type: 'survey',
@@ -155,7 +253,7 @@ export function Layout({ children }: LayoutProps) {
       addRecentItem({
         id: templateMatch[1],
         type: 'template',
-        title: document.title.replace(' - Survey App', '') || t('common.templateFallback'),
+        title: document.title.replace(' - Inquiro', '') || t('common.templateFallback'),
         url: path,
       });
     }
@@ -166,7 +264,7 @@ export function Layout({ children }: LayoutProps) {
       addRecentItem({
         id: themeMatch[1],
         type: 'theme',
-        title: document.title.replace(' - Survey App', '') || t('common.themeFallback'),
+        title: document.title.replace(' - Inquiro', '') || t('common.themeFallback'),
         url: path,
       });
     }
@@ -178,13 +276,13 @@ export function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="flex h-screen w-full bg-surface overflow-hidden">
+    <div className='flex h-screen w-full bg-surface overflow-hidden'>
       {/* Desktop Navigation Rail */}
-      <aside className="hidden md:flex flex-col h-full">
-        <NavigationRail className="flex-1">
-          {/* Namespace Selector */}
-          <div className="mb-4 mt-1">
-            <CompactNamespaceSelector />
+      <aside className='hidden md:flex flex-col h-full'>
+        <NavigationRail className='flex-1'>
+          {/* User Profile */}
+          <div className='mb-4 mt-1'>
+            <CompactUserProfile onSettingsClick={() => navigate('/settings')} onLogoutClick={() => navigate('/login')} />
           </div>
 
           {/* Main navigation items */}
@@ -193,7 +291,7 @@ export function Layout({ children }: LayoutProps) {
             return (
               <NavigationRailItem
                 key={item.path}
-                icon={<Icon className="h-5 w-5" />}
+                icon={<Icon className='h-5 w-5' />}
                 label={item.label}
                 active={isActive(item.path)}
                 onClick={() => navigate(item.path)}
@@ -202,7 +300,7 @@ export function Layout({ children }: LayoutProps) {
           })}
 
           {/* Divider */}
-          <div className="w-10 h-px bg-outline-variant/30 my-2" />
+          <div className='w-10 h-px bg-outline-variant/30 my-2' />
 
           {/* Secondary navigation items */}
           {secondaryNavItems.map((item) => {
@@ -210,7 +308,7 @@ export function Layout({ children }: LayoutProps) {
             return (
               <NavigationRailItem
                 key={item.path}
-                icon={<Icon className="h-5 w-5" />}
+                icon={<Icon className='h-5 w-5' />}
                 label={item.label}
                 active={isActive(item.path)}
                 onClick={() => navigate(item.path)}
@@ -219,12 +317,12 @@ export function Layout({ children }: LayoutProps) {
           })}
 
           {/* Bottom items */}
-          <div className="mt-auto mb-2 flex flex-col items-center gap-1">
+          <div className='mt-auto mb-2 flex flex-col items-center gap-1'>
             {(() => {
               const Icon = settingsConfig.icon;
               return (
                 <NavigationRailItem
-                  icon={<Icon className="h-5 w-5" />}
+                  icon={<Icon className='h-5 w-5' />}
                   label={settingsConfig.label}
                   active={isActive(settingsConfig.path)}
                   onClick={() => navigate(settingsConfig.path)}
@@ -236,16 +334,16 @@ export function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className='flex-1 flex flex-col min-w-0 overflow-hidden'>
         {/* Top App Bar - only show on Dashboard */}
         {location.pathname === '/' && (
           <AppBar
-            leading={<NamespaceSelector className="hidden sm:block" onCreateNew={() => createNamespaceDialog.open()} />}
+            leading={<NamespaceSelector className='hidden sm:block' onCreateNew={() => createNamespaceDialog.open()} />}
             trailing={
-              <div className="flex items-center gap-1">
+              <div className='flex items-center gap-1'>
                 {/* Search button - show compact on smaller screens */}
-                <SearchButton variant="compact" className="hidden lg:flex" />
-                <SearchButton variant="icon" className="lg:hidden" />
+                <SearchButton variant='compact' className='hidden lg:flex' />
+                <SearchButton variant='icon' className='lg:hidden' />
 
                 <button
                   aria-label={t('common.notifications')}
@@ -255,8 +353,8 @@ export function Layout({ children }: LayoutProps) {
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
                   )}
                 >
-                  <Bell className="h-5 w-5 text-on-surface-variant" />
-                  <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-error" />
+                  <Bell className='h-5 w-5 text-on-surface-variant' />
+                  <span className='absolute top-2 right-2 h-2 w-2 rounded-full bg-error' />
                 </button>
                 <UserMenu onSettingsClick={() => navigate('/settings')} onLogoutClick={() => navigate('/login')} />
               </div>
@@ -265,7 +363,7 @@ export function Layout({ children }: LayoutProps) {
         )}
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className='flex-1 overflow-y-auto'>{children}</main>
       </div>
 
       {/* Mobile Navigation Bar */}
@@ -275,7 +373,7 @@ export function Layout({ children }: LayoutProps) {
           return (
             <NavigationBarItem
               key={item.path}
-              icon={<Icon className="h-5 w-5" />}
+              icon={<Icon className='h-5 w-5' />}
               label={item.label}
               active={isActive(item.path)}
               onClick={() => navigate(item.path)}

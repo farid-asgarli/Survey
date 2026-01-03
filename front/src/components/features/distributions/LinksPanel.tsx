@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { formatDateTime, formatRelativeTime, isPast } from '@/utils';
+import { isPast } from '@/utils';
+import { useDateTimeFormatter } from '@/hooks';
 import {
   Link2,
   Copy,
@@ -66,6 +67,7 @@ function LinkCard({
   onReactivate: (linkId: string) => void;
 }) {
   const { t } = useTranslation();
+  const { formatDateTime, formatRelativeTime } = useDateTimeFormatter();
   const { copied, copy } = useCopyToClipboard();
 
   const linkTypeConfig: Record<LinkType, { label: string; icon: typeof Globe; color: string; description: string }> = {

@@ -36,7 +36,7 @@ public class UpdateProfileCommandHandler(
             return Result<UserDto>.NotFound("Errors.UserNotFound");
         }
 
-        user.UpdateProfile(request.FirstName, request.LastName, request.AvatarUrl);
+        user.UpdateProfile(request.FirstName, request.LastName, request.AvatarId);
 
         _userRepository.Update(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Controller } from 'react-hook-form';
-import { Input, Button, Checkbox, AzureAdLoginButton } from '@/components/ui';
-import { Eye, EyeOff, AlertCircle, Sparkles, ArrowRight } from 'lucide-react';
+import { Input, Button, Checkbox, AzureAdLoginButton, LogoIcon } from '@/components/ui';
+import { Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
 import { useFormContext } from '@/lib/form';
 import type { LoginFormData } from '@/lib/validations';
 
@@ -34,7 +34,7 @@ export function LoginForm({ isLoading, error, onSubmit }: LoginFormProps) {
       {/* Logo & Welcome */}
       <div className='text-center mb-10'>
         <div className='inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-linear-to-br from-primary to-primary/80 shadow-lg shadow-primary/25 mb-6'>
-          <Sparkles className='h-8 w-8 text-on-primary' />
+          <LogoIcon size='lg' className='h-10 w-10' />
         </div>
         <h1 className='text-3xl sm:text-4xl font-bold text-on-surface mb-2'>{t('auth.welcomeBack', 'Welcome back')}</h1>
         <p className='text-on-surface-variant text-lg'>{t('auth.signInToContinue', 'Sign in to continue to your account')}</p>

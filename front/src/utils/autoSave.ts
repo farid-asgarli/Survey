@@ -1,6 +1,6 @@
 // Auto-save utility for public survey responses
 
-import { getCurrentISOTimestamp } from './dateFormatters';
+import { getCurrentISOTimestamp } from './dateTimeFormatter';
 
 // ============ Configuration ============
 const STORAGE_PREFIX = 'survey_autosave_';

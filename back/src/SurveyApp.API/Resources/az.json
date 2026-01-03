@@ -1,5 +1,6 @@
 ﻿{
   "Application.Export.ExportFailed": "Eksport uğursuz oldu: {0}",
+  "Errors.NamespaceContextRequired": "Namespace konteksti tələb olunur.",
   "Application.Export.SurveyNotFoundInNamespace": "Cari namespace-də sorğu tapılmadı.",
   "Application.Export.UnsupportedExportFormat": "Dəstəklənməyən eksport formatı.",
   "Application.Question.NotFoundInSurvey": "Sual bu sorğuda tapılmadı.",
@@ -541,7 +542,7 @@
   "Swagger.NamespaceIdDescription": "Çox müştərili kontekst üçün Namespace ID başlığı",
   "Validation.Answer.QuestionIdRequired": "Sual ID-si tələb olunur.",
   "Validation.Answer.ValueMaxLength": "Cavab dəyəri 10000 simvoldan çox ola bilməz.",
-  "Validation.AvatarUrl.InvalidUrl": "Avatar URL etibarlı URL olmalıdır.",
+  "Validation.AvatarId.Invalid": "Yanlış avatar ID-si. Gözlənilən format: avatar-XX (məsələn, avatar-01).",
   "Validation.BodyRequired": "Mətn tələb olunur.",
   "Validation.Branding.InvalidLogoPosition": "Etibarsız loqo mövqeyi dəyəri.",
   "Validation.Branding.LogoUrlInvalid": "Loqo URL-i etibarlı URL olmalıdır.",

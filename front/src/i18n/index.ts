@@ -6,21 +6,25 @@ import en from './locales/en.json';
 import az from './locales/az.json';
 import ru from './locales/ru.json';
 
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE_CODE, getLanguageInfo as getLanguageInfoFromConfig, type LanguageInfo } from '@/config/languages';
+import {
+  SUPPORTED_LANGUAGES,
+  DEFAULT_LANGUAGE_CODE,
+  UI_LANGUAGES,
+  DEFAULT_UI_LANGUAGE,
+  getLanguageInfo as getLanguageInfoFromConfig,
+  type LanguageInfo,
+  type UILanguageCode,
+} from '@/config/languages';
 
-// UI-supported languages (subset of survey-supported languages - only those with translation files)
-export const LANGUAGES = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
-  { code: 'az', name: 'Azerbaijani', nativeName: 'Azərbaycan', flag: '🇦🇿' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
-] as const;
+// Re-export UI languages for backward compatibility
+export const LANGUAGES = UI_LANGUAGES;
 
-export type LanguageCode = (typeof LANGUAGES)[number]['code'];
+export type LanguageCode = UILanguageCode;
 
-export const DEFAULT_LANGUAGE: LanguageCode = 'en';
+export const DEFAULT_LANGUAGE: LanguageCode = DEFAULT_UI_LANGUAGE;
 
 // Re-export centralized language config for survey languages
-export { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE_CODE, type LanguageInfo };
+export { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE_CODE, UI_LANGUAGES, type LanguageInfo, type UILanguageCode };
 export const getSurveyLanguageInfo = getLanguageInfoFromConfig;
 
 // Initialize i18next
@@ -34,7 +38,7 @@ i18n
       ru: { translation: ru },
     },
     fallbackLng: DEFAULT_LANGUAGE,
-    supportedLngs: LANGUAGES.map((lang) => lang.code),
+    supportedLngs: UI_LANGUAGES.map((lang) => lang.code),
 
     // Language detection options
     detection: {

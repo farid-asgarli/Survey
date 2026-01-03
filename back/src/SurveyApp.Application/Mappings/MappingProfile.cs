@@ -58,7 +58,7 @@ public class MappingProfile : Profile
         CreateMap<NamespaceMembership, NamespaceMemberDto>()
             .ForMember(d => d.Email, opt => opt.MapFrom(s => s.User.Email))
             .ForMember(d => d.FullName, opt => opt.MapFrom(s => s.User.FullName))
-            .ForMember(d => d.ProfilePictureUrl, opt => opt.MapFrom(s => s.User.ProfilePictureUrl));
+            .ForMember(d => d.AvatarId, opt => opt.MapFrom(s => s.User.AvatarId));
 
         // User mappings
         CreateMap<User, UserDto>();

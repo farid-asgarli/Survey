@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatDateShort, formatDateTime, getToday, getDaysAgo } from '@/utils';
+import { getToday, getDaysAgo } from '@/utils';
+import { useDateTimeFormatter } from '@/hooks';
 import {
   TrendingUp,
   MousePointerClick,
@@ -99,6 +100,7 @@ function StatCard({
 }
 
 function MiniBarChart({ data }: { data: { date: string; clicks: number; uniqueClicks: number }[] }) {
+  const { formatDateShort } = useDateTimeFormatter();
   const maxCount = Math.max(...data.map((d) => d.clicks), 1);
   // Show last 14 days or all data if less
   const recentData = data.slice(-14);
@@ -283,6 +285,7 @@ function ErrorState({ onRetry, title, description, retryLabel }: { onRetry: () =
 
 export function LinkAnalyticsDrawer({ link, surveyId, onClose }: LinkAnalyticsDrawerProps) {
   const { t } = useTranslation();
+  const { formatDateTime } = useDateTimeFormatter();
   const [dateRange] = useState(getDefaultDateRange);
 
   // Fetch analytics from API

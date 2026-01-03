@@ -1,4 +1,4 @@
-﻿{
+{
   "a11y": {
     "avatarAlt": "Avatar",
     "close": "Bağla",
@@ -189,6 +189,23 @@
     "validation": {
       "invalidType": "Zəhmət olmasa düzgün şəkil faylı seçin (PNG, JPG, GIF)",
       "tooLarge": "Şəkil 5MB-dan kiçik olmalıdır"
+    },
+    "selectAvatar": "Avatar Seç",
+    "changeAvatar": "Avatarı Dəyiş",
+    "selectFromCollection": "3D personaj kolleksiyamızdan seçin",
+    "removeAvatar": "Avatarı Sil",
+    "confirm": "Seçimi Təsdiqlə",
+    "microsoftAccount": "Microsoft Hesab Şəkli",
+    "chooseCharacter": "3D Personajlar",
+    "selectorDialog": {
+      "title": "Avatarınızı Seçin",
+      "description": "Kolleksiyamızdan personaj seçin və ya Microsoft hesab şəklinizi istifadə edin"
+    },
+    "preview": {
+      "selectOne": "Avatar seçin",
+      "selected": "Seçildi",
+      "hover": "Önbaxış",
+      "microsoftPhoto": "Microsoft Şəkli"
     }
   },
   "avatarUpload": {
@@ -252,8 +269,8 @@
     "add": "Əlavə et",
     "all": "Hamısı",
     "almostReady": "Demək olar ki hazırdır",
-    "appName": "Sorğu Tətbiqi",
-    "appTitle": "Sorğu Tətbiqi",
+    "appName": "Inquiro",
+    "appTitle": "Inquiro",
     "back": "Geri",
     "breadcrumb": "Naviqasiya",
     "cancel": "Ləğv et",
@@ -329,6 +346,8 @@
     "showLess": "Daha az göstər",
     "showMore": "Daha {{count}} göstər",
     "signingIn": "Daxil olursunuz",
+    "loadingWorkspace": "İş sahəsi yüklənir",
+    "loadingPreferences": "Tənzimləmələr yüklənir",
     "somethingWentWrong": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
     "status": "Status",
     "submit": "Göndər",
@@ -1296,6 +1315,28 @@
     },
     "title": "E-poçt Paylaşımı Yarat"
   },
+  "theme": {
+    "palette": {
+      "lavender": "Lavanda",
+      "ocean": "Okean",
+      "forest": "Meşə",
+      "sunset": "Qürub",
+      "rose": "Qızılgül",
+      "aqua": "Akva",
+      "amber": "Kəhrəba",
+      "indigo": "İndigo",
+      "coral": "Məcan",
+      "midnight": "Gecə yarısı"
+    },
+    "mode": {
+      "light": "İşıqlı",
+      "dark": "Qaranlıq",
+      "system": "Sistem",
+      "lightDesc": "Həmişə işıqlı rejim istifadə et",
+      "darkDesc": "Həmişə qaranlıq rejim istifadə et",
+      "systemDesc": "Sistem parametrlərinə uyğunlaş"
+    }
+  },
   "emptyState": {
     "responses": {
       "description": "İnsanlar sorğunuzu doldurmağa başladıqda cavablar burada görünəcək",
@@ -2196,7 +2237,7 @@
       "description": "Gəlin bir neçə addımda təcrübənizi fərdiləşdirək",
       "greeting": "Salam {{name}}! 👋",
       "message": "Sizi burada görmək çox xoşdur. Hesabınızı quraq ki, möhtəşəm sorğular yarada və dəyərli məlumatlar toplaya biləsiniz.",
-      "title": "Sorğu Tətbiqinə Xoş Gəldiniz"
+      "title": "Inquiro-ya Xoş Gəldiniz"
     }
   },
   "password": {
@@ -2350,7 +2391,7 @@
     "defaultTitle": "Sorğu",
     "loading": "Sorğu yüklənir...",
     "notAvailable": "Bu sorğu mövcud deyil.",
-    "poweredBy": "Survey App tərəfindən",
+    "poweredBy": "Inquiro tərəfindən",
     "submitError": "Göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin."
   },
   "qrCode": {
@@ -3155,7 +3196,7 @@
       "buildDate": "Yaradılma tarixi",
       "description": "Tətbiq məlumatları və tanışlıq",
       "documentation": "Sənədlər",
-      "madeWith": "Survey App komandası tərəfindən ❤️ ilə hazırlanıb",
+      "madeWith": "Inquiro komandası tərəfindən ❤️ ilə hazırlanıb",
       "onboardingCompleted": "Tanışlıq tamamlandı",
       "onboardingDescription": "Tanışlıq təcrübənizi idarə edin",
       "onboardingInProgress": "Davam edir",
@@ -3226,13 +3267,17 @@
     "appearance": {
       "alwaysDark": "Həmişə qaranlıq rejim",
       "alwaysLight": "Həmişə işıqlı rejim",
+      "amber": "Kəhrəba",
       "aqua": "Akva",
       "colorDesc": "İnterfeys üçün vurğu rəngini seçin",
       "colorPalette": "Rəng palitrası",
+      "coral": "Mərcan",
       "darkMode": "Qaranlıq",
       "description": "Tətbiqin görünüşünü fərdiləşdirin",
       "forest": "Meşə",
+      "indigo": "İndiqo",
       "lavender": "Lavanda",
+      "midnight": "Gecə yarısı",
       "lightMode": "İşıqlı",
       "matchSystem": "Sistem parametrlərinə uyğun",
       "ocean": "Okean",

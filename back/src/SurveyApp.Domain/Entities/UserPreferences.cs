@@ -20,7 +20,7 @@ public class UserPreferences : Entity<Guid>
     public string ThemeMode { get; private set; } = "system";
 
     /// <summary>
-    /// Gets the color palette preference (purple, blue, green, orange, pink, teal).
+    /// Gets the color palette preference (purple, blue, green, orange, pink, teal, amber, indigo, coral, midnight).
     /// </summary>
     public string ColorPalette { get; private set; } = "purple";
 
@@ -547,7 +547,17 @@ public class UserPreferences : Entity<Guid>
     private static bool IsValidThemeMode(string mode) => mode is "light" or "dark" or "system";
 
     private static bool IsValidColorPalette(string palette) =>
-        palette is "purple" or "blue" or "green" or "orange" or "pink" or "teal";
+        palette
+            is "purple"
+                or "blue"
+                or "green"
+                or "orange"
+                or "pink"
+                or "teal"
+                or "amber"
+                or "indigo"
+                or "coral"
+                or "midnight";
 
     private static bool IsValidFontSizeScale(string scale) =>
         scale is "small" or "medium" or "large" or "extra-large";

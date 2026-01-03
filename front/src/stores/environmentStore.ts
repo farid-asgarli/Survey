@@ -17,8 +17,8 @@ type EnvironmentStore = EnvironmentState & EnvironmentActions;
 
 export const useEnvironmentStore = create<EnvironmentStore>((set) => ({
   // Initial state
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-  appName: 'Survey App',
+  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
+  appName: 'Inquiro',
   version: '1.0.0',
   isLoading: false,
   isInitialized: false,
@@ -29,8 +29,8 @@ export const useEnvironmentStore = create<EnvironmentStore>((set) => ({
       // In a real app, you might fetch this from an API endpoint
       // For now, we'll use environment variables
       set({
-        apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-        appName: import.meta.env.VITE_APP_NAME || 'Survey App',
+        apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
+        appName: import.meta.env.VITE_APP_NAME || 'Inquiro',
         version: import.meta.env.VITE_APP_VERSION || '1.0.0',
         isInitialized: true,
       });

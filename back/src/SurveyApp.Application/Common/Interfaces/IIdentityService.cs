@@ -67,8 +67,12 @@ public record AuthenticationResult
     public string? LastName { get; init; }
     public string? FullName { get; init; }
     public bool EmailConfirmed { get; init; }
-    public string? AvatarUrl { get; init; }
-    public string? ProfilePictureUrl { get; init; }
+
+    /// <summary>
+    /// The ID of the user's selected avatar (e.g., "avatar-1", "avatar-32").
+    /// </summary>
+    public string? AvatarId { get; init; }
+
     public DateTime? LastLoginAt { get; init; }
     public bool IsActive { get; init; }
     public DateTime? CreatedAt { get; init; }
@@ -85,8 +89,7 @@ public record AuthenticationResult
         string lastName,
         string fullName,
         bool emailConfirmed,
-        string? avatarUrl,
-        string? profilePictureUrl,
+        string? avatarId,
         DateTime? lastLoginAt,
         bool isActive,
         DateTime createdAt,
@@ -104,8 +107,7 @@ public record AuthenticationResult
             LastName = lastName,
             FullName = fullName,
             EmailConfirmed = emailConfirmed,
-            AvatarUrl = avatarUrl,
-            ProfilePictureUrl = profilePictureUrl,
+            AvatarId = avatarId,
             LastLoginAt = lastLoginAt,
             IsActive = isActive,
             CreatedAt = createdAt,
