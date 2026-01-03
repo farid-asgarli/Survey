@@ -4,7 +4,7 @@
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 import { QuestionType } from '@/types';
-import { getQuestionTypeConfig, getQuestionTypeIcon as getIcon, getQuestionTypeColor, getQuestionTypeLabelKey, getQuestionTypeDescriptionKey } from '@/config';
+import { getQuestionTypeConfig, getQuestionTypeLabelKey, getQuestionTypeDescriptionKey } from '@/config';
 
 // Re-export color getter
 export { getQuestionTypeColor } from '@/config';
@@ -14,7 +14,7 @@ export function QuestionTypeIcon({ type, className }: { type: QuestionType; clas
   const Icon = config.icon;
   return (
     <span className={`${config.color} ${className || ''}`}>
-      <Icon className='w-5 h-5' />
+      <Icon className="w-5 h-5" />
     </span>
   );
 }
@@ -33,7 +33,7 @@ export function useQuestionTypeInfo(type: QuestionType) {
   const config = getQuestionTypeConfig(type);
   const Icon = config.icon;
   return {
-    icon: <Icon className='w-5 h-5' />,
+    icon: <Icon className="w-5 h-5" />,
     label: t(config.labelKey),
     description: t(config.descriptionKey),
     color: config.color,

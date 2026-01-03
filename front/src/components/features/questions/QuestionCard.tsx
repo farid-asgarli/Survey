@@ -27,7 +27,11 @@ interface QuestionCardProps extends HTMLAttributes<HTMLDivElement> {
   onDelete: () => void;
   onRequiredChange: (required: boolean) => void;
   isDragging?: boolean;
-  dragHandleProps?: Record<string, unknown>;
+  /** Drag handle props including ref for dnd-kit */
+  dragHandleProps?: {
+    ref?: (node: HTMLElement | null) => void;
+    [key: string]: unknown;
+  };
 }
 
 export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
@@ -70,22 +74,27 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
       >
         <div className="flex items-stretch">
           {/* Drag Handle - hidden in read-only mode */}
-          {!isReadOnly && (
-            <div
-              {...dragHandleProps}
-              className={cn(
-                'shrink-0 w-9 flex items-center justify-center cursor-grab active:cursor-grabbing',
-                'text-on-surface-variant/40 hover:text-on-surface-variant',
-                'border-r border-outline-variant/20',
-                'hover:bg-surface-container/50 transition-colors rounded-l-2xl',
-                // Shape morph with parent
-                isSelected && 'rounded-l-3xl',
-                'group-hover:rounded-l-3xl'
-              )}
-            >
-              <GripVertical className="w-4 h-4" />
-            </div>
-          )}
+          {!isReadOnly &&
+            (() => {
+              const { ref: handleRef, ...restHandleProps } = dragHandleProps ?? {};
+              return (
+                <div
+                  ref={handleRef}
+                  {...restHandleProps}
+                  className={cn(
+                    'shrink-0 w-9 flex items-center justify-center cursor-grab active:cursor-grabbing',
+                    'text-on-surface-variant/40 hover:text-on-surface-variant',
+                    'border-r border-outline-variant/20',
+                    'hover:bg-surface-container/50 transition-colors rounded-l-2xl',
+                    // Shape morph with parent
+                    isSelected && 'rounded-l-3xl',
+                    'group-hover:rounded-l-3xl'
+                  )}
+                >
+                  <GripVertical className="w-4 h-4" />
+                </div>
+              );
+            })()}
 
           {/* Main Content */}
           <button
@@ -131,7 +140,7 @@ export const QuestionCard = forwardRef<HTMLDivElement, QuestionCardProps>(
               </div>
               <div className="text-xs text-on-surface-variant/70 mt-0.5 truncate">
                 {getQuestionTypeLabel(question.type)}
-                {question.options.length > 0 && ` • ${question.options.length} ${t('editors.options')}`}
+                {question.options.length > 0 && ` • ${question.options.length} ${t('questions.options')}`}
               </div>
             </div>
 

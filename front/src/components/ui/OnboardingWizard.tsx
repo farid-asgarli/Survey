@@ -14,9 +14,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Check,
-  Sun,
-  Moon,
-  Monitor,
   Languages,
   AlertCircle,
   Accessibility,
@@ -51,7 +48,7 @@ interface StepConfig {
 }
 
 const STEPS: StepConfig[] = [
-  { id: 0, icon: () => <LogoIcon size='lg' />, titleKey: 'onboarding.welcome.title', descriptionKey: 'onboarding.welcome.description' },
+  { id: 0, icon: () => <LogoIcon size="lg" />, titleKey: 'onboarding.welcome.title', descriptionKey: 'onboarding.welcome.description' },
   { id: 1, icon: User, titleKey: 'onboarding.profile.title', descriptionKey: 'onboarding.profile.description' },
   { id: 2, icon: Palette, titleKey: 'onboarding.appearance.title', descriptionKey: 'onboarding.appearance.description' },
   { id: 3, icon: Accessibility, titleKey: 'onboarding.accessibility.title', descriptionKey: 'onboarding.accessibility.description' },
@@ -103,7 +100,9 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   // Accessibility state
   const [reducedMotion, setReducedMotion] = useState(preferences.accessibility.reducedMotion);
   const [highContrast, setHighContrast] = useState(preferences.accessibility.highContrastMode);
-  const [largeText, setLargeText] = useState(preferences.accessibility.fontSizeScale === 'large' || preferences.accessibility.fontSizeScale === 'extra-large');
+  const [largeText, setLargeText] = useState(
+    preferences.accessibility.fontSizeScale === 'large' || preferences.accessibility.fontSizeScale === 'extra-large'
+  );
   const [dyslexiaFont, setDyslexiaFont] = useState(preferences.accessibility.dyslexiaFriendlyFont);
 
   // Cleanup animation timers on unmount
@@ -338,7 +337,15 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
       case 0:
         return <WelcomeStep userName={user?.firstName || t('onboarding.defaultUser')} />;
       case 1:
-        return <ProfileStep firstName={firstName} lastName={lastName} avatarUrl={avatarUrl} onFirstNameChange={setFirstName} onLastNameChange={setLastName} />;
+        return (
+          <ProfileStep
+            firstName={firstName}
+            lastName={lastName}
+            avatarUrl={avatarUrl}
+            onFirstNameChange={setFirstName}
+            onLastNameChange={setLastName}
+          />
+        );
       case 2:
         return (
           <AppearanceStep
@@ -383,14 +390,14 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
 
   return createPortal(
     <div
-      className='fixed inset-0 z-100 flex items-center justify-center'
-      role='dialog'
-      aria-modal='true'
-      aria-labelledby='onboarding-title'
-      aria-describedby='onboarding-description'
+      className="fixed inset-0 z-100 flex items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboarding-title"
+      aria-describedby="onboarding-description"
     >
       {/* Backdrop with blur */}
-      <div className='absolute inset-0 bg-scrim/40 backdrop-blur-md' aria-hidden='true' />
+      <div className="absolute inset-0 bg-scrim/40 backdrop-blur-md" aria-hidden="true" />
 
       {/* Main wizard container */}
       <motion.div
@@ -406,19 +413,25 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         )}
       >
         {/* Progress bar */}
-        <div className='h-1 bg-surface-container-high' role='progressbar' aria-valuenow={currentStep + 1} aria-valuemin={1} aria-valuemax={STEPS.length}>
-          <motion.div className='h-full bg-primary' initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
+        <div
+          className="h-1 bg-surface-container-high"
+          role="progressbar"
+          aria-valuenow={currentStep + 1}
+          aria-valuemin={1}
+          aria-valuemax={STEPS.length}
+        >
+          <motion.div className="h-full bg-primary" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }} />
         </div>
 
         {/* Skip button (only show if not on last step) */}
         {!isLastStep && (
-          <div className='absolute top-4 right-4 z-20'>
+          <div className="absolute top-4 right-4 z-20">
             <Button
-              variant='text'
-              size='sm'
+              variant="text"
+              size="sm"
               onClick={handleSkip}
               disabled={isSaving}
-              className='text-on-surface-variant hover:text-on-surface'
+              className="text-on-surface-variant hover:text-on-surface"
               aria-label={t('onboarding.skipAriaLabel', 'Skip onboarding wizard')}
             >
               {t('onboarding.skip')}
@@ -431,44 +444,44 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className='mx-8 mt-4 p-3 rounded-xl bg-error-container/30 border border-error/30 flex items-center gap-2'
-            role='alert'
+            className="mx-8 mt-4 p-3 rounded-xl bg-error-container/30 border border-error/30 flex items-center gap-2"
+            role="alert"
           >
-            <AlertCircle className='h-5 w-5 text-error shrink-0' />
-            <p className='text-sm text-error'>{error}</p>
+            <AlertCircle className="h-5 w-5 text-error shrink-0" />
+            <p className="text-sm text-error">{error}</p>
           </motion.div>
         )}
 
         {/* Header with step indicator */}
-        <div className='px-8 pt-8 pb-4'>
-          <div className='flex items-center gap-4'>
+        <div className="px-8 pt-8 pb-4">
+          <div className="flex items-center gap-4">
             <motion.div
               key={currentStep}
               initial={{ scale: 0.5, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               className={cn('flex h-16 w-16 items-center justify-center rounded-2xl', 'bg-primary-container/30')}
-              aria-hidden='true'
+              aria-hidden="true"
             >
-              <StepIcon className='h-8 w-8 text-primary' />
+              <StepIcon className="h-8 w-8 text-primary" />
             </motion.div>
-            <div className='flex-1'>
+            <div className="flex-1">
               <motion.h2
-                id='onboarding-title'
+                id="onboarding-title"
                 key={`title-${currentStep}`}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className='text-2xl font-bold text-on-surface'
+                className="text-2xl font-bold text-on-surface"
               >
                 {t(step.titleKey)}
               </motion.h2>
               <motion.p
-                id='onboarding-description'
+                id="onboarding-description"
                 key={`desc-${currentStep}`}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className='text-sm text-on-surface-variant mt-1'
+                className="text-sm text-on-surface-variant mt-1"
               >
                 {t(step.descriptionKey)}
               </motion.p>
@@ -477,11 +490,11 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
 
           {/* Step dots */}
           <nav aria-label={t('onboarding.stepNavigation', 'Wizard steps')}>
-            <div className='flex items-center justify-center gap-2 mt-6' role='tablist'>
+            <div className="flex items-center justify-center gap-2 mt-6" role="tablist">
               {STEPS.map((s, idx) => (
                 <motion.div
                   key={s.id}
-                  role='tab'
+                  role="tab"
                   aria-selected={idx === currentStep}
                   aria-label={t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}
                   className={cn(
@@ -499,15 +512,15 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         </div>
 
         {/* Content area with animation */}
-        <div className='px-8 py-6 min-h-80' role='tabpanel' aria-labelledby='onboarding-title'>
-          <AnimatePresence mode='wait' custom={direction}>
+        <div className="px-8 py-6 min-h-80" role="tabpanel" aria-labelledby="onboarding-title">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentStep}
               custom={direction}
               variants={slideVariants}
-              initial='enter'
-              animate='center'
-              exit='exit'
+              initial="enter"
+              animate="center"
+              exit="exit"
               transition={{ duration: 0.2 }}
             >
               {renderStepContent()}
@@ -516,22 +529,22 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
         </div>
 
         {/* Footer with navigation */}
-        <div className='px-8 py-6 border-t border-outline-variant/20 bg-surface-container-lowest/50'>
-          <div className='flex items-center justify-between'>
-            <Button variant='outline' onClick={handleBack} disabled={isFirstStep || isAnimating} className={cn(isFirstStep && 'invisible')}>
-              <ChevronLeft className='h-4 w-4 mr-2' />
+        <div className="px-8 py-6 border-t border-outline-variant/20 bg-surface-container-lowest/50">
+          <div className="flex items-center justify-between">
+            <Button variant="outline" onClick={handleBack} disabled={isFirstStep || isAnimating} className={cn(isFirstStep && 'invisible')}>
+              <ChevronLeft className="h-4 w-4 mr-2" />
               {t('common.back')}
             </Button>
 
             {isLastStep ? (
-              <Button variant='filled' onClick={handleComplete} disabled={isSaving} loading={isSaving} className='min-w-35'>
-                <Rocket className='h-4 w-4 mr-2' />
+              <Button variant="filled" onClick={handleComplete} disabled={isSaving} loading={isSaving} className="min-w-35">
+                <Rocket className="h-4 w-4 mr-2" />
                 {t('onboarding.getStarted')}
               </Button>
             ) : (
-              <Button variant='filled' onClick={handleNext} disabled={isAnimating || isSaving} loading={isSaving}>
+              <Button variant="filled" onClick={handleNext} disabled={isAnimating || isSaving} loading={isSaving}>
                 {t('common.next')}
-                <ChevronRight className='h-4 w-4 ml-2' />
+                <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             )}
           </div>
@@ -548,23 +561,28 @@ function WelcomeStep({ userName }: { userName: string }) {
   const { t } = useTranslation();
 
   return (
-    <div className='text-center py-4'>
+    <div className="text-center py-4">
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-        className='inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary-container/30 mb-6'
+        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary-container/30 mb-6"
       >
-        <LogoIcon size='2xl' />
+        <LogoIcon size="2xl" />
       </motion.div>
-      <motion.h3 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className='text-2xl font-bold text-on-surface mb-3'>
+      <motion.h3
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="text-2xl font-bold text-on-surface mb-3"
+      >
         {t('onboarding.welcome.greeting', { name: userName })}
       </motion.h3>
       <motion.p
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className='text-on-surface-variant max-w-md mx-auto leading-relaxed'
+        className="text-on-surface-variant max-w-md mx-auto leading-relaxed"
       >
         {t('onboarding.welcome.message')}
       </motion.p>
@@ -572,18 +590,18 @@ function WelcomeStep({ userName }: { userName: string }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className='flex items-center justify-center gap-6 mt-8'
+        className="flex items-center justify-center gap-6 mt-8"
       >
         {[
           { icon: Palette, label: t('onboarding.features.customize') },
           { icon: Globe, label: t('onboarding.features.language') },
           { icon: Bell, label: t('onboarding.features.notifications') },
         ].map((item, idx) => (
-          <div key={idx} className='flex flex-col items-center gap-2'>
-            <div className='w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center'>
-              <item.icon className='h-6 w-6 text-on-surface-variant' />
+          <div key={idx} className="flex flex-col items-center gap-2">
+            <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center">
+              <item.icon className="h-6 w-6 text-on-surface-variant" />
             </div>
-            <span className='text-xs text-on-surface-variant'>{item.label}</span>
+            <span className="text-xs text-on-surface-variant">{item.label}</span>
           </div>
         ))}
       </motion.div>
@@ -603,17 +621,17 @@ function ProfileStep({ firstName, lastName, avatarUrl, onFirstNameChange, onLast
   const { t } = useTranslation();
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-center mb-6'>
-        <div className='relative'>
-          <Avatar src={avatarUrl ?? undefined} fallback={`${firstName?.[0] || '?'}${lastName?.[0] || ''}`} size='xl' className='h-24 w-24' />
-          <div className='absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center'>
-            <User className='h-4 w-4 text-on-primary' />
+    <div className="space-y-6">
+      <div className="flex justify-center mb-6">
+        <div className="relative">
+          <Avatar src={avatarUrl ?? undefined} fallback={`${firstName?.[0] || '?'}${lastName?.[0] || ''}`} size="xl" className="h-24 w-24" />
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+            <User className="h-4 w-4 text-on-primary" />
           </div>
         </div>
       </div>
 
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <Input
           label={t('onboarding.profile.firstName')}
           value={firstName}
@@ -628,7 +646,7 @@ function ProfileStep({ firstName, lastName, avatarUrl, onFirstNameChange, onLast
         />
       </div>
 
-      <p className='text-sm text-on-surface-variant text-center'>{t('onboarding.profile.hint')}</p>
+      <p className="text-sm text-on-surface-variant text-center">{t('onboarding.profile.hint')}</p>
     </div>
   );
 }
@@ -644,11 +662,11 @@ function AppearanceStep({ selectedTheme, selectedPalette, onThemeChange, onPalet
   const { t } = useTranslation();
 
   return (
-    <div className='space-y-8'>
+    <div className="space-y-8">
       {/* Theme mode selection */}
       <div>
-        <h4 className='text-sm font-medium text-on-surface mb-3'>{t('onboarding.appearance.themeMode')}</h4>
-        <div className='flex gap-3'>
+        <h4 className="text-sm font-medium text-on-surface mb-3">{t('onboarding.appearance.themeMode')}</h4>
+        <div className="flex gap-3">
           {THEME_MODES.map((mode) => (
             <button
               key={mode.id}
@@ -667,8 +685,8 @@ function AppearanceStep({ selectedTheme, selectedPalette, onThemeChange, onPalet
 
       {/* Color palette selection */}
       <div>
-        <h4 className='text-sm font-medium text-on-surface mb-3'>{t('onboarding.appearance.colorPalette')}</h4>
-        <div className='grid grid-cols-3 gap-3'>
+        <h4 className="text-sm font-medium text-on-surface mb-3">{t('onboarding.appearance.colorPalette')}</h4>
+        <div className="grid grid-cols-3 gap-3">
           {COLOR_PALETTES.map((palette) => (
             <button
               key={palette.id}
@@ -678,17 +696,20 @@ function AppearanceStep({ selectedTheme, selectedPalette, onThemeChange, onPalet
                 selectedPalette === palette.id ? 'border-primary bg-primary-container/10' : 'border-outline-variant/50 hover:border-outline-variant'
               )}
             >
-              <div className='flex gap-1'>
+              <div className="flex gap-1">
                 {palette.colors.map((color, idx) => (
-                  <div key={idx} className='w-6 h-6 rounded-full border border-outline-variant/30' style={{ backgroundColor: color }} />
+                  <div key={idx} className="w-6 h-6 rounded-full border border-outline-variant/30" style={{ backgroundColor: color }} />
                 ))}
               </div>
               <span className={cn('text-xs font-medium', selectedPalette === palette.id ? 'text-primary' : 'text-on-surface-variant')}>
                 {t(palette.labelKey)}
               </span>
               {selectedPalette === palette.id && (
-                <motion.div layoutId='selected-palette' className='absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center'>
-                  <Check className='h-3 w-3 text-on-primary' />
+                <motion.div
+                  layoutId="selected-palette"
+                  className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center"
+                >
+                  <Check className="h-3 w-3 text-on-primary" />
                 </motion.div>
               )}
             </button>
@@ -708,17 +729,17 @@ function LanguageStep({ selectedLanguage, onLanguageChange }: LanguageStepProps)
   const { t } = useTranslation();
 
   return (
-    <div className='space-y-4'>
-      <div className='flex justify-center mb-4'>
-        <Languages className='h-12 w-12 text-primary' />
+    <div className="space-y-4">
+      <div className="flex justify-center mb-4">
+        <Languages className="h-12 w-12 text-primary" />
       </div>
-      <p className='text-center text-on-surface-variant mb-6'>{t('onboarding.language.description')}</p>
+      <p className="text-center text-on-surface-variant mb-6">{t('onboarding.language.description')}</p>
 
-      <div className='space-y-3'>
+      <div className="space-y-3">
         {UI_LANGUAGES.map((lang) => (
           <button
             key={lang.code}
-            onClick={() => onLanguageChange(lang.code)}
+            onClick={() => onLanguageChange(lang.code as SupportedLanguage)}
             className={cn(
               'w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all',
               selectedLanguage === lang.code
@@ -734,13 +755,13 @@ function LanguageStep({ selectedLanguage, onLanguageChange }: LanguageStepProps)
             >
               {lang.code.toUpperCase()}
             </div>
-            <div className='flex-1 text-left'>
+            <div className="flex-1 text-left">
               <div className={cn('font-medium', selectedLanguage === lang.code ? 'text-primary' : 'text-on-surface')}>{lang.nativeName}</div>
-              <div className='text-sm text-on-surface-variant'>{lang.name}</div>
+              <div className="text-sm text-on-surface-variant">{lang.name}</div>
             </div>
             {selectedLanguage === lang.code && (
-              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className='w-6 h-6 rounded-full bg-primary flex items-center justify-center'>
-                <Check className='h-4 w-4 text-on-primary' />
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                <Check className="h-4 w-4 text-on-primary" />
               </motion.div>
             )}
           </button>
@@ -770,15 +791,15 @@ function NotificationsStep({
   const { t } = useTranslation();
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-center mb-2'>
-        <div className='w-16 h-16 rounded-2xl bg-primary-container/30 flex items-center justify-center'>
-          <Bell className='h-8 w-8 text-primary' />
+    <div className="space-y-6">
+      <div className="flex justify-center mb-2">
+        <div className="w-16 h-16 rounded-2xl bg-primary-container/30 flex items-center justify-center">
+          <Bell className="h-8 w-8 text-primary" />
         </div>
       </div>
 
-      <div className='space-y-4'>
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+      <div className="space-y-4">
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={emailNotifications}
             onChange={(e) => onEmailNotificationsChange(e.target.checked)}
@@ -787,7 +808,7 @@ function NotificationsStep({
           />
         </div>
 
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={responseAlerts}
             onChange={(e) => onResponseAlertsChange(e.target.checked)}
@@ -796,7 +817,7 @@ function NotificationsStep({
           />
         </div>
 
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={weeklyDigest}
             onChange={(e) => onWeeklyDigestChange(e.target.checked)}
@@ -806,7 +827,7 @@ function NotificationsStep({
         </div>
       </div>
 
-      <p className='text-xs text-on-surface-variant text-center'>{t('onboarding.notifications.hint')}</p>
+      <p className="text-xs text-on-surface-variant text-center">{t('onboarding.notifications.hint')}</p>
     </div>
   );
 }
@@ -835,19 +856,19 @@ function AccessibilityStep({
   const { t } = useTranslation();
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-center mb-2'>
-        <div className='w-16 h-16 rounded-2xl bg-primary-container/30 flex items-center justify-center'>
-          <Accessibility className='h-8 w-8 text-primary' />
+    <div className="space-y-6">
+      <div className="flex justify-center mb-2">
+        <div className="w-16 h-16 rounded-2xl bg-primary-container/30 flex items-center justify-center">
+          <Accessibility className="h-8 w-8 text-primary" />
         </div>
       </div>
 
-      <p className='text-center text-on-surface-variant text-sm mb-4'>
+      <p className="text-center text-on-surface-variant text-sm mb-4">
         {t('onboarding.accessibility.intro', 'Customize your experience for better accessibility')}
       </p>
 
-      <div className='space-y-3'>
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+      <div className="space-y-3">
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={reducedMotion}
             onChange={(e) => onReducedMotionChange(e.target.checked)}
@@ -856,7 +877,7 @@ function AccessibilityStep({
           />
         </div>
 
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={highContrast}
             onChange={(e) => onHighContrastChange(e.target.checked)}
@@ -865,7 +886,7 @@ function AccessibilityStep({
           />
         </div>
 
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={largeText}
             onChange={(e) => onLargeTextChange(e.target.checked)}
@@ -874,7 +895,7 @@ function AccessibilityStep({
           />
         </div>
 
-        <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
+        <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
           <Switch
             checked={dyslexiaFont}
             onChange={(e) => onDyslexiaFontChange(e.target.checked)}
@@ -884,7 +905,7 @@ function AccessibilityStep({
         </div>
       </div>
 
-      <p className='text-xs text-on-surface-variant text-center'>
+      <p className="text-xs text-on-surface-variant text-center">
         {t('onboarding.accessibility.hint', 'You can adjust these settings anytime in Settings → Accessibility')}
       </p>
     </div>
@@ -901,19 +922,24 @@ function CompleteStep({ userName }: { userName: string }) {
   ];
 
   return (
-    <div className='text-center py-4'>
+    <div className="text-center py-4">
       <motion.div
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-        className='inline-flex items-center justify-center w-24 h-24 rounded-full bg-success-container/30 mb-6'
+        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-success-container/30 mb-6"
       >
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5 }}>
-          <Check className='h-12 w-12 text-success' />
+          <Check className="h-12 w-12 text-success" />
         </motion.div>
       </motion.div>
 
-      <motion.h3 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className='text-2xl font-bold text-on-surface mb-3'>
+      <motion.h3
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="text-2xl font-bold text-on-surface mb-3"
+      >
         {t('onboarding.complete.ready', { name: userName })}
       </motion.h3>
 
@@ -921,18 +947,23 @@ function CompleteStep({ userName }: { userName: string }) {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className='text-on-surface-variant max-w-md mx-auto leading-relaxed mb-6'
+        className="text-on-surface-variant max-w-md mx-auto leading-relaxed mb-6"
       >
         {t('onboarding.complete.message')}
       </motion.p>
 
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className='flex items-center justify-center gap-4'>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="flex items-center justify-center gap-4"
+      >
         {features.map((item, idx) => (
-          <div key={idx} className='flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-container/50'>
-            <div className='w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center'>
+          <div key={idx} className="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-container/50">
+            <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
               <item.icon className={cn('h-5 w-5', item.color)} />
             </div>
-            <span className='text-xs text-on-surface-variant'>{item.label}</span>
+            <span className="text-xs text-on-surface-variant">{item.label}</span>
           </div>
         ))}
       </motion.div>

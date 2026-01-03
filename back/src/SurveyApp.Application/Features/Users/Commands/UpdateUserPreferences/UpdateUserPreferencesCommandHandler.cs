@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SurveyApp.Application.Common;
 using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Application.DTOs;
+using SurveyApp.Domain.Common;
 using SurveyApp.Domain.Interfaces;
 
 namespace SurveyApp.Application.Features.Users.Commands.UpdateUserPreferences;
@@ -204,9 +205,10 @@ public class UpdateUserPreferencesCommandHandler(
             var dto = MapToDto(preferences);
             return Result<UserPreferencesDto>.Success(dto);
         }
-        catch (ArgumentException ex)
+        catch (DomainException ex)
         {
-            return Result<UserPreferencesDto>.Failure(ex.Message);
+            _logger.LogWarning("[DEBUG] DomainException caught: {Message}", ex.Message);
+            return Result<UserPreferencesDto>.Failure(ex.ResourceKey);
         }
     }
 

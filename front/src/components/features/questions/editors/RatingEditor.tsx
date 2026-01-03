@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
 import { RatingStyle } from '@/types/enums';
-import { EditorPreview } from '@/components/features/public-survey';
 import { RATING_STYLE_OPTIONS, RATING_SCALE_OPTIONS } from '@/config';
 
 interface RatingEditorProps {
@@ -19,7 +18,7 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
   const ratingStyle = (question.settings.ratingStyle ?? RatingStyle.Stars) as RatingStyle;
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -39,8 +38,8 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
 
       {/* Rating Style */}
       <div>
-        <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.rating.style', 'Rating Style')}</label>
-        <div className='flex flex-wrap gap-2'>
+        <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('questionEditor.rating.style', 'Rating Style')}</label>
+        <div className="flex flex-wrap gap-2">
           {RATING_STYLE_OPTIONS.map((style) => {
             const Icon = style.icon;
             return (
@@ -54,7 +53,7 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
                     : 'bg-surface border-outline-variant text-on-surface hover:bg-surface-container'
                 )}
               >
-                <Icon className='w-4 h-4' />
+                <Icon className="w-4 h-4" />
                 <span>{style.label}</span>
               </button>
             );
@@ -64,8 +63,8 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
 
       {/* Rating Scale */}
       <div>
-        <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.options.maxRating')}</label>
-        <div className='flex gap-2'>
+        <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('questionEditor.options.maxRating')}</label>
+        <div className="flex gap-2">
           {RATING_SCALE_OPTIONS.map((value) => (
             <button
               key={value}
@@ -83,11 +82,8 @@ export function RatingEditor({ question, onUpdateQuestion }: RatingEditorProps) 
         </div>
       </div>
 
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} />
-
       {/* Labels */}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className="grid grid-cols-2 gap-4">
         <Input
           label={t('questionEditor.rating.lowLabel')}
           value={question.settings.minLabel || ''}

@@ -2841,7 +2841,13 @@
   },
   "questionPreview": {
     "interactiveMode": "İnteraktiv önbaxış - sınayın!",
-    "questionText": "Sualınızı daxil edin"
+    "questionText": "Sualınızı daxil edin",
+    "answered": "Cavab qeyd edildi"
+  },
+  "preview": {
+    "responsive": "Adaptiv",
+    "desktop": "Kompüter",
+    "mobile": "Mobil"
   },
   "questionRenderers": {
     "allowedTypes": "İcazə verilən",
@@ -4646,5 +4652,37 @@
     "workspace": "iş sahəsi",
     "workspaceName": "İş sahəsi adı",
     "workspaces": "iş sahələri"
+  },
+  "api": {
+    "success": {
+      "created": "{{resource}} uğurla yaradıldı",
+      "updated": "{{resource}} uğurla yeniləndi",
+      "deleted": "{{resource}} uğurla silindi",
+      "published": "{{resource}} uğurla dərc edildi",
+      "closed": "{{resource}} uğurla bağlandı",
+      "sent": "{{resource}} uğurla göndərildi",
+      "saved": "{{resource}} uğurla yadda saxlanıldı",
+      "archived": "{{resource}} uğurla arxivləşdirildi",
+      "restored": "{{resource}} uğurla bərpa edildi",
+      "duplicated": "{{resource}} uğurla dublikat edildi",
+      "exported": "{{resource}} uğurla ixrac edildi",
+      "imported": "{{resource}} uğurla idxal edildi"
+    },
+    "resources": {
+      "surveys": "Sorğu",
+      "survey": "Sorğu",
+      "users": "İstifadəçi",
+      "settings": "Parametrlər",
+      "preferences": "Seçimlər",
+      "templates": "Şablon",
+      "responses": "Cavab",
+      "questions": "Sual",
+      "namespaces": "İş sahəsi",
+      "themes": "Tema",
+      "links": "Keçid",
+      "invitations": "Dəvət",
+      "members": "Üzv",
+      "apikeys": "API açarı"
+    }
   }
 }

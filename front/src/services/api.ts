@@ -5,7 +5,7 @@ import { getApiBaseUrl, API_ENDPOINTS } from '@/config/api';
 import { getAccessToken, useAuthStore, getActiveNamespaceId } from '@/stores';
 import { toast } from '@/components/ui';
 import { getErrorMessage, isProblemDetails } from '@/utils';
-import { getCurrentLanguage } from '@/i18n';
+import i18n, { getCurrentLanguage } from '@/i18n';
 import type {
   LoginRequest,
   RegisterRequest,
@@ -147,10 +147,13 @@ const createApiClient = (): AxiosInstance => {
           const { tokens } = useAuthStore.getState();
           if (tokens?.refreshToken && tokens?.accessToken) {
             // Backend expects both token (expired access token) and refreshToken
-            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(`${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`, {
-              token: tokens.accessToken,
-              refreshToken: tokens.refreshToken,
-            });
+            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(
+              `${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`,
+              {
+                token: tokens.accessToken,
+                refreshToken: tokens.refreshToken,
+              }
+            );
 
             const newTokens = {
               accessToken: response.data.token,
@@ -199,38 +202,72 @@ const createApiClient = (): AxiosInstance => {
 };
 
 /**
- * Generate a user-friendly success message based on the HTTP method and URL
+ * Generate a user-friendly success message based on the HTTP method and URL.
+ * Uses i18n for localized messages with fallback to generic messages.
  */
 function getSuccessMessage(method: string, url: string): string | null {
-  // Extract resource name from URL (e.g., /api/v1/surveys -> surveys)
+  // Extract resource name from URL (e.g., /api/users/settings -> settings, /api/surveys -> surveys)
   const urlParts = url.split('/').filter(Boolean);
-  const resourceIndex = urlParts.findIndex((part) => part === 'v1') + 1;
-  const resource = urlParts[resourceIndex]?.replace(/-/g, ' ') || 'item';
 
-  // Singularize resource name for better messages
-  const singularResource = resource.endsWith('s') ? resource.slice(0, -1) : resource;
+  // Find resource after 'api' or 'v1'
+  let resourceIndex = urlParts.findIndex((part) => part === 'v1');
+  if (resourceIndex === -1) {
+    resourceIndex = urlParts.findIndex((part) => part === 'api');
+  }
+  resourceIndex = resourceIndex + 1;
+
+  const resource = urlParts[resourceIndex]?.replace(/-/g, '') || 'item';
 
   // Check if this is an action endpoint (e.g., /surveys/{id}/publish)
   const lastPart = urlParts[urlParts.length - 1];
-  const isActionEndpoint = lastPart && !isUUID(lastPart) && urlParts.length > resourceIndex + 1;
+  const isActionEndpoint = lastPart && !isUUID(lastPart) && urlParts.length > resourceIndex + 2;
 
-  if (isActionEndpoint) {
-    // Format action name (e.g., "publish" -> "Published")
-    const action = lastPart.charAt(0).toUpperCase() + lastPart.slice(1);
-    return `${singularResource.charAt(0).toUpperCase() + singularResource.slice(1)} ${action.toLowerCase()}d successfully`;
+  // Determine the action type
+  let action: string;
+  if (isActionEndpoint && lastPart !== resource) {
+    action = lastPart;
+  } else {
+    switch (method) {
+      case 'POST':
+        action = 'created';
+        break;
+      case 'PUT':
+      case 'PATCH':
+        action = 'updated';
+        break;
+      case 'DELETE':
+        action = 'deleted';
+        break;
+      default:
+        return null;
+    }
   }
 
-  switch (method) {
-    case 'POST':
-      return `${singularResource.charAt(0).toUpperCase() + singularResource.slice(1)} created successfully`;
-    case 'PUT':
-    case 'PATCH':
-      return `${singularResource.charAt(0).toUpperCase() + singularResource.slice(1)} updated successfully`;
-    case 'DELETE':
-      return `${singularResource.charAt(0).toUpperCase() + singularResource.slice(1)} deleted successfully`;
-    default:
-      return null;
+  // Try specific translation key first: e.g., "api.surveys.published"
+  const specificKey = `api.${resource}.${action}`;
+  if (i18n.exists(specificKey)) {
+    return i18n.t(specificKey);
   }
+
+  // Try generic action translation: e.g., "api.success.updated"
+  const genericKey = `api.success.${action}`;
+  if (i18n.exists(genericKey)) {
+    // Get translated resource name if available
+    const resourceKey = `api.resources.${resource}`;
+    const resourceName = i18n.exists(resourceKey) ? i18n.t(resourceKey) : capitalize(resource);
+    return i18n.t(genericKey, { resource: resourceName });
+  }
+
+  // Fallback to English
+  const resourceName = capitalize(resource);
+  return `${resourceName} ${action} successfully`;
+}
+
+/**
+ * Capitalize first letter of a string
+ */
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 /**
@@ -681,7 +718,10 @@ export const logicApi = {
   },
 
   create: async (surveyId: string, questionId: string, data: CreateLogicRequest): Promise<QuestionLogic> => {
-    const response = await apiClient.post<QuestionLogic>(API_ENDPOINTS.surveys.questionLogic(surveyId, questionId), transformCreateLogicRequest(data));
+    const response = await apiClient.post<QuestionLogic>(
+      API_ENDPOINTS.surveys.questionLogic(surveyId, questionId),
+      transformCreateLogicRequest(data)
+    );
     return response.data;
   },
 
@@ -867,7 +907,9 @@ export const distributionsApi = {
     params?: { pageNumber?: number; pageSize?: number; status?: RecipientStatus }
   ): Promise<DistributionRecipientsResponse> => {
     // Backend returns PagedResponse<EmailRecipientDto>
-    const response = await apiClient.get<DistributionRecipientsResponse>(`${API_ENDPOINTS.surveys.distributionById(surveyId, distId)}/recipients`, { params });
+    const response = await apiClient.get<DistributionRecipientsResponse>(`${API_ENDPOINTS.surveys.distributionById(surveyId, distId)}/recipients`, {
+      params,
+    });
     return response.data;
   },
 };

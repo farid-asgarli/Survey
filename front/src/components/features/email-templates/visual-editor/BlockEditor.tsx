@@ -1,10 +1,11 @@
 // Block Editor - Renders editable block with M3 Expressive toolbar
+// Uses @dnd-kit for smooth drag-and-drop reordering
 // M3 Design: IconButton components, Card-based toolbar, shape morphing
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GripVertical, Trash2, Copy, ChevronUp, ChevronDown, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { IconButton, Tooltip, Card } from '@/components/ui';
+import { IconButton, Tooltip, Card, SortableHandle } from '@/components/ui';
 import type { EmailBlock, EmailGlobalStyles } from './types';
 
 interface BlockEditorProps {
@@ -17,7 +18,6 @@ interface BlockEditorProps {
   onDuplicate: () => void;
   onMoveUp: () => void;
   onMoveDown: () => void;
-  onReorder?: (fromId: string, toId: string) => void;
   canMoveUp: boolean;
   canMoveDown: boolean;
   onOpenSettings?: () => void;
@@ -33,54 +33,21 @@ export function BlockEditor({
   onDuplicate,
   onMoveUp,
   onMoveDown,
-  onReorder,
   canMoveUp,
   canMoveDown,
   onOpenSettings,
 }: BlockEditorProps) {
   const { t } = useTranslation();
-  const [isDragOver, setIsDragOver] = useState(false);
   const blockRef = useRef<HTMLDivElement>(null);
-
-  // Drag-drop handlers for reordering
-  const handleDragStart = (e: React.DragEvent) => {
-    e.dataTransfer.setData('blockId', block.id);
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    const draggedId = e.dataTransfer.types.includes('blockid');
-    if (draggedId) {
-      setIsDragOver(true);
-    }
-  };
-
-  function handleDragLeave() {
-    setIsDragOver(false);
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const fromId = e.dataTransfer.getData('blockId');
-    if (fromId && fromId !== block.id && onReorder) {
-      onReorder(fromId, block.id);
-    }
-  };
 
   return (
     <div
       ref={blockRef}
       className={cn(
         'group relative transition-all duration-300 pt-14', // pt-14 for toolbar space
-        isSelected && 'z-10',
-        isDragOver && 'ring-2 ring-primary ring-offset-2 ring-offset-surface'
+        isSelected && 'z-10'
       )}
       onClick={onSelect}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
     >
       {/* Block wrapper with M3 selection outline and shape morphing */}
       <div
@@ -105,22 +72,19 @@ export function BlockEditor({
           role="toolbar"
           aria-label={t('emailEditor.blockToolbar', 'Block actions')}
         >
-          {/* Drag handle */}
+          {/* Drag handle - using @dnd-kit SortableHandle */}
           <Tooltip content={t('common.dragToReorder', 'Drag to reorder')}>
-            <button
-              draggable
-              onDragStart={handleDragStart}
+            <SortableHandle
               className={cn(
                 'p-2 rounded-xl text-on-surface-variant',
                 'hover:bg-surface-container-high hover:text-on-surface',
-                'cursor-grab active:cursor-grabbing',
                 'transition-colors duration-200',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40'
               )}
               aria-label={t('common.dragToReorder', 'Drag to reorder')}
             >
               <GripVertical className="h-4 w-4" />
-            </button>
+            </SortableHandle>
           </Tooltip>
 
           {/* Divider */}

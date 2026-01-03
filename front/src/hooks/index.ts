@@ -91,3 +91,7 @@ export {
   usePrefersReducedMotion,
   usePrefersDarkMode,
 } from './useMediaQuery';
+
+// Drag and Drop
+export { useSortableList, reorderArray } from './useSortableList';
+export type { UseSortableListOptions, UseSortableListReturn } from './useSortableList';

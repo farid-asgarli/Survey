@@ -180,9 +180,11 @@ function savedThemeToUnified(theme: SurveyThemeSummary): UnifiedTheme {
 interface ThemePreviewPanelProps {
   className?: string;
   isReadOnly?: boolean;
+  /** When true, hides the internal header (useful when used inside a Drawer with its own header) */
+  headless?: boolean;
 }
 
-export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePreviewPanelProps) {
+export function ThemePreviewPanel({ className, isReadOnly = false, headless = false }: ThemePreviewPanelProps) {
   const { t } = useTranslation();
   const { survey, updateSurveyMetadata } = useSurveyBuilderStore();
   const { data: themesData, isLoading: isLoadingThemes } = useThemes();
@@ -477,30 +479,43 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
     } catch {
       toast.error(t('themes.createError', 'Failed to create theme'));
     }
-  }, [newThemeName, customColors, isDarkMode, selectedFont, createThemeMutation, survey, applyThemeMutation, updateSurveyMetadata, t, saveThemeDialog]);
+  }, [
+    newThemeName,
+    customColors,
+    isDarkMode,
+    selectedFont,
+    createThemeMutation,
+    survey,
+    applyThemeMutation,
+    updateSurveyMetadata,
+    t,
+    saveThemeDialog,
+  ]);
 
   // Check if current theme is applied to survey (without unsaved customizations)
   const isAppliedToSurvey = !hasCustomizations && survey?.themeId === selectedThemeId;
 
   return (
     <aside className={cn('w-100 shrink-0 flex flex-col bg-surface border-l border-outline-variant/30 overflow-hidden', className)}>
-      {/* Panel Header */}
-      <div className='shrink-0 px-6 py-5 border-b border-outline-variant/30'>
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-3'>
-            <div className='w-11 h-11 rounded-2xl bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center'>
-              <Palette className='w-5 h-5 text-primary' />
-            </div>
-            <div>
-              <h2 className='font-semibold text-on-surface text-base'>{t('themes.appearance', 'Appearance')}</h2>
-              <p className='text-xs text-on-surface-variant'>{t('themes.customizeLook', 'Customize your survey look')}</p>
+      {/* Panel Header - hidden in headless mode */}
+      {!headless && (
+        <div className="shrink-0 px-6 py-5 border-b border-outline-variant/30">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                <Palette className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="font-semibold text-on-surface text-base">{t('themes.appearance', 'Appearance')}</h2>
+                <p className="text-xs text-on-surface-variant">{t('themes.customizeLook', 'Customize your survey look')}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Live Preview */}
-      <div className='shrink-0 px-5 py-5 border-b border-outline-variant/30 bg-surface-container-lowest/30'>
+      <div className="shrink-0 px-5 py-5 border-b border-outline-variant/30 bg-surface-container-lowest/30">
         <ThemePreview
           colors={customColors}
           font={selectedFont}
@@ -516,29 +531,29 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
       </div>
 
       {/* Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} variant='pills' className='flex-1 flex flex-col overflow-hidden'>
-        <div className='shrink-0 px-5 py-3 border-b border-outline-variant/30'>
-          <TabsList className='w-full'>
-            <TabsTrigger value='themes' className='flex-1 gap-1.5'>
-              <Palette className='w-3.5 h-3.5' />
+      <Tabs value={activeTab} onValueChange={setActiveTab} variant="pills" className="flex-1 flex flex-col overflow-hidden">
+        <div className="shrink-0 px-5 py-3 border-b border-outline-variant/30">
+          <TabsList className="w-full">
+            <TabsTrigger value="themes" className="flex-1 gap-1.5">
+              <Palette className="w-3.5 h-3.5" />
               {t('themes.title', 'Themes')}
             </TabsTrigger>
-            <TabsTrigger value='customize' className='flex-1 gap-1.5'>
-              <Sliders className='w-3.5 h-3.5' />
+            <TabsTrigger value="customize" className="flex-1 gap-1.5">
+              <Sliders className="w-3.5 h-3.5" />
               {t('themes.customize', 'Customize')}
             </TabsTrigger>
           </TabsList>
         </div>
 
         {/* Themes Tab - All available themes */}
-        <TabsContent value='themes' className='flex-1 overflow-auto px-5 py-5 space-y-6'>
+        <TabsContent value="themes" className="flex-1 overflow-auto px-5 py-5 space-y-6">
           {/* Light Themes */}
-          <div className='space-y-3'>
-            <div className='flex items-center gap-2 text-xs font-medium text-on-surface-variant'>
-              <Sun className='w-3.5 h-3.5' />
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+              <Sun className="w-3.5 h-3.5" />
               {t('themes.light', 'Light')}
             </div>
-            <div className='grid grid-cols-2 gap-2.5'>
+            <div className="grid grid-cols-2 gap-2.5">
               {allThemes
                 .filter((t) => !t.isDark)
                 .map((theme) => (
@@ -554,12 +569,12 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
           </div>
 
           {/* Dark Themes */}
-          <div className='space-y-3'>
-            <div className='flex items-center gap-2 text-xs font-medium text-on-surface-variant'>
-              <Moon className='w-3.5 h-3.5' />
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+              <Moon className="w-3.5 h-3.5" />
               {t('themes.dark', 'Dark')}
             </div>
-            <div className='grid grid-cols-2 gap-2.5'>
+            <div className="grid grid-cols-2 gap-2.5">
               {allThemes
                 .filter((t) => t.isDark)
                 .map((theme) => (
@@ -575,54 +590,60 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
           </div>
 
           {isLoadingThemes && (
-            <div className='space-y-2.5'>
-              <Skeleton className='h-16 rounded-2xl' />
-              <Skeleton className='h-16 rounded-2xl' />
+            <div className="space-y-2.5">
+              <Skeleton className="h-16 rounded-2xl" />
+              <Skeleton className="h-16 rounded-2xl" />
             </div>
           )}
         </TabsContent>
 
         {/* Customize Tab - Edit selected theme */}
-        <TabsContent value='customize' className='flex-1 overflow-auto px-5 py-5 space-y-6'>
+        <TabsContent value="customize" className="flex-1 overflow-auto px-5 py-5 space-y-6">
           {/* Currently editing indicator */}
           {selectedTheme && (
-            <div className='flex items-center justify-between p-3 rounded-xl bg-surface-container-low/50 border border-outline-variant/20'>
-              <div className='flex items-center gap-3'>
-                <div className='w-8 h-8 rounded-lg flex items-center justify-center' style={{ backgroundColor: customColors.accent }}>
-                  <div className='flex -space-x-1'>
-                    <div className='w-3 h-3 rounded-full ring-1 ring-white' style={{ backgroundColor: customColors.primary }} />
-                    <div className='w-3 h-3 rounded-full ring-1 ring-white' style={{ backgroundColor: customColors.secondary }} />
+            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low/50 border border-outline-variant/20">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: customColors.accent }}>
+                  <div className="flex -space-x-1">
+                    <div className="w-3 h-3 rounded-full ring-1 ring-white" style={{ backgroundColor: customColors.primary }} />
+                    <div className="w-3 h-3 rounded-full ring-1 ring-white" style={{ backgroundColor: customColors.secondary }} />
                   </div>
                 </div>
                 <div>
-                  <span className='text-sm font-medium text-on-surface'>{hasCustomizations ? t('themes.customized', 'Customized') : selectedTheme.name}</span>
+                  <span className="text-sm font-medium text-on-surface">
+                    {hasCustomizations ? t('themes.customized', 'Customized') : selectedTheme.name}
+                  </span>
                   {hasCustomizations && (
-                    <span className='text-xs text-on-surface-variant block'>
+                    <span className="text-xs text-on-surface-variant block">
                       {t('themes.basedOn', 'Based on')} {selectedTheme.name}
                     </span>
                   )}
                 </div>
               </div>
               {hasCustomizations && (
-                <IconButton variant='standard' size='sm' onClick={handleResetCustomizations} aria-label={t('themes.reset', 'Reset')}>
-                  <RotateCcw className='w-4 h-4' />
+                <IconButton variant="standard" size="sm" onClick={handleResetCustomizations} aria-label={t('themes.reset', 'Reset')}>
+                  <RotateCcw className="w-4 h-4" />
                 </IconButton>
               )}
             </div>
           )}
 
           {/* Colors Section */}
-          <div className='space-y-4'>
-            <label className='text-sm font-semibold text-on-surface flex items-center gap-2'>
-              <Palette className='w-4 h-4' />
+          <div className="space-y-4">
+            <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <Palette className="w-4 h-4" />
               {t('themes.colors', 'Colors')}
             </label>
-            <div className='space-y-3'>
+            <div className="space-y-3">
               {/* Brand Colors */}
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.brandColors', 'Brand Colors')}</span>
-                <div className='grid grid-cols-2 gap-2'>
-                  <ColorPickerButton label={t('themes.primary', 'Primary')} value={customColors.primary} onChange={(v) => handleColorChange('primary', v)} />
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.brandColors', 'Brand Colors')}</span>
+                <div className="grid grid-cols-2 gap-2">
+                  <ColorPickerButton
+                    label={t('themes.primary', 'Primary')}
+                    value={customColors.primary}
+                    onChange={(v) => handleColorChange('primary', v)}
+                  />
                   <ColorPickerButton
                     label={t('themes.secondary', 'Secondary')}
                     value={customColors.secondary}
@@ -633,8 +654,8 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
 
               {/* Surface Colors */}
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.surfaceColors', 'Surface Colors')}</span>
-                <div className='grid grid-cols-2 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.surfaceColors', 'Surface Colors')}</span>
+                <div className="grid grid-cols-2 gap-2">
                   <ColorPickerButton
                     label={t('themes.background', 'Background')}
                     value={customColors.background}
@@ -645,7 +666,11 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                     value={customColors.surface || '#FFFFFF'}
                     onChange={(v) => handleColorChange('surface', v)}
                   />
-                  <ColorPickerButton label={t('themes.accent', 'Accent')} value={customColors.accent} onChange={(v) => handleColorChange('accent', v)} />
+                  <ColorPickerButton
+                    label={t('themes.accent', 'Accent')}
+                    value={customColors.accent}
+                    onChange={(v) => handleColorChange('accent', v)}
+                  />
                   <ColorPickerButton
                     label={t('themes.textPrimary', 'Text')}
                     value={customColors.textPrimary || '#111827'}
@@ -657,16 +682,16 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
           </div>
 
           {/* Typography Section */}
-          <div className='space-y-4'>
-            <label className='text-sm font-semibold text-on-surface flex items-center gap-2'>
-              <Type className='w-4 h-4' />
+          <div className="space-y-4">
+            <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <Type className="w-4 h-4" />
               {t('themes.typography', 'Typography')}
             </label>
-            <div className='space-y-3'>
+            <div className="space-y-3">
               {/* Body Font */}
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.bodyFont', 'Body Font')}</span>
-                <div className='grid grid-cols-2 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.bodyFont', 'Body Font')}</span>
+                <div className="grid grid-cols-2 gap-2">
                   {FONT_OPTIONS.map((font) => (
                     <button
                       key={font.name}
@@ -678,14 +703,14 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                           : 'border-outline-variant/30 hover:bg-surface-container/50'
                       )}
                     >
-                      <div className='flex items-center justify-between w-full'>
-                        <span className='text-base font-medium' style={{ fontFamily: font.value }}>
+                      <div className="flex items-center justify-between w-full">
+                        <span className="text-base font-medium" style={{ fontFamily: font.value }}>
                           Aa
                         </span>
-                        {selectedFont === font.value && <Check className='w-3.5 h-3.5 text-primary' />}
+                        {selectedFont === font.value && <Check className="w-3.5 h-3.5 text-primary" />}
                       </div>
-                      <span className='text-xs font-medium text-on-surface'>{font.name}</span>
-                      <span className='text-[10px] text-on-surface-variant'>{font.category}</span>
+                      <span className="text-xs font-medium text-on-surface">{font.name}</span>
+                      <span className="text-[10px] text-on-surface-variant">{font.category}</span>
                     </button>
                   ))}
                 </div>
@@ -694,12 +719,12 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
           </div>
 
           {/* Corner Radius */}
-          <div className='space-y-4'>
-            <label className='text-sm font-semibold text-on-surface flex items-center gap-2'>
-              <SquareIcon className='w-4 h-4' />
+          <div className="space-y-4">
+            <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <SquareIcon className="w-4 h-4" />
               {t('themes.cornerRadius', 'Corner Radius')}
             </label>
-            <div className='grid grid-cols-5 gap-2'>
+            <div className="grid grid-cols-5 gap-2">
               {CORNER_OPTIONS.map((corner) => (
                 <button
                   key={corner.name}
@@ -712,22 +737,22 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                   )}
                 >
                   <div className={cn('w-8 h-8 bg-primary/20 border-2 border-primary/40', corner.preview)} />
-                  <span className='text-xs text-on-surface-variant'>{corner.name}</span>
+                  <span className="text-xs text-on-surface-variant">{corner.name}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Layout & Spacing */}
-          <div className='space-y-4'>
-            <label className='text-sm font-semibold text-on-surface flex items-center gap-2'>
-              <Sliders className='w-4 h-4' />
+          <div className="space-y-4">
+            <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <Sliders className="w-4 h-4" />
               {t('themes.layoutSpacing', 'Layout & Spacing')}
             </label>
-            <div className='space-y-3'>
+            <div className="space-y-3">
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.containerWidth', 'Container Width')}</span>
-                <div className='grid grid-cols-2 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.containerWidth', 'Container Width')}</span>
+                <div className="grid grid-cols-2 gap-2">
                   {WIDTH_OPTIONS.map((width) => (
                     <button
                       key={width.name}
@@ -742,15 +767,15 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                           : 'border-outline-variant/30 hover:bg-surface-container/50'
                       )}
                     >
-                      <span className='text-xs font-medium text-on-surface'>{width.name}</span>
-                      <span className='text-[10px] text-on-surface-variant'>{width.description}</span>
+                      <span className="text-xs font-medium text-on-surface">{width.name}</span>
+                      <span className="text-[10px] text-on-surface-variant">{width.description}</span>
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.spacing', 'Spacing')}</span>
-                <div className='grid grid-cols-4 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.spacing', 'Spacing')}</span>
+                <div className="grid grid-cols-4 gap-2">
                   {SPACING_OPTIONS.map((spacingOption) => (
                     <button
                       key={spacingOption.name}
@@ -765,7 +790,7 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                           : 'border-outline-variant/30 hover:bg-surface-container/50'
                       )}
                     >
-                      <span className='text-xs text-on-surface-variant'>{spacingOption.name}</span>
+                      <span className="text-xs text-on-surface-variant">{spacingOption.name}</span>
                     </button>
                   ))}
                 </div>
@@ -774,16 +799,16 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
           </div>
 
           {/* Display Options */}
-          <div className='space-y-4'>
-            <label className='text-sm font-semibold text-on-surface flex items-center gap-2'>
-              <ToggleLeft className='w-4 h-4' />
+          <div className="space-y-4">
+            <label className="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <ToggleLeft className="w-4 h-4" />
               {t('themes.displayOptions', 'Display Options')}
             </label>
-            <div className='space-y-3'>
+            <div className="space-y-3">
               {/* Progress Indicator */}
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.progressIndicator', 'Progress Indicator')}</span>
-                <div className='grid grid-cols-4 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.progressIndicator', 'Progress Indicator')}</span>
+                <div className="grid grid-cols-4 gap-2">
                   <button
                     onClick={() => {
                       setShowProgressBar(false);
@@ -796,7 +821,7 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                         : 'border-outline-variant/30 hover:bg-surface-container/50 text-on-surface-variant'
                     )}
                   >
-                    <span className='text-xs'>{t('common.none', 'None')}</span>
+                    <span className="text-xs">{t('common.none', 'None')}</span>
                   </button>
                   {PROGRESS_STYLES.map((style) => (
                     <button
@@ -813,8 +838,8 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                           : 'border-outline-variant/30 hover:bg-surface-container/50'
                       )}
                     >
-                      <span className='text-sm font-mono text-on-surface'>{style.icon}</span>
-                      <span className='text-[10px] text-on-surface-variant'>{style.name}</span>
+                      <span className="text-sm font-mono text-on-surface">{style.icon}</span>
+                      <span className="text-[10px] text-on-surface-variant">{style.name}</span>
                     </button>
                   ))}
                 </div>
@@ -822,8 +847,8 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
 
               {/* Question Numbers */}
               <div>
-                <span className='text-xs font-medium text-on-surface-variant block mb-2'>{t('themes.questionNumbers', 'Question Numbers')}</span>
-                <div className='grid grid-cols-3 gap-2'>
+                <span className="text-xs font-medium text-on-surface-variant block mb-2">{t('themes.questionNumbers', 'Question Numbers')}</span>
+                <div className="grid grid-cols-3 gap-2">
                   <button
                     onClick={() => {
                       setShowQuestionNumbers(false);
@@ -836,7 +861,7 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                         : 'border-outline-variant/30 hover:bg-surface-container/50 text-on-surface-variant'
                     )}
                   >
-                    <span className='text-xs'>{t('common.none', 'None')}</span>
+                    <span className="text-xs">{t('common.none', 'None')}</span>
                   </button>
                   {[
                     { name: 'Badge', value: 'badge' },
@@ -856,7 +881,7 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
                           : 'border-outline-variant/30 hover:bg-surface-container/50 text-on-surface-variant'
                       )}
                     >
-                      <span className='text-xs'>{style.name}</span>
+                      <span className="text-xs">{style.name}</span>
                     </button>
                   ))}
                 </div>
@@ -868,15 +893,19 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
 
       {/* Action Buttons - Fixed at bottom (only in edit mode) */}
       {!isReadOnly && (
-        <div className='shrink-0 p-4 border-t border-outline-variant/30 bg-surface space-y-2'>
-          <Button variant='filled' className='w-full' onClick={handleApplyToSurvey} disabled={applyThemeMutation.isPending || !!isAppliedToSurvey}>
-            {applyThemeMutation.isPending ? <Loader2 className='w-4 h-4 mr-2 animate-spin' /> : isAppliedToSurvey ? <Check className='w-4 h-4 mr-2' /> : null}
+        <div className="shrink-0 p-4 border-t border-outline-variant/30 bg-surface space-y-2">
+          <Button variant="filled" className="w-full" onClick={handleApplyToSurvey} disabled={applyThemeMutation.isPending || !!isAppliedToSurvey}>
+            {applyThemeMutation.isPending ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : isAppliedToSurvey ? (
+              <Check className="w-4 h-4 mr-2" />
+            ) : null}
             {isAppliedToSurvey ? t('themes.applied', 'Applied') : t('themes.applyToSurvey', 'Apply to Survey')}
           </Button>
 
           {hasCustomizations && (
-            <Button variant='tonal' className='w-full' onClick={() => saveThemeDialog.open()}>
-              <Plus className='w-4 h-4 mr-2' />
+            <Button variant="tonal" className="w-full" onClick={() => saveThemeDialog.open()}>
+              <Plus className="w-4 h-4 mr-2" />
               {t('themes.saveAsNewTheme', 'Save as New Theme')}
             </Button>
           )}
@@ -890,43 +919,43 @@ export function ThemePreviewPanel({ className, isReadOnly = false }: ThemePrevie
             <DialogTitle>{t('themes.saveTheme', 'Save Theme')}</DialogTitle>
             <DialogDescription>{t('themes.saveThemeDesc', 'Create a new theme from your customizations')}</DialogDescription>
           </DialogHeader>
-          <div className='space-y-4 py-4'>
-            <div className='space-y-2'>
-              <label htmlFor='theme-name' className='text-sm font-medium text-on-surface'>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label htmlFor="theme-name" className="text-sm font-medium text-on-surface">
                 {t('themes.themeName', 'Theme Name')}
               </label>
               <Input
-                id='theme-name'
+                id="theme-name"
                 value={newThemeName}
                 onChange={(e) => setNewThemeName(e.target.value)}
                 placeholder={t('themes.themeNamePlaceholder', 'My Custom Theme')}
               />
             </div>
             {/* Preview */}
-            <div className='p-3 rounded-xl bg-surface-container-low border border-outline-variant/20'>
-              <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 rounded-lg flex items-center justify-center' style={{ backgroundColor: customColors.accent }}>
-                  <div className='flex -space-x-1.5'>
-                    <div className='w-4 h-4 rounded-full ring-2 ring-white' style={{ backgroundColor: customColors.primary }} />
-                    <div className='w-4 h-4 rounded-full ring-2 ring-white' style={{ backgroundColor: customColors.secondary }} />
+            <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: customColors.accent }}>
+                  <div className="flex -space-x-1.5">
+                    <div className="w-4 h-4 rounded-full ring-2 ring-white" style={{ backgroundColor: customColors.primary }} />
+                    <div className="w-4 h-4 rounded-full ring-2 ring-white" style={{ backgroundColor: customColors.secondary }} />
                   </div>
                 </div>
                 <div>
-                  <span className='text-sm font-medium text-on-surface'>{newThemeName || t('themes.untitled', 'Untitled Theme')}</span>
-                  <span className='text-xs text-on-surface-variant flex items-center gap-1'>
-                    <Sparkles className='w-3 h-3' /> {t('themes.customTheme', 'Custom theme')}
+                  <span className="text-sm font-medium text-on-surface">{newThemeName || t('themes.untitled', 'Untitled Theme')}</span>
+                  <span className="text-xs text-on-surface-variant flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> {t('themes.customTheme', 'Custom theme')}
                   </span>
                 </div>
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => saveThemeDialog.close()}>
+            <Button variant="outline" onClick={() => saveThemeDialog.close()}>
               {t('common.cancel', 'Cancel')}
             </Button>
-            <Button variant='filled' onClick={handleSaveAsNewTheme} disabled={createThemeMutation.isPending || !newThemeName.trim()}>
-              {createThemeMutation.isPending && <Loader2 className='w-4 h-4 mr-2 animate-spin' />}
-              <Save className='w-4 h-4 mr-2' />
+            <Button variant="filled" onClick={handleSaveAsNewTheme} disabled={createThemeMutation.isPending || !newThemeName.trim()}>
+              {createThemeMutation.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              <Save className="w-4 h-4 mr-2" />
               {t('themes.saveAndApply', 'Save & Apply')}
             </Button>
           </DialogFooter>
@@ -961,57 +990,57 @@ function ThemeCard({ theme, isSelected, isApplied, onClick }: ThemeCardProps) {
       style={{ backgroundColor: cardBg }}
     >
       {/* Mini survey preview */}
-      <div className='p-3 pb-2.5'>
+      <div className="p-3 pb-2.5">
         {/* Header mockup */}
-        <div className='flex items-center gap-2 mb-3'>
-          <div className='w-5 h-5 rounded-full shrink-0' style={{ backgroundColor: theme.colors.primary }} />
-          <div className='flex-1 space-y-1'>
-            <div className='h-1.5 rounded-full w-16' style={{ backgroundColor: subtextColor }} />
-            <div className='h-1 rounded-full w-10 opacity-60' style={{ backgroundColor: subtextColor }} />
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 rounded-full shrink-0" style={{ backgroundColor: theme.colors.primary }} />
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 rounded-full w-16" style={{ backgroundColor: subtextColor }} />
+            <div className="h-1 rounded-full w-10 opacity-60" style={{ backgroundColor: subtextColor }} />
           </div>
         </div>
 
         {/* Progress bar mockup */}
-        <div className='h-1 rounded-full mb-3 overflow-hidden' style={{ backgroundColor: `${theme.colors.primary}20` }}>
-          <div className='h-full rounded-full w-2/3' style={{ backgroundColor: theme.colors.primary }} />
+        <div className="h-1 rounded-full mb-3 overflow-hidden" style={{ backgroundColor: `${theme.colors.primary}20` }}>
+          <div className="h-full rounded-full w-2/3" style={{ backgroundColor: theme.colors.primary }} />
         </div>
 
         {/* Button mockups */}
-        <div className='flex gap-1.5'>
-          <div className='h-5 px-3 rounded-full flex items-center justify-center' style={{ backgroundColor: theme.colors.primary }}>
-            <div className='h-1 w-6 rounded-full' style={{ backgroundColor: theme.isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.8)' }} />
+        <div className="flex gap-1.5">
+          <div className="h-5 px-3 rounded-full flex items-center justify-center" style={{ backgroundColor: theme.colors.primary }}>
+            <div className="h-1 w-6 rounded-full" style={{ backgroundColor: theme.isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.8)' }} />
           </div>
           <div
-            className='h-5 px-3 rounded-full flex items-center justify-center border'
+            className="h-5 px-3 rounded-full flex items-center justify-center border"
             style={{
               borderColor: `${theme.colors.primary}40`,
               backgroundColor: 'transparent',
             }}
           >
-            <div className='h-1 w-5 rounded-full' style={{ backgroundColor: theme.colors.primary }} />
+            <div className="h-1 w-5 rounded-full" style={{ backgroundColor: theme.colors.primary }} />
           </div>
         </div>
       </div>
 
       {/* Theme info footer */}
       <div
-        className='px-3 py-2.5 border-t flex items-center gap-2'
+        className="px-3 py-2.5 border-t flex items-center gap-2"
         style={{
           borderColor: theme.isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
           backgroundColor: theme.isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
         }}
       >
         {/* Color dots */}
-        <div className='flex -space-x-1'>
+        <div className="flex -space-x-1">
           <div
-            className='w-3.5 h-3.5 rounded-full'
+            className="w-3.5 h-3.5 rounded-full"
             style={{
               backgroundColor: theme.colors.primary,
               boxShadow: `0 0 0 1.5px ${cardBg}`,
             }}
           />
           <div
-            className='w-3.5 h-3.5 rounded-full'
+            className="w-3.5 h-3.5 rounded-full"
             style={{
               backgroundColor: theme.colors.secondary,
               boxShadow: `0 0 0 1.5px ${cardBg}`,
@@ -1020,29 +1049,29 @@ function ThemeCard({ theme, isSelected, isApplied, onClick }: ThemeCardProps) {
         </div>
 
         {/* Name */}
-        <span className='text-xs font-medium truncate flex-1' style={{ color: textColor }}>
+        <span className="text-xs font-medium truncate flex-1" style={{ color: textColor }}>
           {theme.name}
         </span>
 
         {/* System/Custom indicator */}
         {theme.isSystem ? (
-          <Palette className='w-3 h-3 opacity-40' style={{ color: textColor }} />
+          <Palette className="w-3 h-3 opacity-40" style={{ color: textColor }} />
         ) : (
-          <Sparkles className='w-3 h-3 opacity-40' style={{ color: textColor }} />
+          <Sparkles className="w-3 h-3 opacity-40" style={{ color: textColor }} />
         )}
       </div>
 
       {/* Selection checkmark - top right */}
       {isSelected && (
-        <div className='absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center'>
-          <Check className='w-3 h-3 text-on-primary' strokeWidth={3} />
+        <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+          <Check className="w-3 h-3 text-on-primary" strokeWidth={3} />
         </div>
       )}
 
       {/* Applied indicator - subtle badge */}
       {isApplied && !isSelected && (
         <div
-          className='absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[9px] font-semibold'
+          className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[9px] font-semibold"
           style={{
             backgroundColor: theme.colors.primary,
             color: theme.isDark ? '#000' : '#fff',
@@ -1063,13 +1092,18 @@ interface ColorPickerButtonProps {
 
 function ColorPickerButton({ label, value, onChange }: ColorPickerButtonProps) {
   return (
-    <div className='relative group'>
-      <input type='color' value={value} onChange={(e) => onChange(e.target.value)} className='absolute inset-0 w-full h-full opacity-0 cursor-pointer' />
-      <div className='flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 bg-surface group-hover:border-primary/50 transition-colors cursor-pointer'>
-        <div className='w-9 h-9 rounded-xl border border-black/10' style={{ backgroundColor: value }} />
-        <div className='flex-1 min-w-0'>
-          <span className='text-xs text-on-surface-variant block mb-0.5'>{label}</span>
-          <span className='text-xs font-mono text-on-surface uppercase'>{value}</span>
+    <div className="relative group">
+      <input
+        type="color"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+      />
+      <div className="flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 bg-surface group-hover:border-primary/50 transition-colors cursor-pointer">
+        <div className="w-9 h-9 rounded-xl border border-black/10" style={{ backgroundColor: value }} />
+        <div className="flex-1 min-w-0">
+          <span className="text-xs text-on-surface-variant block mb-0.5">{label}</span>
+          <span className="text-xs font-mono text-on-surface uppercase">{value}</span>
         </div>
       </div>
     </div>
@@ -1114,21 +1148,21 @@ function ThemePreview({
   const spacingMultiplier = spacingMap[spacing as keyof typeof spacingMap] || 1;
 
   return (
-    <div className='space-y-3'>
-      <div className='flex items-center justify-between'>
-        <span className='text-xs font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5'>
-          <Eye className='w-3.5 h-3.5' />
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+          <Eye className="w-3.5 h-3.5" />
           Preview
         </span>
         {isDark && (
-          <span className='text-[10px] px-2 py-1 rounded-full bg-surface-container-high text-on-surface-variant flex items-center gap-1'>
-            <Moon className='w-2.5 h-2.5' /> Dark
+          <span className="text-[10px] px-2 py-1 rounded-full bg-surface-container-high text-on-surface-variant flex items-center gap-1">
+            <Moon className="w-2.5 h-2.5" /> Dark
           </span>
         )}
       </div>
 
       <div
-        className='overflow-hidden border border-outline-variant/40 transition-all duration-300'
+        className="overflow-hidden border border-outline-variant/40 transition-all duration-300"
         style={{
           backgroundColor: colors.background,
           fontFamily: font,
@@ -1137,20 +1171,20 @@ function ThemePreview({
       >
         {/* Progress bar */}
         {showProgress && (
-          <div className='relative h-1.5' style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>
+          <div className="relative h-1.5" style={{ backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}>
             {progressBarStyle === 'stepped' ? (
-              <div className='flex items-center h-full px-2'>
+              <div className="flex items-center h-full px-2">
                 {[1, 2, 3, 4, 5].map((step) => (
-                  <div key={step} className='flex-1 flex items-center'>
+                  <div key={step} className="flex-1 flex items-center">
                     <div
-                      className='w-1.5 h-1.5 rounded-full'
+                      className="w-1.5 h-1.5 rounded-full"
                       style={{
                         backgroundColor: step <= 3 ? colors.primary : isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)',
                       }}
                     />
                     {step < 5 && (
                       <div
-                        className='flex-1 h-0.5 mx-1'
+                        className="flex-1 h-0.5 mx-1"
                         style={{
                           backgroundColor: step < 3 ? colors.primary : isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)',
                         }}
@@ -1160,12 +1194,12 @@ function ThemePreview({
                 ))}
               </div>
             ) : progressBarStyle === 'minimal' ? (
-              <div className='absolute top-0 right-2 text-[9px] font-medium px-1.5 py-0.5' style={{ color: colors.primary }}>
+              <div className="absolute top-0 right-2 text-[9px] font-medium px-1.5 py-0.5" style={{ color: colors.primary }}>
                 60%
               </div>
             ) : (
               <div
-                className='h-full transition-all duration-500'
+                className="h-full transition-all duration-500"
                 style={{
                   backgroundColor: colors.primary,
                   width: '60%',
@@ -1177,18 +1211,18 @@ function ThemePreview({
         )}
 
         <div
-          className='space-y-4'
+          className="space-y-4"
           style={{
             padding: `${16 * spacingMultiplier}px ${20 * spacingMultiplier}px`,
           }}
         >
           {/* Question */}
           <div>
-            <div className='flex items-start gap-2.5 mb-3' style={{ marginBottom: `${12 * spacingMultiplier}px` }}>
+            <div className="flex items-start gap-2.5 mb-3" style={{ marginBottom: `${12 * spacingMultiplier}px` }}>
               {showNumbers &&
                 (questionNumberStyle === 'badge' ? (
                   <span
-                    className='text-xs font-bold px-2.5 py-1 rounded-full shrink-0'
+                    className="text-xs font-bold px-2.5 py-1 rounded-full shrink-0"
                     style={{
                       backgroundColor: colors.accent,
                       color: colors.primary,
@@ -1198,12 +1232,12 @@ function ThemePreview({
                     Q1
                   </span>
                 ) : (
-                  <span className='text-sm font-semibold shrink-0' style={{ color: colors.primary }}>
+                  <span className="text-sm font-semibold shrink-0" style={{ color: colors.primary }}>
                     1.
                   </span>
                 ))}
               <span
-                className='text-sm font-medium leading-relaxed'
+                className="text-sm font-medium leading-relaxed"
                 style={{
                   color: textColor,
                   fontFamily: headingFont,
@@ -1214,11 +1248,11 @@ function ThemePreview({
             </div>
 
             {/* Rating scale */}
-            <div className='flex items-center justify-between' style={{ gap: `${8 * spacingMultiplier}px` }}>
+            <div className="flex items-center justify-between" style={{ gap: `${8 * spacingMultiplier}px` }}>
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
-                  className='flex-1 aspect-square max-w-11 flex items-center justify-center text-sm font-semibold transition-all'
+                  className="flex-1 aspect-square max-w-11 flex items-center justify-center text-sm font-semibold transition-all"
                   style={{
                     backgroundColor: n === 4 ? colors.primary : 'transparent',
                     color: n === 4 ? '#FFFFFF' : subtextColor,
@@ -1234,7 +1268,7 @@ function ThemePreview({
 
           {/* Continue button */}
           <button
-            className='w-full py-3 text-sm font-semibold text-white transition-all hover:opacity-90'
+            className="w-full py-3 text-sm font-semibold text-white transition-all hover:opacity-90"
             style={{
               backgroundColor: colors.primary,
               borderRadius: cornerRadius === '9999px' ? '9999px' : cornerRadius === '0px' ? '6px' : cornerRadius,

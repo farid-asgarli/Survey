@@ -1,26 +1,39 @@
-// Languages Tab - M3 Expressive Design
+// Languages Tab - M3 Expressive Design (Redesigned)
 //
 // Features:
+// - Wide, immersive split-panel layout for translation editing
 // - No shadows (uses border/color elevation)
 // - Shape morphing on interactive elements
-// - Semantic color tokens
+// - Semantic color tokens throughout
 // - Rounded-full buttons and pills
-//
-// This component orchestrates the language management experience by composing
-// existing components:
-// - LanguageList: Shows all languages with progress and actions
-// - QuestionTranslationsEditor: Side-by-side question translation
-// - AddLanguageDialog: Modal for adding new languages
+// - Hero header with rich statistics overview
+// - Beautiful language cards with visual progress indicators
+// - Side-by-side source/target editing experience
 //
 // Architecture:
 // - Language list view (default) → click language → Translation editor view
-// - Translation editor has tabs: Survey Details | Questions
+// - Translation editor: Split panel with source preview (left) + editable target (right)
+// - Tabs for Survey Details | Questions
 // - Back button returns to language list
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Globe, Plus, FileDown, FileUp, Loader2, ArrowLeft, Check, Sparkles, AlertTriangle } from 'lucide-react';
-import { Button, Tabs, TabsList, TabsTrigger, TabsContent, EmptyState, Input, Textarea } from '@/components/ui';
+import {
+  Globe,
+  Plus,
+  FileDown,
+  FileUp,
+  Loader2,
+  Check,
+  AlertTriangle,
+  Languages,
+  FileText,
+  MessageSquare,
+  X,
+  CircleCheck,
+  Wand2,
+} from 'lucide-react';
+import { Button, BackButton, Tabs, TabsList, TabsTrigger, TabsContent, EmptyState, Input, Textarea, IconButton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useSurveyTranslations, useBulkUpdateTranslations, useDeleteSurveyTranslation, useDialogState } from '@/hooks';
 import { LanguageList, type LanguageStats } from './LanguageList';
@@ -43,6 +56,8 @@ interface LanguagesTabProps {
   questions: TranslatableQuestion[];
   /** Whether the survey is read-only */
   isReadOnly?: boolean;
+  /** Callback to close the drawer */
+  onClose?: () => void;
   /** Callback when a language is added */
   onAddLanguage: (languageCode: string, autoTranslate: boolean) => Promise<void>;
   /** Callback when language is deleted */
@@ -112,7 +127,7 @@ function calculateLanguageStats(
 }
 
 // ============================================================================
-// Translation Field Component - Reusable side-by-side field editor
+// Translation Field Component - Premium side-by-side field editor
 // ============================================================================
 
 interface TranslationFieldProps {
@@ -140,95 +155,79 @@ function TranslationField({
 }: TranslationFieldProps) {
   const { t } = useTranslation();
   const needsWork = sourceValue && !targetValue;
+  const isComplete = sourceValue && targetValue;
 
   return (
-    <div className="grid grid-cols-2 gap-6">
-      {/* Source */}
-      <div className="space-y-2.5">
-        <label className="flex items-center gap-2 text-sm font-semibold text-on-surface">
-          {sourceFlag} {label}
+    <div className="group rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest p-5 transition-all duration-300 hover:border-outline-variant/50 hover:bg-surface-container-low/50">
+      {/* Field label with status */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-sm font-semibold text-on-surface flex items-center gap-2">
+          {label}
           {isRequired && <span className="text-error">*</span>}
-        </label>
-        <div
-          className={cn(
-            'px-4 py-3 rounded-2xl bg-surface-container-high/50 text-on-surface border-2 border-outline-variant/20 text-sm',
-            isMultiline && 'min-h-24'
-          )}
-        >
-          {sourceValue || <span className="text-on-surface-variant/50 italic">{t('localization.noContent', 'No content')}</span>}
-        </div>
-      </div>
-
-      {/* Target */}
-      <div className="space-y-2.5">
-        <label className="flex items-center gap-2 text-sm font-semibold text-on-surface">
-          {targetFlag} {label}
-          {isRequired && <span className="text-error">*</span>}
-          {needsWork && (
-            <span className="inline-flex items-center gap-1 h-5 px-2 text-[10px] font-semibold text-warning bg-warning-container/50 rounded-full">
-              <AlertTriangle className="w-3 h-3" />
-              {t('common.required', 'Required')}
-            </span>
-          )}
-        </label>
-        {isMultiline ? (
-          <Textarea
-            value={targetValue}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={t('localization.enterTranslation', 'Enter translation...')}
-            disabled={isReadOnly}
-            className={cn('min-h-24 resize-y', needsWork && 'border-warning/50 focus:border-warning')}
-          />
-        ) : (
-          <Input
-            value={targetValue}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={t('localization.enterTranslation', 'Enter translation...')}
-            disabled={isReadOnly}
-            className={cn(needsWork && 'border-warning/50 focus:border-warning')}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// Progress Card Component
-// ============================================================================
-
-interface ProgressCardProps {
-  label: string;
-  translated: number;
-  total: number;
-  percent: number;
-}
-
-function ProgressCard({ label, translated, total, percent }: ProgressCardProps) {
-  return (
-    <div className="flex items-center justify-between p-4 rounded-2xl bg-surface-container border-2 border-outline-variant/20">
-      <span className="text-sm font-medium text-on-surface">{label}</span>
-      <div className="flex items-center gap-3">
-        <span className="text-sm text-on-surface-variant">
-          {translated}/{total}
         </span>
-        <div className="w-32 h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+        {isComplete ? (
+          <span className="inline-flex items-center gap-1.5 h-6 px-2.5 text-xs font-medium text-success bg-success-container/40 rounded-full">
+            <CircleCheck className="w-3.5 h-3.5" />
+            {t('common.complete', 'Complete')}
+          </span>
+        ) : needsWork ? (
+          <span className="inline-flex items-center gap-1.5 h-6 px-2.5 text-xs font-medium text-warning bg-warning-container/40 rounded-full">
+            <AlertTriangle className="w-3.5 h-3.5" />
+            {t('common.required', 'Required')}
+          </span>
+        ) : null}
+      </div>
+
+      {/* Side by side columns */}
+      <div className="grid grid-cols-2 gap-5">
+        {/* Source (read-only) */}
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+            <span className="text-base">{sourceFlag}</span>
+            {t('localization.source', 'Source')}
+          </label>
           <div
             className={cn(
-              'h-full rounded-full transition-all duration-500 ease-out',
-              percent === 100 ? 'bg-success' : percent >= 50 ? 'bg-warning' : 'bg-error'
+              'px-4 py-3.5 rounded-2xl bg-surface-container text-on-surface border-2 border-outline-variant/20 text-sm leading-relaxed',
+              isMultiline && 'min-h-28'
             )}
-            style={{ width: `${percent}%` }}
-          />
+          >
+            {sourceValue || <span className="text-on-surface-variant/50 italic">{t('localization.noContent', 'No content')}</span>}
+          </div>
         </div>
-        <span
-          className={cn(
-            'text-sm font-semibold min-w-10 text-right',
-            percent === 100 ? 'text-success' : percent >= 50 ? 'text-warning' : 'text-error'
+
+        {/* Target (editable) */}
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+            <span className="text-base">{targetFlag}</span>
+            {t('localization.translation', 'Translation')}
+          </label>
+          {isMultiline ? (
+            <Textarea
+              value={targetValue}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={t('localization.enterTranslation', 'Enter translation...')}
+              disabled={isReadOnly}
+              className={cn(
+                'min-h-28 resize-y transition-all duration-200',
+                needsWork && 'border-warning/50 focus:border-warning focus:ring-warning/20',
+                isComplete && 'border-success/30'
+              )}
+            />
+          ) : (
+            <Input
+              value={targetValue}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={t('localization.enterTranslation', 'Enter translation...')}
+              disabled={isReadOnly}
+              className={cn(
+                'transition-all duration-200',
+                needsWork && 'border-warning/50 focus:border-warning focus:ring-warning/20',
+                isComplete && 'border-success/30'
+              )}
+            />
           )}
-        >
-          {percent}%
-        </span>
+        </div>
       </div>
     </div>
   );
@@ -247,6 +246,7 @@ interface TranslationEditorPanelProps {
   questions: TranslatableQuestion[];
   isReadOnly: boolean;
   onBack: () => void;
+  onClose?: () => void;
 }
 
 function TranslationEditorPanel({
@@ -258,6 +258,7 @@ function TranslationEditorPanel({
   questions,
   isReadOnly,
   onBack,
+  onClose,
 }: TranslationEditorPanelProps) {
   const { t } = useTranslation();
   const bulkUpdateMutation = useBulkUpdateTranslations();
@@ -476,71 +477,222 @@ function TranslationEditorPanel({
   }, [questions.length, questionsWithSettings, targetLanguage, questionEdits]);
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface-container-lowest">
-        <div className="flex items-center gap-4">
-          <Button variant="tonal" size="icon" onClick={onBack} className="rounded-full">
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <div>
-            <h2 className="text-lg font-bold text-on-surface">
-              {targetLang.flag} {targetLang.nativeName}
-            </h2>
-            <p className="text-xs text-on-surface-variant">{t('localization.editingTranslation', 'Editing translation')}</p>
+    <div className="flex h-full overflow-hidden">
+      {/* Left sidebar - Language overview and navigation */}
+      <div className="hidden lg:flex w-80 shrink-0 flex-col border-r border-outline-variant/20 bg-surface-container-lowest">
+        {/* Language header */}
+        <div className="shrink-0 p-5 border-b border-outline-variant/20">
+          <BackButton onClick={onBack} label={t('localization.allLanguages', 'All languages')} hideTooltip className="mb-4" />
+          <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-container/40 border-2 border-primary/20">
+              <span className="text-3xl">{targetLang.flag}</span>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-on-surface">{targetLang.nativeName}</h2>
+              <p className="text-sm text-on-surface-variant">{targetLang.name}</p>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          {showSaved && (
-            <span className="inline-flex items-center gap-2 h-9 px-4 text-sm font-semibold text-success bg-success-container/50 rounded-full animate-in fade-in">
-              <Check className="w-4 h-4" />
-              {t('common.saved', 'Saved')}
-            </span>
-          )}
+        {/* Translation progress */}
+        <div className="p-5 border-b border-outline-variant/20">
+          <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4">
+            {t('localization.translationProgress', 'Translation Progress')}
+          </h3>
 
-          {!isReadOnly && (
-            <Button variant="filled" size="default" onClick={handleSave} disabled={!isDirty || isSaving} loading={isSaving} className="rounded-full">
-              <Check className="w-4 h-4 mr-2" />
-              {isSaving ? t('common.saving', 'Saving...') : t('common.saveChanges', 'Save Changes')}
-            </Button>
-          )}
+          {/* Overall progress ring visualization */}
+          <div className="flex items-center gap-4 mb-5">
+            <div className="relative w-16 h-16">
+              <svg className="w-full h-full -rotate-90">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="6" className="text-outline-variant/20" />
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="6"
+                  strokeDasharray={`${((surveyStats.percent + questionStats.percent) / 2 / 100) * 176} 176`}
+                  strokeLinecap="round"
+                  className={cn((surveyStats.percent + questionStats.percent) / 2 === 100 ? 'text-success' : 'text-primary')}
+                />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-on-surface">
+                {Math.round((surveyStats.percent + questionStats.percent) / 2)}%
+              </span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-on-surface">
+                {(surveyStats.percent + questionStats.percent) / 2 === 100
+                  ? t('localization.complete', 'Complete!')
+                  : t('localization.inProgress', 'In progress')}
+              </p>
+              <p className="text-xs text-on-surface-variant mt-0.5">{t('localization.overallCompletion', 'Overall completion')}</p>
+            </div>
+          </div>
+
+          {/* Detail progress bars */}
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="font-medium text-on-surface flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5" />
+                  {t('localization.surveyDetails', 'Survey Details')}
+                </span>
+                <span className="text-on-surface-variant">
+                  {surveyStats.translated}/{surveyStats.total}
+                </span>
+              </div>
+              <div className="h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+                <div
+                  className={cn('h-full rounded-full transition-all duration-500', surveyStats.percent === 100 ? 'bg-success' : 'bg-primary')}
+                  style={{ width: `${surveyStats.percent}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="font-medium text-on-surface flex items-center gap-1.5">
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  {t('localization.questions', 'Questions')}
+                </span>
+                <span className="text-on-surface-variant">
+                  {questionStats.translated}/{questionStats.total}
+                </span>
+              </div>
+              <div className="h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+                <div
+                  className={cn('h-full rounded-full transition-all duration-500', questionStats.percent === 100 ? 'bg-success' : 'bg-primary')}
+                  style={{ width: `${questionStats.percent}%` }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Source language info */}
+        <div className="p-5 flex-1">
+          <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">
+            {t('localization.sourceLanguage', 'Source Language', { language: sourceLang.nativeName })}
+          </h3>
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-surface-container">
+            <span className="text-2xl">{sourceLang.flag}</span>
+            <div>
+              <p className="text-sm font-medium text-on-surface">{sourceLang.nativeName}</p>
+              <p className="text-xs text-on-surface-variant">{sourceLang.name}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Auto-translate hint */}
+        {!isReadOnly && (
+          <div className="shrink-0 p-5 border-t border-outline-variant/20">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-secondary-container/30">
+              <div className="flex items-center justify-center w-9 h-9 rounded-full bg-secondary-container">
+                <Wand2 className="w-4 h-4 text-on-secondary-container" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-on-surface">{t('localization.aiTranslation', 'AI Translation')}</p>
+                <p className="text-[10px] text-on-surface-variant">{t('localization.comingSoon', 'Coming soon')}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Tabs for Survey vs Questions - Using existing Tabs component */}
-      <Tabs
-        value={activeTab}
-        onValueChange={(v) => setActiveTab(v as 'survey' | 'questions')}
-        variant="pills"
-        className="flex-1 flex flex-col overflow-hidden"
-      >
-        <div className="px-6 py-4 border-b border-outline-variant/20 bg-surface">
-          <TabsList className="h-11">
-            <TabsTrigger value="survey" className="relative px-5">
-              {t('localization.surveyDetails', 'Survey Details')}
-              {surveyStats.percent < 100 && <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface" />}
-            </TabsTrigger>
-            <TabsTrigger value="questions" className="relative px-5">
-              {t('localization.questions', 'Questions')} ({questionsWithSettings.length})
-              {questionStats.percent < 100 && (
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface" />
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile header (shown on smaller screens) */}
+        <div className="lg:hidden shrink-0 bg-primary-container/30 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <BackButton onClick={onBack} iconOnly hideTooltip className="rounded-full bg-surface/80" />
+              <div className="flex items-center gap-2">
+                <span className="text-xl">{targetLang.flag}</span>
+                <span className="font-semibold text-on-surface">{targetLang.nativeName}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {showSaved && (
+                <span className="inline-flex items-center gap-1.5 h-7 px-3 text-xs font-semibold text-success bg-success-container/60 rounded-full">
+                  <Check className="w-3.5 h-3.5" />
+                </span>
               )}
-            </TabsTrigger>
-          </TabsList>
+              {!isReadOnly && (
+                <Button variant="filled" size="sm" onClick={handleSave} disabled={!isDirty || isSaving} loading={isSaving} className="rounded-full">
+                  <Check className="w-3.5 h-3.5 mr-1" />
+                  {t('common.save', 'Save')}
+                </Button>
+              )}
+              {onClose && (
+                <IconButton variant="standard" size="sm" onClick={onClose} aria-label={t('common.close')}>
+                  <X className="w-4 h-4" />
+                </IconButton>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Survey Details Tab */}
-        <TabsContent value="survey" className="flex-1 overflow-y-auto p-6 m-0 bg-surface">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <ProgressCard
-              label={t('localization.surveyFieldsProgress', 'Survey fields progress')}
-              translated={surveyStats.translated}
-              total={surveyStats.total}
-              percent={surveyStats.percent}
-            />
+        {/* Desktop header */}
+        <div className="hidden lg:flex shrink-0 items-center justify-between px-6 py-4 border-b border-outline-variant/20 bg-surface">
+          <h3 className="text-lg font-semibold text-on-surface">{t('localization.editTranslations', 'Edit Translations')}</h3>
+          <div className="flex items-center gap-3">
+            {showSaved && (
+              <span className="inline-flex items-center gap-2 h-9 px-4 text-sm font-semibold text-success bg-success-container/60 rounded-full animate-in fade-in">
+                <CircleCheck className="w-4 h-4" />
+                {t('common.saved', 'Saved')}
+              </span>
+            )}
+            {!isReadOnly && (
+              <Button
+                variant="filled"
+                size="default"
+                onClick={handleSave}
+                disabled={!isDirty || isSaving}
+                loading={isSaving}
+                className="rounded-full"
+              >
+                <Check className="w-4 h-4 mr-2" />
+                {isSaving ? t('common.saving', 'Saving...') : t('common.saveChanges', 'Save Changes')}
+              </Button>
+            )}
+            {onClose && (
+              <IconButton variant="standard" size="sm" onClick={onClose} aria-label={t('common.close')}>
+                <X className="w-5 h-5" />
+              </IconButton>
+            )}
+          </div>
+        </div>
 
-            <div className="space-y-6">
+        {/* Tabs for Survey vs Questions */}
+        <Tabs
+          value={activeTab}
+          onValueChange={(v) => setActiveTab(v as 'survey' | 'questions')}
+          variant="pills"
+          className="flex-1 flex flex-col overflow-hidden"
+        >
+          <div className="shrink-0 px-6 py-3 border-b border-outline-variant/20 bg-surface-container-lowest">
+            <TabsList className="h-10">
+              <TabsTrigger value="survey" className="relative px-5 gap-2">
+                <FileText className="w-4 h-4" />
+                {t('localization.surveyDetails', 'Survey Details')}
+                {surveyStats.percent < 100 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface" />
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="questions" className="relative px-5 gap-2">
+                <MessageSquare className="w-4 h-4" />
+                {t('localization.questions', 'Questions')} ({questionsWithSettings.length})
+                {questionStats.percent < 100 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-warning ring-2 ring-surface" />
+                )}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Survey Details Tab */}
+          <TabsContent value="survey" className="flex-1 overflow-y-auto p-6 m-0 bg-surface">
+            <div className="max-w-4xl space-y-5">
               {surveyFields.map((field) => (
                 <TranslationField
                   key={field.key}
@@ -556,43 +708,31 @@ function TranslationEditorPanel({
                 />
               ))}
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        {/* Questions Tab - Uses QuestionTranslationsEditor component */}
-        <TabsContent value="questions" className="flex-1 overflow-y-auto p-6 m-0 bg-surface">
-          <div className="max-w-4xl mx-auto">
-            {questionsWithSettings.length > 0 ? (
-              <QuestionTranslationsEditor
-                questions={questionsWithSettings}
-                sourceLanguage={sourceLanguage}
-                targetLanguage={targetLanguage}
-                onChange={handleQuestionChange}
-                isReadOnly={isReadOnly}
-              />
-            ) : (
-              <EmptyState
-                icon={<Globe className="w-6 h-6" />}
-                title={t('localization.noQuestions', 'No questions to translate')}
-                description={t('localization.noQuestionsDesc', 'Add questions to your survey first, then come back to translate them.')}
-                size="default"
-              />
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Footer */}
-      {!isReadOnly && (
-        <div className="px-6 py-4 border-t border-outline-variant/20 bg-surface-container">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/30 border-2 border-primary/10">
-            <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary-container">
-              <Sparkles className="w-4 h-4 text-on-primary-container" />
+          {/* Questions Tab - Uses QuestionTranslationsEditor component */}
+          <TabsContent value="questions" className="flex-1 overflow-y-auto p-6 m-0 bg-surface">
+            <div className="max-w-4xl">
+              {questionsWithSettings.length > 0 ? (
+                <QuestionTranslationsEditor
+                  questions={questionsWithSettings}
+                  sourceLanguage={sourceLanguage}
+                  targetLanguage={targetLanguage}
+                  onChange={handleQuestionChange}
+                  isReadOnly={isReadOnly}
+                />
+              ) : (
+                <EmptyState
+                  icon={<Globe className="w-6 h-6" />}
+                  title={t('localization.noQuestions', 'No questions to translate')}
+                  description={t('localization.noQuestionsDesc', 'Add questions to your survey first, then come back to translate them.')}
+                  size="default"
+                />
+              )}
             </div>
-            <span className="text-sm font-medium text-on-surface">{t('localization.autoTranslateHint', 'Auto-translate feature coming soon!')}</span>
-          </div>
-        </div>
-      )}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
@@ -607,6 +747,7 @@ export function LanguagesTab({
   availableLanguages,
   questions,
   isReadOnly = false,
+  onClose,
   onAddLanguage,
   onDeleteLanguage,
   className,
@@ -638,6 +779,25 @@ export function LanguagesTab({
 
     return availableLanguages.map((code) => calculateLanguageStats(code, defaultLanguage, translationsData.translations, translationsData.questions));
   }, [availableLanguages, defaultLanguage, translationsData, questions]);
+
+  // Calculate overall stats for hero header
+  const overallStats = useMemo(() => {
+    const nonDefaultLanguages = languageStats.filter((l) => !l.isDefault);
+    if (nonDefaultLanguages.length === 0) {
+      return { totalFields: 0, translatedFields: 0, percent: 100 };
+    }
+
+    let totalFields = 0;
+    let translatedFields = 0;
+
+    nonDefaultLanguages.forEach((lang) => {
+      totalFields += lang.surveyFieldsTotal + lang.questionsTotal;
+      translatedFields += lang.surveyFieldsTranslated + lang.questionsTranslated;
+    });
+
+    const percent = totalFields > 0 ? Math.round((translatedFields / totalFields) * 100) : 100;
+    return { totalFields, translatedFields, percent };
+  }, [languageStats]);
 
   // Handle add language
   const handleAddLanguage = useCallback(
@@ -700,91 +860,200 @@ export function LanguagesTab({
           questions={questions}
           isReadOnly={isReadOnly}
           onBack={() => setSelectedLanguage(null)}
+          onClose={onClose}
         />
       </div>
     );
   }
 
-  // Main language list view
+  const defaultLangInfo = getLanguageInfo(defaultLanguage);
+
+  // Main language list view with split panel design (sidebar + content)
   return (
-    <div className={cn('h-full flex flex-col bg-surface', className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20 bg-surface-container-lowest">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-3xl bg-primary-container border-2 border-primary/20">
-            <Globe className="w-6 h-6 text-on-primary-container" />
+    <div className={cn('h-full flex bg-surface overflow-hidden', className)}>
+      {/* Left sidebar - Overview and stats */}
+      <div className="hidden lg:flex w-80 shrink-0 flex-col border-r border-outline-variant/20 bg-surface-container-lowest">
+        {/* Header with close */}
+        <div className="shrink-0 p-5 border-b border-outline-variant/20">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-lg font-bold text-on-surface">{t('localization.surveyLanguages', 'Survey Languages')}</h2>
+            {onClose && (
+              <IconButton variant="standard" size="sm" onClick={onClose} aria-label={t('common.close', 'Close')}>
+                <X className="w-5 h-5" />
+              </IconButton>
+            )}
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-on-surface">{t('localization.surveyLanguages', 'Languages')}</h2>
-            <p className="text-sm text-on-surface-variant mt-0.5">{t('localization.languagesDescription', 'Manage translations for your survey')}</p>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-secondary-container/40 border-2 border-secondary/20">
+              <Languages className="w-7 h-7 text-secondary" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-on-surface">{t('localization.manageLanguages', 'Manage Languages')}</p>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                {t('localization.languagesDescription', 'Manage survey languages and translations')}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Import/Export - planned */}
-          <Button variant="outline" size="default" disabled className="rounded-full">
-            <FileDown className="w-4 h-4 mr-2" />
-            {t('localization.export', 'Export')}
-          </Button>
-          <Button variant="outline" size="default" disabled className="rounded-full">
-            <FileUp className="w-4 h-4 mr-2" />
-            {t('localization.import', 'Import')}
-          </Button>
+        {/* Stats section */}
+        <div className="p-5 border-b border-outline-variant/20">
+          <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4">{t('common.overview', 'Overview')}</h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 rounded-2xl bg-surface-container">
+              <div className="flex items-center gap-3">
+                <Globe className="w-5 h-5 text-secondary" />
+                <span className="text-sm font-medium text-on-surface">
+                  {t('localization.languageCount', { count: languageStats.length, defaultValue: 'Languages' })}
+                </span>
+              </div>
+              <span className="text-lg font-bold text-on-surface">{languageStats.length}</span>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-2xl bg-surface-container">
+              <div className="flex items-center gap-3">
+                <MessageSquare className="w-5 h-5 text-secondary" />
+                <span className="text-sm font-medium text-on-surface">{t('localization.questionsLabel', 'Questions')}</span>
+              </div>
+              <span className="text-lg font-bold text-on-surface">{questions.length}</span>
+            </div>
+          </div>
+        </div>
 
-          {!isReadOnly && (
-            <Button variant="filled" size="default" onClick={() => addLanguageDialog.open()} className="rounded-full">
-              <Plus className="w-4 h-4 mr-2" />
-              {t('localization.addLanguage', 'Add Language')}
+        {/* Overall progress */}
+        {languageStats.length > 1 && (
+          <div className="p-5 border-b border-outline-variant/20">
+            <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4">
+              {t('localization.translationProgress', 'Translation Progress')}
+            </h3>
+            <div className="flex items-center gap-4 mb-3">
+              <div className="relative w-14 h-14">
+                <svg className="w-full h-full -rotate-90">
+                  <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeWidth="5" className="text-outline-variant/20" />
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="5"
+                    strokeDasharray={`${(overallStats.percent / 100) * 151} 151`}
+                    strokeLinecap="round"
+                    className={cn(overallStats.percent === 100 ? 'text-success' : 'text-primary')}
+                  />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-on-surface">{overallStats.percent}%</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-on-surface">
+                  {overallStats.percent === 100
+                    ? t('localization.fullyTranslated', 'Fully translated')
+                    : t('localization.overallProgress', { percent: overallStats.percent, defaultValue: `${overallStats.percent}% translated` })}
+                </p>
+                <p className="text-xs text-on-surface-variant">
+                  {overallStats.translatedFields}/{overallStats.totalFields} {t('localization.fieldsLabel', 'fields')}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Source language */}
+        <div className="p-5 flex-1">
+          <h3 className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">{t('localization.source', 'Source')}</h3>
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-primary-container/30 border-2 border-primary/20">
+            <span className="text-2xl">{defaultLangInfo.flag}</span>
+            <div>
+              <p className="text-sm font-medium text-on-surface">{defaultLangInfo.nativeName}</p>
+              <p className="text-xs text-on-surface-variant">{t('localization.defaultLanguage', 'Default Language')}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* AI hint */}
+        {!isReadOnly && (
+          <div className="shrink-0 p-5 border-t border-outline-variant/20">
+            <div className="flex items-center gap-3 p-3 rounded-2xl bg-tertiary-container/30">
+              <div className="flex items-center justify-center w-9 h-9 rounded-full bg-tertiary-container">
+                <Wand2 className="w-4 h-4 text-on-tertiary-container" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-on-surface">{t('localization.autoTranslateHint', 'AI Translation')}</p>
+                <p className="text-[10px] text-on-surface-variant">{t('common.comingSoon', 'Coming soon')}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile header */}
+        <div className="lg:hidden shrink-0 bg-secondary-container/30 px-5 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Languages className="w-6 h-6 text-secondary" />
+              <span className="font-semibold text-on-surface">{t('localization.surveyLanguages', 'Survey Languages')}</span>
+            </div>
+            {onClose && (
+              <IconButton variant="standard" size="sm" onClick={onClose} aria-label={t('common.close', 'Close')}>
+                <X className="w-5 h-5" />
+              </IconButton>
+            )}
+          </div>
+        </div>
+
+        {/* Action bar */}
+        <div className="shrink-0 flex items-center justify-between gap-3 px-6 py-3 border-b border-outline-variant/20 bg-surface">
+          <div className="text-sm text-on-surface-variant">{t('localization.clickToEdit', 'Click on a language to edit its translations')}</div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" disabled className="rounded-full">
+              <FileDown className="w-4 h-4 mr-1.5" />
+              {t('localization.export', 'Export')}
             </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Language list */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="max-w-4xl mx-auto">
-          {languageStats.length > 0 ? (
-            <LanguageList
-              languages={languageStats}
-              selectedLanguage={selectedLanguage || undefined}
-              isReadOnly={isReadOnly}
-              onSelect={setSelectedLanguage}
-              onDelete={handleDeleteLanguage}
-            />
-          ) : (
-            <EmptyState
-              icon={<Globe className="w-8 h-8" />}
-              title={t('localization.noLanguages', 'No languages configured')}
-              description={t('localization.noLanguagesDesc', 'Add languages to make your survey available in multiple languages.')}
-              iconVariant="primary"
-              action={
-                !isReadOnly
-                  ? {
-                      label: t('localization.addLanguage', 'Add Language'),
-                      onClick: () => addLanguageDialog.open(),
-                      icon: <Plus className="w-4 h-4" />,
-                    }
-                  : undefined
-              }
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Overall stats footer */}
-      {languageStats.length > 1 && (
-        <div className="px-6 py-4 border-t border-outline-variant/20 bg-surface-container">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <span className="inline-flex items-center gap-2 h-8 px-4 text-sm font-medium bg-surface-container-high rounded-full">
-              <Globe className="w-4 h-4 text-on-surface-variant" />
-              {t('localization.totalLanguages', '{{count}} languages configured', { count: languageStats.length })}
-            </span>
-            <span className="inline-flex items-center gap-2 h-8 px-4 text-sm font-medium text-on-surface-variant bg-surface-container-high rounded-full">
-              {t('localization.questionsCount', '{{count}} questions', { count: questions.length })}
-            </span>
+            <Button variant="outline" size="sm" disabled className="rounded-full">
+              <FileUp className="w-4 h-4 mr-1.5" />
+              {t('localization.import', 'Import')}
+            </Button>
+            {!isReadOnly && (
+              <Button variant="filled" size="sm" onClick={() => addLanguageDialog.open()} className="rounded-full">
+                <Plus className="w-4 h-4 mr-1.5" />
+                {t('localization.addLanguage', 'Add Language')}
+              </Button>
+            )}
           </div>
         </div>
-      )}
+
+        {/* Language list */}
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-4xl">
+            {languageStats.length > 0 ? (
+              <LanguageList
+                languages={languageStats}
+                selectedLanguage={selectedLanguage || undefined}
+                isReadOnly={isReadOnly}
+                onSelect={setSelectedLanguage}
+                onDelete={handleDeleteLanguage}
+              />
+            ) : (
+              <EmptyState
+                icon={<Globe className="w-8 h-8" />}
+                title={t('localization.noLanguages', 'No languages configured')}
+                description={t('localization.noLanguagesDesc', 'Add languages to make your survey available in multiple languages.')}
+                iconVariant="primary"
+                action={
+                  !isReadOnly
+                    ? {
+                        label: t('localization.addLanguage', 'Add Language'),
+                        onClick: () => addLanguageDialog.open(),
+                        icon: <Plus className="w-4 h-4" />,
+                      }
+                    : undefined
+                }
+              />
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Add Language Dialog */}
       <AddLanguageDialog

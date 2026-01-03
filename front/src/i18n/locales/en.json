@@ -1597,16 +1597,26 @@
     "languageCount": "{{count}} language(s)",
     "languageCount_one": "{{count}} language",
     "languageCount_other": "{{count}} languages",
+    "questionCount": "{{count}} question(s)",
+    "questionCount_one": "{{count}} question",
+    "questionCount_other": "{{count}} questions",
     "default": "Default",
     "fallback": "Fallback",
     "addLanguage": "Add Language",
-    "manageLanguages": "Manage Languages...",
+    "manageLanguages": "Manage Languages",
+    "manageLanguagesDesc": "Add and manage survey translations",
     "editingIn": "Editing in {{language}}",
     "complete": "Complete",
     "incomplete": "Incomplete",
     "notTranslated": "Not translated",
     "translationProgress": "Translation Progress",
     "fieldsTranslated": "{{count}} of {{total}} fields translated",
+    "overallProgress": "{{percent}}% translated",
+    "fullyTranslated": "Fully translated",
+    "translatingFrom": "Translating from {{source}}",
+    "surveyFields": "Survey: {{translated}}/{{total}}",
+    "questionFields": "Questions: {{translated}}/{{total}}",
+    "clickToEdit": "Click on a language to edit its translations",
     "addLanguageTitle": "Add Language",
     "addLanguageDescription": "Add a new language translation to this survey",
     "selectLanguageToAdd": "Select language to add",
@@ -1815,7 +1825,13 @@
   },
   "questionPreview": {
     "interactiveMode": "Interactive preview - try it out!",
-    "questionText": "Enter your question"
+    "questionText": "Enter your question",
+    "answered": "Answer recorded"
+  },
+  "preview": {
+    "responsive": "Responsive",
+    "desktop": "Desktop",
+    "mobile": "Mobile"
   },
   "questionEditor": {
     "addQuestion": "Add Question",
@@ -4646,5 +4662,37 @@
     "toSelect": "to select",
     "toNavigate": "to navigate",
     "toClose": "to close"
+  },
+  "api": {
+    "success": {
+      "created": "{{resource}} created successfully",
+      "updated": "{{resource}} updated successfully",
+      "deleted": "{{resource}} deleted successfully",
+      "published": "{{resource}} published successfully",
+      "closed": "{{resource}} closed successfully",
+      "sent": "{{resource}} sent successfully",
+      "saved": "{{resource}} saved successfully",
+      "archived": "{{resource}} archived successfully",
+      "restored": "{{resource}} restored successfully",
+      "duplicated": "{{resource}} duplicated successfully",
+      "exported": "{{resource}} exported successfully",
+      "imported": "{{resource}} imported successfully"
+    },
+    "resources": {
+      "surveys": "Survey",
+      "survey": "Survey",
+      "users": "User",
+      "settings": "Settings",
+      "preferences": "Preferences",
+      "templates": "Template",
+      "responses": "Response",
+      "questions": "Question",
+      "namespaces": "Workspace",
+      "themes": "Theme",
+      "links": "Link",
+      "invitations": "Invitation",
+      "members": "Member",
+      "apikeys": "API Key"
+    }
   }
 }

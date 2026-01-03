@@ -4,7 +4,6 @@ import { Input } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
-import { EditorPreview } from '@/components/features/public-survey';
 
 interface FileUploadEditorProps {
   question: DraftQuestion;
@@ -106,9 +105,6 @@ export function FileUploadEditor({ question, onUpdateQuestion }: FileUploadEdito
           helperText={t('editors.file.maxSizeHelper')}
         />
       </div>
-
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} />
     </div>
   );
 }

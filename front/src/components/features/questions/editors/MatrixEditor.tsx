@@ -5,7 +5,6 @@ import { Input, IconButton } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
-import { EditorPreview } from '@/components/features/public-survey';
 
 interface MatrixEditorProps {
   question: DraftQuestion;
@@ -152,9 +151,6 @@ export function MatrixEditor({ question, onUpdateQuestion }: MatrixEditorProps) 
           <span className="font-medium">{t('editors.matrix.addColumn')}</span>
         </button>
       </div>
-
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} className="overflow-x-auto" />
     </div>
   );
 }

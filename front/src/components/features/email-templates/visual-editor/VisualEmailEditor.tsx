@@ -36,9 +36,11 @@ import {
   SegmentedButtonGroup,
   Card,
   IconButton,
+  SortableList,
+  SortableItemWithHandle,
 } from '@/components/ui';
 import { useUpdateEmailTemplate } from '@/hooks/queries/useEmailTemplates';
-import { useCopyToClipboard } from '@/hooks';
+import { useCopyToClipboard, useSortableList } from '@/hooks';
 import { EmailTemplateType } from '@/types/enums';
 import type { EmailTemplate, UpdateEmailTemplateRequest } from '@/types';
 import { BlockPalette } from './BlockPalette';
@@ -254,6 +256,30 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
   const canvasRef = useRef<HTMLDivElement>(null);
   const historyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Reorder handler for @dnd-kit sortable
+  const handleReorderBlocks = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const newBlocks = [...blocks];
+      const [removed] = newBlocks.splice(fromIndex, 1);
+      newBlocks.splice(toIndex, 0, removed);
+      setBlocks(newBlocks);
+      // Push to history after reorder
+      const newHistory = history.slice(0, historyIndex + 1);
+      newHistory.push(newBlocks);
+      if (newHistory.length > 50) newHistory.shift();
+      setHistory(newHistory);
+      setHistoryIndex(newHistory.length - 1);
+    },
+    [blocks, history, historyIndex]
+  );
+
+  // Use @dnd-kit sortable list for block reordering
+  const blockSortable = useSortableList({
+    items: blocks,
+    getId: (block) => block.id,
+    onReorder: handleReorderBlocks,
+  });
+
   // Cleanup history timer on unmount
   useEffect(() => {
     return () => {
@@ -398,23 +424,7 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
     [blocks, pushHistory]
   );
 
-  // Reorder blocks via drag-drop
-  const reorderBlock = useCallback(
-    (fromId: string, toId: string) => {
-      const fromIndex = blocks.findIndex((b) => b.id === fromId);
-      const toIndex = blocks.findIndex((b) => b.id === toId);
-      if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
-
-      const newBlocks = [...blocks];
-      const [removed] = newBlocks.splice(fromIndex, 1);
-      newBlocks.splice(toIndex, 0, removed);
-      setBlocks(newBlocks);
-      pushHistory(newBlocks);
-    },
-    [blocks, pushHistory]
-  );
-
-  // Handle drop on canvas
+  // Handle drop on canvas (for adding new blocks from palette - using native HTML5 drag)
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
@@ -765,29 +775,38 @@ export function VisualEmailEditor({ template, onBack, onSaved }: VisualEmailEdit
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-0">
-                      {blocks.map((block, index) => (
-                        <BlockEditor
-                          key={block.id}
-                          block={block}
-                          globalStyles={globalStyles}
-                          isSelected={selectedBlockId === block.id}
-                          onSelect={() => {
-                            setSelectedBlockId(block.id);
-                            if (!showRightSidebar) setShowRightSidebar(true);
-                          }}
-                          onChange={(updated) => updateBlock(block.id, updated)}
-                          onDelete={() => deleteBlock(block.id)}
-                          onDuplicate={() => duplicateBlock(block.id)}
-                          onMoveUp={() => moveBlock(block.id, 'up')}
-                          onMoveDown={() => moveBlock(block.id, 'down')}
-                          onReorder={reorderBlock}
-                          canMoveUp={index > 0}
-                          canMoveDown={index < blocks.length - 1}
-                          onOpenSettings={() => setShowRightSidebar(true)}
-                        />
-                      ))}
-                    </div>
+                    <SortableList
+                      sortable={blockSortable}
+                      renderOverlay={(block) => (
+                        <div className="bg-surface border-2 border-primary rounded-2xl shadow-lg p-4 opacity-90">
+                          <div className="text-sm font-medium text-on-surface">{t(`emailEditor.blocks.${block.type}`, block.type)}</div>
+                        </div>
+                      )}
+                    >
+                      <div className="space-y-0">
+                        {blocks.map((block, index) => (
+                          <SortableItemWithHandle key={block.id} id={block.id}>
+                            <BlockEditor
+                              block={block}
+                              globalStyles={globalStyles}
+                              isSelected={selectedBlockId === block.id}
+                              onSelect={() => {
+                                setSelectedBlockId(block.id);
+                                if (!showRightSidebar) setShowRightSidebar(true);
+                              }}
+                              onChange={(updated) => updateBlock(block.id, updated)}
+                              onDelete={() => deleteBlock(block.id)}
+                              onDuplicate={() => duplicateBlock(block.id)}
+                              onMoveUp={() => moveBlock(block.id, 'up')}
+                              onMoveDown={() => moveBlock(block.id, 'down')}
+                              canMoveUp={index > 0}
+                              canMoveDown={index < blocks.length - 1}
+                              onOpenSettings={() => setShowRightSidebar(true)}
+                            />
+                          </SortableItemWithHandle>
+                        ))}
+                      </div>
+                    </SortableList>
                   )}
                 </Card>
               </div>

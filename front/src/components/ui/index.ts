@@ -4,6 +4,9 @@
 export { Button, buttonVariants } from './Button';
 export type { ButtonProps } from './Button';
 
+export { BackButton } from './BackButton';
+export type { BackButtonProps } from './BackButton';
+
 // Azure AD Login Button
 export { AzureAdLoginButton } from './AzureAdLoginButton';
 
@@ -71,7 +74,15 @@ export {
 export { ToastContainer, Snackbar, toast, useToastStore } from './Toast';
 
 // Empty states & Error handling
-export { EmptyState, EmptyStateSurveys, EmptyStateResponses, EmptyStateTemplates, EmptyStateSearch, EmptyStateError, presetIcons } from './EmptyState';
+export {
+  EmptyState,
+  EmptyStateSurveys,
+  EmptyStateResponses,
+  EmptyStateTemplates,
+  EmptyStateSearch,
+  EmptyStateError,
+  presetIcons,
+} from './EmptyState';
 export type { EmptyStateAction, EmptyStateProps } from './EmptyState';
 export { OfflineIndicator, useOnlineStatus, OnlineOnly } from './OfflineIndicator';
 
@@ -125,3 +136,7 @@ export { GettingStartedWizard } from './GettingStartedWizard';
 // Branding
 export { Logo, LogoIcon } from './Logo';
 export type { LogoProps, LogoVariant, LogoSize } from './Logo';
+
+// Drag and Drop
+export { SortableList, SortableItem, SortableItemWithHandle, SortableHandle, useSortableItemState } from './Sortable';
+export type { SortableListProps, SortableItemProps, SortableHandleProps } from './Sortable';

@@ -4,7 +4,6 @@ import { Input } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
-import { EditorPreview } from '@/components/features/public-survey';
 
 interface ScaleEditorProps {
   question: DraftQuestion;
@@ -105,9 +104,6 @@ export function ScaleEditor({ question, onUpdateQuestion }: ScaleEditorProps) {
           placeholder={t('questionEditor.scale.highPlaceholder')}
         />
       </div>
-
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} />
     </div>
   );
 }

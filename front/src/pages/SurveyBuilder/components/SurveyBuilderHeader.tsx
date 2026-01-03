@@ -4,8 +4,8 @@
 // - Dynamic shapes (rounded-full for buttons)
 // - Semantic color tokens
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Save, Eye, Undo2, Redo2, Settings, Check, Loader2, Palette, Lock } from 'lucide-react';
-import { Button, Tooltip, IconButton } from '@/components/ui';
+import { Save, Eye, Undo2, Redo2, Settings, Check, Loader2, Palette, Lock } from 'lucide-react';
+import { Button, BackButton, Tooltip, IconButton } from '@/components/ui';
 import { SurveyStatusBadge } from '@/components/features/surveys';
 import { SurveyLanguageSwitcher, type LanguageStatus } from '@/components/features/localization';
 import { SurveyStatus } from '@/types';
@@ -35,6 +35,7 @@ interface SurveyBuilderHeaderProps {
   onLanguageChange: (languageCode: string) => void;
   onAddLanguage: () => void;
   onEditTranslation?: () => void;
+  onManageLanguages?: () => void;
 }
 
 export function SurveyBuilderHeader({
@@ -61,6 +62,7 @@ export function SurveyBuilderHeader({
   onLanguageChange,
   onAddLanguage,
   onEditTranslation,
+  onManageLanguages,
 }: SurveyBuilderHeaderProps) {
   const { t } = useTranslation();
 
@@ -85,12 +87,7 @@ export function SurveyBuilderHeader({
       <header className="h-14 flex items-center justify-between px-4 bg-surface border-b border-outline-variant/30">
         {/* Left section - Back & Title */}
         <div className="flex items-center gap-3">
-          <Tooltip content={t('surveyBuilder.backToSurveys')}>
-            <Button variant="text" size="sm" onClick={onBack} className="rounded-lg">
-              <ArrowLeft className="w-4 h-4 mr-1" />
-              {t('common.back', 'Back')}
-            </Button>
-          </Tooltip>
+          <BackButton onClick={onBack} tooltip={t('surveyBuilder.backToSurveys')} />
 
           <div className="h-6 w-px bg-outline-variant/30" />
 
@@ -184,7 +181,8 @@ export function SurveyBuilderHeader({
             availableLanguages={languageStatuses}
             onLanguageSelect={onLanguageChange}
             onAddLanguage={onAddLanguage}
-            onManageLanguages={editingLanguage !== defaultLanguage ? onEditTranslation : undefined}
+            onEditTranslation={editingLanguage !== defaultLanguage ? onEditTranslation : undefined}
+            onManageLanguages={onManageLanguages}
             isReadOnly={isReadOnly}
           />
 

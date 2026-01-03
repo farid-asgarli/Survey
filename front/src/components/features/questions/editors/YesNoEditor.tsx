@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
 import { YesNoStyle } from '@/types/enums';
-import { EditorPreview } from '@/components/features/public-survey';
 import { YES_NO_STYLE_OPTIONS } from '@/config';
 
 interface YesNoEditorProps {
@@ -18,7 +17,7 @@ export function YesNoEditor({ question, onUpdateQuestion }: YesNoEditorProps) {
   const yesNoStyle = (question.settings.yesNoStyle ?? YesNoStyle.Text) as YesNoStyle;
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -38,8 +37,8 @@ export function YesNoEditor({ question, onUpdateQuestion }: YesNoEditorProps) {
 
       {/* Display Style */}
       <div>
-        <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.yesNo.style', 'Display Style')}</label>
-        <div className='flex flex-wrap gap-2'>
+        <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('questionEditor.yesNo.style', 'Display Style')}</label>
+        <div className="flex flex-wrap gap-2">
           {YES_NO_STYLE_OPTIONS.map((style) => {
             const Icon = style.icon;
             return (
@@ -53,16 +52,13 @@ export function YesNoEditor({ question, onUpdateQuestion }: YesNoEditorProps) {
                     : 'bg-surface border-outline-variant text-on-surface hover:bg-surface-container'
                 )}
               >
-                <Icon className='w-4 h-4' />
+                <Icon className="w-4 h-4" />
                 <span>{style.label}</span>
               </button>
             );
           })}
         </div>
       </div>
-
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} />
     </div>
   );
 }

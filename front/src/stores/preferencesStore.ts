@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
+import { FONT_SIZE_SCALES } from '@/config/accessibility';
 import type {
   UserPreferences,
   AccessibilitySettings,

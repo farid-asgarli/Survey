@@ -2137,7 +2137,8 @@
     "languagesDescription": "Управляйте языками и переводами опроса",
     "loadingTranslations": "Загрузка переводов...",
     "lowRatingLabel": "Метка низкой оценки",
-    "manageLanguages": "Управление языками...",
+    "manageLanguages": "Управление языками",
+    "manageLanguagesDesc": "Добавить и управлять переводами опроса",
     "missingTranslations": "Отсутствует: {{fields}}",
     "needsTranslation": "Требуется перевод",
     "needsWork": "Требует доработки",
@@ -2158,6 +2159,15 @@
     "questionsLabel": "Вопросы",
     "questionsProgress": "{{completed}}/{{total}} вопросов переведено",
     "questionsTooltip": "Текст вопросов и варианты",
+    "questionCount": "{{count}} вопросов",
+    "questionCount_one": "{{count}} вопрос",
+    "questionCount_other": "{{count}} вопросов",
+    "overallProgress": "{{percent}}% переведено",
+    "fullyTranslated": "Полностью переведено",
+    "translatingFrom": "Перевод с {{source}}",
+    "surveyFields": "Опрос: {{translated}}/{{total}}",
+    "questionFields": "Вопросы: {{translated}}/{{total}}",
+    "clickToEdit": "Нажмите на язык, чтобы редактировать переводы",
     "ratingLabels": "Метки рейтинга",
     "removeLanguage": "Удалить язык",
     "removeLanguageConfirm": "Вы уверены, что хотите удалить {{language}}? Все переводы для этого языка будут удалены.",
@@ -2841,7 +2851,13 @@
   },
   "questionPreview": {
     "interactiveMode": "Интерактивный предпросмотр — попробуйте!",
-    "questionText": "Введите ваш вопрос"
+    "questionText": "Введите ваш вопрос",
+    "answered": "Ответ записан"
+  },
+  "preview": {
+    "responsive": "Адаптивный",
+    "desktop": "Компьютер",
+    "mobile": "Мобильный"
   },
   "questionRenderers": {
     "allowedTypes": "Разрешено",
@@ -4646,5 +4662,37 @@
     "workspace": "пространство",
     "workspaceName": "Название пространства",
     "workspaces": "пространства"
+  },
+  "api": {
+    "success": {
+      "created": "{{resource}} успешно создан(а)",
+      "updated": "{{resource}} успешно обновлен(а)",
+      "deleted": "{{resource}} успешно удален(а)",
+      "published": "{{resource}} успешно опубликован(а)",
+      "closed": "{{resource}} успешно закрыт(а)",
+      "sent": "{{resource}} успешно отправлен(а)",
+      "saved": "{{resource}} успешно сохранен(а)",
+      "archived": "{{resource}} успешно архивирован(а)",
+      "restored": "{{resource}} успешно восстановлен(а)",
+      "duplicated": "{{resource}} успешно дублирован(а)",
+      "exported": "{{resource}} успешно экспортирован(а)",
+      "imported": "{{resource}} успешно импортирован(а)"
+    },
+    "resources": {
+      "surveys": "Опрос",
+      "survey": "Опрос",
+      "users": "Пользователь",
+      "settings": "Настройки",
+      "preferences": "Предпочтения",
+      "templates": "Шаблон",
+      "responses": "Ответ",
+      "questions": "Вопрос",
+      "namespaces": "Рабочее пространство",
+      "themes": "Тема",
+      "links": "Ссылка",
+      "invitations": "Приглашение",
+      "members": "Участник",
+      "apikeys": "API ключ"
+    }
   }
 }

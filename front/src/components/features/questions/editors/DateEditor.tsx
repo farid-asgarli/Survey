@@ -3,7 +3,6 @@
 import { Input } from '@/components/ui';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
-import { EditorPreview } from '@/components/features/public-survey';
 
 interface DateEditorProps {
   question: DraftQuestion;
@@ -31,9 +30,6 @@ export function DateEditor({ question, onUpdateQuestion }: DateEditorProps) {
         placeholder={t('questionEditor.common.addHelpText')}
         helperText={t('questionEditor.common.textBelowQuestion')}
       />
-
-      {/* Preview - Using unified preview component */}
-      <EditorPreview question={question} />
     </div>
   );
 }

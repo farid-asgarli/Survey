@@ -50,6 +50,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
   const logicDialog = useDialogState();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const [isLogicExpanded, setIsLogicExpanded] = useState(false);
+  const [isPreviewVisible, setIsPreviewVisible] = useState(true);
   const { survey, updateQuestion, deleteQuestion, duplicateQuestion, addOption, updateOption, deleteOption, reorderOptions } =
     useSurveyBuilderStore();
 
@@ -283,6 +284,26 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
 
       {!isReadOnly && (
         <div className="flex items-center gap-2">
+          {/* Inline Preview Toggle - Desktop only */}
+          {showLogicInline && (
+            <Tooltip content={isPreviewVisible ? t('questionEditor.hidePreview', 'Hide Preview') : t('questionEditor.showPreview', 'Show Preview')}>
+              <Button
+                variant="tonal"
+                size="sm"
+                onClick={() => setIsPreviewVisible(!isPreviewVisible)}
+                className={cn(
+                  'transition-colors',
+                  isPreviewVisible
+                    ? 'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80'
+                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                )}
+              >
+                <Eye className="w-4 h-4 mr-1.5" />
+                {t('questionEditor.preview')}
+              </Button>
+            </Tooltip>
+          )}
+
           {/* Inline Logic Button - Desktop only */}
           {showLogicInline && canConfigureLogic && (
             <div className="flex items-center gap-2">
@@ -363,7 +384,7 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
           <p className="text-xs text-on-surface-variant">{t('questionEditor.previewDescription', 'How respondents will see this')}</p>
         </div>
       </div>
-      <div className={cn('p-4', compact ? '' : 'overflow-auto')}>
+      <div className={cn('bg-surface p-4', compact ? '' : 'overflow-auto')}>
         <QuestionPreview question={displayQuestion} />
       </div>
     </div>
@@ -441,15 +462,17 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
         {/* Header with inline Logic button */}
         <div className="shrink-0 bg-surface border-b border-outline-variant/30 p-4">{renderQuestionHeader(true)}</div>
 
-        {/* Scrollable Content - Editor + Preview side by side */}
-        <div className="flex-1 overflow-auto p-4">
-          <div className="grid grid-cols-5 gap-4 h-full">
-            {/* Left Column - Editor (Hero) - takes 3/5 */}
-            <div className="col-span-3">{renderEditorCard()}</div>
+        {/* Content Area - Editor scrolls, Preview stays sticky */}
+        <div className={cn('flex-1 overflow-hidden', isPreviewVisible ? 'grid grid-cols-5 gap-4' : '')}>
+          {/* Left Column - Editor (Hero) - scrollable */}
+          <div className={cn('overflow-auto p-4', isPreviewVisible ? 'col-span-3' : 'max-w-4xl mx-auto')}>{renderEditorCard()}</div>
 
-            {/* Right Column - Preview - takes 2/5 */}
-            <div className="col-span-2">{renderPreviewCard()}</div>
-          </div>
+          {/* Right Column - Preview - sticky, doesn't scroll with editor */}
+          {isPreviewVisible && (
+            <div className="col-span-2 overflow-auto border-l border-outline-variant/20 bg-surface-container-lowest/50">
+              <div className="sticky top-0 p-4">{renderPreviewCard()}</div>
+            </div>
+          )}
         </div>
 
         {/* Logic Builder Dialog */}

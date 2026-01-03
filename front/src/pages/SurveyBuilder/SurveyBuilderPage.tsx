@@ -20,22 +20,15 @@
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useBlocker } from 'react-router-dom';
-import { Loader2, AlertTriangle, Plus } from 'lucide-react';
-import { Button, EmptyState } from '@/components/ui';
+import { Loader2, AlertTriangle, Plus, Palette } from 'lucide-react';
+import { Button, EmptyState, Drawer, DrawerContent, DrawerHeader, DrawerBody } from '@/components/ui';
 import { QuestionEditor, AddQuestionMenu } from '@/components/features/questions';
 import { ThemePreviewPanel } from '@/components/features/surveys';
 import { AddLanguageDialog, TranslationEditorDialog, LanguagesTab } from '@/components/features/localization';
 import { useSurveyBuilderStore, useSelectedQuestion, useNamespaceStore } from '@/stores';
 import { useSurveyDetail, useViewTransitionNavigate, useAddSurveyTranslation, useDialogState } from '@/hooks';
 import type { QuestionType } from '@/types';
-import {
-  SurveyBuilderHeader,
-  QuestionListSidebar,
-  SurveySettingsDialog,
-  UnsavedChangesDialog,
-  SurveyBuilderTabs,
-  type BuilderTab,
-} from './components';
+import { SurveyBuilderHeader, QuestionListSidebar, SurveySettingsDialog, UnsavedChangesDialog } from './components';
 import { useSurveyBuilderSave } from './hooks';
 import { useEditorShortcuts, useEditorAutoSave } from '@/hooks';
 import { AUTOSAVE_DELAY } from './constants';
@@ -55,7 +48,7 @@ export function SurveyBuilderPage() {
   const [showThemePanel, setShowThemePanel] = useState(false);
   const addLanguageDialog = useDialogState();
   const translationEditorDialog = useDialogState();
-  const [activeBuilderTab, setActiveBuilderTab] = useState<BuilderTab>('questions');
+  const languagesDrawer = useDialogState();
 
   // Store
   const {
@@ -195,25 +188,6 @@ export function SurveyBuilderPage() {
     }
   };
 
-  // Drag and drop handlers
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    e.dataTransfer.setData('text/plain', index.toString());
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-    if (dragIndex !== dropIndex) {
-      reorderQuestions(dragIndex, dropIndex);
-    }
-  };
-
   // Loading state - only show on initial load, not during background refetches
   // Using isLoading (not isFetching) prevents flash during autosave refetches
   if (!activeNamespace || isLoading) {
@@ -268,106 +242,54 @@ export function SurveyBuilderPage() {
         onLanguageChange={setEditingLanguage}
         onAddLanguage={() => addLanguageDialog.open()}
         onEditTranslation={() => translationEditorDialog.open()}
+        onManageLanguages={() => languagesDrawer.open()}
       />
 
-      {/* Tab Navigation */}
-      <SurveyBuilderTabs
-        activeTab={activeBuilderTab}
-        onTabChange={setActiveBuilderTab}
-        questionCount={questions.length}
-        languageCount={survey?.availableLanguages?.length || 1}
-        hasIncompleteTranslations={(survey?.availableLanguages?.length || 1) > 1}
-      />
+      {/* Main Content - Questions panel layout */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Question List */}
+        <QuestionListSidebar
+          questions={questions}
+          selectedQuestionId={selectedQuestionId}
+          isReadOnly={isReadOnly}
+          onQuestionSelect={selectQuestion}
+          onQuestionDuplicate={duplicateQuestion}
+          onQuestionDelete={deleteQuestion}
+          onQuestionRequiredChange={(id, required) => updateQuestion(id, { isRequired: required })}
+          onAddQuestion={() => setIsAddMenuOpen(true)}
+          onReorderQuestions={reorderQuestions}
+        />
 
-      {/* Main Content - Conditional based on active tab */}
-      {activeBuilderTab === 'questions' ? (
-        /* Questions Tab - 3-panel layout */
-        <div className="flex-1 flex overflow-hidden">
-          {/* Left Panel - Question List */}
-          <QuestionListSidebar
-            questions={questions}
-            selectedQuestionId={selectedQuestionId}
-            isReadOnly={isReadOnly}
-            onQuestionSelect={selectQuestion}
-            onQuestionDuplicate={duplicateQuestion}
-            onQuestionDelete={deleteQuestion}
-            onQuestionRequiredChange={(id, required) => updateQuestion(id, { isRequired: required })}
-            onAddQuestion={() => setIsAddMenuOpen(true)}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          />
-
-          {/* Center Panel - Question Editor */}
-          <main className="flex-1 flex flex-col overflow-hidden">
-            {selectedQuestion ? (
-              <QuestionEditor question={selectedQuestion} isReadOnly={isReadOnly} />
-            ) : (
-              <div className="flex-1 flex items-center justify-center p-8">
-                <EmptyState
-                  icon={<Plus className="h-6 w-6" />}
-                  title={questions.length === 0 ? t('surveyBuilder.noQuestions') : t('surveyBuilder.selectQuestion', 'Select a question')}
-                  description={
-                    questions.length === 0
-                      ? t('surveyBuilder.addFirstQuestion')
-                      : t('surveyBuilder.selectQuestionDesc', 'Choose a question from the list to edit, or add a new one')
-                  }
-                  iconVariant={questions.length === 0 ? 'primary' : 'default'}
-                  size="default"
-                  action={
-                    !isReadOnly
-                      ? {
-                          label: t('surveyBuilder.addQuestion'),
-                          onClick: () => setIsAddMenuOpen(true),
-                          icon: <Plus className="h-4 w-4" />,
-                        }
-                      : undefined
-                  }
-                />
-              </div>
-            )}
-          </main>
-
-          {/* Right Panel - Theme Preview */}
-          {showThemePanel && <ThemePreviewPanel isReadOnly={isReadOnly} />}
-        </div>
-      ) : (
-        /* Languages Tab - Full-width language management */
-        <div className="flex-1 overflow-hidden">
-          {survey?.id && (
-            <LanguagesTab
-              surveyId={survey.id}
-              defaultLanguage={survey.defaultLanguage || 'en'}
-              availableLanguages={survey.availableLanguages || ['en']}
-              questions={questions}
-              isReadOnly={isReadOnly}
-              onAddLanguage={async (languageCode, autoTranslate) => {
-                try {
-                  await addTranslationMutation.mutateAsync({
-                    surveyId: survey.id,
-                    translation: {
-                      languageCode,
-                      title: survey.title,
-                      description: autoTranslate ? survey.description : undefined,
-                      welcomeMessage: autoTranslate ? survey.welcomeMessage : undefined,
-                      thankYouMessage: autoTranslate ? survey.thankYouMessage : undefined,
-                      isDefault: false,
-                    },
-                  });
-                  addLanguage(languageCode);
-                } catch (error) {
-                  console.error('Failed to add language:', error);
-                  throw error;
+        {/* Center Panel - Question Editor */}
+        <main className="flex-1 flex flex-col overflow-hidden">
+          {selectedQuestion ? (
+            <QuestionEditor question={selectedQuestion} isReadOnly={isReadOnly} />
+          ) : (
+            <div className="flex-1 flex items-center justify-center p-8">
+              <EmptyState
+                icon={<Plus className="h-6 w-6" />}
+                title={questions.length === 0 ? t('surveyBuilder.noQuestions') : t('surveyBuilder.selectQuestion', 'Select a question')}
+                description={
+                  questions.length === 0
+                    ? t('surveyBuilder.addFirstQuestion')
+                    : t('surveyBuilder.selectQuestionDesc', 'Choose a question from the list to edit, or add a new one')
                 }
-              }}
-              onDeleteLanguage={() => {
-                // Update local store when language is deleted
-                // The actual deletion is handled by LanguagesTab
-              }}
-            />
+                iconVariant={questions.length === 0 ? 'primary' : 'default'}
+                size="default"
+                action={
+                  !isReadOnly
+                    ? {
+                        label: t('surveyBuilder.addQuestion'),
+                        onClick: () => setIsAddMenuOpen(true),
+                        icon: <Plus className="h-4 w-4" />,
+                      }
+                    : undefined
+                }
+              />
+            </div>
           )}
-        </div>
-      )}
+        </main>
+      </div>
 
       {/* Add Question Menu - only show in edit mode */}
       {!isReadOnly && <AddQuestionMenu isOpen={isAddMenuOpen} onOpenChange={setIsAddMenuOpen} onSelectType={handleAddQuestion} />}
@@ -446,6 +368,64 @@ export function SurveyBuilderPage() {
           isReadOnly={isReadOnly}
         />
       )}
+
+      {/* Theme Preview Drawer */}
+      <Drawer open={showThemePanel} onOpenChange={setShowThemePanel} side="right">
+        <DrawerContent className="w-full max-w-md" showClose={false}>
+          <DrawerHeader
+            hero
+            icon={<Palette className="w-5 h-5" />}
+            title={t('surveyBuilder.themePreview', 'Theme & Style')}
+            description={t('surveyBuilder.themePreviewDescription', 'Customize how your survey looks')}
+            variant="primary"
+            showClose
+          />
+          <DrawerBody className="p-0">
+            <ThemePreviewPanel isReadOnly={isReadOnly} headless className="border-none rounded-none h-full w-full" />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Languages Management Drawer - Wide for better translation UX */}
+      <Drawer open={languagesDrawer.isOpen} onOpenChange={languagesDrawer.setOpen} side="right">
+        <DrawerContent className="w-full max-w-7xl" showClose={false}>
+          <DrawerBody className="p-0 overflow-hidden">
+            {survey?.id && (
+              <LanguagesTab
+                surveyId={survey.id}
+                defaultLanguage={survey.defaultLanguage || 'en'}
+                availableLanguages={survey.availableLanguages || ['en']}
+                questions={questions}
+                isReadOnly={isReadOnly}
+                onClose={() => languagesDrawer.close()}
+                onAddLanguage={async (languageCode, autoTranslate) => {
+                  try {
+                    await addTranslationMutation.mutateAsync({
+                      surveyId: survey.id,
+                      translation: {
+                        languageCode,
+                        title: survey.title,
+                        description: autoTranslate ? survey.description : undefined,
+                        welcomeMessage: autoTranslate ? survey.welcomeMessage : undefined,
+                        thankYouMessage: autoTranslate ? survey.thankYouMessage : undefined,
+                        isDefault: false,
+                      },
+                    });
+                    addLanguage(languageCode);
+                  } catch (error) {
+                    console.error('Failed to add language:', error);
+                    throw error;
+                  }
+                }}
+                onDeleteLanguage={() => {
+                  // Update local store when language is deleted
+                  // The actual deletion is handled by LanguagesTab
+                }}
+              />
+            )}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

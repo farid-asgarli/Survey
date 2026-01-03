@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { preferencesApi } from '@/services';
 import { usePreferencesStore, useAuthStore, defaultDashboard, defaultSurveyBuilder } from '@/stores';
-import { toast } from '@/components/ui';
 import type { UserPreferences, UpdateUserPreferencesRequest } from '@/types';
 import { createExtendedQueryKeys, STALE_TIMES } from './queryUtils';
 
@@ -106,13 +105,16 @@ export function useUpdatePreferences() {
 
       return { previousPreferences };
     },
-    onError: (_err, _newData, context) => {
+    onError: (err, _newData, context) => {
       // Revert to previous state on error
       if (context?.previousPreferences) {
         setPreferences(context.previousPreferences);
         queryClient.setQueryData(preferencesKeys.current(), context.previousPreferences);
       }
-      toast.error('Failed to save preferences');
+      // Log the actual error for debugging
+      console.error('Failed to save preferences:', err);
+      // Note: The axios interceptor already shows an error toast,
+      // so we don't need to show another one here
     },
     onSuccess: (data) => {
       // Update with server response

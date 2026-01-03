@@ -1,11 +1,13 @@
 // Base Option List Editor - Shared by SingleChoice, MultipleChoice, and Ranking
+// Uses @dnd-kit for smooth drag-and-drop reordering (consistent with QuestionListSidebar)
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Plus, X, GripVertical } from 'lucide-react';
-import { Input, Switch } from '@/components/ui';
+import { Input, Switch, SortableList, SortableItemWithHandle, SortableHandle } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import type { DraftOption } from '@/stores/surveyBuilderStore';
 import { useTranslation } from 'react-i18next';
+import { useSortableList } from '@/hooks';
 
 interface OptionListEditorProps {
   options: DraftOption[];
@@ -35,10 +37,15 @@ export function OptionListEditor({
   optionIcon = 'radio',
 }: OptionListEditorProps) {
   const { t } = useTranslation();
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const newOptionRef = useRef<HTMLInputElement>(null);
   const focusNewOptionRef = useRef(false);
+
+  // Use centralized sortable list hook from @dnd-kit
+  const sortable = useSortableList({
+    items: options,
+    getId: (option) => option.id,
+    onReorder: onReorderOptions,
+  });
 
   // Focus new option when added
   useEffect(() => {
@@ -51,28 +58,6 @@ export function OptionListEditor({
   const handleAddOption = () => {
     onAddOption();
     focusNewOptionRef.current = true;
-  };
-
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    setDragOverIndex(index);
-  };
-
-  const handleDrop = (index: number) => {
-    if (draggedIndex !== null && draggedIndex !== index) {
-      onReorderOptions(draggedIndex, index);
-    }
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverIndex(null);
   };
 
   const canDelete = options.length > minOptions;
@@ -94,61 +79,71 @@ export function OptionListEditor({
     <div className="space-y-3">
       <label className="block text-sm font-medium text-on-surface">{t('questionTypes.options.title')}</label>
 
-      <div className="space-y-1.5">
-        {options.map((option, index) => (
-          <div
-            key={option.id}
-            draggable
-            onDragStart={() => handleDragStart(index)}
-            onDragOver={(e) => handleDragOver(e, index)}
-            onDrop={() => handleDrop(index)}
-            onDragEnd={handleDragEnd}
-            className={cn(
-              'group flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all duration-200',
-              'bg-surface hover:bg-surface-container/50',
-              'border border-transparent hover:border-outline-variant/30',
-              draggedIndex === index && 'opacity-50 scale-[0.98] border-primary/50',
-              dragOverIndex === index && draggedIndex !== index && 'border-primary ring-1 ring-primary/20'
-            )}
-          >
-            {/* Drag Handle */}
-            <button className="cursor-grab active:cursor-grabbing p-1 rounded text-on-surface-variant/40 hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
-              <GripVertical className="w-4 h-4" />
-            </button>
-
-            {/* Option Icon */}
-            <div className="shrink-0">{renderOptionIcon(index)}</div>
-
-            {/* Option Input */}
-            <input
-              ref={index === options.length - 1 ? newOptionRef : undefined}
-              type="text"
-              value={option.text}
-              onChange={(e) => onUpdateOption(option.id, { text: e.target.value })}
-              placeholder={t('questionTypes.options.placeholder', { number: index + 1 })}
+      <SortableList
+        sortable={sortable}
+        renderOverlay={(option) => {
+          const index = options.findIndex((o) => o.id === option.id);
+          return (
+            <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-surface border border-primary shadow-lg">
+              <div className="p-1 text-on-surface-variant">
+                <GripVertical className="w-4 h-4" />
+              </div>
+              <div className="shrink-0">{renderOptionIcon(index)}</div>
+              <span className="flex-1 text-sm text-on-surface">{option.text || t('questionTypes.options.placeholder', { number: index + 1 })}</span>
+            </div>
+          );
+        }}
+      >
+        <div className="space-y-1.5">
+          {options.map((option, index) => (
+            <SortableItemWithHandle
+              key={option.id}
+              id={option.id}
               className={cn(
-                'flex-1 px-2 py-1.5 rounded-md bg-transparent text-on-surface text-sm',
-                'placeholder:text-on-surface-variant/50',
-                'focus:outline-none focus:bg-surface-container/50 focus:ring-1 focus:ring-primary/30'
+                'group flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all duration-200',
+                'bg-surface hover:bg-surface-container/50',
+                'border border-transparent hover:border-outline-variant/30'
               )}
-            />
-
-            {/* Delete Button */}
-            <button
-              onClick={() => onDeleteOption(option.id)}
-              disabled={!canDelete}
-              className={cn(
-                'p-1.5 rounded-md text-on-surface-variant/40 hover:text-error hover:bg-error/8 transition-colors',
-                'opacity-0 group-hover:opacity-100',
-                !canDelete && 'opacity-30 pointer-events-none'
-              )}
-              aria-label={t('questionTypes.options.remove')}
             >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        ))}
-      </div>
+              {/* Drag Handle */}
+              <SortableHandle className="p-1 rounded text-on-surface-variant/40 hover:text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+                <GripVertical className="w-4 h-4" />
+              </SortableHandle>
+
+              {/* Option Icon */}
+              <div className="shrink-0">{renderOptionIcon(index)}</div>
+
+              {/* Option Input */}
+              <input
+                ref={index === options.length - 1 ? newOptionRef : undefined}
+                type="text"
+                value={option.text}
+                onChange={(e) => onUpdateOption(option.id, { text: e.target.value })}
+                placeholder={t('questionTypes.options.placeholder', { number: index + 1 })}
+                className={cn(
+                  'flex-1 px-2 py-1.5 rounded-md bg-transparent text-on-surface text-sm',
+                  'placeholder:text-on-surface-variant/50',
+                  'focus:outline-none focus:bg-surface-container/50 focus:ring-1 focus:ring-primary/30'
+                )}
+              />
+
+              {/* Delete Button */}
+              <button
+                onClick={() => onDeleteOption(option.id)}
+                disabled={!canDelete}
+                className={cn(
+                  'p-1.5 rounded-md text-on-surface-variant/40 hover:text-error hover:bg-error/8 transition-colors',
+                  'opacity-0 group-hover:opacity-100',
+                  !canDelete && 'opacity-30 pointer-events-none'
+                )}
+                aria-label={t('questionTypes.options.remove')}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </SortableItemWithHandle>
+          ))}
+        </div>
+      </SortableList>
 
       {/* Add Option Button */}
       <button

@@ -27,7 +27,9 @@ interface SurveyLanguageSwitcherProps {
   onLanguageSelect: (languageCode: string) => void;
   /** Callback when "Add Language" is clicked */
   onAddLanguage: () => void;
-  /** Callback to open language management panel */
+  /** Callback to open translation editor for current language */
+  onEditTranslation?: () => void;
+  /** Callback to open full language management panel */
   onManageLanguages?: () => void;
   /** Whether the survey is in read-only mode */
   isReadOnly?: boolean;
@@ -50,6 +52,7 @@ export function SurveyLanguageSwitcher({
   availableLanguages,
   onLanguageSelect,
   onAddLanguage,
+  onEditTranslation,
   onManageLanguages,
   isReadOnly = false,
   className,
@@ -205,6 +208,18 @@ export function SurveyLanguageSwitcher({
                 <Plus className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-primary">{t('localization.addLanguage', 'Add Language')}</span>
               </button>
+              {onEditTranslation && (
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    onEditTranslation();
+                  }}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-left hover:bg-on-surface/5 transition-colors"
+                >
+                  <Languages className="h-4 w-4 text-secondary" />
+                  <span className="text-sm font-medium text-secondary">{t('localization.editTranslation', 'Edit Translation...')}</span>
+                </button>
+              )}
               {onManageLanguages && (
                 <button
                   onClick={() => {
@@ -213,8 +228,8 @@ export function SurveyLanguageSwitcher({
                   }}
                   className="flex items-center gap-3 w-full px-4 py-2.5 text-left hover:bg-on-surface/5 transition-colors"
                 >
-                  <Globe className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-primary">{t('localization.editTranslation', 'Edit Translation...')}</span>
+                  <Globe className="h-4 w-4 text-on-surface-variant" />
+                  <span className="text-sm font-medium text-on-surface-variant">{t('localization.manageLanguages', 'Manage Languages...')}</span>
                 </button>
               )}
             </div>
