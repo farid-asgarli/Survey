@@ -23,6 +23,7 @@
     "@survey/api-client": "workspace:*",
     "@survey/types": "workspace:*",
     "@survey/ui": "workspace:*",
+    "@survey/ui-primitives": "workspace:*",
     "@survey/validation": "workspace:*",
     "@tailwindcss/postcss": "^4.1.17",
     "@tanstack/react-query": "^5.90.12",

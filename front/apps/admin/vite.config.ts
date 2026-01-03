@@ -27,6 +27,27 @@ export default defineConfig({
       output: {
         // Manual chunk splitting for optimal caching
         manualChunks(id) {
+          // Keep @survey/ui-primitives modules together to avoid circular dependency issues
+          if (id.includes('packages/ui-primitives')) {
+            // Group by submodule to keep related components together
+            if (id.includes('/layout/')) return 'ui-primitives-layout';
+            if (id.includes('/feedback/')) return 'ui-primitives-feedback';
+            if (id.includes('/buttons/')) return 'ui-primitives-buttons';
+            if (id.includes('/inputs/')) return 'ui-primitives-inputs';
+            if (id.includes('/display/')) return 'ui-primitives-display';
+            if (id.includes('/date-picker/')) return 'ui-primitives-date-picker';
+            if (id.includes('/time-picker/')) return 'ui-primitives-time-picker';
+            return 'ui-primitives';
+          }
+
+          // Keep local feature modules together to avoid circular dependencies
+          if (id.includes('src/components/features/public-survey/')) {
+            return 'feature-public-survey';
+          }
+          if (id.includes('src/components/ui/')) {
+            return 'components-ui';
+          }
+
           // Vendor chunks - split by dependency type for better caching
           if (id.includes('node_modules')) {
             // Core React runtime - rarely changes

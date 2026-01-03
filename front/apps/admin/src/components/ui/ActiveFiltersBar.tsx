@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Chip } from './Chip';
-import { Button } from './Button';
+import { Chip, Button } from '@survey/ui-primitives';
 
 /**
  * Represents a single active filter.

@@ -90,8 +90,8 @@ export function NamespacesPage() {
         title={t('workspaces.title')}
         description={t('workspaces.description')}
         actions={
-          <Button onClick={() => createDialog.open()} className='gap-2'>
-            <Plus className='h-5 w-5' />
+          <Button onClick={() => createDialog.open()} className="gap-2">
+            <Plus className="h-5 w-5" />
             {t('workspaces.newWorkspace')}
           </Button>
         }
@@ -107,15 +107,15 @@ export function NamespacesPage() {
       <ListPageLayout.Content>
         <ListContainer items={filteredNamespaces} isLoading={isLoading} hasError={!!error}>
           <ListContainer.Loading>
-            <GridSkeleton count={3} gridHeight='h-48' />
+            <GridSkeleton count={3} gridHeight="h-48" />
           </ListContainer.Loading>
 
           <ListContainer.Error>
             <EmptyState
-              icon={<FolderOpen className='h-7 w-7' />}
+              icon={<FolderOpen className="h-7 w-7" />}
               title={t('workspaces.loadError')}
               description={t('workspaces.loadErrorDesc')}
-              iconVariant='muted'
+              iconVariant="muted"
               action={{
                 label: t('errors.tryAgain'),
                 onClick: () => window.location.reload(),
@@ -129,7 +129,7 @@ export function NamespacesPage() {
           </ListContainer.Empty>
 
           <ListContainer.Content>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredNamespaces.map((namespace) => (
                 <NamespaceCard
                   key={namespace.id}
@@ -147,7 +147,7 @@ export function NamespacesPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
       <CreateNamespaceDialog open={createDialog.isOpen} onOpenChange={createDialog.setOpen} />

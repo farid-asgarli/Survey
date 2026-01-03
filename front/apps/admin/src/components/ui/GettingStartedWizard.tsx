@@ -34,11 +34,10 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './Button';
+import { Button, toast } from '@survey/ui-primitives';
 import { usePreferencesStore } from '@/stores/preferencesStore';
 import { useAuthStore } from '@/stores/authStore';
 import { preferencesApi } from '@/services/api';
-import { toast } from './Toast';
 
 interface GettingStartedWizardProps {
   onComplete?: () => void;
@@ -53,16 +52,66 @@ interface StepConfig {
 }
 
 const STEPS: StepConfig[] = [
-  { id: 0, icon: Rocket, titleKey: 'gettingStarted.welcome.title', descriptionKey: 'gettingStarted.welcome.description' },
-  { id: 1, icon: Building2, titleKey: 'gettingStarted.workspace.title', descriptionKey: 'gettingStarted.workspace.description' },
-  { id: 2, icon: ClipboardList, titleKey: 'gettingStarted.createSurvey.title', descriptionKey: 'gettingStarted.createSurvey.description' },
-  { id: 3, icon: HelpCircle, titleKey: 'gettingStarted.questions.title', descriptionKey: 'gettingStarted.questions.description' },
-  { id: 4, icon: Palette, titleKey: 'gettingStarted.themes.title', descriptionKey: 'gettingStarted.themes.description' },
-  { id: 5, icon: Eye, titleKey: 'gettingStarted.preview.title', descriptionKey: 'gettingStarted.preview.description' },
-  { id: 6, icon: Share2, titleKey: 'gettingStarted.distribute.title', descriptionKey: 'gettingStarted.distribute.description' },
-  { id: 7, icon: Users, titleKey: 'gettingStarted.responses.title', descriptionKey: 'gettingStarted.responses.description' },
-  { id: 8, icon: BarChart3, titleKey: 'gettingStarted.analytics.title', descriptionKey: 'gettingStarted.analytics.description' },
-  { id: 9, icon: PartyPopper, titleKey: 'gettingStarted.complete.title', descriptionKey: 'gettingStarted.complete.description' },
+  {
+    id: 0,
+    icon: Rocket,
+    titleKey: 'gettingStarted.welcome.title',
+    descriptionKey: 'gettingStarted.welcome.description',
+  },
+  {
+    id: 1,
+    icon: Building2,
+    titleKey: 'gettingStarted.workspace.title',
+    descriptionKey: 'gettingStarted.workspace.description',
+  },
+  {
+    id: 2,
+    icon: ClipboardList,
+    titleKey: 'gettingStarted.createSurvey.title',
+    descriptionKey: 'gettingStarted.createSurvey.description',
+  },
+  {
+    id: 3,
+    icon: HelpCircle,
+    titleKey: 'gettingStarted.questions.title',
+    descriptionKey: 'gettingStarted.questions.description',
+  },
+  {
+    id: 4,
+    icon: Palette,
+    titleKey: 'gettingStarted.themes.title',
+    descriptionKey: 'gettingStarted.themes.description',
+  },
+  {
+    id: 5,
+    icon: Eye,
+    titleKey: 'gettingStarted.preview.title',
+    descriptionKey: 'gettingStarted.preview.description',
+  },
+  {
+    id: 6,
+    icon: Share2,
+    titleKey: 'gettingStarted.distribute.title',
+    descriptionKey: 'gettingStarted.distribute.description',
+  },
+  {
+    id: 7,
+    icon: Users,
+    titleKey: 'gettingStarted.responses.title',
+    descriptionKey: 'gettingStarted.responses.description',
+  },
+  {
+    id: 8,
+    icon: BarChart3,
+    titleKey: 'gettingStarted.analytics.title',
+    descriptionKey: 'gettingStarted.analytics.description',
+  },
+  {
+    id: 9,
+    icon: PartyPopper,
+    titleKey: 'gettingStarted.complete.title',
+    descriptionKey: 'gettingStarted.complete.description',
+  },
 ];
 
 export function GettingStartedWizard({ onComplete, onSkip }: GettingStartedWizardProps) {
@@ -347,7 +396,10 @@ export function GettingStartedWizard({ onComplete, onSkip }: GettingStartedWizar
                   key={s.id}
                   role="tab"
                   aria-selected={idx === currentStep}
-                  aria-label={t('gettingStarted.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}
+                  aria-label={t('gettingStarted.stepLabel', 'Step {{current}} of {{total}}', {
+                    current: idx + 1,
+                    total: STEPS.length,
+                  })}
                   className={cn(
                     'h-2 rounded-full transition-all duration-300',
                     idx === currentStep ? 'w-6 bg-primary' : idx < currentStep ? 'w-2 bg-primary/60' : 'w-2 bg-outline-variant/50'
@@ -434,7 +486,9 @@ function WelcomeStep({ userName }: { userName: string }) {
         transition={{ delay: 0.3 }}
         className="text-2xl font-bold text-on-surface mb-3"
       >
-        {t('gettingStarted.welcome.greeting', "Let's get you started, {{name}}!", { name: userName })}
+        {t('gettingStarted.welcome.greeting', "Let's get you started, {{name}}!", {
+          name: userName,
+        })}
       </motion.h3>
 
       <motion.p
@@ -834,9 +888,21 @@ function CompleteStep({ userName }: { userName: string }) {
   const { t } = useTranslation();
 
   const quickActions = [
-    { icon: ClipboardList, label: t('gettingStarted.complete.actions.surveys', 'Surveys'), shortcut: 'G S' },
-    { icon: FileStack, label: t('gettingStarted.complete.actions.templates', 'Templates'), shortcut: 'G T' },
-    { icon: BarChart3, label: t('gettingStarted.complete.actions.analytics', 'Analytics'), shortcut: 'G A' },
+    {
+      icon: ClipboardList,
+      label: t('gettingStarted.complete.actions.surveys', 'Surveys'),
+      shortcut: 'G S',
+    },
+    {
+      icon: FileStack,
+      label: t('gettingStarted.complete.actions.templates', 'Templates'),
+      shortcut: 'G T',
+    },
+    {
+      icon: BarChart3,
+      label: t('gettingStarted.complete.actions.analytics', 'Analytics'),
+      shortcut: 'G A',
+    },
   ];
 
   return (

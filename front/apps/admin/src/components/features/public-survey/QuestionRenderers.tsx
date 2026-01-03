@@ -1,13 +1,31 @@
-// Question Renderers - Components for rendering different question types in public surveys
+// ============================================================================
+// DEPRECATED: Legacy Question Renderers
+// ============================================================================
+//
+// This file is DEPRECATED and will be removed in a future version.
+//
+// The question renderers have been moved to the shared @survey/ui package.
+// Use TranslatedQuestionRenderer (exported as QuestionRenderer from ./index.ts)
+// instead of importing from this file directly.
+//
+// Migration guide:
+// - Import QuestionRenderer from '@/components/features/public-survey'
+// - The new QuestionRenderer automatically handles i18n labels
+// - If you need legacy renderers, import them as Legacy* from index.ts
+//
+// This file is kept temporarily for:
+// 1. Reference during migration
+// 2. Backward compatibility with any edge cases
+// ============================================================================
 
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { DatePicker } from '@/components/ui/DatePicker';
+import { DatePicker } from '@/components/ui';
 import { QuestionType, RatingStyle, YesNoStyle } from '@/types';
 import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
 import { Star, Heart, ThumbsUp, ThumbsDown, Smile, Meh, Frown, Upload, X, GripVertical, Check, Mail, Phone, Link, Hash } from 'lucide-react';
-import { validateQuestionValue, getPresetById } from '@/utils/validationPatterns';
+import { validateQuestionValue, getPresetById } from '@/utils/validation';
 
 // ============ Base Props ============
 export interface QuestionRendererProps {
@@ -502,8 +520,8 @@ export function NumberRenderer({ question, value, onChange, error, disabled }: Q
           {minValue !== undefined && maxValue !== undefined
             ? `Value between ${minValue} and ${maxValue}`
             : minValue !== undefined
-            ? `Minimum: ${minValue}`
-            : `Maximum: ${maxValue}`}
+              ? `Minimum: ${minValue}`
+              : `Maximum: ${maxValue}`}
         </p>
       )}
       {displayError && <p className="text-error text-sm">{displayError}</p>}

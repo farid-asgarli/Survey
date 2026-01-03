@@ -1,7 +1,7 @@
 // @survey/ui - Shared Types
 // Types for translation-agnostic components
 
-import type { AnswerValue, PublicQuestion } from "@survey/types";
+import type { AnswerValue, PublicQuestion } from '@survey/types';
 
 // ============================================================================
 // Base Props
@@ -117,6 +117,8 @@ export interface ValidationLabels {
   maxValue?: string;
   /** Generic required field message */
   required?: string;
+  /** Unsupported question type message (use {type} placeholder) */
+  unsupportedType?: string;
 }
 
 /**
@@ -132,172 +134,27 @@ export type QuestionLabels = CommonLabels &
   Partial<ValidationLabels>;
 
 // ============================================================================
-// DatePicker Labels
+// Note: DatePickerLabels are defined in @survey/ui-primitives
+// Use labels from @survey/ui-primitives/types when customizing date picker
 // ============================================================================
-
-/**
- * Labels for the DatePicker component
- */
-export interface DatePickerLabels {
-  /** Placeholder text (e.g., "Select a date") */
-  placeholder?: string;
-  /** Month names (long form) */
-  months: {
-    january: string;
-    february: string;
-    march: string;
-    april: string;
-    may: string;
-    june: string;
-    july: string;
-    august: string;
-    september: string;
-    october: string;
-    november: string;
-    december: string;
-  };
-  /** Month names (short form) */
-  monthsShort: {
-    jan: string;
-    feb: string;
-    mar: string;
-    apr: string;
-    may: string;
-    jun: string;
-    jul: string;
-    aug: string;
-    sep: string;
-    oct: string;
-    nov: string;
-    dec: string;
-  };
-  /** Weekday names (short form) */
-  weekDays: {
-    sun: string;
-    mon: string;
-    tue: string;
-    wed: string;
-    thu: string;
-    fri: string;
-    sat: string;
-  };
-  /** Weekday names (full form) */
-  weekDaysFull: {
-    sun: string;
-    mon: string;
-    tue: string;
-    wed: string;
-    thu: string;
-    fri: string;
-    sat: string;
-  };
-  /** "Select date" aria label */
-  selectDate?: string;
-  /** "Cancel" button text */
-  cancel?: string;
-  /** "OK" / "Confirm" button text */
-  confirm?: string;
-  /** "Clear" button text */
-  clear?: string;
-  /** "Today" button text */
-  today?: string;
-  /** "Previous month" aria label */
-  previousMonth?: string;
-  /** "Next month" aria label */
-  nextMonth?: string;
-  /** "Enter date" for manual input mode */
-  enterDate?: string;
-  /** "From" label for range picker */
-  from?: string;
-  /** "To" label for range picker */
-  to?: string;
-  /** "Presets" tab label */
-  presets?: string;
-  /** "Custom" tab label */
-  custom?: string;
-}
-
-/**
- * Default English labels for DatePicker
- */
-export const defaultDatePickerLabels: DatePickerLabels = {
-  placeholder: "Select a date",
-  months: {
-    january: "January",
-    february: "February",
-    march: "March",
-    april: "April",
-    may: "May",
-    june: "June",
-    july: "July",
-    august: "August",
-    september: "September",
-    october: "October",
-    november: "November",
-    december: "December",
-  },
-  monthsShort: {
-    jan: "Jan",
-    feb: "Feb",
-    mar: "Mar",
-    apr: "Apr",
-    may: "May",
-    jun: "Jun",
-    jul: "Jul",
-    aug: "Aug",
-    sep: "Sep",
-    oct: "Oct",
-    nov: "Nov",
-    dec: "Dec",
-  },
-  weekDays: {
-    sun: "Su",
-    mon: "Mo",
-    tue: "Tu",
-    wed: "We",
-    thu: "Th",
-    fri: "Fr",
-    sat: "Sa",
-  },
-  weekDaysFull: {
-    sun: "Sunday",
-    mon: "Monday",
-    tue: "Tuesday",
-    wed: "Wednesday",
-    thu: "Thursday",
-    fri: "Friday",
-    sat: "Saturday",
-  },
-  selectDate: "Select date",
-  cancel: "Cancel",
-  confirm: "OK",
-  clear: "Clear",
-  today: "Today",
-  previousMonth: "Previous month",
-  nextMonth: "Next month",
-  enterDate: "Enter date",
-  from: "From",
-  to: "To",
-  presets: "Presets",
-  custom: "Custom",
-};
 
 /**
  * Default English labels for common question labels
  */
 export const defaultQuestionLabels: QuestionLabels = {
-  placeholder: "Your answer",
-  other: "Other",
-  pleaseSpecify: "Please specify",
-  dropFilesHere: "Drop files here or click to upload",
-  maxFilesText: "Maximum files allowed",
-  allowedTypesPrefix: "Allowed types:",
-  dragToReorder: "Drag to reorder",
-  yes: "Yes",
-  no: "No",
-  invalidEmail: "Please enter a valid email address",
-  invalidPhone: "Please enter a valid phone number",
-  invalidUrl: "Please enter a valid URL",
-  invalidNumber: "Please enter a valid number",
-  required: "This field is required",
+  placeholder: 'Your answer',
+  other: 'Other',
+  pleaseSpecify: 'Please specify',
+  dropFilesHere: 'Drop files here or click to upload',
+  maxFilesText: 'Maximum files allowed',
+  allowedTypesPrefix: 'Allowed types:',
+  dragToReorder: 'Drag to reorder',
+  yes: 'Yes',
+  no: 'No',
+  invalidEmail: 'Please enter a valid email address',
+  invalidPhone: 'Please enter a valid phone number',
+  invalidUrl: 'Please enter a valid URL',
+  invalidNumber: 'Please enter a valid number',
+  required: 'This field is required',
+  unsupportedType: 'Unsupported question type: {type}',
 };

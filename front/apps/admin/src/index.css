@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* Include shared packages for Tailwind class scanning */
+@source "../../../packages/ui-primitives/src/**/*.{ts,tsx}";
+@source "../../../packages/ui/src/**/*.{ts,tsx}";
+
 /* Airbnb Cereal Font */
 @font-face {
   font-family: 'Cereal';
@@ -1928,7 +1932,11 @@
 :root.dyslexia-font,
 :root[data-dyslexia-font='true'] {
   /* Use a more readable font with increased letter spacing */
-  font-family: 'OpenSans', system-ui, -apple-system, sans-serif !important;
+  font-family:
+    'OpenSans',
+    system-ui,
+    -apple-system,
+    sans-serif !important;
   letter-spacing: 0.05em;
   word-spacing: 0.15em;
   line-height: 1.8;

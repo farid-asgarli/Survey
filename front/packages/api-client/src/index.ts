@@ -1,13 +1,7 @@
 // @survey/api-client - Shared API utilities for the survey platform
 // This package contains API client utilities for public survey
 
-import type {
-  PublicSurvey,
-  StartResponseRequest,
-  StartResponseResult,
-  SubmitResponseRequest,
-  SubmitResponseResult,
-} from "@survey/types";
+import type { PublicSurvey, StartResponseRequest, StartResponseResult, SubmitResponseRequest, SubmitResponseResult } from '@survey/types';
 
 // ============ API Configuration ============
 
@@ -28,16 +22,13 @@ export interface ApiError {
 /**
  * Creates headers for API requests
  */
-export function createHeaders(
-  language?: string,
-  additionalHeaders?: Record<string, string>
-): Record<string, string> {
+export function createHeaders(language?: string, additionalHeaders?: Record<string, string>): Record<string, string> {
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 
   if (language) {
-    headers["Accept-Language"] = language;
+    headers['Accept-Language'] = language;
   }
 
   return { ...headers, ...additionalHeaders };
@@ -48,7 +39,7 @@ export function createHeaders(
  */
 export async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    let errorMessage = "An error occurred";
+    let errorMessage = 'An error occurred';
     let details: Record<string, unknown> | undefined;
 
     try {
@@ -86,13 +77,9 @@ export async function handleResponse<T>(response: Response): Promise<T> {
 /**
  * Fetches a public survey by share token
  */
-export async function fetchPublicSurvey(
-  baseUrl: string,
-  shareToken: string,
-  language?: string
-): Promise<PublicSurvey> {
-  const response = await fetch(`${baseUrl}/api/public/surveys/${shareToken}`, {
-    method: "GET",
+export async function fetchPublicSurvey(baseUrl: string, shareToken: string, language?: string): Promise<PublicSurvey> {
+  const response = await fetch(`${baseUrl}/api/surveys/public/${shareToken}`, {
+    method: 'GET',
     headers: createHeaders(language),
   });
 
@@ -102,13 +89,9 @@ export async function fetchPublicSurvey(
 /**
  * Starts a new survey response (creates draft)
  */
-export async function startSurveyResponse(
-  baseUrl: string,
-  request: StartResponseRequest,
-  language?: string
-): Promise<StartResponseResult> {
-  const response = await fetch(`${baseUrl}/api/public/responses/start`, {
-    method: "POST",
+export async function startSurveyResponse(baseUrl: string, request: StartResponseRequest, language?: string): Promise<StartResponseResult> {
+  const response = await fetch(`${baseUrl}/api/responses/start`, {
+    method: 'POST',
     headers: createHeaders(language),
     body: JSON.stringify(request),
   });
@@ -119,13 +102,9 @@ export async function startSurveyResponse(
 /**
  * Submits a completed survey response
  */
-export async function submitSurveyResponse(
-  baseUrl: string,
-  request: SubmitResponseRequest,
-  language?: string
-): Promise<SubmitResponseResult> {
-  const response = await fetch(`${baseUrl}/api/public/responses/submit`, {
-    method: "POST",
+export async function submitSurveyResponse(baseUrl: string, request: SubmitResponseRequest, language?: string): Promise<SubmitResponseResult> {
+  const response = await fetch(`${baseUrl}/api/responses`, {
+    method: 'POST',
     headers: createHeaders(language),
     body: JSON.stringify(request),
   });
@@ -159,7 +138,7 @@ export async function fetchPublicSurveySSR(
   }
 ): Promise<PublicSurvey> {
   const fetchOptions: NextRequestInit = {
-    method: "GET",
+    method: 'GET',
     headers: createHeaders(language),
   };
 
@@ -172,10 +151,7 @@ export async function fetchPublicSurveySSR(
     fetchOptions.next = { revalidate: options.revalidate };
   }
 
-  const response = await fetch(
-    `${baseUrl}/api/public/surveys/${shareToken}`,
-    fetchOptions as RequestInit
-  );
+  const response = await fetch(`${baseUrl}/api/surveys/public/${shareToken}`, fetchOptions as RequestInit);
 
   return handleResponse<PublicSurvey>(response);
 }
@@ -197,4 +173,4 @@ export type {
   PublicSurveyViewMode,
   PublicSurveyState,
   ValidationResult,
-} from "@survey/types";
+} from '@survey/types';

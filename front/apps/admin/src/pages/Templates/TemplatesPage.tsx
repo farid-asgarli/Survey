@@ -221,7 +221,7 @@ export function TemplatesPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
       <ListPageLayout.Dialogs>

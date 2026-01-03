@@ -225,7 +225,11 @@ function evaluateVisibilityRules(rules: LogicRule[], answers: Record<string, Ans
  * Evaluates all logic rules for a question and determines its visibility
  * Returns: visibility result with potential navigation actions
  */
-export function evaluateQuestionVisibility(questionId: string, allQuestions: QuestionWithLogic[], answers: Record<string, AnswerValue>): VisibilityResult {
+export function evaluateQuestionVisibility(
+  questionId: string,
+  allQuestions: QuestionWithLogic[],
+  answers: Record<string, AnswerValue>
+): VisibilityResult {
   // Build a lookup map for efficient question access
   const questionMap = new Map(allQuestions.map((q) => [q.id, q]));
   const question = questionMap.get(questionId);

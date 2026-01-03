@@ -1,0 +1,65 @@
+{
+  "survey": {
+    "start": "Sorğuya başla",
+    "continue": "Davam et",
+    "next": "Növbəti",
+    "previous": "Əvvəlki",
+    "submit": "Göndər",
+    "submitting": "Göndərilir...",
+    "starting": "Başlanır...",
+    "progress": "İrəliləyiş",
+    "question": "Sual",
+    "questions": "sual",
+    "minutes": "dəq",
+    "of": "/",
+    "required": "Məcburi",
+    "anonymous": "Anonim",
+    "thankYou": "Təşəkkürlər!",
+    "thankYouDefault": "Cavabınız qeydə alındı. Bu sorğunu tamamlamaq üçün vaxt ayırdığınız üçün təşəkkür edirik.",
+    "resumeNotice": "💾 Əvvəlki irəliləyişinizi tapdıq. Qaldığınız yerdən davam etmək üçün davam et düyməsinə basın.",
+    "poweredBy": "Survey Platform tərəfindən",
+    "closeMessage": "İndi bu pəncərəni bağlaya bilərsiniz.",
+    "anonymousNote": "Cavablarınız inkişaf etməyimizə kömək edir"
+  },
+  "resume": {
+    "title": "Davam etmək istəyirsiniz?",
+    "description": "Əvvəlki cavablarınızı tapdıq. Qaldığınız yerdən davam etmək və ya yenidən başlamaq istəyirsiniz?",
+    "continue": "Davam et",
+    "startFresh": "Yenidən başla"
+  },
+  "error": {
+    "title": "Xəta baş verdi",
+    "description": "Sorğu yüklənə bilmədi. Zəhmət olmasa sonra yenidən cəhd edin.",
+    "retry": "Yenidən cəhd et",
+    "notFound": {
+      "title": "Sorğu tapılmadı",
+      "description": "Axtardığınız sorğu mövcud deyil, silinib və ya keçidin vaxtı bitib.",
+      "hint": "Əgər bu bir xəta olduğunu düşünürsünüzsə, sorğu administratoru ilə əlaqə saxlayın."
+    }
+  },
+  "validation": {
+    "required": "Bu sahə məcburidir",
+    "selectOption": "Zəhmət olmasa bir seçim edin",
+    "selectAtLeast": "Zəhmət olmasa ən azı bir seçim edin",
+    "selectAtMost": "Zəhmət olmasa ən çox {max} seçim edin",
+    "invalidEmail": "Zəhmət olmasa düzgün e-poçt ünvanı daxil edin",
+    "invalidPhone": "Zəhmət olmasa düzgün telefon nömrəsi daxil edin",
+    "invalidUrl": "Zəhmət olmasa düzgün URL daxil edin",
+    "minLength": "Zəhmət olmasa ən azı {min} simvol daxil edin",
+    "maxLength": "Zəhmət olmasa ən çox {max} simvol daxil edin",
+    "minValue": "Dəyər ən azı {min} olmalıdır",
+    "maxValue": "Dəyər ən çox {max} olmalıdır"
+  },
+  "question": {
+    "selectPlaceholder": "Seçin...",
+    "otherPlaceholder": "Zəhmət olmasa göstərin...",
+    "typePlaceholder": "Cavabınızı buraya yazın...",
+    "datePlaceholder": "Tarix seçin...",
+    "fileDrop": "Faylları bura atın və ya yükləmək üçün klikləyin",
+    "fileSelect": "Fayl seçin",
+    "fileSelected": "{count} fayl seçildi",
+    "rankingInstruction": "Sıralamaq üçün elementləri sürükləyin",
+    "yes": "Bəli",
+    "no": "Xeyr"
+  }
+}

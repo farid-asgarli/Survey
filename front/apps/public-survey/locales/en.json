@@ -1,0 +1,65 @@
+{
+  "survey": {
+    "start": "Start Survey",
+    "continue": "Continue Survey",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "starting": "Starting...",
+    "progress": "Progress",
+    "question": "Question",
+    "questions": "questions",
+    "minutes": "min",
+    "of": "of",
+    "required": "Required",
+    "anonymous": "Anonymous",
+    "thankYou": "Thank You!",
+    "thankYouDefault": "Your response has been recorded. Thank you for taking the time to complete this survey.",
+    "resumeNotice": "💾 We found your previous progress. Click continue to pick up where you left off.",
+    "poweredBy": "Powered by Survey Platform",
+    "closeMessage": "You may now close this window.",
+    "anonymousNote": "Your responses help us improve"
+  },
+  "resume": {
+    "title": "Resume Your Progress?",
+    "description": "We found your previous answers. Would you like to continue where you left off or start fresh?",
+    "continue": "Continue Survey",
+    "startFresh": "Start Fresh"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "We couldn't load the survey. Please try again later.",
+    "retry": "Try Again",
+    "notFound": {
+      "title": "Survey Not Found",
+      "description": "The survey you're looking for doesn't exist, has been removed, or the link may have expired.",
+      "hint": "If you believe this is an error, please contact the survey administrator."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "selectOption": "Please select an option",
+    "selectAtLeast": "Please select at least one option",
+    "selectAtMost": "Please select at most {max} options",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "invalidUrl": "Please enter a valid URL",
+    "minLength": "Please enter at least {min} characters",
+    "maxLength": "Please enter at most {max} characters",
+    "minValue": "Value must be at least {min}",
+    "maxValue": "Value must be at most {max}"
+  },
+  "question": {
+    "selectPlaceholder": "Select an option...",
+    "otherPlaceholder": "Please specify...",
+    "typePlaceholder": "Type your answer here...",
+    "datePlaceholder": "Select a date...",
+    "fileDrop": "Drop files here or click to upload",
+    "fileSelect": "Select files",
+    "fileSelected": "{count} file(s) selected",
+    "rankingInstruction": "Drag items to rank them",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WifiOff, Wifi, RefreshCw, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './Button';
+import { Button } from '@survey/ui-primitives';
 
 interface OfflineIndicatorProps {
   /** Position of the indicator */

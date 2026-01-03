@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import type { ViewMode } from '@/components/ui/ViewModeToggle';
-import type { ActiveFilter } from '@/components/ui/ActiveFiltersBar';
+import type { ViewMode, ActiveFilter } from '@/components/ui';
 import type { FilterConfig } from '@/types/list-page';
 import { useDebounce } from './useDebounce';
 

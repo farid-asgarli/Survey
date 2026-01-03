@@ -1,9 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff, Check, X, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button, toast } from '@/components/ui';
 import { useChangePassword } from '@/hooks';
-import { toast } from '@/components/ui/Toast';
 import { getPasswordRequirements, calculatePasswordStrength } from '@/lib/validations';
 import { cn } from '@/lib/utils';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';

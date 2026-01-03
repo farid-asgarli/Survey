@@ -16,8 +16,8 @@
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "clean": "turbo clean && rimraf node_modules .turbo",
-    "clean:turbo": "rimraf .turbo \"apps/**/.turbo\" \"packages/**/.turbo\" \"**/tsconfig.tsbuildinfo\"",
-    "clean:all": "pnpm clean && rimraf apps/*/node_modules packages/*/node_modules",
+    "clean:turbo": "rimraf --glob .turbo \"apps/**/.turbo\" \"packages/**/.turbo\" \"apps/**/dist\" \"packages/**/dist\" \"**/tsconfig.tsbuildinfo\"",
+    "clean:all": "pnpm clean && rimraf --glob \"apps/*/node_modules\" \"packages/*/node_modules\"",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
   },

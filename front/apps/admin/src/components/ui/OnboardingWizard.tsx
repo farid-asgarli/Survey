@@ -22,11 +22,7 @@ import {
   Send,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './Button';
-import { Switch } from './Switch';
-import { Input } from './Input';
-import { Avatar } from './Avatar';
-import { toast } from './Toast';
+import { Button, Switch, Input, Avatar, toast } from '@survey/ui-primitives';
 import { LogoIcon } from './Logo';
 import { usePreferencesStore } from '@/stores/preferencesStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -48,13 +44,48 @@ interface StepConfig {
 }
 
 const STEPS: StepConfig[] = [
-  { id: 0, icon: () => <LogoIcon size="lg" />, titleKey: 'onboarding.welcome.title', descriptionKey: 'onboarding.welcome.description' },
-  { id: 1, icon: User, titleKey: 'onboarding.profile.title', descriptionKey: 'onboarding.profile.description' },
-  { id: 2, icon: Palette, titleKey: 'onboarding.appearance.title', descriptionKey: 'onboarding.appearance.description' },
-  { id: 3, icon: Accessibility, titleKey: 'onboarding.accessibility.title', descriptionKey: 'onboarding.accessibility.description' },
-  { id: 4, icon: Globe, titleKey: 'onboarding.language.title', descriptionKey: 'onboarding.language.description' },
-  { id: 5, icon: Bell, titleKey: 'onboarding.notifications.title', descriptionKey: 'onboarding.notifications.description' },
-  { id: 6, icon: Rocket, titleKey: 'onboarding.complete.title', descriptionKey: 'onboarding.complete.description' },
+  {
+    id: 0,
+    icon: () => <LogoIcon size="lg" />,
+    titleKey: 'onboarding.welcome.title',
+    descriptionKey: 'onboarding.welcome.description',
+  },
+  {
+    id: 1,
+    icon: User,
+    titleKey: 'onboarding.profile.title',
+    descriptionKey: 'onboarding.profile.description',
+  },
+  {
+    id: 2,
+    icon: Palette,
+    titleKey: 'onboarding.appearance.title',
+    descriptionKey: 'onboarding.appearance.description',
+  },
+  {
+    id: 3,
+    icon: Accessibility,
+    titleKey: 'onboarding.accessibility.title',
+    descriptionKey: 'onboarding.accessibility.description',
+  },
+  {
+    id: 4,
+    icon: Globe,
+    titleKey: 'onboarding.language.title',
+    descriptionKey: 'onboarding.language.description',
+  },
+  {
+    id: 5,
+    icon: Bell,
+    titleKey: 'onboarding.notifications.title',
+    descriptionKey: 'onboarding.notifications.description',
+  },
+  {
+    id: 6,
+    icon: Rocket,
+    titleKey: 'onboarding.complete.title',
+    descriptionKey: 'onboarding.complete.description',
+  },
 ];
 
 export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) {
@@ -496,7 +527,10 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
                   key={s.id}
                   role="tab"
                   aria-selected={idx === currentStep}
-                  aria-label={t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}
+                  aria-label={t('onboarding.stepLabel', 'Step {{current}} of {{total}}', {
+                    current: idx + 1,
+                    total: STEPS.length,
+                  })}
                   className={cn(
                     'h-2 rounded-full transition-all duration-300',
                     idx === currentStep ? 'w-8 bg-primary' : idx < currentStep ? 'w-2 bg-primary/60' : 'w-2 bg-outline-variant/50'

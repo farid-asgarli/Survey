@@ -2,9 +2,8 @@ import { type ReactNode, type HTMLAttributes, createContext, useContext } from '
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Layout, PageHeader, type PageHeaderProps } from '../layout';
-import { FAB } from '../ui/FAB';
+import { FAB, SearchInput } from '@survey/ui-primitives';
 import { ViewModeToggle, type ViewMode } from '../ui/ViewModeToggle';
-import { SearchInput } from '../ui/SearchInput';
 import { ActiveFiltersBar, type ActiveFilter } from '../ui/ActiveFiltersBar';
 
 /**

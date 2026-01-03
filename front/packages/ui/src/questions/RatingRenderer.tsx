@@ -1,17 +1,11 @@
-import { RatingStyle } from "@survey/types";
-import { useState } from "react";
-import { cn } from "..";
-import { Frown, Heart, Meh, Smile, Star, ThumbsUp } from "lucide-react";
-import type { QuestionRendererProps } from "../QuestionRenderer";
+import { RatingStyle } from '@survey/types';
+import { useState } from 'react';
+import { cn } from '@survey/ui-primitives';
+import { Frown, Heart, Meh, Smile, Star, ThumbsUp } from 'lucide-react';
+import type { QuestionRendererProps } from '../types/index.js';
 
 // ============ Rating ============
-export function RatingRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
+export function RatingRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
   const maxValue = question.settings?.maxValue || 5;
   const ratingStyle = (question.settings?.ratingStyle ?? RatingStyle.Stars) as RatingStyle;
   const minLabel = question.settings?.minLabel;
@@ -23,8 +17,8 @@ export function RatingRenderer({
   const labelsElement =
     minLabel || maxLabel ? (
       <div className="flex justify-between text-sm text-on-surface-variant px-1">
-        <span>{minLabel || ""}</span>
-        <span>{maxLabel || ""}</span>
+        <span>{minLabel || ''}</span>
+        <span>{maxLabel || ''}</span>
       </div>
     ) : null;
 
@@ -36,8 +30,7 @@ export function RatingRenderer({
           {labelsElement}
           <div className="flex justify-center gap-2">
             {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
-              const isActive =
-                hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
               return (
                 <button
                   key={rating}
@@ -47,14 +40,14 @@ export function RatingRenderer({
                   onMouseEnter={() => setHoverValue(rating)}
                   onMouseLeave={() => setHoverValue(null)}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center transition-colors",
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
                     isActive
-                      ? "bg-warning-container text-warning"
-                      : "bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                      ? 'bg-warning-container text-warning'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
-                  <Star className={cn("w-7 h-7", isActive && "fill-current")} />
+                  <Star className={cn('w-7 h-7', isActive && 'fill-current')} />
                 </button>
               );
             })}
@@ -69,8 +62,7 @@ export function RatingRenderer({
           {labelsElement}
           <div className="flex justify-center gap-2">
             {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
-              const isActive =
-                hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
               return (
                 <button
                   key={rating}
@@ -80,14 +72,12 @@ export function RatingRenderer({
                   onMouseEnter={() => setHoverValue(rating)}
                   onMouseLeave={() => setHoverValue(null)}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center transition-colors",
-                    isActive
-                      ? "bg-error-container text-error"
-                      : "bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
+                    isActive ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
-                  <Heart className={cn("w-7 h-7", isActive && "fill-current")} />
+                  <Heart className={cn('w-7 h-7', isActive && 'fill-current')} />
                 </button>
               );
             })}
@@ -102,8 +92,7 @@ export function RatingRenderer({
           {labelsElement}
           <div className="flex justify-center gap-2">
             {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
-              const isActive =
-                hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
               return (
                 <button
                   key={rating}
@@ -113,14 +102,14 @@ export function RatingRenderer({
                   onMouseEnter={() => setHoverValue(rating)}
                   onMouseLeave={() => setHoverValue(null)}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center transition-colors",
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
                     isActive
-                      ? "bg-primary-container text-primary"
-                      : "bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                      ? 'bg-primary-container text-primary'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
-                  <ThumbsUp className={cn("w-7 h-7", isActive && "fill-current")} />
+                  <ThumbsUp className={cn('w-7 h-7', isActive && 'fill-current')} />
                 </button>
               );
             })}
@@ -141,14 +130,8 @@ export function RatingRenderer({
               const ratio = (rating - 1) / (maxValue - 1);
               const SmileyIcon = ratio <= 0.33 ? Frown : ratio <= 0.66 ? Meh : Smile;
               // Color based on position
-              const bgColor =
-                ratio <= 0.33
-                  ? "bg-error-container"
-                  : ratio <= 0.66
-                    ? "bg-warning-container"
-                    : "bg-success-container";
-              const textColor =
-                ratio <= 0.33 ? "text-error" : ratio <= 0.66 ? "text-warning" : "text-success";
+              const bgColor = ratio <= 0.33 ? 'bg-error-container' : ratio <= 0.66 ? 'bg-warning-container' : 'bg-success-container';
+              const textColor = ratio <= 0.33 ? 'text-error' : ratio <= 0.66 ? 'text-warning' : 'text-success';
 
               return (
                 <button
@@ -159,11 +142,11 @@ export function RatingRenderer({
                   onMouseEnter={() => setHoverValue(rating)}
                   onMouseLeave={() => setHoverValue(null)}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center transition-colors",
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
                     isSelected || isHovered
                       ? cn(bgColor, textColor)
-                      : "bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
                   <SmileyIcon className="w-7 h-7" />
@@ -189,11 +172,9 @@ export function RatingRenderer({
                   disabled={disabled}
                   onClick={() => onChange(rating.toString())}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center text-lg font-bold transition-colors",
-                    isSelected
-                      ? "bg-primary text-on-primary"
-                      : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                    'w-14 h-14 rounded-xl flex items-center justify-center text-lg font-bold transition-colors',
+                    isSelected ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
                   {rating}
@@ -211,8 +192,7 @@ export function RatingRenderer({
           {labelsElement}
           <div className="flex justify-center gap-2">
             {Array.from({ length: maxValue }, (_, i) => i + 1).map((rating) => {
-              const isActive =
-                hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
+              const isActive = hoverValue !== null ? rating <= hoverValue : rating <= (selectedValue || 0);
               return (
                 <button
                   key={rating}
@@ -222,14 +202,14 @@ export function RatingRenderer({
                   onMouseEnter={() => setHoverValue(rating)}
                   onMouseLeave={() => setHoverValue(null)}
                   className={cn(
-                    "w-14 h-14 rounded-xl flex items-center justify-center transition-colors",
+                    'w-14 h-14 rounded-xl flex items-center justify-center transition-colors',
                     isActive
-                      ? "bg-warning-container text-warning"
-                      : "bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high",
-                    disabled && "cursor-not-allowed opacity-50"
+                      ? 'bg-warning-container text-warning'
+                      : 'bg-surface-container text-on-surface-variant/40 hover:bg-surface-container-high',
+                    disabled && 'cursor-not-allowed opacity-50'
                   )}
                 >
-                  <Star className={cn("w-7 h-7", isActive && "fill-current")} />
+                  <Star className={cn('w-7 h-7', isActive && 'fill-current')} />
                 </button>
               );
             })}

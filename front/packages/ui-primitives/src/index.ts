@@ -4,16 +4,65 @@
 // Components should NOT use i18n/useTranslation internally.
 // All text should come from props or children.
 
-// Utilities
-export { cn } from "./utils";
-export type { ClassValue } from "clsx";
+// ============================================================================
+// Core Utilities
+// ============================================================================
 
-// Component categories - uncomment as you migrate
-// export * from "./buttons";
-// export * from "./inputs";
-// export * from "./feedback";
-// export * from "./layout";
-// export * from "./display";
+export { cn } from './utils';
+export type { ClassValue } from 'clsx';
+
+// ============================================================================
+// Types
+// ============================================================================
+
+export type {
+  ViewMode,
+  CommonLabels,
+  SelectLabels,
+  SearchInputLabels,
+  TimePickerLabels,
+  DatePickerLabels,
+  DialogLabels,
+  DrawerLabels,
+  OverlayHeaderLabels,
+  EmptyStateLabels,
+} from './types';
+
+export {
+  DEFAULT_COMMON_LABELS,
+  DEFAULT_SELECT_LABELS,
+  DEFAULT_SEARCH_INPUT_LABELS,
+  DEFAULT_TIME_PICKER_LABELS,
+  DEFAULT_DATE_PICKER_LABELS,
+  DEFAULT_DIALOG_LABELS,
+  DEFAULT_DRAWER_LABELS,
+  DEFAULT_OVERLAY_HEADER_LABELS,
+} from './types';
+
+// ============================================================================
+// Component Modules
+// ============================================================================
+
+// Buttons
+export * from './buttons';
+
+// Inputs
+export * from './inputs';
+
+// Feedback
+export * from './feedback';
+
+// Layout
+export * from './layout';
+
+// Display
+export * from './display';
+
+// Date Picker
+export * from './date-picker';
+
+// Time Picker
+export * from './time-picker';
 
 // ============================================================================
 // Migration Map: apps/admin/src/components/ui → packages/ui-primitives/src

@@ -2,7 +2,7 @@ import { type HTMLAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LayoutGrid, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './Button';
+import { Button } from '@survey/ui-primitives';
 
 /**
  * View mode type representing the display mode for list/grid views.
@@ -41,11 +41,16 @@ export function ViewModeToggle({ value, onChange, gridIcon, listIcon, size = 'de
   const iconSize = size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4';
 
   return (
-    <div className={cn('flex items-center bg-surface-container rounded-full p-1', className)} role='radiogroup' aria-label={t('common.viewMode')} {...props}>
+    <div
+      className={cn('flex items-center bg-surface-container rounded-full p-1', className)}
+      role="radiogroup"
+      aria-label={t('common.viewMode')}
+      {...props}
+    >
       <Button
         variant={value === 'grid' ? 'tonal' : 'text'}
         size={buttonSize}
-        className='rounded-full'
+        className="rounded-full"
         onClick={() => onChange('grid')}
         aria-pressed={value === 'grid'}
         aria-label={t('common.gridView')}
@@ -55,7 +60,7 @@ export function ViewModeToggle({ value, onChange, gridIcon, listIcon, size = 'de
       <Button
         variant={value === 'list' ? 'tonal' : 'text'}
         size={buttonSize}
-        className='rounded-full'
+        className="rounded-full"
         onClick={() => onChange('list')}
         aria-pressed={value === 'list'}
         aria-label={t('common.listView')}

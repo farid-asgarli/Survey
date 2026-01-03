@@ -3,7 +3,7 @@
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
-import { IconButton } from '@/components/ui/IconButton';
+import { IconButton } from '@/components/ui';
 import { useShortcutsStore, formatShortcutKeys, type KeyboardShortcut } from '@/stores/shortcutsStore';
 import { X, Keyboard } from 'lucide-react';
 
@@ -64,12 +64,15 @@ export function KeyboardShortcutsHelp() {
   if (!isHelpOpen) return null;
 
   // Group shortcuts by category
-  const groupedShortcuts = categoryOrder.reduce((acc, category) => {
-    acc[category] = Array.from(shortcuts.values())
-      .filter((s) => s.category === category && s.enabled !== false)
-      .sort((a, b) => a.description.localeCompare(b.description));
-    return acc;
-  }, {} as Record<KeyboardShortcut['category'], KeyboardShortcut[]>);
+  const groupedShortcuts = categoryOrder.reduce(
+    (acc, category) => {
+      acc[category] = Array.from(shortcuts.values())
+        .filter((s) => s.category === category && s.enabled !== false)
+        .sort((a, b) => a.description.localeCompare(b.description));
+      return acc;
+    },
+    {} as Record<KeyboardShortcut['category'], KeyboardShortcut[]>
+  );
 
   return createPortal(
     <div className="fixed inset-0 z-100" aria-modal="true" role="dialog">

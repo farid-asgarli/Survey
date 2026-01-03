@@ -1,6 +1,3 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// Re-export cn from shared package (single source of truth)
+export { cn } from "@survey/ui-primitives";
+export type { ClassValue } from "@survey/ui-primitives";

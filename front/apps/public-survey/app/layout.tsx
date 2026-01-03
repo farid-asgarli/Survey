@@ -1,37 +1,46 @@
-import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next';
+import { fontVariables } from './fonts';
+import './globals.css';
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
-  subsets: ["latin"],
-});
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fdfcff' },
+    { media: '(prefers-color-scheme: dark)', color: '#131316' },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Survey",
-    default: "Survey",
+    template: '%s | Survey',
+    default: 'Survey',
   },
-  description: "Take a survey and share your feedback",
+  description: 'Take a survey and share your feedback',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'),
+  formatDetection: {
+    telephone: false,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${plusJakarta.variable} font-sans antialiased`}
-      >
-        {children}
-      </body>
+      <head>
+        {/* Preconnect to API for performance */}
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'} />
+        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'} />
+      </head>
+      <body className={`${fontVariables} font-sans antialiased`}>{children}</body>
     </html>
   );
 }

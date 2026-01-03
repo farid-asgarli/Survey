@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { RotateCcw, Info } from 'lucide-react';
-import { QuestionRenderer } from './QuestionRenderers';
+import { QuestionRenderer } from './index';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
 import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
 

@@ -1,15 +1,15 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Enable transpilation of monorepo packages
-  transpilePackages: ["@survey/types", "@survey/validation", "@survey/api-client", "@survey/ui"],
+  transpilePackages: ['@survey/types', '@survey/validation', '@survey/api-client', '@survey/ui', '@survey/ui-primitives'],
 
   // Image optimization configuration
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },

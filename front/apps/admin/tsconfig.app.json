@@ -31,5 +31,10 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../../packages/ui-primitives/src/buttons/Button.tsx",
+    "../../packages/ui-primitives/src/buttons/FAB.tsx",
+    "../../packages/ui-primitives/src/buttons/IconButton.tsx"
+  ]
 }

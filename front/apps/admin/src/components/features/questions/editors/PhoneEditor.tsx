@@ -2,7 +2,7 @@
 
 import { Input, Select } from '@/components/ui';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
-import { PHONE_PRESETS } from '@/utils/validationPatterns';
+import { PHONE_PRESETS } from '@survey/validation';
 import { useTranslation } from 'react-i18next';
 
 interface PhoneEditorProps {
@@ -21,7 +21,7 @@ export function PhoneEditor({ question, onUpdateQuestion }: PhoneEditorProps) {
   }));
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -66,14 +66,16 @@ export function PhoneEditor({ question, onUpdateQuestion }: PhoneEditorProps) {
       />
 
       {/* Custom Validation Pattern (Advanced) */}
-      <details className='group'>
-        <summary className='cursor-pointer text-sm font-medium text-on-surface-variant hover:text-on-surface'>{t('editors.phone.advancedRegex')}</summary>
-        <div className='mt-4 space-y-4 pl-4 border-l-2 border-outline-variant/30'>
+      <details className="group">
+        <summary className="cursor-pointer text-sm font-medium text-on-surface-variant hover:text-on-surface">
+          {t('editors.phone.advancedRegex')}
+        </summary>
+        <div className="mt-4 space-y-4 pl-4 border-l-2 border-outline-variant/30">
           <Input
             label={t('editors.phone.regexPattern')}
             value={question.settings.validationPattern || ''}
             onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, validationPattern: e.target.value } })}
-            placeholder='^\\+?[0-9\\s-]{8,20}$'
+            placeholder="^\\+?[0-9\\s-]{8,20}$"
             helperText={t('editors.phone.regexHelper')}
           />
         </div>
@@ -90,7 +92,7 @@ export function PhoneEditor({ question, onUpdateQuestion }: PhoneEditorProps) {
 
       {/* Max Length */}
       <Input
-        type='number'
+        type="number"
         label={t('questionEditor.common.maxCharacters')}
         value={question.settings.maxLength?.toString() || '50'}
         onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, maxLength: parseInt(e.target.value) || 50 } })}

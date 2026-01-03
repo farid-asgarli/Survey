@@ -1,12 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, Loader2, Mail, User as UserIcon } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button, toast } from '@/components/ui';
 import { AvatarSelector } from './AvatarSelector';
 import { useAuthStore } from '@/stores';
 import { useUpdateProfile, useSelectAvatar, useClearAvatar, useDateTimeFormatter } from '@/hooks';
 import { useUserAvatar } from '@/hooks/useUserAvatarUrl';
-import { toast } from '@/components/ui/Toast';
 import { validateEmail, validateName } from '@/lib/validations';
 
 interface ProfileSettingsProps {
@@ -185,12 +184,12 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
     .slice(0, 2);
 
   return (
-    <Card variant='elevated' className={className}>
+    <Card variant="elevated" className={className}>
       <CardHeader>
         <CardTitle>{t('profile.title')}</CardTitle>
         <CardDescription>{t('profile.description')}</CardDescription>
       </CardHeader>
-      <CardContent className='space-y-6'>
+      <CardContent className="space-y-6">
         {/* Avatar Section */}
         <AvatarSelector
           currentAvatarId={user?.avatarId}
@@ -203,12 +202,12 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
         />
 
         {/* Divider */}
-        <div className='border-t border-outline-variant/30' />
+        <div className="border-t border-outline-variant/30" />
 
         {/* Profile Info Section */}
-        <div className='space-y-4'>
-          <div className='grid gap-4 sm:grid-cols-2'>
-            <div className='relative'>
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="relative">
               <Input
                 label={t('profile.firstName')}
                 value={firstName}
@@ -216,10 +215,10 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
                 onBlur={() => handleBlur('firstName')}
                 disabled={!isEditing}
                 error={touched.firstName ? errors.firstName : undefined}
-                startIcon={<UserIcon className='h-4 w-4' />}
+                startIcon={<UserIcon className="h-4 w-4" />}
               />
             </div>
-            <div className='relative'>
+            <div className="relative">
               <Input
                 label={t('profile.lastName')}
                 value={lastName}
@@ -227,37 +226,37 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
                 onBlur={() => handleBlur('lastName')}
                 disabled={!isEditing}
                 error={touched.lastName ? errors.lastName : undefined}
-                startIcon={<UserIcon className='h-4 w-4' />}
+                startIcon={<UserIcon className="h-4 w-4" />}
               />
             </div>
           </div>
 
-          <div className='relative'>
+          <div className="relative">
             <Input
               label={t('profile.email')}
-              type='email'
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => handleBlur('email')}
               disabled={!isEditing}
               error={touched.email ? errors.email : undefined}
-              startIcon={<Mail className='h-4 w-4' />}
+              startIcon={<Mail className="h-4 w-4" />}
               helperText={isEditing && email !== user?.email ? t('profile.emailChangeNotice') : undefined}
             />
           </div>
 
           {/* Account Info (Read-only) */}
           {user && (
-            <div className='p-4 rounded-xl bg-surface-container/50'>
-              <p className='text-xs text-on-surface-variant mb-2'>{t('profile.accountInfo')}</p>
-              <div className='grid gap-2 text-sm'>
-                <div className='flex justify-between'>
-                  <span className='text-on-surface-variant'>{t('profile.memberSince')}</span>
-                  <span className='text-on-surface font-medium'>{formatDateLong(user.createdAt)}</span>
+            <div className="p-4 rounded-xl bg-surface-container/50">
+              <p className="text-xs text-on-surface-variant mb-2">{t('profile.accountInfo')}</p>
+              <div className="grid gap-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-on-surface-variant">{t('profile.memberSince')}</span>
+                  <span className="text-on-surface font-medium">{formatDateLong(user.createdAt)}</span>
                 </div>
-                <div className='flex justify-between'>
-                  <span className='text-on-surface-variant'>{t('profile.lastUpdated')}</span>
-                  <span className='text-on-surface font-medium'>{formatDateLong(user.updatedAt)}</span>
+                <div className="flex justify-between">
+                  <span className="text-on-surface-variant">{t('profile.lastUpdated')}</span>
+                  <span className="text-on-surface font-medium">{formatDateLong(user.updatedAt)}</span>
                 </div>
               </div>
             </div>
@@ -265,28 +264,28 @@ export function ProfileSettings({ className }: ProfileSettingsProps) {
         </div>
 
         {/* Actions */}
-        <div className='flex justify-end gap-2'>
+        <div className="flex justify-end gap-2">
           {isEditing ? (
             <>
-              <Button variant='outline' onClick={handleCancel} disabled={updateProfileMutation.isPending}>
+              <Button variant="outline" onClick={handleCancel} disabled={updateProfileMutation.isPending}>
                 {t('common.cancel')}
               </Button>
               <Button onClick={handleSave} disabled={updateProfileMutation.isPending || !hasChanges}>
                 {updateProfileMutation.isPending ? (
                   <>
-                    <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     {t('common.saving')}
                   </>
                 ) : (
                   <>
-                    <Check className='h-4 w-4 mr-2' />
+                    <Check className="h-4 w-4 mr-2" />
                     {t('common.saveChanges')}
                   </>
                 )}
               </Button>
             </>
           ) : (
-            <Button variant='outline' onClick={() => setIsEditing(true)}>
+            <Button variant="outline" onClick={() => setIsEditing(true)}>
               {t('profile.editProfile')}
             </Button>
           )}

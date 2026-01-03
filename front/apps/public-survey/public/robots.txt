@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /s/
+Disallow: /api/
+
+# Sitemap (dynamically generated surveys don't need sitemap)
+# Crawlers should find surveys via shared links

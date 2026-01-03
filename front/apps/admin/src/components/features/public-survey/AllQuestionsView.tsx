@@ -3,7 +3,7 @@
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui';
-import { QuestionRenderer } from './QuestionRenderers';
+import { QuestionRenderer } from './index';
 import { Send, Loader2 } from 'lucide-react';
 import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
 import { useTranslation } from 'react-i18next';

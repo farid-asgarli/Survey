@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import type { ViewMode } from '@/components/ui/ViewModeToggle';
-import type { ActiveFilter } from '@/components/ui/ActiveFiltersBar';
+import type { ViewMode, ActiveFilter } from '@/components/ui';
 import type { ExtendedFilterConfig, FilterConfig, FilterFieldConfig, SearchConfig } from '@/types/list-page';
 import { useListPage, type PaginationState } from './useListPage';
 import { useFilteredList } from './useFilteredList';

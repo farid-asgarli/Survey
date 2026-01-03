@@ -2,10 +2,8 @@ import { useState, useCallback, useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore, usePreferencesStore, useNamespaceStore } from '@/stores';
 import { useNamespacesList, useUserPreferences } from '@/hooks';
-import { AppLoadingScreen } from '@/components/ui';
-import { OnboardingWizard } from '@/components/ui/OnboardingWizard';
-import { GettingStartedWizard } from '@/components/ui/GettingStartedWizard';
-import type { LoadingStage } from '@/components/ui/AppLoadingScreen';
+import { AppLoadingScreen, OnboardingWizard, GettingStartedWizard } from '@/components/ui';
+import type { LoadingStage } from '@/components/ui';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -164,7 +162,7 @@ export function PublicOnlyRoute({ children, redirectTo = '/' }: PublicOnlyRouteP
 
   // Show beautiful loading screen while hydrating persisted state
   if (!hasHydrated || isLoading) {
-    return <AppLoadingScreen message='Loading' />;
+    return <AppLoadingScreen message="Loading" />;
   }
 
   if (isAuthenticated) {

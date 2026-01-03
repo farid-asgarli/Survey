@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, LogoIcon } from '@/components/ui';
-import { OnboardingWizard } from '@/components/ui/OnboardingWizard';
-import { GettingStartedWizard } from '@/components/ui/GettingStartedWizard';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, LogoIcon, OnboardingWizard, GettingStartedWizard } from '@/components/ui';
 import { Info, RefreshCw, ExternalLink, Heart, Rocket } from 'lucide-react';
 import { usePreferencesStore } from '@/stores';
 import { preferencesApi } from '@/services/api';
@@ -84,13 +82,13 @@ export function AboutSection() {
 
   return (
     <>
-      <div className='space-y-6'>
+      <div className="space-y-6">
         {/* App Info */}
-        <Card variant='elevated' padding='none'>
-          <CardHeader className='p-6 pb-4'>
-            <div className='flex items-center gap-3'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-primary-container/30'>
-                <Info className='h-6 w-6 text-primary' />
+        <Card variant="elevated" padding="none">
+          <CardHeader className="p-6 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-container/30">
+                <Info className="h-6 w-6 text-primary" />
               </div>
               <div>
                 <CardTitle>{t('settings.about.title')}</CardTitle>
@@ -98,14 +96,14 @@ export function AboutSection() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className='px-6 pb-6 space-y-4'>
-            <div className='flex items-center justify-between p-4 rounded-2xl bg-surface-container/50'>
+          <CardContent className="px-6 pb-6 space-y-4">
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-surface-container/50">
               <div>
-                <p className='font-medium text-on-surface'>{t('common.appName')}</p>
-                <p className='text-sm text-on-surface-variant'>{t('settings.about.version', { version: '1.0.0' })}</p>
+                <p className="font-medium text-on-surface">{t('common.appName')}</p>
+                <p className="text-sm text-on-surface-variant">{t('settings.about.version', { version: '1.0.0' })}</p>
               </div>
-              <div className='flex items-center gap-2 text-sm text-on-surface-variant'>
-                <Heart className='h-4 w-4 text-error' />
+              <div className="flex items-center gap-2 text-sm text-on-surface-variant">
+                <Heart className="h-4 w-4 text-error" />
                 <span>{t('settings.about.madeWith')}</span>
               </div>
             </div>
@@ -113,11 +111,11 @@ export function AboutSection() {
         </Card>
 
         {/* Setup Wizard */}
-        <Card variant='elevated' padding='none'>
-          <CardHeader className='p-6 pb-4'>
-            <div className='flex items-center gap-3'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-primary-container/30'>
-                <LogoIcon size='md' />
+        <Card variant="elevated" padding="none">
+          <CardHeader className="p-6 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-container/30">
+                <LogoIcon size="md" />
               </div>
               <div>
                 <CardTitle>{t('settings.about.setupWizard')}</CardTitle>
@@ -125,27 +123,27 @@ export function AboutSection() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className='px-6 pb-6 space-y-4'>
-            <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
-              <div className='flex items-start justify-between gap-4'>
-                <div className='flex-1'>
-                  <p className='font-medium text-on-surface'>{t('onboarding.restartOnboarding')}</p>
-                  <p className='text-sm text-on-surface-variant mt-1'>{t('onboarding.restartOnboardingDescription')}</p>
+          <CardContent className="px-6 pb-6 space-y-4">
+            <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="font-medium text-on-surface">{t('onboarding.restartOnboarding')}</p>
+                  <p className="text-sm text-on-surface-variant mt-1">{t('onboarding.restartOnboardingDescription')}</p>
                   {onboardingStatus === 'completed' && (
-                    <p className='text-xs text-success mt-2 flex items-center gap-1'>
-                      <span className='inline-block w-2 h-2 rounded-full bg-success' />
+                    <p className="text-xs text-success mt-2 flex items-center gap-1">
+                      <span className="inline-block w-2 h-2 rounded-full bg-success" />
                       {t('settings.about.onboardingCompleted')}
                     </p>
                   )}
                   {onboardingStatus === 'skipped' && (
-                    <p className='text-xs text-warning mt-2 flex items-center gap-1'>
-                      <span className='inline-block w-2 h-2 rounded-full bg-warning' />
+                    <p className="text-xs text-warning mt-2 flex items-center gap-1">
+                      <span className="inline-block w-2 h-2 rounded-full bg-warning" />
                       {t('settings.about.onboardingSkipped')}
                     </p>
                   )}
                 </div>
-                <Button variant='tonal' onClick={handleRestartOnboarding} disabled={isResetting} loading={isResetting}>
-                  <RefreshCw className='h-4 w-4 mr-2' />
+                <Button variant="tonal" onClick={handleRestartOnboarding} disabled={isResetting} loading={isResetting}>
+                  <RefreshCw className="h-4 w-4 mr-2" />
                   {t('settings.about.restart')}
                 </Button>
               </div>
@@ -154,11 +152,11 @@ export function AboutSection() {
         </Card>
 
         {/* Getting Started Guide */}
-        <Card variant='elevated' padding='none'>
-          <CardHeader className='p-6 pb-4'>
-            <div className='flex items-center gap-3'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-tertiary-container/30'>
-                <Rocket className='h-6 w-6 text-tertiary' />
+        <Card variant="elevated" padding="none">
+          <CardHeader className="p-6 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-tertiary-container/30">
+                <Rocket className="h-6 w-6 text-tertiary" />
               </div>
               <div>
                 <CardTitle>{t('gettingStarted.trigger.title')}</CardTitle>
@@ -166,21 +164,21 @@ export function AboutSection() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className='px-6 pb-6 space-y-4'>
-            <div className='p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30'>
-              <div className='flex items-start justify-between gap-4'>
-                <div className='flex-1'>
-                  <p className='font-medium text-on-surface'>{t('gettingStarted.welcome.title')}</p>
-                  <p className='text-sm text-on-surface-variant mt-1'>{t('gettingStarted.welcome.description')}</p>
+          <CardContent className="px-6 pb-6 space-y-4">
+            <div className="p-4 rounded-2xl bg-surface-container/50 border border-outline-variant/30">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="font-medium text-on-surface">{t('gettingStarted.welcome.title')}</p>
+                  <p className="text-sm text-on-surface-variant mt-1">{t('gettingStarted.welcome.description')}</p>
                   {hasCompletedGettingStarted && (
-                    <p className='text-xs text-success mt-2 flex items-center gap-1'>
-                      <span className='inline-block w-2 h-2 rounded-full bg-success' />
+                    <p className="text-xs text-success mt-2 flex items-center gap-1">
+                      <span className="inline-block w-2 h-2 rounded-full bg-success" />
                       {t('settings.about.onboardingCompleted')}
                     </p>
                   )}
                 </div>
-                <Button variant='tonal' onClick={handleRestartGettingStarted} disabled={isResettingGuide} loading={isResettingGuide}>
-                  <Rocket className='h-4 w-4 mr-2' />
+                <Button variant="tonal" onClick={handleRestartGettingStarted} disabled={isResettingGuide} loading={isResettingGuide}>
+                  <Rocket className="h-4 w-4 mr-2" />
                   {t('gettingStarted.trigger.restart')}
                 </Button>
               </div>
@@ -189,11 +187,11 @@ export function AboutSection() {
         </Card>
 
         {/* Links */}
-        <Card variant='elevated' padding='none'>
-          <CardHeader className='p-6 pb-4'>
-            <div className='flex items-center gap-3'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-secondary-container/30'>
-                <ExternalLink className='h-6 w-6 text-secondary' />
+        <Card variant="elevated" padding="none">
+          <CardHeader className="p-6 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary-container/30">
+                <ExternalLink className="h-6 w-6 text-secondary" />
               </div>
               <div>
                 <CardTitle>{t('settings.about.resources')}</CardTitle>
@@ -201,17 +199,21 @@ export function AboutSection() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className='px-6 pb-6'>
-            <div className='grid gap-3'>
+          <CardContent className="px-6 pb-6">
+            <div className="grid gap-3">
               {[
                 { label: t('settings.about.documentation'), href: '#' },
                 { label: t('settings.about.support'), href: '#' },
                 { label: t('settings.about.privacy'), href: '#' },
                 { label: t('settings.about.terms'), href: '#' },
               ].map((link, idx) => (
-                <a key={idx} href={link.href} className='flex items-center justify-between p-3 rounded-xl hover:bg-surface-container transition-colors'>
-                  <span className='text-on-surface'>{link.label}</span>
-                  <ExternalLink className='h-4 w-4 text-on-surface-variant' />
+                <a
+                  key={idx}
+                  href={link.href}
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-container transition-colors"
+                >
+                  <span className="text-on-surface">{link.label}</span>
+                  <ExternalLink className="h-4 w-4 text-on-surface-variant" />
                 </a>
               ))}
             </div>

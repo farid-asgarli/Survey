@@ -1,14 +1,8 @@
-import { cn } from "..";
-import type { QuestionRendererProps } from "../QuestionRenderer";
+import { cn } from '@survey/ui-primitives';
+import type { QuestionRendererProps } from '../types/index.js';
 
 // ============ Scale (NPS-style) ============
-export function ScaleRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
+export function ScaleRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
   const minValue = question.settings?.minValue ?? 0;
   const maxValue = question.settings?.maxValue ?? 10;
   const minLabel = question.settings?.minLabel;
@@ -35,12 +29,12 @@ export function ScaleRenderer({
             disabled={disabled}
             onClick={() => onChange(num.toString())}
             className={cn(
-              "w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-base sm:text-lg font-semibold transition-all duration-200",
+              'w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-base sm:text-lg font-semibold transition-all duration-200',
               selectedValue === num
-                ? "bg-primary text-on-primary ring-2 ring-primary ring-offset-2 ring-offset-surface"
-                : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high",
-              disabled && "cursor-not-allowed opacity-50",
-              error && selectedValue === null && "ring-1 ring-error/50"
+                ? 'bg-primary text-on-primary ring-2 ring-primary ring-offset-2 ring-offset-surface'
+                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high',
+              disabled && 'cursor-not-allowed opacity-50',
+              error && selectedValue === null && 'ring-1 ring-error/50'
             )}
           >
             {num}

@@ -69,15 +69,13 @@ export function SurveysPage() {
   const createDialog = useDialogState();
 
   // Use the combined list page state hook with preferences as initial values
-  const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters, hasActiveFilters } = useListPageState<
-    Survey,
-    SurveyListFilters
-  >({
-    initialFilters: { status: 'all' },
-    filterConfigs: FILTER_CONFIGS,
-    items: [], // We use server-side filtering for surveys, so no items here
-    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
-  });
+  const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters, hasActiveFilters } =
+    useListPageState<Survey, SurveyListFilters>({
+      initialFilters: { status: 'all' },
+      filterConfigs: FILTER_CONFIGS,
+      items: [], // We use server-side filtering for surveys, so no items here
+      initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
+    });
 
   // Build filters object for API - use preferences for sort and pagination
   const apiFilters: SurveyFilters = useMemo(
@@ -238,11 +236,11 @@ export function SurveysPage() {
     return (
       <ListPageLayout viewMode={viewMode} onViewModeChange={setViewMode}>
         <EmptyState
-          icon={<FileText className='h-7 w-7' />}
+          icon={<FileText className="h-7 w-7" />}
           title={t('workspaces.selectWorkspace')}
           description={t('workspaces.selectWorkspaceDesc')}
-          iconVariant='default'
-          size='full'
+          iconVariant="default"
+          size="full"
         />
       </ListPageLayout>
     );
@@ -307,10 +305,15 @@ export function SurveysPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
-      <CreateSurveyDialog open={createDialog.isOpen} onOpenChange={createDialog.setOpen} onSubmit={handleCreateSurvey} isLoading={createSurvey.isPending} />
+      <CreateSurveyDialog
+        open={createDialog.isOpen}
+        onOpenChange={createDialog.setOpen}
+        onSubmit={handleCreateSurvey}
+        isLoading={createSurvey.isPending}
+      />
 
       <ConfirmDialog />
       <PublishConfirmDialog />

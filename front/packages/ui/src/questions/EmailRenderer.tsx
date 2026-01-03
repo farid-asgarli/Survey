@@ -1,18 +1,12 @@
-import { useState } from "react";
-import type { QuestionRendererProps } from "../QuestionRenderer";
-import { validateQuestionValue, getPresetById } from "@/utils/validationPatterns";
+import { useState } from 'react';
+import type { QuestionRendererProps } from '../types/index.js';
+import { validateQuestionValue } from '@survey/validation';
+import { cn } from '@survey/ui-primitives';
+import { Mail } from 'lucide-react';
 
 // ============ Email Input ============
-export function EmailRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
-  const { t } = useTranslation();
-  const placeholder =
-    question.settings?.placeholder || t("questionDefaults.placeholders.emailExample");
+export function EmailRenderer({ question, value, onChange, error, disabled, labels }: QuestionRendererProps) {
+  const placeholder = question.settings?.placeholder || labels.placeholder || 'email@example.com';
   const maxLength = question.settings?.maxLength || 256;
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -25,11 +19,11 @@ export function EmailRenderer({
   };
 
   const handleBlur = () => {
-    const stringValue = (value as string) || "";
+    const stringValue = (value as string) || '';
     if (stringValue) {
-      const result = validateQuestionValue(stringValue, "Email", question.settings);
+      const result = validateQuestionValue(stringValue, 'Email', question.settings);
       if (!result.isValid) {
-        setLocalError(result.errorMessage || t("validation.invalidEmail"));
+        setLocalError(result.errorMessage || labels.invalidEmail || 'Please enter a valid email');
       }
     }
   };
@@ -44,20 +38,18 @@ export function EmailRenderer({
           type="email"
           inputMode="email"
           autoComplete="email"
-          value={(value as string) || ""}
+          value={(value as string) || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder={placeholder}
           maxLength={maxLength}
           disabled={disabled}
           className={cn(
-            "w-full pl-12 pr-5 py-4 rounded-2xl border-2 bg-surface-container-lowest text-on-surface text-lg",
-            "placeholder:text-on-surface-variant/50 transition-all duration-200",
-            "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-            displayError
-              ? "border-error"
-              : "border-outline-variant/50 hover:border-outline-variant",
-            disabled && "opacity-50 cursor-not-allowed"
+            'w-full pl-12 pr-5 py-4 rounded-2xl border-2 bg-surface-container-lowest text-on-surface text-lg',
+            'placeholder:text-on-surface-variant/50 transition-all duration-200',
+            'focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20',
+            displayError ? 'border-error' : 'border-outline-variant/50 hover:border-outline-variant',
+            disabled && 'opacity-50 cursor-not-allowed'
           )}
         />
       </div>

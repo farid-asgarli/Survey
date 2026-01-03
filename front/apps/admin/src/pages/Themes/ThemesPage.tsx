@@ -270,7 +270,9 @@ export function ThemesPage() {
           viewMode={viewMode}
           defaultTheme={defaultTheme}
           hasActiveFilters={hasActiveFilters}
-          emptyStateElement={<ThemesEmptyState hasActiveFilters={hasActiveFilters} onClearFilters={clearAllFilters} onCreateItem={handleCreateTheme} />}
+          emptyStateElement={
+            <ThemesEmptyState hasActiveFilters={hasActiveFilters} onClearFilters={clearAllFilters} onCreateItem={handleCreateTheme} />
+          }
           onEdit={handleEditTheme}
           onDuplicate={(theme: SurveyThemeSummary) => handleDuplicate?.(theme)}
           onDelete={(theme: SurveyThemeSummary) => handleDelete?.(theme)}
@@ -279,7 +281,7 @@ export function ThemesPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={handleCreateTheme} />
+      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={handleCreateTheme} />
 
       {/* Theme Editor Drawer */}
       <ThemeEditorDrawer

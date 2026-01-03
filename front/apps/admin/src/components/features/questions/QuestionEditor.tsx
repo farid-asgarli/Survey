@@ -493,9 +493,9 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
         <div className="p-4">{renderQuestionHeader()}</div>
 
         {/* Tabs - M3 Expressive Pill style */}
-        <div className="px-4 pb-3">
-          <TabsList className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full w-fit">
-            {!isReadOnly && (
+        {!isReadOnly && (
+          <div className="px-4 pb-3">
+            <TabsList className="flex items-center gap-1 p-1.5 bg-surface-container rounded-full w-fit">
               <TabsTrigger
                 value="edit"
                 className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-on-primary"
@@ -503,15 +503,13 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
                 <Pencil className="w-4 h-4" />
                 {t('questionEditor.edit')}
               </TabsTrigger>
-            )}
-            <TabsTrigger
-              value="preview"
-              className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-on-primary"
-            >
-              <Eye className="w-4 h-4" />
-              {t('questionEditor.preview')}
-            </TabsTrigger>
-            {!isReadOnly && (
+              <TabsTrigger
+                value="preview"
+                className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-on-primary"
+              >
+                <Eye className="w-4 h-4" />
+                {t('questionEditor.preview')}
+              </TabsTrigger>
               <TabsTrigger
                 value="logic"
                 className="gap-2 px-4 py-2 rounded-full text-sm font-semibold data-[state=active]:bg-tertiary data-[state=active]:text-on-tertiary"
@@ -519,9 +517,9 @@ export function QuestionEditor({ question, isReadOnly = false }: QuestionEditorP
                 <GitBranch className="w-4 h-4" />
                 {t('questionEditor.logic', 'Logic')}
               </TabsTrigger>
-            )}
-          </TabsList>
-        </div>
+            </TabsList>
+          </div>
+        )}
       </div>
 
       {/* Content Area - Edit tab only in edit mode */}

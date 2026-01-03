@@ -2,7 +2,7 @@
 
 import { Input, Select } from '@/components/ui';
 import type { DraftQuestion } from '@/stores/surveyBuilderStore';
-import { URL_PRESETS } from '@/utils/validationPatterns';
+import { URL_PRESETS } from '@survey/validation';
 import { useTranslation } from 'react-i18next';
 
 interface UrlEditorProps {
@@ -21,7 +21,7 @@ export function UrlEditor({ question, onUpdateQuestion }: UrlEditorProps) {
   }));
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Question Text */}
       <Input
         label={t('questionEditor.question')}
@@ -66,14 +66,16 @@ export function UrlEditor({ question, onUpdateQuestion }: UrlEditorProps) {
       />
 
       {/* Custom Validation Pattern (Advanced) */}
-      <details className='group'>
-        <summary className='cursor-pointer text-sm font-medium text-on-surface-variant hover:text-on-surface'>{t('editors.url.advancedRegex')}</summary>
-        <div className='mt-4 space-y-4 pl-4 border-l-2 border-outline-variant/30'>
+      <details className="group">
+        <summary className="cursor-pointer text-sm font-medium text-on-surface-variant hover:text-on-surface">
+          {t('editors.url.advancedRegex')}
+        </summary>
+        <div className="mt-4 space-y-4 pl-4 border-l-2 border-outline-variant/30">
           <Input
             label={t('editors.url.regexPattern')}
             value={question.settings.validationPattern || ''}
             onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, validationPattern: e.target.value } })}
-            placeholder='^https?:\\/\\/.*'
+            placeholder="^https?:\\/\\/.*"
             helperText={t('questionEditor.url.customPatternHelper')}
           />
         </div>
@@ -90,7 +92,7 @@ export function UrlEditor({ question, onUpdateQuestion }: UrlEditorProps) {
 
       {/* Max Length */}
       <Input
-        type='number'
+        type="number"
         label={t('questionEditor.common.maxCharacters')}
         value={question.settings.maxLength?.toString() || '2048'}
         onChange={(e) => onUpdateQuestion({ settings: { ...question.settings, maxLength: parseInt(e.target.value) || 2048 } })}

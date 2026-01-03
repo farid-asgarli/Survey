@@ -1,5 +1,5 @@
 import type { PublicQuestion, AnswerValue } from '@/types/public-survey';
-import { validateQuestionValue } from '@/utils/validationPatterns';
+import { validateQuestionValue } from '@survey/validation';
 import { QuestionType } from '@/types/enums';
 
 /**

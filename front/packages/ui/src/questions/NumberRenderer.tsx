@@ -1,19 +1,11 @@
-import { useState } from "react";
-import type { QuestionRendererProps } from "../QuestionRenderer";
-import { Hash } from "lucide-react";
-import { cn } from "..";
+import { useState } from 'react';
+import type { QuestionRendererProps } from '../types/index.js';
+import { Hash } from 'lucide-react';
+import { cn } from '@survey/ui-primitives';
 
 // ============ Number Input ============
-export function NumberRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
-  const { t } = useTranslation();
-  const placeholder =
-    question.settings?.placeholder || t("questionDefaults.placeholders.enterNumber");
+export function NumberRenderer({ question, value, onChange, error, disabled, labels }: QuestionRendererProps) {
+  const placeholder = question.settings?.placeholder || labels.placeholder || 'Enter a number';
   const minValue = question.settings?.minValue;
   const maxValue = question.settings?.maxValue;
   const [localError, setLocalError] = useState<string | null>(null);
@@ -21,22 +13,22 @@ export function NumberRenderer({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     // Allow empty, or valid number characters
-    if (newValue === "" || /^-?\d*\.?\d*$/.test(newValue)) {
+    if (newValue === '' || /^-?\d*\.?\d*$/.test(newValue)) {
       onChange(newValue);
       if (localError) setLocalError(null);
     }
   };
 
   const handleBlur = () => {
-    const stringValue = (value as string) || "";
+    const stringValue = (value as string) || '';
     if (stringValue) {
       const numValue = parseFloat(stringValue);
       if (isNaN(numValue)) {
-        setLocalError(t("validation.number"));
+        setLocalError(labels.invalidNumber || 'Please enter a valid number');
       } else if (minValue !== undefined && numValue < minValue) {
-        setLocalError(t("validation.minValue", { min: minValue }));
+        setLocalError((labels.minValue || 'Value must be at least {min}').replace('{min}', String(minValue)));
       } else if (maxValue !== undefined && numValue > maxValue) {
-        setLocalError(t("validation.maxValue", { max: maxValue }));
+        setLocalError((labels.maxValue || 'Value must be at most {max}').replace('{max}', String(maxValue)));
       }
     }
   };
@@ -50,19 +42,17 @@ export function NumberRenderer({
         <input
           type="text"
           inputMode="numeric"
-          value={(value as string) || ""}
+          value={(value as string) || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
-            "w-full pl-12 pr-5 py-4 rounded-2xl border-2 bg-surface-container-lowest text-on-surface text-lg",
-            "placeholder:text-on-surface-variant/50 transition-all duration-200",
-            "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-            displayError
-              ? "border-error"
-              : "border-outline-variant/50 hover:border-outline-variant",
-            disabled && "opacity-50 cursor-not-allowed"
+            'w-full pl-12 pr-5 py-4 rounded-2xl border-2 bg-surface-container-lowest text-on-surface text-lg',
+            'placeholder:text-on-surface-variant/50 transition-all duration-200',
+            'focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20',
+            displayError ? 'border-error' : 'border-outline-variant/50 hover:border-outline-variant',
+            disabled && 'opacity-50 cursor-not-allowed'
           )}
         />
       </div>

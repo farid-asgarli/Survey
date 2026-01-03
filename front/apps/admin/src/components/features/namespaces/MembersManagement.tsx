@@ -144,10 +144,10 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
 
   if (error) {
     return (
-      <Card variant='elevated'>
-        <CardContent className='py-12 text-center'>
-          <p className='text-error'>{t('workspaces.team.failedToLoad')}</p>
-          <Button variant='text' className='mt-2' onClick={() => window.location.reload()}>
+      <Card variant="elevated">
+        <CardContent className="py-12 text-center">
+          <p className="text-error">{t('workspaces.team.failedToLoad')}</p>
+          <Button variant="text" className="mt-2" onClick={() => window.location.reload()}>
             {t('workspaces.team.tryAgain')}
           </Button>
         </CardContent>
@@ -157,16 +157,16 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
 
   return (
     <>
-      <Card variant='elevated'>
+      <Card variant="elevated">
         <CardHeader>
-          <div className='flex items-center justify-between'>
+          <div className="flex items-center justify-between">
             <div>
               <CardTitle>{t('workspaces.team.title')}</CardTitle>
               <CardDescription>{t('workspaces.team.description')}</CardDescription>
             </div>
             {isOwner && (
-              <Button onClick={() => inviteDialog.open()} className='gap-2'>
-                <UserPlus className='h-4 w-4' />
+              <Button onClick={() => inviteDialog.open()} className="gap-2">
+                <UserPlus className="h-4 w-4" />
                 {t('workspaces.team.invite')}
               </Button>
             )}
@@ -174,60 +174,63 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className='space-y-3'>
+            <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className='flex items-center gap-4 px-5 py-3.5'>
-                  <Skeleton className='h-12 w-12 rounded-full' />
-                  <div className='flex-1 space-y-2'>
-                    <Skeleton className='h-4 w-32' />
-                    <Skeleton className='h-3 w-48' />
+                <div key={i} className="flex items-center gap-4 px-5 py-3.5">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-48" />
                   </div>
-                  <Skeleton className='h-6 w-16 rounded-full' />
+                  <Skeleton className="h-6 w-16 rounded-full" />
                 </div>
               ))}
             </div>
           ) : members && members.items && members.items.length > 0 ? (
-            <div className='-mx-5 divide-y divide-outline-variant/30'>
+            <div className="-mx-5 divide-y divide-outline-variant/30">
               {members.items.map((member) => {
                 const roleKey = getRoleKey(member.role);
                 const RoleIcon = roleIcons[roleKey];
                 return (
-                  <div key={member.membershipId} className='flex items-center gap-4 px-5 py-3.5 hover:bg-surface-container-high transition-colors group'>
+                  <div
+                    key={member.membershipId}
+                    className="flex items-center gap-4 px-5 py-3.5 hover:bg-surface-container-high transition-colors group"
+                  >
                     <Avatar
                       src={getAvatarUrl(member.avatarId)}
                       alt={`${member.firstName} ${member.lastName}`}
                       fallback={`${member.firstName[0]}${member.lastName[0]}`}
-                      size='lg'
+                      size="lg"
                     />
-                    <div className='flex-1 min-w-0'>
-                      <p className='font-medium text-on-surface truncate'>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-on-surface truncate">
                         {member.firstName} {member.lastName}
-                        {member.userId === currentUserId && <span className='ml-2 text-xs text-on-surface-variant'>{t('workspaces.team.you')}</span>}
+                        {member.userId === currentUserId && <span className="ml-2 text-xs text-on-surface-variant">{t('workspaces.team.you')}</span>}
                       </p>
-                      <p className='text-sm text-on-surface-variant truncate flex items-center gap-1'>
-                        <Mail className='h-3.5 w-3.5' />
+                      <p className="text-sm text-on-surface-variant truncate flex items-center gap-1">
+                        <Mail className="h-3.5 w-3.5" />
                         {member.email}
                       </p>
                     </div>
                     <div className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border', roleColors[roleKey])}>
-                      <RoleIcon className='h-3.5 w-3.5' />
+                      <RoleIcon className="h-3.5 w-3.5" />
                       {roleKey}
                     </div>
                     {canManageMember(member) && (
                       <Menu
                         trigger={
                           <IconButton
-                            variant='ghost'
-                            size='sm'
-                            className='opacity-0 group-hover:opacity-100 transition-opacity'
+                            variant="ghost"
+                            size="sm"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity"
                             aria-label={t('a11y.memberActions')}
                           >
-                            <MoreVertical className='h-5 w-5' />
+                            <MoreVertical className="h-5 w-5" />
                           </IconButton>
                         }
-                        align='end'
+                        align="end"
                       >
-                        <MenuItem onClick={() => handleRemoveMember(member)} destructive icon={<Trash2 className='h-4 w-4' />}>
+                        <MenuItem onClick={() => handleRemoveMember(member)} destructive icon={<Trash2 className="h-4 w-4" />}>
                           {t('workspaces.team.removeFromWorkspace')}
                         </MenuItem>
                       </Menu>
@@ -237,17 +240,17 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
               })}
             </div>
           ) : (
-            <div className='py-12 text-center'>
-              <div className='flex justify-center mb-4'>
-                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-high'>
-                  <UserPlus className='h-8 w-8 text-on-surface-variant' />
+            <div className="py-12 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-high">
+                  <UserPlus className="h-8 w-8 text-on-surface-variant" />
                 </div>
               </div>
-              <p className='text-on-surface font-medium'>{t('workspaces.team.noMembers')}</p>
-              <p className='text-sm text-on-surface-variant mt-1'>{t('workspaces.team.noMembersDesc')}</p>
+              <p className="text-on-surface font-medium">{t('workspaces.team.noMembers')}</p>
+              <p className="text-sm text-on-surface-variant mt-1">{t('workspaces.team.noMembersDesc')}</p>
               {isOwner && (
-                <Button className='mt-4' onClick={() => inviteDialog.open()}>
-                  <UserPlus className='h-4 w-4 mr-2' />
+                <Button className="mt-4" onClick={() => inviteDialog.open()}>
+                  <UserPlus className="h-4 w-4 mr-2" />
                   {t('workspaces.team.inviteFirst')}
                 </Button>
               )}
@@ -258,36 +261,36 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
 
       {/* Invite Member Dialog */}
       <Dialog open={inviteDialog.isOpen} onOpenChange={inviteDialog.setOpen}>
-        <DialogContent size='sm' showClose={false}>
+        <DialogContent size="sm" showClose={false}>
           <DialogHeader
             hero
-            icon={<UserPlus className='h-7 w-7' />}
+            icon={<UserPlus className="h-7 w-7" />}
             title={t('workspaces.team.inviteTitle')}
             description={t('workspaces.team.inviteDescription')}
             showClose
           />
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogBody className='space-y-4'>
+            <DialogBody className="space-y-4">
               <Input
                 label={t('workspaces.team.emailLabel')}
-                type='email'
+                type="email"
                 placeholder={t('workspaces.team.emailPlaceholder')}
                 {...register('email')}
                 error={touchedFields.email ? errors.email?.message : undefined}
-                startIcon={<Mail className='h-5 w-5' />}
+                startIcon={<Mail className="h-5 w-5" />}
                 autoFocus
               />
 
               <div>
-                <label className='block text-sm font-medium text-on-surface-variant mb-1.5'>{t('workspaces.team.roleLabel')}</label>
+                <label className="block text-sm font-medium text-on-surface-variant mb-1.5">{t('workspaces.team.roleLabel')}</label>
                 <Select
                   value={watchedRole}
                   onChange={(value) => setValue('role', value as InviteMemberFormData['role'])}
                   options={roleOptions}
                   placeholder={t('workspaces.team.selectRole')}
                 />
-                <p className='mt-1.5 text-xs text-on-surface-variant'>
+                <p className="mt-1.5 text-xs text-on-surface-variant">
                   {watchedRole === 'Admin' && t('workspaces.team.roleDescriptions.admin')}
                   {watchedRole === 'Member' && t('workspaces.team.roleDescriptions.member')}
                   {watchedRole === 'Viewer' && t('workspaces.team.roleDescriptions.viewer')}
@@ -296,10 +299,10 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
             </DialogBody>
 
             <DialogFooter>
-              <Button type='button' variant='text' onClick={inviteDialog.close} disabled={inviteMember.isPending}>
+              <Button type="button" variant="text" onClick={inviteDialog.close} disabled={inviteMember.isPending}>
                 {t('common.cancel')}
               </Button>
-              <Button type='submit' disabled={inviteMember.isPending}>
+              <Button type="submit" disabled={inviteMember.isPending}>
                 {inviteMember.isPending ? t('workspaces.team.sending') : t('workspaces.team.sendInvitation')}
               </Button>
             </DialogFooter>

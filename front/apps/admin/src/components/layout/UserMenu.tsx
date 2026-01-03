@@ -53,14 +53,14 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
         onClick={() => setOpen(!open)}
         aria-label={t('a11y.userMenu')}
         aria-expanded={open}
-        aria-haspopup='menu'
+        aria-haspopup="menu"
         className={cn(
           'flex items-center gap-2 p-1.5 rounded-full',
           'hover:bg-on-surface/8 transition-colors',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
         )}
       >
-        <Avatar src={avatarUrl} fallback={userInitials} size='default' />
+        <Avatar src={avatarUrl} fallback={userInitials} size="default" />
       </button>
 
       {open && (
@@ -73,22 +73,22 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
           )}
         >
           {/* User info */}
-          <div className='px-4 py-3'>
-            <div className='flex items-center gap-3'>
-              <Avatar src={avatarUrl} fallback={userInitials} size='lg' />
-              <div className='flex-1 min-w-0'>
-                <p className='text-sm font-medium text-on-surface truncate'>
+          <div className="px-4 py-3">
+            <div className="flex items-center gap-3">
+              <Avatar src={avatarUrl} fallback={userInitials} size="lg" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-on-surface truncate">
                   {user.firstName || ''} {user.lastName || ''}
                 </p>
-                <p className='text-xs text-on-surface-variant truncate'>{user.email}</p>
+                <p className="text-xs text-on-surface-variant truncate">{user.email}</p>
               </div>
             </div>
           </div>
 
-          <Divider className='my-1' />
+          <Divider className="my-1" />
 
           {/* Menu items */}
-          <div className='py-1'>
+          <div className="py-1">
             <button
               onClick={() => {
                 setOpen(false);
@@ -96,8 +96,8 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
               }}
               className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-on-surface hover:bg-on-surface/5 transition-colors')}
             >
-              <User className='h-5 w-5 text-on-surface-variant' />
-              <span className='text-sm'>{t('navigation.profile')}</span>
+              <User className="h-5 w-5 text-on-surface-variant" />
+              <span className="text-sm">{t('navigation.profile')}</span>
             </button>
 
             <button
@@ -107,31 +107,34 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
               }}
               className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-on-surface hover:bg-on-surface/5 transition-colors')}
             >
-              <Settings className='h-5 w-5 text-on-surface-variant' />
-              <span className='text-sm'>{t('navigation.settings')}</span>
+              <Settings className="h-5 w-5 text-on-surface-variant" />
+              <span className="text-sm">{t('navigation.settings')}</span>
             </button>
 
             <button
               onClick={() => setOpen(false)}
               className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-on-surface hover:bg-on-surface/5 transition-colors')}
             >
-              <Palette className='h-5 w-5 text-on-surface-variant' />
-              <span className='text-sm'>{t('navigation.appearance')}</span>
+              <Palette className="h-5 w-5 text-on-surface-variant" />
+              <span className="text-sm">{t('navigation.appearance')}</span>
             </button>
 
             {/* Language Switcher */}
-            <div className='px-4 py-2.5'>
-              <LanguageSwitcher variant='default' />
+            <div className="px-4 py-2.5">
+              <LanguageSwitcher variant="default" />
             </div>
           </div>
 
-          <Divider className='my-1' />
+          <Divider className="my-1" />
 
           {/* Logout */}
-          <div className='py-1'>
-            <button onClick={handleLogout} className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-error hover:bg-error/5 transition-colors')}>
-              <LogOut className='h-5 w-5' />
-              <span className='text-sm'>{t('auth.signOut')}</span>
+          <div className="py-1">
+            <button
+              onClick={handleLogout}
+              className={cn('flex w-full items-center gap-3 px-4 py-2.5', 'text-error hover:bg-error/5 transition-colors')}
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-sm">{t('auth.signOut')}</span>
             </button>
           </div>
         </div>

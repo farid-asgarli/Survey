@@ -1,14 +1,8 @@
-import { cn } from "..";
-import type { QuestionRendererProps } from "../QuestionRenderer";
+import { cn } from '@survey/ui-primitives';
+import type { QuestionRendererProps } from '../types/index.js';
 
 // ============ Matrix ============
-export function MatrixRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
+export function MatrixRenderer({ question, value, onChange, error, disabled }: QuestionRendererProps) {
   const rows = question.settings?.matrixRows || [];
   const columns = question.settings?.matrixColumns || [];
   const matrixValue = (value as Record<string, string>) || {};
@@ -34,13 +28,7 @@ export function MatrixRenderer({
           </thead>
           <tbody>
             {rows.map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={cn(
-                  "border-t border-outline-variant/30",
-                  error && !matrixValue[row] && "bg-error-container/10"
-                )}
-              >
+              <tr key={rowIndex} className={cn('border-t border-outline-variant/30', error && !matrixValue[row] && 'bg-error-container/10')}>
                 <td className="p-3 text-on-surface font-medium">{row}</td>
                 {columns.map((col, colIndex) => (
                   <td key={colIndex} className="p-3 text-center">
@@ -49,16 +37,12 @@ export function MatrixRenderer({
                       disabled={disabled}
                       onClick={() => handleSelect(row, col)}
                       className={cn(
-                        "w-7 h-7 rounded-full border-2 flex items-center justify-center mx-auto transition-all duration-200",
-                        matrixValue[row] === col
-                          ? "border-primary bg-primary"
-                          : "border-outline-variant hover:border-primary/50",
-                        disabled && "cursor-not-allowed opacity-50"
+                        'w-7 h-7 rounded-full border-2 flex items-center justify-center mx-auto transition-all duration-200',
+                        matrixValue[row] === col ? 'border-primary bg-primary' : 'border-outline-variant hover:border-primary/50',
+                        disabled && 'cursor-not-allowed opacity-50'
                       )}
                     >
-                      {matrixValue[row] === col && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />
-                      )}
+                      {matrixValue[row] === col && <div className="w-2.5 h-2.5 rounded-full bg-on-primary" />}
                     </button>
                   </td>
                 ))}

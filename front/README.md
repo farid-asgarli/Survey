@@ -87,7 +87,7 @@ pnpm format
 Shared TypeScript types and enums used across all apps.
 
 ```typescript
-import { QuestionType, PublicSurvey } from "@survey/types";
+import { QuestionType, PublicSurvey } from '@survey/types';
 ```
 
 ### `@survey/validation`
@@ -95,7 +95,7 @@ import { QuestionType, PublicSurvey } from "@survey/types";
 Zod schemas and validation utilities for survey answers.
 
 ```typescript
-import { validateAnswer, validateAllAnswers } from "@survey/validation";
+import { validateAnswer, validateAllAnswers } from '@survey/validation';
 ```
 
 ### `@survey/api-client`
@@ -103,7 +103,7 @@ import { validateAnswer, validateAllAnswers } from "@survey/validation";
 API client utilities for interacting with the survey backend.
 
 ```typescript
-import { fetchPublicSurvey, submitSurveyResponse } from "@survey/api-client";
+import { fetchPublicSurvey, submitSurveyResponse } from '@survey/api-client';
 ```
 
 ### `@survey/ui`
@@ -111,7 +111,7 @@ import { fetchPublicSurvey, submitSurveyResponse } from "@survey/api-client";
 Shared UI components and theme utilities (to be expanded in Phase 2).
 
 ```typescript
-import { generateThemeCSSVariables, cn } from "@survey/ui";
+import { generateThemeCSSVariables, cn } from '@survey/ui';
 ```
 
 ## 🏗️ Apps
@@ -145,13 +145,13 @@ The public survey experience built with:
 #### Admin (`apps/admin/.env`)
 
 ```env
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5001
 ```
 
 #### Public Survey (`apps/public-survey/.env.local`)
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_API_URL=http://localhost:5001
 ```
 
 ## 📝 Architecture Decisions

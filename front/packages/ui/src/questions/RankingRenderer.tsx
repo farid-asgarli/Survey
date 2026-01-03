@@ -1,16 +1,9 @@
-import { GripVertical } from "lucide-react";
-import { cn } from "..";
-import type { QuestionRendererProps } from "../QuestionRenderer";
+import { GripVertical } from 'lucide-react';
+import { cn } from '@survey/ui-primitives';
+import type { QuestionRendererProps } from '../types/index.js';
 
 // ============ Ranking ============
-export function RankingRenderer({
-  question,
-  value,
-  onChange,
-  error,
-  disabled,
-}: QuestionRendererProps) {
-  const { t } = useTranslation();
+export function RankingRenderer({ question, value, onChange, error, disabled, labels }: QuestionRendererProps) {
   const options = question.settings?.options || [];
   // For ranking, we store option IDs in order. Initialize with default order if no value.
   const rankedOptionIds = (value as string[]) || options.map((o) => o.id);
@@ -28,7 +21,7 @@ export function RankingRenderer({
 
   return (
     <div className="space-y-3">
-      <p className="text-on-surface-variant text-sm mb-2">{t("questionRenderers.dragToReorder")}</p>
+      <p className="text-on-surface-variant text-sm mb-2">{labels.dragToReorder || 'Drag to reorder'}</p>
 
       {rankedOptionIds.map((optionId, index) => {
         const option = optionMap.get(optionId);
@@ -39,21 +32,21 @@ export function RankingRenderer({
             key={optionId}
             draggable={!disabled}
             onDragStart={(e) => {
-              e.dataTransfer.setData("text/plain", index.toString());
+              e.dataTransfer.setData('text/plain', index.toString());
             }}
             onDragOver={(e) => {
               e.preventDefault();
             }}
             onDrop={(e) => {
               e.preventDefault();
-              const fromIndex = parseInt(e.dataTransfer.getData("text/plain"), 10);
+              const fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
               moveItem(fromIndex, index);
             }}
             className={cn(
-              "flex items-center gap-4 p-4 rounded-2xl border-2 border-outline-variant/50 bg-surface-container-lowest",
-              "cursor-move transition-all duration-200 hover:border-outline-variant hover:bg-surface-container-low",
-              disabled && "cursor-not-allowed opacity-50",
-              error && "border-error/50"
+              'flex items-center gap-4 p-4 rounded-2xl border-2 border-outline-variant/50 bg-surface-container-lowest',
+              'cursor-move transition-all duration-200 hover:border-outline-variant hover:bg-surface-container-low',
+              disabled && 'cursor-not-allowed opacity-50',
+              error && 'border-error/50'
             )}
           >
             <GripVertical className="w-5 h-5 text-on-surface-variant/50" />
