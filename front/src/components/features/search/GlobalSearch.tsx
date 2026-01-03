@@ -9,36 +9,8 @@ import { useViewTransitionNavigate } from '@/hooks';
 import { useSearchStore, type SearchResult, type RecentItem } from '@/stores/searchStore';
 import { useGlobalSearch } from '@/hooks/queries/useSearch';
 import { formatShortcutKeys } from '@/stores/shortcutsStore';
-import { getPageIcon } from '@/config';
-import { Search, Send, Clock, ArrowRight, X, CornerDownLeft, ChevronUp, ChevronDown, Loader2, type LucideIcon } from 'lucide-react';
-
-// Icon mapping for result types - using centralized page icons
-const typeIcons: Record<string, LucideIcon> = {
-  survey: getPageIcon('surveys'),
-  template: getPageIcon('templates'),
-  theme: getPageIcon('themes'),
-  distribution: Send,
-  response: getPageIcon('responses'),
-};
-
-// Default icon for unknown types
-const defaultIcon = getPageIcon('surveys');
-
-const typeLabels: Record<string, string> = {
-  survey: 'Survey',
-  template: 'Template',
-  theme: 'Theme',
-  distribution: 'Distribution',
-  response: 'Response',
-};
-
-const typeColors: Record<string, string> = {
-  survey: 'bg-primary-container/60 text-on-primary-container',
-  template: 'bg-secondary-container/60 text-on-secondary-container',
-  theme: 'bg-tertiary-container/60 text-on-tertiary-container',
-  distribution: 'bg-info-container/60 text-on-info-container',
-  response: 'bg-success-container/60 text-on-success-container',
-};
+import { getSearchTypeIcon, getSearchTypeLabel, getSearchTypeColors } from '@/config';
+import { Search, Clock, ArrowRight, X, CornerDownLeft, ChevronUp, ChevronDown, Loader2 } from 'lucide-react';
 
 interface SearchItemProps {
   item: SearchResult | RecentItem;
@@ -49,7 +21,9 @@ interface SearchItemProps {
 }
 
 function SearchItem({ item, isSelected, onClick, onMouseEnter, isRecent = false }: SearchItemProps) {
-  const Icon = typeIcons[item.type] || defaultIcon;
+  const Icon = getSearchTypeIcon(item.type);
+  const typeLabel = getSearchTypeLabel(item.type);
+  const colorClasses = getSearchTypeColors(item.type);
 
   return (
     <button
@@ -62,26 +36,21 @@ function SearchItem({ item, isSelected, onClick, onMouseEnter, isRecent = false 
       onMouseEnter={onMouseEnter}
     >
       {/* Icon */}
-      <div
-        className={cn(
-          'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors',
-          isSelected ? 'bg-primary/20' : typeColors[item.type]
-        )}
-      >
-        {isRecent ? <Clock className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+      <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors', isSelected ? 'bg-primary/20' : colorClasses)}>
+        {isRecent ? <Clock className='h-5 w-5' /> : <Icon className='h-5 w-5' />}
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="font-medium truncate">{item.title}</span>
+      <div className='flex-1 min-w-0'>
+        <div className='flex items-center gap-2'>
+          <span className='font-medium truncate'>{item.title}</span>
           <span
             className={cn(
               'text-xs px-2 py-0.5 rounded-full shrink-0',
               isSelected ? 'bg-primary/20 text-on-primary-container' : 'bg-surface-container-high text-on-surface-variant'
             )}
           >
-            {typeLabels[item.type]}
+            {typeLabel}
           </span>
         </div>
         {'description' in item && item.description && (
@@ -90,9 +59,7 @@ function SearchItem({ item, isSelected, onClick, onMouseEnter, isRecent = false 
       </div>
 
       {/* Arrow indicator */}
-      <ArrowRight
-        className={cn('h-4 w-4 shrink-0 transition-all duration-150', isSelected ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2')}
-      />
+      <ArrowRight className={cn('h-4 w-4 shrink-0 transition-all duration-150', isSelected ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2')} />
     </button>
   );
 }
@@ -189,12 +156,12 @@ export function GlobalSearch() {
   if (!isSearchOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-100" aria-modal="true" role="dialog">
+    <div className='fixed inset-0 z-100' aria-modal='true' role='dialog'>
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-scrim/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={closeSearch} />
+      <div className='absolute inset-0 bg-scrim/40 backdrop-blur-sm animate-in fade-in duration-200' onClick={closeSearch} />
 
       {/* Dialog */}
-      <div className="absolute inset-x-4 top-[10%] sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl">
+      <div className='absolute inset-x-4 top-[10%] sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl'>
         <div
           className={cn(
             'bg-surface-container-low rounded-3xl shadow-xl overflow-hidden',
@@ -203,31 +170,31 @@ export function GlobalSearch() {
           )}
         >
           {/* Search input */}
-          <div className="flex items-center gap-3 px-5 py-4 border-b border-outline-variant/20">
-            <Search className="h-5 w-5 text-on-surface-variant shrink-0" />
+          <div className='flex items-center gap-3 px-5 py-4 border-b border-outline-variant/20'>
+            <Search className='h-5 w-5 text-on-surface-variant shrink-0' />
             <input
               ref={inputRef}
-              type="text"
+              type='text'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t('search.placeholder')}
               className={cn('flex-1 bg-transparent text-on-surface placeholder:text-on-surface-variant/50', 'text-lg font-medium focus:outline-none')}
-              autoComplete="off"
-              autoCorrect="off"
+              autoComplete='off'
+              autoCorrect='off'
               spellCheck={false}
             />
-            {isLoading && <Loader2 className="h-5 w-5 text-on-surface-variant animate-spin" />}
-            <IconButton variant="ghost" size="sm" onClick={closeSearch} aria-label={t('a11y.closeSearch')}>
-              <X className="h-5 w-5" />
+            {isLoading && <Loader2 className='h-5 w-5 text-on-surface-variant animate-spin' />}
+            <IconButton variant='ghost' size='sm' onClick={closeSearch} aria-label={t('a11y.closeSearch')}>
+              <X className='h-5 w-5' />
             </IconButton>
           </div>
 
           {/* Results */}
-          <div ref={listRef} className="max-h-[60vh] overflow-y-auto py-2 px-2">
+          <div ref={listRef} className='max-h-[60vh] overflow-y-auto py-2 px-2'>
             {/* Section header */}
             {displayItems.length > 0 && (
-              <div className="px-3 py-2 text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+              <div className='px-3 py-2 text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>
                 {searchQuery.length >= 2 ? t('search.results') : t('search.recent')}
               </div>
             )}
@@ -247,51 +214,51 @@ export function GlobalSearch() {
 
             {/* Empty state */}
             {displayItems.length === 0 && searchQuery.length >= 2 && !isLoading && (
-              <div className="px-4 py-12 text-center">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container mb-4">
-                  <Search className="h-8 w-8 text-on-surface-variant/50" />
+              <div className='px-4 py-12 text-center'>
+                <div className='inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container mb-4'>
+                  <Search className='h-8 w-8 text-on-surface-variant/50' />
                 </div>
-                <p className="text-on-surface font-medium">{t('search.noResults')}</p>
-                <p className="text-on-surface-variant text-sm mt-1">{t('search.tryDifferentKeywords')}</p>
+                <p className='text-on-surface font-medium'>{t('search.noResults')}</p>
+                <p className='text-on-surface-variant text-sm mt-1'>{t('search.tryDifferentKeywords')}</p>
               </div>
             )}
 
             {/* Empty recent items */}
             {displayItems.length === 0 && searchQuery.length < 2 && (
-              <div className="px-4 py-12 text-center">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container mb-4">
-                  <Clock className="h-8 w-8 text-on-surface-variant/50" />
+              <div className='px-4 py-12 text-center'>
+                <div className='inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container mb-4'>
+                  <Clock className='h-8 w-8 text-on-surface-variant/50' />
                 </div>
-                <p className="text-on-surface font-medium">{t('search.noRecentItems')}</p>
-                <p className="text-on-surface-variant text-sm mt-1">{t('search.startTyping')}</p>
+                <p className='text-on-surface font-medium'>{t('search.noRecentItems')}</p>
+                <p className='text-on-surface-variant text-sm mt-1'>{t('search.startTyping')}</p>
               </div>
             )}
           </div>
 
           {/* Footer with keyboard hints */}
-          <div className="flex items-center gap-4 px-4 py-3 border-t border-outline-variant/20 bg-surface-container/50">
-            <div className="flex items-center gap-1.5 text-xs text-on-surface-variant">
-              <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">
-                <CornerDownLeft className="h-3 w-3 inline" />
+          <div className='flex items-center gap-4 px-4 py-3 border-t border-outline-variant/20 bg-surface-container/50'>
+            <div className='flex items-center gap-1.5 text-xs text-on-surface-variant'>
+              <kbd className='px-1.5 py-0.5 rounded bg-surface-container-high font-mono'>
+                <CornerDownLeft className='h-3 w-3 inline' />
               </kbd>
               <span>{t('search.toSelect')}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-on-surface-variant">
-              <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">
-                <ChevronUp className="h-3 w-3 inline" />
+            <div className='flex items-center gap-1.5 text-xs text-on-surface-variant'>
+              <kbd className='px-1.5 py-0.5 rounded bg-surface-container-high font-mono'>
+                <ChevronUp className='h-3 w-3 inline' />
               </kbd>
-              <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">
-                <ChevronDown className="h-3 w-3 inline" />
+              <kbd className='px-1.5 py-0.5 rounded bg-surface-container-high font-mono'>
+                <ChevronDown className='h-3 w-3 inline' />
               </kbd>
               <span>{t('search.toNavigate')}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-on-surface-variant">
-              <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">Esc</kbd>
+            <div className='flex items-center gap-1.5 text-xs text-on-surface-variant'>
+              <kbd className='px-1.5 py-0.5 rounded bg-surface-container-high font-mono'>Esc</kbd>
               <span>{t('search.toClose')}</span>
             </div>
-            <div className="ml-auto flex items-center gap-1.5 text-xs text-on-surface-variant">
+            <div className='ml-auto flex items-center gap-1.5 text-xs text-on-surface-variant'>
               <span>{t('emptyState.search.openWith')}</span>
-              <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high font-mono">{formatShortcutKeys(['Mod', 'K'])}</kbd>
+              <kbd className='px-1.5 py-0.5 rounded bg-surface-container-high font-mono'>{formatShortcutKeys(['Mod', 'K'])}</kbd>
             </div>
           </div>
         </div>

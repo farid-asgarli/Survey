@@ -3,7 +3,8 @@ import { FileText } from 'lucide-react';
 import { Chip } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useDateTimeFormatter } from '@/hooks';
-import { SurveyStatus, getSurveyStatusLabel } from '@/types';
+import { getSurveyStatusLabel } from '@/types';
+import { getSurveyStatusChipVariant } from '@/config';
 import type { Survey } from '@/types';
 
 interface RecentSurveyItemProps {
@@ -14,14 +15,7 @@ interface RecentSurveyItemProps {
 export function RecentSurveyItem({ survey, onClick }: RecentSurveyItemProps) {
   const { t } = useTranslation();
   const { formatDateShort } = useDateTimeFormatter();
-  const statusConfig: Record<SurveyStatus, { color: 'assist' | 'success' | 'warning' }> = {
-    [SurveyStatus.Draft]: { color: 'warning' },
-    [SurveyStatus.Published]: { color: 'success' },
-    [SurveyStatus.Closed]: { color: 'assist' },
-    [SurveyStatus.Archived]: { color: 'assist' },
-  };
-
-  const config = statusConfig[survey.status];
+  const chipVariant = getSurveyStatusChipVariant(survey.status);
   const updatedDate = formatDateShort(survey.updatedAt || survey.createdAt);
 
   return (
@@ -42,7 +36,7 @@ export function RecentSurveyItem({ survey, onClick }: RecentSurveyItemProps) {
           <span className='text-sm text-on-surface-variant'>{updatedDate}</span>
         </div>
       </div>
-      <Chip variant={config.color} size='sm'>
+      <Chip variant={chipVariant} size='sm'>
         {getSurveyStatusLabel(survey.status)}
       </Chip>
     </button>

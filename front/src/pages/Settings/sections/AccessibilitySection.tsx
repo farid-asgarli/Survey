@@ -13,17 +13,11 @@ import {
   SelectionField,
 } from '@/components/ui';
 import { Eye, ZapOff, Monitor, Type } from 'lucide-react';
-import { usePreferencesStore, FONT_SIZE_SCALES } from '@/stores';
+import { usePreferencesStore } from '@/stores';
 import { useUpdateSinglePreference } from '@/hooks';
 import { cn } from '@/lib/utils';
 import type { FontSizeScale } from '@/types';
-
-const FONT_SIZE_OPTIONS: { value: FontSizeScale; labelKey: string; preview: string }[] = [
-  { value: 'small', labelKey: 'settings.accessibility.fontSizes.small', preview: '14px' },
-  { value: 'medium', labelKey: 'settings.accessibility.fontSizes.medium', preview: '16px' },
-  { value: 'large', labelKey: 'settings.accessibility.fontSizes.large', preview: '18px' },
-  { value: 'extra-large', labelKey: 'settings.accessibility.fontSizes.extraLarge', preview: '20px' },
-];
+import { FONT_SIZE_OPTIONS, FONT_SIZE_SCALES } from '@/config';
 
 export function AccessibilitySection() {
   const { t } = useTranslation();
@@ -43,18 +37,18 @@ export function AccessibilitySection() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Visual Settings */}
-      <Card variant="elevated" shape="rounded">
+      <Card variant='elevated' shape='rounded'>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Eye className="h-5 w-5 text-primary" />
+          <CardTitle className='flex items-center gap-2'>
+            <Eye className='h-5 w-5 text-primary' />
             {t('settings.accessibility.visual.title')}
           </CardTitle>
           <CardDescription>{t('settings.accessibility.visual.description')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-1">
-          <div className="py-3 border-b border-outline-variant/20">
+        <CardContent className='space-y-1'>
+          <div className='py-3 border-b border-outline-variant/20'>
             <Switch
               label={t('settings.accessibility.highContrast.title')}
               description={t('settings.accessibility.highContrast.description')}
@@ -63,7 +57,7 @@ export function AccessibilitySection() {
               disabled={isPending}
             />
           </div>
-          <div className="py-3">
+          <div className='py-3'>
             <Switch
               label={t('settings.accessibility.screenReader.title')}
               description={t('settings.accessibility.screenReader.description')}
@@ -76,10 +70,10 @@ export function AccessibilitySection() {
       </Card>
 
       {/* Motion Settings */}
-      <Card variant="elevated" shape="rounded">
+      <Card variant='elevated' shape='rounded'>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ZapOff className="h-5 w-5 text-primary" />
+          <CardTitle className='flex items-center gap-2'>
+            <ZapOff className='h-5 w-5 text-primary' />
             {t('settings.accessibility.motion.title')}
           </CardTitle>
           <CardDescription>{t('settings.accessibility.motion.description')}</CardDescription>
@@ -96,15 +90,15 @@ export function AccessibilitySection() {
       </Card>
 
       {/* Font Settings */}
-      <Card variant="elevated" shape="rounded">
+      <Card variant='elevated' shape='rounded'>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Type className="h-5 w-5 text-primary" />
+          <CardTitle className='flex items-center gap-2'>
+            <Type className='h-5 w-5 text-primary' />
             {t('settings.accessibility.font.title')}
           </CardTitle>
           <CardDescription>{t('settings.accessibility.font.description')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className='space-y-6'>
           {/* Font Size Scale */}
           <SelectionField label={t('settings.accessibility.fontSize.title')}>
             <SelectionCardGroup columns={{ default: 2, sm: 4 }}>
@@ -117,13 +111,13 @@ export function AccessibilitySection() {
                     isSelected={isActive}
                     onClick={() => handleFontSizeChange(option.value)}
                     disabled={isPending}
-                    shape="rounded-2xl"
+                    shape='rounded-2xl'
                   >
                     <span className={cn('font-semibold text-on-surface', isActive && 'text-primary')} style={{ fontSize: `${scale}rem` }}>
                       Aa
                     </span>
-                    <div className="text-center">
-                      <SelectionCardLabel isSelected={isActive} className="text-sm">
+                    <div className='text-center'>
+                      <SelectionCardLabel isSelected={isActive} className='text-sm'>
                         {t(option.labelKey)}
                       </SelectionCardLabel>
                       <SelectionCardDescription>{option.preview}</SelectionCardDescription>
@@ -135,7 +129,7 @@ export function AccessibilitySection() {
           </SelectionField>
 
           {/* Dyslexia-friendly Font */}
-          <div className="pt-5 border-t border-outline-variant/20">
+          <div className='pt-5 border-t border-outline-variant/20'>
             <Switch
               label={t('settings.accessibility.dyslexiaFont.title')}
               description={t('settings.accessibility.dyslexiaFont.description')}
@@ -148,10 +142,10 @@ export function AccessibilitySection() {
       </Card>
 
       {/* Preview Card */}
-      <Card variant="filled" shape="rounded">
+      <Card variant='filled' shape='rounded'>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Monitor className="h-5 w-5 text-info" />
+          <CardTitle className='flex items-center gap-2'>
+            <Monitor className='h-5 w-5 text-info' />
             {t('settings.accessibility.preview.title')}
           </CardTitle>
         </CardHeader>
@@ -166,8 +160,8 @@ export function AccessibilitySection() {
               fontSize: `${FONT_SIZE_SCALES[accessibility.fontSizeScale]}rem`,
             }}
           >
-            <h4 className="font-semibold text-on-surface mb-2">{t('settings.accessibility.preview.sampleTitle')}</h4>
-            <p className="text-on-surface-variant">{t('settings.accessibility.preview.sampleText')}</p>
+            <h4 className='font-semibold text-on-surface mb-2'>{t('settings.accessibility.preview.sampleTitle')}</h4>
+            <p className='text-on-surface-variant'>{t('settings.accessibility.preview.sampleText')}</p>
           </div>
         </CardContent>
       </Card>

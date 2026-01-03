@@ -21,6 +21,7 @@ import { Code, Palette, Type, Image, Sparkles, Eye, FileCode, Check, SquareIcon,
 import { ButtonStyle, ProgressBarStyle } from '@/types';
 import type { SurveyTheme } from '@/types';
 import { filesApi } from '@/services/api';
+import { FONT_OPTIONS, COLOR_PRESETS, CORNER_OPTIONS, SPACING_OPTIONS, WIDTH_OPTIONS } from '@/config';
 
 // ============ Types ============
 export interface ThemeFormData {
@@ -97,65 +98,14 @@ const defaultFormData: ThemeFormData = {
   customCss: '',
 };
 
-// Color presets with expanded colors
-const colorPresets = [
-  { name: 'Violet', primary: '#6750a4', secondary: '#625b71', accent: '#eaddff', background: '#fef7ff', surface: '#ffffff', text: '#1d1b20' },
-  { name: 'Ocean', primary: '#1976d2', secondary: '#455a64', accent: '#bbdefb', background: '#f5f9ff', surface: '#ffffff', text: '#1e293b' },
-  { name: 'Forest', primary: '#2e7d32', secondary: '#558b2f', accent: '#c8e6c9', background: '#f1f8e9', surface: '#ffffff', text: '#1b5e20' },
-  { name: 'Sunset', primary: '#f57c00', secondary: '#e64a19', accent: '#ffe0b2', background: '#fff3e0', surface: '#ffffff', text: '#4a2c00' },
-  { name: 'Rose', primary: '#c2185b', secondary: '#7b1fa2', accent: '#f8bbd9', background: '#fce4ec', surface: '#ffffff', text: '#4a0e2b' },
-  { name: 'Slate', primary: '#475569', secondary: '#64748b', accent: '#e2e8f0', background: '#f1f5f9', surface: '#ffffff', text: '#1e293b' },
-  { name: 'Teal', primary: '#0d9488', secondary: '#0891b2', accent: '#99f6e4', background: '#f0fdfa', surface: '#ffffff', text: '#134e4a' },
-  { name: 'Amber', primary: '#d97706', secondary: '#b45309', accent: '#fde68a', background: '#fffbeb', surface: '#ffffff', text: '#451a03' },
-];
-
-// Font options - matches fonts available in index.css
-const FONT_OPTIONS = [
-  { name: 'Inter', value: 'Inter, sans-serif', category: 'Sans Serif' },
-  { name: 'Roboto', value: 'Roboto, sans-serif', category: 'Sans Serif' },
-  { name: 'Lato', value: 'Lato, sans-serif', category: 'Sans Serif' },
-  { name: 'DM Sans', value: '"DM Sans", sans-serif', category: 'Sans Serif' },
-  { name: 'Montserrat', value: 'Montserrat, sans-serif', category: 'Sans Serif' },
-  { name: 'Open Sans', value: '"Open Sans", sans-serif', category: 'Sans Serif' },
-  { name: 'Outfit', value: 'Outfit, sans-serif', category: 'Sans Serif' },
-  { name: 'Plus Jakarta Sans', value: '"Plus Jakarta Sans", sans-serif', category: 'Sans Serif' },
-  { name: 'Merriweather', value: 'Merriweather, serif', category: 'Serif' },
-  { name: 'Playfair Display', value: '"Playfair Display", serif', category: 'Serif' },
-];
-
-// Corner radius options
-const CORNER_OPTIONS = [
-  { name: 'Sharp', value: '0px', preview: 'rounded-none' },
-  { name: 'Subtle', value: '4px', preview: 'rounded' },
-  { name: 'Rounded', value: '12px', preview: 'rounded-xl' },
-  { name: 'Smooth', value: '20px', preview: 'rounded-3xl' },
-  { name: 'Pill', value: '9999px', preview: 'rounded-full' },
-];
-
-// Spacing options
-const SPACING_OPTIONS = [
-  { name: 'Compact', value: 'compact' },
-  { name: 'Normal', value: 'normal' },
-  { name: 'Relaxed', value: 'relaxed' },
-  { name: 'Spacious', value: 'spacious' },
-];
-
-// Container width options
-const WIDTH_OPTIONS = [
-  { name: 'Narrow', value: '600px', description: 'Best for mobile' },
-  { name: 'Medium', value: '800px', description: 'Balanced' },
-  { name: 'Wide', value: '1000px', description: 'Desktop first' },
-  { name: 'Full', value: '100%', description: 'Edge to edge' },
-];
-
-// Progress bar styles
+// Progress bar styles (kept local as they're specific to this component's UI)
 const PROGRESS_STYLES = [
   { name: 'Linear', value: ProgressBarStyle.Bar, icon: '━━━' },
   { name: 'Stepped', value: ProgressBarStyle.Steps, icon: '○─○─○' },
   { name: 'Minimal', value: ProgressBarStyle.Dots, icon: '···' },
 ];
 
-// Button style options with visual preview
+// Button style options with visual preview (kept local as they're specific to this component's UI)
 const BUTTON_STYLE_OPTIONS: { name: string; value: ButtonStyle; preview: string }[] = [
   { name: 'Rounded', value: ButtonStyle.Rounded, preview: 'rounded-xl' },
   { name: 'Pill', value: ButtonStyle.Pill, preview: 'rounded-full' },
@@ -233,7 +183,7 @@ export function ThemeEditorDrawer({ open, onOpenChange, theme, onSave, isSaving 
     [errors]
   );
 
-  const applyPreset = useCallback((preset: (typeof colorPresets)[0]) => {
+  const applyPreset = useCallback((preset: (typeof COLOR_PRESETS)[0]) => {
     setFormData((prev) => ({
       ...prev,
       primaryColor: preset.primary,
@@ -389,7 +339,7 @@ ${formData.customCss || '/* Custom CSS */'}`;
                     {t('themeEditor.quickPresets')}
                   </label>
                   <div className='flex flex-wrap gap-2'>
-                    {colorPresets.map((preset) => (
+                    {COLOR_PRESETS.map((preset) => (
                       <button
                         key={preset.name}
                         type='button'

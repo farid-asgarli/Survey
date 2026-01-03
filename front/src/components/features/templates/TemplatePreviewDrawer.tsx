@@ -1,31 +1,11 @@
 import { Drawer, DrawerContent, DrawerBody, DrawerFooter, Button, Chip, Skeleton, OverlayHeader } from '@/components/ui';
 import { useTranslation } from 'react-i18next';
-import {
-  FileText,
-  Users,
-  Globe,
-  Lock,
-  Calendar,
-  Copy,
-  CheckCircle2,
-  Circle,
-  AlignLeft,
-  Hash,
-  Star,
-  CalendarDays,
-  Upload,
-  LayoutGrid,
-  ToggleLeft,
-  ChevronDown,
-  Gauge,
-  CalendarClock,
-  Grip,
-  Mail,
-} from 'lucide-react';
+import { FileText, Users, Globe, Lock, Calendar, Copy, Circle } from 'lucide-react';
 import { useTemplateDetail } from '@/hooks/queries/useTemplates';
 import { useDateTimeFormatter } from '@/hooks';
 import { getCategoryInfo } from './templateUtils';
 import { QuestionType } from '@/types';
+import { getQuestionTypeIcon, getQuestionTypeFallbackLabel } from '@/config';
 import type { SurveyTemplate, SurveyTemplateSummary, TemplateCategory } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -36,49 +16,6 @@ interface TemplatePreviewDrawerProps {
   /** Callback when user clicks "Use Template". Receives the template with at least summary fields. */
   onUseTemplate: (template: SurveyTemplateSummary) => void;
 }
-
-// Question type icon mapping
-const questionTypeIcons: Partial<Record<QuestionType, typeof Circle>> = {
-  [QuestionType.SingleChoice]: Circle,
-  [QuestionType.MultipleChoice]: CheckCircle2,
-  [QuestionType.Text]: AlignLeft,
-  [QuestionType.LongText]: AlignLeft,
-  [QuestionType.Rating]: Star,
-  [QuestionType.Scale]: Hash,
-  [QuestionType.Matrix]: LayoutGrid,
-  [QuestionType.Date]: CalendarDays,
-  [QuestionType.DateTime]: CalendarClock,
-  [QuestionType.FileUpload]: Upload,
-  [QuestionType.Ranking]: Grip,
-  [QuestionType.YesNo]: ToggleLeft,
-  [QuestionType.Dropdown]: ChevronDown,
-  [QuestionType.NPS]: Gauge,
-  [QuestionType.Checkbox]: CheckCircle2,
-  [QuestionType.Number]: Hash,
-  [QuestionType.ShortText]: AlignLeft,
-  [QuestionType.Email]: Mail,
-};
-
-const questionTypeLabels: Partial<Record<QuestionType, string>> = {
-  [QuestionType.SingleChoice]: 'Single Choice',
-  [QuestionType.MultipleChoice]: 'Multiple Choice',
-  [QuestionType.Text]: 'Short Text',
-  [QuestionType.LongText]: 'Long Text',
-  [QuestionType.Rating]: 'Rating',
-  [QuestionType.Scale]: 'Scale',
-  [QuestionType.Matrix]: 'Matrix',
-  [QuestionType.Date]: 'Date',
-  [QuestionType.DateTime]: 'Date & Time',
-  [QuestionType.FileUpload]: 'File Upload',
-  [QuestionType.Ranking]: 'Ranking',
-  [QuestionType.YesNo]: 'Yes/No',
-  [QuestionType.Dropdown]: 'Dropdown',
-  [QuestionType.NPS]: 'Net Promoter Score',
-  [QuestionType.Checkbox]: 'Checkbox',
-  [QuestionType.Number]: 'Number',
-  [QuestionType.ShortText]: 'Short Text',
-  [QuestionType.Email]: 'Email',
-};
 
 function QuestionPreviewItem({
   question,
@@ -92,7 +29,8 @@ function QuestionPreviewItem({
   };
   index: number;
 }) {
-  const Icon = questionTypeIcons[question.type] || Circle;
+  const Icon = getQuestionTypeIcon(question.type);
+  const label = getQuestionTypeFallbackLabel(question.type);
 
   return (
     <div className='flex items-start gap-3'>
@@ -104,7 +42,7 @@ function QuestionPreviewItem({
         </p>
         <div className='flex items-center gap-1.5 mt-1 text-xs text-on-surface-variant/70'>
           <Icon className='h-3 w-3' />
-          <span>{questionTypeLabels[question.type] || question.type}</span>
+          <span>{label}</span>
           {question.optionCount && question.optionCount > 0 && (
             <>
               <span className='text-on-surface-variant/40'>•</span>

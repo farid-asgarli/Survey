@@ -100,13 +100,8 @@ const defaultPreferences: UserPreferences = {
   onboarding: defaultOnboarding,
 };
 
-// Font size scale mappings (in rem)
-export const FONT_SIZE_SCALES: Record<FontSizeScale, number> = {
-  small: 0.875,
-  medium: 1,
-  large: 1.125,
-  'extra-large': 1.25,
-};
+// Re-export from config for backward compatibility
+export { FONT_SIZE_SCALES } from '@/config';
 
 // Available timezones (common ones)
 export const COMMON_TIMEZONES = [

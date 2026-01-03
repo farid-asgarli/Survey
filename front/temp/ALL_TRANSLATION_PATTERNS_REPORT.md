@@ -1,30 +1,29 @@
 # Complete Translation Patterns Report
 
-Generated: 2026-01-03T06:49:03.549Z
+Generated: 2026-01-03T07:23:05.695Z
 
 ## Summary
 
-| Metric | Count |
-|--------|-------|
-| **Total translation calls** | 2779 |
-| **Files with translations** | 203 |
-| **Unique static keys** | 2092 |
-| **Dynamic key usages** | 84 |
-| **Template literal usages** | 0 |
+| Metric                      | Count |
+| --------------------------- | ----- |
+| **Total translation calls** | 2780  |
+| **Files with translations** | 204   |
+| **Unique static keys**      | 2090  |
+| **Dynamic key usages**      | 87    |
+| **Template literal usages** | 0     |
 
 ## Translation Patterns Found
 
-| Pattern Type | Count |
-|--------------|-------|
-| t() - Standard hook call | 1966 |
-| t() - With default value | 559 |
-| t() - With options object | 105 |
-| t() - Dynamic/variable key | 82 |
-| ⚠️ ANY standalone t() call (catch-all) | 48 |
-| ⚠️ ANY .t() call (catch-all) | 10 |
-| window.__i18n?.t() - Global fallback | 6 |
-| i18n.t() - Dynamic key | 2 |
-| i18n.t() - Direct instance call | 1 |
+| Pattern Type                           | Count |
+| -------------------------------------- | ----- |
+| t() - Standard hook call               | 1964  |
+| t() - With default value               | 559   |
+| t() - With options object              | 105   |
+| t() - Dynamic/variable key             | 87    |
+| ⚠️ ANY standalone t() call (catch-all) | 48    |
+| ⚠️ ANY .t() call (catch-all)           | 10    |
+| window.\_\_i18n?.t() - Global fallback | 6     |
+| i18n.t() - Direct instance call        | 1     |
 
 ---
 
@@ -35,286 +34,343 @@ These are translation calls that don't follow standard patterns and may need att
 ### Unrecognized Patterns (58)
 
 - **src/components/ErrorBoundary.tsx** (Line 62)
+
   ```
   <CardTitle className="error-boundary-title">{window.__i18n?.t('errorBoundary.title') ?? 'Something went wrong'}</CardTitle>
   ```
 
 - **src/components/ErrorBoundary.tsx** (Line 64)
+
   ```
   {window.__i18n?.t('errorBoundary.description') ?? 'An unexpected error has occurred'}
   ```
 
 - **src/components/ErrorBoundary.tsx** (Line 76)
+
   ```
   {window.__i18n?.t('errorBoundary.viewStackTrace') ?? 'View stack trace'}
   ```
 
 - **src/components/ErrorBoundary.tsx** (Line 85)
+
   ```
   {window.__i18n?.t('errorBoundary.refreshMessage') ??
   ```
 
 - **src/components/ErrorBoundary.tsx** (Line 93)
+
   ```
   {window.__i18n?.t('errorBoundary.goHome') ?? 'Go Home'}
   ```
 
 - **src/components/ErrorBoundary.tsx** (Line 97)
+
   ```
   {window.__i18n?.t('errorBoundary.tryAgain') ?? 'Try Again'}
   ```
 
 - **src/components/features/distributions/LinksPanel.tsx** (Line 180)
+
   ```
   <Tooltip content={t('linksPanel.expiresAt', { date: formatDateTime(link.expiresAt) })}>
   ```
 
 - **src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx** (Line 302)
+
   ```
   label={t('emailEditor.settings.linkUrl', 'Link URL (optional)')}
   ```
 
 - **src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx** (Line 830)
+
   ```
   {t('emailEditor.generatedHtml', 'Generated HTML (Outlook Compatible)')}
   ```
 
 - **src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx** (Line 989)
+
   ```
   copy(key, { successMessage: t('emailEditor.placeholderCopied', { key, defaultValue: `Copied ${key}` }) });
   ```
 
 - **src/components/features/localization/AddLanguageDialog.tsx** (Line 213)
+
   ```
   {t(
   ```
 
 - **src/components/features/localization/AddLanguageDialog.tsx** (Line 231)
+
   ```
   ? t('localization.addLanguage', 'Add {{language}}', {
   ```
 
 - **src/components/features/localization/LanguagesTab.tsx** (Line 780)
+
   ```
   {t('localization.totalLanguages', '{{count}} languages configured', { count: languageStats.length })}
   ```
 
 - **src/components/features/localization/LanguagesTab.tsx** (Line 783)
+
   ```
   {t('localization.questionsCount', '{{count}} questions', { count: questions.length })}
   ```
 
 - **src/components/features/localization/QuestionTranslationsEditor.tsx** (Line 282)
+
   ```
   content={t('localization.translationIncomplete', '{{percent}}% translated', {
   ```
 
 - **src/components/features/localization/QuestionTranslationsEditor.tsx** (Line 461)
+
   ```
   {t('localization.optionsCount', '{{count}} options', {
   ```
 
-- **src/components/features/localization/QuestionTranslationsEditor.tsx** (Line 543)
+- **src/components/**features**/localization/QuestionTranslationsEditor.tsx** (Line 543)
+
   ```
   {t('localization.questionsProgress', '{{complete}}/{{total}} complete', {
   ```
 
 - **src/components/features/localization/SurveyLanguageSwitcher.tsx** (Line 143)
+
   ```
   {t('localization.languageCount', '{{count}} language(s)', { count: availableLanguages.length })}
   ```
 
 - **src/components/features/localization/TranslationEditor.tsx** (Line 223)
+
   ```
   {t('localization.translateTo', 'Translate to {{language}}', { language: targetLang.nativeName })}
   ```
 
 - **src/components/features/localization/TranslationEditor.tsx** (Line 226)
+
   ```
   {t('localization.sourceLanguage', 'Source: {{language}}', { language: sourceLang.nativeName })}
   ```
 
 - **src/components/features/localization/TranslationEditorDialog.tsx** (Line 93)
+
   ```
   title={t('localization.editTranslation', 'Edit {{language}} Translation', {
   ```
 
 - **src/components/features/namespaces/MembersManagement.tsx** (Line 120)
+
   ```
   description: t('workspaces.team.removeConfirm', { name: `${member.firstName} ${member.lastName}` }),
   ```
 
 - **src/components/features/profile/PasswordChangeForm.tsx** (Line 73)
+
   ```
   label: t(strengthKeys[rawPasswordStrength.label] || rawPasswordStrength.label),
   ```
 
 - **src/components/features/questions/QuestionEditor.tsx** (Line 261)
+
   ```
   ? t('localization.editingFallback', 'Editing (fallback)')
   ```
 
 - **src/components/features/questions/QuestionEditor.tsx** (Line 262)
+
   ```
   : t('localization.editingTranslation', 'Editing {{lang}}', { lang: translated.editingLanguage.toUpperCase() })}
   ```
 
 - **src/components/features/questions/QuestionEditor.tsx** (Line 267)
+
   ```
   {t('questionEditor.questionNumber', 'Question {{number}}', { number: question.order + 1 })}
   ```
 
-- **src/components/features/questions/QuestionTypeInfo.tsx** (Line 178)
+- **src/components/features/questions/QuestionTypeInfo.tsx** (Line 23)
+
   ```
-  return i18n.t(info.labelKey);
+  return i18n.t(getQuestionTypeLabelKey(type));
   ```
 
-- **src/components/features/questions/QuestionTypeInfo.tsx** (Line 183)
+- **src/components/features/questions/QuestionTypeInfo.tsx** (Line 27)
+
   ```
-  return i18n.t(info.descriptionKey);
+  return i18n.t(getQuestionTypeDescriptionKey(type));
   ```
 
 - **src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx** (Line 94)
+
   ```
   const categoryName = t(categoryInfo?.nameKey || 'createSurvey.categories.classic.name');
   ```
 
 - **src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx** (Line 231)
+
   ```
   ? t('createSurvey.actions.startMetricSurvey', { metric: t(currentMetric?.nameKey || '') })
   ```
 
 - **src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx** (Line 417)
+
   ```
   {t('createSurvey.preview.conversational.botMessage', "Hi there! 👋 I'd love to hear your thoughts.")}
   ```
 
 - **src/components/ui/AppLoadingScreen.tsx** (Line 142)
+
   ```
   {t(stage.label, stage.label)}
   ```
 
 - **src/components/ui/AppLoadingScreen.tsx** (Line 145)
+
   ```
   t(stage.label, stage.label)
   ```
 
 - **src/components/ui/GettingStartedWizard.tsx** (Line 130)
+
   ```
   toast.success(t('gettingStarted.completedSuccessfully', "You're ready to create amazing surveys!"));
   ```
 
 - **src/components/ui/GettingStartedWizard.tsx** (Line 288)
+
   ```
   {t('gettingStarted.skip', "I'll explore on my own")}
   ```
 
 - **src/components/ui/GettingStartedWizard.tsx** (Line 350)
+
   ```
   aria-label={t('gettingStarted.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}
   ```
 
 - **src/components/ui/GettingStartedWizard.tsx** (Line 437)
+
   ```
   {t('gettingStarted.welcome.greeting', "Let's get you started, {{name}}!", { name: userName })}
   ```
 
 - **src/components/ui/GettingStartedWizard.tsx** (Line 861)
+
   ```
   {t('gettingStarted.complete.ready', "You're all set, {{name}}!", { name: userName })}
   ```
 
 - **src/components/ui/ImageUploader.tsx** (Line 104)
+
   ```
   return t('imageUploader.errors.tooLarge', { maxSize: maxSizeMB, defaultValue: `File is too large. Maximum size is ${maxSizeMB}MB.` });
   ```
 
 - **src/components/ui/ImageUploader.tsx** (Line 309)
+
   ```
   {t('imageUploader.maxSize', {
   ```
 
-- **src/components/ui/OnboardingWizard.tsx** (Line 511)
+- **src/components/ui/OnboardingWizard.tsx** (Line 486)
+
   ```
   aria-label={t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}
   ```
 
 - **src/hooks/useConfirmDialog.tsx** (Line 123)
+
   ```
   description: t('dialogs.deleteDescription', { itemName: itemName.toLowerCase() }),
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 223)
+
   ```
   title: t('dialogs.deleteEntityTitle', { entity: capitalizedEntityName, defaultValue: `Delete ${capitalizedEntityName}` }),
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 224)
+
   ```
   description: t('dialogs.deleteEntityDescription', {
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 237)
+
   ```
   t('common.entityDeletedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} deleted successfully` })
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 242)
+
   ```
   toast.error(t('common.entityDeleteFailed', { entity: entityName, defaultValue: `Failed to delete ${entityName}` }));
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 257)
+
   ```
   t('common.entityDuplicatedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} duplicated successfully` })
   ```
 
 - **src/hooks/useEntityActions.ts** (Line 262)
+
   ```
   toast.error(t('common.entityDuplicateFailed', { entity: entityName, defaultValue: `Failed to duplicate ${entityName}` }));
   ```
 
 - **src/lib/validations.ts** (Line 5)
+
   ```
   const t = (key: string, options?: Record<string, unknown>) => i18n.t(key, options);
   ```
 
 - **src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx** (Line 44)
+
   ```
   t('emailEditor.modeSwitched', 'Switched to {{mode}} editor. Unsaved changes may be lost.', {
   ```
 
 - **src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx** (Line 107)
+
   ```
   <Tooltip content={t('emailTemplates.editor.visualMode', 'Visual Editor (Drag & Drop)')}>
   ```
 
 - **src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx** (Line 117)
+
   ```
   <Tooltip content={t('emailTemplates.editor.codeMode', 'Code Editor (Raw HTML)')}>
   ```
 
 - **src/pages/Settings/sections/DashboardSection.tsx** (Line 154)
+
   ```
   label: t(opt.labelKey, { count: opt.value }),
   ```
 
 - **src/pages/Settings/sections/ProfileSection.tsx** (Line 34)
+
   ```
   newErrors.firstName = t('validation.required', { field: t('profile.firstName') });
   ```
 
 - **src/pages/Settings/sections/ProfileSection.tsx** (Line 37)
+
   ```
   newErrors.lastName = t('validation.required', { field: t('profile.lastName') });
   ```
 
 - **src/pages/Settings/sections/ProfileSection.tsx** (Line 40)
+
   ```
   newErrors.email = t('validation.required', { field: t('profile.email') });
   ```
 
 - **src/pages/Settings/sections/SecuritySection.tsx** (Line 106)
+
   ```
   {t('twoFactor.usingMethod', {
   ```
@@ -326,96 +382,99 @@ These are translation calls that don't follow standard patterns and may need att
 
 ---
 
-## Dynamic Keys (84)
+## Dynamic Keys (87)
 
 These translations use variables instead of static keys - the actual keys are determined at runtime:
 
-| File | Line | Code |
-|------|------|------|
-| `src/components/features/profile/PasswordChangeForm.tsx` | 58 | `t(requirementKeys[index])` |
-| `src/components/features/public-survey/AllQuestionsView.tsx` | 28 | `t(error)` |
-| `src/components/features/questions/QuestionTypeInfo.tsx` | 196 | `t(info.labelKey)` |
-| `src/components/features/questions/QuestionTypeInfo.tsx` | 197 | `t(info.descriptionKey)` |
-| `src/components/features/questions/QuestionTypeInfo.tsx` | 178 | `i18n.t(info.labelKey)` |
-| `src/components/features/questions/QuestionTypeInfo.tsx` | 183 | `i18n.t(info.descriptionKey)` |
-| `src/components/features/questions/editors/PhoneEditor.tsx` | 20 | `t(p.nameKey)` |
-| `src/components/features/questions/editors/PhoneEditor.tsx` | 20 | `t(p.descriptionKey)` |
-| `src/components/features/questions/editors/UrlEditor.tsx` | 20 | `t(p.nameKey)` |
-| `src/components/features/questions/editors/UrlEditor.tsx` | 20 | `t(p.descriptionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 92 | `t(defaultTitleKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 166 | `t(category.nameKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 256 | `t(category.nameKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 257 | `t(category.descriptionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 319 | `t(m.nameKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 337 | `t(currentMetric.descriptionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 516 | `t(currentMetric.questionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 542 | `t(currentMetric.minLabelKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 543 | `t(currentMetric.maxLabelKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 567 | `t(currentMetric.questionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 587 | `t(currentMetric.minLabelKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 588 | `t(currentMetric.maxLabelKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 598 | `t(currentMetric.questionKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 618 | `t(currentMetric.minLabelKey)` |
-| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 619 | `t(currentMetric.maxLabelKey)` |
-| `src/components/ui/DatePicker.tsx` | 1046 | `t(preset.label)` |
-| `src/components/ui/GettingStartedWizard.tsx` | 327 | `t(step.titleKey)` |
-| `src/components/ui/GettingStartedWizard.tsx` | 337 | `t(step.descriptionKey)` |
-| `src/components/ui/OnboardingWizard.tsx` | 488 | `t(step.titleKey)` |
-| `src/components/ui/OnboardingWizard.tsx` | 498 | `t(step.descriptionKey)` |
-| `src/hooks/queries/useQuestionLogic.ts` | 393 | `t(operatorTranslationKeys[LogicOperator.IsAnswered])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 394 | `t(operatorTranslationKeys[LogicOperator.IsNotAnswered])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 395 | `t(operatorTranslationKeys[LogicOperator.IsEmpty])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 396 | `t(operatorTranslationKeys[LogicOperator.IsNotEmpty])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 406 | `t(operatorTranslationKeys[LogicOperator.Equals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 407 | `t(operatorTranslationKeys[LogicOperator.NotEquals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 408 | `t(operatorTranslationKeys[LogicOperator.Contains])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 409 | `t(operatorTranslationKeys[LogicOperator.NotContains])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 417 | `t(operatorTranslationKeys[LogicOperator.Equals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 418 | `t(operatorTranslationKeys[LogicOperator.NotEquals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 419 | `t(operatorTranslationKeys[LogicOperator.Contains])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 420 | `t(operatorTranslationKeys[LogicOperator.NotContains])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 428 | `t(operatorTranslationKeys[LogicOperator.Equals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 429 | `t(operatorTranslationKeys[LogicOperator.NotEquals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 430 | `t(operatorTranslationKeys[LogicOperator.GreaterThan])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 431 | `t(operatorTranslationKeys[LogicOperator.GreaterThanOrEquals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 432 | `t(operatorTranslationKeys[LogicOperator.LessThan])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 433 | `t(operatorTranslationKeys[LogicOperator.LessThanOrEquals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 439 | `t(operatorTranslationKeys[LogicOperator.Equals])` |
-| `src/hooks/queries/useQuestionLogic.ts` | 459 | `t(key)` |
-| `src/hooks/queries/useQuestionLogic.ts` | 470 | `t(key)` |
-| `src/hooks/useTranslatedNav.ts` | 54 | `t(PAGE_LABEL_KEYS[pageId])` |
-| `src/hooks/useTranslatedNav.ts` | 55 | `t(PAGE_DESCRIPTION_KEYS[pageId])` |
-| `src/hooks/useTranslatedNav.ts` | 71 | `t(PAGE_LABEL_KEYS[id])` |
-| `src/hooks/useTranslatedNav.ts` | 72 | `t(PAGE_DESCRIPTION_KEYS[id])` |
-| `src/hooks/useTranslatedNav.ts` | 83 | `t(PAGE_LABEL_KEYS[pageId])` |
-| `src/pages/Distributions/components/DistributionCard.tsx` | 117 | `t(config.labelKey)` |
-| `src/pages/PublicSurvey/sections/OneByOneSection.tsx` | 40 | `t(error)` |
-| `src/pages/Settings/SettingsPage.tsx` | 183 | `t(group.titleKey)` |
-| `src/pages/Settings/SettingsPage.tsx` | 189 | `t(item.labelKey)` |
-| `src/pages/Settings/SettingsPage.tsx` | 219 | `t(group.titleKey)` |
-| `src/pages/Settings/SettingsPage.tsx` | 222 | `t(item.labelKey)` |
-| `src/pages/Settings/SettingsPage.tsx` | 241 | `t(currentItem.labelKey)` |
-| `src/pages/Settings/SettingsPage.tsx` | 242 | `t(currentItem.descriptionKey)` |
-| `src/pages/Settings/sections/AccessibilitySection.tsx` | 127 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/AppearanceSection.tsx` | 67 | `t(mode.labelKey)` |
-| `src/pages/Settings/sections/AppearanceSection.tsx` | 68 | `t(mode.descKey)` |
-| `src/pages/Settings/sections/AppearanceSection.tsx` | 106 | `t(palette.labelKey)` |
-| `src/pages/Settings/sections/DashboardSection.tsx` | 127 | `t(mode.labelKey)` |
-| `src/pages/Settings/sections/DashboardSection.tsx` | 170 | `t(field.labelKey)` |
-| `src/pages/Settings/sections/DashboardSection.tsx` | 182 | `t(order.labelKey)` |
-| `src/pages/Settings/sections/DashboardSection.tsx` | 231 | `t(widget.labelKey)` |
-| `src/pages/Settings/sections/DashboardSection.tsx` | 232 | `t(widget.descKey)` |
-| `src/pages/Settings/sections/RegionalSection.tsx` | 187 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/RegionalSection.tsx` | 239 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/RegionalSection.tsx` | 263 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/SecuritySection.tsx` | 281 | `t(method.labelKey)` |
-| `src/pages/Settings/sections/SecuritySection.tsx` | 282 | `t(method.descKey)` |
-| `src/pages/Settings/sections/SurveyBuilderSection.tsx` | 185 | `t(style.labelKey)` |
-| `src/pages/Settings/sections/SurveyBuilderSection.tsx` | 276 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/SurveyBuilderSection.tsx` | 304 | `t(option.labelKey)` |
-| `src/pages/Settings/sections/SurveyBuilderSection.tsx` | 305 | `t(option.descKey)` |
-| `src/pages/SurveyPreview/SurveyPreviewPage.tsx` | 366 | `t(errorKey)` |
-| `src/pages/SurveyPreview/SurveyPreviewPage.tsx` | 380 | `t(errorKey)` |
+| File                                                                        | Line | Code                                                            |
+| --------------------------------------------------------------------------- | ---- | --------------------------------------------------------------- |
+| `src/components/features/profile/PasswordChangeForm.tsx`                    | 58   | `t(requirementKeys[index])`                                     |
+| `src/components/features/public-survey/AllQuestionsView.tsx`                | 28   | `t(error)`                                                      |
+| `src/components/features/questions/QuestionTypeInfo.tsx`                    | 37   | `t(config.labelKey)`                                            |
+| `src/components/features/questions/QuestionTypeInfo.tsx`                    | 38   | `t(config.descriptionKey)`                                      |
+| `src/components/features/questions/editors/PhoneEditor.tsx`                 | 20   | `t(p.nameKey)`                                                  |
+| `src/components/features/questions/editors/PhoneEditor.tsx`                 | 20   | `t(p.descriptionKey)`                                           |
+| `src/components/features/questions/editors/UrlEditor.tsx`                   | 20   | `t(p.nameKey)`                                                  |
+| `src/components/features/questions/editors/UrlEditor.tsx`                   | 20   | `t(p.descriptionKey)`                                           |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 92   | `t(defaultTitleKey)`                                            |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 166  | `t(category.nameKey)`                                           |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 256  | `t(category.nameKey)`                                           |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 257  | `t(category.descriptionKey)`                                    |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 319  | `t(m.nameKey)`                                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 337  | `t(currentMetric.descriptionKey)`                               |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 516  | `t(currentMetric.questionKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 542  | `t(currentMetric.minLabelKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 543  | `t(currentMetric.maxLabelKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 567  | `t(currentMetric.questionKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 587  | `t(currentMetric.minLabelKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 588  | `t(currentMetric.maxLabelKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 598  | `t(currentMetric.questionKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 618  | `t(currentMetric.minLabelKey)`                                  |
+| `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 619  | `t(currentMetric.maxLabelKey)`                                  |
+| `src/components/ui/DatePicker.tsx`                                          | 1046 | `t(preset.label)`                                               |
+| `src/components/ui/GettingStartedWizard.tsx`                                | 327  | `t(step.titleKey)`                                              |
+| `src/components/ui/GettingStartedWizard.tsx`                                | 337  | `t(step.descriptionKey)`                                        |
+| `src/components/ui/OnboardingWizard.tsx`                                    | 463  | `t(step.titleKey)`                                              |
+| `src/components/ui/OnboardingWizard.tsx`                                    | 473  | `t(step.descriptionKey)`                                        |
+| `src/components/ui/OnboardingWizard.tsx`                                    | 662  | `t(mode.labelKey)`                                              |
+| `src/components/ui/OnboardingWizard.tsx`                                    | 687  | `t(palette.labelKey)`                                           |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 393  | `t(operatorTranslationKeys[LogicOperator.IsAnswered])`          |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 394  | `t(operatorTranslationKeys[LogicOperator.IsNotAnswered])`       |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 395  | `t(operatorTranslationKeys[LogicOperator.IsEmpty])`             |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 396  | `t(operatorTranslationKeys[LogicOperator.IsNotEmpty])`          |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 406  | `t(operatorTranslationKeys[LogicOperator.Equals])`              |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 407  | `t(operatorTranslationKeys[LogicOperator.NotEquals])`           |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 408  | `t(operatorTranslationKeys[LogicOperator.Contains])`            |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 409  | `t(operatorTranslationKeys[LogicOperator.NotContains])`         |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 417  | `t(operatorTranslationKeys[LogicOperator.Equals])`              |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 418  | `t(operatorTranslationKeys[LogicOperator.NotEquals])`           |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 419  | `t(operatorTranslationKeys[LogicOperator.Contains])`            |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 420  | `t(operatorTranslationKeys[LogicOperator.NotContains])`         |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 428  | `t(operatorTranslationKeys[LogicOperator.Equals])`              |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 429  | `t(operatorTranslationKeys[LogicOperator.NotEquals])`           |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 430  | `t(operatorTranslationKeys[LogicOperator.GreaterThan])`         |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 431  | `t(operatorTranslationKeys[LogicOperator.GreaterThanOrEquals])` |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 432  | `t(operatorTranslationKeys[LogicOperator.LessThan])`            |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 433  | `t(operatorTranslationKeys[LogicOperator.LessThanOrEquals])`    |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 439  | `t(operatorTranslationKeys[LogicOperator.Equals])`              |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 459  | `t(key)`                                                        |
+| `src/hooks/queries/useQuestionLogic.ts`                                     | 470  | `t(key)`                                                        |
+| `src/hooks/useTranslatedNav.ts`                                             | 54   | `t(PAGE_LABEL_KEYS[pageId])`                                    |
+| `src/hooks/useTranslatedNav.ts`                                             | 55   | `t(PAGE_DESCRIPTION_KEYS[pageId])`                              |
+| `src/hooks/useTranslatedNav.ts`                                             | 71   | `t(PAGE_LABEL_KEYS[id])`                                        |
+| `src/hooks/useTranslatedNav.ts`                                             | 72   | `t(PAGE_DESCRIPTION_KEYS[id])`                                  |
+| `src/hooks/useTranslatedNav.ts`                                             | 83   | `t(PAGE_LABEL_KEYS[pageId])`                                    |
+| `src/pages/DevTest/sections/ThemeControlsSection.tsx`                       | 43   | `t(palette.labelKey)`                                           |
+| `src/pages/DevTest/sections/ThemeControlsSection.tsx`                       | 73   | `t(mode.labelKey)`                                              |
+| `src/pages/DevTest/sections/ThemeControlsSection.tsx`                       | 74   | `t(mode.descKey)`                                               |
+| `src/pages/Distributions/components/DistributionCard.tsx`                   | 117  | `t(config.labelKey)`                                            |
+| `src/pages/PublicSurvey/sections/OneByOneSection.tsx`                       | 40   | `t(error)`                                                      |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 183  | `t(group.titleKey)`                                             |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 189  | `t(item.labelKey)`                                              |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 219  | `t(group.titleKey)`                                             |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 222  | `t(item.labelKey)`                                              |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 241  | `t(currentItem.labelKey)`                                       |
+| `src/pages/Settings/SettingsPage.tsx`                                       | 242  | `t(currentItem.descriptionKey)`                                 |
+| `src/pages/Settings/sections/AccessibilitySection.tsx`                      | 121  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/AppearanceSection.tsx`                         | 67   | `t(mode.labelKey)`                                              |
+| `src/pages/Settings/sections/AppearanceSection.tsx`                         | 68   | `t(mode.descKey)`                                               |
+| `src/pages/Settings/sections/AppearanceSection.tsx`                         | 106  | `t(palette.labelKey)`                                           |
+| `src/pages/Settings/sections/DashboardSection.tsx`                          | 127  | `t(mode.labelKey)`                                              |
+| `src/pages/Settings/sections/DashboardSection.tsx`                          | 170  | `t(field.labelKey)`                                             |
+| `src/pages/Settings/sections/DashboardSection.tsx`                          | 182  | `t(order.labelKey)`                                             |
+| `src/pages/Settings/sections/DashboardSection.tsx`                          | 231  | `t(widget.labelKey)`                                            |
+| `src/pages/Settings/sections/DashboardSection.tsx`                          | 232  | `t(widget.descKey)`                                             |
+| `src/pages/Settings/sections/RegionalSection.tsx`                           | 187  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/RegionalSection.tsx`                           | 239  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/RegionalSection.tsx`                           | 263  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/SecuritySection.tsx`                           | 281  | `t(method.labelKey)`                                            |
+| `src/pages/Settings/sections/SecuritySection.tsx`                           | 282  | `t(method.descKey)`                                             |
+| `src/pages/Settings/sections/SurveyBuilderSection.tsx`                      | 185  | `t(style.labelKey)`                                             |
+| `src/pages/Settings/sections/SurveyBuilderSection.tsx`                      | 276  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/SurveyBuilderSection.tsx`                      | 304  | `t(option.labelKey)`                                            |
+| `src/pages/Settings/sections/SurveyBuilderSection.tsx`                      | 305  | `t(option.descKey)`                                             |
+| `src/pages/SurveyPreview/SurveyPreviewPage.tsx`                             | 366  | `t(errorKey)`                                                   |
+| `src/pages/SurveyPreview/SurveyPreviewPage.tsx`                             | 380  | `t(errorKey)`                                                   |
 
 ---
 
@@ -424,17 +483,16 @@ These translations use variables instead of static keys - the actual keys are de
 These translations use template literals to construct keys:
 
 | File | Line | Template |
-|------|------|----------|
-
+| ---- | ---- | -------- |
 
 ---
 
 ## By Pattern Type
 
-### t() - Standard hook call (1966)
+### t() - Standard hook call (1964)
 
 <details>
-<summary>Click to expand (1966 items)</summary>
+<summary>Click to expand (1964 items)</summary>
 
 - `src/components/ErrorBoundary.tsx` L134: `t('errorBoundary.title')`
 - `src/components/ErrorBoundary.tsx` L135: `t('errorBoundary.description')`
@@ -459,7 +517,7 @@ These translations use template literals to construct keys:
 - `src/components/features/analytics/AnalyticsSummaryCards.tsx` L70: `t('analyticsSummary.partialResponses')`
 - `src/components/features/analytics/AnalyticsSummaryCards.tsx` L73: `t('analyticsSummary.incompleteSubmissions')`
 - `src/components/features/analytics/AnalyticsSummaryCards.tsx` L73: `t('analyticsSummary.none')`
-- `src/components/features/analytics/ChoiceChart.tsx` L55: `t('charts.noResponsesYet')`
+- `src/components/features/analytics/ChoiceChart.tsx` L53: `t('charts.noResponsesYet')`
 - `src/components/features/analytics/MatrixHeatmap.tsx` L97: `t('analytics.noMatrixData')`
 - `src/components/features/analytics/MatrixHeatmap.tsx` L173: `t('analytics.responseIntensity')`
 - `src/components/features/analytics/NPSGauge.tsx` L56: `t('analytics.npsScore')`
@@ -1105,16 +1163,16 @@ These translations use template literals to construct keys:
 - `src/components/features/questions/editors/RankingEditor.tsx` L54: `t('questionEditor.ranking.randomize')`
 - `src/components/features/questions/editors/RankingEditor.tsx` L55: `t('questionEditor.ranking.randomizeDesc')`
 - `src/components/features/questions/editors/RankingEditor.tsx` L62: `t('questionTypes.ranking.previewLabel')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L34: `t('questionEditor.question')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L37: `t('questionEditor.common.enterQuestion')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L42: `t('questionEditor.common.descriptionOptional')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L45: `t('questionEditor.common.addHelpText')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L46: `t('questionEditor.common.textBelowQuestion')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L76: `t('questionEditor.options.maxRating')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L101: `t('questionEditor.rating.lowLabel')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L104: `t('questionEditor.rating.lowPlaceholder')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L107: `t('questionEditor.rating.highLabel')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L110: `t('questionEditor.rating.highPlaceholder')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L25: `t('questionEditor.question')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L28: `t('questionEditor.common.enterQuestion')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L33: `t('questionEditor.common.descriptionOptional')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L36: `t('questionEditor.common.addHelpText')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L37: `t('questionEditor.common.textBelowQuestion')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L67: `t('questionEditor.options.maxRating')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L92: `t('questionEditor.rating.lowLabel')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L95: `t('questionEditor.rating.lowPlaceholder')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L98: `t('questionEditor.rating.highLabel')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L101: `t('questionEditor.rating.highPlaceholder')`
 - `src/components/features/questions/editors/ScaleEditor.tsx` L21: `t('questionTypes.scale.presets.nps')`
 - `src/components/features/questions/editors/ScaleEditor.tsx` L22: `t('questionTypes.scale.presets.1-5')`
 - `src/components/features/questions/editors/ScaleEditor.tsx` L23: `t('questionTypes.scale.presets.1-7')`
@@ -1166,11 +1224,11 @@ These translations use template literals to construct keys:
 - `src/components/features/questions/editors/UrlEditor.tsx` L88: `t('questionEditor.url.validationHelper')`
 - `src/components/features/questions/editors/UrlEditor.tsx` L94: `t('questionEditor.common.maxCharacters')`
 - `src/components/features/questions/editors/UrlEditor.tsx` L97: `t('editors.common.maxCharactersHelper')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L32: `t('questionEditor.question')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L35: `t('questionEditor.common.enterQuestion')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L40: `t('questionEditor.common.descriptionOptional')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L43: `t('questionEditor.common.addHelpText')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L44: `t('questionEditor.common.textBelowQuestion')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L24: `t('questionEditor.question')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L27: `t('questionEditor.common.enterQuestion')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L32: `t('questionEditor.common.descriptionOptional')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L35: `t('questionEditor.common.addHelpText')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L36: `t('questionEditor.common.textBelowQuestion')`
 - `src/components/features/recurring-surveys/RecurringScheduleEditor.tsx` L29: `t('recurringSurveys.form.daily')`
 - `src/components/features/recurring-surveys/RecurringScheduleEditor.tsx` L30: `t('recurringSurveys.form.weekly')`
 - `src/components/features/recurring-surveys/RecurringScheduleEditor.tsx` L31: `t('recurringSurveys.form.biWeekly')`
@@ -1292,26 +1350,26 @@ These translations use template literals to construct keys:
 - `src/components/features/responses/ResponseDetailDrawer.tsx` L347: `t('responses.noAnswers')`
 - `src/components/features/responses/ResponseDetailDrawer.tsx` L361: `t('common.close')`
 - `src/components/features/responses/ResponseDetailDrawer.tsx` L365: `t('common.delete')`
-- `src/components/features/search/GlobalSearch.tsx` L214: `t('search.placeholder')`
-- `src/components/features/search/GlobalSearch.tsx` L221: `t('a11y.closeSearch')`
-- `src/components/features/search/GlobalSearch.tsx` L231: `t('search.results')`
-- `src/components/features/search/GlobalSearch.tsx` L231: `t('search.recent')`
-- `src/components/features/search/GlobalSearch.tsx` L254: `t('search.noResults')`
-- `src/components/features/search/GlobalSearch.tsx` L255: `t('search.tryDifferentKeywords')`
-- `src/components/features/search/GlobalSearch.tsx` L265: `t('search.noRecentItems')`
-- `src/components/features/search/GlobalSearch.tsx` L266: `t('search.startTyping')`
-- `src/components/features/search/GlobalSearch.tsx` L277: `t('search.toSelect')`
-- `src/components/features/search/GlobalSearch.tsx` L286: `t('search.toNavigate')`
-- `src/components/features/search/GlobalSearch.tsx` L290: `t('search.toClose')`
-- `src/components/features/search/GlobalSearch.tsx` L293: `t('emptyState.search.openWith')`
+- `src/components/features/search/GlobalSearch.tsx` L181: `t('search.placeholder')`
+- `src/components/features/search/GlobalSearch.tsx` L188: `t('a11y.closeSearch')`
+- `src/components/features/search/GlobalSearch.tsx` L198: `t('search.results')`
+- `src/components/features/search/GlobalSearch.tsx` L198: `t('search.recent')`
+- `src/components/features/search/GlobalSearch.tsx` L221: `t('search.noResults')`
+- `src/components/features/search/GlobalSearch.tsx` L222: `t('search.tryDifferentKeywords')`
+- `src/components/features/search/GlobalSearch.tsx` L232: `t('search.noRecentItems')`
+- `src/components/features/search/GlobalSearch.tsx` L233: `t('search.startTyping')`
+- `src/components/features/search/GlobalSearch.tsx` L244: `t('search.toSelect')`
+- `src/components/features/search/GlobalSearch.tsx` L253: `t('search.toNavigate')`
+- `src/components/features/search/GlobalSearch.tsx` L257: `t('search.toClose')`
+- `src/components/features/search/GlobalSearch.tsx` L260: `t('emptyState.search.openWith')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L94: `t('shortcuts.title')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L95: `t('shortcuts.description')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L97: `t('a11y.close')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L114: `t('shortcuts.noShortcuts')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L115: `t('shortcuts.willAppear')`
 - `src/components/features/search/KeyboardShortcutsHelp.tsx` L122: `t('shortcuts.pressEscToClose')`
-- `src/components/features/search/RecentItems.tsx` L127: `t('emptyState.search.noRecentItems')`
-- `src/components/features/search/RecentItems.tsx` L137: `t('common.recent')`
+- `src/components/features/search/RecentItems.tsx` L104: `t('emptyState.search.noRecentItems')`
+- `src/components/features/search/RecentItems.tsx` L114: `t('common.recent')`
 - `src/components/features/search/SearchButton.tsx` L28: `t('a11y.search')`
 - `src/components/features/search/SearchButton.tsx` L46: `t('a11y.search')`
 - `src/components/features/search/SearchButton.tsx` L49: `t('common.search')`
@@ -1370,13 +1428,13 @@ These translations use template literals to construct keys:
 - `src/components/features/templates/CreateTemplateDialog.tsx` L310: `t('templates.form.title')`
 - `src/components/features/templates/CreateTemplateDialog.tsx` L311: `t('templates.form.description')`
 - `src/components/features/templates/TemplateCard.tsx` L37: `t('a11y.moreOptions')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L150: `t('common.public')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L150: `t('common.private')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L169: `t('templates.untitledQuestion')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L182: `t('templates.noQuestions')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L183: `t('templates.questionsWillAppear')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L192: `t('templates.useThis')`
-- `src/components/features/templates/TemplatePreviewDrawer.tsx` L259: `t('templates.loadError')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L88: `t('common.public')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L88: `t('common.private')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L107: `t('templates.untitledQuestion')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L120: `t('templates.noQuestions')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L121: `t('templates.questionsWillAppear')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L130: `t('templates.useThis')`
+- `src/components/features/templates/TemplatePreviewDrawer.tsx` L197: `t('templates.loadError')`
 - `src/components/features/templates/UseTemplateDialog.tsx` L78: `t('templates.useTemplateDialog.surveyTitle')`
 - `src/components/features/templates/UseTemplateDialog.tsx` L79: `t('templates.useTemplateDialog.surveyTitlePlaceholder')`
 - `src/components/features/templates/UseTemplateDialog.tsx` L89: `t('templates.useTemplateDialog.descriptionOptional')`
@@ -1388,51 +1446,51 @@ These translations use template literals to construct keys:
 - `src/components/features/templates/UseTemplateDialog.tsx` L136: `t('templates.useTemplateDialog.createButton')`
 - `src/components/features/templates/UseTemplateDialog.tsx` L153: `t('templates.useTemplateDialog.title')`
 - `src/components/features/templates/UseTemplateDialog.tsx` L154: `t('templates.useTemplateDialog.description')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L252: `t('themeEditor.validation.nameRequired')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L255: `t('themeEditor.validation.primaryColorRequired')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L258: `t('themeEditor.validation.backgroundColorRequired')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L267: `t('themeEditor.toast.validationError')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L317: `t('themeEditor.editTitle')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L317: `t('themeEditor.createTitle')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L318: `t('themeEditor.editDescription')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L318: `t('themeEditor.createDescription')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L329: `t('themeEditor.livePreview')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L355: `t('themeEditor.themeName')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L359: `t('themeEditor.themeNamePlaceholder')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L367: `t('themeEditor.tabs.colors')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L370: `t('themeEditor.tabs.typography')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L376: `t('themeEditor.tabs.branding')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L379: `t('themeEditor.tabs.advanced')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L389: `t('themeEditor.quickPresets')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L419: `t('themeEditor.colors.primary')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L424: `t('themeEditor.colors.secondary')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L438: `t('themeEditor.colors.background')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L448: `t('themeEditor.colors.text')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L514: `t('themeEditor.buttonStyle')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L693: `t('themeEditor.logoUrl')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L697: `t('themeEditor.logoUrlHelperText')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L704: `t('themeEditor.branding.logoSize')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L707: `t('themeEditor.branding.sizes.small')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L708: `t('themeEditor.branding.sizes.medium')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L709: `t('themeEditor.branding.sizes.large')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L710: `t('themeEditor.branding.sizes.extraLarge')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L732: `t('themeEditor.branding.showLogoBackground')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L770: `t('themeEditor.branding.brandingTitle')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L774: `t('themeEditor.branding.brandingTitlePlaceholder')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L777: `t('themeEditor.branding.brandingTitleHelper')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L782: `t('themeEditor.branding.brandingSubtitle')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L786: `t('themeEditor.branding.brandingSubtitlePlaceholder')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L789: `t('themeEditor.branding.brandingSubtitleHelper')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L793: `t('themeEditor.backgroundImageUrl')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L797: `t('themeEditor.backgroundImageUrlHelperText')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L809: `t('themeEditor.customCss')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L814: `t('themeEditor.customCssPlaceholder')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L819: `t('themeEditor.customCssHelperText')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L826: `t('themeEditor.generatedCssPreview')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L837: `t('themeEditor.livePreview')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L857: `t('common.cancel')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L860: `t('themeEditor.saveChanges')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L860: `t('themeEditor.createTheme')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L202: `t('themeEditor.validation.nameRequired')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L205: `t('themeEditor.validation.primaryColorRequired')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L208: `t('themeEditor.validation.backgroundColorRequired')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L217: `t('themeEditor.toast.validationError')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L267: `t('themeEditor.editTitle')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L267: `t('themeEditor.createTitle')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L268: `t('themeEditor.editDescription')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L268: `t('themeEditor.createDescription')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L279: `t('themeEditor.livePreview')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L305: `t('themeEditor.themeName')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L309: `t('themeEditor.themeNamePlaceholder')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L317: `t('themeEditor.tabs.colors')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L320: `t('themeEditor.tabs.typography')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L326: `t('themeEditor.tabs.branding')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L329: `t('themeEditor.tabs.advanced')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L339: `t('themeEditor.quickPresets')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L369: `t('themeEditor.colors.primary')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L374: `t('themeEditor.colors.secondary')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L388: `t('themeEditor.colors.background')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L398: `t('themeEditor.colors.text')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L464: `t('themeEditor.buttonStyle')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L643: `t('themeEditor.logoUrl')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L647: `t('themeEditor.logoUrlHelperText')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L654: `t('themeEditor.branding.logoSize')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L657: `t('themeEditor.branding.sizes.small')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L658: `t('themeEditor.branding.sizes.medium')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L659: `t('themeEditor.branding.sizes.large')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L660: `t('themeEditor.branding.sizes.extraLarge')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L682: `t('themeEditor.branding.showLogoBackground')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L720: `t('themeEditor.branding.brandingTitle')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L724: `t('themeEditor.branding.brandingTitlePlaceholder')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L727: `t('themeEditor.branding.brandingTitleHelper')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L732: `t('themeEditor.branding.brandingSubtitle')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L736: `t('themeEditor.branding.brandingSubtitlePlaceholder')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L739: `t('themeEditor.branding.brandingSubtitleHelper')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L743: `t('themeEditor.backgroundImageUrl')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L747: `t('themeEditor.backgroundImageUrlHelperText')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L759: `t('themeEditor.customCss')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L764: `t('themeEditor.customCssPlaceholder')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L769: `t('themeEditor.customCssHelperText')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L776: `t('themeEditor.generatedCssPreview')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L787: `t('themeEditor.livePreview')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L807: `t('common.cancel')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L810: `t('themeEditor.saveChanges')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L810: `t('themeEditor.createTheme')`
 - `src/components/features/themes/ThemeLivePreview.tsx` L78: `t('a11y.logo')`
 - `src/components/features/themes/ThemeLivePreview.tsx` L84: `t('themePreview.surveyTitle')`
 - `src/components/features/themes/ThemeLivePreview.tsx` L87: `t('themePreview.surveyDescription')`
@@ -1555,37 +1613,35 @@ These translations use template literals to construct keys:
 - `src/components/ui/OfflineIndicator.tsx` L129: `t('offline.message')`
 - `src/components/ui/OfflineIndicator.tsx` L144: `t('offline.retry')`
 - `src/components/ui/OfflineIndicator.tsx` L150: `t('offline.dismiss')`
-- `src/components/ui/OnboardingWizard.tsx` L364: `t('onboarding.defaultUser')`
-- `src/components/ui/OnboardingWizard.tsx` L403: `t('onboarding.defaultUser')`
-- `src/components/ui/OnboardingWizard.tsx` L449: `t('onboarding.skip')`
-- `src/components/ui/OnboardingWizard.tsx` L548: `t('common.back')`
-- `src/components/ui/OnboardingWizard.tsx` L554: `t('onboarding.getStarted')`
-- `src/components/ui/OnboardingWizard.tsx` L558: `t('common.next')`
-- `src/components/ui/OnboardingWizard.tsx` L594: `t('onboarding.welcome.message')`
-- `src/components/ui/OnboardingWizard.tsx` L603: `t('onboarding.features.customize')`
-- `src/components/ui/OnboardingWizard.tsx` L604: `t('onboarding.features.language')`
-- `src/components/ui/OnboardingWizard.tsx` L605: `t('onboarding.features.notifications')`
-- `src/components/ui/OnboardingWizard.tsx` L643: `t('onboarding.profile.firstName')`
-- `src/components/ui/OnboardingWizard.tsx` L646: `t('onboarding.profile.firstNamePlaceholder')`
-- `src/components/ui/OnboardingWizard.tsx` L649: `t('onboarding.profile.lastName')`
-- `src/components/ui/OnboardingWizard.tsx` L652: `t('onboarding.profile.lastNamePlaceholder')`
-- `src/components/ui/OnboardingWizard.tsx` L656: `t('onboarding.profile.hint')`
-- `src/components/ui/OnboardingWizard.tsx` L675: `t('onboarding.appearance.themeMode')`
-- `src/components/ui/OnboardingWizard.tsx` L688: `t(`onboarding.appearance.${mode.id}`)`
-- `src/components/ui/OnboardingWizard.tsx` L697: `t('onboarding.appearance.colorPalette')`
-- `src/components/ui/OnboardingWizard.tsx` L714: `t(`onboarding.appearance.palette.${palette.id}`)`
-- `src/components/ui/OnboardingWizard.tsx` L742: `t('onboarding.language.description')`
-- `src/components/ui/OnboardingWizard.tsx` L812: `t('onboarding.notifications.email')`
-- `src/components/ui/OnboardingWizard.tsx` L813: `t('onboarding.notifications.emailDesc')`
-- `src/components/ui/OnboardingWizard.tsx` L821: `t('onboarding.notifications.responses')`
-- `src/components/ui/OnboardingWizard.tsx` L822: `t('onboarding.notifications.responsesDesc')`
-- `src/components/ui/OnboardingWizard.tsx` L830: `t('onboarding.notifications.digest')`
-- `src/components/ui/OnboardingWizard.tsx` L831: `t('onboarding.notifications.digestDesc')`
-- `src/components/ui/OnboardingWizard.tsx` L836: `t('onboarding.notifications.hint')`
-- `src/components/ui/OnboardingWizard.tsx` L925: `t('onboarding.complete.createSurvey')`
-- `src/components/ui/OnboardingWizard.tsx` L926: `t('onboarding.complete.viewAnalytics')`
-- `src/components/ui/OnboardingWizard.tsx` L927: `t('onboarding.complete.distribute')`
-- `src/components/ui/OnboardingWizard.tsx` L953: `t('onboarding.complete.message')`
+- `src/components/ui/OnboardingWizard.tsx` L339: `t('onboarding.defaultUser')`
+- `src/components/ui/OnboardingWizard.tsx` L378: `t('onboarding.defaultUser')`
+- `src/components/ui/OnboardingWizard.tsx` L424: `t('onboarding.skip')`
+- `src/components/ui/OnboardingWizard.tsx` L523: `t('common.back')`
+- `src/components/ui/OnboardingWizard.tsx` L529: `t('onboarding.getStarted')`
+- `src/components/ui/OnboardingWizard.tsx` L533: `t('common.next')`
+- `src/components/ui/OnboardingWizard.tsx` L569: `t('onboarding.welcome.message')`
+- `src/components/ui/OnboardingWizard.tsx` L578: `t('onboarding.features.customize')`
+- `src/components/ui/OnboardingWizard.tsx` L579: `t('onboarding.features.language')`
+- `src/components/ui/OnboardingWizard.tsx` L580: `t('onboarding.features.notifications')`
+- `src/components/ui/OnboardingWizard.tsx` L618: `t('onboarding.profile.firstName')`
+- `src/components/ui/OnboardingWizard.tsx` L621: `t('onboarding.profile.firstNamePlaceholder')`
+- `src/components/ui/OnboardingWizard.tsx` L624: `t('onboarding.profile.lastName')`
+- `src/components/ui/OnboardingWizard.tsx` L627: `t('onboarding.profile.lastNamePlaceholder')`
+- `src/components/ui/OnboardingWizard.tsx` L631: `t('onboarding.profile.hint')`
+- `src/components/ui/OnboardingWizard.tsx` L650: `t('onboarding.appearance.themeMode')`
+- `src/components/ui/OnboardingWizard.tsx` L670: `t('onboarding.appearance.colorPalette')`
+- `src/components/ui/OnboardingWizard.tsx` L715: `t('onboarding.language.description')`
+- `src/components/ui/OnboardingWizard.tsx` L785: `t('onboarding.notifications.email')`
+- `src/components/ui/OnboardingWizard.tsx` L786: `t('onboarding.notifications.emailDesc')`
+- `src/components/ui/OnboardingWizard.tsx` L794: `t('onboarding.notifications.responses')`
+- `src/components/ui/OnboardingWizard.tsx` L795: `t('onboarding.notifications.responsesDesc')`
+- `src/components/ui/OnboardingWizard.tsx` L803: `t('onboarding.notifications.digest')`
+- `src/components/ui/OnboardingWizard.tsx` L804: `t('onboarding.notifications.digestDesc')`
+- `src/components/ui/OnboardingWizard.tsx` L809: `t('onboarding.notifications.hint')`
+- `src/components/ui/OnboardingWizard.tsx` L898: `t('onboarding.complete.createSurvey')`
+- `src/components/ui/OnboardingWizard.tsx` L899: `t('onboarding.complete.viewAnalytics')`
+- `src/components/ui/OnboardingWizard.tsx` L900: `t('onboarding.complete.distribute')`
+- `src/components/ui/OnboardingWizard.tsx` L926: `t('onboarding.complete.message')`
 - `src/components/ui/Progress.tsx` L30: `t('common.progress')`
 - `src/components/ui/Progress.tsx` L86: `t('common.progress')`
 - `src/components/ui/SearchInput.tsx` L54: `t('common.searchDots')`
@@ -1725,7 +1781,7 @@ These translations use template literals to construct keys:
 - `src/pages/Dashboard/sections/DashboardStats.tsx` L40: `t('dashboard.stats.readyToPublish')`
 - `src/pages/Dashboard/sections/DashboardStats.tsx` L46: `t('dashboard.stats.totalResponses')`
 - `src/pages/Dashboard/sections/DashboardStats.tsx` L48: `t('dashboard.stats.acrossAllSurveys')`
-- `src/pages/Dashboard/sections/RecentSurveyItem.tsx` L39: `t('surveys.responses')`
+- `src/pages/Dashboard/sections/RecentSurveyItem.tsx` L33: `t('surveys.responses')`
 - `src/pages/DevTest/sections/ButtonShowcaseSection.tsx` L92: `t('devTest.like')`
 - `src/pages/DevTest/sections/ButtonShowcaseSection.tsx` L95: `t('devTest.favorite')`
 - `src/pages/DevTest/sections/ButtonShowcaseSection.tsx` L98: `t('devTest.notifications')`
@@ -2076,24 +2132,24 @@ These translations use template literals to construct keys:
 - `src/pages/Settings/sections/AboutSection.tsx` L206: `t('settings.about.support')`
 - `src/pages/Settings/sections/AboutSection.tsx` L207: `t('settings.about.privacy')`
 - `src/pages/Settings/sections/AboutSection.tsx` L208: `t('settings.about.terms')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L52: `t('settings.accessibility.visual.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L54: `t('settings.accessibility.visual.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L59: `t('settings.accessibility.highContrast.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L60: `t('settings.accessibility.highContrast.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L68: `t('settings.accessibility.screenReader.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L69: `t('settings.accessibility.screenReader.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L83: `t('settings.accessibility.motion.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L85: `t('settings.accessibility.motion.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L89: `t('settings.accessibility.reducedMotion.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L90: `t('settings.accessibility.reducedMotion.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L103: `t('settings.accessibility.font.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L105: `t('settings.accessibility.font.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L109: `t('settings.accessibility.fontSize.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L140: `t('settings.accessibility.dyslexiaFont.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L141: `t('settings.accessibility.dyslexiaFont.description')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L155: `t('settings.accessibility.preview.title')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L169: `t('settings.accessibility.preview.sampleTitle')`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L170: `t('settings.accessibility.preview.sampleText')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L46: `t('settings.accessibility.visual.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L48: `t('settings.accessibility.visual.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L53: `t('settings.accessibility.highContrast.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L54: `t('settings.accessibility.highContrast.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L62: `t('settings.accessibility.screenReader.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L63: `t('settings.accessibility.screenReader.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L77: `t('settings.accessibility.motion.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L79: `t('settings.accessibility.motion.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L83: `t('settings.accessibility.reducedMotion.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L84: `t('settings.accessibility.reducedMotion.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L97: `t('settings.accessibility.font.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L99: `t('settings.accessibility.font.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L103: `t('settings.accessibility.fontSize.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L134: `t('settings.accessibility.dyslexiaFont.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L135: `t('settings.accessibility.dyslexiaFont.description')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L149: `t('settings.accessibility.preview.title')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L163: `t('settings.accessibility.preview.sampleTitle')`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L164: `t('settings.accessibility.preview.sampleText')`
 - `src/pages/Settings/sections/ApiKeysSection.tsx` L62: `t('apiKeys.createSuccess')`
 - `src/pages/Settings/sections/ApiKeysSection.tsx` L66: `t('settings.security.keyCopied')`
 - `src/pages/Settings/sections/ApiKeysSection.tsx` L72: `t('apiKeys.deleteSuccess')`
@@ -2733,8 +2789,8 @@ These translations use template literals to construct keys:
 - `src/components/features/questions/QuestionEditor.tsx` L261: `t('localization.editingFallback', 'Editing (fallback)')`
 - `src/components/features/questions/QuestionEditor.tsx` L276: `t('common.duplicate', 'Duplicate')`
 - `src/components/features/questions/QuestionEditor.tsx` L286: `t('common.delete', 'Delete')`
-- `src/components/features/questions/editors/RatingEditor.tsx` L51: `t('questionEditor.rating.style', 'Rating Style')`
-- `src/components/features/questions/editors/YesNoEditor.tsx` L49: `t('questionEditor.yesNo.style', 'Display Style')`
+- `src/components/features/questions/editors/RatingEditor.tsx` L42: `t('questionEditor.rating.style', 'Rating Style')`
+- `src/components/features/questions/editors/YesNoEditor.tsx` L41: `t('questionEditor.yesNo.style', 'Display Style')`
 - `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` L194: `t('createSurvey.language', 'Language')`
 - `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` L274: `t('createSurvey.preview.features', 'Features')`
 - `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` L340: `t('createSurvey.preview.scale', 'Scale')`
@@ -2805,21 +2861,21 @@ These translations use template literals to construct keys:
 - `src/components/features/surveys/ThemePreviewPanel.tsx` L930: `t('themes.saveAndApply', 'Save & Apply')`
 - `src/components/features/surveys/ThemePreviewPanel.tsx` L1051: `t('themeCard.default', 'Default')`
 - `src/components/features/templates/CreateTemplateDialog.tsx` L259: `t('templates.form.language', 'Language')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L331: `t('themeEditor.livePreviewHint', 'Changes update in real-time')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L373: `t('themeEditor.tabs.layout', 'Layout')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L416: `t('themeEditor.brandColors', 'Brand Colors')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L426: `t('themeEditor.colors.accent', 'Accent')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L435: `t('themeEditor.surfaceColors', 'Surface Colors')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L444: `t('themeEditor.colors.surface', 'Surface')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L457: `t('themeEditor.bodyFont', 'Body Font')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L486: `t('themeEditor.headingFont', 'Heading Font')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L544: `t('themeEditor.cornerRadius', 'Corner Radius')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L568: `t('themeEditor.containerWidth', 'Container Width')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L591: `t('themeEditor.spacing', 'Spacing')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L613: `t('themeEditor.progressIndicator', 'Progress Indicator')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L625: `t('common.none', 'None')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L651: `t('themeEditor.questionNumbers', 'Question Numbers')`
-- `src/components/features/themes/ThemeEditorDrawer.tsx` L663: `t('common.none', 'None')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L281: `t('themeEditor.livePreviewHint', 'Changes update in real-time')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L323: `t('themeEditor.tabs.layout', 'Layout')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L366: `t('themeEditor.brandColors', 'Brand Colors')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L376: `t('themeEditor.colors.accent', 'Accent')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L385: `t('themeEditor.surfaceColors', 'Surface Colors')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L394: `t('themeEditor.colors.surface', 'Surface')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L407: `t('themeEditor.bodyFont', 'Body Font')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L436: `t('themeEditor.headingFont', 'Heading Font')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L494: `t('themeEditor.cornerRadius', 'Corner Radius')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L518: `t('themeEditor.containerWidth', 'Container Width')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L541: `t('themeEditor.spacing', 'Spacing')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L563: `t('themeEditor.progressIndicator', 'Progress Indicator')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L575: `t('common.none', 'None')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L601: `t('themeEditor.questionNumbers', 'Question Numbers')`
+- `src/components/features/themes/ThemeEditorDrawer.tsx` L613: `t('common.none', 'None')`
 - `src/components/ui/AzureAdLoginButton.tsx` L44: `t('auth.signingIn', 'Signing in...')`
 - `src/components/ui/AzureAdLoginButton.tsx` L44: `t('auth.signInWithMicrosoft', 'Sign in with Microsoft')`
 - `src/components/ui/GettingStartedWizard.tsx` L134: `t('gettingStarted.errors.saveFailed', 'Failed to save progress. Please try again.')`
@@ -2835,13 +2891,13 @@ These translations use template literals to construct keys:
 - `src/components/ui/GettingStartedWizard.tsx` L416: `t('gettingStarted.welcome.steps.share', 'Share')`
 - `src/components/ui/GettingStartedWizard.tsx` L417: `t('gettingStarted.welcome.steps.analyze', 'Analyze')`
 - `src/components/ui/GettingStartedWizard.tsx` L446: `t(
-          'gettingStarted.welcome.message',
-          'This quick guide will walk you through the essential steps to create, distribute, and analyze your surveys.'
-        )`
+        'gettingStarted.welcome.message',
+        'This quick guide will walk you through the essential steps to create, distribute, and analyze your surveys.'
+      )`
 - `src/components/ui/GettingStartedWizard.tsx` L486: `t(
-          'gettingStarted.workspace.intro',
-          'Workspaces help you organize surveys by team, project, or client. Think of them as folders for your work.'
-        )`
+        'gettingStarted.workspace.intro',
+        'Workspaces help you organize surveys by team, project, or client. Think of them as folders for your work.'
+      )`
 - `src/components/ui/GettingStartedWizard.tsx` L495: `t('gettingStarted.workspace.benefits.title', 'Workspace Benefits')`
 - `src/components/ui/GettingStartedWizard.tsx` L499: `t('gettingStarted.workspace.benefits.organize', 'Organize surveys by project or team')`
 - `src/components/ui/GettingStartedWizard.tsx` L500: `t('gettingStarted.workspace.benefits.collaborate', 'Invite team members to collaborate')`
@@ -2909,21 +2965,21 @@ These translations use template literals to construct keys:
 - `src/components/ui/ImageUploader.tsx` L307: `t('imageUploader.dragDrop', 'Drag & drop or click to upload')`
 - `src/components/ui/ImageUploader.tsx` L339: `t('imageUploader.apply', 'Apply')`
 - `src/components/ui/ImageUploader.tsx` L349: `t('imageUploader.remove', 'Remove image')`
-- `src/components/ui/OnboardingWizard.tsx` L262: `t('onboarding.completedSuccessfully', 'Setup completed successfully!')`
-- `src/components/ui/OnboardingWizard.tsx` L266: `t('onboarding.errors.saveFailed', 'Failed to save your preferences. Please try again.')`
-- `src/components/ui/OnboardingWizard.tsx` L267: `t('onboarding.errors.saveFailed', 'Failed to save your preferences')`
-- `src/components/ui/OnboardingWizard.tsx` L447: `t('onboarding.skipAriaLabel', 'Skip onboarding wizard')`
-- `src/components/ui/OnboardingWizard.tsx` L504: `t('onboarding.stepNavigation', 'Wizard steps')`
-- `src/components/ui/OnboardingWizard.tsx` L873: `t('onboarding.accessibility.intro', 'Customize your experience for better accessibility')`
-- `src/components/ui/OnboardingWizard.tsx` L881: `t('onboarding.accessibility.reducedMotion', 'Reduce Motion')`
-- `src/components/ui/OnboardingWizard.tsx` L882: `t('onboarding.accessibility.reducedMotionDesc', 'Minimize animations and transitions')`
-- `src/components/ui/OnboardingWizard.tsx` L890: `t('onboarding.accessibility.highContrast', 'High Contrast')`
-- `src/components/ui/OnboardingWizard.tsx` L891: `t('onboarding.accessibility.highContrastDesc', 'Increase color contrast for better visibility')`
-- `src/components/ui/OnboardingWizard.tsx` L899: `t('onboarding.accessibility.largeText', 'Large Text')`
-- `src/components/ui/OnboardingWizard.tsx` L900: `t('onboarding.accessibility.largeTextDesc', 'Increase font size throughout the app')`
-- `src/components/ui/OnboardingWizard.tsx` L908: `t('onboarding.accessibility.dyslexiaFont', 'Dyslexia-Friendly Font')`
-- `src/components/ui/OnboardingWizard.tsx` L909: `t('onboarding.accessibility.dyslexiaFontDesc', 'Use a font designed for easier reading')`
-- `src/components/ui/OnboardingWizard.tsx` L915: `t('onboarding.accessibility.hint', 'You can adjust these settings anytime in Settings → Accessibility')`
+- `src/components/ui/OnboardingWizard.tsx` L237: `t('onboarding.completedSuccessfully', 'Setup completed successfully!')`
+- `src/components/ui/OnboardingWizard.tsx` L241: `t('onboarding.errors.saveFailed', 'Failed to save your preferences. Please try again.')`
+- `src/components/ui/OnboardingWizard.tsx` L242: `t('onboarding.errors.saveFailed', 'Failed to save your preferences')`
+- `src/components/ui/OnboardingWizard.tsx` L422: `t('onboarding.skipAriaLabel', 'Skip onboarding wizard')`
+- `src/components/ui/OnboardingWizard.tsx` L479: `t('onboarding.stepNavigation', 'Wizard steps')`
+- `src/components/ui/OnboardingWizard.tsx` L846: `t('onboarding.accessibility.intro', 'Customize your experience for better accessibility')`
+- `src/components/ui/OnboardingWizard.tsx` L854: `t('onboarding.accessibility.reducedMotion', 'Reduce Motion')`
+- `src/components/ui/OnboardingWizard.tsx` L855: `t('onboarding.accessibility.reducedMotionDesc', 'Minimize animations and transitions')`
+- `src/components/ui/OnboardingWizard.tsx` L863: `t('onboarding.accessibility.highContrast', 'High Contrast')`
+- `src/components/ui/OnboardingWizard.tsx` L864: `t('onboarding.accessibility.highContrastDesc', 'Increase color contrast for better visibility')`
+- `src/components/ui/OnboardingWizard.tsx` L872: `t('onboarding.accessibility.largeText', 'Large Text')`
+- `src/components/ui/OnboardingWizard.tsx` L873: `t('onboarding.accessibility.largeTextDesc', 'Increase font size throughout the app')`
+- `src/components/ui/OnboardingWizard.tsx` L881: `t('onboarding.accessibility.dyslexiaFont', 'Dyslexia-Friendly Font')`
+- `src/components/ui/OnboardingWizard.tsx` L882: `t('onboarding.accessibility.dyslexiaFontDesc', 'Use a font designed for easier reading')`
+- `src/components/ui/OnboardingWizard.tsx` L888: `t('onboarding.accessibility.hint', 'You can adjust these settings anytime in Settings → Accessibility')`
 - `src/hooks/useEntityActions.ts` L56: `t('common.operationFailed', 'Operation failed')`
 - `src/hooks/useEntityActions.ts` L116: `t('common.confirm', 'Confirm')`
 - `src/hooks/useEntityActions.ts` L117: `t('common.operationFailed', 'Operation failed')`
@@ -2984,9 +3040,9 @@ These translations use template literals to construct keys:
 <summary>Click to expand (105 items)</summary>
 
 - `src/components/features/analytics/AnalyticsSummaryCards.tsx` L52: `t('analyticsSummary.completed', { count: analytics.completedResponses })`
-- `src/components/features/analytics/ChoiceChart.tsx` L66: `t('charts.responseCount', { count: totalAnswers })`
-- `src/components/features/analytics/ChoiceChart.tsx` L126: `t('charts.moreOptions', { count: sortedData.length - 5 })`
-- `src/components/features/analytics/ChoiceChart.tsx` L140: `t('charts.responseCount', { count: totalAnswers })`
+- `src/components/features/analytics/ChoiceChart.tsx` L64: `t('charts.responseCount', { count: totalAnswers })`
+- `src/components/features/analytics/ChoiceChart.tsx` L123: `t('charts.moreOptions', { count: sortedData.length - 5 })`
+- `src/components/features/analytics/ChoiceChart.tsx` L136: `t('charts.responseCount', { count: totalAnswers })`
 - `src/components/features/analytics/NPSGauge.tsx` L156: `t('analytics.basedOnResponses', { count: data.totalResponses })`
 - `src/components/features/analytics/RatingChart.tsx` L85: `t('charts.responseCount', { count: totalAnswers })`
 - `src/components/features/analytics/RatingChart.tsx` L95: `t('charts.averageRatingOutOf', { max: maxValue })`
@@ -3049,8 +3105,8 @@ These translations use template literals to construct keys:
 - `src/components/features/templates/CreateTemplateDialog.tsx` L154: `t('templates.form.questions', { count: s.questionCount ?? s.questions?.length })`
 - `src/components/features/themes/ThemeLivePreview.tsx` L101: `t('themePreview.progress', { current: 1, total: 3 })`
 - `src/components/ui/EmptyState.tsx` L247: `t('emptyState.search.descriptionWithQuery', { query })`
-- `src/components/ui/OnboardingWizard.tsx` L586: `t('onboarding.welcome.greeting', { name: userName })`
-- `src/components/ui/OnboardingWizard.tsx` L944: `t('onboarding.complete.ready', { name: userName })`
+- `src/components/ui/OnboardingWizard.tsx` L561: `t('onboarding.welcome.greeting', { name: userName })`
+- `src/components/ui/OnboardingWizard.tsx` L917: `t('onboarding.complete.ready', { name: userName })`
 - `src/hooks/useConfirmDialog.tsx` L122: `t('dialogs.deleteTitle', { itemName })`
 - `src/hooks/useConfirmDialog.tsx` L123: `t('dialogs.deleteDescription', { itemName: itemName.toLowerCase() })`
 - `src/lib/validations.ts` L31: `t('validation.fieldRequired', { field: fieldName })`
@@ -3079,13 +3135,13 @@ These translations use template literals to construct keys:
 - `src/pages/Settings/sections/ProfileSection.tsx` L37: `t('validation.required', { field: t('profile.lastName') })`
 - `src/pages/Settings/sections/ProfileSection.tsx` L40: `t('validation.required', { field: t('profile.email') })`
 - `src/pages/Settings/sections/SecuritySection.tsx` L106: `t('twoFactor.usingMethod', {
-                      method:
-                        twoFactor.method === 'authenticator'
-                          ? t('twoFactor.authenticatorApp')
-                          : twoFactor.method === 'sms'
-                          ? t('twoFactor.sms')
-                          : t('auth.email'),
-                    })`
+                    method:
+                      twoFactor.method === 'authenticator'
+                        ? t('twoFactor.authenticatorApp')
+                        : twoFactor.method === 'sms'
+                        ? t('twoFactor.sms')
+                        : t('auth.email'),
+                  })`
 - `src/pages/Settings/sections/SecuritySection.tsx` L117: `t('twoFactor.backupCodesRemaining', { count: twoFactor.backupCodesRemaining })`
 - `src/pages/SurveyPreview/components/PreviewStatusBar.tsx` L31: `t('surveyPreview.questionCount', { count: totalQuestions })`
 - `src/pages/SurveyPreview/components/PreviewStatusBar.tsx` L48: `t('surveyPreview.questionProgress', { current: currentQuestionIndex + 1, total: totalQuestions })`
@@ -3098,15 +3154,15 @@ These translations use template literals to construct keys:
 
 </details>
 
-### t() - Dynamic/variable key (82)
+### t() - Dynamic/variable key (87)
 
 <details>
-<summary>Click to expand (82 items)</summary>
+<summary>Click to expand (87 items)</summary>
 
 - `src/components/features/profile/PasswordChangeForm.tsx` L58: `t(requirementKeys[index])`
 - `src/components/features/public-survey/AllQuestionsView.tsx` L28: `t(error)`
-- `src/components/features/questions/QuestionTypeInfo.tsx` L196: `t(info.labelKey)`
-- `src/components/features/questions/QuestionTypeInfo.tsx` L197: `t(info.descriptionKey)`
+- `src/components/features/questions/QuestionTypeInfo.tsx` L37: `t(config.labelKey)`
+- `src/components/features/questions/QuestionTypeInfo.tsx` L38: `t(config.descriptionKey)`
 - `src/components/features/questions/editors/PhoneEditor.tsx` L20: `t(p.nameKey)`
 - `src/components/features/questions/editors/PhoneEditor.tsx` L20: `t(p.descriptionKey)`
 - `src/components/features/questions/editors/UrlEditor.tsx` L20: `t(p.nameKey)`
@@ -3129,8 +3185,10 @@ These translations use template literals to construct keys:
 - `src/components/ui/DatePicker.tsx` L1046: `t(preset.label)`
 - `src/components/ui/GettingStartedWizard.tsx` L327: `t(step.titleKey)`
 - `src/components/ui/GettingStartedWizard.tsx` L337: `t(step.descriptionKey)`
-- `src/components/ui/OnboardingWizard.tsx` L488: `t(step.titleKey)`
-- `src/components/ui/OnboardingWizard.tsx` L498: `t(step.descriptionKey)`
+- `src/components/ui/OnboardingWizard.tsx` L463: `t(step.titleKey)`
+- `src/components/ui/OnboardingWizard.tsx` L473: `t(step.descriptionKey)`
+- `src/components/ui/OnboardingWizard.tsx` L662: `t(mode.labelKey)`
+- `src/components/ui/OnboardingWizard.tsx` L687: `t(palette.labelKey)`
 - `src/hooks/queries/useQuestionLogic.ts` L393: `t(operatorTranslationKeys[LogicOperator.IsAnswered])`
 - `src/hooks/queries/useQuestionLogic.ts` L394: `t(operatorTranslationKeys[LogicOperator.IsNotAnswered])`
 - `src/hooks/queries/useQuestionLogic.ts` L395: `t(operatorTranslationKeys[LogicOperator.IsEmpty])`
@@ -3157,6 +3215,9 @@ These translations use template literals to construct keys:
 - `src/hooks/useTranslatedNav.ts` L71: `t(PAGE_LABEL_KEYS[id])`
 - `src/hooks/useTranslatedNav.ts` L72: `t(PAGE_DESCRIPTION_KEYS[id])`
 - `src/hooks/useTranslatedNav.ts` L83: `t(PAGE_LABEL_KEYS[pageId])`
+- `src/pages/DevTest/sections/ThemeControlsSection.tsx` L43: `t(palette.labelKey)`
+- `src/pages/DevTest/sections/ThemeControlsSection.tsx` L73: `t(mode.labelKey)`
+- `src/pages/DevTest/sections/ThemeControlsSection.tsx` L74: `t(mode.descKey)`
 - `src/pages/Distributions/components/DistributionCard.tsx` L117: `t(config.labelKey)`
 - `src/pages/PublicSurvey/sections/OneByOneSection.tsx` L40: `t(error)`
 - `src/pages/Settings/SettingsPage.tsx` L183: `t(group.titleKey)`
@@ -3165,7 +3226,7 @@ These translations use template literals to construct keys:
 - `src/pages/Settings/SettingsPage.tsx` L222: `t(item.labelKey)`
 - `src/pages/Settings/SettingsPage.tsx` L241: `t(currentItem.labelKey)`
 - `src/pages/Settings/SettingsPage.tsx` L242: `t(currentItem.descriptionKey)`
-- `src/pages/Settings/sections/AccessibilitySection.tsx` L127: `t(option.labelKey)`
+- `src/pages/Settings/sections/AccessibilitySection.tsx` L121: `t(option.labelKey)`
 - `src/pages/Settings/sections/AppearanceSection.tsx` L67: `t(mode.labelKey)`
 - `src/pages/Settings/sections/AppearanceSection.tsx` L68: `t(mode.descKey)`
 - `src/pages/Settings/sections/AppearanceSection.tsx` L106: `t(palette.labelKey)`
@@ -3195,29 +3256,29 @@ These translations use template literals to construct keys:
 - `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` L830: `t('emailEditor.generatedHtml', 'Generated HTML (Outlook Compatible)`
 - `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` L989: `t('emailEditor.placeholderCopied', { key, defaultValue: `Copied ${key}` })`
 - `src/components/features/localization/AddLanguageDialog.tsx` L213: `t(
-                      'localization.autoTranslateDesc',
-                      'Use machine translation to create initial translations from {{language}} (you can edit them later)`
+                    'localization.autoTranslateDesc',
+                    'Use machine translation to create initial translations from {{language}} (you can edit them later)`
 - `src/components/features/localization/AddLanguageDialog.tsx` L231: `t('localization.addLanguage', 'Add {{language}}', {
-                  language: LANGUAGE_INFO[selectedLanguage]?.nativeName || selectedLanguage,
-                })`
+                language: LANGUAGE_INFO[selectedLanguage]?.nativeName || selectedLanguage,
+              })`
 - `src/components/features/localization/LanguagesTab.tsx` L780: `t('localization.totalLanguages', '{{count}} languages configured', { count: languageStats.length })`
 - `src/components/features/localization/LanguagesTab.tsx` L783: `t('localization.questionsCount', '{{count}} questions', { count: questions.length })`
 - `src/components/features/localization/QuestionTranslationsEditor.tsx` L282: `t('localization.translationIncomplete', '{{percent}}% translated', {
-                percent: completeness.percent,
-              })`
-- `src/components/features/localization/QuestionTranslationsEditor.tsx` L461: `t('localization.optionsCount', '{{count}} options', {
-                  count: question.sourceOptions.length,
-                })`
-- `src/components/features/localization/QuestionTranslationsEditor.tsx` L543: `t('localization.questionsProgress', '{{complete}}/{{total}} complete', {
-              complete: stats.complete,
-              total: stats.total,
+              percent: completeness.percent,
             })`
+- `src/components/features/localization/QuestionTranslationsEditor.tsx` L461: `t('localization.optionsCount', '{{count}} options', {
+                count: question.sourceOptions.length,
+              })`
+- `src/components/features/localization/QuestionTranslationsEditor.tsx` L543: `t('localization.questionsProgress', '{{complete}}/{{total}} complete', {
+            complete: stats.complete,
+            total: stats.total,
+          })`
 - `src/components/features/localization/SurveyLanguageSwitcher.tsx` L143: `t('localization.languageCount', '{{count}} language(s)`
 - `src/components/features/localization/TranslationEditor.tsx` L223: `t('localization.translateTo', 'Translate to {{language}}', { language: targetLang.nativeName })`
 - `src/components/features/localization/TranslationEditor.tsx` L226: `t('localization.sourceLanguage', 'Source: {{language}}', { language: sourceLang.nativeName })`
 - `src/components/features/localization/TranslationEditorDialog.tsx` L93: `t('localization.editTranslation', 'Edit {{language}} Translation', {
-            language: targetLang.nativeName,
-          })`
+          language: targetLang.nativeName,
+        })`
 - `src/components/features/namespaces/MembersManagement.tsx` L120: `t('workspaces.team.removeConfirm', { name: `${member.firstName} ${member.lastName}` })`
 - `src/components/features/profile/PasswordChangeForm.tsx` L73: `t(strengthKeys[rawPasswordStrength.label] || rawPasswordStrength.label)`
 - `src/components/features/questions/QuestionEditor.tsx` L261: `t('localization.editingFallback', 'Editing (fallback)`
@@ -3235,20 +3296,20 @@ These translations use template literals to construct keys:
 - `src/components/ui/GettingStartedWizard.tsx` L861: `t('gettingStarted.complete.ready', "You're all set, {{name}}!", { name: userName })`
 - `src/components/ui/ImageUploader.tsx` L104: `t('imageUploader.errors.tooLarge', { maxSize: maxSizeMB, defaultValue: `File is too large. Maximum size is ${maxSizeMB}MB.` })`
 - `src/components/ui/ImageUploader.tsx` L309: `t('imageUploader.maxSize', {
-                      size: Math.round(maxSize / (1024 * 1024)`
-- `src/components/ui/OnboardingWizard.tsx` L511: `t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })`
+                    size: Math.round(maxSize / (1024 * 1024)`
+- `src/components/ui/OnboardingWizard.tsx` L486: `t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })`
 - `src/hooks/useConfirmDialog.tsx` L123: `t('dialogs.deleteDescription', { itemName: itemName.toLowerCase()`
 - `src/hooks/useEntityActions.ts` L223: `t('dialogs.deleteEntityTitle', { entity: capitalizedEntityName, defaultValue: `Delete ${capitalizedEntityName}` })`
 - `src/hooks/useEntityActions.ts` L224: `t('dialogs.deleteEntityDescription', {
-          name: displayName,
-          defaultValue: `Are you sure you want to delete "${displayName}"? This action cannot be undone.`,
-        })`
+        name: displayName,
+        defaultValue: `Are you sure you want to delete "${displayName}"? This action cannot be undone.`,
+      })`
 - `src/hooks/useEntityActions.ts` L237: `t('common.entityDeletedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} deleted successfully` })`
 - `src/hooks/useEntityActions.ts` L242: `t('common.entityDeleteFailed', { entity: entityName, defaultValue: `Failed to delete ${entityName}` })`
 - `src/hooks/useEntityActions.ts` L257: `t('common.entityDuplicatedSuccess', { entity: capitalizedEntityName, defaultValue: `${capitalizedEntityName} duplicated successfully` })`
 - `src/hooks/useEntityActions.ts` L262: `t('common.entityDuplicateFailed', { entity: entityName, defaultValue: `Failed to duplicate ${entityName}` })`
 - `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` L44: `t('emailEditor.modeSwitched', 'Switched to {{mode}} editor. Unsaved changes may be lost.', {
-            mode: mode === 'visual' ? t('emailTemplates.editor.visual', 'Visual')`
+          mode: mode === 'visual' ? t('emailTemplates.editor.visual', 'Visual')`
 - `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` L107: `t('emailTemplates.editor.visualMode', 'Visual Editor (Drag & Drop)`
 - `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` L117: `t('emailTemplates.editor.codeMode', 'Code Editor (Raw HTML)`
 - `src/pages/Settings/sections/DashboardSection.tsx` L154: `t(opt.labelKey, { count: opt.value })`
@@ -3256,9 +3317,9 @@ These translations use template literals to construct keys:
 - `src/pages/Settings/sections/ProfileSection.tsx` L37: `t('validation.required', { field: t('profile.lastName')`
 - `src/pages/Settings/sections/ProfileSection.tsx` L40: `t('validation.required', { field: t('profile.email')`
 - `src/pages/Settings/sections/SecuritySection.tsx` L106: `t('twoFactor.usingMethod', {
-                      method:
-                        twoFactor.method === 'authenticator'
-                          ? t('twoFactor.authenticatorApp')`
+                    method:
+                      twoFactor.method === 'authenticator'
+                        ? t('twoFactor.authenticatorApp')`
 
 ### ⚠️ ANY .t() call (catch-all) (10)
 
@@ -3268,12 +3329,12 @@ These translations use template literals to construct keys:
 - `src/components/ErrorBoundary.tsx` L85: `.t('errorBoundary.refreshMessage')`
 - `src/components/ErrorBoundary.tsx` L93: `.t('errorBoundary.goHome')`
 - `src/components/ErrorBoundary.tsx` L97: `.t('errorBoundary.tryAgain')`
-- `src/components/features/questions/QuestionTypeInfo.tsx` L178: `.t(info.labelKey)`
-- `src/components/features/questions/QuestionTypeInfo.tsx` L183: `.t(info.descriptionKey)`
+- `src/components/features/questions/QuestionTypeInfo.tsx` L23: `.t(getQuestionTypeLabelKey(type)`
+- `src/components/features/questions/QuestionTypeInfo.tsx` L27: `.t(getQuestionTypeDescriptionKey(type)`
 - `src/lib/validations.ts` L5: `.t(key, options)`
 - `src/types/enums.ts` L329: `.t(`${translationKeyPrefix}.${key}`)`
 
-### window.__i18n?.t() - Global fallback (6)
+### window.\_\_i18n?.t() - Global fallback (6)
 
 - `src/components/ErrorBoundary.tsx` L62: `window.__i18n?.t('errorBoundary.title'`
 - `src/components/ErrorBoundary.tsx` L64: `window.__i18n?.t('errorBoundary.description'`
@@ -3282,18 +3343,13 @@ These translations use template literals to construct keys:
 - `src/components/ErrorBoundary.tsx` L93: `window.__i18n?.t('errorBoundary.goHome'`
 - `src/components/ErrorBoundary.tsx` L97: `window.__i18n?.t('errorBoundary.tryAgain'`
 
-### i18n.t() - Dynamic key (2)
-
-- `src/components/features/questions/QuestionTypeInfo.tsx` L178: `i18n.t(info.labelKey)`
-- `src/components/features/questions/QuestionTypeInfo.tsx` L183: `i18n.t(info.descriptionKey)`
-
 ### i18n.t() - Direct instance call (1)
 
 - `src/types/enums.ts` L329: `i18n.t(`${translationKeyPrefix}.${key}``
 
 ---
 
-## All Static Translation Keys (2092)
+## All Static Translation Keys (2090)
 
 ```
 ${translationKeyPrefix}.${key}
@@ -4365,9 +4421,7 @@ onboarding.accessibility.largeText
 onboarding.accessibility.largeTextDesc
 onboarding.accessibility.reducedMotion
 onboarding.accessibility.reducedMotionDesc
-onboarding.appearance.${mode.id}
 onboarding.appearance.colorPalette
-onboarding.appearance.palette.${palette.id}
 onboarding.appearance.themeMode
 onboarding.complete.createSurvey
 onboarding.complete.distribute
@@ -5394,567 +5448,567 @@ workspaces.workspace
 
 ## Keys With Default Values
 
-| Key | Default Value | File | Line |
-|-----|---------------|------|------|
-| `linksPanel.types.campaign` | `Campaign` | `src/components/features/distributions/LinksPanel.tsx` | 93 |
-| `linksPanel.types.campaignDescription` | `Campaign tracking link` | `src/components/features/distributions/LinksPanel.tsx` | 96 |
-| `linksPanel.types.qrCode` | `QR Code` | `src/components/features/distributions/LinksPanel.tsx` | 99 |
-| `linksPanel.types.qrCodeDescription` | `QR code link` | `src/components/features/distributions/LinksPanel.tsx` | 102 |
-| `emailEditor.blockToolbar` | `Block actions` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 106 |
-| `common.dragToReorder` | `Drag to reorder` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 109 |
-| `common.dragToReorder` | `Drag to reorder` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 120 |
-| `common.moveUp` | `Move Up` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 130 |
-| `common.moveUp` | `Move Up` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 139 |
-| `common.moveDown` | `Move Down` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 147 |
-| `common.moveDown` | `Move Down` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 156 |
-| `emailEditor.settings.title` | `Settings` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 167 |
-| `emailEditor.settings.title` | `Settings` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 175 |
-| `common.duplicate` | `Duplicate` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 182 |
-| `common.duplicate` | `Duplicate` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 190 |
-| `common.delete` | `Delete` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 197 |
-| `common.delete` | `Delete` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 205 |
-| `a11y.logoAlt` | `Company logo` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 241 |
-| `emailEditor.preview.headerPlaceholder` | `Header Block` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 253 |
-| `emailEditor.preview.textPlaceholder` | `Text content...` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 274 |
-| `emailEditor.preview.imagePlaceholder` | `Add image URL` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 294 |
-| `emailEditor.preview.columnsPlaceholder` | `Columns Layout` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 350 |
-| `emailEditor.columns` | `columns` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 352 |
-| `emailEditor.preview.socialPlaceholder` | `Add social links` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 378 |
-| `emailEditor.preview.footerPlaceholder` | `Footer content` | `src/components/features/email-templates/visual-editor/BlockEditor.tsx` | 401 |
-| `emailEditor.blocks.header` | `Header` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 29 |
-| `emailEditor.blocks.headerDesc` | `Logo and title section` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 30 |
-| `emailEditor.blocks.text` | `Text` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 36 |
-| `emailEditor.blocks.textDesc` | `Rich text content` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 37 |
-| `emailEditor.blocks.image` | `Image` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 43 |
-| `emailEditor.blocks.imageDesc` | `Single image with optional link` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 44 |
-| `emailEditor.blocks.button` | `Button` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 50 |
-| `emailEditor.blocks.buttonDesc` | `Call-to-action button` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 51 |
-| `emailEditor.blocks.divider` | `Divider` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 57 |
-| `emailEditor.blocks.dividerDesc` | `Horizontal line separator` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 58 |
-| `emailEditor.blocks.spacer` | `Spacer` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 64 |
-| `emailEditor.blocks.spacerDesc` | `Empty vertical space` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 65 |
-| `emailEditor.blocks.columns` | `Columns` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 71 |
-| `emailEditor.blocks.columnsDesc` | `Multi-column layout` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 72 |
-| `emailEditor.blocks.social` | `Social Links` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 78 |
-| `emailEditor.blocks.socialDesc` | `Social media icons` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 79 |
-| `emailEditor.blocks.footer` | `Footer` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 85 |
-| `emailEditor.blocks.footerDesc` | `Company info & unsubscribe` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 86 |
-| `emailEditor.addBlock` | `Add Block` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 93 |
-| `emailEditor.addBlockHint` | `Click or drag blocks to add them` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 94 |
-| `emailEditor.blocks.header` | `Header` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 171 |
-| `emailEditor.blocks.text` | `Text` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 172 |
-| `emailEditor.blocks.image` | `Image` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 173 |
-| `emailEditor.blocks.button` | `Button` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 174 |
-| `emailEditor.blocks.divider` | `Divider` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 175 |
-| `emailEditor.blocks.spacer` | `Spacer` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 176 |
-| `emailEditor.blocks.columns` | `Columns` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 177 |
-| `emailEditor.blocks.social` | `Social` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 178 |
-| `emailEditor.blocks.footer` | `Footer` | `src/components/features/email-templates/visual-editor/BlockPalette.tsx` | 179 |
-| `emailEditor.settings.logo` | `Logo` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 138 |
-| `emailEditor.settings.logoUrl` | `Logo URL` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 140 |
-| `emailEditor.settings.logoWidth` | `Logo Width` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 146 |
-| `emailEditor.settings.content` | `Content` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 160 |
-| `emailEditor.settings.title` | `Title` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 162 |
-| `emailEditor.settings.subtitle` | `Subtitle` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 168 |
-| `emailEditor.settings.style` | `Style` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 177 |
-| `emailEditor.settings.alignment` | `Alignment` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 178 |
-| `emailEditor.settings.backgroundColor` | `Background` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 181 |
-| `emailEditor.settings.textColor` | `Text Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 188 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 191 |
-| `emailEditor.settings.content` | `Content` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 215 |
-| `emailEditor.settings.htmlContent` | `HTML Content` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 216 |
-| `emailEditor.settings.htmlSupport` | `Supports: <p>, <strong>, <em>, <a>, <ul>, <ol>` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 218 |
-| `emailEditor.settings.typography` | `Typography` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 224 |
-| `emailEditor.settings.alignment` | `Alignment` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 225 |
-| `emailEditor.settings.fontSize` | `Font Size` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 228 |
-| `emailEditor.settings.lineHeight` | `Line Height` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 238 |
-| `emailEditor.settings.colors` | `Colors` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 252 |
-| `emailEditor.settings.textColor` | `Text Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 253 |
-| `emailEditor.settings.backgroundColor` | `Background` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 256 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 263 |
-| `emailEditor.settings.image` | `Image` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 287 |
-| `emailEditor.settings.imageUrl` | `Image URL` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 289 |
-| `emailEditor.settings.altText` | `Alt Text` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 296 |
-| `emailEditor.settings.linkUrl` | `Link URL (optional)` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 302 |
-| `emailEditor.settings.layout` | `Layout` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 313 |
-| `emailEditor.settings.width` | `Width` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 314 |
-| `emailEditor.settings.alignment` | `Alignment` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 324 |
-| `emailEditor.settings.borderRadius` | `Border Radius` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 327 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 337 |
-| `emailEditor.settings.button` | `Button` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 361 |
-| `emailEditor.settings.buttonText` | `Button Text` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 363 |
-| `emailEditor.settings.url` | `URL` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 369 |
-| `emailEditor.settings.fullWidth` | `Full Width` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 377 |
-| `emailEditor.settings.style` | `Style` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 385 |
-| `emailEditor.settings.alignment` | `Alignment` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 386 |
-| `emailEditor.settings.buttonColor` | `Button Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 389 |
-| `emailEditor.settings.textColor` | `Text Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 396 |
-| `emailEditor.settings.fontSize` | `Font Size` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 399 |
-| `emailEditor.settings.borderRadius` | `Border Radius` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 409 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 423 |
-| `emailEditor.settings.vertical` | `Vertical` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 425 |
-| `emailEditor.settings.horizontal` | `Horizontal` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 443 |
-| `emailEditor.settings.divider` | `Divider` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 476 |
-| `emailEditor.settings.color` | `Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 477 |
-| `emailEditor.settings.thickness` | `Thickness` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 480 |
-| `emailEditor.settings.style` | `Style` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 491 |
-| `emailEditor.dividerStyles.solid` | `Solid` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 495 |
-| `emailEditor.dividerStyles.dashed` | `Dashed` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 496 |
-| `emailEditor.dividerStyles.dotted` | `Dotted` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 497 |
-| `emailEditor.settings.width` | `Width` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 501 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 507 |
-| `emailEditor.settings.spacer` | `Spacer` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 528 |
-| `emailEditor.settings.height` | `Height` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 529 |
-| `emailEditor.settings.preview` | `Preview` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 543 |
-| `emailEditor.settings.columns` | `Columns` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 591 |
-| `emailEditor.columns` | `columns` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 594 |
-| `common.add` | `Add` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 598 |
-| `common.delete` | `Delete` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 620 |
-| `emailEditor.settings.layout` | `Layout` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 631 |
-| `emailEditor.settings.gap` | `Gap` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 632 |
-| `emailEditor.settings.backgroundColor` | `Background` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 635 |
-| `emailEditor.settings.padding` | `Padding` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 642 |
-| `emailEditor.settings.stackOnMobile` | `Stack on mobile` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 654 |
-| `emailEditor.settings.socialLinks` | `Social Links` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 692 |
-| `common.delete` | `Delete` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 698 |
-| `emailEditor.settings.addPlatform` | `Add platform...` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 719 |
-| `emailEditor.settings.style` | `Style` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 731 |
-| `emailEditor.settings.alignment` | `Alignment` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 732 |
-| `emailEditor.settings.iconSize` | `Icon Size` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 735 |
-| `emailEditor.settings.gap` | `Gap` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 745 |
-| `emailEditor.settings.companyInfo` | `Company Info` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 762 |
-| `emailEditor.settings.companyName` | `Company Name` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 764 |
-| `emailEditor.settings.address` | `Address` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 770 |
-| `emailEditor.settings.addressPlaceholder` | `Company address...` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 775 |
-| `emailEditor.settings.unsubscribe` | `Unsubscribe` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 782 |
-| `emailEditor.settings.unsubscribeText` | `Link Text` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 784 |
-| `emailEditor.settings.unsubscribeUrl` | `URL` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 790 |
-| `emailEditor.settings.style` | `Style` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 800 |
-| `emailEditor.settings.backgroundColor` | `Background` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 801 |
-| `emailEditor.settings.textColor` | `Text Color` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 808 |
-| `emailEditor.settings.fontSize` | `Font Size` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 811 |
-| `emailEditor.noBlockSelected` | `No block selected` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 836 |
-| `emailEditor.selectBlockHint` | `Select a block in the canvas to edit its properties` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 838 |
-| `emailEditor.blocks.header` | `Header` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 870 |
-| `emailEditor.blocks.text` | `Text` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 871 |
-| `emailEditor.blocks.image` | `Image` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 872 |
-| `emailEditor.blocks.button` | `Button` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 873 |
-| `emailEditor.blocks.divider` | `Divider` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 874 |
-| `emailEditor.blocks.spacer` | `Spacer` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 875 |
-| `emailEditor.blocks.columns` | `Columns` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 876 |
-| `emailEditor.blocks.social` | `Social` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 877 |
-| `emailEditor.blocks.footer` | `Footer` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 878 |
-| `emailEditor.blockSettings` | `Block Settings` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 891 |
-| `common.close` | `Close` | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 894 |
-| `emailEditor.blockAdded` | `Block added` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 334 |
-| `emailEditor.blockDeleted` | `Block deleted` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 361 |
-| `emailEditor.blockDuplicated` | `Block duplicated` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 380 |
-| `emailEditor.errors.nameRequired` | `Template name is required` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 435 |
-| `emailEditor.errors.subjectRequired` | `Subject is required` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 439 |
-| `emailEditor.saved` | `Template saved successfully` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 455 |
-| `emailEditor.errors.saveFailed` | `Failed to save template` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 459 |
-| `emailEditor.htmlCopied` | `HTML copied to clipboard` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 466 |
-| `emailEditor.htmlDownloaded` | `HTML file downloaded` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 481 |
-| `emailTemplates.types.invitation` | `Invitation` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 524 |
-| `emailTemplates.types.reminder` | `Reminder` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 525 |
-| `emailTemplates.types.thankYou` | `Thank You` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 526 |
-| `emailTemplates.types.custom` | `Custom` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 527 |
-| `emailEditor.title` | `Visual Email Editor` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 546 |
-| `common.back` | `Back` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 551 |
-| `common.back` | `Back` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 553 |
-| `emailEditor.title` | `Visual Email Editor` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 557 |
-| `emailEditor.unsavedChanges` | `Unsaved changes` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 559 |
-| `common.saved` | `Saved` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 559 |
-| `emailEditor.toolbar` | `Editor toolbar` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 564 |
-| `emailEditor.views.edit` | `Edit` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 567 |
-| `emailEditor.views.preview` | `Preview` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 570 |
-| `emailEditor.views.code` | `HTML Code` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 573 |
-| `emailEditor.device.desktop` | `Desktop` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 581 |
-| `emailEditor.device.mobile` | `Mobile` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 584 |
-| `common.undo` | `Undo` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 595 |
-| `common.undo` | `Undo` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 596 |
-| `common.redo` | `Redo` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 600 |
-| `common.redo` | `Redo` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 601 |
-| `emailEditor.copyHtml` | `Copy HTML` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 612 |
-| `emailEditor.copyHtml` | `Copy HTML` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 613 |
-| `emailEditor.downloadHtml` | `Download HTML` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 617 |
-| `emailEditor.downloadHtml` | `Download HTML` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 618 |
-| `common.save` | `Save` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 629 |
-| `emailEditor.panels.blocks` | `Blocks` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 648 |
-| `emailEditor.panels.styles` | `Styles` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 652 |
-| `emailEditor.templateNameLabel` | `Template Name` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 679 |
-| `emailEditor.templateName` | `Enter template name...` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 684 |
-| `emailEditor.typeLabel` | `Type` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 691 |
-| `emailEditor.subjectLabel` | `Subject Line` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 699 |
-| `emailEditor.subjectPlaceholder` | `e.g., {{survey.title}} - We need your feedback` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 704 |
-| `emailEditor.preheaderTooltip` | `Preview text shown in inbox before opening the email` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 711 |
-| `emailEditor.preheaderLabel` | `Preheader` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 724 |
-| `emailEditor.preheaderPlaceholder` | `Preview text shown in inbox before opening the email...` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 736 |
-| `emailEditor.emptyCanvas` | `Drag blocks here or click to add` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 762 |
-| `emailEditor.addFirstBlock` | `Add your first block` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 764 |
-| `emailEditor.previewWithSampleData` | `Preview with sample data` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 802 |
-| `emailEditor.sampleDataInfo` | `Replaces placeholders like {{firstName}} with sample values` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 804 |
-| `emailEditor.generatedHtml` | `Generated HTML (Outlook Compatible)` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 830 |
-| `emailEditor.hideSettings` | `Hide settings panel` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 864 |
-| `emailEditor.showSettings` | `Show settings panel` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 864 |
-| `emailEditor.hideSettings` | `Hide settings panel` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 873 |
-| `emailEditor.showSettings` | `Show settings panel` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 873 |
-| `emailEditor.globalStyles` | `Global Styles` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 904 |
-| `emailEditor.styles.colors` | `Colors` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 908 |
-| `emailEditor.styles.backgroundColor` | `Page Background` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 912 |
-| `emailEditor.styles.contentBackground` | `Content Background` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 917 |
-| `emailEditor.styles.textColor` | `Text Color` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 922 |
-| `emailEditor.styles.linkColor` | `Link Color` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 927 |
-| `emailEditor.styles.typography` | `Typography` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 935 |
-| `emailEditor.styles.fontFamily` | `Font Family` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 938 |
-| `emailEditor.styles.layout` | `Layout` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 948 |
-| `emailEditor.styles.contentWidth` | `Content Width` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 952 |
-| `emailEditor.styles.borderRadius` | `Border Radius` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 965 |
-| `emailEditor.placeholders` | `Placeholders` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 997 |
-| `emailEditor.placeholdersHelp` | `Click to copy, then paste into text blocks` | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx` | 998 |
-| `localization.addLanguageTitle` | `Add Language` | `src/components/features/localization/AddLanguageDialog.tsx` | 95 |
-| `localization.addLanguageDescription` | `Add a new language translation to this survey` | `src/components/features/localization/AddLanguageDialog.tsx` | 96 |
-| `localization.searchLanguages` | `Search languages...` | `src/components/features/localization/AddLanguageDialog.tsx` | 109 |
-| `localization.popularLanguages` | `Popular Languages` | `src/components/features/localization/AddLanguageDialog.tsx` | 121 |
-| `localization.allLanguages` | `All Languages` | `src/components/features/localization/AddLanguageDialog.tsx` | 157 |
-| `common.noResults` | `No results found` | `src/components/features/localization/AddLanguageDialog.tsx` | 198 |
-| `localization.languageAlreadyExists` | `All available languages have been added` | `src/components/features/localization/AddLanguageDialog.tsx` | 199 |
-| `localization.autoTranslate` | `Auto-translate from default language` | `src/components/features/localization/AddLanguageDialog.tsx` | 211 |
-| `common.cancel` | `Cancel` | `src/components/features/localization/AddLanguageDialog.tsx` | 227 |
-| `localization.addLanguage` | `Add Language` | `src/components/features/localization/AddLanguageDialog.tsx` | 234 |
-| `localization.defaultLanguage` | `Default language` | `src/components/features/localization/LanguageList.tsx` | 176 |
-| `localization.default` | `Default` | `src/components/features/localization/LanguageList.tsx` | 179 |
-| `localization.disabled` | `Disabled` | `src/components/features/localization/LanguageList.tsx` | 186 |
-| `localization.source` | `Source` | `src/components/features/localization/LanguageList.tsx` | 201 |
-| `localization.surveyFieldsTooltip` | `Survey title, description, messages` | `src/components/features/localization/LanguageList.tsx` | 234 |
-| `localization.fieldsLabel` | `fields` | `src/components/features/localization/LanguageList.tsx` | 240 |
-| `localization.questionsTooltip` | `Question text and options` | `src/components/features/localization/LanguageList.tsx` | 243 |
-| `localization.questionsLabel` | `questions` | `src/components/features/localization/LanguageList.tsx` | 249 |
-| `localization.needsWork` | `Needs work` | `src/components/features/localization/LanguageList.tsx` | 258 |
-| `localization.editTranslations` | `Edit Translations` | `src/components/features/localization/LanguageList.tsx` | 278 |
-| `localization.disable` | `Disable` | `src/components/features/localization/LanguageList.tsx` | 283 |
-| `localization.enable` | `Enable` | `src/components/features/localization/LanguageList.tsx` | 283 |
-| `localization.setAsDefault` | `Set as Default` | `src/components/features/localization/LanguageList.tsx` | 289 |
-| `common.delete` | `Delete` | `src/components/features/localization/LanguageList.tsx` | 296 |
-| `localization.noLanguages` | `No languages configured` | `src/components/features/localization/LanguageList.tsx` | 328 |
-| `localization.noContent` | `No content` | `src/components/features/localization/LanguagesTab.tsx` | 158 |
-| `common.required` | `Required` | `src/components/features/localization/LanguagesTab.tsx` | 170 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/LanguagesTab.tsx` | 178 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/LanguagesTab.tsx` | 186 |
-| `localization.fields.title` | `Survey Title` | `src/components/features/localization/LanguagesTab.tsx` | 400 |
-| `localization.fields.description` | `Description` | `src/components/features/localization/LanguagesTab.tsx` | 407 |
-| `localization.fields.welcomeMessage` | `Welcome Message` | `src/components/features/localization/LanguagesTab.tsx` | 414 |
-| `localization.fields.thankYouMessage` | `Thank You Message` | `src/components/features/localization/LanguagesTab.tsx` | 421 |
-| `localization.editingTranslation` | `Editing translation` | `src/components/features/localization/LanguagesTab.tsx` | 490 |
-| `common.saved` | `Saved` | `src/components/features/localization/LanguagesTab.tsx` | 498 |
-| `common.saving` | `Saving...` | `src/components/features/localization/LanguagesTab.tsx` | 505 |
-| `common.saveChanges` | `Save Changes` | `src/components/features/localization/LanguagesTab.tsx` | 505 |
-| `localization.surveyDetails` | `Survey Details` | `src/components/features/localization/LanguagesTab.tsx` | 521 |
-| `localization.questions` | `Questions` | `src/components/features/localization/LanguagesTab.tsx` | 525 |
-| `localization.surveyFieldsProgress` | `Survey fields progress` | `src/components/features/localization/LanguagesTab.tsx` | 537 |
-| `localization.noQuestions` | `No questions to translate` | `src/components/features/localization/LanguagesTab.tsx` | 576 |
-| `localization.noQuestionsDesc` | `Add questions to your survey first, then come back to translate them.` | `src/components/features/localization/LanguagesTab.tsx` | 577 |
-| `localization.autoTranslateHint` | `Auto-translate feature coming soon!` | `src/components/features/localization/LanguagesTab.tsx` | 592 |
-| `common.loading` | `Loading...` | `src/components/features/localization/LanguagesTab.tsx` | 684 |
-| `localization.surveyLanguages` | `Languages` | `src/components/features/localization/LanguagesTab.tsx` | 718 |
-| `localization.languagesDescription` | `Manage translations for your survey` | `src/components/features/localization/LanguagesTab.tsx` | 719 |
-| `localization.export` | `Export` | `src/components/features/localization/LanguagesTab.tsx` | 727 |
-| `localization.import` | `Import` | `src/components/features/localization/LanguagesTab.tsx` | 731 |
-| `localization.addLanguage` | `Add Language` | `src/components/features/localization/LanguagesTab.tsx` | 737 |
-| `localization.noLanguages` | `No languages configured` | `src/components/features/localization/LanguagesTab.tsx` | 757 |
-| `localization.noLanguagesDesc` | `Add languages to make your survey available in multiple languages.` | `src/components/features/localization/LanguagesTab.tsx` | 758 |
-| `localization.addLanguage` | `Add Language` | `src/components/features/localization/LanguagesTab.tsx` | 763 |
-| `localization.untitledQuestion` | `Untitled Question` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 267 |
-| `localization.translationComplete` | `Translation complete` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 274 |
-| `common.complete` | `Complete` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 277 |
-| `localization.questionText` | `Question Text` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 303 |
-| `localization.noContent` | `No content` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 306 |
-| `localization.questionText` | `Question Text` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 313 |
-| `common.required` | `Required` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 317 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 324 |
-| `localization.description` | `Description` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 341 |
-| `localization.description` | `Description` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 352 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 362 |
-| `localization.ratingLabels` | `Rating Labels` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 378 |
-| `localization.lowRatingLabel` | `Low Rating Label` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 387 |
-| `localization.lowRatingLabel` | `Low Rating Label` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 396 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 406 |
-| `localization.highRatingLabel` | `High Rating Label` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 423 |
-| `localization.highRatingLabel` | `High Rating Label` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 432 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 442 |
-| `localization.optionsTranslationHint` | `Option translations coming in next update` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 479 |
-| `localization.noQuestions` | `No questions to translate` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 531 |
-| `localization.questions` | `Questions` | `src/components/features/localization/QuestionTranslationsEditor.tsx` | 540 |
-| `localization.switchLanguage` | `Switch editing language` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 100 |
-| `localization.switchLanguage` | `Switch editing language` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 110 |
-| `localization.default` | `Default` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 119 |
-| `localization.selectLanguage` | `Select language` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 134 |
-| `localization.surveyLanguages` | `Survey Languages` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 140 |
-| `localization.default` | `Default` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 172 |
-| `localization.addLanguage` | `Add Language` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 206 |
-| `localization.editTranslation` | `Edit Translation...` | `src/components/features/localization/SurveyLanguageSwitcher.tsx` | 217 |
-| `localization.noContent` | `No content` | `src/components/features/localization/TranslationEditor.tsx` | 98 |
-| `localization.needsTranslation` | `Needs translation` | `src/components/features/localization/TranslationEditor.tsx` | 112 |
-| `localization.enterTranslation` | `Enter translation...` | `src/components/features/localization/TranslationEditor.tsx` | 119 |
-| `localization.fields.title` | `Survey Title` | `src/components/features/localization/TranslationEditor.tsx` | 176 |
-| `localization.fields.description` | `Description` | `src/components/features/localization/TranslationEditor.tsx` | 183 |
-| `localization.fields.welcomeMessage` | `Welcome Message` | `src/components/features/localization/TranslationEditor.tsx` | 190 |
-| `localization.fields.thankYouMessage` | `Thank You Message` | `src/components/features/localization/TranslationEditor.tsx` | 197 |
-| `common.saving` | `Saving...` | `src/components/features/localization/TranslationEditor.tsx` | 253 |
-| `common.saveChanges` | `Save Changes` | `src/components/features/localization/TranslationEditor.tsx` | 258 |
-| `common.saved` | `Saved` | `src/components/features/localization/TranslationEditor.tsx` | 263 |
-| `localization.surveyDetails` | `Survey Details` | `src/components/features/localization/TranslationEditor.tsx` | 276 |
-| `localization.autoTranslateHint` | `Auto-translate feature coming soon!` | `src/components/features/localization/TranslationEditor.tsx` | 300 |
-| `localization.editTranslationDesc` | `Translate survey content from the default language` | `src/components/features/localization/TranslationEditorDialog.tsx` | 96 |
-| `localization.loadingTranslations` | `Loading translations...` | `src/components/features/localization/TranslationEditorDialog.tsx` | 105 |
-| `localization.errorLoading` | `Failed to load translations` | `src/components/features/localization/TranslationEditorDialog.tsx` | 112 |
-| `localization.errorLoadingDesc` | `Please try again later` | `src/components/features/localization/TranslationEditorDialog.tsx` | 113 |
-| `localization.noTranslation` | `Translation not found` | `src/components/features/localization/TranslationEditorDialog.tsx` | 121 |
-| `localization.noTranslationDesc` | `This language translation does not exist yet` | `src/components/features/localization/TranslationEditorDialog.tsx` | 122 |
-| `questionPreview.interactiveMode` | `Interactive preview - try it out!` | `src/components/features/public-survey/UnifiedQuestionPreview.tsx` | 162 |
-| `common.reset` | `Reset` | `src/components/features/public-survey/UnifiedQuestionPreview.tsx` | 172 |
-| `questionPreview.questionText` | `Question text` | `src/components/features/public-survey/UnifiedQuestionPreview.tsx` | 182 |
-| `questionEditor.preview` | `Preview` | `src/components/features/public-survey/UnifiedQuestionPreview.tsx` | 217 |
-| `localization.fallback` | `Fallback` | `src/components/features/questions/QuestionCard.tsx` | 128 |
-| `localization.editingFallback` | `Editing (fallback)` | `src/components/features/questions/QuestionEditor.tsx` | 261 |
-| `common.duplicate` | `Duplicate` | `src/components/features/questions/QuestionEditor.tsx` | 276 |
-| `common.delete` | `Delete` | `src/components/features/questions/QuestionEditor.tsx` | 286 |
-| `questionEditor.rating.style` | `Rating Style` | `src/components/features/questions/editors/RatingEditor.tsx` | 51 |
-| `questionEditor.yesNo.style` | `Display Style` | `src/components/features/questions/editors/YesNoEditor.tsx` | 49 |
-| `createSurvey.language` | `Language` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 194 |
-| `createSurvey.preview.features` | `Features` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 274 |
-| `createSurvey.preview.scale` | `Scale` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 340 |
-| `createSurvey.preview.classic.question` | `How satisfied are you with our service?` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 359 |
-| `createSurvey.preview.classic.option1` | `Very satisfied` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 366 |
-| `createSurvey.preview.classic.option2` | `Satisfied` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 367 |
-| `createSurvey.preview.classic.option3` | `Neutral` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 368 |
-| `createSurvey.preview.classic.option4` | `Dissatisfied` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 369 |
-| `createSurvey.preview.progress` | `Question 1 of 5` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 394 |
-| `createSurvey.preview.conversational.userMessage` | `The experience was great!` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 425 |
-| `createSurvey.preview.conversational.followUp` | `Wonderful! What did you like most?` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 435 |
-| `createSurvey.preview.conversational.placeholder` | `Type your answer...` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 442 |
-| `createSurvey.preview.research.title` | `Which option do you prefer?` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 456 |
-| `createSurvey.preview.research.subtitle` | `Conjoint Analysis` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 457 |
-| `createSurvey.preview.assessment.title` | `Multi-rater Feedback` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 484 |
-| `createSurvey.preview.assessment.self` | `Self` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 490 |
-| `createSurvey.preview.assessment.manager` | `Manager` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 491 |
-| `createSurvey.preview.assessment.peers` | `Peers` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 492 |
-| `createSurvey.preview.assessment.reports` | `Direct Reports` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 493 |
-| `createSurvey.preview.nps.detractors` | `Detractors` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 549 |
-| `createSurvey.preview.nps.passives` | `Passives` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 550 |
-| `createSurvey.preview.nps.promoters` | `Promoters` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 551 |
-| `createSurvey.preview.csat.rating` | `4 out of 5` | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx` | 626 |
-| `themes.applySuccess` | `Theme applied to survey` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 412 |
-| `themes.applyError` | `Failed to apply theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 415 |
-| `themes.nameRequired` | `Theme name is required` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 439 |
-| `themes.createSuccess` | `Theme created successfully` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 463 |
-| `themes.createError` | `Failed to create theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 478 |
-| `themes.appearance` | `Appearance` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 495 |
-| `themes.customizeLook` | `Customize your survey look` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 496 |
-| `themes.title` | `Themes` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 524 |
-| `themes.customize` | `Customize` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 528 |
-| `themes.light` | `Light` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 539 |
-| `themes.dark` | `Dark` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 560 |
-| `themes.customized` | `Customized` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 598 |
-| `themes.basedOn` | `Based on` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 601 |
-| `themes.reset` | `Reset` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 607 |
-| `themes.colors` | `Colors` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 618 |
-| `themes.brandColors` | `Brand Colors` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 623 |
-| `themes.primary` | `Primary` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 625 |
-| `themes.secondary` | `Secondary` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 627 |
-| `themes.surfaceColors` | `Surface Colors` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 636 |
-| `themes.background` | `Background` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 639 |
-| `themes.surface` | `Surface` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 644 |
-| `themes.accent` | `Accent` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 648 |
-| `themes.textPrimary` | `Text` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 650 |
-| `themes.typography` | `Typography` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 663 |
-| `themes.bodyFont` | `Body Font` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 668 |
-| `themes.cornerRadius` | `Corner Radius` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 700 |
-| `themes.layoutSpacing` | `Layout & Spacing` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 725 |
-| `themes.containerWidth` | `Container Width` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 729 |
-| `themes.spacing` | `Spacing` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 752 |
-| `themes.displayOptions` | `Display Options` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 780 |
-| `themes.progressIndicator` | `Progress Indicator` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 785 |
-| `common.none` | `None` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 799 |
-| `themes.questionNumbers` | `Question Numbers` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 825 |
-| `common.none` | `None` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 839 |
-| `themes.applied` | `Applied` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 874 |
-| `themes.applyToSurvey` | `Apply to Survey` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 874 |
-| `themes.saveAsNewTheme` | `Save as New Theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 880 |
-| `themes.saveTheme` | `Save Theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 890 |
-| `themes.saveThemeDesc` | `Create a new theme from your customizations` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 891 |
-| `themes.themeName` | `Theme Name` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 896 |
-| `themes.themeNamePlaceholder` | `My Custom Theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 902 |
-| `themes.untitled` | `Untitled Theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 915 |
-| `themes.customTheme` | `Custom theme` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 917 |
-| `common.cancel` | `Cancel` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 925 |
-| `themes.saveAndApply` | `Save & Apply` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 930 |
-| `themeCard.default` | `Default` | `src/components/features/surveys/ThemePreviewPanel.tsx` | 1051 |
-| `templates.form.language` | `Language` | `src/components/features/templates/CreateTemplateDialog.tsx` | 259 |
-| `themeEditor.livePreviewHint` | `Changes update in real-time` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 331 |
-| `themeEditor.tabs.layout` | `Layout` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 373 |
-| `themeEditor.brandColors` | `Brand Colors` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 416 |
-| `themeEditor.colors.accent` | `Accent` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 426 |
-| `themeEditor.surfaceColors` | `Surface Colors` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 435 |
-| `themeEditor.colors.surface` | `Surface` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 444 |
-| `themeEditor.bodyFont` | `Body Font` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 457 |
-| `themeEditor.headingFont` | `Heading Font` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 486 |
-| `themeEditor.cornerRadius` | `Corner Radius` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 544 |
-| `themeEditor.containerWidth` | `Container Width` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 568 |
-| `themeEditor.spacing` | `Spacing` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 591 |
-| `themeEditor.progressIndicator` | `Progress Indicator` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 613 |
-| `common.none` | `None` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 625 |
-| `themeEditor.questionNumbers` | `Question Numbers` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 651 |
-| `common.none` | `None` | `src/components/features/themes/ThemeEditorDrawer.tsx` | 663 |
-| `auth.signingIn` | `Signing in...` | `src/components/ui/AzureAdLoginButton.tsx` | 44 |
-| `auth.signInWithMicrosoft` | `Sign in with Microsoft` | `src/components/ui/AzureAdLoginButton.tsx` | 44 |
-| `gettingStarted.errors.saveFailed` | `Failed to save progress. Please try again.` | `src/components/ui/GettingStartedWizard.tsx` | 134 |
-| `gettingStarted.errors.saveFailed` | `Failed to save progress` | `src/components/ui/GettingStartedWizard.tsx` | 135 |
-| `gettingStarted.defaultUser` | `there` | `src/components/ui/GettingStartedWizard.tsx` | 218 |
-| `gettingStarted.defaultUser` | `there` | `src/components/ui/GettingStartedWizard.tsx` | 236 |
-| `gettingStarted.skipAriaLabel` | `Skip getting started guide` | `src/components/ui/GettingStartedWizard.tsx` | 286 |
-| `gettingStarted.stepNavigation` | `Guide steps` | `src/components/ui/GettingStartedWizard.tsx` | 343 |
-| `common.back` | `Back` | `src/components/ui/GettingStartedWizard.tsx` | 387 |
-| `gettingStarted.startCreating` | `Start Creating` | `src/components/ui/GettingStartedWizard.tsx` | 393 |
-| `common.next` | `Next` | `src/components/ui/GettingStartedWizard.tsx` | 397 |
-| `gettingStarted.welcome.steps.create` | `Create` | `src/components/ui/GettingStartedWizard.tsx` | 415 |
-| `gettingStarted.welcome.steps.share` | `Share` | `src/components/ui/GettingStartedWizard.tsx` | 416 |
-| `gettingStarted.welcome.steps.analyze` | `Analyze` | `src/components/ui/GettingStartedWizard.tsx` | 417 |
-| `gettingStarted.welcome.message` | `This quick guide will walk you through the essential steps to create, distribute, and analyze your surveys.` | `src/components/ui/GettingStartedWizard.tsx` | 446 |
-| `gettingStarted.workspace.intro` | `Workspaces help you organize surveys by team, project, or client. Think of them as folders for your work.` | `src/components/ui/GettingStartedWizard.tsx` | 486 |
-| `gettingStarted.workspace.benefits.title` | `Workspace Benefits` | `src/components/ui/GettingStartedWizard.tsx` | 495 |
-| `gettingStarted.workspace.benefits.organize` | `Organize surveys by project or team` | `src/components/ui/GettingStartedWizard.tsx` | 499 |
-| `gettingStarted.workspace.benefits.collaborate` | `Invite team members to collaborate` | `src/components/ui/GettingStartedWizard.tsx` | 500 |
-| `gettingStarted.workspace.benefits.separate` | `Keep client work separate` | `src/components/ui/GettingStartedWizard.tsx` | 501 |
-| `gettingStarted.workspace.hint` | `You can access workspaces from the sidebar or navigation menu.` | `src/components/ui/GettingStartedWizard.tsx` | 512 |
-| `gettingStarted.createSurvey.methods.scratch.title` | `Start from Scratch` | `src/components/ui/GettingStartedWizard.tsx` | 524 |
-| `gettingStarted.createSurvey.methods.scratch.desc` | `Build a custom survey with full control` | `src/components/ui/GettingStartedWizard.tsx` | 525 |
-| `gettingStarted.createSurvey.methods.template.title` | `Use a Template` | `src/components/ui/GettingStartedWizard.tsx` | 529 |
-| `gettingStarted.createSurvey.methods.template.desc` | `Start with pre-built survey templates` | `src/components/ui/GettingStartedWizard.tsx` | 530 |
-| `gettingStarted.createSurvey.intro` | `Ready to create? You have two options to get started:` | `src/components/ui/GettingStartedWizard.tsx` | 537 |
-| `gettingStarted.createSurvey.shortcut` | `Pro tip: Press Ctrl+N to quickly create a new survey` | `src/components/ui/GettingStartedWizard.tsx` | 562 |
-| `gettingStarted.questions.types.multipleChoice` | `Multiple Choice` | `src/components/ui/GettingStartedWizard.tsx` | 572 |
-| `gettingStarted.questions.types.text` | `Text Answer` | `src/components/ui/GettingStartedWizard.tsx` | 573 |
-| `gettingStarted.questions.types.rating` | `Rating Scale` | `src/components/ui/GettingStartedWizard.tsx` | 574 |
-| `gettingStarted.questions.types.nps` | `NPS Score` | `src/components/ui/GettingStartedWizard.tsx` | 575 |
-| `gettingStarted.questions.intro` | `The Survey Builder supports 10+ question types. Here are some popular ones:` | `src/components/ui/GettingStartedWizard.tsx` | 581 |
-| `gettingStarted.questions.builderFeatures.title` | `Builder Features` | `src/components/ui/GettingStartedWizard.tsx` | 602 |
-| `gettingStarted.questions.builderFeatures.dragDrop` | `Drag & drop to reorder questions` | `src/components/ui/GettingStartedWizard.tsx` | 606 |
-| `gettingStarted.questions.builderFeatures.autosave` | `Autosave keeps your work safe` | `src/components/ui/GettingStartedWizard.tsx` | 610 |
-| `gettingStarted.questions.builderFeatures.undoRedo` | `Undo/Redo with Ctrl+Z / Ctrl+Y` | `src/components/ui/GettingStartedWizard.tsx` | 614 |
-| `gettingStarted.themes.intro` | `Make your surveys visually appealing with custom themes. Matching your brand has never been easier.` | `src/components/ui/GettingStartedWizard.tsx` | 634 |
-| `gettingStarted.themes.customize.title` | `Customize Everything` | `src/components/ui/GettingStartedWizard.tsx` | 638 |
-| `gettingStarted.themes.customize.colors` | `Brand colors` | `src/components/ui/GettingStartedWizard.tsx` | 641 |
-| `gettingStarted.themes.customize.fonts` | `Typography` | `src/components/ui/GettingStartedWizard.tsx` | 642 |
-| `gettingStarted.themes.customize.logo` | `Logo placement` | `src/components/ui/GettingStartedWizard.tsx` | 643 |
-| `gettingStarted.themes.customize.background` | `Backgrounds` | `src/components/ui/GettingStartedWizard.tsx` | 644 |
-| `gettingStarted.themes.hint` | `Access Themes from the sidebar to create reusable designs.` | `src/components/ui/GettingStartedWizard.tsx` | 655 |
-| `gettingStarted.preview.intro` | `Always preview your survey before sharing! See exactly what respondents will experience.` | `src/components/ui/GettingStartedWizard.tsx` | 673 |
-| `gettingStarted.preview.features.title` | `Preview Features` | `src/components/ui/GettingStartedWizard.tsx` | 677 |
-| `gettingStarted.preview.features.desktop` | `Desktop & mobile views` | `src/components/ui/GettingStartedWizard.tsx` | 680 |
-| `gettingStarted.preview.features.test` | `Test the survey as a respondent` | `src/components/ui/GettingStartedWizard.tsx` | 681 |
-| `gettingStarted.preview.features.logic` | `Verify question logic flows` | `src/components/ui/GettingStartedWizard.tsx` | 682 |
-| `gettingStarted.preview.hint` | `Click the Preview button in the Survey Builder toolbar.` | `src/components/ui/GettingStartedWizard.tsx` | 693 |
-| `gettingStarted.distribute.methods.link.title` | `Share Link` | `src/components/ui/GettingStartedWizard.tsx` | 705 |
-| `gettingStarted.distribute.methods.link.desc` | `Copy and paste anywhere` | `src/components/ui/GettingStartedWizard.tsx` | 706 |
-| `gettingStarted.distribute.methods.email.title` | `Email Campaign` | `src/components/ui/GettingStartedWizard.tsx` | 710 |
-| `gettingStarted.distribute.methods.email.desc` | `Send to your contact list` | `src/components/ui/GettingStartedWizard.tsx` | 711 |
-| `gettingStarted.distribute.intro` | `Once your survey is ready, publish it and share with your audience.` | `src/components/ui/GettingStartedWizard.tsx` | 718 |
-| `gettingStarted.distribute.hint` | `Access Distribute from the sidebar to manage all your survey links.` | `src/components/ui/GettingStartedWizard.tsx` | 742 |
-| `gettingStarted.responses.intro` | `Watch responses come in real-time! Every submission is captured and stored securely.` | `src/components/ui/GettingStartedWizard.tsx` | 760 |
-| `gettingStarted.responses.features.title` | `Response Management` | `src/components/ui/GettingStartedWizard.tsx` | 764 |
-| `gettingStarted.responses.features.realtime` | `Real-time response notifications` | `src/components/ui/GettingStartedWizard.tsx` | 767 |
-| `gettingStarted.responses.features.individual` | `View individual responses` | `src/components/ui/GettingStartedWizard.tsx` | 768 |
-| `gettingStarted.responses.features.export` | `Export to CSV or Excel` | `src/components/ui/GettingStartedWizard.tsx` | 769 |
-| `gettingStarted.analytics.features.charts` | `Charts & Graphs` | `src/components/ui/GettingStartedWizard.tsx` | 786 |
-| `gettingStarted.analytics.features.trends` | `Trends Over Time` | `src/components/ui/GettingStartedWizard.tsx` | 787 |
-| `gettingStarted.analytics.features.export` | `Export Reports` | `src/components/ui/GettingStartedWizard.tsx` | 788 |
-| `gettingStarted.analytics.intro` | `Turn raw data into actionable insights with powerful analytics.` | `src/components/ui/GettingStartedWizard.tsx` | 794 |
-| `gettingStarted.analytics.insights.title` | `Get Insights On` | `src/components/ui/GettingStartedWizard.tsx` | 815 |
-| `gettingStarted.analytics.insights.completion` | `Completion rates` | `src/components/ui/GettingStartedWizard.tsx` | 818 |
-| `gettingStarted.analytics.insights.response` | `Response patterns` | `src/components/ui/GettingStartedWizard.tsx` | 819 |
-| `gettingStarted.analytics.insights.nps` | `NPS scores & benchmarks` | `src/components/ui/GettingStartedWizard.tsx` | 820 |
-| `gettingStarted.complete.actions.surveys` | `Surveys` | `src/components/ui/GettingStartedWizard.tsx` | 837 |
-| `gettingStarted.complete.actions.templates` | `Templates` | `src/components/ui/GettingStartedWizard.tsx` | 838 |
-| `gettingStarted.complete.actions.analytics` | `Analytics` | `src/components/ui/GettingStartedWizard.tsx` | 839 |
-| `gettingStarted.complete.message` | `You now know the essentials. Start creating surveys and gathering valuable insights!` | `src/components/ui/GettingStartedWizard.tsx` | 870 |
-| `gettingStarted.complete.shortcuts.title` | `Quick Navigation Shortcuts` | `src/components/ui/GettingStartedWizard.tsx` | 881 |
-| `imageUploader.errors.invalidType` | `Invalid file type. Please upload an image.` | `src/components/ui/ImageUploader.tsx` | 98 |
-| `imageUploader.errors.noUploadFunction` | `Upload is not available. Please enter a URL instead.` | `src/components/ui/ImageUploader.tsx` | 126 |
-| `imageUploader.errors.uploadFailed` | `Upload failed. Please try again.` | `src/components/ui/ImageUploader.tsx` | 138 |
-| `imageUploader.upload` | `Upload` | `src/components/ui/ImageUploader.tsx` | 229 |
-| `imageUploader.url` | `URL` | `src/components/ui/ImageUploader.tsx` | 243 |
-| `imageUploader.selectFile` | `Select file` | `src/components/ui/ImageUploader.tsx` | 296 |
-| `imageUploader.uploading` | `Uploading...` | `src/components/ui/ImageUploader.tsx` | 302 |
-| `imageUploader.dragDrop` | `Drag & drop or click to upload` | `src/components/ui/ImageUploader.tsx` | 307 |
-| `imageUploader.apply` | `Apply` | `src/components/ui/ImageUploader.tsx` | 339 |
-| `imageUploader.remove` | `Remove image` | `src/components/ui/ImageUploader.tsx` | 349 |
-| `onboarding.completedSuccessfully` | `Setup completed successfully!` | `src/components/ui/OnboardingWizard.tsx` | 262 |
-| `onboarding.errors.saveFailed` | `Failed to save your preferences. Please try again.` | `src/components/ui/OnboardingWizard.tsx` | 266 |
-| `onboarding.errors.saveFailed` | `Failed to save your preferences` | `src/components/ui/OnboardingWizard.tsx` | 267 |
-| `onboarding.skipAriaLabel` | `Skip onboarding wizard` | `src/components/ui/OnboardingWizard.tsx` | 447 |
-| `onboarding.stepNavigation` | `Wizard steps` | `src/components/ui/OnboardingWizard.tsx` | 504 |
-| `onboarding.accessibility.intro` | `Customize your experience for better accessibility` | `src/components/ui/OnboardingWizard.tsx` | 873 |
-| `onboarding.accessibility.reducedMotion` | `Reduce Motion` | `src/components/ui/OnboardingWizard.tsx` | 881 |
-| `onboarding.accessibility.reducedMotionDesc` | `Minimize animations and transitions` | `src/components/ui/OnboardingWizard.tsx` | 882 |
-| `onboarding.accessibility.highContrast` | `High Contrast` | `src/components/ui/OnboardingWizard.tsx` | 890 |
-| `onboarding.accessibility.highContrastDesc` | `Increase color contrast for better visibility` | `src/components/ui/OnboardingWizard.tsx` | 891 |
-| `onboarding.accessibility.largeText` | `Large Text` | `src/components/ui/OnboardingWizard.tsx` | 899 |
-| `onboarding.accessibility.largeTextDesc` | `Increase font size throughout the app` | `src/components/ui/OnboardingWizard.tsx` | 900 |
-| `onboarding.accessibility.dyslexiaFont` | `Dyslexia-Friendly Font` | `src/components/ui/OnboardingWizard.tsx` | 908 |
-| `onboarding.accessibility.dyslexiaFontDesc` | `Use a font designed for easier reading` | `src/components/ui/OnboardingWizard.tsx` | 909 |
-| `onboarding.accessibility.hint` | `You can adjust these settings anytime in Settings → Accessibility` | `src/components/ui/OnboardingWizard.tsx` | 915 |
-| `common.operationFailed` | `Operation failed` | `src/hooks/useEntityActions.ts` | 56 |
-| `common.confirm` | `Confirm` | `src/hooks/useEntityActions.ts` | 116 |
-| `common.operationFailed` | `Operation failed` | `src/hooks/useEntityActions.ts` | 117 |
-| `common.delete` | `Delete` | `src/hooks/useEntityActions.ts` | 228 |
-| `dialogs.confirmDescription` | `Are you sure?` | `src/hooks/useEntityActions.ts` | 281 |
-| `dialogs.confirmAction` | `Confirm Action` | `src/hooks/useEntityActions.ts` | 284 |
-| `common.operationFailed` | `Operation failed` | `src/hooks/useEntityActions.ts` | 296 |
-| `auth.authenticationFailed` | `Authentication Failed` | `src/pages/AzureCallback/AzureCallbackPage.tsx` | 57 |
-| `auth.returnToLogin` | `Return to Login` | `src/pages/AzureCallback/AzureCallbackPage.tsx` | 60 |
-| `auth.completingSignIn` | `Completing sign in...` | `src/pages/AzureCallback/AzureCallbackPage.tsx` | 72 |
-| `emailEditor.saved` | `Template saved successfully` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 32 |
-| `emailTemplates.editor.visual` | `Visual` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 45 |
-| `emailTemplates.editor.code` | `Code` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 45 |
-| `emailEditor.errors.loadFailed` | `Failed to load template` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 71 |
-| `emailEditor.errors.loadFailedDescription` | `The email template could not be loaded. Please try again.` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 72 |
-| `emailEditor.errors.noTemplate` | `No template selected` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 90 |
-| `emailEditor.errors.noTemplateDescription` | `Please select an email template to edit.` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 91 |
-| `emailTemplates.backToTemplates` | `Back to Templates` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 94 |
-| `emailTemplates.editor.visualMode` | `Visual Editor (Drag & Drop)` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 107 |
-| `emailTemplates.editor.codeMode` | `Code Editor (Raw HTML)` | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx` | 117 |
-| `auth.illustrationTitle` | `Create surveys that inspire` | `src/pages/Login/sections/IllustrationPanel.tsx` | 20 |
-| `auth.illustrationSubtitle` | `Gather insights, understand your audience, and make data-driven decisions.` | `src/pages/Login/sections/IllustrationPanel.tsx` | 22 |
-| `auth.welcomeBack` | `Welcome back` | `src/pages/Login/sections/LoginForm.tsx` | 39 |
-| `auth.signInToContinue` | `Sign in to continue to your account` | `src/pages/Login/sections/LoginForm.tsx` | 40 |
-| `auth.orContinueWith` | `or continue with` | `src/pages/Login/sections/LoginForm.tsx` | 111 |
-| `auth.joinUs` | `Join thousands of teams creating better surveys` | `src/pages/Register/RegisterPage.tsx` | 78 |
-| `auth.registerIllustrationTitle` | `Join our community` | `src/pages/Register/RegisterPage.tsx` | 95 |
-| `auth.registerIllustrationSubtitle` | `Create, distribute, and analyze surveys with powerful tools designed for teams.` | `src/pages/Register/RegisterPage.tsx` | 97 |
-| `surveyBuilder.selectQuestion` | `Select a question` | `src/pages/SurveyBuilder/SurveyBuilderPage.tsx` | 309 |
-| `surveyBuilder.selectQuestionDesc` | `Choose a question from the list to edit, or add a new one` | `src/pages/SurveyBuilder/SurveyBuilderPage.tsx` | 313 |
-| `common.item` | `item` | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx` | 232 |
-| `common.items` | `items` | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx` | 232 |
-| `surveyBuilder.add` | `Add` | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx` | 239 |
-| `surveyBuilder.dragToReorder` | `Drag to reorder questions` | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx` | 252 |
-| `surveyBuilder.addFirstQuestionDesc` | `Start building your survey by adding your first question` | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx` | 302 |
-| `surveyBuilder.readOnlyBanner` | `This survey is published and cannot be edited. You are viewing it in read-only mode.` | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx` | 81 |
-| `common.back` | `Back` | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx` | 91 |
-| `surveyBuilder.viewOnly` | `View Only` | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx` | 149 |
-| `surveyBuilder.tabs.questions` | `Questions` | `src/pages/SurveyBuilder/components/SurveyBuilderTabs.tsx` | 77 |
-| `surveyBuilder.tabs.languages` | `Languages` | `src/pages/SurveyBuilder/components/SurveyBuilderTabs.tsx` | 83 |
-| `surveyPreview.switchPreviewLanguage` | `Switch preview language` | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx` | 78 |
-| `surveyPreview.switchPreviewLanguage` | `Switch preview language` | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx` | 88 |
-| `surveyPreview.selectLanguage` | `Select language` | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx` | 108 |
-| `surveyPreview.previewLanguage` | `Preview Language` | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx` | 112 |
-| `localization.default` | `Default` | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx` | 139 |
-| `surveyPreview.testModeDesc` | `No data is saved` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 332 |
-| `surveyPreview.testModeOff` | `Test mode is off` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 332 |
-| `surveyPreview.keyboardHintsDesc` | `Show keyboard shortcuts` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 357 |
-| `surveyPreview.displayModeDesc` | `How questions appear to respondents` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 404 |
-| `surveyPreview.testModeDesc` | `No data is saved` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 436 |
-| `surveyPreview.keyboardHintsDesc` | `Show keyboard shortcuts` | `src/pages/SurveyPreview/components/PreviewToolbar.tsx` | 444 |
+| Key                                                  | Default Value                                                                                                 | File                                                                           | Line |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---- |
+| `linksPanel.types.campaign`                          | `Campaign`                                                                                                    | `src/components/features/distributions/LinksPanel.tsx`                         | 93   |
+| `linksPanel.types.campaignDescription`               | `Campaign tracking link`                                                                                      | `src/components/features/distributions/LinksPanel.tsx`                         | 96   |
+| `linksPanel.types.qrCode`                            | `QR Code`                                                                                                     | `src/components/features/distributions/LinksPanel.tsx`                         | 99   |
+| `linksPanel.types.qrCodeDescription`                 | `QR code link`                                                                                                | `src/components/features/distributions/LinksPanel.tsx`                         | 102  |
+| `emailEditor.blockToolbar`                           | `Block actions`                                                                                               | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 106  |
+| `common.dragToReorder`                               | `Drag to reorder`                                                                                             | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 109  |
+| `common.dragToReorder`                               | `Drag to reorder`                                                                                             | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 120  |
+| `common.moveUp`                                      | `Move Up`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 130  |
+| `common.moveUp`                                      | `Move Up`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 139  |
+| `common.moveDown`                                    | `Move Down`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 147  |
+| `common.moveDown`                                    | `Move Down`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 156  |
+| `emailEditor.settings.title`                         | `Settings`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 167  |
+| `emailEditor.settings.title`                         | `Settings`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 175  |
+| `common.duplicate`                                   | `Duplicate`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 182  |
+| `common.duplicate`                                   | `Duplicate`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 190  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 197  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 205  |
+| `a11y.logoAlt`                                       | `Company logo`                                                                                                | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 241  |
+| `emailEditor.preview.headerPlaceholder`              | `Header Block`                                                                                                | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 253  |
+| `emailEditor.preview.textPlaceholder`                | `Text content...`                                                                                             | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 274  |
+| `emailEditor.preview.imagePlaceholder`               | `Add image URL`                                                                                               | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 294  |
+| `emailEditor.preview.columnsPlaceholder`             | `Columns Layout`                                                                                              | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 350  |
+| `emailEditor.columns`                                | `columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 352  |
+| `emailEditor.preview.socialPlaceholder`              | `Add social links`                                                                                            | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 378  |
+| `emailEditor.preview.footerPlaceholder`              | `Footer content`                                                                                              | `src/components/features/email-templates/visual-editor/BlockEditor.tsx`        | 401  |
+| `emailEditor.blocks.header`                          | `Header`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 29   |
+| `emailEditor.blocks.headerDesc`                      | `Logo and title section`                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 30   |
+| `emailEditor.blocks.text`                            | `Text`                                                                                                        | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 36   |
+| `emailEditor.blocks.textDesc`                        | `Rich text content`                                                                                           | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 37   |
+| `emailEditor.blocks.image`                           | `Image`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 43   |
+| `emailEditor.blocks.imageDesc`                       | `Single image with optional link`                                                                             | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 44   |
+| `emailEditor.blocks.button`                          | `Button`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 50   |
+| `emailEditor.blocks.buttonDesc`                      | `Call-to-action button`                                                                                       | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 51   |
+| `emailEditor.blocks.divider`                         | `Divider`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 57   |
+| `emailEditor.blocks.dividerDesc`                     | `Horizontal line separator`                                                                                   | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 58   |
+| `emailEditor.blocks.spacer`                          | `Spacer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 64   |
+| `emailEditor.blocks.spacerDesc`                      | `Empty vertical space`                                                                                        | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 65   |
+| `emailEditor.blocks.columns`                         | `Columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 71   |
+| `emailEditor.blocks.columnsDesc`                     | `Multi-column layout`                                                                                         | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 72   |
+| `emailEditor.blocks.social`                          | `Social Links`                                                                                                | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 78   |
+| `emailEditor.blocks.socialDesc`                      | `Social media icons`                                                                                          | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 79   |
+| `emailEditor.blocks.footer`                          | `Footer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 85   |
+| `emailEditor.blocks.footerDesc`                      | `Company info & unsubscribe`                                                                                  | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 86   |
+| `emailEditor.addBlock`                               | `Add Block`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 93   |
+| `emailEditor.addBlockHint`                           | `Click or drag blocks to add them`                                                                            | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 94   |
+| `emailEditor.blocks.header`                          | `Header`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 171  |
+| `emailEditor.blocks.text`                            | `Text`                                                                                                        | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 172  |
+| `emailEditor.blocks.image`                           | `Image`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 173  |
+| `emailEditor.blocks.button`                          | `Button`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 174  |
+| `emailEditor.blocks.divider`                         | `Divider`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 175  |
+| `emailEditor.blocks.spacer`                          | `Spacer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 176  |
+| `emailEditor.blocks.columns`                         | `Columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 177  |
+| `emailEditor.blocks.social`                          | `Social`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 178  |
+| `emailEditor.blocks.footer`                          | `Footer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockPalette.tsx`       | 179  |
+| `emailEditor.settings.logo`                          | `Logo`                                                                                                        | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 138  |
+| `emailEditor.settings.logoUrl`                       | `Logo URL`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 140  |
+| `emailEditor.settings.logoWidth`                     | `Logo Width`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 146  |
+| `emailEditor.settings.content`                       | `Content`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 160  |
+| `emailEditor.settings.title`                         | `Title`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 162  |
+| `emailEditor.settings.subtitle`                      | `Subtitle`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 168  |
+| `emailEditor.settings.style`                         | `Style`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 177  |
+| `emailEditor.settings.alignment`                     | `Alignment`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 178  |
+| `emailEditor.settings.backgroundColor`               | `Background`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 181  |
+| `emailEditor.settings.textColor`                     | `Text Color`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 188  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 191  |
+| `emailEditor.settings.content`                       | `Content`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 215  |
+| `emailEditor.settings.htmlContent`                   | `HTML Content`                                                                                                | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 216  |
+| `emailEditor.settings.htmlSupport`                   | `Supports: <p>, <strong>, <em>, <a>, <ul>, <ol>`                                                              | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 218  |
+| `emailEditor.settings.typography`                    | `Typography`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 224  |
+| `emailEditor.settings.alignment`                     | `Alignment`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 225  |
+| `emailEditor.settings.fontSize`                      | `Font Size`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 228  |
+| `emailEditor.settings.lineHeight`                    | `Line Height`                                                                                                 | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 238  |
+| `emailEditor.settings.colors`                        | `Colors`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 252  |
+| `emailEditor.settings.textColor`                     | `Text Color`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 253  |
+| `emailEditor.settings.backgroundColor`               | `Background`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 256  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 263  |
+| `emailEditor.settings.image`                         | `Image`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 287  |
+| `emailEditor.settings.imageUrl`                      | `Image URL`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 289  |
+| `emailEditor.settings.altText`                       | `Alt Text`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 296  |
+| `emailEditor.settings.linkUrl`                       | `Link URL (optional)`                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 302  |
+| `emailEditor.settings.layout`                        | `Layout`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 313  |
+| `emailEditor.settings.width`                         | `Width`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 314  |
+| `emailEditor.settings.alignment`                     | `Alignment`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 324  |
+| `emailEditor.settings.borderRadius`                  | `Border Radius`                                                                                               | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 327  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 337  |
+| `emailEditor.settings.button`                        | `Button`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 361  |
+| `emailEditor.settings.buttonText`                    | `Button Text`                                                                                                 | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 363  |
+| `emailEditor.settings.url`                           | `URL`                                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 369  |
+| `emailEditor.settings.fullWidth`                     | `Full Width`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 377  |
+| `emailEditor.settings.style`                         | `Style`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 385  |
+| `emailEditor.settings.alignment`                     | `Alignment`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 386  |
+| `emailEditor.settings.buttonColor`                   | `Button Color`                                                                                                | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 389  |
+| `emailEditor.settings.textColor`                     | `Text Color`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 396  |
+| `emailEditor.settings.fontSize`                      | `Font Size`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 399  |
+| `emailEditor.settings.borderRadius`                  | `Border Radius`                                                                                               | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 409  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 423  |
+| `emailEditor.settings.vertical`                      | `Vertical`                                                                                                    | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 425  |
+| `emailEditor.settings.horizontal`                    | `Horizontal`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 443  |
+| `emailEditor.settings.divider`                       | `Divider`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 476  |
+| `emailEditor.settings.color`                         | `Color`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 477  |
+| `emailEditor.settings.thickness`                     | `Thickness`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 480  |
+| `emailEditor.settings.style`                         | `Style`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 491  |
+| `emailEditor.dividerStyles.solid`                    | `Solid`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 495  |
+| `emailEditor.dividerStyles.dashed`                   | `Dashed`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 496  |
+| `emailEditor.dividerStyles.dotted`                   | `Dotted`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 497  |
+| `emailEditor.settings.width`                         | `Width`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 501  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 507  |
+| `emailEditor.settings.spacer`                        | `Spacer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 528  |
+| `emailEditor.settings.height`                        | `Height`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 529  |
+| `emailEditor.settings.preview`                       | `Preview`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 543  |
+| `emailEditor.settings.columns`                       | `Columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 591  |
+| `emailEditor.columns`                                | `columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 594  |
+| `common.add`                                         | `Add`                                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 598  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 620  |
+| `emailEditor.settings.layout`                        | `Layout`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 631  |
+| `emailEditor.settings.gap`                           | `Gap`                                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 632  |
+| `emailEditor.settings.backgroundColor`               | `Background`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 635  |
+| `emailEditor.settings.padding`                       | `Padding`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 642  |
+| `emailEditor.settings.stackOnMobile`                 | `Stack on mobile`                                                                                             | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 654  |
+| `emailEditor.settings.socialLinks`                   | `Social Links`                                                                                                | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 692  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 698  |
+| `emailEditor.settings.addPlatform`                   | `Add platform...`                                                                                             | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 719  |
+| `emailEditor.settings.style`                         | `Style`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 731  |
+| `emailEditor.settings.alignment`                     | `Alignment`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 732  |
+| `emailEditor.settings.iconSize`                      | `Icon Size`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 735  |
+| `emailEditor.settings.gap`                           | `Gap`                                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 745  |
+| `emailEditor.settings.companyInfo`                   | `Company Info`                                                                                                | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 762  |
+| `emailEditor.settings.companyName`                   | `Company Name`                                                                                                | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 764  |
+| `emailEditor.settings.address`                       | `Address`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 770  |
+| `emailEditor.settings.addressPlaceholder`            | `Company address...`                                                                                          | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 775  |
+| `emailEditor.settings.unsubscribe`                   | `Unsubscribe`                                                                                                 | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 782  |
+| `emailEditor.settings.unsubscribeText`               | `Link Text`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 784  |
+| `emailEditor.settings.unsubscribeUrl`                | `URL`                                                                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 790  |
+| `emailEditor.settings.style`                         | `Style`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 800  |
+| `emailEditor.settings.backgroundColor`               | `Background`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 801  |
+| `emailEditor.settings.textColor`                     | `Text Color`                                                                                                  | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 808  |
+| `emailEditor.settings.fontSize`                      | `Font Size`                                                                                                   | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 811  |
+| `emailEditor.noBlockSelected`                        | `No block selected`                                                                                           | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 836  |
+| `emailEditor.selectBlockHint`                        | `Select a block in the canvas to edit its properties`                                                         | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 838  |
+| `emailEditor.blocks.header`                          | `Header`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 870  |
+| `emailEditor.blocks.text`                            | `Text`                                                                                                        | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 871  |
+| `emailEditor.blocks.image`                           | `Image`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 872  |
+| `emailEditor.blocks.button`                          | `Button`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 873  |
+| `emailEditor.blocks.divider`                         | `Divider`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 874  |
+| `emailEditor.blocks.spacer`                          | `Spacer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 875  |
+| `emailEditor.blocks.columns`                         | `Columns`                                                                                                     | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 876  |
+| `emailEditor.blocks.social`                          | `Social`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 877  |
+| `emailEditor.blocks.footer`                          | `Footer`                                                                                                      | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 878  |
+| `emailEditor.blockSettings`                          | `Block Settings`                                                                                              | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 891  |
+| `common.close`                                       | `Close`                                                                                                       | `src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx` | 894  |
+| `emailEditor.blockAdded`                             | `Block added`                                                                                                 | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 334  |
+| `emailEditor.blockDeleted`                           | `Block deleted`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 361  |
+| `emailEditor.blockDuplicated`                        | `Block duplicated`                                                                                            | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 380  |
+| `emailEditor.errors.nameRequired`                    | `Template name is required`                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 435  |
+| `emailEditor.errors.subjectRequired`                 | `Subject is required`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 439  |
+| `emailEditor.saved`                                  | `Template saved successfully`                                                                                 | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 455  |
+| `emailEditor.errors.saveFailed`                      | `Failed to save template`                                                                                     | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 459  |
+| `emailEditor.htmlCopied`                             | `HTML copied to clipboard`                                                                                    | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 466  |
+| `emailEditor.htmlDownloaded`                         | `HTML file downloaded`                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 481  |
+| `emailTemplates.types.invitation`                    | `Invitation`                                                                                                  | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 524  |
+| `emailTemplates.types.reminder`                      | `Reminder`                                                                                                    | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 525  |
+| `emailTemplates.types.thankYou`                      | `Thank You`                                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 526  |
+| `emailTemplates.types.custom`                        | `Custom`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 527  |
+| `emailEditor.title`                                  | `Visual Email Editor`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 546  |
+| `common.back`                                        | `Back`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 551  |
+| `common.back`                                        | `Back`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 553  |
+| `emailEditor.title`                                  | `Visual Email Editor`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 557  |
+| `emailEditor.unsavedChanges`                         | `Unsaved changes`                                                                                             | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 559  |
+| `common.saved`                                       | `Saved`                                                                                                       | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 559  |
+| `emailEditor.toolbar`                                | `Editor toolbar`                                                                                              | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 564  |
+| `emailEditor.views.edit`                             | `Edit`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 567  |
+| `emailEditor.views.preview`                          | `Preview`                                                                                                     | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 570  |
+| `emailEditor.views.code`                             | `HTML Code`                                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 573  |
+| `emailEditor.device.desktop`                         | `Desktop`                                                                                                     | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 581  |
+| `emailEditor.device.mobile`                          | `Mobile`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 584  |
+| `common.undo`                                        | `Undo`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 595  |
+| `common.undo`                                        | `Undo`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 596  |
+| `common.redo`                                        | `Redo`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 600  |
+| `common.redo`                                        | `Redo`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 601  |
+| `emailEditor.copyHtml`                               | `Copy HTML`                                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 612  |
+| `emailEditor.copyHtml`                               | `Copy HTML`                                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 613  |
+| `emailEditor.downloadHtml`                           | `Download HTML`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 617  |
+| `emailEditor.downloadHtml`                           | `Download HTML`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 618  |
+| `common.save`                                        | `Save`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 629  |
+| `emailEditor.panels.blocks`                          | `Blocks`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 648  |
+| `emailEditor.panels.styles`                          | `Styles`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 652  |
+| `emailEditor.templateNameLabel`                      | `Template Name`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 679  |
+| `emailEditor.templateName`                           | `Enter template name...`                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 684  |
+| `emailEditor.typeLabel`                              | `Type`                                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 691  |
+| `emailEditor.subjectLabel`                           | `Subject Line`                                                                                                | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 699  |
+| `emailEditor.subjectPlaceholder`                     | `e.g., {{survey.title}} - We need your feedback`                                                              | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 704  |
+| `emailEditor.preheaderTooltip`                       | `Preview text shown in inbox before opening the email`                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 711  |
+| `emailEditor.preheaderLabel`                         | `Preheader`                                                                                                   | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 724  |
+| `emailEditor.preheaderPlaceholder`                   | `Preview text shown in inbox before opening the email...`                                                     | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 736  |
+| `emailEditor.emptyCanvas`                            | `Drag blocks here or click to add`                                                                            | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 762  |
+| `emailEditor.addFirstBlock`                          | `Add your first block`                                                                                        | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 764  |
+| `emailEditor.previewWithSampleData`                  | `Preview with sample data`                                                                                    | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 802  |
+| `emailEditor.sampleDataInfo`                         | `Replaces placeholders like {{firstName}} with sample values`                                                 | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 804  |
+| `emailEditor.generatedHtml`                          | `Generated HTML (Outlook Compatible)`                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 830  |
+| `emailEditor.hideSettings`                           | `Hide settings panel`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 864  |
+| `emailEditor.showSettings`                           | `Show settings panel`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 864  |
+| `emailEditor.hideSettings`                           | `Hide settings panel`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 873  |
+| `emailEditor.showSettings`                           | `Show settings panel`                                                                                         | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 873  |
+| `emailEditor.globalStyles`                           | `Global Styles`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 904  |
+| `emailEditor.styles.colors`                          | `Colors`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 908  |
+| `emailEditor.styles.backgroundColor`                 | `Page Background`                                                                                             | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 912  |
+| `emailEditor.styles.contentBackground`               | `Content Background`                                                                                          | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 917  |
+| `emailEditor.styles.textColor`                       | `Text Color`                                                                                                  | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 922  |
+| `emailEditor.styles.linkColor`                       | `Link Color`                                                                                                  | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 927  |
+| `emailEditor.styles.typography`                      | `Typography`                                                                                                  | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 935  |
+| `emailEditor.styles.fontFamily`                      | `Font Family`                                                                                                 | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 938  |
+| `emailEditor.styles.layout`                          | `Layout`                                                                                                      | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 948  |
+| `emailEditor.styles.contentWidth`                    | `Content Width`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 952  |
+| `emailEditor.styles.borderRadius`                    | `Border Radius`                                                                                               | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 965  |
+| `emailEditor.placeholders`                           | `Placeholders`                                                                                                | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 997  |
+| `emailEditor.placeholdersHelp`                       | `Click to copy, then paste into text blocks`                                                                  | `src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx`  | 998  |
+| `localization.addLanguageTitle`                      | `Add Language`                                                                                                | `src/components/features/localization/AddLanguageDialog.tsx`                   | 95   |
+| `localization.addLanguageDescription`                | `Add a new language translation to this survey`                                                               | `src/components/features/localization/AddLanguageDialog.tsx`                   | 96   |
+| `localization.searchLanguages`                       | `Search languages...`                                                                                         | `src/components/features/localization/AddLanguageDialog.tsx`                   | 109  |
+| `localization.popularLanguages`                      | `Popular Languages`                                                                                           | `src/components/features/localization/AddLanguageDialog.tsx`                   | 121  |
+| `localization.allLanguages`                          | `All Languages`                                                                                               | `src/components/features/localization/AddLanguageDialog.tsx`                   | 157  |
+| `common.noResults`                                   | `No results found`                                                                                            | `src/components/features/localization/AddLanguageDialog.tsx`                   | 198  |
+| `localization.languageAlreadyExists`                 | `All available languages have been added`                                                                     | `src/components/features/localization/AddLanguageDialog.tsx`                   | 199  |
+| `localization.autoTranslate`                         | `Auto-translate from default language`                                                                        | `src/components/features/localization/AddLanguageDialog.tsx`                   | 211  |
+| `common.cancel`                                      | `Cancel`                                                                                                      | `src/components/features/localization/AddLanguageDialog.tsx`                   | 227  |
+| `localization.addLanguage`                           | `Add Language`                                                                                                | `src/components/features/localization/AddLanguageDialog.tsx`                   | 234  |
+| `localization.defaultLanguage`                       | `Default language`                                                                                            | `src/components/features/localization/LanguageList.tsx`                        | 176  |
+| `localization.default`                               | `Default`                                                                                                     | `src/components/features/localization/LanguageList.tsx`                        | 179  |
+| `localization.disabled`                              | `Disabled`                                                                                                    | `src/components/features/localization/LanguageList.tsx`                        | 186  |
+| `localization.source`                                | `Source`                                                                                                      | `src/components/features/localization/LanguageList.tsx`                        | 201  |
+| `localization.surveyFieldsTooltip`                   | `Survey title, description, messages`                                                                         | `src/components/features/localization/LanguageList.tsx`                        | 234  |
+| `localization.fieldsLabel`                           | `fields`                                                                                                      | `src/components/features/localization/LanguageList.tsx`                        | 240  |
+| `localization.questionsTooltip`                      | `Question text and options`                                                                                   | `src/components/features/localization/LanguageList.tsx`                        | 243  |
+| `localization.questionsLabel`                        | `questions`                                                                                                   | `src/components/features/localization/LanguageList.tsx`                        | 249  |
+| `localization.needsWork`                             | `Needs work`                                                                                                  | `src/components/features/localization/LanguageList.tsx`                        | 258  |
+| `localization.editTranslations`                      | `Edit Translations`                                                                                           | `src/components/features/localization/LanguageList.tsx`                        | 278  |
+| `localization.disable`                               | `Disable`                                                                                                     | `src/components/features/localization/LanguageList.tsx`                        | 283  |
+| `localization.enable`                                | `Enable`                                                                                                      | `src/components/features/localization/LanguageList.tsx`                        | 283  |
+| `localization.setAsDefault`                          | `Set as Default`                                                                                              | `src/components/features/localization/LanguageList.tsx`                        | 289  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/localization/LanguageList.tsx`                        | 296  |
+| `localization.noLanguages`                           | `No languages configured`                                                                                     | `src/components/features/localization/LanguageList.tsx`                        | 328  |
+| `localization.noContent`                             | `No content`                                                                                                  | `src/components/features/localization/LanguagesTab.tsx`                        | 158  |
+| `common.required`                                    | `Required`                                                                                                    | `src/components/features/localization/LanguagesTab.tsx`                        | 170  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/LanguagesTab.tsx`                        | 178  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/LanguagesTab.tsx`                        | 186  |
+| `localization.fields.title`                          | `Survey Title`                                                                                                | `src/components/features/localization/LanguagesTab.tsx`                        | 400  |
+| `localization.fields.description`                    | `Description`                                                                                                 | `src/components/features/localization/LanguagesTab.tsx`                        | 407  |
+| `localization.fields.welcomeMessage`                 | `Welcome Message`                                                                                             | `src/components/features/localization/LanguagesTab.tsx`                        | 414  |
+| `localization.fields.thankYouMessage`                | `Thank You Message`                                                                                           | `src/components/features/localization/LanguagesTab.tsx`                        | 421  |
+| `localization.editingTranslation`                    | `Editing translation`                                                                                         | `src/components/features/localization/LanguagesTab.tsx`                        | 490  |
+| `common.saved`                                       | `Saved`                                                                                                       | `src/components/features/localization/LanguagesTab.tsx`                        | 498  |
+| `common.saving`                                      | `Saving...`                                                                                                   | `src/components/features/localization/LanguagesTab.tsx`                        | 505  |
+| `common.saveChanges`                                 | `Save Changes`                                                                                                | `src/components/features/localization/LanguagesTab.tsx`                        | 505  |
+| `localization.surveyDetails`                         | `Survey Details`                                                                                              | `src/components/features/localization/LanguagesTab.tsx`                        | 521  |
+| `localization.questions`                             | `Questions`                                                                                                   | `src/components/features/localization/LanguagesTab.tsx`                        | 525  |
+| `localization.surveyFieldsProgress`                  | `Survey fields progress`                                                                                      | `src/components/features/localization/LanguagesTab.tsx`                        | 537  |
+| `localization.noQuestions`                           | `No questions to translate`                                                                                   | `src/components/features/localization/LanguagesTab.tsx`                        | 576  |
+| `localization.noQuestionsDesc`                       | `Add questions to your survey first, then come back to translate them.`                                       | `src/components/features/localization/LanguagesTab.tsx`                        | 577  |
+| `localization.autoTranslateHint`                     | `Auto-translate feature coming soon!`                                                                         | `src/components/features/localization/LanguagesTab.tsx`                        | 592  |
+| `common.loading`                                     | `Loading...`                                                                                                  | `src/components/features/localization/LanguagesTab.tsx`                        | 684  |
+| `localization.surveyLanguages`                       | `Languages`                                                                                                   | `src/components/features/localization/LanguagesTab.tsx`                        | 718  |
+| `localization.languagesDescription`                  | `Manage translations for your survey`                                                                         | `src/components/features/localization/LanguagesTab.tsx`                        | 719  |
+| `localization.export`                                | `Export`                                                                                                      | `src/components/features/localization/LanguagesTab.tsx`                        | 727  |
+| `localization.import`                                | `Import`                                                                                                      | `src/components/features/localization/LanguagesTab.tsx`                        | 731  |
+| `localization.addLanguage`                           | `Add Language`                                                                                                | `src/components/features/localization/LanguagesTab.tsx`                        | 737  |
+| `localization.noLanguages`                           | `No languages configured`                                                                                     | `src/components/features/localization/LanguagesTab.tsx`                        | 757  |
+| `localization.noLanguagesDesc`                       | `Add languages to make your survey available in multiple languages.`                                          | `src/components/features/localization/LanguagesTab.tsx`                        | 758  |
+| `localization.addLanguage`                           | `Add Language`                                                                                                | `src/components/features/localization/LanguagesTab.tsx`                        | 763  |
+| `localization.untitledQuestion`                      | `Untitled Question`                                                                                           | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 267  |
+| `localization.translationComplete`                   | `Translation complete`                                                                                        | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 274  |
+| `common.complete`                                    | `Complete`                                                                                                    | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 277  |
+| `localization.questionText`                          | `Question Text`                                                                                               | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 303  |
+| `localization.noContent`                             | `No content`                                                                                                  | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 306  |
+| `localization.questionText`                          | `Question Text`                                                                                               | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 313  |
+| `common.required`                                    | `Required`                                                                                                    | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 317  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 324  |
+| `localization.description`                           | `Description`                                                                                                 | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 341  |
+| `localization.description`                           | `Description`                                                                                                 | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 352  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 362  |
+| `localization.ratingLabels`                          | `Rating Labels`                                                                                               | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 378  |
+| `localization.lowRatingLabel`                        | `Low Rating Label`                                                                                            | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 387  |
+| `localization.lowRatingLabel`                        | `Low Rating Label`                                                                                            | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 396  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 406  |
+| `localization.highRatingLabel`                       | `High Rating Label`                                                                                           | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 423  |
+| `localization.highRatingLabel`                       | `High Rating Label`                                                                                           | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 432  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 442  |
+| `localization.optionsTranslationHint`                | `Option translations coming in next update`                                                                   | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 479  |
+| `localization.noQuestions`                           | `No questions to translate`                                                                                   | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 531  |
+| `localization.questions`                             | `Questions`                                                                                                   | `src/components/features/localization/QuestionTranslationsEditor.tsx`          | 540  |
+| `localization.switchLanguage`                        | `Switch editing language`                                                                                     | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 100  |
+| `localization.switchLanguage`                        | `Switch editing language`                                                                                     | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 110  |
+| `localization.default`                               | `Default`                                                                                                     | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 119  |
+| `localization.selectLanguage`                        | `Select language`                                                                                             | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 134  |
+| `localization.surveyLanguages`                       | `Survey Languages`                                                                                            | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 140  |
+| `localization.default`                               | `Default`                                                                                                     | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 172  |
+| `localization.addLanguage`                           | `Add Language`                                                                                                | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 206  |
+| `localization.editTranslation`                       | `Edit Translation...`                                                                                         | `src/components/features/localization/SurveyLanguageSwitcher.tsx`              | 217  |
+| `localization.noContent`                             | `No content`                                                                                                  | `src/components/features/localization/TranslationEditor.tsx`                   | 98   |
+| `localization.needsTranslation`                      | `Needs translation`                                                                                           | `src/components/features/localization/TranslationEditor.tsx`                   | 112  |
+| `localization.enterTranslation`                      | `Enter translation...`                                                                                        | `src/components/features/localization/TranslationEditor.tsx`                   | 119  |
+| `localization.fields.title`                          | `Survey Title`                                                                                                | `src/components/features/localization/TranslationEditor.tsx`                   | 176  |
+| `localization.fields.description`                    | `Description`                                                                                                 | `src/components/features/localization/TranslationEditor.tsx`                   | 183  |
+| `localization.fields.welcomeMessage`                 | `Welcome Message`                                                                                             | `src/components/features/localization/TranslationEditor.tsx`                   | 190  |
+| `localization.fields.thankYouMessage`                | `Thank You Message`                                                                                           | `src/components/features/localization/TranslationEditor.tsx`                   | 197  |
+| `common.saving`                                      | `Saving...`                                                                                                   | `src/components/features/localization/TranslationEditor.tsx`                   | 253  |
+| `common.saveChanges`                                 | `Save Changes`                                                                                                | `src/components/features/localization/TranslationEditor.tsx`                   | 258  |
+| `common.saved`                                       | `Saved`                                                                                                       | `src/components/features/localization/TranslationEditor.tsx`                   | 263  |
+| `localization.surveyDetails`                         | `Survey Details`                                                                                              | `src/components/features/localization/TranslationEditor.tsx`                   | 276  |
+| `localization.autoTranslateHint`                     | `Auto-translate feature coming soon!`                                                                         | `src/components/features/localization/TranslationEditor.tsx`                   | 300  |
+| `localization.editTranslationDesc`                   | `Translate survey content from the default language`                                                          | `src/components/features/localization/TranslationEditorDialog.tsx`             | 96   |
+| `localization.loadingTranslations`                   | `Loading translations...`                                                                                     | `src/components/features/localization/TranslationEditorDialog.tsx`             | 105  |
+| `localization.errorLoading`                          | `Failed to load translations`                                                                                 | `src/components/features/localization/TranslationEditorDialog.tsx`             | 112  |
+| `localization.errorLoadingDesc`                      | `Please try again later`                                                                                      | `src/components/features/localization/TranslationEditorDialog.tsx`             | 113  |
+| `localization.noTranslation`                         | `Translation not found`                                                                                       | `src/components/features/localization/TranslationEditorDialog.tsx`             | 121  |
+| `localization.noTranslationDesc`                     | `This language translation does not exist yet`                                                                | `src/components/features/localization/TranslationEditorDialog.tsx`             | 122  |
+| `questionPreview.interactiveMode`                    | `Interactive preview - try it out!`                                                                           | `src/components/features/public-survey/UnifiedQuestionPreview.tsx`             | 162  |
+| `common.reset`                                       | `Reset`                                                                                                       | `src/components/features/public-survey/UnifiedQuestionPreview.tsx`             | 172  |
+| `questionPreview.questionText`                       | `Question text`                                                                                               | `src/components/features/public-survey/UnifiedQuestionPreview.tsx`             | 182  |
+| `questionEditor.preview`                             | `Preview`                                                                                                     | `src/components/features/public-survey/UnifiedQuestionPreview.tsx`             | 217  |
+| `localization.fallback`                              | `Fallback`                                                                                                    | `src/components/features/questions/QuestionCard.tsx`                           | 128  |
+| `localization.editingFallback`                       | `Editing (fallback)`                                                                                          | `src/components/features/questions/QuestionEditor.tsx`                         | 261  |
+| `common.duplicate`                                   | `Duplicate`                                                                                                   | `src/components/features/questions/QuestionEditor.tsx`                         | 276  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/components/features/questions/QuestionEditor.tsx`                         | 286  |
+| `questionEditor.rating.style`                        | `Rating Style`                                                                                                | `src/components/features/questions/editors/RatingEditor.tsx`                   | 42   |
+| `questionEditor.yesNo.style`                         | `Display Style`                                                                                               | `src/components/features/questions/editors/YesNoEditor.tsx`                    | 41   |
+| `createSurvey.language`                              | `Language`                                                                                                    | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 194  |
+| `createSurvey.preview.features`                      | `Features`                                                                                                    | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 274  |
+| `createSurvey.preview.scale`                         | `Scale`                                                                                                       | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 340  |
+| `createSurvey.preview.classic.question`              | `How satisfied are you with our service?`                                                                     | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 359  |
+| `createSurvey.preview.classic.option1`               | `Very satisfied`                                                                                              | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 366  |
+| `createSurvey.preview.classic.option2`               | `Satisfied`                                                                                                   | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 367  |
+| `createSurvey.preview.classic.option3`               | `Neutral`                                                                                                     | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 368  |
+| `createSurvey.preview.classic.option4`               | `Dissatisfied`                                                                                                | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 369  |
+| `createSurvey.preview.progress`                      | `Question 1 of 5`                                                                                             | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 394  |
+| `createSurvey.preview.conversational.userMessage`    | `The experience was great!`                                                                                   | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 425  |
+| `createSurvey.preview.conversational.followUp`       | `Wonderful! What did you like most?`                                                                          | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 435  |
+| `createSurvey.preview.conversational.placeholder`    | `Type your answer...`                                                                                         | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 442  |
+| `createSurvey.preview.research.title`                | `Which option do you prefer?`                                                                                 | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 456  |
+| `createSurvey.preview.research.subtitle`             | `Conjoint Analysis`                                                                                           | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 457  |
+| `createSurvey.preview.assessment.title`              | `Multi-rater Feedback`                                                                                        | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 484  |
+| `createSurvey.preview.assessment.self`               | `Self`                                                                                                        | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 490  |
+| `createSurvey.preview.assessment.manager`            | `Manager`                                                                                                     | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 491  |
+| `createSurvey.preview.assessment.peers`              | `Peers`                                                                                                       | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 492  |
+| `createSurvey.preview.assessment.reports`            | `Direct Reports`                                                                                              | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 493  |
+| `createSurvey.preview.nps.detractors`                | `Detractors`                                                                                                  | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 549  |
+| `createSurvey.preview.nps.passives`                  | `Passives`                                                                                                    | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 550  |
+| `createSurvey.preview.nps.promoters`                 | `Promoters`                                                                                                   | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 551  |
+| `createSurvey.preview.csat.rating`                   | `4 out of 5`                                                                                                  | `src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx`    | 626  |
+| `themes.applySuccess`                                | `Theme applied to survey`                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 412  |
+| `themes.applyError`                                  | `Failed to apply theme`                                                                                       | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 415  |
+| `themes.nameRequired`                                | `Theme name is required`                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 439  |
+| `themes.createSuccess`                               | `Theme created successfully`                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 463  |
+| `themes.createError`                                 | `Failed to create theme`                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 478  |
+| `themes.appearance`                                  | `Appearance`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 495  |
+| `themes.customizeLook`                               | `Customize your survey look`                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 496  |
+| `themes.title`                                       | `Themes`                                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 524  |
+| `themes.customize`                                   | `Customize`                                                                                                   | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 528  |
+| `themes.light`                                       | `Light`                                                                                                       | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 539  |
+| `themes.dark`                                        | `Dark`                                                                                                        | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 560  |
+| `themes.customized`                                  | `Customized`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 598  |
+| `themes.basedOn`                                     | `Based on`                                                                                                    | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 601  |
+| `themes.reset`                                       | `Reset`                                                                                                       | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 607  |
+| `themes.colors`                                      | `Colors`                                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 618  |
+| `themes.brandColors`                                 | `Brand Colors`                                                                                                | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 623  |
+| `themes.primary`                                     | `Primary`                                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 625  |
+| `themes.secondary`                                   | `Secondary`                                                                                                   | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 627  |
+| `themes.surfaceColors`                               | `Surface Colors`                                                                                              | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 636  |
+| `themes.background`                                  | `Background`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 639  |
+| `themes.surface`                                     | `Surface`                                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 644  |
+| `themes.accent`                                      | `Accent`                                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 648  |
+| `themes.textPrimary`                                 | `Text`                                                                                                        | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 650  |
+| `themes.typography`                                  | `Typography`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 663  |
+| `themes.bodyFont`                                    | `Body Font`                                                                                                   | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 668  |
+| `themes.cornerRadius`                                | `Corner Radius`                                                                                               | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 700  |
+| `themes.layoutSpacing`                               | `Layout & Spacing`                                                                                            | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 725  |
+| `themes.containerWidth`                              | `Container Width`                                                                                             | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 729  |
+| `themes.spacing`                                     | `Spacing`                                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 752  |
+| `themes.displayOptions`                              | `Display Options`                                                                                             | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 780  |
+| `themes.progressIndicator`                           | `Progress Indicator`                                                                                          | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 785  |
+| `common.none`                                        | `None`                                                                                                        | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 799  |
+| `themes.questionNumbers`                             | `Question Numbers`                                                                                            | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 825  |
+| `common.none`                                        | `None`                                                                                                        | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 839  |
+| `themes.applied`                                     | `Applied`                                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 874  |
+| `themes.applyToSurvey`                               | `Apply to Survey`                                                                                             | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 874  |
+| `themes.saveAsNewTheme`                              | `Save as New Theme`                                                                                           | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 880  |
+| `themes.saveTheme`                                   | `Save Theme`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 890  |
+| `themes.saveThemeDesc`                               | `Create a new theme from your customizations`                                                                 | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 891  |
+| `themes.themeName`                                   | `Theme Name`                                                                                                  | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 896  |
+| `themes.themeNamePlaceholder`                        | `My Custom Theme`                                                                                             | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 902  |
+| `themes.untitled`                                    | `Untitled Theme`                                                                                              | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 915  |
+| `themes.customTheme`                                 | `Custom theme`                                                                                                | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 917  |
+| `common.cancel`                                      | `Cancel`                                                                                                      | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 925  |
+| `themes.saveAndApply`                                | `Save & Apply`                                                                                                | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 930  |
+| `themeCard.default`                                  | `Default`                                                                                                     | `src/components/features/surveys/ThemePreviewPanel.tsx`                        | 1051 |
+| `templates.form.language`                            | `Language`                                                                                                    | `src/components/features/templates/CreateTemplateDialog.tsx`                   | 259  |
+| `themeEditor.livePreviewHint`                        | `Changes update in real-time`                                                                                 | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 281  |
+| `themeEditor.tabs.layout`                            | `Layout`                                                                                                      | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 323  |
+| `themeEditor.brandColors`                            | `Brand Colors`                                                                                                | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 366  |
+| `themeEditor.colors.accent`                          | `Accent`                                                                                                      | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 376  |
+| `themeEditor.surfaceColors`                          | `Surface Colors`                                                                                              | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 385  |
+| `themeEditor.colors.surface`                         | `Surface`                                                                                                     | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 394  |
+| `themeEditor.bodyFont`                               | `Body Font`                                                                                                   | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 407  |
+| `themeEditor.headingFont`                            | `Heading Font`                                                                                                | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 436  |
+| `themeEditor.cornerRadius`                           | `Corner Radius`                                                                                               | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 494  |
+| `themeEditor.containerWidth`                         | `Container Width`                                                                                             | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 518  |
+| `themeEditor.spacing`                                | `Spacing`                                                                                                     | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 541  |
+| `themeEditor.progressIndicator`                      | `Progress Indicator`                                                                                          | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 563  |
+| `common.none`                                        | `None`                                                                                                        | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 575  |
+| `themeEditor.questionNumbers`                        | `Question Numbers`                                                                                            | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 601  |
+| `common.none`                                        | `None`                                                                                                        | `src/components/features/themes/ThemeEditorDrawer.tsx`                         | 613  |
+| `auth.signingIn`                                     | `Signing in...`                                                                                               | `src/components/ui/AzureAdLoginButton.tsx`                                     | 44   |
+| `auth.signInWithMicrosoft`                           | `Sign in with Microsoft`                                                                                      | `src/components/ui/AzureAdLoginButton.tsx`                                     | 44   |
+| `gettingStarted.errors.saveFailed`                   | `Failed to save progress. Please try again.`                                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 134  |
+| `gettingStarted.errors.saveFailed`                   | `Failed to save progress`                                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 135  |
+| `gettingStarted.defaultUser`                         | `there`                                                                                                       | `src/components/ui/GettingStartedWizard.tsx`                                   | 218  |
+| `gettingStarted.defaultUser`                         | `there`                                                                                                       | `src/components/ui/GettingStartedWizard.tsx`                                   | 236  |
+| `gettingStarted.skipAriaLabel`                       | `Skip getting started guide`                                                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 286  |
+| `gettingStarted.stepNavigation`                      | `Guide steps`                                                                                                 | `src/components/ui/GettingStartedWizard.tsx`                                   | 343  |
+| `common.back`                                        | `Back`                                                                                                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 387  |
+| `gettingStarted.startCreating`                       | `Start Creating`                                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 393  |
+| `common.next`                                        | `Next`                                                                                                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 397  |
+| `gettingStarted.welcome.steps.create`                | `Create`                                                                                                      | `src/components/ui/GettingStartedWizard.tsx`                                   | 415  |
+| `gettingStarted.welcome.steps.share`                 | `Share`                                                                                                       | `src/components/ui/GettingStartedWizard.tsx`                                   | 416  |
+| `gettingStarted.welcome.steps.analyze`               | `Analyze`                                                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 417  |
+| `gettingStarted.welcome.message`                     | `This quick guide will walk you through the essential steps to create, distribute, and analyze your surveys.` | `src/components/ui/GettingStartedWizard.tsx`                                   | 446  |
+| `gettingStarted.workspace.intro`                     | `Workspaces help you organize surveys by team, project, or client. Think of them as folders for your work.`   | `src/components/ui/GettingStartedWizard.tsx`                                   | 486  |
+| `gettingStarted.workspace.benefits.title`            | `Workspace Benefits`                                                                                          | `src/components/ui/GettingStartedWizard.tsx`                                   | 495  |
+| `gettingStarted.workspace.benefits.organize`         | `Organize surveys by project or team`                                                                         | `src/components/ui/GettingStartedWizard.tsx`                                   | 499  |
+| `gettingStarted.workspace.benefits.collaborate`      | `Invite team members to collaborate`                                                                          | `src/components/ui/GettingStartedWizard.tsx`                                   | 500  |
+| `gettingStarted.workspace.benefits.separate`         | `Keep client work separate`                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 501  |
+| `gettingStarted.workspace.hint`                      | `You can access workspaces from the sidebar or navigation menu.`                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 512  |
+| `gettingStarted.createSurvey.methods.scratch.title`  | `Start from Scratch`                                                                                          | `src/components/ui/GettingStartedWizard.tsx`                                   | 524  |
+| `gettingStarted.createSurvey.methods.scratch.desc`   | `Build a custom survey with full control`                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 525  |
+| `gettingStarted.createSurvey.methods.template.title` | `Use a Template`                                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 529  |
+| `gettingStarted.createSurvey.methods.template.desc`  | `Start with pre-built survey templates`                                                                       | `src/components/ui/GettingStartedWizard.tsx`                                   | 530  |
+| `gettingStarted.createSurvey.intro`                  | `Ready to create? You have two options to get started:`                                                       | `src/components/ui/GettingStartedWizard.tsx`                                   | 537  |
+| `gettingStarted.createSurvey.shortcut`               | `Pro tip: Press Ctrl+N to quickly create a new survey`                                                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 562  |
+| `gettingStarted.questions.types.multipleChoice`      | `Multiple Choice`                                                                                             | `src/components/ui/GettingStartedWizard.tsx`                                   | 572  |
+| `gettingStarted.questions.types.text`                | `Text Answer`                                                                                                 | `src/components/ui/GettingStartedWizard.tsx`                                   | 573  |
+| `gettingStarted.questions.types.rating`              | `Rating Scale`                                                                                                | `src/components/ui/GettingStartedWizard.tsx`                                   | 574  |
+| `gettingStarted.questions.types.nps`                 | `NPS Score`                                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 575  |
+| `gettingStarted.questions.intro`                     | `The Survey Builder supports 10+ question types. Here are some popular ones:`                                 | `src/components/ui/GettingStartedWizard.tsx`                                   | 581  |
+| `gettingStarted.questions.builderFeatures.title`     | `Builder Features`                                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 602  |
+| `gettingStarted.questions.builderFeatures.dragDrop`  | `Drag & drop to reorder questions`                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 606  |
+| `gettingStarted.questions.builderFeatures.autosave`  | `Autosave keeps your work safe`                                                                               | `src/components/ui/GettingStartedWizard.tsx`                                   | 610  |
+| `gettingStarted.questions.builderFeatures.undoRedo`  | `Undo/Redo with Ctrl+Z / Ctrl+Y`                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 614  |
+| `gettingStarted.themes.intro`                        | `Make your surveys visually appealing with custom themes. Matching your brand has never been easier.`         | `src/components/ui/GettingStartedWizard.tsx`                                   | 634  |
+| `gettingStarted.themes.customize.title`              | `Customize Everything`                                                                                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 638  |
+| `gettingStarted.themes.customize.colors`             | `Brand colors`                                                                                                | `src/components/ui/GettingStartedWizard.tsx`                                   | 641  |
+| `gettingStarted.themes.customize.fonts`              | `Typography`                                                                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 642  |
+| `gettingStarted.themes.customize.logo`               | `Logo placement`                                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 643  |
+| `gettingStarted.themes.customize.background`         | `Backgrounds`                                                                                                 | `src/components/ui/GettingStartedWizard.tsx`                                   | 644  |
+| `gettingStarted.themes.hint`                         | `Access Themes from the sidebar to create reusable designs.`                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 655  |
+| `gettingStarted.preview.intro`                       | `Always preview your survey before sharing! See exactly what respondents will experience.`                    | `src/components/ui/GettingStartedWizard.tsx`                                   | 673  |
+| `gettingStarted.preview.features.title`              | `Preview Features`                                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 677  |
+| `gettingStarted.preview.features.desktop`            | `Desktop & mobile views`                                                                                      | `src/components/ui/GettingStartedWizard.tsx`                                   | 680  |
+| `gettingStarted.preview.features.test`               | `Test the survey as a respondent`                                                                             | `src/components/ui/GettingStartedWizard.tsx`                                   | 681  |
+| `gettingStarted.preview.features.logic`              | `Verify question logic flows`                                                                                 | `src/components/ui/GettingStartedWizard.tsx`                                   | 682  |
+| `gettingStarted.preview.hint`                        | `Click the Preview button in the Survey Builder toolbar.`                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 693  |
+| `gettingStarted.distribute.methods.link.title`       | `Share Link`                                                                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 705  |
+| `gettingStarted.distribute.methods.link.desc`        | `Copy and paste anywhere`                                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 706  |
+| `gettingStarted.distribute.methods.email.title`      | `Email Campaign`                                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 710  |
+| `gettingStarted.distribute.methods.email.desc`       | `Send to your contact list`                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 711  |
+| `gettingStarted.distribute.intro`                    | `Once your survey is ready, publish it and share with your audience.`                                         | `src/components/ui/GettingStartedWizard.tsx`                                   | 718  |
+| `gettingStarted.distribute.hint`                     | `Access Distribute from the sidebar to manage all your survey links.`                                         | `src/components/ui/GettingStartedWizard.tsx`                                   | 742  |
+| `gettingStarted.responses.intro`                     | `Watch responses come in real-time! Every submission is captured and stored securely.`                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 760  |
+| `gettingStarted.responses.features.title`            | `Response Management`                                                                                         | `src/components/ui/GettingStartedWizard.tsx`                                   | 764  |
+| `gettingStarted.responses.features.realtime`         | `Real-time response notifications`                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 767  |
+| `gettingStarted.responses.features.individual`       | `View individual responses`                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 768  |
+| `gettingStarted.responses.features.export`           | `Export to CSV or Excel`                                                                                      | `src/components/ui/GettingStartedWizard.tsx`                                   | 769  |
+| `gettingStarted.analytics.features.charts`           | `Charts & Graphs`                                                                                             | `src/components/ui/GettingStartedWizard.tsx`                                   | 786  |
+| `gettingStarted.analytics.features.trends`           | `Trends Over Time`                                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 787  |
+| `gettingStarted.analytics.features.export`           | `Export Reports`                                                                                              | `src/components/ui/GettingStartedWizard.tsx`                                   | 788  |
+| `gettingStarted.analytics.intro`                     | `Turn raw data into actionable insights with powerful analytics.`                                             | `src/components/ui/GettingStartedWizard.tsx`                                   | 794  |
+| `gettingStarted.analytics.insights.title`            | `Get Insights On`                                                                                             | `src/components/ui/GettingStartedWizard.tsx`                                   | 815  |
+| `gettingStarted.analytics.insights.completion`       | `Completion rates`                                                                                            | `src/components/ui/GettingStartedWizard.tsx`                                   | 818  |
+| `gettingStarted.analytics.insights.response`         | `Response patterns`                                                                                           | `src/components/ui/GettingStartedWizard.tsx`                                   | 819  |
+| `gettingStarted.analytics.insights.nps`              | `NPS scores & benchmarks`                                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 820  |
+| `gettingStarted.complete.actions.surveys`            | `Surveys`                                                                                                     | `src/components/ui/GettingStartedWizard.tsx`                                   | 837  |
+| `gettingStarted.complete.actions.templates`          | `Templates`                                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 838  |
+| `gettingStarted.complete.actions.analytics`          | `Analytics`                                                                                                   | `src/components/ui/GettingStartedWizard.tsx`                                   | 839  |
+| `gettingStarted.complete.message`                    | `You now know the essentials. Start creating surveys and gathering valuable insights!`                        | `src/components/ui/GettingStartedWizard.tsx`                                   | 870  |
+| `gettingStarted.complete.shortcuts.title`            | `Quick Navigation Shortcuts`                                                                                  | `src/components/ui/GettingStartedWizard.tsx`                                   | 881  |
+| `imageUploader.errors.invalidType`                   | `Invalid file type. Please upload an image.`                                                                  | `src/components/ui/ImageUploader.tsx`                                          | 98   |
+| `imageUploader.errors.noUploadFunction`              | `Upload is not available. Please enter a URL instead.`                                                        | `src/components/ui/ImageUploader.tsx`                                          | 126  |
+| `imageUploader.errors.uploadFailed`                  | `Upload failed. Please try again.`                                                                            | `src/components/ui/ImageUploader.tsx`                                          | 138  |
+| `imageUploader.upload`                               | `Upload`                                                                                                      | `src/components/ui/ImageUploader.tsx`                                          | 229  |
+| `imageUploader.url`                                  | `URL`                                                                                                         | `src/components/ui/ImageUploader.tsx`                                          | 243  |
+| `imageUploader.selectFile`                           | `Select file`                                                                                                 | `src/components/ui/ImageUploader.tsx`                                          | 296  |
+| `imageUploader.uploading`                            | `Uploading...`                                                                                                | `src/components/ui/ImageUploader.tsx`                                          | 302  |
+| `imageUploader.dragDrop`                             | `Drag & drop or click to upload`                                                                              | `src/components/ui/ImageUploader.tsx`                                          | 307  |
+| `imageUploader.apply`                                | `Apply`                                                                                                       | `src/components/ui/ImageUploader.tsx`                                          | 339  |
+| `imageUploader.remove`                               | `Remove image`                                                                                                | `src/components/ui/ImageUploader.tsx`                                          | 349  |
+| `onboarding.completedSuccessfully`                   | `Setup completed successfully!`                                                                               | `src/components/ui/OnboardingWizard.tsx`                                       | 237  |
+| `onboarding.errors.saveFailed`                       | `Failed to save your preferences. Please try again.`                                                          | `src/components/ui/OnboardingWizard.tsx`                                       | 241  |
+| `onboarding.errors.saveFailed`                       | `Failed to save your preferences`                                                                             | `src/components/ui/OnboardingWizard.tsx`                                       | 242  |
+| `onboarding.skipAriaLabel`                           | `Skip onboarding wizard`                                                                                      | `src/components/ui/OnboardingWizard.tsx`                                       | 422  |
+| `onboarding.stepNavigation`                          | `Wizard steps`                                                                                                | `src/components/ui/OnboardingWizard.tsx`                                       | 479  |
+| `onboarding.accessibility.intro`                     | `Customize your experience for better accessibility`                                                          | `src/components/ui/OnboardingWizard.tsx`                                       | 846  |
+| `onboarding.accessibility.reducedMotion`             | `Reduce Motion`                                                                                               | `src/components/ui/OnboardingWizard.tsx`                                       | 854  |
+| `onboarding.accessibility.reducedMotionDesc`         | `Minimize animations and transitions`                                                                         | `src/components/ui/OnboardingWizard.tsx`                                       | 855  |
+| `onboarding.accessibility.highContrast`              | `High Contrast`                                                                                               | `src/components/ui/OnboardingWizard.tsx`                                       | 863  |
+| `onboarding.accessibility.highContrastDesc`          | `Increase color contrast for better visibility`                                                               | `src/components/ui/OnboardingWizard.tsx`                                       | 864  |
+| `onboarding.accessibility.largeText`                 | `Large Text`                                                                                                  | `src/components/ui/OnboardingWizard.tsx`                                       | 872  |
+| `onboarding.accessibility.largeTextDesc`             | `Increase font size throughout the app`                                                                       | `src/components/ui/OnboardingWizard.tsx`                                       | 873  |
+| `onboarding.accessibility.dyslexiaFont`              | `Dyslexia-Friendly Font`                                                                                      | `src/components/ui/OnboardingWizard.tsx`                                       | 881  |
+| `onboarding.accessibility.dyslexiaFontDesc`          | `Use a font designed for easier reading`                                                                      | `src/components/ui/OnboardingWizard.tsx`                                       | 882  |
+| `onboarding.accessibility.hint`                      | `You can adjust these settings anytime in Settings → Accessibility`                                           | `src/components/ui/OnboardingWizard.tsx`                                       | 888  |
+| `common.operationFailed`                             | `Operation failed`                                                                                            | `src/hooks/useEntityActions.ts`                                                | 56   |
+| `common.confirm`                                     | `Confirm`                                                                                                     | `src/hooks/useEntityActions.ts`                                                | 116  |
+| `common.operationFailed`                             | `Operation failed`                                                                                            | `src/hooks/useEntityActions.ts`                                                | 117  |
+| `common.delete`                                      | `Delete`                                                                                                      | `src/hooks/useEntityActions.ts`                                                | 228  |
+| `dialogs.confirmDescription`                         | `Are you sure?`                                                                                               | `src/hooks/useEntityActions.ts`                                                | 281  |
+| `dialogs.confirmAction`                              | `Confirm Action`                                                                                              | `src/hooks/useEntityActions.ts`                                                | 284  |
+| `common.operationFailed`                             | `Operation failed`                                                                                            | `src/hooks/useEntityActions.ts`                                                | 296  |
+| `auth.authenticationFailed`                          | `Authentication Failed`                                                                                       | `src/pages/AzureCallback/AzureCallbackPage.tsx`                                | 57   |
+| `auth.returnToLogin`                                 | `Return to Login`                                                                                             | `src/pages/AzureCallback/AzureCallbackPage.tsx`                                | 60   |
+| `auth.completingSignIn`                              | `Completing sign in...`                                                                                       | `src/pages/AzureCallback/AzureCallbackPage.tsx`                                | 72   |
+| `emailEditor.saved`                                  | `Template saved successfully`                                                                                 | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 32   |
+| `emailTemplates.editor.visual`                       | `Visual`                                                                                                      | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 45   |
+| `emailTemplates.editor.code`                         | `Code`                                                                                                        | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 45   |
+| `emailEditor.errors.loadFailed`                      | `Failed to load template`                                                                                     | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 71   |
+| `emailEditor.errors.loadFailedDescription`           | `The email template could not be loaded. Please try again.`                                                   | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 72   |
+| `emailEditor.errors.noTemplate`                      | `No template selected`                                                                                        | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 90   |
+| `emailEditor.errors.noTemplateDescription`           | `Please select an email template to edit.`                                                                    | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 91   |
+| `emailTemplates.backToTemplates`                     | `Back to Templates`                                                                                           | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 94   |
+| `emailTemplates.editor.visualMode`                   | `Visual Editor (Drag & Drop)`                                                                                 | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 107  |
+| `emailTemplates.editor.codeMode`                     | `Code Editor (Raw HTML)`                                                                                      | `src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx`                    | 117  |
+| `auth.illustrationTitle`                             | `Create surveys that inspire`                                                                                 | `src/pages/Login/sections/IllustrationPanel.tsx`                               | 20   |
+| `auth.illustrationSubtitle`                          | `Gather insights, understand your audience, and make data-driven decisions.`                                  | `src/pages/Login/sections/IllustrationPanel.tsx`                               | 22   |
+| `auth.welcomeBack`                                   | `Welcome back`                                                                                                | `src/pages/Login/sections/LoginForm.tsx`                                       | 39   |
+| `auth.signInToContinue`                              | `Sign in to continue to your account`                                                                         | `src/pages/Login/sections/LoginForm.tsx`                                       | 40   |
+| `auth.orContinueWith`                                | `or continue with`                                                                                            | `src/pages/Login/sections/LoginForm.tsx`                                       | 111  |
+| `auth.joinUs`                                        | `Join thousands of teams creating better surveys`                                                             | `src/pages/Register/RegisterPage.tsx`                                          | 78   |
+| `auth.registerIllustrationTitle`                     | `Join our community`                                                                                          | `src/pages/Register/RegisterPage.tsx`                                          | 95   |
+| `auth.registerIllustrationSubtitle`                  | `Create, distribute, and analyze surveys with powerful tools designed for teams.`                             | `src/pages/Register/RegisterPage.tsx`                                          | 97   |
+| `surveyBuilder.selectQuestion`                       | `Select a question`                                                                                           | `src/pages/SurveyBuilder/SurveyBuilderPage.tsx`                                | 309  |
+| `surveyBuilder.selectQuestionDesc`                   | `Choose a question from the list to edit, or add a new one`                                                   | `src/pages/SurveyBuilder/SurveyBuilderPage.tsx`                                | 313  |
+| `common.item`                                        | `item`                                                                                                        | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx`                   | 232  |
+| `common.items`                                       | `items`                                                                                                       | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx`                   | 232  |
+| `surveyBuilder.add`                                  | `Add`                                                                                                         | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx`                   | 239  |
+| `surveyBuilder.dragToReorder`                        | `Drag to reorder questions`                                                                                   | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx`                   | 252  |
+| `surveyBuilder.addFirstQuestionDesc`                 | `Start building your survey by adding your first question`                                                    | `src/pages/SurveyBuilder/components/QuestionListSidebar.tsx`                   | 302  |
+| `surveyBuilder.readOnlyBanner`                       | `This survey is published and cannot be edited. You are viewing it in read-only mode.`                        | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx`                   | 81   |
+| `common.back`                                        | `Back`                                                                                                        | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx`                   | 91   |
+| `surveyBuilder.viewOnly`                             | `View Only`                                                                                                   | `src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx`                   | 149  |
+| `surveyBuilder.tabs.questions`                       | `Questions`                                                                                                   | `src/pages/SurveyBuilder/components/SurveyBuilderTabs.tsx`                     | 77   |
+| `surveyBuilder.tabs.languages`                       | `Languages`                                                                                                   | `src/pages/SurveyBuilder/components/SurveyBuilderTabs.tsx`                     | 83   |
+| `surveyPreview.switchPreviewLanguage`                | `Switch preview language`                                                                                     | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx`               | 78   |
+| `surveyPreview.switchPreviewLanguage`                | `Switch preview language`                                                                                     | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx`               | 88   |
+| `surveyPreview.selectLanguage`                       | `Select language`                                                                                             | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx`               | 108  |
+| `surveyPreview.previewLanguage`                      | `Preview Language`                                                                                            | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx`               | 112  |
+| `localization.default`                               | `Default`                                                                                                     | `src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx`               | 139  |
+| `surveyPreview.testModeDesc`                         | `No data is saved`                                                                                            | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 332  |
+| `surveyPreview.testModeOff`                          | `Test mode is off`                                                                                            | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 332  |
+| `surveyPreview.keyboardHintsDesc`                    | `Show keyboard shortcuts`                                                                                     | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 357  |
+| `surveyPreview.displayModeDesc`                      | `How questions appear to respondents`                                                                         | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 404  |
+| `surveyPreview.testModeDesc`                         | `No data is saved`                                                                                            | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 436  |
+| `surveyPreview.keyboardHintsDesc`                    | `Show keyboard shortcuts`                                                                                     | `src/pages/SurveyPreview/components/PreviewToolbar.tsx`                        | 444  |
 
 ---
 
@@ -5962,3797 +6016,3803 @@ workspaces.workspace
 
 ### src/components/ErrorBoundary.tsx (21)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 62 | window.__i18n?.Global fallback | `errorBoundary.title` |
-| 62 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 64 | window.__i18n?.Global fallback | `errorBoundary.description` |
-| 64 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 76 | window.__i18n?.Global fallback | `errorBoundary.viewStackTrace` |
-| 76 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 85 | window.__i18n?.Global fallback | `errorBoundary.refreshMessage` |
-| 85 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 93 | window.__i18n?.Global fallback | `errorBoundary.goHome` |
-| 93 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 97 | window.__i18n?.Global fallback | `errorBoundary.tryAgain` |
-| 97 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 134 | Standard hook call | `errorBoundary.title` |
-| 135 | Standard hook call | `errorBoundary.description` |
-| 148 | Standard hook call | `errors.hideDetails` |
-| 148 | Standard hook call | `errors.showDetails` |
-| 154 | Standard hook call | `errorBoundary.message` |
-| 158 | Standard hook call | `errorBoundary.stack` |
-| 169 | Standard hook call | `errorBoundary.refreshMessage` |
-| 175 | Standard hook call | `errors.goHome` |
-| 179 | Standard hook call | `errors.tryAgain` |
+| Line | Pattern                          | Key                            |
+| ---- | -------------------------------- | ------------------------------ |
+| 62   | window.\_\_i18n?.Global fallback | `errorBoundary.title`          |
+| 62   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 64   | window.\_\_i18n?.Global fallback | `errorBoundary.description`    |
+| 64   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 76   | window.\_\_i18n?.Global fallback | `errorBoundary.viewStackTrace` |
+| 76   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 85   | window.\_\_i18n?.Global fallback | `errorBoundary.refreshMessage` |
+| 85   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 93   | window.\_\_i18n?.Global fallback | `errorBoundary.goHome`         |
+| 93   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 97   | window.\_\_i18n?.Global fallback | `errorBoundary.tryAgain`       |
+| 97   | ⚠️ ANY .t() call (catch-all)     | `[UNKNOWN - Review manually]`  |
+| 134  | Standard hook call               | `errorBoundary.title`          |
+| 135  | Standard hook call               | `errorBoundary.description`    |
+| 148  | Standard hook call               | `errors.hideDetails`           |
+| 148  | Standard hook call               | `errors.showDetails`           |
+| 154  | Standard hook call               | `errorBoundary.message`        |
+| 158  | Standard hook call               | `errorBoundary.stack`          |
+| 169  | Standard hook call               | `errorBoundary.refreshMessage` |
+| 175  | Standard hook call               | `errors.goHome`                |
+| 179  | Standard hook call               | `errors.tryAgain`              |
 
 ### src/components/features/analytics/AnalyticsSummaryCards.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 33 | Standard hook call | `analyticsSummary.totalResponses` |
-| 34 | Standard hook call | `analyticsSummary.completionRate` |
-| 35 | Standard hook call | `analyticsSummary.avgCompletionTime` |
-| 36 | Standard hook call | `analyticsSummary.partialResponses` |
-| 49 | Standard hook call | `analyticsSummary.totalResponses` |
-| 52 | With options object | `analyticsSummary.completed` |
-| 55 | Standard hook call | `analyticsSummary.completionRate` |
-| 60 | Standard hook call | `analyticsSummary.excellent` |
-| 62 | Standard hook call | `analyticsSummary.good` |
-| 64 | Standard hook call | `analyticsSummary.average` |
-| 65 | Standard hook call | `analyticsSummary.needsImprovement` |
-| 68 | Standard hook call | `analyticsSummary.avgCompletionTime` |
-| 70 | Standard hook call | `analyticsSummary.partialResponses` |
-| 73 | Standard hook call | `analyticsSummary.incompleteSubmissions` |
-| 73 | Standard hook call | `analyticsSummary.none` |
+| Line | Pattern             | Key                                      |
+| ---- | ------------------- | ---------------------------------------- |
+| 33   | Standard hook call  | `analyticsSummary.totalResponses`        |
+| 34   | Standard hook call  | `analyticsSummary.completionRate`        |
+| 35   | Standard hook call  | `analyticsSummary.avgCompletionTime`     |
+| 36   | Standard hook call  | `analyticsSummary.partialResponses`      |
+| 49   | Standard hook call  | `analyticsSummary.totalResponses`        |
+| 52   | With options object | `analyticsSummary.completed`             |
+| 55   | Standard hook call  | `analyticsSummary.completionRate`        |
+| 60   | Standard hook call  | `analyticsSummary.excellent`             |
+| 62   | Standard hook call  | `analyticsSummary.good`                  |
+| 64   | Standard hook call  | `analyticsSummary.average`               |
+| 65   | Standard hook call  | `analyticsSummary.needsImprovement`      |
+| 68   | Standard hook call  | `analyticsSummary.avgCompletionTime`     |
+| 70   | Standard hook call  | `analyticsSummary.partialResponses`      |
+| 73   | Standard hook call  | `analyticsSummary.incompleteSubmissions` |
+| 73   | Standard hook call  | `analyticsSummary.none`                  |
 
 ### src/components/features/analytics/ChoiceChart.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 55 | Standard hook call | `charts.noResponsesYet` |
-| 66 | With options object | `charts.responseCount` |
-| 126 | With options object | `charts.moreOptions` |
-| 140 | With options object | `charts.responseCount` |
+| Line | Pattern             | Key                     |
+| ---- | ------------------- | ----------------------- |
+| 53   | Standard hook call  | `charts.noResponsesYet` |
+| 64   | With options object | `charts.responseCount`  |
+| 123  | With options object | `charts.moreOptions`    |
+| 136  | With options object | `charts.responseCount`  |
 
 ### src/components/features/analytics/MatrixHeatmap.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 97 | Standard hook call | `analytics.noMatrixData` |
-| 173 | Standard hook call | `analytics.responseIntensity` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 97   | Standard hook call | `analytics.noMatrixData`      |
+| 173  | Standard hook call | `analytics.responseIntensity` |
 
 ### src/components/features/analytics/NPSGauge.tsx (10)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 56 | Standard hook call | `analytics.npsScore` |
-| 57 | Standard hook call | `analytics.npsDescription` |
-| 60 | Standard hook call | `analytics.noNpsData` |
-| 76 | Standard hook call | `analytics.npsScore` |
-| 77 | Standard hook call | `analytics.npsDescription` |
-| 108 | Standard hook call | `analytics.npsScoreLabel` |
-| 118 | Standard hook call | `analytics.detractors` |
-| 122 | Standard hook call | `analytics.passives` |
-| 126 | Standard hook call | `analytics.promoters` |
-| 156 | With options object | `analytics.basedOnResponses` |
+| Line | Pattern             | Key                          |
+| ---- | ------------------- | ---------------------------- |
+| 56   | Standard hook call  | `analytics.npsScore`         |
+| 57   | Standard hook call  | `analytics.npsDescription`   |
+| 60   | Standard hook call  | `analytics.noNpsData`        |
+| 76   | Standard hook call  | `analytics.npsScore`         |
+| 77   | Standard hook call  | `analytics.npsDescription`   |
+| 108  | Standard hook call  | `analytics.npsScoreLabel`    |
+| 118  | Standard hook call  | `analytics.detractors`       |
+| 122  | Standard hook call  | `analytics.passives`         |
+| 126  | Standard hook call  | `analytics.promoters`        |
+| 156  | With options object | `analytics.basedOnResponses` |
 
 ### src/components/features/analytics/QuestionAnalyticsCard.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 156 | Standard hook call | `analytics.matrixQuestion` |
-| 172 | Standard hook call | `analytics.noData` |
-| 188 | Standard hook call | `analytics.visualizationNotAvailable` |
+| Line | Pattern            | Key                                   |
+| ---- | ------------------ | ------------------------------------- |
+| 156  | Standard hook call | `analytics.matrixQuestion`            |
+| 172  | Standard hook call | `analytics.noData`                    |
+| 188  | Standard hook call | `analytics.visualizationNotAvailable` |
 
 ### src/components/features/analytics/RatingChart.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 56 | Standard hook call | `charts.noResponsesYet` |
-| 85 | With options object | `charts.responseCount` |
-| 95 | With options object | `charts.averageRatingOutOf` |
+| Line | Pattern             | Key                         |
+| ---- | ------------------- | --------------------------- |
+| 56   | Standard hook call  | `charts.noResponsesYet`     |
+| 85   | With options object | `charts.responseCount`      |
+| 95   | With options object | `charts.averageRatingOutOf` |
 
 ### src/components/features/analytics/ResponseTrendChart.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 16 | Standard hook call | `analytics.responseTrend` |
-| 17 | Standard hook call | `analytics.responseTrendDesc` |
-| 58 | Standard hook call | `analytics.noResponseData` |
-| 74 | Standard hook call | `analytics.totalResponses` |
-| 94 | With options object | `analytics.responsesCount` |
+| Line | Pattern             | Key                           |
+| ---- | ------------------- | ----------------------------- |
+| 16   | Standard hook call  | `analytics.responseTrend`     |
+| 17   | Standard hook call  | `analytics.responseTrendDesc` |
+| 58   | Standard hook call  | `analytics.noResponseData`    |
+| 74   | Standard hook call  | `analytics.totalResponses`    |
+| 94   | With options object | `analytics.responsesCount`    |
 
 ### src/components/features/analytics/TextResponsesList.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 44 | Standard hook call | `analytics.noTextResponses` |
-| 90 | Standard hook call | `common.showLess` |
-| 95 | With options object | `common.showMore` |
+| Line | Pattern             | Key                         |
+| ---- | ------------------- | --------------------------- |
+| 44   | Standard hook call  | `analytics.noTextResponses` |
+| 90   | Standard hook call  | `common.showLess`           |
+| 95   | With options object | `common.showMore`           |
 
 ### src/components/features/distributions/BulkLinkGenerationDialog.tsx (33)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 47 | Standard hook call | `bulkLinkDialog.toast.allCopied` |
-| 48 | Standard hook call | `bulkLinkDialog.toast.copyFailed` |
-| 67 | Standard hook call | `bulkLinkDialog.toast.downloaded` |
-| 75 | With options object | `bulkLinkDialog.generatedCount` |
-| 79 | Standard hook call | `bulkLinkDialog.copyAll` |
-| 83 | Standard hook call | `bulkLinkDialog.downloadCSV` |
-| 107 | Standard hook call | `common.done` |
-| 181 | With options object | `bulkLinkDialog.toast.generated` |
-| 183 | Standard hook call | `bulkLinkDialog.toast.error` |
-| 197 | Standard hook call | `bulkLinkDialog.title` |
-| 198 | Standard hook call | `bulkLinkDialog.description` |
-| 198 | With options object | `bulkLinkDialog.descriptionWithTitle` |
-| 209 | Standard hook call | `bulkLinkDialog.numberOfLinks` |
-| 214 | Standard hook call | `bulkLinkDialog.numberOfLinksPlaceholder` |
-| 219 | Standard hook call | `bulkLinkDialog.numberOfLinksHint` |
-| 224 | Standard hook call | `bulkLinkDialog.namePrefix` |
-| 225 | Standard hook call | `bulkLinkDialog.namePrefixPlaceholder` |
-| 226 | With options object | `bulkLinkDialog.namePrefixHint` |
-| 238 | Standard hook call | `bulkLinkDialog.expirationDate` |
-| 239 | Standard hook call | `bulkLinkDialog.expirationDateDescription` |
-| 259 | Standard hook call | `bulkLinkDialog.advancedOptions` |
-| 275 | Standard hook call | `bulkLinkDialog.utmParameters` |
-| 276 | Standard hook call | `bulkLinkDialog.utmTooltip` |
-| 280 | Standard hook call | `bulkLinkDialog.utmDescription` |
-| 288 | Standard hook call | `bulkLinkDialog.utmSourcePlaceholder` |
-| 291 | Standard hook call | `bulkLinkDialog.utmSource` |
-| 294 | Standard hook call | `bulkLinkDialog.utmMediumPlaceholder` |
-| 297 | Standard hook call | `bulkLinkDialog.utmMedium` |
-| 300 | Standard hook call | `bulkLinkDialog.utmCampaignPlaceholder` |
-| 303 | Standard hook call | `bulkLinkDialog.utmCampaign` |
-| 315 | Standard hook call | `common.cancel` |
-| 318 | Standard hook call | `bulkLinkDialog.generating` |
-| 318 | Standard hook call | `bulkLinkDialog.generate` |
+| Line | Pattern             | Key                                        |
+| ---- | ------------------- | ------------------------------------------ |
+| 47   | Standard hook call  | `bulkLinkDialog.toast.allCopied`           |
+| 48   | Standard hook call  | `bulkLinkDialog.toast.copyFailed`          |
+| 67   | Standard hook call  | `bulkLinkDialog.toast.downloaded`          |
+| 75   | With options object | `bulkLinkDialog.generatedCount`            |
+| 79   | Standard hook call  | `bulkLinkDialog.copyAll`                   |
+| 83   | Standard hook call  | `bulkLinkDialog.downloadCSV`               |
+| 107  | Standard hook call  | `common.done`                              |
+| 181  | With options object | `bulkLinkDialog.toast.generated`           |
+| 183  | Standard hook call  | `bulkLinkDialog.toast.error`               |
+| 197  | Standard hook call  | `bulkLinkDialog.title`                     |
+| 198  | Standard hook call  | `bulkLinkDialog.description`               |
+| 198  | With options object | `bulkLinkDialog.descriptionWithTitle`      |
+| 209  | Standard hook call  | `bulkLinkDialog.numberOfLinks`             |
+| 214  | Standard hook call  | `bulkLinkDialog.numberOfLinksPlaceholder`  |
+| 219  | Standard hook call  | `bulkLinkDialog.numberOfLinksHint`         |
+| 224  | Standard hook call  | `bulkLinkDialog.namePrefix`                |
+| 225  | Standard hook call  | `bulkLinkDialog.namePrefixPlaceholder`     |
+| 226  | With options object | `bulkLinkDialog.namePrefixHint`            |
+| 238  | Standard hook call  | `bulkLinkDialog.expirationDate`            |
+| 239  | Standard hook call  | `bulkLinkDialog.expirationDateDescription` |
+| 259  | Standard hook call  | `bulkLinkDialog.advancedOptions`           |
+| 275  | Standard hook call  | `bulkLinkDialog.utmParameters`             |
+| 276  | Standard hook call  | `bulkLinkDialog.utmTooltip`                |
+| 280  | Standard hook call  | `bulkLinkDialog.utmDescription`            |
+| 288  | Standard hook call  | `bulkLinkDialog.utmSourcePlaceholder`      |
+| 291  | Standard hook call  | `bulkLinkDialog.utmSource`                 |
+| 294  | Standard hook call  | `bulkLinkDialog.utmMediumPlaceholder`      |
+| 297  | Standard hook call  | `bulkLinkDialog.utmMedium`                 |
+| 300  | Standard hook call  | `bulkLinkDialog.utmCampaignPlaceholder`    |
+| 303  | Standard hook call  | `bulkLinkDialog.utmCampaign`               |
+| 315  | Standard hook call  | `common.cancel`                            |
+| 318  | Standard hook call  | `bulkLinkDialog.generating`                |
+| 318  | Standard hook call  | `bulkLinkDialog.generate`                  |
 
 ### src/components/features/distributions/CreateDistributionDialog.tsx (53)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 51 | Standard hook call | `createDistribution.steps.recipients` |
-| 51 | Standard hook call | `createDistribution.steps.recipientsDesc` |
-| 52 | Standard hook call | `createDistribution.steps.content` |
-| 52 | Standard hook call | `createDistribution.steps.contentDesc` |
-| 53 | Standard hook call | `createDistribution.steps.schedule` |
-| 53 | Standard hook call | `createDistribution.steps.scheduleDesc` |
-| 170 | Standard hook call | `createDistribution.scheduleSuccess` |
-| 170 | Standard hook call | `createDistribution.createSuccess` |
-| 175 | Standard hook call | `createDistribution.createError` |
-| 194 | Standard hook call | `createDistribution.title` |
-| 195 | Standard hook call | `createDistribution.description` |
-| 195 | With options object | `createDistribution.descriptionWithTitle` |
-| 257 | Standard hook call | `createDistribution.addRecipients` |
-| 258 | Standard hook call | `createDistribution.importOrAddManually` |
-| 267 | Standard hook call | `createDistribution.noRecipientsYet` |
-| 268 | Standard hook call | `createDistribution.noRecipientsDesc` |
-| 277 | With options object | `createDistribution.recipientsAdded` |
-| 278 | Standard hook call | `createDistribution.readyToProceed` |
-| 294 | Standard hook call | `createDistribution.emailContent` |
-| 295 | Standard hook call | `createDistribution.customizeMessage` |
-| 303 | Standard hook call | `createDistribution.chooseTemplate` |
-| 341 | Standard hook call | `createDistribution.senderDetails` |
-| 342 | Standard hook call | `common.optional` |
-| 346 | Standard hook call | `createDistribution.namePlaceholder` |
-| 352 | Standard hook call | `createDistribution.emailPlaceholder` |
-| 365 | Standard hook call | `createDistribution.subjectLine` |
-| 368 | Standard hook call | `createDistribution.subjectPlaceholder` |
-| 371 | Standard hook call | `createDistribution.subjectRequired` |
-| 379 | Standard hook call | `createDistribution.emailBody` |
-| 382 | Standard hook call | `createDistribution.bodyPlaceholder` |
-| 387 | Standard hook call | `createDistribution.bodyRequired` |
-| 390 | Standard hook call | `createDistribution.surveyLinkHint` |
-| 404 | Standard hook call | `createDistribution.whenToSend` |
-| 405 | Standard hook call | `createDistribution.chooseWhenEmailsGoOut` |
-| 427 | Standard hook call | `createDistribution.sendNow` |
-| 429 | Standard hook call | `createDistribution.deliverImmediately` |
-| 449 | Standard hook call | `createDistribution.scheduleLabel` |
-| 451 | Standard hook call | `createDistribution.pickDateTime` |
-| 462 | Standard hook call | `createDistribution.selectDateTime` |
-| 465 | Standard hook call | `common.date` |
-| 466 | Standard hook call | `common.time` |
-| 474 | Standard hook call | `createDistribution.scheduledFor` |
-| 497 | Standard hook call | `createDistribution.summary` |
-| 502 | Standard hook call | `createDistribution.summaryRecipients` |
-| 508 | Standard hook call | `createDistribution.summarySubject` |
-| 513 | Standard hook call | `createDistribution.now` |
-| 518 | Standard hook call | `createDistribution.summarySendTime` |
-| 529 | Standard hook call | `common.back` |
-| 534 | Standard hook call | `common.cancel` |
-| 538 | Standard hook call | `common.continue` |
-| 543 | Standard hook call | `createDistribution.creating` |
-| 547 | Standard hook call | `createDistribution.sendNow` |
-| 552 | Standard hook call | `createDistribution.scheduleLabel` |
+| Line | Pattern             | Key                                        |
+| ---- | ------------------- | ------------------------------------------ |
+| 51   | Standard hook call  | `createDistribution.steps.recipients`      |
+| 51   | Standard hook call  | `createDistribution.steps.recipientsDesc`  |
+| 52   | Standard hook call  | `createDistribution.steps.content`         |
+| 52   | Standard hook call  | `createDistribution.steps.contentDesc`     |
+| 53   | Standard hook call  | `createDistribution.steps.schedule`        |
+| 53   | Standard hook call  | `createDistribution.steps.scheduleDesc`    |
+| 170  | Standard hook call  | `createDistribution.scheduleSuccess`       |
+| 170  | Standard hook call  | `createDistribution.createSuccess`         |
+| 175  | Standard hook call  | `createDistribution.createError`           |
+| 194  | Standard hook call  | `createDistribution.title`                 |
+| 195  | Standard hook call  | `createDistribution.description`           |
+| 195  | With options object | `createDistribution.descriptionWithTitle`  |
+| 257  | Standard hook call  | `createDistribution.addRecipients`         |
+| 258  | Standard hook call  | `createDistribution.importOrAddManually`   |
+| 267  | Standard hook call  | `createDistribution.noRecipientsYet`       |
+| 268  | Standard hook call  | `createDistribution.noRecipientsDesc`      |
+| 277  | With options object | `createDistribution.recipientsAdded`       |
+| 278  | Standard hook call  | `createDistribution.readyToProceed`        |
+| 294  | Standard hook call  | `createDistribution.emailContent`          |
+| 295  | Standard hook call  | `createDistribution.customizeMessage`      |
+| 303  | Standard hook call  | `createDistribution.chooseTemplate`        |
+| 341  | Standard hook call  | `createDistribution.senderDetails`         |
+| 342  | Standard hook call  | `common.optional`                          |
+| 346  | Standard hook call  | `createDistribution.namePlaceholder`       |
+| 352  | Standard hook call  | `createDistribution.emailPlaceholder`      |
+| 365  | Standard hook call  | `createDistribution.subjectLine`           |
+| 368  | Standard hook call  | `createDistribution.subjectPlaceholder`    |
+| 371  | Standard hook call  | `createDistribution.subjectRequired`       |
+| 379  | Standard hook call  | `createDistribution.emailBody`             |
+| 382  | Standard hook call  | `createDistribution.bodyPlaceholder`       |
+| 387  | Standard hook call  | `createDistribution.bodyRequired`          |
+| 390  | Standard hook call  | `createDistribution.surveyLinkHint`        |
+| 404  | Standard hook call  | `createDistribution.whenToSend`            |
+| 405  | Standard hook call  | `createDistribution.chooseWhenEmailsGoOut` |
+| 427  | Standard hook call  | `createDistribution.sendNow`               |
+| 429  | Standard hook call  | `createDistribution.deliverImmediately`    |
+| 449  | Standard hook call  | `createDistribution.scheduleLabel`         |
+| 451  | Standard hook call  | `createDistribution.pickDateTime`          |
+| 462  | Standard hook call  | `createDistribution.selectDateTime`        |
+| 465  | Standard hook call  | `common.date`                              |
+| 466  | Standard hook call  | `common.time`                              |
+| 474  | Standard hook call  | `createDistribution.scheduledFor`          |
+| 497  | Standard hook call  | `createDistribution.summary`               |
+| 502  | Standard hook call  | `createDistribution.summaryRecipients`     |
+| 508  | Standard hook call  | `createDistribution.summarySubject`        |
+| 513  | Standard hook call  | `createDistribution.now`                   |
+| 518  | Standard hook call  | `createDistribution.summarySendTime`       |
+| 529  | Standard hook call  | `common.back`                              |
+| 534  | Standard hook call  | `common.cancel`                            |
+| 538  | Standard hook call  | `common.continue`                          |
+| 543  | Standard hook call  | `createDistribution.creating`              |
+| 547  | Standard hook call  | `createDistribution.sendNow`               |
+| 552  | Standard hook call  | `createDistribution.scheduleLabel`         |
 
 ### src/components/features/distributions/CreateLinkDialog.tsx (33)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 43 | Standard hook call | `createLinkDialog.types.standard` |
-| 45 | Standard hook call | `createLinkDialog.types.standardDescription` |
-| 50 | Standard hook call | `createLinkDialog.types.unique` |
-| 52 | Standard hook call | `createLinkDialog.types.uniqueDescription` |
-| 57 | Standard hook call | `createLinkDialog.types.embedded` |
-| 59 | Standard hook call | `createLinkDialog.types.embeddedDescription` |
-| 173 | Standard hook call | `createLinkDialog.toast.success` |
-| 176 | Standard hook call | `createLinkDialog.toast.error` |
-| 190 | Standard hook call | `createLinkDialog.title` |
-| 191 | Standard hook call | `createLinkDialog.description` |
-| 191 | With options object | `createLinkDialog.descriptionWithTitle` |
-| 199 | Standard hook call | `createLinkDialog.linkType` |
-| 214 | Standard hook call | `createLinkDialog.expirationDate` |
-| 215 | Standard hook call | `createLinkDialog.expirationDateDescription` |
-| 237 | Standard hook call | `createLinkDialog.responseLimit` |
-| 238 | Standard hook call | `createLinkDialog.responseLimitDescription` |
-| 248 | Standard hook call | `createLinkDialog.maxResponsesPlaceholder` |
-| 266 | Standard hook call | `createLinkDialog.passwordProtection` |
-| 267 | Standard hook call | `createLinkDialog.passwordProtectionDescription` |
-| 274 | Standard hook call | `createLinkDialog.passwordPlaceholder` |
-| 288 | Standard hook call | `createLinkDialog.advancedOptions` |
-| 304 | Standard hook call | `createLinkDialog.utmParameters` |
-| 305 | Standard hook call | `createLinkDialog.utmTooltip` |
-| 309 | Standard hook call | `createLinkDialog.utmDescription` |
-| 317 | Standard hook call | `createLinkDialog.utmSourcePlaceholder` |
-| 320 | Standard hook call | `createLinkDialog.utmSource` |
-| 323 | Standard hook call | `createLinkDialog.utmMediumPlaceholder` |
-| 326 | Standard hook call | `createLinkDialog.utmMedium` |
-| 329 | Standard hook call | `createLinkDialog.utmCampaignPlaceholder` |
-| 332 | Standard hook call | `createLinkDialog.utmCampaign` |
-| 344 | Standard hook call | `common.cancel` |
-| 347 | Standard hook call | `createLinkDialog.creating` |
-| 347 | Standard hook call | `createLinkDialog.create` |
+| Line | Pattern             | Key                                              |
+| ---- | ------------------- | ------------------------------------------------ |
+| 43   | Standard hook call  | `createLinkDialog.types.standard`                |
+| 45   | Standard hook call  | `createLinkDialog.types.standardDescription`     |
+| 50   | Standard hook call  | `createLinkDialog.types.unique`                  |
+| 52   | Standard hook call  | `createLinkDialog.types.uniqueDescription`       |
+| 57   | Standard hook call  | `createLinkDialog.types.embedded`                |
+| 59   | Standard hook call  | `createLinkDialog.types.embeddedDescription`     |
+| 173  | Standard hook call  | `createLinkDialog.toast.success`                 |
+| 176  | Standard hook call  | `createLinkDialog.toast.error`                   |
+| 190  | Standard hook call  | `createLinkDialog.title`                         |
+| 191  | Standard hook call  | `createLinkDialog.description`                   |
+| 191  | With options object | `createLinkDialog.descriptionWithTitle`          |
+| 199  | Standard hook call  | `createLinkDialog.linkType`                      |
+| 214  | Standard hook call  | `createLinkDialog.expirationDate`                |
+| 215  | Standard hook call  | `createLinkDialog.expirationDateDescription`     |
+| 237  | Standard hook call  | `createLinkDialog.responseLimit`                 |
+| 238  | Standard hook call  | `createLinkDialog.responseLimitDescription`      |
+| 248  | Standard hook call  | `createLinkDialog.maxResponsesPlaceholder`       |
+| 266  | Standard hook call  | `createLinkDialog.passwordProtection`            |
+| 267  | Standard hook call  | `createLinkDialog.passwordProtectionDescription` |
+| 274  | Standard hook call  | `createLinkDialog.passwordPlaceholder`           |
+| 288  | Standard hook call  | `createLinkDialog.advancedOptions`               |
+| 304  | Standard hook call  | `createLinkDialog.utmParameters`                 |
+| 305  | Standard hook call  | `createLinkDialog.utmTooltip`                    |
+| 309  | Standard hook call  | `createLinkDialog.utmDescription`                |
+| 317  | Standard hook call  | `createLinkDialog.utmSourcePlaceholder`          |
+| 320  | Standard hook call  | `createLinkDialog.utmSource`                     |
+| 323  | Standard hook call  | `createLinkDialog.utmMediumPlaceholder`          |
+| 326  | Standard hook call  | `createLinkDialog.utmMedium`                     |
+| 329  | Standard hook call  | `createLinkDialog.utmCampaignPlaceholder`        |
+| 332  | Standard hook call  | `createLinkDialog.utmCampaign`                   |
+| 344  | Standard hook call  | `common.cancel`                                  |
+| 347  | Standard hook call  | `createLinkDialog.creating`                      |
+| 347  | Standard hook call  | `createLinkDialog.create`                        |
 
 ### src/components/features/distributions/DistributionStats.tsx (27)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 246 | Standard hook call | `distributions.analytics` |
-| 249 | Standard hook call | `common.refresh` |
-| 256 | Standard hook call | `distributions.sent` |
-| 263 | Standard hook call | `distributions.delivered` |
-| 270 | Standard hook call | `distributions.statusOpened` |
-| 277 | Standard hook call | `distributions.statusClicked` |
-| 292 | Standard hook call | `distributions.deliveryFunnel` |
-| 294 | Standard hook call | `distributions.performanceBreakdown` |
-| 306 | Standard hook call | `distributions.performanceRates` |
-| 308 | Standard hook call | `distributions.metricsComparison` |
-| 313 | Standard hook call | `distributions.deliveryRate` |
-| 320 | Standard hook call | `distributions.openRate` |
-| 327 | Standard hook call | `distributions.clickRate` |
-| 335 | Standard hook call | `distributions.bounced` |
-| 338 | Standard hook call | `distributions.failed` |
-| 352 | Standard hook call | `distributions.recipients` |
-| 354 | With options object | `distributions.totalRecipients` |
-| 360 | Standard hook call | `distributions.searchPlaceholder` |
-| 375 | Standard hook call | `distributions.statusAll` |
-| 378 | Standard hook call | `distributions.statusSent` |
-| 381 | Standard hook call | `distributions.statusDelivered` |
-| 384 | Standard hook call | `distributions.statusOpened` |
-| 387 | Standard hook call | `distributions.statusClicked` |
-| 390 | Standard hook call | `distributions.statusBounced` |
-| 393 | Standard hook call | `distributions.statusFailed` |
-| 421 | Standard hook call | `distributions.noRecipients` |
-| 439 | Standard hook call | `common.loadMore` |
+| Line | Pattern             | Key                                  |
+| ---- | ------------------- | ------------------------------------ |
+| 246  | Standard hook call  | `distributions.analytics`            |
+| 249  | Standard hook call  | `common.refresh`                     |
+| 256  | Standard hook call  | `distributions.sent`                 |
+| 263  | Standard hook call  | `distributions.delivered`            |
+| 270  | Standard hook call  | `distributions.statusOpened`         |
+| 277  | Standard hook call  | `distributions.statusClicked`        |
+| 292  | Standard hook call  | `distributions.deliveryFunnel`       |
+| 294  | Standard hook call  | `distributions.performanceBreakdown` |
+| 306  | Standard hook call  | `distributions.performanceRates`     |
+| 308  | Standard hook call  | `distributions.metricsComparison`    |
+| 313  | Standard hook call  | `distributions.deliveryRate`         |
+| 320  | Standard hook call  | `distributions.openRate`             |
+| 327  | Standard hook call  | `distributions.clickRate`            |
+| 335  | Standard hook call  | `distributions.bounced`              |
+| 338  | Standard hook call  | `distributions.failed`               |
+| 352  | Standard hook call  | `distributions.recipients`           |
+| 354  | With options object | `distributions.totalRecipients`      |
+| 360  | Standard hook call  | `distributions.searchPlaceholder`    |
+| 375  | Standard hook call  | `distributions.statusAll`            |
+| 378  | Standard hook call  | `distributions.statusSent`           |
+| 381  | Standard hook call  | `distributions.statusDelivered`      |
+| 384  | Standard hook call  | `distributions.statusOpened`         |
+| 387  | Standard hook call  | `distributions.statusClicked`        |
+| 390  | Standard hook call  | `distributions.statusBounced`        |
+| 393  | Standard hook call  | `distributions.statusFailed`         |
+| 421  | Standard hook call  | `distributions.noRecipients`         |
+| 439  | Standard hook call  | `common.loadMore`                    |
 
 ### src/components/features/distributions/LinkAnalyticsDrawer.tsx (37)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 308 | Standard hook call | `linkAnalytics.title` |
-| 311 | Standard hook call | `linkAnalytics.description` |
-| 319 | Standard hook call | `linkAnalytics.clicks` |
-| 320 | Standard hook call | `linkAnalytics.responses` |
-| 321 | With options object | `linkAnalytics.conversion` |
-| 332 | Standard hook call | `linkAnalytics.error.title` |
-| 333 | Standard hook call | `linkAnalytics.error.description` |
-| 334 | Standard hook call | `common.tryAgain` |
-| 340 | Standard hook call | `linkAnalytics.uniqueClicks` |
-| 341 | Standard hook call | `linkAnalytics.topCountries` |
-| 350 | Standard hook call | `linkAnalytics.clicksOverTime` |
-| 362 | Standard hook call | `linkAnalytics.tabs.geography` |
-| 365 | Standard hook call | `linkAnalytics.tabs.device` |
-| 368 | Standard hook call | `linkAnalytics.tabs.referrer` |
-| 375 | Standard hook call | `linkAnalytics.geoDistribution` |
-| 376 | Standard hook call | `linkAnalytics.noGeoData` |
-| 384 | Standard hook call | `linkAnalytics.deviceBreakdown` |
-| 385 | Standard hook call | `linkAnalytics.noDeviceData` |
-| 393 | Standard hook call | `linkAnalytics.trafficSources` |
-| 396 | Standard hook call | `linkAnalytics.noReferrerData` |
-| 397 | Standard hook call | `linkAnalytics.direct` |
-| 407 | Standard hook call | `linkAnalytics.linkDetails` |
-| 410 | Standard hook call | `linkAnalytics.details.created` |
-| 414 | Standard hook call | `linkAnalytics.details.type` |
-| 419 | Standard hook call | `linkAnalytics.details.name` |
-| 424 | Standard hook call | `linkAnalytics.details.status` |
-| 426 | Standard hook call | `linkAnalytics.details.active` |
-| 426 | Standard hook call | `linkAnalytics.details.inactive` |
-| 431 | Standard hook call | `linkAnalytics.details.expires` |
-| 437 | Standard hook call | `linkAnalytics.details.maxResponses` |
-| 445 | Standard hook call | `linkAnalytics.details.passwordProtected` |
-| 446 | Standard hook call | `common.yes` |
-| 451 | Standard hook call | `linkAnalytics.details.utmSource` |
-| 457 | Standard hook call | `linkAnalytics.details.utmMedium` |
-| 463 | Standard hook call | `linkAnalytics.details.utmCampaign` |
-| 474 | Standard hook call | `linkAnalytics.loading` |
-| 481 | Standard hook call | `common.close` |
+| Line | Pattern             | Key                                       |
+| ---- | ------------------- | ----------------------------------------- |
+| 308  | Standard hook call  | `linkAnalytics.title`                     |
+| 311  | Standard hook call  | `linkAnalytics.description`               |
+| 319  | Standard hook call  | `linkAnalytics.clicks`                    |
+| 320  | Standard hook call  | `linkAnalytics.responses`                 |
+| 321  | With options object | `linkAnalytics.conversion`                |
+| 332  | Standard hook call  | `linkAnalytics.error.title`               |
+| 333  | Standard hook call  | `linkAnalytics.error.description`         |
+| 334  | Standard hook call  | `common.tryAgain`                         |
+| 340  | Standard hook call  | `linkAnalytics.uniqueClicks`              |
+| 341  | Standard hook call  | `linkAnalytics.topCountries`              |
+| 350  | Standard hook call  | `linkAnalytics.clicksOverTime`            |
+| 362  | Standard hook call  | `linkAnalytics.tabs.geography`            |
+| 365  | Standard hook call  | `linkAnalytics.tabs.device`               |
+| 368  | Standard hook call  | `linkAnalytics.tabs.referrer`             |
+| 375  | Standard hook call  | `linkAnalytics.geoDistribution`           |
+| 376  | Standard hook call  | `linkAnalytics.noGeoData`                 |
+| 384  | Standard hook call  | `linkAnalytics.deviceBreakdown`           |
+| 385  | Standard hook call  | `linkAnalytics.noDeviceData`              |
+| 393  | Standard hook call  | `linkAnalytics.trafficSources`            |
+| 396  | Standard hook call  | `linkAnalytics.noReferrerData`            |
+| 397  | Standard hook call  | `linkAnalytics.direct`                    |
+| 407  | Standard hook call  | `linkAnalytics.linkDetails`               |
+| 410  | Standard hook call  | `linkAnalytics.details.created`           |
+| 414  | Standard hook call  | `linkAnalytics.details.type`              |
+| 419  | Standard hook call  | `linkAnalytics.details.name`              |
+| 424  | Standard hook call  | `linkAnalytics.details.status`            |
+| 426  | Standard hook call  | `linkAnalytics.details.active`            |
+| 426  | Standard hook call  | `linkAnalytics.details.inactive`          |
+| 431  | Standard hook call  | `linkAnalytics.details.expires`           |
+| 437  | Standard hook call  | `linkAnalytics.details.maxResponses`      |
+| 445  | Standard hook call  | `linkAnalytics.details.passwordProtected` |
+| 446  | Standard hook call  | `common.yes`                              |
+| 451  | Standard hook call  | `linkAnalytics.details.utmSource`         |
+| 457  | Standard hook call  | `linkAnalytics.details.utmMedium`         |
+| 463  | Standard hook call  | `linkAnalytics.details.utmCampaign`       |
+| 474  | Standard hook call  | `linkAnalytics.loading`                   |
+| 481  | Standard hook call  | `common.close`                            |
 
 ### src/components/features/distributions/LinksPanel.tsx (49)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 75 | Standard hook call | `linksPanel.types.standard` |
-| 78 | Standard hook call | `linksPanel.types.standardDescription` |
-| 81 | Standard hook call | `linksPanel.types.unique` |
-| 84 | Standard hook call | `linksPanel.types.uniqueDescription` |
-| 87 | Standard hook call | `linksPanel.types.embedded` |
-| 90 | Standard hook call | `linksPanel.types.embeddedDescription` |
-| 93 | With default value | `linksPanel.types.campaign` |
-| 96 | With default value | `linksPanel.types.campaignDescription` |
-| 99 | With default value | `linksPanel.types.qrCode` |
-| 102 | With default value | `linksPanel.types.qrCodeDescription` |
-| 115 | Standard hook call | `linksPanel.toast.copied` |
-| 116 | Standard hook call | `linksPanel.toast.copyFailed` |
-| 121 | Standard hook call | `linksPanel.status.inactive` |
-| 122 | Standard hook call | `linksPanel.status.expired` |
-| 123 | Standard hook call | `linksPanel.status.limitReached` |
-| 124 | Standard hook call | `linksPanel.status.active` |
-| 148 | Standard hook call | `linksPanel.passwordProtected` |
-| 164 | Standard hook call | `linksPanel.totalClicks` |
-| 170 | Standard hook call | `linksPanel.responses` |
-| 180 | With options object | `linksPanel.expiresAt` |
-| 180 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 183 | Standard hook call | `linksPanel.status.expired` |
-| 196 | Standard hook call | `linksPanel.showQRCode` |
-| 201 | Standard hook call | `linksPanel.openLink` |
-| 215 | Standard hook call | `linksPanel.viewAnalytics` |
-| 218 | Standard hook call | `linksPanel.copyLink` |
-| 221 | Standard hook call | `linksPanel.showQRCode` |
-| 226 | Standard hook call | `linksPanel.deactivate` |
-| 230 | Standard hook call | `linksPanel.reactivate` |
-| 274 | Standard hook call | `linksPanel.emptyState.title` |
-| 275 | Standard hook call | `linksPanel.emptyState.description` |
-| 278 | Standard hook call | `linksPanel.createLink` |
-| 303 | Standard hook call | `linksPanel.confirm.deactivateTitle` |
-| 304 | Standard hook call | `linksPanel.confirm.deactivateDescription` |
-| 305 | Standard hook call | `linksPanel.deactivate` |
-| 312 | Standard hook call | `linksPanel.toast.deactivated` |
-| 314 | Standard hook call | `linksPanel.toast.deactivateFailed` |
-| 321 | Standard hook call | `linksPanel.confirm.reactivateTitle` |
-| 322 | Standard hook call | `linksPanel.confirm.reactivateDescription` |
-| 323 | Standard hook call | `linksPanel.reactivate` |
-| 329 | Standard hook call | `linksPanel.toast.reactivated` |
-| 331 | Standard hook call | `linksPanel.toast.reactivateFailed` |
-| 347 | Standard hook call | `linksPanel.title` |
-| 349 | Standard hook call | `linksPanel.description` |
-| 354 | Standard hook call | `linksPanel.bulkGenerate` |
-| 358 | Standard hook call | `linksPanel.newLink` |
-| 369 | Standard hook call | `linksPanel.error` |
-| 379 | With options object | `linksPanel.activeLinks` |
-| 398 | With options object | `linksPanel.inactiveLinks` |
+| Line | Pattern                                | Key                                        |
+| ---- | -------------------------------------- | ------------------------------------------ |
+| 75   | Standard hook call                     | `linksPanel.types.standard`                |
+| 78   | Standard hook call                     | `linksPanel.types.standardDescription`     |
+| 81   | Standard hook call                     | `linksPanel.types.unique`                  |
+| 84   | Standard hook call                     | `linksPanel.types.uniqueDescription`       |
+| 87   | Standard hook call                     | `linksPanel.types.embedded`                |
+| 90   | Standard hook call                     | `linksPanel.types.embeddedDescription`     |
+| 93   | With default value                     | `linksPanel.types.campaign`                |
+| 96   | With default value                     | `linksPanel.types.campaignDescription`     |
+| 99   | With default value                     | `linksPanel.types.qrCode`                  |
+| 102  | With default value                     | `linksPanel.types.qrCodeDescription`       |
+| 115  | Standard hook call                     | `linksPanel.toast.copied`                  |
+| 116  | Standard hook call                     | `linksPanel.toast.copyFailed`              |
+| 121  | Standard hook call                     | `linksPanel.status.inactive`               |
+| 122  | Standard hook call                     | `linksPanel.status.expired`                |
+| 123  | Standard hook call                     | `linksPanel.status.limitReached`           |
+| 124  | Standard hook call                     | `linksPanel.status.active`                 |
+| 148  | Standard hook call                     | `linksPanel.passwordProtected`             |
+| 164  | Standard hook call                     | `linksPanel.totalClicks`                   |
+| 170  | Standard hook call                     | `linksPanel.responses`                     |
+| 180  | With options object                    | `linksPanel.expiresAt`                     |
+| 180  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`              |
+| 183  | Standard hook call                     | `linksPanel.status.expired`                |
+| 196  | Standard hook call                     | `linksPanel.showQRCode`                    |
+| 201  | Standard hook call                     | `linksPanel.openLink`                      |
+| 215  | Standard hook call                     | `linksPanel.viewAnalytics`                 |
+| 218  | Standard hook call                     | `linksPanel.copyLink`                      |
+| 221  | Standard hook call                     | `linksPanel.showQRCode`                    |
+| 226  | Standard hook call                     | `linksPanel.deactivate`                    |
+| 230  | Standard hook call                     | `linksPanel.reactivate`                    |
+| 274  | Standard hook call                     | `linksPanel.emptyState.title`              |
+| 275  | Standard hook call                     | `linksPanel.emptyState.description`        |
+| 278  | Standard hook call                     | `linksPanel.createLink`                    |
+| 303  | Standard hook call                     | `linksPanel.confirm.deactivateTitle`       |
+| 304  | Standard hook call                     | `linksPanel.confirm.deactivateDescription` |
+| 305  | Standard hook call                     | `linksPanel.deactivate`                    |
+| 312  | Standard hook call                     | `linksPanel.toast.deactivated`             |
+| 314  | Standard hook call                     | `linksPanel.toast.deactivateFailed`        |
+| 321  | Standard hook call                     | `linksPanel.confirm.reactivateTitle`       |
+| 322  | Standard hook call                     | `linksPanel.confirm.reactivateDescription` |
+| 323  | Standard hook call                     | `linksPanel.reactivate`                    |
+| 329  | Standard hook call                     | `linksPanel.toast.reactivated`             |
+| 331  | Standard hook call                     | `linksPanel.toast.reactivateFailed`        |
+| 347  | Standard hook call                     | `linksPanel.title`                         |
+| 349  | Standard hook call                     | `linksPanel.description`                   |
+| 354  | Standard hook call                     | `linksPanel.bulkGenerate`                  |
+| 358  | Standard hook call                     | `linksPanel.newLink`                       |
+| 369  | Standard hook call                     | `linksPanel.error`                         |
+| 379  | With options object                    | `linksPanel.activeLinks`                   |
+| 398  | With options object                    | `linksPanel.inactiveLinks`                 |
 
 ### src/components/features/distributions/QRCodeDialog.tsx (25)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 36 | Standard hook call | `qrCodeDialog.sizes.small` |
-| 37 | Standard hook call | `qrCodeDialog.sizes.medium` |
-| 38 | Standard hook call | `qrCodeDialog.sizes.large` |
-| 39 | Standard hook call | `qrCodeDialog.sizes.xlarge` |
-| 47 | Standard hook call | `qrCodeDialog.toast.copied` |
-| 48 | Standard hook call | `qrCodeDialog.toast.copyFailed` |
-| 73 | Standard hook call | `qrCodeDialog.toast.downloaded` |
-| 76 | Standard hook call | `qrCodeDialog.toast.downloadFailed` |
-| 92 | Standard hook call | `qrCodeDialog.title` |
-| 93 | Standard hook call | `qrCodeDialog.description` |
-| 108 | Standard hook call | `a11y.qrCode` |
-| 124 | Standard hook call | `qrCodeDialog.theme` |
-| 129 | Standard hook call | `qrCodeDialog.themes.light` |
-| 133 | Standard hook call | `qrCodeDialog.themes.dark` |
-| 137 | Standard hook call | `qrCodeDialog.themes.brand` |
-| 145 | Standard hook call | `qrCodeDialog.downloadSize` |
-| 146 | Standard hook call | `qrCodeDialog.selectSize` |
-| 153 | Standard hook call | `qrCodeDialog.downloadPNG` |
-| 160 | Standard hook call | `qrCodeDialog.openSurvey` |
-| 165 | Standard hook call | `qrCodeDialog.tips.title` |
-| 167 | Standard hook call | `qrCodeDialog.tips.tip1` |
-| 168 | Standard hook call | `qrCodeDialog.tips.tip2` |
-| 169 | Standard hook call | `qrCodeDialog.tips.tip3` |
-| 170 | Standard hook call | `qrCodeDialog.tips.tip4` |
-| 179 | Standard hook call | `common.close` |
+| Line | Pattern            | Key                                 |
+| ---- | ------------------ | ----------------------------------- |
+| 36   | Standard hook call | `qrCodeDialog.sizes.small`          |
+| 37   | Standard hook call | `qrCodeDialog.sizes.medium`         |
+| 38   | Standard hook call | `qrCodeDialog.sizes.large`          |
+| 39   | Standard hook call | `qrCodeDialog.sizes.xlarge`         |
+| 47   | Standard hook call | `qrCodeDialog.toast.copied`         |
+| 48   | Standard hook call | `qrCodeDialog.toast.copyFailed`     |
+| 73   | Standard hook call | `qrCodeDialog.toast.downloaded`     |
+| 76   | Standard hook call | `qrCodeDialog.toast.downloadFailed` |
+| 92   | Standard hook call | `qrCodeDialog.title`                |
+| 93   | Standard hook call | `qrCodeDialog.description`          |
+| 108  | Standard hook call | `a11y.qrCode`                       |
+| 124  | Standard hook call | `qrCodeDialog.theme`                |
+| 129  | Standard hook call | `qrCodeDialog.themes.light`         |
+| 133  | Standard hook call | `qrCodeDialog.themes.dark`          |
+| 137  | Standard hook call | `qrCodeDialog.themes.brand`         |
+| 145  | Standard hook call | `qrCodeDialog.downloadSize`         |
+| 146  | Standard hook call | `qrCodeDialog.selectSize`           |
+| 153  | Standard hook call | `qrCodeDialog.downloadPNG`          |
+| 160  | Standard hook call | `qrCodeDialog.openSurvey`           |
+| 165  | Standard hook call | `qrCodeDialog.tips.title`           |
+| 167  | Standard hook call | `qrCodeDialog.tips.tip1`            |
+| 168  | Standard hook call | `qrCodeDialog.tips.tip2`            |
+| 169  | Standard hook call | `qrCodeDialog.tips.tip3`            |
+| 170  | Standard hook call | `qrCodeDialog.tips.tip4`            |
+| 179  | Standard hook call | `common.close`                      |
 
 ### src/components/features/distributions/RecipientImporter.tsx (22)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 86 | Standard hook call | `recipientImporter.enterEmail` |
-| 91 | Standard hook call | `recipientImporter.invalidEmail` |
-| 96 | Standard hook call | `recipientImporter.duplicateEmail` |
-| 101 | With options object | `recipientImporter.maxRecipientsError` |
-| 196 | Standard hook call | `recipientImporter.emailPlaceholder` |
-| 209 | Standard hook call | `common.add` |
-| 236 | Standard hook call | `recipientImporter.dropCsvHere` |
-| 237 | Standard hook call | `recipientImporter.orClickToBrowse` |
-| 242 | Standard hook call | `recipientImporter.browseFiles` |
-| 253 | With options object | `recipientImporter.recipientCount` |
-| 257 | Standard hook call | `common.clearAll` |
-| 275 | With options object | `recipientImporter.moreRecipients` |
-| 289 | Standard hook call | `recipientImporter.importTitle` |
-| 290 | Standard hook call | `recipientImporter.importDescription` |
-| 300 | With options object | `recipientImporter.validEmails` |
-| 301 | Standard hook call | `recipientImporter.willBeAdded` |
-| 311 | With options object | `recipientImporter.duplicatesSkipped` |
-| 313 | Standard hook call | `recipientImporter.alreadyInList` |
-| 324 | With options object | `recipientImporter.invalidEmails` |
-| 334 | With options object | `recipientImporter.moreInvalid` |
-| 346 | Standard hook call | `common.cancel` |
-| 349 | With options object | `recipientImporter.importButton` |
+| Line | Pattern             | Key                                    |
+| ---- | ------------------- | -------------------------------------- |
+| 86   | Standard hook call  | `recipientImporter.enterEmail`         |
+| 91   | Standard hook call  | `recipientImporter.invalidEmail`       |
+| 96   | Standard hook call  | `recipientImporter.duplicateEmail`     |
+| 101  | With options object | `recipientImporter.maxRecipientsError` |
+| 196  | Standard hook call  | `recipientImporter.emailPlaceholder`   |
+| 209  | Standard hook call  | `common.add`                           |
+| 236  | Standard hook call  | `recipientImporter.dropCsvHere`        |
+| 237  | Standard hook call  | `recipientImporter.orClickToBrowse`    |
+| 242  | Standard hook call  | `recipientImporter.browseFiles`        |
+| 253  | With options object | `recipientImporter.recipientCount`     |
+| 257  | Standard hook call  | `common.clearAll`                      |
+| 275  | With options object | `recipientImporter.moreRecipients`     |
+| 289  | Standard hook call  | `recipientImporter.importTitle`        |
+| 290  | Standard hook call  | `recipientImporter.importDescription`  |
+| 300  | With options object | `recipientImporter.validEmails`        |
+| 301  | Standard hook call  | `recipientImporter.willBeAdded`        |
+| 311  | With options object | `recipientImporter.duplicatesSkipped`  |
+| 313  | Standard hook call  | `recipientImporter.alreadyInList`      |
+| 324  | With options object | `recipientImporter.invalidEmails`      |
+| 334  | With options object | `recipientImporter.moreInvalid`        |
+| 346  | Standard hook call  | `common.cancel`                        |
+| 349  | With options object | `recipientImporter.importButton`       |
 
 ### src/components/features/email-templates/CreateEmailTemplateDialog.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 126 | Standard hook call | `emailTemplates.createSuccess` |
-| 132 | Standard hook call | `emailTemplates.createError` |
-| 152 | Standard hook call | `emailTemplates.form.title` |
-| 153 | Standard hook call | `emailTemplates.form.description` |
-| 161 | Standard hook call | `emailTemplates.form.name` |
-| 164 | Standard hook call | `emailTemplates.form.namePlaceholder` |
-| 173 | Standard hook call | `emailTemplates.form.type` |
-| 190 | Standard hook call | `emailTemplates.form.defaultContentInfo` |
-| 191 | Standard hook call | `emailTemplates.form.defaultContentDesc` |
-| 212 | Standard hook call | `common.cancel` |
-| 215 | Standard hook call | `emailTemplates.form.createButton` |
+| Line | Pattern            | Key                                      |
+| ---- | ------------------ | ---------------------------------------- |
+| 126  | Standard hook call | `emailTemplates.createSuccess`           |
+| 132  | Standard hook call | `emailTemplates.createError`             |
+| 152  | Standard hook call | `emailTemplates.form.title`              |
+| 153  | Standard hook call | `emailTemplates.form.description`        |
+| 161  | Standard hook call | `emailTemplates.form.name`               |
+| 164  | Standard hook call | `emailTemplates.form.namePlaceholder`    |
+| 173  | Standard hook call | `emailTemplates.form.type`               |
+| 190  | Standard hook call | `emailTemplates.form.defaultContentInfo` |
+| 191  | Standard hook call | `emailTemplates.form.defaultContentDesc` |
+| 212  | Standard hook call | `common.cancel`                          |
+| 215  | Standard hook call | `emailTemplates.form.createButton`       |
 
 ### src/components/features/email-templates/EmailTemplateEditor.tsx (43)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 243 | Standard hook call | `emailTemplates.editor.validation.nameRequired` |
-| 247 | Standard hook call | `emailTemplates.editor.validation.subjectRequired` |
-| 251 | Standard hook call | `emailTemplates.editor.validation.bodyRequired` |
-| 266 | Standard hook call | `emailTemplates.editor.saveSuccess` |
-| 270 | Standard hook call | `emailTemplates.editor.saveError` |
-| 295 | Standard hook call | `emailTemplates.editor.back` |
-| 299 | Standard hook call | `emailTemplates.editor.title` |
-| 300 | Standard hook call | `emailTemplates.editor.unsavedChanges` |
-| 300 | Standard hook call | `common.saved` |
-| 309 | Standard hook call | `emailTemplates.editor.viewModes.edit` |
-| 312 | Standard hook call | `emailTemplates.editor.viewModes.split` |
-| 321 | Standard hook call | `emailTemplates.editor.viewModes.preview` |
-| 327 | Standard hook call | `emailTemplates.editor.toolbar.undo` |
-| 332 | Standard hook call | `emailTemplates.editor.toolbar.redo` |
-| 342 | Standard hook call | `common.save` |
-| 360 | Standard hook call | `emailTemplates.editor.templateName` |
-| 364 | Standard hook call | `emailTemplates.editor.templateNamePlaceholder` |
-| 369 | Standard hook call | `emailTemplates.form.type` |
-| 378 | Standard hook call | `emailTemplates.editor.subject` |
-| 382 | Standard hook call | `emailTemplates.editor.subjectPlaceholder` |
-| 396 | Standard hook call | `emailTemplates.editor.contentModes.html` |
-| 400 | Standard hook call | `emailTemplates.editor.contentModes.plainText` |
-| 408 | Standard hook call | `emailTemplates.editor.toolbar.bold` |
-| 413 | Standard hook call | `emailTemplates.editor.toolbar.italic` |
-| 418 | Standard hook call | `emailTemplates.editor.toolbar.link` |
-| 423 | Standard hook call | `emailTemplates.editor.toolbar.bulletList` |
-| 428 | Standard hook call | `emailTemplates.editor.toolbar.numberedList` |
-| 441 | Standard hook call | `emailTemplates.editor.availablePlaceholders` |
-| 442 | Standard hook call | `common.clickToInsert` |
-| 446 | Standard hook call | `common.insert` |
-| 468 | Standard hook call | `emailTemplates.editor.contentModes.html` |
-| 468 | Standard hook call | `emailTemplates.editor.contentModes.plainText` |
-| 470 | Standard hook call | `emailTemplates.editor.plainTextFallback` |
-| 478 | Standard hook call | `emailTemplates.editor.htmlPlaceholder` |
-| 486 | Standard hook call | `emailTemplates.editor.plainTextPlaceholder` |
-| 503 | Standard hook call | `emailTemplates.editor.preview` |
-| 505 | Standard hook call | `emailTemplates.editor.contentModes.html` |
-| 505 | Standard hook call | `emailTemplates.editor.contentModes.plainText` |
-| 521 | Standard hook call | `emailTemplates.preview.from` |
-| 521 | Standard hook call | `emailTemplates.preview.yourCompany` |
-| 528 | Standard hook call | `emailTemplates.preview.to` |
-| 532 | Standard hook call | `emailTemplates.editor.subject` |
-| 546 | Standard hook call | `emailTemplates.preview.placeholderReference` |
+| Line | Pattern            | Key                                                |
+| ---- | ------------------ | -------------------------------------------------- |
+| 243  | Standard hook call | `emailTemplates.editor.validation.nameRequired`    |
+| 247  | Standard hook call | `emailTemplates.editor.validation.subjectRequired` |
+| 251  | Standard hook call | `emailTemplates.editor.validation.bodyRequired`    |
+| 266  | Standard hook call | `emailTemplates.editor.saveSuccess`                |
+| 270  | Standard hook call | `emailTemplates.editor.saveError`                  |
+| 295  | Standard hook call | `emailTemplates.editor.back`                       |
+| 299  | Standard hook call | `emailTemplates.editor.title`                      |
+| 300  | Standard hook call | `emailTemplates.editor.unsavedChanges`             |
+| 300  | Standard hook call | `common.saved`                                     |
+| 309  | Standard hook call | `emailTemplates.editor.viewModes.edit`             |
+| 312  | Standard hook call | `emailTemplates.editor.viewModes.split`            |
+| 321  | Standard hook call | `emailTemplates.editor.viewModes.preview`          |
+| 327  | Standard hook call | `emailTemplates.editor.toolbar.undo`               |
+| 332  | Standard hook call | `emailTemplates.editor.toolbar.redo`               |
+| 342  | Standard hook call | `common.save`                                      |
+| 360  | Standard hook call | `emailTemplates.editor.templateName`               |
+| 364  | Standard hook call | `emailTemplates.editor.templateNamePlaceholder`    |
+| 369  | Standard hook call | `emailTemplates.form.type`                         |
+| 378  | Standard hook call | `emailTemplates.editor.subject`                    |
+| 382  | Standard hook call | `emailTemplates.editor.subjectPlaceholder`         |
+| 396  | Standard hook call | `emailTemplates.editor.contentModes.html`          |
+| 400  | Standard hook call | `emailTemplates.editor.contentModes.plainText`     |
+| 408  | Standard hook call | `emailTemplates.editor.toolbar.bold`               |
+| 413  | Standard hook call | `emailTemplates.editor.toolbar.italic`             |
+| 418  | Standard hook call | `emailTemplates.editor.toolbar.link`               |
+| 423  | Standard hook call | `emailTemplates.editor.toolbar.bulletList`         |
+| 428  | Standard hook call | `emailTemplates.editor.toolbar.numberedList`       |
+| 441  | Standard hook call | `emailTemplates.editor.availablePlaceholders`      |
+| 442  | Standard hook call | `common.clickToInsert`                             |
+| 446  | Standard hook call | `common.insert`                                    |
+| 468  | Standard hook call | `emailTemplates.editor.contentModes.html`          |
+| 468  | Standard hook call | `emailTemplates.editor.contentModes.plainText`     |
+| 470  | Standard hook call | `emailTemplates.editor.plainTextFallback`          |
+| 478  | Standard hook call | `emailTemplates.editor.htmlPlaceholder`            |
+| 486  | Standard hook call | `emailTemplates.editor.plainTextPlaceholder`       |
+| 503  | Standard hook call | `emailTemplates.editor.preview`                    |
+| 505  | Standard hook call | `emailTemplates.editor.contentModes.html`          |
+| 505  | Standard hook call | `emailTemplates.editor.contentModes.plainText`     |
+| 521  | Standard hook call | `emailTemplates.preview.from`                      |
+| 521  | Standard hook call | `emailTemplates.preview.yourCompany`               |
+| 528  | Standard hook call | `emailTemplates.preview.to`                        |
+| 532  | Standard hook call | `emailTemplates.editor.subject`                    |
+| 546  | Standard hook call | `emailTemplates.preview.placeholderReference`      |
 
 ### src/components/features/email-templates/visual-editor/BlockEditor.tsx (21)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 106 | With default value | `emailEditor.blockToolbar` |
-| 109 | With default value | `common.dragToReorder` |
-| 120 | With default value | `common.dragToReorder` |
-| 130 | With default value | `common.moveUp` |
-| 139 | With default value | `common.moveUp` |
-| 147 | With default value | `common.moveDown` |
-| 156 | With default value | `common.moveDown` |
-| 167 | With default value | `emailEditor.settings.title` |
-| 175 | With default value | `emailEditor.settings.title` |
-| 182 | With default value | `common.duplicate` |
-| 190 | With default value | `common.duplicate` |
-| 197 | With default value | `common.delete` |
-| 205 | With default value | `common.delete` |
-| 241 | With default value | `a11y.logoAlt` |
-| 253 | With default value | `emailEditor.preview.headerPlaceholder` |
-| 274 | With default value | `emailEditor.preview.textPlaceholder` |
-| 294 | With default value | `emailEditor.preview.imagePlaceholder` |
-| 350 | With default value | `emailEditor.preview.columnsPlaceholder` |
-| 352 | With default value | `emailEditor.columns` |
-| 378 | With default value | `emailEditor.preview.socialPlaceholder` |
-| 401 | With default value | `emailEditor.preview.footerPlaceholder` |
+| Line | Pattern            | Key                                      |
+| ---- | ------------------ | ---------------------------------------- |
+| 106  | With default value | `emailEditor.blockToolbar`               |
+| 109  | With default value | `common.dragToReorder`                   |
+| 120  | With default value | `common.dragToReorder`                   |
+| 130  | With default value | `common.moveUp`                          |
+| 139  | With default value | `common.moveUp`                          |
+| 147  | With default value | `common.moveDown`                        |
+| 156  | With default value | `common.moveDown`                        |
+| 167  | With default value | `emailEditor.settings.title`             |
+| 175  | With default value | `emailEditor.settings.title`             |
+| 182  | With default value | `common.duplicate`                       |
+| 190  | With default value | `common.duplicate`                       |
+| 197  | With default value | `common.delete`                          |
+| 205  | With default value | `common.delete`                          |
+| 241  | With default value | `a11y.logoAlt`                           |
+| 253  | With default value | `emailEditor.preview.headerPlaceholder`  |
+| 274  | With default value | `emailEditor.preview.textPlaceholder`    |
+| 294  | With default value | `emailEditor.preview.imagePlaceholder`   |
+| 350  | With default value | `emailEditor.preview.columnsPlaceholder` |
+| 352  | With default value | `emailEditor.columns`                    |
+| 378  | With default value | `emailEditor.preview.socialPlaceholder`  |
+| 401  | With default value | `emailEditor.preview.footerPlaceholder`  |
 
 ### src/components/features/email-templates/visual-editor/BlockPalette.tsx (29)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 29 | With default value | `emailEditor.blocks.header` |
-| 30 | With default value | `emailEditor.blocks.headerDesc` |
-| 36 | With default value | `emailEditor.blocks.text` |
-| 37 | With default value | `emailEditor.blocks.textDesc` |
-| 43 | With default value | `emailEditor.blocks.image` |
-| 44 | With default value | `emailEditor.blocks.imageDesc` |
-| 50 | With default value | `emailEditor.blocks.button` |
-| 51 | With default value | `emailEditor.blocks.buttonDesc` |
-| 57 | With default value | `emailEditor.blocks.divider` |
-| 58 | With default value | `emailEditor.blocks.dividerDesc` |
-| 64 | With default value | `emailEditor.blocks.spacer` |
-| 65 | With default value | `emailEditor.blocks.spacerDesc` |
-| 71 | With default value | `emailEditor.blocks.columns` |
-| 72 | With default value | `emailEditor.blocks.columnsDesc` |
-| 78 | With default value | `emailEditor.blocks.social` |
-| 79 | With default value | `emailEditor.blocks.socialDesc` |
-| 85 | With default value | `emailEditor.blocks.footer` |
-| 86 | With default value | `emailEditor.blocks.footerDesc` |
-| 93 | With default value | `emailEditor.addBlock` |
-| 94 | With default value | `emailEditor.addBlockHint` |
-| 171 | With default value | `emailEditor.blocks.header` |
-| 172 | With default value | `emailEditor.blocks.text` |
-| 173 | With default value | `emailEditor.blocks.image` |
-| 174 | With default value | `emailEditor.blocks.button` |
-| 175 | With default value | `emailEditor.blocks.divider` |
-| 176 | With default value | `emailEditor.blocks.spacer` |
-| 177 | With default value | `emailEditor.blocks.columns` |
-| 178 | With default value | `emailEditor.blocks.social` |
-| 179 | With default value | `emailEditor.blocks.footer` |
+| Line | Pattern            | Key                              |
+| ---- | ------------------ | -------------------------------- |
+| 29   | With default value | `emailEditor.blocks.header`      |
+| 30   | With default value | `emailEditor.blocks.headerDesc`  |
+| 36   | With default value | `emailEditor.blocks.text`        |
+| 37   | With default value | `emailEditor.blocks.textDesc`    |
+| 43   | With default value | `emailEditor.blocks.image`       |
+| 44   | With default value | `emailEditor.blocks.imageDesc`   |
+| 50   | With default value | `emailEditor.blocks.button`      |
+| 51   | With default value | `emailEditor.blocks.buttonDesc`  |
+| 57   | With default value | `emailEditor.blocks.divider`     |
+| 58   | With default value | `emailEditor.blocks.dividerDesc` |
+| 64   | With default value | `emailEditor.blocks.spacer`      |
+| 65   | With default value | `emailEditor.blocks.spacerDesc`  |
+| 71   | With default value | `emailEditor.blocks.columns`     |
+| 72   | With default value | `emailEditor.blocks.columnsDesc` |
+| 78   | With default value | `emailEditor.blocks.social`      |
+| 79   | With default value | `emailEditor.blocks.socialDesc`  |
+| 85   | With default value | `emailEditor.blocks.footer`      |
+| 86   | With default value | `emailEditor.blocks.footerDesc`  |
+| 93   | With default value | `emailEditor.addBlock`           |
+| 94   | With default value | `emailEditor.addBlockHint`       |
+| 171  | With default value | `emailEditor.blocks.header`      |
+| 172  | With default value | `emailEditor.blocks.text`        |
+| 173  | With default value | `emailEditor.blocks.image`       |
+| 174  | With default value | `emailEditor.blocks.button`      |
+| 175  | With default value | `emailEditor.blocks.divider`     |
+| 176  | With default value | `emailEditor.blocks.spacer`      |
+| 177  | With default value | `emailEditor.blocks.columns`     |
+| 178  | With default value | `emailEditor.blocks.social`      |
+| 179  | With default value | `emailEditor.blocks.footer`      |
 
 ### src/components/features/email-templates/visual-editor/BlockSettingsPanel.tsx (97)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 138 | With default value | `emailEditor.settings.logo` |
-| 140 | With default value | `emailEditor.settings.logoUrl` |
-| 146 | With default value | `emailEditor.settings.logoWidth` |
-| 160 | With default value | `emailEditor.settings.content` |
-| 162 | With default value | `emailEditor.settings.title` |
-| 168 | With default value | `emailEditor.settings.subtitle` |
-| 177 | With default value | `emailEditor.settings.style` |
-| 178 | With default value | `emailEditor.settings.alignment` |
-| 181 | With default value | `emailEditor.settings.backgroundColor` |
-| 188 | With default value | `emailEditor.settings.textColor` |
-| 191 | With default value | `emailEditor.settings.padding` |
-| 215 | With default value | `emailEditor.settings.content` |
-| 216 | With default value | `emailEditor.settings.htmlContent` |
-| 218 | With default value | `emailEditor.settings.htmlSupport` |
-| 224 | With default value | `emailEditor.settings.typography` |
-| 225 | With default value | `emailEditor.settings.alignment` |
-| 228 | With default value | `emailEditor.settings.fontSize` |
-| 238 | With default value | `emailEditor.settings.lineHeight` |
-| 252 | With default value | `emailEditor.settings.colors` |
-| 253 | With default value | `emailEditor.settings.textColor` |
-| 256 | With default value | `emailEditor.settings.backgroundColor` |
-| 263 | With default value | `emailEditor.settings.padding` |
-| 287 | With default value | `emailEditor.settings.image` |
-| 289 | With default value | `emailEditor.settings.imageUrl` |
-| 296 | With default value | `emailEditor.settings.altText` |
-| 302 | With default value | `emailEditor.settings.linkUrl` |
-| 302 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 313 | With default value | `emailEditor.settings.layout` |
-| 314 | With default value | `emailEditor.settings.width` |
-| 324 | With default value | `emailEditor.settings.alignment` |
-| 327 | With default value | `emailEditor.settings.borderRadius` |
-| 337 | With default value | `emailEditor.settings.padding` |
-| 361 | With default value | `emailEditor.settings.button` |
-| 363 | With default value | `emailEditor.settings.buttonText` |
-| 369 | With default value | `emailEditor.settings.url` |
-| 377 | With default value | `emailEditor.settings.fullWidth` |
-| 385 | With default value | `emailEditor.settings.style` |
-| 386 | With default value | `emailEditor.settings.alignment` |
-| 389 | With default value | `emailEditor.settings.buttonColor` |
-| 396 | With default value | `emailEditor.settings.textColor` |
-| 399 | With default value | `emailEditor.settings.fontSize` |
-| 409 | With default value | `emailEditor.settings.borderRadius` |
-| 423 | With default value | `emailEditor.settings.padding` |
-| 425 | With default value | `emailEditor.settings.vertical` |
-| 443 | With default value | `emailEditor.settings.horizontal` |
-| 476 | With default value | `emailEditor.settings.divider` |
-| 477 | With default value | `emailEditor.settings.color` |
-| 480 | With default value | `emailEditor.settings.thickness` |
-| 491 | With default value | `emailEditor.settings.style` |
-| 495 | With default value | `emailEditor.dividerStyles.solid` |
-| 496 | With default value | `emailEditor.dividerStyles.dashed` |
-| 497 | With default value | `emailEditor.dividerStyles.dotted` |
-| 501 | With default value | `emailEditor.settings.width` |
-| 507 | With default value | `emailEditor.settings.padding` |
-| 528 | With default value | `emailEditor.settings.spacer` |
-| 529 | With default value | `emailEditor.settings.height` |
-| 543 | With default value | `emailEditor.settings.preview` |
-| 591 | With default value | `emailEditor.settings.columns` |
-| 594 | With default value | `emailEditor.columns` |
-| 598 | With default value | `common.add` |
-| 620 | With default value | `common.delete` |
-| 631 | With default value | `emailEditor.settings.layout` |
-| 632 | With default value | `emailEditor.settings.gap` |
-| 635 | With default value | `emailEditor.settings.backgroundColor` |
-| 642 | With default value | `emailEditor.settings.padding` |
-| 654 | With default value | `emailEditor.settings.stackOnMobile` |
-| 692 | With default value | `emailEditor.settings.socialLinks` |
-| 698 | With default value | `common.delete` |
-| 719 | With default value | `emailEditor.settings.addPlatform` |
-| 731 | With default value | `emailEditor.settings.style` |
-| 732 | With default value | `emailEditor.settings.alignment` |
-| 735 | With default value | `emailEditor.settings.iconSize` |
-| 745 | With default value | `emailEditor.settings.gap` |
-| 762 | With default value | `emailEditor.settings.companyInfo` |
-| 764 | With default value | `emailEditor.settings.companyName` |
-| 770 | With default value | `emailEditor.settings.address` |
-| 775 | With default value | `emailEditor.settings.addressPlaceholder` |
-| 782 | With default value | `emailEditor.settings.unsubscribe` |
-| 784 | With default value | `emailEditor.settings.unsubscribeText` |
-| 790 | With default value | `emailEditor.settings.unsubscribeUrl` |
-| 800 | With default value | `emailEditor.settings.style` |
-| 801 | With default value | `emailEditor.settings.backgroundColor` |
-| 808 | With default value | `emailEditor.settings.textColor` |
-| 811 | With default value | `emailEditor.settings.fontSize` |
-| 836 | With default value | `emailEditor.noBlockSelected` |
-| 838 | With default value | `emailEditor.selectBlockHint` |
-| 870 | With default value | `emailEditor.blocks.header` |
-| 871 | With default value | `emailEditor.blocks.text` |
-| 872 | With default value | `emailEditor.blocks.image` |
-| 873 | With default value | `emailEditor.blocks.button` |
-| 874 | With default value | `emailEditor.blocks.divider` |
-| 875 | With default value | `emailEditor.blocks.spacer` |
-| 876 | With default value | `emailEditor.blocks.columns` |
-| 877 | With default value | `emailEditor.blocks.social` |
-| 878 | With default value | `emailEditor.blocks.footer` |
-| 891 | With default value | `emailEditor.blockSettings` |
-| 894 | With default value | `common.close` |
+| Line | Pattern                                | Key                                       |
+| ---- | -------------------------------------- | ----------------------------------------- |
+| 138  | With default value                     | `emailEditor.settings.logo`               |
+| 140  | With default value                     | `emailEditor.settings.logoUrl`            |
+| 146  | With default value                     | `emailEditor.settings.logoWidth`          |
+| 160  | With default value                     | `emailEditor.settings.content`            |
+| 162  | With default value                     | `emailEditor.settings.title`              |
+| 168  | With default value                     | `emailEditor.settings.subtitle`           |
+| 177  | With default value                     | `emailEditor.settings.style`              |
+| 178  | With default value                     | `emailEditor.settings.alignment`          |
+| 181  | With default value                     | `emailEditor.settings.backgroundColor`    |
+| 188  | With default value                     | `emailEditor.settings.textColor`          |
+| 191  | With default value                     | `emailEditor.settings.padding`            |
+| 215  | With default value                     | `emailEditor.settings.content`            |
+| 216  | With default value                     | `emailEditor.settings.htmlContent`        |
+| 218  | With default value                     | `emailEditor.settings.htmlSupport`        |
+| 224  | With default value                     | `emailEditor.settings.typography`         |
+| 225  | With default value                     | `emailEditor.settings.alignment`          |
+| 228  | With default value                     | `emailEditor.settings.fontSize`           |
+| 238  | With default value                     | `emailEditor.settings.lineHeight`         |
+| 252  | With default value                     | `emailEditor.settings.colors`             |
+| 253  | With default value                     | `emailEditor.settings.textColor`          |
+| 256  | With default value                     | `emailEditor.settings.backgroundColor`    |
+| 263  | With default value                     | `emailEditor.settings.padding`            |
+| 287  | With default value                     | `emailEditor.settings.image`              |
+| 289  | With default value                     | `emailEditor.settings.imageUrl`           |
+| 296  | With default value                     | `emailEditor.settings.altText`            |
+| 302  | With default value                     | `emailEditor.settings.linkUrl`            |
+| 302  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`             |
+| 313  | With default value                     | `emailEditor.settings.layout`             |
+| 314  | With default value                     | `emailEditor.settings.width`              |
+| 324  | With default value                     | `emailEditor.settings.alignment`          |
+| 327  | With default value                     | `emailEditor.settings.borderRadius`       |
+| 337  | With default value                     | `emailEditor.settings.padding`            |
+| 361  | With default value                     | `emailEditor.settings.button`             |
+| 363  | With default value                     | `emailEditor.settings.buttonText`         |
+| 369  | With default value                     | `emailEditor.settings.url`                |
+| 377  | With default value                     | `emailEditor.settings.fullWidth`          |
+| 385  | With default value                     | `emailEditor.settings.style`              |
+| 386  | With default value                     | `emailEditor.settings.alignment`          |
+| 389  | With default value                     | `emailEditor.settings.buttonColor`        |
+| 396  | With default value                     | `emailEditor.settings.textColor`          |
+| 399  | With default value                     | `emailEditor.settings.fontSize`           |
+| 409  | With default value                     | `emailEditor.settings.borderRadius`       |
+| 423  | With default value                     | `emailEditor.settings.padding`            |
+| 425  | With default value                     | `emailEditor.settings.vertical`           |
+| 443  | With default value                     | `emailEditor.settings.horizontal`         |
+| 476  | With default value                     | `emailEditor.settings.divider`            |
+| 477  | With default value                     | `emailEditor.settings.color`              |
+| 480  | With default value                     | `emailEditor.settings.thickness`          |
+| 491  | With default value                     | `emailEditor.settings.style`              |
+| 495  | With default value                     | `emailEditor.dividerStyles.solid`         |
+| 496  | With default value                     | `emailEditor.dividerStyles.dashed`        |
+| 497  | With default value                     | `emailEditor.dividerStyles.dotted`        |
+| 501  | With default value                     | `emailEditor.settings.width`              |
+| 507  | With default value                     | `emailEditor.settings.padding`            |
+| 528  | With default value                     | `emailEditor.settings.spacer`             |
+| 529  | With default value                     | `emailEditor.settings.height`             |
+| 543  | With default value                     | `emailEditor.settings.preview`            |
+| 591  | With default value                     | `emailEditor.settings.columns`            |
+| 594  | With default value                     | `emailEditor.columns`                     |
+| 598  | With default value                     | `common.add`                              |
+| 620  | With default value                     | `common.delete`                           |
+| 631  | With default value                     | `emailEditor.settings.layout`             |
+| 632  | With default value                     | `emailEditor.settings.gap`                |
+| 635  | With default value                     | `emailEditor.settings.backgroundColor`    |
+| 642  | With default value                     | `emailEditor.settings.padding`            |
+| 654  | With default value                     | `emailEditor.settings.stackOnMobile`      |
+| 692  | With default value                     | `emailEditor.settings.socialLinks`        |
+| 698  | With default value                     | `common.delete`                           |
+| 719  | With default value                     | `emailEditor.settings.addPlatform`        |
+| 731  | With default value                     | `emailEditor.settings.style`              |
+| 732  | With default value                     | `emailEditor.settings.alignment`          |
+| 735  | With default value                     | `emailEditor.settings.iconSize`           |
+| 745  | With default value                     | `emailEditor.settings.gap`                |
+| 762  | With default value                     | `emailEditor.settings.companyInfo`        |
+| 764  | With default value                     | `emailEditor.settings.companyName`        |
+| 770  | With default value                     | `emailEditor.settings.address`            |
+| 775  | With default value                     | `emailEditor.settings.addressPlaceholder` |
+| 782  | With default value                     | `emailEditor.settings.unsubscribe`        |
+| 784  | With default value                     | `emailEditor.settings.unsubscribeText`    |
+| 790  | With default value                     | `emailEditor.settings.unsubscribeUrl`     |
+| 800  | With default value                     | `emailEditor.settings.style`              |
+| 801  | With default value                     | `emailEditor.settings.backgroundColor`    |
+| 808  | With default value                     | `emailEditor.settings.textColor`          |
+| 811  | With default value                     | `emailEditor.settings.fontSize`           |
+| 836  | With default value                     | `emailEditor.noBlockSelected`             |
+| 838  | With default value                     | `emailEditor.selectBlockHint`             |
+| 870  | With default value                     | `emailEditor.blocks.header`               |
+| 871  | With default value                     | `emailEditor.blocks.text`                 |
+| 872  | With default value                     | `emailEditor.blocks.image`                |
+| 873  | With default value                     | `emailEditor.blocks.button`               |
+| 874  | With default value                     | `emailEditor.blocks.divider`              |
+| 875  | With default value                     | `emailEditor.blocks.spacer`               |
+| 876  | With default value                     | `emailEditor.blocks.columns`              |
+| 877  | With default value                     | `emailEditor.blocks.social`               |
+| 878  | With default value                     | `emailEditor.blocks.footer`               |
+| 891  | With default value                     | `emailEditor.blockSettings`               |
+| 894  | With default value                     | `common.close`                            |
 
 ### src/components/features/email-templates/visual-editor/VisualEmailEditor.tsx (69)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 334 | With default value | `emailEditor.blockAdded` |
-| 361 | With default value | `emailEditor.blockDeleted` |
-| 380 | With default value | `emailEditor.blockDuplicated` |
-| 435 | With default value | `emailEditor.errors.nameRequired` |
-| 439 | With default value | `emailEditor.errors.subjectRequired` |
-| 455 | With default value | `emailEditor.saved` |
-| 459 | With default value | `emailEditor.errors.saveFailed` |
-| 466 | With default value | `emailEditor.htmlCopied` |
-| 481 | With default value | `emailEditor.htmlDownloaded` |
-| 524 | With default value | `emailTemplates.types.invitation` |
-| 525 | With default value | `emailTemplates.types.reminder` |
-| 526 | With default value | `emailTemplates.types.thankYou` |
-| 527 | With default value | `emailTemplates.types.custom` |
-| 546 | With default value | `emailEditor.title` |
-| 551 | With default value | `common.back` |
-| 553 | With default value | `common.back` |
-| 557 | With default value | `emailEditor.title` |
-| 559 | With default value | `emailEditor.unsavedChanges` |
-| 559 | With default value | `common.saved` |
-| 564 | With default value | `emailEditor.toolbar` |
-| 567 | With default value | `emailEditor.views.edit` |
-| 570 | With default value | `emailEditor.views.preview` |
-| 573 | With default value | `emailEditor.views.code` |
-| 581 | With default value | `emailEditor.device.desktop` |
-| 584 | With default value | `emailEditor.device.mobile` |
-| 595 | With default value | `common.undo` |
-| 596 | With default value | `common.undo` |
-| 600 | With default value | `common.redo` |
-| 601 | With default value | `common.redo` |
-| 612 | With default value | `emailEditor.copyHtml` |
-| 613 | With default value | `emailEditor.copyHtml` |
-| 617 | With default value | `emailEditor.downloadHtml` |
-| 618 | With default value | `emailEditor.downloadHtml` |
-| 629 | With default value | `common.save` |
-| 648 | With default value | `emailEditor.panels.blocks` |
-| 652 | With default value | `emailEditor.panels.styles` |
-| 679 | With default value | `emailEditor.templateNameLabel` |
-| 684 | With default value | `emailEditor.templateName` |
-| 691 | With default value | `emailEditor.typeLabel` |
-| 699 | With default value | `emailEditor.subjectLabel` |
-| 704 | With default value | `emailEditor.subjectPlaceholder` |
-| 711 | With default value | `emailEditor.preheaderTooltip` |
-| 724 | With default value | `emailEditor.preheaderLabel` |
-| 736 | With default value | `emailEditor.preheaderPlaceholder` |
-| 762 | With default value | `emailEditor.emptyCanvas` |
-| 764 | With default value | `emailEditor.addFirstBlock` |
-| 802 | With default value | `emailEditor.previewWithSampleData` |
-| 804 | With default value | `emailEditor.sampleDataInfo` |
-| 817 | Standard hook call | `emailEditor.previewTitle` |
-| 830 | With default value | `emailEditor.generatedHtml` |
-| 830 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 864 | With default value | `emailEditor.hideSettings` |
-| 864 | With default value | `emailEditor.showSettings` |
-| 873 | With default value | `emailEditor.hideSettings` |
-| 873 | With default value | `emailEditor.showSettings` |
-| 904 | With default value | `emailEditor.globalStyles` |
-| 908 | With default value | `emailEditor.styles.colors` |
-| 912 | With default value | `emailEditor.styles.backgroundColor` |
-| 917 | With default value | `emailEditor.styles.contentBackground` |
-| 922 | With default value | `emailEditor.styles.textColor` |
-| 927 | With default value | `emailEditor.styles.linkColor` |
-| 935 | With default value | `emailEditor.styles.typography` |
-| 938 | With default value | `emailEditor.styles.fontFamily` |
-| 948 | With default value | `emailEditor.styles.layout` |
-| 952 | With default value | `emailEditor.styles.contentWidth` |
-| 965 | With default value | `emailEditor.styles.borderRadius` |
-| 989 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 997 | With default value | `emailEditor.placeholders` |
-| 998 | With default value | `emailEditor.placeholdersHelp` |
+| Line | Pattern                                | Key                                    |
+| ---- | -------------------------------------- | -------------------------------------- |
+| 334  | With default value                     | `emailEditor.blockAdded`               |
+| 361  | With default value                     | `emailEditor.blockDeleted`             |
+| 380  | With default value                     | `emailEditor.blockDuplicated`          |
+| 435  | With default value                     | `emailEditor.errors.nameRequired`      |
+| 439  | With default value                     | `emailEditor.errors.subjectRequired`   |
+| 455  | With default value                     | `emailEditor.saved`                    |
+| 459  | With default value                     | `emailEditor.errors.saveFailed`        |
+| 466  | With default value                     | `emailEditor.htmlCopied`               |
+| 481  | With default value                     | `emailEditor.htmlDownloaded`           |
+| 524  | With default value                     | `emailTemplates.types.invitation`      |
+| 525  | With default value                     | `emailTemplates.types.reminder`        |
+| 526  | With default value                     | `emailTemplates.types.thankYou`        |
+| 527  | With default value                     | `emailTemplates.types.custom`          |
+| 546  | With default value                     | `emailEditor.title`                    |
+| 551  | With default value                     | `common.back`                          |
+| 553  | With default value                     | `common.back`                          |
+| 557  | With default value                     | `emailEditor.title`                    |
+| 559  | With default value                     | `emailEditor.unsavedChanges`           |
+| 559  | With default value                     | `common.saved`                         |
+| 564  | With default value                     | `emailEditor.toolbar`                  |
+| 567  | With default value                     | `emailEditor.views.edit`               |
+| 570  | With default value                     | `emailEditor.views.preview`            |
+| 573  | With default value                     | `emailEditor.views.code`               |
+| 581  | With default value                     | `emailEditor.device.desktop`           |
+| 584  | With default value                     | `emailEditor.device.mobile`            |
+| 595  | With default value                     | `common.undo`                          |
+| 596  | With default value                     | `common.undo`                          |
+| 600  | With default value                     | `common.redo`                          |
+| 601  | With default value                     | `common.redo`                          |
+| 612  | With default value                     | `emailEditor.copyHtml`                 |
+| 613  | With default value                     | `emailEditor.copyHtml`                 |
+| 617  | With default value                     | `emailEditor.downloadHtml`             |
+| 618  | With default value                     | `emailEditor.downloadHtml`             |
+| 629  | With default value                     | `common.save`                          |
+| 648  | With default value                     | `emailEditor.panels.blocks`            |
+| 652  | With default value                     | `emailEditor.panels.styles`            |
+| 679  | With default value                     | `emailEditor.templateNameLabel`        |
+| 684  | With default value                     | `emailEditor.templateName`             |
+| 691  | With default value                     | `emailEditor.typeLabel`                |
+| 699  | With default value                     | `emailEditor.subjectLabel`             |
+| 704  | With default value                     | `emailEditor.subjectPlaceholder`       |
+| 711  | With default value                     | `emailEditor.preheaderTooltip`         |
+| 724  | With default value                     | `emailEditor.preheaderLabel`           |
+| 736  | With default value                     | `emailEditor.preheaderPlaceholder`     |
+| 762  | With default value                     | `emailEditor.emptyCanvas`              |
+| 764  | With default value                     | `emailEditor.addFirstBlock`            |
+| 802  | With default value                     | `emailEditor.previewWithSampleData`    |
+| 804  | With default value                     | `emailEditor.sampleDataInfo`           |
+| 817  | Standard hook call                     | `emailEditor.previewTitle`             |
+| 830  | With default value                     | `emailEditor.generatedHtml`            |
+| 830  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`          |
+| 864  | With default value                     | `emailEditor.hideSettings`             |
+| 864  | With default value                     | `emailEditor.showSettings`             |
+| 873  | With default value                     | `emailEditor.hideSettings`             |
+| 873  | With default value                     | `emailEditor.showSettings`             |
+| 904  | With default value                     | `emailEditor.globalStyles`             |
+| 908  | With default value                     | `emailEditor.styles.colors`            |
+| 912  | With default value                     | `emailEditor.styles.backgroundColor`   |
+| 917  | With default value                     | `emailEditor.styles.contentBackground` |
+| 922  | With default value                     | `emailEditor.styles.textColor`         |
+| 927  | With default value                     | `emailEditor.styles.linkColor`         |
+| 935  | With default value                     | `emailEditor.styles.typography`        |
+| 938  | With default value                     | `emailEditor.styles.fontFamily`        |
+| 948  | With default value                     | `emailEditor.styles.layout`            |
+| 952  | With default value                     | `emailEditor.styles.contentWidth`      |
+| 965  | With default value                     | `emailEditor.styles.borderRadius`      |
+| 989  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`          |
+| 997  | With default value                     | `emailEditor.placeholders`             |
+| 998  | With default value                     | `emailEditor.placeholdersHelp`         |
 
 ### src/components/features/localization/AddLanguageDialog.tsx (12)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 95 | With default value | `localization.addLanguageTitle` |
-| 96 | With default value | `localization.addLanguageDescription` |
-| 109 | With default value | `localization.searchLanguages` |
-| 121 | With default value | `localization.popularLanguages` |
-| 157 | With default value | `localization.allLanguages` |
-| 198 | With default value | `common.noResults` |
-| 199 | With default value | `localization.languageAlreadyExists` |
-| 211 | With default value | `localization.autoTranslate` |
-| 213 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 227 | With default value | `common.cancel` |
-| 231 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 234 | With default value | `localization.addLanguage` |
+| Line | Pattern                                | Key                                   |
+| ---- | -------------------------------------- | ------------------------------------- |
+| 95   | With default value                     | `localization.addLanguageTitle`       |
+| 96   | With default value                     | `localization.addLanguageDescription` |
+| 109  | With default value                     | `localization.searchLanguages`        |
+| 121  | With default value                     | `localization.popularLanguages`       |
+| 157  | With default value                     | `localization.allLanguages`           |
+| 198  | With default value                     | `common.noResults`                    |
+| 199  | With default value                     | `localization.languageAlreadyExists`  |
+| 211  | With default value                     | `localization.autoTranslate`          |
+| 213  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 227  | With default value                     | `common.cancel`                       |
+| 231  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 234  | With default value                     | `localization.addLanguage`            |
 
 ### src/components/features/localization/LanguageList.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 176 | With default value | `localization.defaultLanguage` |
-| 179 | With default value | `localization.default` |
-| 186 | With default value | `localization.disabled` |
-| 201 | With default value | `localization.source` |
-| 234 | With default value | `localization.surveyFieldsTooltip` |
-| 240 | With default value | `localization.fieldsLabel` |
-| 243 | With default value | `localization.questionsTooltip` |
-| 249 | With default value | `localization.questionsLabel` |
-| 258 | With default value | `localization.needsWork` |
-| 278 | With default value | `localization.editTranslations` |
-| 283 | With default value | `localization.disable` |
-| 283 | With default value | `localization.enable` |
-| 289 | With default value | `localization.setAsDefault` |
-| 296 | With default value | `common.delete` |
-| 328 | With default value | `localization.noLanguages` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 176  | With default value | `localization.defaultLanguage`     |
+| 179  | With default value | `localization.default`             |
+| 186  | With default value | `localization.disabled`            |
+| 201  | With default value | `localization.source`              |
+| 234  | With default value | `localization.surveyFieldsTooltip` |
+| 240  | With default value | `localization.fieldsLabel`         |
+| 243  | With default value | `localization.questionsTooltip`    |
+| 249  | With default value | `localization.questionsLabel`      |
+| 258  | With default value | `localization.needsWork`           |
+| 278  | With default value | `localization.editTranslations`    |
+| 283  | With default value | `localization.disable`             |
+| 283  | With default value | `localization.enable`              |
+| 289  | With default value | `localization.setAsDefault`        |
+| 296  | With default value | `common.delete`                    |
+| 328  | With default value | `localization.noLanguages`         |
 
 ### src/components/features/localization/LanguagesTab.tsx (29)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 158 | With default value | `localization.noContent` |
-| 170 | With default value | `common.required` |
-| 178 | With default value | `localization.enterTranslation` |
-| 186 | With default value | `localization.enterTranslation` |
-| 400 | With default value | `localization.fields.title` |
-| 407 | With default value | `localization.fields.description` |
-| 414 | With default value | `localization.fields.welcomeMessage` |
-| 421 | With default value | `localization.fields.thankYouMessage` |
-| 490 | With default value | `localization.editingTranslation` |
-| 498 | With default value | `common.saved` |
-| 505 | With default value | `common.saving` |
-| 505 | With default value | `common.saveChanges` |
-| 521 | With default value | `localization.surveyDetails` |
-| 525 | With default value | `localization.questions` |
-| 537 | With default value | `localization.surveyFieldsProgress` |
-| 576 | With default value | `localization.noQuestions` |
-| 577 | With default value | `localization.noQuestionsDesc` |
-| 592 | With default value | `localization.autoTranslateHint` |
-| 684 | With default value | `common.loading` |
-| 718 | With default value | `localization.surveyLanguages` |
-| 719 | With default value | `localization.languagesDescription` |
-| 727 | With default value | `localization.export` |
-| 731 | With default value | `localization.import` |
-| 737 | With default value | `localization.addLanguage` |
-| 757 | With default value | `localization.noLanguages` |
-| 758 | With default value | `localization.noLanguagesDesc` |
-| 763 | With default value | `localization.addLanguage` |
-| 780 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 783 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| Line | Pattern                                | Key                                   |
+| ---- | -------------------------------------- | ------------------------------------- |
+| 158  | With default value                     | `localization.noContent`              |
+| 170  | With default value                     | `common.required`                     |
+| 178  | With default value                     | `localization.enterTranslation`       |
+| 186  | With default value                     | `localization.enterTranslation`       |
+| 400  | With default value                     | `localization.fields.title`           |
+| 407  | With default value                     | `localization.fields.description`     |
+| 414  | With default value                     | `localization.fields.welcomeMessage`  |
+| 421  | With default value                     | `localization.fields.thankYouMessage` |
+| 490  | With default value                     | `localization.editingTranslation`     |
+| 498  | With default value                     | `common.saved`                        |
+| 505  | With default value                     | `common.saving`                       |
+| 505  | With default value                     | `common.saveChanges`                  |
+| 521  | With default value                     | `localization.surveyDetails`          |
+| 525  | With default value                     | `localization.questions`              |
+| 537  | With default value                     | `localization.surveyFieldsProgress`   |
+| 576  | With default value                     | `localization.noQuestions`            |
+| 577  | With default value                     | `localization.noQuestionsDesc`        |
+| 592  | With default value                     | `localization.autoTranslateHint`      |
+| 684  | With default value                     | `common.loading`                      |
+| 718  | With default value                     | `localization.surveyLanguages`        |
+| 719  | With default value                     | `localization.languagesDescription`   |
+| 727  | With default value                     | `localization.export`                 |
+| 731  | With default value                     | `localization.import`                 |
+| 737  | With default value                     | `localization.addLanguage`            |
+| 757  | With default value                     | `localization.noLanguages`            |
+| 758  | With default value                     | `localization.noLanguagesDesc`        |
+| 763  | With default value                     | `localization.addLanguage`            |
+| 780  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 783  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
 
 ### src/components/features/localization/QuestionTranslationsEditor.tsx (24)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 267 | With default value | `localization.untitledQuestion` |
-| 274 | With default value | `localization.translationComplete` |
-| 277 | With default value | `common.complete` |
-| 282 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 303 | With default value | `localization.questionText` |
-| 306 | With default value | `localization.noContent` |
-| 313 | With default value | `localization.questionText` |
-| 317 | With default value | `common.required` |
-| 324 | With default value | `localization.enterTranslation` |
-| 341 | With default value | `localization.description` |
-| 352 | With default value | `localization.description` |
-| 362 | With default value | `localization.enterTranslation` |
-| 378 | With default value | `localization.ratingLabels` |
-| 387 | With default value | `localization.lowRatingLabel` |
-| 396 | With default value | `localization.lowRatingLabel` |
-| 406 | With default value | `localization.enterTranslation` |
-| 423 | With default value | `localization.highRatingLabel` |
-| 432 | With default value | `localization.highRatingLabel` |
-| 442 | With default value | `localization.enterTranslation` |
-| 461 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 479 | With default value | `localization.optionsTranslationHint` |
-| 531 | With default value | `localization.noQuestions` |
-| 540 | With default value | `localization.questions` |
-| 543 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| Line | Pattern                                | Key                                   |
+| ---- | -------------------------------------- | ------------------------------------- |
+| 267  | With default value                     | `localization.untitledQuestion`       |
+| 274  | With default value                     | `localization.translationComplete`    |
+| 277  | With default value                     | `common.complete`                     |
+| 282  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 303  | With default value                     | `localization.questionText`           |
+| 306  | With default value                     | `localization.noContent`              |
+| 313  | With default value                     | `localization.questionText`           |
+| 317  | With default value                     | `common.required`                     |
+| 324  | With default value                     | `localization.enterTranslation`       |
+| 341  | With default value                     | `localization.description`            |
+| 352  | With default value                     | `localization.description`            |
+| 362  | With default value                     | `localization.enterTranslation`       |
+| 378  | With default value                     | `localization.ratingLabels`           |
+| 387  | With default value                     | `localization.lowRatingLabel`         |
+| 396  | With default value                     | `localization.lowRatingLabel`         |
+| 406  | With default value                     | `localization.enterTranslation`       |
+| 423  | With default value                     | `localization.highRatingLabel`        |
+| 432  | With default value                     | `localization.highRatingLabel`        |
+| 442  | With default value                     | `localization.enterTranslation`       |
+| 461  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 479  | With default value                     | `localization.optionsTranslationHint` |
+| 531  | With default value                     | `localization.noQuestions`            |
+| 540  | With default value                     | `localization.questions`              |
+| 543  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
 
 ### src/components/features/localization/SurveyLanguageSwitcher.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 100 | With default value | `localization.switchLanguage` |
-| 110 | With default value | `localization.switchLanguage` |
-| 119 | With default value | `localization.default` |
-| 134 | With default value | `localization.selectLanguage` |
-| 140 | With default value | `localization.surveyLanguages` |
-| 143 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 172 | With default value | `localization.default` |
-| 206 | With default value | `localization.addLanguage` |
-| 217 | With default value | `localization.editTranslation` |
+| Line | Pattern                                | Key                            |
+| ---- | -------------------------------------- | ------------------------------ |
+| 100  | With default value                     | `localization.switchLanguage`  |
+| 110  | With default value                     | `localization.switchLanguage`  |
+| 119  | With default value                     | `localization.default`         |
+| 134  | With default value                     | `localization.selectLanguage`  |
+| 140  | With default value                     | `localization.surveyLanguages` |
+| 143  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`  |
+| 172  | With default value                     | `localization.default`         |
+| 206  | With default value                     | `localization.addLanguage`     |
+| 217  | With default value                     | `localization.editTranslation` |
 
 ### src/components/features/localization/TranslationEditor.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 98 | With default value | `localization.noContent` |
-| 112 | With default value | `localization.needsTranslation` |
-| 119 | With default value | `localization.enterTranslation` |
-| 176 | With default value | `localization.fields.title` |
-| 183 | With default value | `localization.fields.description` |
-| 190 | With default value | `localization.fields.welcomeMessage` |
-| 197 | With default value | `localization.fields.thankYouMessage` |
-| 223 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 226 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 253 | With default value | `common.saving` |
-| 258 | With default value | `common.saveChanges` |
-| 263 | With default value | `common.saved` |
-| 276 | With default value | `localization.surveyDetails` |
-| 300 | With default value | `localization.autoTranslateHint` |
+| Line | Pattern                                | Key                                   |
+| ---- | -------------------------------------- | ------------------------------------- |
+| 98   | With default value                     | `localization.noContent`              |
+| 112  | With default value                     | `localization.needsTranslation`       |
+| 119  | With default value                     | `localization.enterTranslation`       |
+| 176  | With default value                     | `localization.fields.title`           |
+| 183  | With default value                     | `localization.fields.description`     |
+| 190  | With default value                     | `localization.fields.welcomeMessage`  |
+| 197  | With default value                     | `localization.fields.thankYouMessage` |
+| 223  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 226  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 253  | With default value                     | `common.saving`                       |
+| 258  | With default value                     | `common.saveChanges`                  |
+| 263  | With default value                     | `common.saved`                        |
+| 276  | With default value                     | `localization.surveyDetails`          |
+| 300  | With default value                     | `localization.autoTranslateHint`      |
 
 ### src/components/features/localization/TranslationEditorDialog.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 93 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 96 | With default value | `localization.editTranslationDesc` |
-| 105 | With default value | `localization.loadingTranslations` |
-| 112 | With default value | `localization.errorLoading` |
-| 113 | With default value | `localization.errorLoadingDesc` |
-| 121 | With default value | `localization.noTranslation` |
-| 122 | With default value | `localization.noTranslationDesc` |
+| Line | Pattern                                | Key                                |
+| ---- | -------------------------------------- | ---------------------------------- |
+| 93   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`      |
+| 96   | With default value                     | `localization.editTranslationDesc` |
+| 105  | With default value                     | `localization.loadingTranslations` |
+| 112  | With default value                     | `localization.errorLoading`        |
+| 113  | With default value                     | `localization.errorLoadingDesc`    |
+| 121  | With default value                     | `localization.noTranslation`       |
+| 122  | With default value                     | `localization.noTranslationDesc`   |
 
 ### src/components/features/namespaces/CreateNamespaceDialog.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 84 | Standard hook call | `workspaces.create.success` |
-| 88 | Standard hook call | `workspaces.create.error` |
-| 105 | Standard hook call | `workspaces.create.title` |
-| 106 | Standard hook call | `workspaces.create.description` |
-| 114 | Standard hook call | `workspaces.create.nameLabel` |
-| 115 | Standard hook call | `workspaces.create.namePlaceholder` |
-| 124 | Standard hook call | `workspaces.create.urlLabel` |
-| 129 | Standard hook call | `workspaces.create.urlHelper` |
-| 135 | Standard hook call | `workspaces.create.descriptionLabel` |
-| 136 | Standard hook call | `workspaces.create.descriptionPlaceholder` |
-| 143 | Standard hook call | `workspaces.create.proTip` |
-| 144 | Standard hook call | `workspaces.create.proTipText` |
-| 151 | Standard hook call | `common.cancel` |
-| 154 | Standard hook call | `workspaces.create.creating` |
-| 154 | Standard hook call | `workspaces.createWorkspace` |
+| Line | Pattern            | Key                                        |
+| ---- | ------------------ | ------------------------------------------ |
+| 84   | Standard hook call | `workspaces.create.success`                |
+| 88   | Standard hook call | `workspaces.create.error`                  |
+| 105  | Standard hook call | `workspaces.create.title`                  |
+| 106  | Standard hook call | `workspaces.create.description`            |
+| 114  | Standard hook call | `workspaces.create.nameLabel`              |
+| 115  | Standard hook call | `workspaces.create.namePlaceholder`        |
+| 124  | Standard hook call | `workspaces.create.urlLabel`               |
+| 129  | Standard hook call | `workspaces.create.urlHelper`              |
+| 135  | Standard hook call | `workspaces.create.descriptionLabel`       |
+| 136  | Standard hook call | `workspaces.create.descriptionPlaceholder` |
+| 143  | Standard hook call | `workspaces.create.proTip`                 |
+| 144  | Standard hook call | `workspaces.create.proTipText`             |
+| 151  | Standard hook call | `common.cancel`                            |
+| 154  | Standard hook call | `workspaces.create.creating`               |
+| 154  | Standard hook call | `workspaces.createWorkspace`               |
 
 ### src/components/features/namespaces/MembersManagement.tsx (33)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 68 | Standard hook call | `workspaces.roles.admin` |
-| 69 | Standard hook call | `workspaces.roles.member` |
-| 70 | Standard hook call | `workspaces.roles.viewer` |
-| 108 | With options object | `workspaces.team.invitationSent` |
-| 112 | Standard hook call | `workspaces.team.inviteError` |
-| 119 | Standard hook call | `workspaces.team.removeTitle` |
-| 120 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 121 | Standard hook call | `common.remove` |
-| 131 | Standard hook call | `workspaces.team.removeSuccess` |
-| 134 | Standard hook call | `workspaces.team.removeError` |
-| 149 | Standard hook call | `workspaces.team.failedToLoad` |
-| 151 | Standard hook call | `workspaces.team.tryAgain` |
-| 164 | Standard hook call | `workspaces.team.title` |
-| 165 | Standard hook call | `workspaces.team.description` |
-| 170 | Standard hook call | `workspaces.team.invite` |
-| 205 | Standard hook call | `workspaces.team.you` |
-| 223 | Standard hook call | `a11y.memberActions` |
-| 231 | Standard hook call | `workspaces.team.removeFromWorkspace` |
-| 246 | Standard hook call | `workspaces.team.noMembers` |
-| 247 | Standard hook call | `workspaces.team.noMembersDesc` |
-| 251 | Standard hook call | `workspaces.team.inviteFirst` |
-| 265 | Standard hook call | `workspaces.team.inviteTitle` |
-| 266 | Standard hook call | `workspaces.team.inviteDescription` |
-| 273 | Standard hook call | `workspaces.team.emailLabel` |
-| 275 | Standard hook call | `workspaces.team.emailPlaceholder` |
-| 283 | Standard hook call | `workspaces.team.roleLabel` |
-| 288 | Standard hook call | `workspaces.team.selectRole` |
-| 291 | Standard hook call | `workspaces.team.roleDescriptions.admin` |
-| 292 | Standard hook call | `workspaces.team.roleDescriptions.member` |
-| 293 | Standard hook call | `workspaces.team.roleDescriptions.viewer` |
-| 300 | Standard hook call | `common.cancel` |
-| 303 | Standard hook call | `workspaces.team.sending` |
-| 303 | Standard hook call | `workspaces.team.sendInvitation` |
+| Line | Pattern                                | Key                                       |
+| ---- | -------------------------------------- | ----------------------------------------- |
+| 68   | Standard hook call                     | `workspaces.roles.admin`                  |
+| 69   | Standard hook call                     | `workspaces.roles.member`                 |
+| 70   | Standard hook call                     | `workspaces.roles.viewer`                 |
+| 108  | With options object                    | `workspaces.team.invitationSent`          |
+| 112  | Standard hook call                     | `workspaces.team.inviteError`             |
+| 119  | Standard hook call                     | `workspaces.team.removeTitle`             |
+| 120  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`             |
+| 121  | Standard hook call                     | `common.remove`                           |
+| 131  | Standard hook call                     | `workspaces.team.removeSuccess`           |
+| 134  | Standard hook call                     | `workspaces.team.removeError`             |
+| 149  | Standard hook call                     | `workspaces.team.failedToLoad`            |
+| 151  | Standard hook call                     | `workspaces.team.tryAgain`                |
+| 164  | Standard hook call                     | `workspaces.team.title`                   |
+| 165  | Standard hook call                     | `workspaces.team.description`             |
+| 170  | Standard hook call                     | `workspaces.team.invite`                  |
+| 205  | Standard hook call                     | `workspaces.team.you`                     |
+| 223  | Standard hook call                     | `a11y.memberActions`                      |
+| 231  | Standard hook call                     | `workspaces.team.removeFromWorkspace`     |
+| 246  | Standard hook call                     | `workspaces.team.noMembers`               |
+| 247  | Standard hook call                     | `workspaces.team.noMembersDesc`           |
+| 251  | Standard hook call                     | `workspaces.team.inviteFirst`             |
+| 265  | Standard hook call                     | `workspaces.team.inviteTitle`             |
+| 266  | Standard hook call                     | `workspaces.team.inviteDescription`       |
+| 273  | Standard hook call                     | `workspaces.team.emailLabel`              |
+| 275  | Standard hook call                     | `workspaces.team.emailPlaceholder`        |
+| 283  | Standard hook call                     | `workspaces.team.roleLabel`               |
+| 288  | Standard hook call                     | `workspaces.team.selectRole`              |
+| 291  | Standard hook call                     | `workspaces.team.roleDescriptions.admin`  |
+| 292  | Standard hook call                     | `workspaces.team.roleDescriptions.member` |
+| 293  | Standard hook call                     | `workspaces.team.roleDescriptions.viewer` |
+| 300  | Standard hook call                     | `common.cancel`                           |
+| 303  | Standard hook call                     | `workspaces.team.sending`                 |
+| 303  | Standard hook call                     | `workspaces.team.sendInvitation`          |
 
 ### src/components/features/profile/AvatarSelector.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 157 | Standard hook call | `avatar.changeAvatar` |
-| 157 | Standard hook call | `avatar.selectAvatar` |
-| 159 | Standard hook call | `avatar.selectFromCollection` |
-| 169 | Standard hook call | `avatar.selectorDialog.title` |
-| 170 | Standard hook call | `avatar.selectorDialog.description` |
-| 219 | Standard hook call | `avatar.preview.hover` |
-| 222 | Standard hook call | `avatar.preview.microsoftPhoto` |
-| 223 | Standard hook call | `avatar.preview.selected` |
-| 224 | Standard hook call | `avatar.preview.selectOne` |
-| 237 | Standard hook call | `avatar.microsoftAccount` |
-| 262 | Standard hook call | `avatar.chooseCharacter` |
-| 296 | Standard hook call | `avatar.removeAvatar` |
-| 300 | Standard hook call | `common.cancel` |
-| 306 | Standard hook call | `common.saving` |
-| 311 | Standard hook call | `avatar.confirm` |
+| Line | Pattern            | Key                                 |
+| ---- | ------------------ | ----------------------------------- |
+| 157  | Standard hook call | `avatar.changeAvatar`               |
+| 157  | Standard hook call | `avatar.selectAvatar`               |
+| 159  | Standard hook call | `avatar.selectFromCollection`       |
+| 169  | Standard hook call | `avatar.selectorDialog.title`       |
+| 170  | Standard hook call | `avatar.selectorDialog.description` |
+| 219  | Standard hook call | `avatar.preview.hover`              |
+| 222  | Standard hook call | `avatar.preview.microsoftPhoto`     |
+| 223  | Standard hook call | `avatar.preview.selected`           |
+| 224  | Standard hook call | `avatar.preview.selectOne`          |
+| 237  | Standard hook call | `avatar.microsoftAccount`           |
+| 262  | Standard hook call | `avatar.chooseCharacter`            |
+| 296  | Standard hook call | `avatar.removeAvatar`               |
+| 300  | Standard hook call | `common.cancel`                     |
+| 306  | Standard hook call | `common.saving`                     |
+| 311  | Standard hook call | `avatar.confirm`                    |
 
 ### src/components/features/profile/PasswordChangeForm.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 58 | Dynamic/variable key | `[DYNAMIC] requirementKeys[index]` |
-| 73 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 88 | Standard hook call | `password.toast.success` |
-| 91 | Standard hook call | `password.toast.failed` |
-| 92 | Standard hook call | `password.toast.failedTitle` |
-| 104 | Standard hook call | `password.title` |
-| 105 | Standard hook call | `password.description` |
-| 111 | Standard hook call | `password.successMessage` |
-| 119 | Standard hook call | `password.currentPassword` |
-| 138 | Standard hook call | `password.newPassword` |
-| 184 | Standard hook call | `password.confirmPassword` |
-| 210 | Standard hook call | `common.cancel` |
-| 217 | Standard hook call | `password.updating` |
-| 220 | Standard hook call | `password.updatePassword` |
+| Line | Pattern                                | Key                                |
+| ---- | -------------------------------------- | ---------------------------------- |
+| 58   | Dynamic/variable key                   | `[DYNAMIC] requirementKeys[index]` |
+| 73   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`      |
+| 88   | Standard hook call                     | `password.toast.success`           |
+| 91   | Standard hook call                     | `password.toast.failed`            |
+| 92   | Standard hook call                     | `password.toast.failedTitle`       |
+| 104  | Standard hook call                     | `password.title`                   |
+| 105  | Standard hook call                     | `password.description`             |
+| 111  | Standard hook call                     | `password.successMessage`          |
+| 119  | Standard hook call                     | `password.currentPassword`         |
+| 138  | Standard hook call                     | `password.newPassword`             |
+| 184  | Standard hook call                     | `password.confirmPassword`         |
+| 210  | Standard hook call                     | `common.cancel`                    |
+| 217  | Standard hook call                     | `password.updating`                |
+| 220  | Standard hook call                     | `password.updatePassword`          |
 
 ### src/components/features/profile/ProfileSettings.tsx (19)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 136 | Standard hook call | `profile.toast.updateSuccess` |
-| 139 | Standard hook call | `profile.toast.updateFailed` |
-| 150 | Standard hook call | `profile.toast.updateFailedTitle` |
-| 168 | Standard hook call | `profile.toast.avatarUpdated` |
-| 173 | Standard hook call | `profile.toast.avatarRemoved` |
-| 178 | Standard hook call | `common.userFallback` |
-| 189 | Standard hook call | `profile.title` |
-| 190 | Standard hook call | `profile.description` |
-| 212 | Standard hook call | `profile.firstName` |
-| 223 | Standard hook call | `profile.lastName` |
-| 236 | Standard hook call | `profile.email` |
-| 244 | Standard hook call | `profile.emailChangeNotice` |
-| 251 | Standard hook call | `profile.accountInfo` |
-| 254 | Standard hook call | `profile.memberSince` |
-| 258 | Standard hook call | `profile.lastUpdated` |
-| 271 | Standard hook call | `common.cancel` |
-| 277 | Standard hook call | `common.saving` |
-| 282 | Standard hook call | `common.saveChanges` |
-| 289 | Standard hook call | `profile.editProfile` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 136  | Standard hook call | `profile.toast.updateSuccess`     |
+| 139  | Standard hook call | `profile.toast.updateFailed`      |
+| 150  | Standard hook call | `profile.toast.updateFailedTitle` |
+| 168  | Standard hook call | `profile.toast.avatarUpdated`     |
+| 173  | Standard hook call | `profile.toast.avatarRemoved`     |
+| 178  | Standard hook call | `common.userFallback`             |
+| 189  | Standard hook call | `profile.title`                   |
+| 190  | Standard hook call | `profile.description`             |
+| 212  | Standard hook call | `profile.firstName`               |
+| 223  | Standard hook call | `profile.lastName`                |
+| 236  | Standard hook call | `profile.email`                   |
+| 244  | Standard hook call | `profile.emailChangeNotice`       |
+| 251  | Standard hook call | `profile.accountInfo`             |
+| 254  | Standard hook call | `profile.memberSince`             |
+| 258  | Standard hook call | `profile.lastUpdated`             |
+| 271  | Standard hook call | `common.cancel`                   |
+| 277  | Standard hook call | `common.saving`                   |
+| 282  | Standard hook call | `common.saveChanges`              |
+| 289  | Standard hook call | `profile.editProfile`             |
 
 ### src/components/features/public-survey/AllQuestionsView.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 28 | Dynamic/variable key | `[DYNAMIC] error` |
-| 45 | With options object | `publicSurvey.questionCount` |
-| 46 | With options object | `publicSurvey.answeredCount` |
-| 97 | Standard hook call | `publicSurvey.submitError` |
-| 104 | Standard hook call | `publicSurvey.fixErrors` |
-| 114 | Standard hook call | `publicSurvey.submitting` |
-| 118 | Standard hook call | `publicSurvey.submitSurvey` |
+| Line | Pattern              | Key                          |
+| ---- | -------------------- | ---------------------------- |
+| 28   | Dynamic/variable key | `[DYNAMIC] error`            |
+| 45   | With options object  | `publicSurvey.questionCount` |
+| 46   | With options object  | `publicSurvey.answeredCount` |
+| 97   | Standard hook call   | `publicSurvey.submitError`   |
+| 104  | Standard hook call   | `publicSurvey.fixErrors`     |
+| 114  | Standard hook call   | `publicSurvey.submitting`    |
+| 118  | Standard hook call   | `publicSurvey.submitSurvey`  |
 
 ### src/components/features/public-survey/ErrorScreen.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 25 | Standard hook call | `publicSurvey.errorTitle` |
-| 29 | Standard hook call | `publicSurvey.errorMessage` |
-| 37 | Standard hook call | `common.tryAgain` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 25   | Standard hook call | `publicSurvey.errorTitle`   |
+| 29   | Standard hook call | `publicSurvey.errorMessage` |
+| 37   | Standard hook call | `common.tryAgain`           |
 
 ### src/components/features/public-survey/NavigationControls.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 44 | Standard hook call | `publicSurvey.back` |
-| 53 | Standard hook call | `publicSurvey.submitting` |
-| 58 | Standard hook call | `publicSurvey.submit` |
-| 65 | Standard hook call | `publicSurvey.next` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 44   | Standard hook call | `publicSurvey.back`       |
+| 53   | Standard hook call | `publicSurvey.submitting` |
+| 58   | Standard hook call | `publicSurvey.submit`     |
+| 65   | Standard hook call | `publicSurvey.next`       |
 
 ### src/components/features/public-survey/QuestionCard.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 30 | With options object | `publicSurvey.questionOfTotal` |
-| 33 | Standard hook call | `publicSurvey.required` |
+| Line | Pattern             | Key                            |
+| ---- | ------------------- | ------------------------------ |
+| 30   | With options object | `publicSurvey.questionOfTotal` |
+| 33   | Standard hook call  | `publicSurvey.required`        |
 
 ### src/components/features/public-survey/QuestionRenderers.tsx (22)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 94 | Standard hook call | `questionRenderers.other` |
-| 101 | Standard hook call | `questionRenderers.pleaseSpecify` |
-| 190 | Standard hook call | `questionRenderers.other` |
-| 196 | Standard hook call | `questionRenderers.pleaseSpecify` |
-| 211 | Standard hook call | `publicSurvey.placeholders.yourAnswer` |
-| 246 | Standard hook call | `publicSurvey.placeholders.yourAnswer` |
-| 281 | Standard hook call | `questionDefaults.placeholders.emailExample` |
-| 298 | Standard hook call | `validation.invalidEmail` |
-| 337 | Standard hook call | `questionDefaults.placeholders.enterPhone` |
-| 354 | Standard hook call | `validation.invalidPhone` |
-| 411 | Standard hook call | `validation.invalidUrl` |
-| 449 | Standard hook call | `questionDefaults.placeholders.enterNumber` |
-| 468 | Standard hook call | `validation.number` |
-| 470 | With options object | `validation.minValue` |
-| 472 | With options object | `validation.maxValue` |
-| 927 | Standard hook call | `questionRenderers.dropFilesHere` |
-| 928 | With options object | `questionRenderers.maxFiles` |
-| 931 | Standard hook call | `questionRenderers.allowedTypes` |
-| 994 | Standard hook call | `questionRenderers.dragToReorder` |
-| 1040 | Standard hook call | `common.yes` |
-| 1041 | Standard hook call | `common.no` |
-| 1293 | With options object | `errors.unsupportedQuestionType` |
+| Line | Pattern             | Key                                          |
+| ---- | ------------------- | -------------------------------------------- |
+| 94   | Standard hook call  | `questionRenderers.other`                    |
+| 101  | Standard hook call  | `questionRenderers.pleaseSpecify`            |
+| 190  | Standard hook call  | `questionRenderers.other`                    |
+| 196  | Standard hook call  | `questionRenderers.pleaseSpecify`            |
+| 211  | Standard hook call  | `publicSurvey.placeholders.yourAnswer`       |
+| 246  | Standard hook call  | `publicSurvey.placeholders.yourAnswer`       |
+| 281  | Standard hook call  | `questionDefaults.placeholders.emailExample` |
+| 298  | Standard hook call  | `validation.invalidEmail`                    |
+| 337  | Standard hook call  | `questionDefaults.placeholders.enterPhone`   |
+| 354  | Standard hook call  | `validation.invalidPhone`                    |
+| 411  | Standard hook call  | `validation.invalidUrl`                      |
+| 449  | Standard hook call  | `questionDefaults.placeholders.enterNumber`  |
+| 468  | Standard hook call  | `validation.number`                          |
+| 470  | With options object | `validation.minValue`                        |
+| 472  | With options object | `validation.maxValue`                        |
+| 927  | Standard hook call  | `questionRenderers.dropFilesHere`            |
+| 928  | With options object | `questionRenderers.maxFiles`                 |
+| 931  | Standard hook call  | `questionRenderers.allowedTypes`             |
+| 994  | Standard hook call  | `questionRenderers.dragToReorder`            |
+| 1040 | Standard hook call  | `common.yes`                                 |
+| 1041 | Standard hook call  | `common.no`                                  |
+| 1293 | With options object | `errors.unsupportedQuestionType`             |
 
 ### src/components/features/public-survey/ResumeProgressDialog.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 28 | Standard hook call | `publicSurvey.resumeTitle` |
-| 31 | Standard hook call | `publicSurvey.resumeDescription` |
-| 37 | Standard hook call | `publicSurvey.continueSurvey` |
-| 41 | Standard hook call | `publicSurvey.startFresh` |
+| Line | Pattern            | Key                              |
+| ---- | ------------------ | -------------------------------- |
+| 28   | Standard hook call | `publicSurvey.resumeTitle`       |
+| 31   | Standard hook call | `publicSurvey.resumeDescription` |
+| 37   | Standard hook call | `publicSurvey.continueSurvey`    |
+| 41   | Standard hook call | `publicSurvey.startFresh`        |
 
 ### src/components/features/public-survey/ThankYouScreen.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 15 | Standard hook call | `publicSurvey.thankYouMessage` |
-| 33 | Standard hook call | `publicSurvey.thankYouTitle` |
-| 44 | Standard hook call | `publicSurvey.continue` |
-| 51 | Standard hook call | `publicSurvey.closeMessage` |
+| Line | Pattern            | Key                            |
+| ---- | ------------------ | ------------------------------ |
+| 15   | Standard hook call | `publicSurvey.thankYouMessage` |
+| 33   | Standard hook call | `publicSurvey.thankYouTitle`   |
+| 44   | Standard hook call | `publicSurvey.continue`        |
+| 51   | Standard hook call | `publicSurvey.closeMessage`    |
 
 ### src/components/features/public-survey/UnifiedQuestionPreview.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 162 | With default value | `questionPreview.interactiveMode` |
-| 172 | With default value | `common.reset` |
-| 182 | With default value | `questionPreview.questionText` |
-| 217 | With default value | `questionEditor.preview` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 162  | With default value | `questionPreview.interactiveMode` |
+| 172  | With default value | `common.reset`                    |
+| 182  | With default value | `questionPreview.questionText`    |
+| 217  | With default value | `questionEditor.preview`          |
 
 ### src/components/features/public-survey/WelcomeScreen.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 132 | Standard hook call | `a11y.surveyLogo` |
-| 197 | With options object | `welcomeScreen.questions` |
-| 201 | Standard hook call | `welcomeScreen.minutes` |
-| 216 | Standard hook call | `welcomeScreen.startSurvey` |
-| 216 | With options object | `welcomeScreen.starting` |
-| 222 | With options object | `welcomeScreen.anonymousNote` |
+| Line | Pattern             | Key                           |
+| ---- | ------------------- | ----------------------------- |
+| 132  | Standard hook call  | `a11y.surveyLogo`             |
+| 197  | With options object | `welcomeScreen.questions`     |
+| 201  | Standard hook call  | `welcomeScreen.minutes`       |
+| 216  | Standard hook call  | `welcomeScreen.startSurvey`   |
+| 216  | With options object | `welcomeScreen.starting`      |
+| 222  | With options object | `welcomeScreen.anonymousNote` |
 
 ### src/components/features/questions/AddQuestionMenu.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 62 | Standard hook call | `questionCategories.popular` |
-| 68 | Standard hook call | `questionCategories.textInput` |
-| 82 | Standard hook call | `questionCategories.choice` |
-| 95 | Standard hook call | `questionCategories.ratingScale` |
-| 101 | Standard hook call | `questionCategories.dateTime` |
-| 107 | Standard hook call | `questionCategories.advanced` |
-| 200 | Standard hook call | `editors.addQuestion` |
-| 201 | Standard hook call | `common.close` |
-| 214 | Standard hook call | `editors.searchQuestionTypes` |
-| 241 | Standard hook call | `editors.noQuestionTypesFound` |
-| 242 | Standard hook call | `editors.tryDifferentSearch` |
-| 246 | With options object | `editors.resultsFound` |
-| 290 | With options object | `editors.typesCount` |
-| 308 | Standard hook call | `editors.pressEscToClose` |
-| 383 | Standard hook call | `editors.addQuestion` |
+| Line | Pattern             | Key                              |
+| ---- | ------------------- | -------------------------------- |
+| 62   | Standard hook call  | `questionCategories.popular`     |
+| 68   | Standard hook call  | `questionCategories.textInput`   |
+| 82   | Standard hook call  | `questionCategories.choice`      |
+| 95   | Standard hook call  | `questionCategories.ratingScale` |
+| 101  | Standard hook call  | `questionCategories.dateTime`    |
+| 107  | Standard hook call  | `questionCategories.advanced`    |
+| 200  | Standard hook call  | `editors.addQuestion`            |
+| 201  | Standard hook call  | `common.close`                   |
+| 214  | Standard hook call  | `editors.searchQuestionTypes`    |
+| 241  | Standard hook call  | `editors.noQuestionTypesFound`   |
+| 242  | Standard hook call  | `editors.tryDifferentSearch`     |
+| 246  | With options object | `editors.resultsFound`           |
+| 290  | With options object | `editors.typesCount`             |
+| 308  | Standard hook call  | `editors.pressEscToClose`        |
+| 383  | Standard hook call  | `editors.addQuestion`            |
 
 ### src/components/features/questions/LogicBuilderDialog.tsx (40)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 248 | Standard hook call | `conditionalLogic.unknownQuestion` |
-| 275 | Standard hook call | `conditionalLogic.title` |
-| 276 | Standard hook call | `conditionalLogic.description` |
-| 283 | Standard hook call | `conditionalLogic.currentQuestion` |
-| 285 | Standard hook call | `common.unknown` |
-| 297 | Standard hook call | `conditionalLogic.validationIssues` |
-| 311 | Standard hook call | `conditionalLogic.logicRules` |
-| 315 | Standard hook call | `conditionalLogic.addRule` |
-| 330 | Standard hook call | `conditionalLogic.noRules` |
-| 331 | Standard hook call | `conditionalLogic.addRuleToStart` |
-| 334 | Standard hook call | `conditionalLogic.addFirstRule` |
-| 339 | Standard hook call | `conditionalLogic.dragToReorder` |
-| 396 | Standard hook call | `common.edit` |
-| 402 | Standard hook call | `common.delete` |
-| 440 | Standard hook call | `common.close` |
-| 484 | Standard hook call | `conditionalLogic.actions.show` |
-| 485 | Standard hook call | `conditionalLogic.actions.hide` |
-| 486 | Standard hook call | `conditionalLogic.actions.skip` |
-| 487 | Standard hook call | `conditionalLogic.actions.jumpTo` |
-| 488 | Standard hook call | `conditionalLogic.actions.endSurvey` |
-| 499 | Standard hook call | `conditionalLogic.form.conditionSection` |
-| 505 | Standard hook call | `conditionalLogic.form.ifAnswerTo` |
-| 506 | Standard hook call | `conditionalLogic.form.selectQuestion` |
-| 514 | Standard hook call | `conditionalLogic.form.condition` |
-| 515 | Standard hook call | `conditionalLogic.form.selectCondition` |
-| 528 | Standard hook call | `conditionalLogic.form.value` |
-| 529 | Standard hook call | `conditionalLogic.form.selectValue` |
-| 536 | Standard hook call | `conditionalLogic.form.value` |
-| 537 | Standard hook call | `conditionalLogic.form.enterValue` |
-| 551 | Standard hook call | `conditionalLogic.then` |
-| 562 | Standard hook call | `conditionalLogic.form.actionSection` |
-| 568 | Standard hook call | `conditionalLogic.form.action` |
-| 569 | Standard hook call | `conditionalLogic.form.selectAction` |
-| 578 | Standard hook call | `conditionalLogic.form.skipTo` |
-| 578 | Standard hook call | `conditionalLogic.form.targetQuestion` |
-| 579 | Standard hook call | `conditionalLogic.form.selectTargetQuestion` |
-| 591 | Standard hook call | `common.cancel` |
-| 594 | Standard hook call | `common.saving` |
-| 594 | Standard hook call | `conditionalLogic.saveRule` |
-| 614 | Standard hook call | `conditionalLogic.if` |
+| Line | Pattern            | Key                                          |
+| ---- | ------------------ | -------------------------------------------- |
+| 248  | Standard hook call | `conditionalLogic.unknownQuestion`           |
+| 275  | Standard hook call | `conditionalLogic.title`                     |
+| 276  | Standard hook call | `conditionalLogic.description`               |
+| 283  | Standard hook call | `conditionalLogic.currentQuestion`           |
+| 285  | Standard hook call | `common.unknown`                             |
+| 297  | Standard hook call | `conditionalLogic.validationIssues`          |
+| 311  | Standard hook call | `conditionalLogic.logicRules`                |
+| 315  | Standard hook call | `conditionalLogic.addRule`                   |
+| 330  | Standard hook call | `conditionalLogic.noRules`                   |
+| 331  | Standard hook call | `conditionalLogic.addRuleToStart`            |
+| 334  | Standard hook call | `conditionalLogic.addFirstRule`              |
+| 339  | Standard hook call | `conditionalLogic.dragToReorder`             |
+| 396  | Standard hook call | `common.edit`                                |
+| 402  | Standard hook call | `common.delete`                              |
+| 440  | Standard hook call | `common.close`                               |
+| 484  | Standard hook call | `conditionalLogic.actions.show`              |
+| 485  | Standard hook call | `conditionalLogic.actions.hide`              |
+| 486  | Standard hook call | `conditionalLogic.actions.skip`              |
+| 487  | Standard hook call | `conditionalLogic.actions.jumpTo`            |
+| 488  | Standard hook call | `conditionalLogic.actions.endSurvey`         |
+| 499  | Standard hook call | `conditionalLogic.form.conditionSection`     |
+| 505  | Standard hook call | `conditionalLogic.form.ifAnswerTo`           |
+| 506  | Standard hook call | `conditionalLogic.form.selectQuestion`       |
+| 514  | Standard hook call | `conditionalLogic.form.condition`            |
+| 515  | Standard hook call | `conditionalLogic.form.selectCondition`      |
+| 528  | Standard hook call | `conditionalLogic.form.value`                |
+| 529  | Standard hook call | `conditionalLogic.form.selectValue`          |
+| 536  | Standard hook call | `conditionalLogic.form.value`                |
+| 537  | Standard hook call | `conditionalLogic.form.enterValue`           |
+| 551  | Standard hook call | `conditionalLogic.then`                      |
+| 562  | Standard hook call | `conditionalLogic.form.actionSection`        |
+| 568  | Standard hook call | `conditionalLogic.form.action`               |
+| 569  | Standard hook call | `conditionalLogic.form.selectAction`         |
+| 578  | Standard hook call | `conditionalLogic.form.skipTo`               |
+| 578  | Standard hook call | `conditionalLogic.form.targetQuestion`       |
+| 579  | Standard hook call | `conditionalLogic.form.selectTargetQuestion` |
+| 591  | Standard hook call | `common.cancel`                              |
+| 594  | Standard hook call | `common.saving`                              |
+| 594  | Standard hook call | `conditionalLogic.saveRule`                  |
+| 614  | Standard hook call | `conditionalLogic.if`                        |
 
 ### src/components/features/questions/LogicVisualization.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 49 | Standard hook call | `common.unknown` |
-| 108 | Standard hook call | `logicVisualization.loadError` |
-| 118 | Standard hook call | `logicVisualization.noRules` |
-| 119 | Standard hook call | `logicVisualization.addLogicHint` |
-| 132 | Standard hook call | `logicVisualization.issuesFound` |
-| 218 | Standard hook call | `conditionalLogic.legend` |
-| 222 | Standard hook call | `conditionalLogic.show` |
-| 226 | Standard hook call | `conditionalLogic.hide` |
-| 230 | Standard hook call | `conditionalLogic.skip` |
-| 234 | Standard hook call | `conditionalLogic.actions.endSurvey` |
-| 254 | Standard hook call | `conditionalLogic.if` |
+| Line | Pattern            | Key                                  |
+| ---- | ------------------ | ------------------------------------ |
+| 49   | Standard hook call | `common.unknown`                     |
+| 108  | Standard hook call | `logicVisualization.loadError`       |
+| 118  | Standard hook call | `logicVisualization.noRules`         |
+| 119  | Standard hook call | `logicVisualization.addLogicHint`    |
+| 132  | Standard hook call | `logicVisualization.issuesFound`     |
+| 218  | Standard hook call | `conditionalLogic.legend`            |
+| 222  | Standard hook call | `conditionalLogic.show`              |
+| 226  | Standard hook call | `conditionalLogic.hide`              |
+| 230  | Standard hook call | `conditionalLogic.skip`              |
+| 234  | Standard hook call | `conditionalLogic.actions.endSurvey` |
+| 254  | Standard hook call | `conditionalLogic.if`                |
 
 ### src/components/features/questions/QuestionCard.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 123 | Standard hook call | `editors.untitledQuestion` |
-| 128 | With default value | `localization.fallback` |
-| 134 | Standard hook call | `editors.options` |
-| 156 | Standard hook call | `common.duplicate` |
-| 168 | Standard hook call | `common.delete` |
-| 184 | Standard hook call | `editors.required` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 123  | Standard hook call | `editors.untitledQuestion` |
+| 128  | With default value | `localization.fallback`    |
+| 134  | Standard hook call | `editors.options`          |
+| 156  | Standard hook call | `common.duplicate`         |
+| 168  | Standard hook call | `common.delete`            |
+| 184  | Standard hook call | `editors.required`         |
 
 ### src/components/features/questions/QuestionEditor.tsx (17)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 235 | With options object | `questionEditor.unknownType` |
-| 261 | With default value | `localization.editingFallback` |
-| 261 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 262 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 267 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 276 | With default value | `common.duplicate` |
-| 280 | Standard hook call | `questionEditor.duplicateQuestion` |
-| 286 | With default value | `common.delete` |
-| 290 | Standard hook call | `questionEditor.deleteQuestion` |
-| 310 | Standard hook call | `questionEditor.edit` |
-| 318 | Standard hook call | `questionEditor.preview` |
-| 336 | Standard hook call | `questionEditor.requiredQuestion` |
-| 337 | Standard hook call | `questionEditor.requiredDescription` |
-| 351 | Standard hook call | `questionEditor.conditionalLogic` |
-| 352 | Standard hook call | `questionEditor.controlWhenAppears` |
-| 359 | Standard hook call | `questionEditor.configure` |
-| 370 | Standard hook call | `questionEditor.saveFirst` |
+| Line | Pattern                                | Key                                  |
+| ---- | -------------------------------------- | ------------------------------------ |
+| 235  | With options object                    | `questionEditor.unknownType`         |
+| 261  | With default value                     | `localization.editingFallback`       |
+| 261  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`        |
+| 262  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`        |
+| 267  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`        |
+| 276  | With default value                     | `common.duplicate`                   |
+| 280  | Standard hook call                     | `questionEditor.duplicateQuestion`   |
+| 286  | With default value                     | `common.delete`                      |
+| 290  | Standard hook call                     | `questionEditor.deleteQuestion`      |
+| 310  | Standard hook call                     | `questionEditor.edit`                |
+| 318  | Standard hook call                     | `questionEditor.preview`             |
+| 336  | Standard hook call                     | `questionEditor.requiredQuestion`    |
+| 337  | Standard hook call                     | `questionEditor.requiredDescription` |
+| 351  | Standard hook call                     | `questionEditor.conditionalLogic`    |
+| 352  | Standard hook call                     | `questionEditor.controlWhenAppears`  |
+| 359  | Standard hook call                     | `questionEditor.configure`           |
+| 370  | Standard hook call                     | `questionEditor.saveFirst`           |
 
-### src/components/features/questions/QuestionTypeInfo.tsx (6)
+### src/components/features/questions/QuestionTypeInfo.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 178 | i18n.Dynamic key | `[DYNAMIC] info.labelKey` |
-| 178 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 183 | i18n.Dynamic key | `[DYNAMIC] info.descriptionKey` |
-| 183 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 196 | Dynamic/variable key | `[DYNAMIC] info.labelKey` |
-| 197 | Dynamic/variable key | `[DYNAMIC] info.descriptionKey` |
+| Line | Pattern                      | Key                               |
+| ---- | ---------------------------- | --------------------------------- |
+| 23   | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]`     |
+| 27   | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]`     |
+| 37   | Dynamic/variable key         | `[DYNAMIC] config.labelKey`       |
+| 38   | Dynamic/variable key         | `[DYNAMIC] config.descriptionKey` |
 
 ### src/components/features/questions/editors/DateEditor.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Standard hook call | `questionEditor.question` |
-| 23 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 28 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 31 | Standard hook call | `questionEditor.common.addHelpText` |
-| 32 | Standard hook call | `questionEditor.common.textBelowQuestion` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 20   | Standard hook call | `questionEditor.question`                   |
+| 23   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 28   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 31   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 32   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
 
 ### src/components/features/questions/editors/EmailEditor.tsx (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 19 | Standard hook call | `questionEditor.question` |
-| 22 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 27 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 30 | Standard hook call | `questionEditor.common.addHelpText` |
-| 31 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 36 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 39 | Standard hook call | `questionEditor.email.placeholderDefault` |
-| 40 | Standard hook call | `questionEditor.common.shownInsideField` |
-| 46 | Standard hook call | `questionEditor.common.maxCharacters` |
-| 49 | Standard hook call | `questionEditor.common.maxCharsAllowed` |
-| 54 | Standard hook call | `questionEditor.email.validationMessage` |
-| 57 | Standard hook call | `questionEditor.email.validationPlaceholder` |
-| 58 | Standard hook call | `questionEditor.email.validationHelper` |
+| Line | Pattern            | Key                                          |
+| ---- | ------------------ | -------------------------------------------- |
+| 19   | Standard hook call | `questionEditor.question`                    |
+| 22   | Standard hook call | `questionEditor.common.enterQuestion`        |
+| 27   | Standard hook call | `questionEditor.common.descriptionOptional`  |
+| 30   | Standard hook call | `questionEditor.common.addHelpText`          |
+| 31   | Standard hook call | `questionEditor.common.textBelowQuestion`    |
+| 36   | Standard hook call | `questionEditor.common.placeholderLabel`     |
+| 39   | Standard hook call | `questionEditor.email.placeholderDefault`    |
+| 40   | Standard hook call | `questionEditor.common.shownInsideField`     |
+| 46   | Standard hook call | `questionEditor.common.maxCharacters`        |
+| 49   | Standard hook call | `questionEditor.common.maxCharsAllowed`      |
+| 54   | Standard hook call | `questionEditor.email.validationMessage`     |
+| 57   | Standard hook call | `questionEditor.email.validationPlaceholder` |
+| 58   | Standard hook call | `questionEditor.email.validationHelper`      |
 
 ### src/components/features/questions/editors/FileUploadEditor.tsx (10)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 41 | Standard hook call | `questionEditor.question` |
-| 44 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 49 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 52 | Standard hook call | `questionEditor.common.addHelpText` |
-| 57 | Standard hook call | `editors.file.allowedTypes` |
-| 70 | Standard hook call | `editors.file.fileTypes.${preset.key}` |
-| 96 | Standard hook call | `editors.file.maxFiles` |
-| 99 | Standard hook call | `editors.file.maxFilesHelper` |
-| 103 | Standard hook call | `editors.file.maxSize` |
-| 106 | Standard hook call | `editors.file.maxSizeHelper` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 41   | Standard hook call | `questionEditor.question`                   |
+| 44   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 49   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 52   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 57   | Standard hook call | `editors.file.allowedTypes`                 |
+| 70   | Standard hook call | `editors.file.fileTypes.${preset.key}`      |
+| 96   | Standard hook call | `editors.file.maxFiles`                     |
+| 99   | Standard hook call | `editors.file.maxFilesHelper`               |
+| 103  | Standard hook call | `editors.file.maxSize`                      |
+| 106  | Standard hook call | `editors.file.maxSizeHelper`                |
 
 ### src/components/features/questions/editors/LongTextEditor.tsx (10)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 19 | Standard hook call | `questionEditor.question` |
-| 22 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 27 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 30 | Standard hook call | `questionEditor.common.addHelpText` |
-| 31 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 36 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 39 | Standard hook call | `questionEditor.common.enterPlaceholder` |
-| 40 | Standard hook call | `questionEditor.common.shownInsideTextArea` |
-| 47 | Standard hook call | `questionEditor.common.maxCharacters` |
-| 50 | Standard hook call | `questionEditor.common.maxCharsAllowed` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 19   | Standard hook call | `questionEditor.question`                   |
+| 22   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 27   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 30   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 31   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 36   | Standard hook call | `questionEditor.common.placeholderLabel`    |
+| 39   | Standard hook call | `questionEditor.common.enterPlaceholder`    |
+| 40   | Standard hook call | `questionEditor.common.shownInsideTextArea` |
+| 47   | Standard hook call | `questionEditor.common.maxCharacters`       |
+| 50   | Standard hook call | `questionEditor.common.maxCharsAllowed`     |
 
 ### src/components/features/questions/editors/MatrixEditor.tsx (18)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 17 | With options object | `editors.matrix.rowPlaceholder` |
-| 19 | With options object | `editors.matrix.columnPlaceholder` |
-| 20 | With options object | `editors.matrix.columnPlaceholder` |
-| 21 | With options object | `editors.matrix.columnPlaceholder` |
-| 35 | With options object | `editors.matrix.rowPlaceholder` |
-| 51 | With options object | `editors.matrix.columnPlaceholder` |
-| 70 | Standard hook call | `questionEditor.question` |
-| 73 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 78 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 81 | Standard hook call | `questionEditor.common.addHelpText` |
-| 86 | Standard hook call | `editors.matrix.rows` |
-| 96 | With options object | `editors.matrix.rowPlaceholder` |
-| 101 | Standard hook call | `editors.matrix.removeRow` |
-| 116 | Standard hook call | `editors.matrix.addRow` |
-| 122 | Standard hook call | `editors.matrix.columns` |
-| 132 | With options object | `editors.matrix.columnPlaceholder` |
-| 137 | Standard hook call | `editors.matrix.removeColumn` |
-| 152 | Standard hook call | `editors.matrix.addColumn` |
+| Line | Pattern             | Key                                         |
+| ---- | ------------------- | ------------------------------------------- |
+| 17   | With options object | `editors.matrix.rowPlaceholder`             |
+| 19   | With options object | `editors.matrix.columnPlaceholder`          |
+| 20   | With options object | `editors.matrix.columnPlaceholder`          |
+| 21   | With options object | `editors.matrix.columnPlaceholder`          |
+| 35   | With options object | `editors.matrix.rowPlaceholder`             |
+| 51   | With options object | `editors.matrix.columnPlaceholder`          |
+| 70   | Standard hook call  | `questionEditor.question`                   |
+| 73   | Standard hook call  | `questionEditor.common.enterQuestion`       |
+| 78   | Standard hook call  | `questionEditor.common.descriptionOptional` |
+| 81   | Standard hook call  | `questionEditor.common.addHelpText`         |
+| 86   | Standard hook call  | `editors.matrix.rows`                       |
+| 96   | With options object | `editors.matrix.rowPlaceholder`             |
+| 101  | Standard hook call  | `editors.matrix.removeRow`                  |
+| 116  | Standard hook call  | `editors.matrix.addRow`                     |
+| 122  | Standard hook call  | `editors.matrix.columns`                    |
+| 132  | With options object | `editors.matrix.columnPlaceholder`          |
+| 137  | Standard hook call  | `editors.matrix.removeColumn`               |
+| 152  | Standard hook call  | `editors.matrix.addColumn`                  |
 
 ### src/components/features/questions/editors/MultipleChoiceEditor.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 24 | Standard hook call | `questionEditor.question` |
-| 27 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 32 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 35 | Standard hook call | `questionEditor.common.addHelpText` |
-| 36 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 56 | Standard hook call | `questionEditor.choice.randomize` |
-| 57 | Standard hook call | `questionEditor.choice.randomizeDesc` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 24   | Standard hook call | `questionEditor.question`                   |
+| 27   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 32   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 35   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 36   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 56   | Standard hook call | `questionEditor.choice.randomize`           |
+| 57   | Standard hook call | `questionEditor.choice.randomizeDesc`       |
 
 ### src/components/features/questions/editors/NumberEditor.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 19 | Standard hook call | `questionEditor.question` |
-| 22 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 27 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 30 | Standard hook call | `questionEditor.common.addHelpText` |
-| 31 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 36 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 39 | Standard hook call | `questionEditor.number.placeholderDefault` |
-| 40 | Standard hook call | `questionEditor.common.shownInsideField` |
-| 47 | Standard hook call | `questionEditor.number.minValue` |
-| 53 | Standard hook call | `questionEditor.number.noMinimum` |
-| 54 | Standard hook call | `questionEditor.number.leaveEmptyMin` |
-| 58 | Standard hook call | `questionEditor.number.maxValue` |
-| 64 | Standard hook call | `questionEditor.number.noMaximum` |
-| 65 | Standard hook call | `questionEditor.number.leaveEmptyMax` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 19   | Standard hook call | `questionEditor.question`                   |
+| 22   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 27   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 30   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 31   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 36   | Standard hook call | `questionEditor.common.placeholderLabel`    |
+| 39   | Standard hook call | `questionEditor.number.placeholderDefault`  |
+| 40   | Standard hook call | `questionEditor.common.shownInsideField`    |
+| 47   | Standard hook call | `questionEditor.number.minValue`            |
+| 53   | Standard hook call | `questionEditor.number.noMinimum`           |
+| 54   | Standard hook call | `questionEditor.number.leaveEmptyMin`       |
+| 58   | Standard hook call | `questionEditor.number.maxValue`            |
+| 64   | Standard hook call | `questionEditor.number.noMaximum`           |
+| 65   | Standard hook call | `questionEditor.number.leaveEmptyMax`       |
 
 ### src/components/features/questions/editors/OptionListEditor.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 95 | Standard hook call | `questionTypes.options.title` |
-| 128 | With options object | `questionTypes.options.placeholder` |
-| 145 | Standard hook call | `questionTypes.options.remove` |
-| 164 | Standard hook call | `questionTypes.options.add` |
-| 171 | Standard hook call | `questionEditor.choice.addOther` |
-| 172 | Standard hook call | `questionEditor.choice.addOtherDesc` |
-| 180 | Standard hook call | `questionEditor.choice.otherLabel` |
-| 181 | Standard hook call | `questionEditor.choice.otherPlaceholder` |
-| 183 | Standard hook call | `questionEditor.choice.otherPlaceholder` |
+| Line | Pattern             | Key                                      |
+| ---- | ------------------- | ---------------------------------------- |
+| 95   | Standard hook call  | `questionTypes.options.title`            |
+| 128  | With options object | `questionTypes.options.placeholder`      |
+| 145  | Standard hook call  | `questionTypes.options.remove`           |
+| 164  | Standard hook call  | `questionTypes.options.add`              |
+| 171  | Standard hook call  | `questionEditor.choice.addOther`         |
+| 172  | Standard hook call  | `questionEditor.choice.addOtherDesc`     |
+| 180  | Standard hook call  | `questionEditor.choice.otherLabel`       |
+| 181  | Standard hook call  | `questionEditor.choice.otherPlaceholder` |
+| 183  | Standard hook call  | `questionEditor.choice.otherPlaceholder` |
 
 ### src/components/features/questions/editors/PhoneEditor.tsx (20)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Dynamic/variable key | `[DYNAMIC] p.nameKey` |
-| 20 | Dynamic/variable key | `[DYNAMIC] p.descriptionKey` |
-| 27 | Standard hook call | `questionEditor.question` |
-| 30 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 35 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 38 | Standard hook call | `questionEditor.common.addHelpText` |
-| 39 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 44 | Standard hook call | `questionEditor.phone.formatLabel` |
-| 56 | Standard hook call | `common.example` |
-| 61 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 64 | Standard hook call | `editors.phone.placeholderDefault` |
-| 65 | Standard hook call | `questionEditor.common.shownInsideField` |
-| 70 | Standard hook call | `editors.phone.advancedRegex` |
-| 73 | Standard hook call | `editors.phone.regexPattern` |
-| 77 | Standard hook call | `editors.phone.regexHelper` |
-| 84 | Standard hook call | `editors.phone.errorMessage` |
-| 87 | Standard hook call | `editors.phone.errorPlaceholder` |
-| 88 | Standard hook call | `editors.phone.errorHelper` |
-| 94 | Standard hook call | `questionEditor.common.maxCharacters` |
-| 97 | Standard hook call | `editors.common.maxCharactersHelper` |
+| Line | Pattern              | Key                                         |
+| ---- | -------------------- | ------------------------------------------- |
+| 20   | Dynamic/variable key | `[DYNAMIC] p.nameKey`                       |
+| 20   | Dynamic/variable key | `[DYNAMIC] p.descriptionKey`                |
+| 27   | Standard hook call   | `questionEditor.question`                   |
+| 30   | Standard hook call   | `questionEditor.common.enterQuestion`       |
+| 35   | Standard hook call   | `questionEditor.common.descriptionOptional` |
+| 38   | Standard hook call   | `questionEditor.common.addHelpText`         |
+| 39   | Standard hook call   | `questionEditor.common.textBelowQuestion`   |
+| 44   | Standard hook call   | `questionEditor.phone.formatLabel`          |
+| 56   | Standard hook call   | `common.example`                            |
+| 61   | Standard hook call   | `questionEditor.common.placeholderLabel`    |
+| 64   | Standard hook call   | `editors.phone.placeholderDefault`          |
+| 65   | Standard hook call   | `questionEditor.common.shownInsideField`    |
+| 70   | Standard hook call   | `editors.phone.advancedRegex`               |
+| 73   | Standard hook call   | `editors.phone.regexPattern`                |
+| 77   | Standard hook call   | `editors.phone.regexHelper`                 |
+| 84   | Standard hook call   | `editors.phone.errorMessage`                |
+| 87   | Standard hook call   | `editors.phone.errorPlaceholder`            |
+| 88   | Standard hook call   | `editors.phone.errorHelper`                 |
+| 94   | Standard hook call   | `questionEditor.common.maxCharacters`       |
+| 97   | Standard hook call   | `editors.common.maxCharactersHelper`        |
 
 ### src/components/features/questions/editors/RankingEditor.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 25 | Standard hook call | `questionEditor.question` |
-| 28 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 33 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 36 | Standard hook call | `questionEditor.common.addHelpText` |
-| 37 | Standard hook call | `questionTypes.ranking.helper` |
-| 54 | Standard hook call | `questionEditor.ranking.randomize` |
-| 55 | Standard hook call | `questionEditor.ranking.randomizeDesc` |
-| 62 | Standard hook call | `questionTypes.ranking.previewLabel` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 25   | Standard hook call | `questionEditor.question`                   |
+| 28   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 33   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 36   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 37   | Standard hook call | `questionTypes.ranking.helper`              |
+| 54   | Standard hook call | `questionEditor.ranking.randomize`          |
+| 55   | Standard hook call | `questionEditor.ranking.randomizeDesc`      |
+| 62   | Standard hook call | `questionTypes.ranking.previewLabel`        |
 
 ### src/components/features/questions/editors/RatingEditor.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 34 | Standard hook call | `questionEditor.question` |
-| 37 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 42 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 45 | Standard hook call | `questionEditor.common.addHelpText` |
-| 46 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 51 | With default value | `questionEditor.rating.style` |
-| 76 | Standard hook call | `questionEditor.options.maxRating` |
-| 101 | Standard hook call | `questionEditor.rating.lowLabel` |
-| 104 | Standard hook call | `questionEditor.rating.lowPlaceholder` |
-| 107 | Standard hook call | `questionEditor.rating.highLabel` |
-| 110 | Standard hook call | `questionEditor.rating.highPlaceholder` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 25   | Standard hook call | `questionEditor.question`                   |
+| 28   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 33   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 36   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 37   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 42   | With default value | `questionEditor.rating.style`               |
+| 67   | Standard hook call | `questionEditor.options.maxRating`          |
+| 92   | Standard hook call | `questionEditor.rating.lowLabel`            |
+| 95   | Standard hook call | `questionEditor.rating.lowPlaceholder`      |
+| 98   | Standard hook call | `questionEditor.rating.highLabel`           |
+| 101  | Standard hook call | `questionEditor.rating.highPlaceholder`     |
 
 ### src/components/features/questions/editors/ScaleEditor.tsx (16)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 21 | Standard hook call | `questionTypes.scale.presets.nps` |
-| 22 | Standard hook call | `questionTypes.scale.presets.1-5` |
-| 23 | Standard hook call | `questionTypes.scale.presets.1-7` |
-| 24 | Standard hook call | `questionTypes.scale.presets.1-10` |
-| 41 | Standard hook call | `questionEditor.question` |
-| 44 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 49 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 52 | Standard hook call | `questionEditor.common.addHelpText` |
-| 53 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 58 | Standard hook call | `questionTypes.scale.scaleType` |
-| 81 | Standard hook call | `questionEditor.scale.minValue` |
-| 87 | Standard hook call | `questionEditor.scale.maxValue` |
-| 96 | Standard hook call | `questionEditor.scale.lowLabel` |
-| 99 | Standard hook call | `questionEditor.scale.lowPlaceholder` |
-| 102 | Standard hook call | `questionEditor.scale.highLabel` |
-| 105 | Standard hook call | `questionEditor.scale.highPlaceholder` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 21   | Standard hook call | `questionTypes.scale.presets.nps`           |
+| 22   | Standard hook call | `questionTypes.scale.presets.1-5`           |
+| 23   | Standard hook call | `questionTypes.scale.presets.1-7`           |
+| 24   | Standard hook call | `questionTypes.scale.presets.1-10`          |
+| 41   | Standard hook call | `questionEditor.question`                   |
+| 44   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 49   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 52   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 53   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 58   | Standard hook call | `questionTypes.scale.scaleType`             |
+| 81   | Standard hook call | `questionEditor.scale.minValue`             |
+| 87   | Standard hook call | `questionEditor.scale.maxValue`             |
+| 96   | Standard hook call | `questionEditor.scale.lowLabel`             |
+| 99   | Standard hook call | `questionEditor.scale.lowPlaceholder`       |
+| 102  | Standard hook call | `questionEditor.scale.highLabel`            |
+| 105  | Standard hook call | `questionEditor.scale.highPlaceholder`      |
 
 ### src/components/features/questions/editors/SingleChoiceEditor.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 24 | Standard hook call | `questionEditor.question` |
-| 27 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 32 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 35 | Standard hook call | `questionEditor.common.addHelpText` |
-| 36 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 56 | Standard hook call | `questionEditor.choice.randomize` |
-| 57 | Standard hook call | `questionEditor.choice.randomizeDesc` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 24   | Standard hook call | `questionEditor.question`                   |
+| 27   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 32   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 35   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 36   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 56   | Standard hook call | `questionEditor.choice.randomize`           |
+| 57   | Standard hook call | `questionEditor.choice.randomizeDesc`       |
 
 ### src/components/features/questions/editors/TextEditor.tsx (10)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 19 | Standard hook call | `questionEditor.question` |
-| 22 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 27 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 30 | Standard hook call | `questionEditor.common.addHelpText` |
-| 31 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 36 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 39 | Standard hook call | `questionEditor.common.enterPlaceholder` |
-| 40 | Standard hook call | `questionEditor.common.shownInsideField` |
-| 46 | Standard hook call | `questionEditor.common.maxCharacters` |
-| 49 | Standard hook call | `questionEditor.common.maxCharsAllowed` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 19   | Standard hook call | `questionEditor.question`                   |
+| 22   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 27   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 30   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 31   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 36   | Standard hook call | `questionEditor.common.placeholderLabel`    |
+| 39   | Standard hook call | `questionEditor.common.enterPlaceholder`    |
+| 40   | Standard hook call | `questionEditor.common.shownInsideField`    |
+| 46   | Standard hook call | `questionEditor.common.maxCharacters`       |
+| 49   | Standard hook call | `questionEditor.common.maxCharsAllowed`     |
 
 ### src/components/features/questions/editors/UrlEditor.tsx (20)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Dynamic/variable key | `[DYNAMIC] p.nameKey` |
-| 20 | Dynamic/variable key | `[DYNAMIC] p.descriptionKey` |
-| 27 | Standard hook call | `questionEditor.question` |
-| 30 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 35 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 38 | Standard hook call | `questionEditor.common.addHelpText` |
-| 39 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 44 | Standard hook call | `editors.url.format` |
-| 56 | Standard hook call | `common.example` |
-| 61 | Standard hook call | `questionEditor.common.placeholderLabel` |
-| 64 | Standard hook call | `questionEditor.url.placeholderDefault` |
-| 65 | Standard hook call | `questionEditor.common.shownInsideField` |
-| 70 | Standard hook call | `editors.url.advancedRegex` |
-| 73 | Standard hook call | `editors.url.regexPattern` |
-| 77 | Standard hook call | `questionEditor.url.customPatternHelper` |
-| 84 | Standard hook call | `editors.url.errorMessage` |
-| 87 | Standard hook call | `questionEditor.url.validationPlaceholder` |
-| 88 | Standard hook call | `questionEditor.url.validationHelper` |
-| 94 | Standard hook call | `questionEditor.common.maxCharacters` |
-| 97 | Standard hook call | `editors.common.maxCharactersHelper` |
+| Line | Pattern              | Key                                         |
+| ---- | -------------------- | ------------------------------------------- |
+| 20   | Dynamic/variable key | `[DYNAMIC] p.nameKey`                       |
+| 20   | Dynamic/variable key | `[DYNAMIC] p.descriptionKey`                |
+| 27   | Standard hook call   | `questionEditor.question`                   |
+| 30   | Standard hook call   | `questionEditor.common.enterQuestion`       |
+| 35   | Standard hook call   | `questionEditor.common.descriptionOptional` |
+| 38   | Standard hook call   | `questionEditor.common.addHelpText`         |
+| 39   | Standard hook call   | `questionEditor.common.textBelowQuestion`   |
+| 44   | Standard hook call   | `editors.url.format`                        |
+| 56   | Standard hook call   | `common.example`                            |
+| 61   | Standard hook call   | `questionEditor.common.placeholderLabel`    |
+| 64   | Standard hook call   | `questionEditor.url.placeholderDefault`     |
+| 65   | Standard hook call   | `questionEditor.common.shownInsideField`    |
+| 70   | Standard hook call   | `editors.url.advancedRegex`                 |
+| 73   | Standard hook call   | `editors.url.regexPattern`                  |
+| 77   | Standard hook call   | `questionEditor.url.customPatternHelper`    |
+| 84   | Standard hook call   | `editors.url.errorMessage`                  |
+| 87   | Standard hook call   | `questionEditor.url.validationPlaceholder`  |
+| 88   | Standard hook call   | `questionEditor.url.validationHelper`       |
+| 94   | Standard hook call   | `questionEditor.common.maxCharacters`       |
+| 97   | Standard hook call   | `editors.common.maxCharactersHelper`        |
 
 ### src/components/features/questions/editors/YesNoEditor.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 32 | Standard hook call | `questionEditor.question` |
-| 35 | Standard hook call | `questionEditor.common.enterQuestion` |
-| 40 | Standard hook call | `questionEditor.common.descriptionOptional` |
-| 43 | Standard hook call | `questionEditor.common.addHelpText` |
-| 44 | Standard hook call | `questionEditor.common.textBelowQuestion` |
-| 49 | With default value | `questionEditor.yesNo.style` |
+| Line | Pattern            | Key                                         |
+| ---- | ------------------ | ------------------------------------------- |
+| 24   | Standard hook call | `questionEditor.question`                   |
+| 27   | Standard hook call | `questionEditor.common.enterQuestion`       |
+| 32   | Standard hook call | `questionEditor.common.descriptionOptional` |
+| 35   | Standard hook call | `questionEditor.common.addHelpText`         |
+| 36   | Standard hook call | `questionEditor.common.textBelowQuestion`   |
+| 41   | With default value | `questionEditor.yesNo.style`                |
 
 ### src/components/features/recurring-surveys/RecurringScheduleEditor.tsx (54)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 29 | Standard hook call | `recurringSurveys.form.daily` |
-| 30 | Standard hook call | `recurringSurveys.form.weekly` |
-| 31 | Standard hook call | `recurringSurveys.form.biWeekly` |
-| 32 | Standard hook call | `recurringSurveys.form.monthly` |
-| 33 | Standard hook call | `recurringSurveys.form.quarterly` |
-| 34 | Standard hook call | `recurringSurveys.form.custom` |
-| 46 | Standard hook call | `recurringSurveys.form.daysOfWeek.sun` |
-| 47 | Standard hook call | `recurringSurveys.form.daysOfWeek.mon` |
-| 48 | Standard hook call | `recurringSurveys.form.daysOfWeek.tue` |
-| 49 | Standard hook call | `recurringSurveys.form.daysOfWeek.wed` |
-| 50 | Standard hook call | `recurringSurveys.form.daysOfWeek.thu` |
-| 51 | Standard hook call | `recurringSurveys.form.daysOfWeek.fri` |
-| 52 | Standard hook call | `recurringSurveys.form.daysOfWeek.sat` |
-| 68 | Standard hook call | `recurringSurveys.form.audienceType.staticList` |
-| 69 | Standard hook call | `recurringSurveys.form.audienceType.allContacts` |
-| 80 | Standard hook call | `recurringSurveys.form.timezones.utc` |
-| 81 | Standard hook call | `recurringSurveys.form.timezones.eastern` |
-| 82 | Standard hook call | `recurringSurveys.form.timezones.central` |
-| 83 | Standard hook call | `recurringSurveys.form.timezones.mountain` |
-| 84 | Standard hook call | `recurringSurveys.form.timezones.pacific` |
-| 85 | Standard hook call | `recurringSurveys.form.timezones.london` |
-| 86 | Standard hook call | `recurringSurveys.form.timezones.paris` |
-| 87 | Standard hook call | `recurringSurveys.form.timezones.berlin` |
-| 88 | Standard hook call | `recurringSurveys.form.timezones.tokyo` |
-| 89 | Standard hook call | `recurringSurveys.form.timezones.shanghai` |
-| 90 | Standard hook call | `recurringSurveys.form.timezones.singapore` |
-| 91 | Standard hook call | `recurringSurveys.form.timezones.sydney` |
-| 201 | Standard hook call | `recurringSurveys.form.validation.selectSurvey` |
-| 205 | Standard hook call | `recurringSurveys.form.nameRequired` |
-| 209 | Standard hook call | `recurringSurveys.form.validation.validTime` |
-| 284 | Standard hook call | `recurringSurveys.editTitle` |
-| 284 | Standard hook call | `recurringSurveys.createTitle` |
-| 285 | Standard hook call | `recurringSurveys.editDescription` |
-| 285 | Standard hook call | `recurringSurveys.createDescription` |
-| 313 | Standard hook call | `recurringSurveys.form.scheduleName` |
-| 314 | Standard hook call | `recurringSurveys.form.scheduleNamePlaceholder` |
-| 332 | Standard hook call | `recurringSurveys.form.daysOfWeek` |
-| 349 | Standard hook call | `recurringSurveys.form.daysOfWeekHelper` |
-| 362 | Standard hook call | `recurringSurveys.cronExpression` |
-| 368 | Standard hook call | `recurringSurveys.cronHelp` |
-| 377 | Standard hook call | `recurringSurveys.timeSettings` |
-| 382 | Standard hook call | `recurringSurveys.form.sendTime` |
-| 386 | Standard hook call | `common.timezone` |
-| 391 | With options object | `recurringSurveys.sendTimeInfo` |
-| 399 | Standard hook call | `recurringSurveys.audience` |
-| 474 | Standard hook call | `recurringSurveys.form.daysAfterSend` |
-| 478 | Standard hook call | `recurringSurveys.form.maxReminders` |
-| 494 | Standard hook call | `recurringSurveys.form.endDate` |
-| 499 | Standard hook call | `recurringSurveys.form.maxRuns` |
-| 503 | Standard hook call | `recurringSurveys.form.maxRunsPlaceholder` |
-| 520 | Standard hook call | `recurringSurveys.pausedStateHint` |
-| 529 | Standard hook call | `common.cancel` |
-| 532 | Standard hook call | `common.saveChanges` |
-| 532 | Standard hook call | `recurringSurveys.createSchedule` |
+| Line | Pattern             | Key                                              |
+| ---- | ------------------- | ------------------------------------------------ |
+| 29   | Standard hook call  | `recurringSurveys.form.daily`                    |
+| 30   | Standard hook call  | `recurringSurveys.form.weekly`                   |
+| 31   | Standard hook call  | `recurringSurveys.form.biWeekly`                 |
+| 32   | Standard hook call  | `recurringSurveys.form.monthly`                  |
+| 33   | Standard hook call  | `recurringSurveys.form.quarterly`                |
+| 34   | Standard hook call  | `recurringSurveys.form.custom`                   |
+| 46   | Standard hook call  | `recurringSurveys.form.daysOfWeek.sun`           |
+| 47   | Standard hook call  | `recurringSurveys.form.daysOfWeek.mon`           |
+| 48   | Standard hook call  | `recurringSurveys.form.daysOfWeek.tue`           |
+| 49   | Standard hook call  | `recurringSurveys.form.daysOfWeek.wed`           |
+| 50   | Standard hook call  | `recurringSurveys.form.daysOfWeek.thu`           |
+| 51   | Standard hook call  | `recurringSurveys.form.daysOfWeek.fri`           |
+| 52   | Standard hook call  | `recurringSurveys.form.daysOfWeek.sat`           |
+| 68   | Standard hook call  | `recurringSurveys.form.audienceType.staticList`  |
+| 69   | Standard hook call  | `recurringSurveys.form.audienceType.allContacts` |
+| 80   | Standard hook call  | `recurringSurveys.form.timezones.utc`            |
+| 81   | Standard hook call  | `recurringSurveys.form.timezones.eastern`        |
+| 82   | Standard hook call  | `recurringSurveys.form.timezones.central`        |
+| 83   | Standard hook call  | `recurringSurveys.form.timezones.mountain`       |
+| 84   | Standard hook call  | `recurringSurveys.form.timezones.pacific`        |
+| 85   | Standard hook call  | `recurringSurveys.form.timezones.london`         |
+| 86   | Standard hook call  | `recurringSurveys.form.timezones.paris`          |
+| 87   | Standard hook call  | `recurringSurveys.form.timezones.berlin`         |
+| 88   | Standard hook call  | `recurringSurveys.form.timezones.tokyo`          |
+| 89   | Standard hook call  | `recurringSurveys.form.timezones.shanghai`       |
+| 90   | Standard hook call  | `recurringSurveys.form.timezones.singapore`      |
+| 91   | Standard hook call  | `recurringSurveys.form.timezones.sydney`         |
+| 201  | Standard hook call  | `recurringSurveys.form.validation.selectSurvey`  |
+| 205  | Standard hook call  | `recurringSurveys.form.nameRequired`             |
+| 209  | Standard hook call  | `recurringSurveys.form.validation.validTime`     |
+| 284  | Standard hook call  | `recurringSurveys.editTitle`                     |
+| 284  | Standard hook call  | `recurringSurveys.createTitle`                   |
+| 285  | Standard hook call  | `recurringSurveys.editDescription`               |
+| 285  | Standard hook call  | `recurringSurveys.createDescription`             |
+| 313  | Standard hook call  | `recurringSurveys.form.scheduleName`             |
+| 314  | Standard hook call  | `recurringSurveys.form.scheduleNamePlaceholder`  |
+| 332  | Standard hook call  | `recurringSurveys.form.daysOfWeek`               |
+| 349  | Standard hook call  | `recurringSurveys.form.daysOfWeekHelper`         |
+| 362  | Standard hook call  | `recurringSurveys.cronExpression`                |
+| 368  | Standard hook call  | `recurringSurveys.cronHelp`                      |
+| 377  | Standard hook call  | `recurringSurveys.timeSettings`                  |
+| 382  | Standard hook call  | `recurringSurveys.form.sendTime`                 |
+| 386  | Standard hook call  | `common.timezone`                                |
+| 391  | With options object | `recurringSurveys.sendTimeInfo`                  |
+| 399  | Standard hook call  | `recurringSurveys.audience`                      |
+| 474  | Standard hook call  | `recurringSurveys.form.daysAfterSend`            |
+| 478  | Standard hook call  | `recurringSurveys.form.maxReminders`             |
+| 494  | Standard hook call  | `recurringSurveys.form.endDate`                  |
+| 499  | Standard hook call  | `recurringSurveys.form.maxRuns`                  |
+| 503  | Standard hook call  | `recurringSurveys.form.maxRunsPlaceholder`       |
+| 520  | Standard hook call  | `recurringSurveys.pausedStateHint`               |
+| 529  | Standard hook call  | `common.cancel`                                  |
+| 532  | Standard hook call  | `common.saveChanges`                             |
+| 532  | Standard hook call  | `recurringSurveys.createSchedule`                |
 
 ### src/components/features/recurring-surveys/RecurringSurveyCard.tsx (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 76 | Standard hook call | `a11y.moreOptions` |
-| 122 | With options object | `recurringSurveys.recipientCount` |
-| 130 | Standard hook call | `recurringSurveys.nextRun` |
-| 138 | Standard hook call | `recurringSurveys.lastRun` |
-| 146 | Standard hook call | `recurringSurveys.totalRuns` |
-| 154 | Standard hook call | `recurringSurveys.pauseTooltip` |
-| 158 | Standard hook call | `a11y.pauseRecurring` |
-| 167 | Standard hook call | `recurringSurveys.resumeTooltip` |
-| 171 | Standard hook call | `a11y.resumeRecurring` |
-| 180 | Standard hook call | `recurringSurveys.triggerTooltip` |
-| 181 | Standard hook call | `a11y.triggerRun` |
-| 188 | Standard hook call | `recurringSurveys.viewHistoryTooltip` |
-| 189 | Standard hook call | `a11y.viewHistory` |
+| Line | Pattern             | Key                                   |
+| ---- | ------------------- | ------------------------------------- |
+| 76   | Standard hook call  | `a11y.moreOptions`                    |
+| 122  | With options object | `recurringSurveys.recipientCount`     |
+| 130  | Standard hook call  | `recurringSurveys.nextRun`            |
+| 138  | Standard hook call  | `recurringSurveys.lastRun`            |
+| 146  | Standard hook call  | `recurringSurveys.totalRuns`          |
+| 154  | Standard hook call  | `recurringSurveys.pauseTooltip`       |
+| 158  | Standard hook call  | `a11y.pauseRecurring`                 |
+| 167  | Standard hook call  | `recurringSurveys.resumeTooltip`      |
+| 171  | Standard hook call  | `a11y.resumeRecurring`                |
+| 180  | Standard hook call  | `recurringSurveys.triggerTooltip`     |
+| 181  | Standard hook call  | `a11y.triggerRun`                     |
+| 188  | Standard hook call  | `recurringSurveys.viewHistoryTooltip` |
+| 189  | Standard hook call  | `a11y.viewHistory`                    |
 
 ### src/components/features/recurring-surveys/RunHistoryDrawer.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 174 | Standard hook call | `recurringSurveys.runHistory` |
-| 219 | Standard hook call | `recurringSurveys.loadHistoryError` |
-| 220 | Standard hook call | `recurringSurveys.loadHistoryErrorDesc` |
-| 222 | Standard hook call | `common.tryAgain` |
-| 227 | Standard hook call | `recurringSurveys.noRuns` |
-| 227 | Standard hook call | `recurringSurveys.noRunsDesc` |
-| 238 | Standard hook call | `common.loadMore` |
+| Line | Pattern            | Key                                     |
+| ---- | ------------------ | --------------------------------------- |
+| 174  | Standard hook call | `recurringSurveys.runHistory`           |
+| 219  | Standard hook call | `recurringSurveys.loadHistoryError`     |
+| 220  | Standard hook call | `recurringSurveys.loadHistoryErrorDesc` |
+| 222  | Standard hook call | `common.tryAgain`                       |
+| 227  | Standard hook call | `recurringSurveys.noRuns`               |
+| 227  | Standard hook call | `recurringSurveys.noRunsDesc`           |
+| 238  | Standard hook call | `common.loadMore`                       |
 
 ### src/components/features/responses/ExportDialog.tsx (26)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 128 | Standard hook call | `responses.exportDialog.selectColumns` |
-| 157 | With options object | `responses.exportDialog.exportSuccess` |
-| 160 | Standard hook call | `responses.exportDialog.exportError` |
-| 172 | Standard hook call | `responses.exportDialog.title` |
-| 173 | Standard hook call | `responses.exportDialog.description` |
-| 173 | With options object | `responses.exportDialog.descriptionWithTitle` |
-| 182 | Standard hook call | `responses.exportDialog.format` |
-| 201 | Standard hook call | `responses.exportDialog.dateRange` |
-| 217 | Standard hook call | `responses.exportDialog.filters` |
-| 223 | Standard hook call | `responses.exportDialog.includeIncomplete` |
-| 224 | Standard hook call | `responses.exportDialog.includeIncompleteDesc` |
-| 229 | Standard hook call | `responses.exportDialog.includeMetadata` |
-| 230 | Standard hook call | `responses.exportDialog.includeMetadataDesc` |
-| 240 | Standard hook call | `responses.exportDialog.columnsToExport` |
-| 242 | With options object | `responses.exportDialog.selectedCount` |
-| 254 | Standard hook call | `responses.exportDialog.loadColumnsError` |
-| 261 | Standard hook call | `responses.exportDialog.questions` |
-| 275 | Standard hook call | `responses.exportDialog.systemFields` |
-| 289 | Standard hook call | `responses.exportDialog.metadata` |
-| 307 | Standard hook call | `responses.exportDialog.exportSummary` |
-| 311 | With options object | `responses.exportDialog.responsesCount` |
-| 314 | With options object | `responses.exportDialog.columnsCount` |
-| 317 | With options object | `responses.exportDialog.formatLabel` |
-| 330 | Standard hook call | `common.cancel` |
-| 336 | Standard hook call | `responses.exportDialog.exporting` |
-| 341 | With options object | `responses.exportDialog.exportButton` |
+| Line | Pattern             | Key                                            |
+| ---- | ------------------- | ---------------------------------------------- |
+| 128  | Standard hook call  | `responses.exportDialog.selectColumns`         |
+| 157  | With options object | `responses.exportDialog.exportSuccess`         |
+| 160  | Standard hook call  | `responses.exportDialog.exportError`           |
+| 172  | Standard hook call  | `responses.exportDialog.title`                 |
+| 173  | Standard hook call  | `responses.exportDialog.description`           |
+| 173  | With options object | `responses.exportDialog.descriptionWithTitle`  |
+| 182  | Standard hook call  | `responses.exportDialog.format`                |
+| 201  | Standard hook call  | `responses.exportDialog.dateRange`             |
+| 217  | Standard hook call  | `responses.exportDialog.filters`               |
+| 223  | Standard hook call  | `responses.exportDialog.includeIncomplete`     |
+| 224  | Standard hook call  | `responses.exportDialog.includeIncompleteDesc` |
+| 229  | Standard hook call  | `responses.exportDialog.includeMetadata`       |
+| 230  | Standard hook call  | `responses.exportDialog.includeMetadataDesc`   |
+| 240  | Standard hook call  | `responses.exportDialog.columnsToExport`       |
+| 242  | With options object | `responses.exportDialog.selectedCount`         |
+| 254  | Standard hook call  | `responses.exportDialog.loadColumnsError`      |
+| 261  | Standard hook call  | `responses.exportDialog.questions`             |
+| 275  | Standard hook call  | `responses.exportDialog.systemFields`          |
+| 289  | Standard hook call  | `responses.exportDialog.metadata`              |
+| 307  | Standard hook call  | `responses.exportDialog.exportSummary`         |
+| 311  | With options object | `responses.exportDialog.responsesCount`        |
+| 314  | With options object | `responses.exportDialog.columnsCount`          |
+| 317  | With options object | `responses.exportDialog.formatLabel`           |
+| 330  | Standard hook call  | `common.cancel`                                |
+| 336  | Standard hook call  | `responses.exportDialog.exporting`             |
+| 341  | With options object | `responses.exportDialog.exportButton`          |
 
 ### src/components/features/responses/ResponseDetailDrawer.tsx (30)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 42 | Standard hook call | `responses.na` |
-| 57 | Standard hook call | `responses.na` |
-| 74 | Standard hook call | `common.other` |
-| 81 | Standard hook call | `responses.na` |
-| 110 | Standard hook call | `responses.na` |
-| 149 | Standard hook call | `responses.na` |
-| 165 | Standard hook call | `responses.noFiles` |
-| 173 | Standard hook call | `responses.na` |
-| 177 | Standard hook call | `responses.na` |
-| 202 | Standard hook call | `responses.unknownQuestion` |
-| 203 | Standard hook call | `common.required` |
-| 241 | Standard hook call | `responses.deleteResponse.title` |
-| 242 | Standard hook call | `responses.deleteResponse.description` |
-| 243 | Standard hook call | `common.delete` |
-| 244 | Standard hook call | `common.cancel` |
-| 251 | Standard hook call | `responses.deleteSuccess` |
-| 255 | Standard hook call | `responses.deleteError` |
-| 267 | Standard hook call | `responses.responseDetails` |
-| 268 | Standard hook call | `responses.title` |
-| 295 | Standard hook call | `responses.loadError` |
-| 301 | Standard hook call | `responses.responseInfo` |
-| 309 | Standard hook call | `responses.respondent` |
-| 310 | Standard hook call | `responses.anonymous` |
-| 317 | Standard hook call | `responses.responseId` |
-| 325 | Standard hook call | `responses.started` |
-| 333 | Standard hook call | `responses.duration` |
-| 343 | Standard hook call | `responses.answers` |
-| 347 | Standard hook call | `responses.noAnswers` |
-| 361 | Standard hook call | `common.close` |
-| 365 | Standard hook call | `common.delete` |
+| Line | Pattern            | Key                                    |
+| ---- | ------------------ | -------------------------------------- |
+| 42   | Standard hook call | `responses.na`                         |
+| 57   | Standard hook call | `responses.na`                         |
+| 74   | Standard hook call | `common.other`                         |
+| 81   | Standard hook call | `responses.na`                         |
+| 110  | Standard hook call | `responses.na`                         |
+| 149  | Standard hook call | `responses.na`                         |
+| 165  | Standard hook call | `responses.noFiles`                    |
+| 173  | Standard hook call | `responses.na`                         |
+| 177  | Standard hook call | `responses.na`                         |
+| 202  | Standard hook call | `responses.unknownQuestion`            |
+| 203  | Standard hook call | `common.required`                      |
+| 241  | Standard hook call | `responses.deleteResponse.title`       |
+| 242  | Standard hook call | `responses.deleteResponse.description` |
+| 243  | Standard hook call | `common.delete`                        |
+| 244  | Standard hook call | `common.cancel`                        |
+| 251  | Standard hook call | `responses.deleteSuccess`              |
+| 255  | Standard hook call | `responses.deleteError`                |
+| 267  | Standard hook call | `responses.responseDetails`            |
+| 268  | Standard hook call | `responses.title`                      |
+| 295  | Standard hook call | `responses.loadError`                  |
+| 301  | Standard hook call | `responses.responseInfo`               |
+| 309  | Standard hook call | `responses.respondent`                 |
+| 310  | Standard hook call | `responses.anonymous`                  |
+| 317  | Standard hook call | `responses.responseId`                 |
+| 325  | Standard hook call | `responses.started`                    |
+| 333  | Standard hook call | `responses.duration`                   |
+| 343  | Standard hook call | `responses.answers`                    |
+| 347  | Standard hook call | `responses.noAnswers`                  |
+| 361  | Standard hook call | `common.close`                         |
+| 365  | Standard hook call | `common.delete`                        |
 
 ### src/components/features/search/GlobalSearch.tsx (12)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 214 | Standard hook call | `search.placeholder` |
-| 221 | Standard hook call | `a11y.closeSearch` |
-| 231 | Standard hook call | `search.results` |
-| 231 | Standard hook call | `search.recent` |
-| 254 | Standard hook call | `search.noResults` |
-| 255 | Standard hook call | `search.tryDifferentKeywords` |
-| 265 | Standard hook call | `search.noRecentItems` |
-| 266 | Standard hook call | `search.startTyping` |
-| 277 | Standard hook call | `search.toSelect` |
-| 286 | Standard hook call | `search.toNavigate` |
-| 290 | Standard hook call | `search.toClose` |
-| 293 | Standard hook call | `emptyState.search.openWith` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 181  | Standard hook call | `search.placeholder`          |
+| 188  | Standard hook call | `a11y.closeSearch`            |
+| 198  | Standard hook call | `search.results`              |
+| 198  | Standard hook call | `search.recent`               |
+| 221  | Standard hook call | `search.noResults`            |
+| 222  | Standard hook call | `search.tryDifferentKeywords` |
+| 232  | Standard hook call | `search.noRecentItems`        |
+| 233  | Standard hook call | `search.startTyping`          |
+| 244  | Standard hook call | `search.toSelect`             |
+| 253  | Standard hook call | `search.toNavigate`           |
+| 257  | Standard hook call | `search.toClose`              |
+| 260  | Standard hook call | `emptyState.search.openWith`  |
 
 ### src/components/features/search/KeyboardShortcutsHelp.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 94 | Standard hook call | `shortcuts.title` |
-| 95 | Standard hook call | `shortcuts.description` |
-| 97 | Standard hook call | `a11y.close` |
-| 114 | Standard hook call | `shortcuts.noShortcuts` |
-| 115 | Standard hook call | `shortcuts.willAppear` |
-| 122 | Standard hook call | `shortcuts.pressEscToClose` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 94   | Standard hook call | `shortcuts.title`           |
+| 95   | Standard hook call | `shortcuts.description`     |
+| 97   | Standard hook call | `a11y.close`                |
+| 114  | Standard hook call | `shortcuts.noShortcuts`     |
+| 115  | Standard hook call | `shortcuts.willAppear`      |
+| 122  | Standard hook call | `shortcuts.pressEscToClose` |
 
 ### src/components/features/search/RecentItems.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 127 | Standard hook call | `emptyState.search.noRecentItems` |
-| 137 | Standard hook call | `common.recent` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 104  | Standard hook call | `emptyState.search.noRecentItems` |
+| 114  | Standard hook call | `common.recent`                   |
 
 ### src/components/features/search/SearchButton.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 28 | Standard hook call | `a11y.search` |
-| 46 | Standard hook call | `a11y.search` |
-| 49 | Standard hook call | `common.search` |
-| 70 | Standard hook call | `a11y.search` |
-| 73 | Standard hook call | `emptyState.search.placeholder` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 28   | Standard hook call | `a11y.search`                   |
+| 46   | Standard hook call | `a11y.search`                   |
+| 49   | Standard hook call | `common.search`                 |
+| 70   | Standard hook call | `a11y.search`                   |
+| 73   | Standard hook call | `emptyState.search.placeholder` |
 
 ### src/components/features/surveys/CreateSurveyDialog/CreateSurveyDialog.tsx (51)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 92 | Dynamic/variable key | `[DYNAMIC] defaultTitleKey` |
-| 94 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 95 | With options object | `createSurvey.defaults.untitledSurvey` |
-| 127 | Standard hook call | `createSurvey.title` |
-| 128 | Standard hook call | `createSurvey.subtitle` |
-| 137 | Standard hook call | `createSurvey.selectType` |
-| 166 | Dynamic/variable key | `[DYNAMIC] category.nameKey` |
-| 169 | Standard hook call | `common.comingSoon` |
-| 194 | With default value | `createSurvey.language` |
-| 226 | Standard hook call | `common.cancel` |
-| 231 | With options object | `createSurvey.actions.startMetricSurvey` |
-| 231 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 232 | Standard hook call | `createSurvey.actions.createSurvey` |
-| 256 | Dynamic/variable key | `[DYNAMIC] category.nameKey` |
-| 257 | Dynamic/variable key | `[DYNAMIC] category.descriptionKey` |
-| 274 | With default value | `createSurvey.preview.features` |
-| 319 | Dynamic/variable key | `[DYNAMIC] m.nameKey` |
-| 337 | Dynamic/variable key | `[DYNAMIC] currentMetric.descriptionKey` |
-| 340 | With default value | `createSurvey.preview.scale` |
-| 359 | With default value | `createSurvey.preview.classic.question` |
-| 366 | With default value | `createSurvey.preview.classic.option1` |
-| 367 | With default value | `createSurvey.preview.classic.option2` |
-| 368 | With default value | `createSurvey.preview.classic.option3` |
-| 369 | With default value | `createSurvey.preview.classic.option4` |
-| 394 | With default value | `createSurvey.preview.progress` |
-| 417 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 425 | With default value | `createSurvey.preview.conversational.userMessage` |
-| 435 | With default value | `createSurvey.preview.conversational.followUp` |
-| 442 | With default value | `createSurvey.preview.conversational.placeholder` |
-| 456 | With default value | `createSurvey.preview.research.title` |
-| 457 | With default value | `createSurvey.preview.research.subtitle` |
-| 474 | Standard hook call | `common.comingSoon` |
-| 484 | With default value | `createSurvey.preview.assessment.title` |
-| 490 | With default value | `createSurvey.preview.assessment.self` |
-| 491 | With default value | `createSurvey.preview.assessment.manager` |
-| 492 | With default value | `createSurvey.preview.assessment.peers` |
-| 493 | With default value | `createSurvey.preview.assessment.reports` |
-| 504 | Standard hook call | `common.comingSoon` |
-| 516 | Dynamic/variable key | `[DYNAMIC] currentMetric.questionKey` |
-| 542 | Dynamic/variable key | `[DYNAMIC] currentMetric.minLabelKey` |
-| 543 | Dynamic/variable key | `[DYNAMIC] currentMetric.maxLabelKey` |
-| 549 | With default value | `createSurvey.preview.nps.detractors` |
-| 550 | With default value | `createSurvey.preview.nps.passives` |
-| 551 | With default value | `createSurvey.preview.nps.promoters` |
-| 567 | Dynamic/variable key | `[DYNAMIC] currentMetric.questionKey` |
-| 587 | Dynamic/variable key | `[DYNAMIC] currentMetric.minLabelKey` |
-| 588 | Dynamic/variable key | `[DYNAMIC] currentMetric.maxLabelKey` |
-| 598 | Dynamic/variable key | `[DYNAMIC] currentMetric.questionKey` |
-| 618 | Dynamic/variable key | `[DYNAMIC] currentMetric.minLabelKey` |
-| 619 | Dynamic/variable key | `[DYNAMIC] currentMetric.maxLabelKey` |
-| 626 | With default value | `createSurvey.preview.csat.rating` |
+| Line | Pattern                                | Key                                               |
+| ---- | -------------------------------------- | ------------------------------------------------- |
+| 92   | Dynamic/variable key                   | `[DYNAMIC] defaultTitleKey`                       |
+| 94   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                     |
+| 95   | With options object                    | `createSurvey.defaults.untitledSurvey`            |
+| 127  | Standard hook call                     | `createSurvey.title`                              |
+| 128  | Standard hook call                     | `createSurvey.subtitle`                           |
+| 137  | Standard hook call                     | `createSurvey.selectType`                         |
+| 166  | Dynamic/variable key                   | `[DYNAMIC] category.nameKey`                      |
+| 169  | Standard hook call                     | `common.comingSoon`                               |
+| 194  | With default value                     | `createSurvey.language`                           |
+| 226  | Standard hook call                     | `common.cancel`                                   |
+| 231  | With options object                    | `createSurvey.actions.startMetricSurvey`          |
+| 231  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                     |
+| 232  | Standard hook call                     | `createSurvey.actions.createSurvey`               |
+| 256  | Dynamic/variable key                   | `[DYNAMIC] category.nameKey`                      |
+| 257  | Dynamic/variable key                   | `[DYNAMIC] category.descriptionKey`               |
+| 274  | With default value                     | `createSurvey.preview.features`                   |
+| 319  | Dynamic/variable key                   | `[DYNAMIC] m.nameKey`                             |
+| 337  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.descriptionKey`          |
+| 340  | With default value                     | `createSurvey.preview.scale`                      |
+| 359  | With default value                     | `createSurvey.preview.classic.question`           |
+| 366  | With default value                     | `createSurvey.preview.classic.option1`            |
+| 367  | With default value                     | `createSurvey.preview.classic.option2`            |
+| 368  | With default value                     | `createSurvey.preview.classic.option3`            |
+| 369  | With default value                     | `createSurvey.preview.classic.option4`            |
+| 394  | With default value                     | `createSurvey.preview.progress`                   |
+| 417  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                     |
+| 425  | With default value                     | `createSurvey.preview.conversational.userMessage` |
+| 435  | With default value                     | `createSurvey.preview.conversational.followUp`    |
+| 442  | With default value                     | `createSurvey.preview.conversational.placeholder` |
+| 456  | With default value                     | `createSurvey.preview.research.title`             |
+| 457  | With default value                     | `createSurvey.preview.research.subtitle`          |
+| 474  | Standard hook call                     | `common.comingSoon`                               |
+| 484  | With default value                     | `createSurvey.preview.assessment.title`           |
+| 490  | With default value                     | `createSurvey.preview.assessment.self`            |
+| 491  | With default value                     | `createSurvey.preview.assessment.manager`         |
+| 492  | With default value                     | `createSurvey.preview.assessment.peers`           |
+| 493  | With default value                     | `createSurvey.preview.assessment.reports`         |
+| 504  | Standard hook call                     | `common.comingSoon`                               |
+| 516  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.questionKey`             |
+| 542  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.minLabelKey`             |
+| 543  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.maxLabelKey`             |
+| 549  | With default value                     | `createSurvey.preview.nps.detractors`             |
+| 550  | With default value                     | `createSurvey.preview.nps.passives`               |
+| 551  | With default value                     | `createSurvey.preview.nps.promoters`              |
+| 567  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.questionKey`             |
+| 587  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.minLabelKey`             |
+| 588  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.maxLabelKey`             |
+| 598  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.questionKey`             |
+| 618  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.minLabelKey`             |
+| 619  | Dynamic/variable key                   | `[DYNAMIC] currentMetric.maxLabelKey`             |
+| 626  | With default value                     | `createSurvey.preview.csat.rating`                |
 
 ### src/components/features/surveys/SurveyCard.tsx (23)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 57 | Standard hook call | `a11y.moreOptions` |
-| 64 | Standard hook call | `common.edit` |
-| 67 | Standard hook call | `templates.preview` |
-| 70 | Standard hook call | `common.duplicate` |
-| 74 | Standard hook call | `distributions.shareLink` |
-| 80 | Standard hook call | `surveys.publishSurvey` |
-| 85 | Standard hook call | `surveys.closeSurvey` |
-| 89 | Standard hook call | `common.delete` |
-| 104 | Standard hook call | `surveys.questions` |
-| 108 | Standard hook call | `surveys.responses` |
-| 177 | Standard hook call | `surveys.questions` |
-| 181 | Standard hook call | `surveys.responses` |
-| 185 | Standard hook call | `common.updated` |
-| 196 | Standard hook call | `responses.title` |
-| 197 | Standard hook call | `responses.title` |
-| 205 | Standard hook call | `a11y.moreOptions` |
-| 212 | Standard hook call | `common.edit` |
-| 215 | Standard hook call | `templates.preview` |
-| 218 | Standard hook call | `common.duplicate` |
-| 222 | Standard hook call | `distributions.shareLink` |
-| 228 | Standard hook call | `surveys.publishSurvey` |
-| 233 | Standard hook call | `surveys.closeSurvey` |
-| 237 | Standard hook call | `common.delete` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 57   | Standard hook call | `a11y.moreOptions`        |
+| 64   | Standard hook call | `common.edit`             |
+| 67   | Standard hook call | `templates.preview`       |
+| 70   | Standard hook call | `common.duplicate`        |
+| 74   | Standard hook call | `distributions.shareLink` |
+| 80   | Standard hook call | `surveys.publishSurvey`   |
+| 85   | Standard hook call | `surveys.closeSurvey`     |
+| 89   | Standard hook call | `common.delete`           |
+| 104  | Standard hook call | `surveys.questions`       |
+| 108  | Standard hook call | `surveys.responses`       |
+| 177  | Standard hook call | `surveys.questions`       |
+| 181  | Standard hook call | `surveys.responses`       |
+| 185  | Standard hook call | `common.updated`          |
+| 196  | Standard hook call | `responses.title`         |
+| 197  | Standard hook call | `responses.title`         |
+| 205  | Standard hook call | `a11y.moreOptions`        |
+| 212  | Standard hook call | `common.edit`             |
+| 215  | Standard hook call | `templates.preview`       |
+| 218  | Standard hook call | `common.duplicate`        |
+| 222  | Standard hook call | `distributions.shareLink` |
+| 228  | Standard hook call | `surveys.publishSurvey`   |
+| 233  | Standard hook call | `surveys.closeSurvey`     |
+| 237  | Standard hook call | `common.delete`           |
 
 ### src/components/features/surveys/ThemePreviewPanel.tsx (46)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 412 | With default value | `themes.applySuccess` |
-| 415 | With default value | `themes.applyError` |
-| 439 | With default value | `themes.nameRequired` |
-| 463 | With default value | `themes.createSuccess` |
-| 478 | With default value | `themes.createError` |
-| 495 | With default value | `themes.appearance` |
-| 496 | With default value | `themes.customizeLook` |
-| 524 | With default value | `themes.title` |
-| 528 | With default value | `themes.customize` |
-| 539 | With default value | `themes.light` |
-| 560 | With default value | `themes.dark` |
-| 598 | With default value | `themes.customized` |
-| 601 | With default value | `themes.basedOn` |
-| 607 | With default value | `themes.reset` |
-| 618 | With default value | `themes.colors` |
-| 623 | With default value | `themes.brandColors` |
-| 625 | With default value | `themes.primary` |
-| 627 | With default value | `themes.secondary` |
-| 636 | With default value | `themes.surfaceColors` |
-| 639 | With default value | `themes.background` |
-| 644 | With default value | `themes.surface` |
-| 648 | With default value | `themes.accent` |
-| 650 | With default value | `themes.textPrimary` |
-| 663 | With default value | `themes.typography` |
-| 668 | With default value | `themes.bodyFont` |
-| 700 | With default value | `themes.cornerRadius` |
-| 725 | With default value | `themes.layoutSpacing` |
-| 729 | With default value | `themes.containerWidth` |
-| 752 | With default value | `themes.spacing` |
-| 780 | With default value | `themes.displayOptions` |
-| 785 | With default value | `themes.progressIndicator` |
-| 799 | With default value | `common.none` |
-| 825 | With default value | `themes.questionNumbers` |
-| 839 | With default value | `common.none` |
-| 874 | With default value | `themes.applied` |
-| 874 | With default value | `themes.applyToSurvey` |
-| 880 | With default value | `themes.saveAsNewTheme` |
-| 890 | With default value | `themes.saveTheme` |
-| 891 | With default value | `themes.saveThemeDesc` |
-| 896 | With default value | `themes.themeName` |
-| 902 | With default value | `themes.themeNamePlaceholder` |
-| 915 | With default value | `themes.untitled` |
-| 917 | With default value | `themes.customTheme` |
-| 925 | With default value | `common.cancel` |
-| 930 | With default value | `themes.saveAndApply` |
-| 1051 | With default value | `themeCard.default` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 412  | With default value | `themes.applySuccess`         |
+| 415  | With default value | `themes.applyError`           |
+| 439  | With default value | `themes.nameRequired`         |
+| 463  | With default value | `themes.createSuccess`        |
+| 478  | With default value | `themes.createError`          |
+| 495  | With default value | `themes.appearance`           |
+| 496  | With default value | `themes.customizeLook`        |
+| 524  | With default value | `themes.title`                |
+| 528  | With default value | `themes.customize`            |
+| 539  | With default value | `themes.light`                |
+| 560  | With default value | `themes.dark`                 |
+| 598  | With default value | `themes.customized`           |
+| 601  | With default value | `themes.basedOn`              |
+| 607  | With default value | `themes.reset`                |
+| 618  | With default value | `themes.colors`               |
+| 623  | With default value | `themes.brandColors`          |
+| 625  | With default value | `themes.primary`              |
+| 627  | With default value | `themes.secondary`            |
+| 636  | With default value | `themes.surfaceColors`        |
+| 639  | With default value | `themes.background`           |
+| 644  | With default value | `themes.surface`              |
+| 648  | With default value | `themes.accent`               |
+| 650  | With default value | `themes.textPrimary`          |
+| 663  | With default value | `themes.typography`           |
+| 668  | With default value | `themes.bodyFont`             |
+| 700  | With default value | `themes.cornerRadius`         |
+| 725  | With default value | `themes.layoutSpacing`        |
+| 729  | With default value | `themes.containerWidth`       |
+| 752  | With default value | `themes.spacing`              |
+| 780  | With default value | `themes.displayOptions`       |
+| 785  | With default value | `themes.progressIndicator`    |
+| 799  | With default value | `common.none`                 |
+| 825  | With default value | `themes.questionNumbers`      |
+| 839  | With default value | `common.none`                 |
+| 874  | With default value | `themes.applied`              |
+| 874  | With default value | `themes.applyToSurvey`        |
+| 880  | With default value | `themes.saveAsNewTheme`       |
+| 890  | With default value | `themes.saveTheme`            |
+| 891  | With default value | `themes.saveThemeDesc`        |
+| 896  | With default value | `themes.themeName`            |
+| 902  | With default value | `themes.themeNamePlaceholder` |
+| 915  | With default value | `themes.untitled`             |
+| 917  | With default value | `themes.customTheme`          |
+| 925  | With default value | `common.cancel`               |
+| 930  | With default value | `themes.saveAndApply`         |
+| 1051 | With default value | `themeCard.default`           |
 
 ### src/components/features/templates/CreateTemplateDialog.tsx (23)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 154 | With options object | `templates.form.questions` |
-| 168 | Standard hook call | `templates.form.modes.scratch` |
-| 169 | Standard hook call | `templates.form.modes.scratchDescription` |
-| 176 | Standard hook call | `templates.form.modes.survey` |
-| 177 | Standard hook call | `templates.form.modes.surveyDescription` |
-| 184 | Standard hook call | `templates.form.selectSurvey` |
-| 188 | Standard hook call | `templates.form.loadingSurveys` |
-| 188 | Standard hook call | `templates.form.chooseSurvey` |
-| 197 | Standard hook call | `templates.form.name` |
-| 198 | Standard hook call | `templates.form.namePlaceholder` |
-| 207 | Standard hook call | `templates.form.templateDescription` |
-| 208 | Standard hook call | `templates.form.descriptionPlaceholder` |
-| 212 | Standard hook call | `templates.form.descriptionHelperText` |
-| 217 | Standard hook call | `templates.form.category` |
-| 245 | Standard hook call | `templates.form.visibility.public` |
-| 245 | Standard hook call | `templates.form.visibility.private` |
-| 248 | Standard hook call | `templates.form.visibility.publicDescription` |
-| 248 | Standard hook call | `templates.form.visibility.privateDescription` |
-| 259 | With default value | `templates.form.language` |
-| 292 | Standard hook call | `common.cancel` |
-| 295 | Standard hook call | `templates.createTemplate` |
-| 310 | Standard hook call | `templates.form.title` |
-| 311 | Standard hook call | `templates.form.description` |
+| Line | Pattern             | Key                                            |
+| ---- | ------------------- | ---------------------------------------------- |
+| 154  | With options object | `templates.form.questions`                     |
+| 168  | Standard hook call  | `templates.form.modes.scratch`                 |
+| 169  | Standard hook call  | `templates.form.modes.scratchDescription`      |
+| 176  | Standard hook call  | `templates.form.modes.survey`                  |
+| 177  | Standard hook call  | `templates.form.modes.surveyDescription`       |
+| 184  | Standard hook call  | `templates.form.selectSurvey`                  |
+| 188  | Standard hook call  | `templates.form.loadingSurveys`                |
+| 188  | Standard hook call  | `templates.form.chooseSurvey`                  |
+| 197  | Standard hook call  | `templates.form.name`                          |
+| 198  | Standard hook call  | `templates.form.namePlaceholder`               |
+| 207  | Standard hook call  | `templates.form.templateDescription`           |
+| 208  | Standard hook call  | `templates.form.descriptionPlaceholder`        |
+| 212  | Standard hook call  | `templates.form.descriptionHelperText`         |
+| 217  | Standard hook call  | `templates.form.category`                      |
+| 245  | Standard hook call  | `templates.form.visibility.public`             |
+| 245  | Standard hook call  | `templates.form.visibility.private`            |
+| 248  | Standard hook call  | `templates.form.visibility.publicDescription`  |
+| 248  | Standard hook call  | `templates.form.visibility.privateDescription` |
+| 259  | With default value  | `templates.form.language`                      |
+| 292  | Standard hook call  | `common.cancel`                                |
+| 295  | Standard hook call  | `templates.createTemplate`                     |
+| 310  | Standard hook call  | `templates.form.title`                         |
+| 311  | Standard hook call  | `templates.form.description`                   |
 
 ### src/components/features/templates/TemplateCard.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 37 | Standard hook call | `a11y.moreOptions` |
+| Line | Pattern            | Key                |
+| ---- | ------------------ | ------------------ |
+| 37   | Standard hook call | `a11y.moreOptions` |
 
 ### src/components/features/templates/TemplatePreviewDrawer.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 150 | Standard hook call | `common.public` |
-| 150 | Standard hook call | `common.private` |
-| 169 | Standard hook call | `templates.untitledQuestion` |
-| 182 | Standard hook call | `templates.noQuestions` |
-| 183 | Standard hook call | `templates.questionsWillAppear` |
-| 192 | Standard hook call | `templates.useThis` |
-| 259 | Standard hook call | `templates.loadError` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 88   | Standard hook call | `common.public`                 |
+| 88   | Standard hook call | `common.private`                |
+| 107  | Standard hook call | `templates.untitledQuestion`    |
+| 120  | Standard hook call | `templates.noQuestions`         |
+| 121  | Standard hook call | `templates.questionsWillAppear` |
+| 130  | Standard hook call | `templates.useThis`             |
+| 197  | Standard hook call | `templates.loadError`           |
 
 ### src/components/features/templates/UseTemplateDialog.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 78 | Standard hook call | `templates.useTemplateDialog.surveyTitle` |
-| 79 | Standard hook call | `templates.useTemplateDialog.surveyTitlePlaceholder` |
-| 89 | Standard hook call | `templates.useTemplateDialog.descriptionOptional` |
-| 90 | Standard hook call | `templates.useTemplateDialog.descriptionPlaceholder` |
-| 103 | Standard hook call | `templates.useTemplateDialog.addDescription` |
-| 110 | Standard hook call | `templates.useTemplateDialog.language` |
-| 127 | Standard hook call | `templates.useTemplateDialog.infoMessage` |
-| 132 | Standard hook call | `common.cancel` |
-| 136 | Standard hook call | `templates.useTemplateDialog.createButton` |
-| 153 | Standard hook call | `templates.useTemplateDialog.title` |
-| 154 | Standard hook call | `templates.useTemplateDialog.description` |
+| Line | Pattern            | Key                                                  |
+| ---- | ------------------ | ---------------------------------------------------- |
+| 78   | Standard hook call | `templates.useTemplateDialog.surveyTitle`            |
+| 79   | Standard hook call | `templates.useTemplateDialog.surveyTitlePlaceholder` |
+| 89   | Standard hook call | `templates.useTemplateDialog.descriptionOptional`    |
+| 90   | Standard hook call | `templates.useTemplateDialog.descriptionPlaceholder` |
+| 103  | Standard hook call | `templates.useTemplateDialog.addDescription`         |
+| 110  | Standard hook call | `templates.useTemplateDialog.language`               |
+| 127  | Standard hook call | `templates.useTemplateDialog.infoMessage`            |
+| 132  | Standard hook call | `common.cancel`                                      |
+| 136  | Standard hook call | `templates.useTemplateDialog.createButton`           |
+| 153  | Standard hook call | `templates.useTemplateDialog.title`                  |
+| 154  | Standard hook call | `templates.useTemplateDialog.description`            |
 
 ### src/components/features/themes/ThemeEditorDrawer.tsx (60)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 252 | Standard hook call | `themeEditor.validation.nameRequired` |
-| 255 | Standard hook call | `themeEditor.validation.primaryColorRequired` |
-| 258 | Standard hook call | `themeEditor.validation.backgroundColorRequired` |
-| 267 | Standard hook call | `themeEditor.toast.validationError` |
-| 317 | Standard hook call | `themeEditor.editTitle` |
-| 317 | Standard hook call | `themeEditor.createTitle` |
-| 318 | Standard hook call | `themeEditor.editDescription` |
-| 318 | Standard hook call | `themeEditor.createDescription` |
-| 329 | Standard hook call | `themeEditor.livePreview` |
-| 331 | With default value | `themeEditor.livePreviewHint` |
-| 355 | Standard hook call | `themeEditor.themeName` |
-| 359 | Standard hook call | `themeEditor.themeNamePlaceholder` |
-| 367 | Standard hook call | `themeEditor.tabs.colors` |
-| 370 | Standard hook call | `themeEditor.tabs.typography` |
-| 373 | With default value | `themeEditor.tabs.layout` |
-| 376 | Standard hook call | `themeEditor.tabs.branding` |
-| 379 | Standard hook call | `themeEditor.tabs.advanced` |
-| 389 | Standard hook call | `themeEditor.quickPresets` |
-| 416 | With default value | `themeEditor.brandColors` |
-| 419 | Standard hook call | `themeEditor.colors.primary` |
-| 424 | Standard hook call | `themeEditor.colors.secondary` |
-| 426 | With default value | `themeEditor.colors.accent` |
-| 435 | With default value | `themeEditor.surfaceColors` |
-| 438 | Standard hook call | `themeEditor.colors.background` |
-| 444 | With default value | `themeEditor.colors.surface` |
-| 448 | Standard hook call | `themeEditor.colors.text` |
-| 457 | With default value | `themeEditor.bodyFont` |
-| 486 | With default value | `themeEditor.headingFont` |
-| 514 | Standard hook call | `themeEditor.buttonStyle` |
-| 544 | With default value | `themeEditor.cornerRadius` |
-| 568 | With default value | `themeEditor.containerWidth` |
-| 591 | With default value | `themeEditor.spacing` |
-| 613 | With default value | `themeEditor.progressIndicator` |
-| 625 | With default value | `common.none` |
-| 651 | With default value | `themeEditor.questionNumbers` |
-| 663 | With default value | `common.none` |
-| 693 | Standard hook call | `themeEditor.logoUrl` |
-| 697 | Standard hook call | `themeEditor.logoUrlHelperText` |
-| 704 | Standard hook call | `themeEditor.branding.logoSize` |
-| 707 | Standard hook call | `themeEditor.branding.sizes.small` |
-| 708 | Standard hook call | `themeEditor.branding.sizes.medium` |
-| 709 | Standard hook call | `themeEditor.branding.sizes.large` |
-| 710 | Standard hook call | `themeEditor.branding.sizes.extraLarge` |
-| 732 | Standard hook call | `themeEditor.branding.showLogoBackground` |
-| 770 | Standard hook call | `themeEditor.branding.brandingTitle` |
-| 774 | Standard hook call | `themeEditor.branding.brandingTitlePlaceholder` |
-| 777 | Standard hook call | `themeEditor.branding.brandingTitleHelper` |
-| 782 | Standard hook call | `themeEditor.branding.brandingSubtitle` |
-| 786 | Standard hook call | `themeEditor.branding.brandingSubtitlePlaceholder` |
-| 789 | Standard hook call | `themeEditor.branding.brandingSubtitleHelper` |
-| 793 | Standard hook call | `themeEditor.backgroundImageUrl` |
-| 797 | Standard hook call | `themeEditor.backgroundImageUrlHelperText` |
-| 809 | Standard hook call | `themeEditor.customCss` |
-| 814 | Standard hook call | `themeEditor.customCssPlaceholder` |
-| 819 | Standard hook call | `themeEditor.customCssHelperText` |
-| 826 | Standard hook call | `themeEditor.generatedCssPreview` |
-| 837 | Standard hook call | `themeEditor.livePreview` |
-| 857 | Standard hook call | `common.cancel` |
-| 860 | Standard hook call | `themeEditor.saveChanges` |
-| 860 | Standard hook call | `themeEditor.createTheme` |
+| Line | Pattern            | Key                                                |
+| ---- | ------------------ | -------------------------------------------------- |
+| 202  | Standard hook call | `themeEditor.validation.nameRequired`              |
+| 205  | Standard hook call | `themeEditor.validation.primaryColorRequired`      |
+| 208  | Standard hook call | `themeEditor.validation.backgroundColorRequired`   |
+| 217  | Standard hook call | `themeEditor.toast.validationError`                |
+| 267  | Standard hook call | `themeEditor.editTitle`                            |
+| 267  | Standard hook call | `themeEditor.createTitle`                          |
+| 268  | Standard hook call | `themeEditor.editDescription`                      |
+| 268  | Standard hook call | `themeEditor.createDescription`                    |
+| 279  | Standard hook call | `themeEditor.livePreview`                          |
+| 281  | With default value | `themeEditor.livePreviewHint`                      |
+| 305  | Standard hook call | `themeEditor.themeName`                            |
+| 309  | Standard hook call | `themeEditor.themeNamePlaceholder`                 |
+| 317  | Standard hook call | `themeEditor.tabs.colors`                          |
+| 320  | Standard hook call | `themeEditor.tabs.typography`                      |
+| 323  | With default value | `themeEditor.tabs.layout`                          |
+| 326  | Standard hook call | `themeEditor.tabs.branding`                        |
+| 329  | Standard hook call | `themeEditor.tabs.advanced`                        |
+| 339  | Standard hook call | `themeEditor.quickPresets`                         |
+| 366  | With default value | `themeEditor.brandColors`                          |
+| 369  | Standard hook call | `themeEditor.colors.primary`                       |
+| 374  | Standard hook call | `themeEditor.colors.secondary`                     |
+| 376  | With default value | `themeEditor.colors.accent`                        |
+| 385  | With default value | `themeEditor.surfaceColors`                        |
+| 388  | Standard hook call | `themeEditor.colors.background`                    |
+| 394  | With default value | `themeEditor.colors.surface`                       |
+| 398  | Standard hook call | `themeEditor.colors.text`                          |
+| 407  | With default value | `themeEditor.bodyFont`                             |
+| 436  | With default value | `themeEditor.headingFont`                          |
+| 464  | Standard hook call | `themeEditor.buttonStyle`                          |
+| 494  | With default value | `themeEditor.cornerRadius`                         |
+| 518  | With default value | `themeEditor.containerWidth`                       |
+| 541  | With default value | `themeEditor.spacing`                              |
+| 563  | With default value | `themeEditor.progressIndicator`                    |
+| 575  | With default value | `common.none`                                      |
+| 601  | With default value | `themeEditor.questionNumbers`                      |
+| 613  | With default value | `common.none`                                      |
+| 643  | Standard hook call | `themeEditor.logoUrl`                              |
+| 647  | Standard hook call | `themeEditor.logoUrlHelperText`                    |
+| 654  | Standard hook call | `themeEditor.branding.logoSize`                    |
+| 657  | Standard hook call | `themeEditor.branding.sizes.small`                 |
+| 658  | Standard hook call | `themeEditor.branding.sizes.medium`                |
+| 659  | Standard hook call | `themeEditor.branding.sizes.large`                 |
+| 660  | Standard hook call | `themeEditor.branding.sizes.extraLarge`            |
+| 682  | Standard hook call | `themeEditor.branding.showLogoBackground`          |
+| 720  | Standard hook call | `themeEditor.branding.brandingTitle`               |
+| 724  | Standard hook call | `themeEditor.branding.brandingTitlePlaceholder`    |
+| 727  | Standard hook call | `themeEditor.branding.brandingTitleHelper`         |
+| 732  | Standard hook call | `themeEditor.branding.brandingSubtitle`            |
+| 736  | Standard hook call | `themeEditor.branding.brandingSubtitlePlaceholder` |
+| 739  | Standard hook call | `themeEditor.branding.brandingSubtitleHelper`      |
+| 743  | Standard hook call | `themeEditor.backgroundImageUrl`                   |
+| 747  | Standard hook call | `themeEditor.backgroundImageUrlHelperText`         |
+| 759  | Standard hook call | `themeEditor.customCss`                            |
+| 764  | Standard hook call | `themeEditor.customCssPlaceholder`                 |
+| 769  | Standard hook call | `themeEditor.customCssHelperText`                  |
+| 776  | Standard hook call | `themeEditor.generatedCssPreview`                  |
+| 787  | Standard hook call | `themeEditor.livePreview`                          |
+| 807  | Standard hook call | `common.cancel`                                    |
+| 810  | Standard hook call | `themeEditor.saveChanges`                          |
+| 810  | Standard hook call | `themeEditor.createTheme`                          |
 
 ### src/components/features/themes/ThemeLivePreview.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 78 | Standard hook call | `a11y.logo` |
-| 84 | Standard hook call | `themePreview.surveyTitle` |
-| 87 | Standard hook call | `themePreview.surveyDescription` |
-| 101 | With options object | `themePreview.progress` |
-| 108 | Standard hook call | `themePreview.sampleQuestion1` |
-| 131 | Standard hook call | `themePreview.sampleQuestion2` |
-| 133 | Standard hook call | `themePreview.option1` |
-| 133 | Standard hook call | `themePreview.option2` |
-| 133 | Standard hook call | `themePreview.option3` |
-| 164 | Standard hook call | `themePreview.previous` |
-| 174 | Standard hook call | `themePreview.next` |
-| 197 | Standard hook call | `a11y.logo` |
-| 224 | Standard hook call | `themePreview.primaryBtn` |
-| 235 | Standard hook call | `themePreview.outlineBtn` |
+| Line | Pattern             | Key                              |
+| ---- | ------------------- | -------------------------------- |
+| 78   | Standard hook call  | `a11y.logo`                      |
+| 84   | Standard hook call  | `themePreview.surveyTitle`       |
+| 87   | Standard hook call  | `themePreview.surveyDescription` |
+| 101  | With options object | `themePreview.progress`          |
+| 108  | Standard hook call  | `themePreview.sampleQuestion1`   |
+| 131  | Standard hook call  | `themePreview.sampleQuestion2`   |
+| 133  | Standard hook call  | `themePreview.option1`           |
+| 133  | Standard hook call  | `themePreview.option2`           |
+| 133  | Standard hook call  | `themePreview.option3`           |
+| 164  | Standard hook call  | `themePreview.previous`          |
+| 174  | Standard hook call  | `themePreview.next`              |
+| 197  | Standard hook call  | `a11y.logo`                      |
+| 224  | Standard hook call  | `themePreview.primaryBtn`        |
+| 235  | Standard hook call  | `themePreview.outlineBtn`        |
 
 ### src/components/features/themes/ThemePreviewCard.tsx (17)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 138 | Standard hook call | `themes.system` |
-| 142 | Standard hook call | `themes.custom` |
-| 165 | Standard hook call | `themes.default` |
-| 171 | Standard hook call | `themes.selected` |
-| 180 | Standard hook call | `a11y.moreOptions` |
-| 188 | Standard hook call | `common.edit` |
-| 193 | Standard hook call | `common.duplicate` |
-| 198 | Standard hook call | `themes.setAsDefault` |
-| 205 | Standard hook call | `common.delete` |
-| 283 | Standard hook call | `themes.system` |
-| 287 | Standard hook call | `themes.custom` |
-| 299 | Standard hook call | `a11y.moreOptions` |
-| 307 | Standard hook call | `common.edit` |
-| 312 | Standard hook call | `common.duplicate` |
-| 317 | Standard hook call | `themes.setAsDefault` |
-| 324 | Standard hook call | `common.delete` |
-| 344 | Standard hook call | `themes.default` |
+| Line | Pattern            | Key                   |
+| ---- | ------------------ | --------------------- |
+| 138  | Standard hook call | `themes.system`       |
+| 142  | Standard hook call | `themes.custom`       |
+| 165  | Standard hook call | `themes.default`      |
+| 171  | Standard hook call | `themes.selected`     |
+| 180  | Standard hook call | `a11y.moreOptions`    |
+| 188  | Standard hook call | `common.edit`         |
+| 193  | Standard hook call | `common.duplicate`    |
+| 198  | Standard hook call | `themes.setAsDefault` |
+| 205  | Standard hook call | `common.delete`       |
+| 283  | Standard hook call | `themes.system`       |
+| 287  | Standard hook call | `themes.custom`       |
+| 299  | Standard hook call | `a11y.moreOptions`    |
+| 307  | Standard hook call | `common.edit`         |
+| 312  | Standard hook call | `common.duplicate`    |
+| 317  | Standard hook call | `themes.setAsDefault` |
+| 324  | Standard hook call | `common.delete`       |
+| 344  | Standard hook call | `themes.default`      |
 
 ### src/components/layout/AppBar.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 31 | Standard hook call | `common.openMenu` |
+| Line | Pattern            | Key               |
+| ---- | ------------------ | ----------------- |
+| 31   | Standard hook call | `common.openMenu` |
 
 ### src/components/layout/Layout.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 78 | Standard hook call | `a11y.userMenu` |
-| 127 | Standard hook call | `navigation.profile` |
-| 138 | Standard hook call | `navigation.settings` |
-| 153 | Standard hook call | `auth.signOut` |
-| 245 | Standard hook call | `common.surveyFallback` |
-| 256 | Standard hook call | `common.templateFallback` |
-| 267 | Standard hook call | `common.themeFallback` |
-| 349 | Standard hook call | `common.notifications` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 78   | Standard hook call | `a11y.userMenu`           |
+| 127  | Standard hook call | `navigation.profile`      |
+| 138  | Standard hook call | `navigation.settings`     |
+| 153  | Standard hook call | `auth.signOut`            |
+| 245  | Standard hook call | `common.surveyFallback`   |
+| 256  | Standard hook call | `common.templateFallback` |
+| 267  | Standard hook call | `common.themeFallback`    |
+| 349  | Standard hook call | `common.notifications`    |
 
 ### src/components/layout/ListPageLayout.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 151 | Standard hook call | `common.searchDots` |
+| Line | Pattern            | Key                 |
+| ---- | ------------------ | ------------------- |
+| 151  | Standard hook call | `common.searchDots` |
 
 ### src/components/layout/NamespaceSelector.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 62 | Standard hook call | `workspaces.selectWorkspace` |
-| 77 | Standard hook call | `workspaces.title` |
-| 120 | Standard hook call | `workspaces.createNewWorkspace` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 62   | Standard hook call | `workspaces.selectWorkspace`    |
+| 77   | Standard hook call | `workspaces.title`              |
+| 120  | Standard hook call | `workspaces.createNewWorkspace` |
 
 ### src/components/layout/UserMenu.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 54 | Standard hook call | `a11y.userMenu` |
-| 100 | Standard hook call | `navigation.profile` |
-| 111 | Standard hook call | `navigation.settings` |
-| 119 | Standard hook call | `navigation.appearance` |
-| 134 | Standard hook call | `auth.signOut` |
+| Line | Pattern            | Key                     |
+| ---- | ------------------ | ----------------------- |
+| 54   | Standard hook call | `a11y.userMenu`         |
+| 100  | Standard hook call | `navigation.profile`    |
+| 111  | Standard hook call | `navigation.settings`   |
+| 119  | Standard hook call | `navigation.appearance` |
+| 134  | Standard hook call | `auth.signOut`          |
 
 ### src/components/ui/AppLoadingScreen.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 142 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 145 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 177 | Standard hook call | `common.initializing` |
-| 186 | Standard hook call | `common.initializing` |
-| 186 | Standard hook call | `common.loadingResources` |
-| 186 | Standard hook call | `common.preparingWorkspace` |
-| 186 | Standard hook call | `common.almostReady` |
-| 220 | Standard hook call | `common.appName` |
+| Line | Pattern                                | Key                           |
+| ---- | -------------------------------------- | ----------------------------- |
+| 142  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 145  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 177  | Standard hook call                     | `common.initializing`         |
+| 186  | Standard hook call                     | `common.initializing`         |
+| 186  | Standard hook call                     | `common.loadingResources`     |
+| 186  | Standard hook call                     | `common.preparingWorkspace`   |
+| 186  | Standard hook call                     | `common.almostReady`          |
+| 220  | Standard hook call                     | `common.appName`              |
 
 ### src/components/ui/Avatar.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 53 | Standard hook call | `a11y.avatarAlt` |
+| Line | Pattern            | Key              |
+| ---- | ------------------ | ---------------- |
+| 53   | Standard hook call | `a11y.avatarAlt` |
 
 ### src/components/ui/AzureAdLoginButton.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 44 | With default value | `auth.signingIn` |
-| 44 | With default value | `auth.signInWithMicrosoft` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 44   | With default value | `auth.signingIn`           |
+| 44   | With default value | `auth.signInWithMicrosoft` |
 
 ### src/components/ui/Breadcrumbs.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 32 | Standard hook call | `navigation.dashboard` |
-| 43 | Standard hook call | `common.breadcrumb` |
+| Line | Pattern            | Key                    |
+| ---- | ------------------ | ---------------------- |
+| 32   | Standard hook call | `navigation.dashboard` |
+| 43   | Standard hook call | `common.breadcrumb`    |
 
 ### src/components/ui/Chip.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 101 | Standard hook call | `a11y.remove` |
+| Line | Pattern            | Key           |
+| ---- | ------------------ | ------------- |
+| 101  | Standard hook call | `a11y.remove` |
 
 ### src/components/ui/DatePicker.tsx (29)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 124 | Standard hook call | `datePicker.monthsShort.${monthKey}` |
-| 137 | Standard hook call | `datePicker.weekDaysFull.${weekdayKey}` |
-| 138 | Standard hook call | `datePicker.monthsShort.${monthKey}` |
-| 295 | Standard hook call | `datePicker.weekDays.${dayKey}` |
-| 368 | Standard hook call | `datePicker.months.${monthKey}` |
-| 374 | Standard hook call | `datePicker.previousMonth` |
-| 377 | Standard hook call | `datePicker.nextMonth` |
-| 413 | Standard hook call | `datePicker.year` |
-| 445 | Standard hook call | `datePicker.monthsShort.${MONTH_SHORT_KEYS[index]}` |
-| 453 | Standard hook call | `datePicker.backToCalendar` |
-| 476 | Standard hook call | `datePicker.selectDate` |
-| 623 | Standard hook call | `datePicker.noDate` |
-| 629 | Standard hook call | `datePicker.switchToCalendar` |
-| 629 | Standard hook call | `datePicker.switchToInput` |
-| 640 | Standard hook call | `datePicker.dateFormat` |
-| 652 | Standard hook call | `datePicker.invalidDate` |
-| 684 | Standard hook call | `common.cancel` |
-| 744 | Standard hook call | `datePicker.selectDate` |
-| 747 | Standard hook call | `datePicker.clearDate` |
-| 762 | Standard hook call | `datePicker.selectDate` |
-| 977 | Standard hook call | `datePicker.selectDate` |
-| 994 | Standard hook call | `datePicker.selectDateRange` |
-| 997 | Standard hook call | `common.close` |
-| 1014 | Standard hook call | `datePicker.presets` |
-| 1024 | Standard hook call | `datePicker.custom` |
-| 1046 | Dynamic/variable key | `[DYNAMIC] preset.label` |
-| 1086 | Standard hook call | `common.cancel` |
-| 1138 | Standard hook call | `datePicker.dateRange` |
-| 1140 | Standard hook call | `datePicker.clearDateFilter` |
+| Line | Pattern              | Key                                                 |
+| ---- | -------------------- | --------------------------------------------------- |
+| 124  | Standard hook call   | `datePicker.monthsShort.${monthKey}`                |
+| 137  | Standard hook call   | `datePicker.weekDaysFull.${weekdayKey}`             |
+| 138  | Standard hook call   | `datePicker.monthsShort.${monthKey}`                |
+| 295  | Standard hook call   | `datePicker.weekDays.${dayKey}`                     |
+| 368  | Standard hook call   | `datePicker.months.${monthKey}`                     |
+| 374  | Standard hook call   | `datePicker.previousMonth`                          |
+| 377  | Standard hook call   | `datePicker.nextMonth`                              |
+| 413  | Standard hook call   | `datePicker.year`                                   |
+| 445  | Standard hook call   | `datePicker.monthsShort.${MONTH_SHORT_KEYS[index]}` |
+| 453  | Standard hook call   | `datePicker.backToCalendar`                         |
+| 476  | Standard hook call   | `datePicker.selectDate`                             |
+| 623  | Standard hook call   | `datePicker.noDate`                                 |
+| 629  | Standard hook call   | `datePicker.switchToCalendar`                       |
+| 629  | Standard hook call   | `datePicker.switchToInput`                          |
+| 640  | Standard hook call   | `datePicker.dateFormat`                             |
+| 652  | Standard hook call   | `datePicker.invalidDate`                            |
+| 684  | Standard hook call   | `common.cancel`                                     |
+| 744  | Standard hook call   | `datePicker.selectDate`                             |
+| 747  | Standard hook call   | `datePicker.clearDate`                              |
+| 762  | Standard hook call   | `datePicker.selectDate`                             |
+| 977  | Standard hook call   | `datePicker.selectDate`                             |
+| 994  | Standard hook call   | `datePicker.selectDateRange`                        |
+| 997  | Standard hook call   | `common.close`                                      |
+| 1014 | Standard hook call   | `datePicker.presets`                                |
+| 1024 | Standard hook call   | `datePicker.custom`                                 |
+| 1046 | Dynamic/variable key | `[DYNAMIC] preset.label`                            |
+| 1086 | Standard hook call   | `common.cancel`                                     |
+| 1138 | Standard hook call   | `datePicker.dateRange`                              |
+| 1140 | Standard hook call   | `datePicker.clearDateFilter`                        |
 
 ### src/components/ui/Dialog.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 197 | Standard hook call | `common.close` |
+| Line | Pattern            | Key            |
+| ---- | ------------------ | -------------- |
+| 197  | Standard hook call | `common.close` |
 
 ### src/components/ui/Drawer.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 224 | Standard hook call | `common.closeDrawer` |
+| Line | Pattern            | Key                  |
+| ---- | ------------------ | -------------------- |
+| 224  | Standard hook call | `common.closeDrawer` |
 
 ### src/components/ui/EmptyState.tsx (24)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 188 | Standard hook call | `emptyState.surveys.titleFiltered` |
-| 188 | Standard hook call | `emptyState.surveys.title` |
-| 189 | Standard hook call | `emptyState.surveys.descriptionFiltered` |
-| 189 | Standard hook call | `emptyState.surveys.description` |
-| 193 | Standard hook call | `common.clearFilters` |
-| 196 | Standard hook call | `emptyState.surveys.createButton` |
-| 210 | Standard hook call | `emptyState.responses.titleFiltered` |
-| 210 | Standard hook call | `emptyState.responses.title` |
-| 211 | Standard hook call | `emptyState.responses.descriptionFiltered` |
-| 211 | Standard hook call | `emptyState.responses.description` |
-| 212 | Standard hook call | `common.clearFilters` |
-| 224 | Standard hook call | `emptyState.templates.titleFiltered` |
-| 224 | Standard hook call | `emptyState.templates.title` |
-| 225 | Standard hook call | `emptyState.templates.descriptionFiltered` |
-| 225 | Standard hook call | `emptyState.templates.description` |
-| 229 | Standard hook call | `common.clearFilters` |
-| 232 | Standard hook call | `emptyState.templates.createButton` |
-| 246 | Standard hook call | `emptyState.search.title` |
-| 247 | Standard hook call | `emptyState.search.description` |
-| 247 | With options object | `emptyState.search.descriptionWithQuery` |
-| 248 | Standard hook call | `common.clearSearch` |
-| 266 | Standard hook call | `common.failedToLoad` |
-| 267 | Standard hook call | `common.somethingWentWrong` |
-| 268 | Standard hook call | `common.tryAgain` |
+| Line | Pattern             | Key                                        |
+| ---- | ------------------- | ------------------------------------------ |
+| 188  | Standard hook call  | `emptyState.surveys.titleFiltered`         |
+| 188  | Standard hook call  | `emptyState.surveys.title`                 |
+| 189  | Standard hook call  | `emptyState.surveys.descriptionFiltered`   |
+| 189  | Standard hook call  | `emptyState.surveys.description`           |
+| 193  | Standard hook call  | `common.clearFilters`                      |
+| 196  | Standard hook call  | `emptyState.surveys.createButton`          |
+| 210  | Standard hook call  | `emptyState.responses.titleFiltered`       |
+| 210  | Standard hook call  | `emptyState.responses.title`               |
+| 211  | Standard hook call  | `emptyState.responses.descriptionFiltered` |
+| 211  | Standard hook call  | `emptyState.responses.description`         |
+| 212  | Standard hook call  | `common.clearFilters`                      |
+| 224  | Standard hook call  | `emptyState.templates.titleFiltered`       |
+| 224  | Standard hook call  | `emptyState.templates.title`               |
+| 225  | Standard hook call  | `emptyState.templates.descriptionFiltered` |
+| 225  | Standard hook call  | `emptyState.templates.description`         |
+| 229  | Standard hook call  | `common.clearFilters`                      |
+| 232  | Standard hook call  | `emptyState.templates.createButton`        |
+| 246  | Standard hook call  | `emptyState.search.title`                  |
+| 247  | Standard hook call  | `emptyState.search.description`            |
+| 247  | With options object | `emptyState.search.descriptionWithQuery`   |
+| 248  | Standard hook call  | `common.clearSearch`                       |
+| 266  | Standard hook call  | `common.failedToLoad`                      |
+| 267  | Standard hook call  | `common.somethingWentWrong`                |
+| 268  | Standard hook call  | `common.tryAgain`                          |
 
 ### src/components/ui/GettingStartedWizard.tsx (78)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 130 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 134 | With default value | `gettingStarted.errors.saveFailed` |
-| 135 | With default value | `gettingStarted.errors.saveFailed` |
-| 218 | With default value | `gettingStarted.defaultUser` |
-| 236 | With default value | `gettingStarted.defaultUser` |
-| 286 | With default value | `gettingStarted.skipAriaLabel` |
-| 288 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 327 | Dynamic/variable key | `[DYNAMIC] step.titleKey` |
-| 337 | Dynamic/variable key | `[DYNAMIC] step.descriptionKey` |
-| 343 | With default value | `gettingStarted.stepNavigation` |
-| 350 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 387 | With default value | `common.back` |
-| 393 | With default value | `gettingStarted.startCreating` |
-| 397 | With default value | `common.next` |
-| 415 | With default value | `gettingStarted.welcome.steps.create` |
-| 416 | With default value | `gettingStarted.welcome.steps.share` |
-| 417 | With default value | `gettingStarted.welcome.steps.analyze` |
-| 437 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 446 | With default value | `gettingStarted.welcome.message` |
-| 486 | With default value | `gettingStarted.workspace.intro` |
-| 495 | With default value | `gettingStarted.workspace.benefits.title` |
-| 499 | With default value | `gettingStarted.workspace.benefits.organize` |
-| 500 | With default value | `gettingStarted.workspace.benefits.collaborate` |
-| 501 | With default value | `gettingStarted.workspace.benefits.separate` |
-| 512 | With default value | `gettingStarted.workspace.hint` |
-| 524 | With default value | `gettingStarted.createSurvey.methods.scratch.title` |
-| 525 | With default value | `gettingStarted.createSurvey.methods.scratch.desc` |
-| 529 | With default value | `gettingStarted.createSurvey.methods.template.title` |
-| 530 | With default value | `gettingStarted.createSurvey.methods.template.desc` |
-| 537 | With default value | `gettingStarted.createSurvey.intro` |
-| 562 | With default value | `gettingStarted.createSurvey.shortcut` |
-| 572 | With default value | `gettingStarted.questions.types.multipleChoice` |
-| 573 | With default value | `gettingStarted.questions.types.text` |
-| 574 | With default value | `gettingStarted.questions.types.rating` |
-| 575 | With default value | `gettingStarted.questions.types.nps` |
-| 581 | With default value | `gettingStarted.questions.intro` |
-| 602 | With default value | `gettingStarted.questions.builderFeatures.title` |
-| 606 | With default value | `gettingStarted.questions.builderFeatures.dragDrop` |
-| 610 | With default value | `gettingStarted.questions.builderFeatures.autosave` |
-| 614 | With default value | `gettingStarted.questions.builderFeatures.undoRedo` |
-| 634 | With default value | `gettingStarted.themes.intro` |
-| 638 | With default value | `gettingStarted.themes.customize.title` |
-| 641 | With default value | `gettingStarted.themes.customize.colors` |
-| 642 | With default value | `gettingStarted.themes.customize.fonts` |
-| 643 | With default value | `gettingStarted.themes.customize.logo` |
-| 644 | With default value | `gettingStarted.themes.customize.background` |
-| 655 | With default value | `gettingStarted.themes.hint` |
-| 673 | With default value | `gettingStarted.preview.intro` |
-| 677 | With default value | `gettingStarted.preview.features.title` |
-| 680 | With default value | `gettingStarted.preview.features.desktop` |
-| 681 | With default value | `gettingStarted.preview.features.test` |
-| 682 | With default value | `gettingStarted.preview.features.logic` |
-| 693 | With default value | `gettingStarted.preview.hint` |
-| 705 | With default value | `gettingStarted.distribute.methods.link.title` |
-| 706 | With default value | `gettingStarted.distribute.methods.link.desc` |
-| 710 | With default value | `gettingStarted.distribute.methods.email.title` |
-| 711 | With default value | `gettingStarted.distribute.methods.email.desc` |
-| 718 | With default value | `gettingStarted.distribute.intro` |
-| 742 | With default value | `gettingStarted.distribute.hint` |
-| 760 | With default value | `gettingStarted.responses.intro` |
-| 764 | With default value | `gettingStarted.responses.features.title` |
-| 767 | With default value | `gettingStarted.responses.features.realtime` |
-| 768 | With default value | `gettingStarted.responses.features.individual` |
-| 769 | With default value | `gettingStarted.responses.features.export` |
-| 786 | With default value | `gettingStarted.analytics.features.charts` |
-| 787 | With default value | `gettingStarted.analytics.features.trends` |
-| 788 | With default value | `gettingStarted.analytics.features.export` |
-| 794 | With default value | `gettingStarted.analytics.intro` |
-| 815 | With default value | `gettingStarted.analytics.insights.title` |
-| 818 | With default value | `gettingStarted.analytics.insights.completion` |
-| 819 | With default value | `gettingStarted.analytics.insights.response` |
-| 820 | With default value | `gettingStarted.analytics.insights.nps` |
-| 837 | With default value | `gettingStarted.complete.actions.surveys` |
-| 838 | With default value | `gettingStarted.complete.actions.templates` |
-| 839 | With default value | `gettingStarted.complete.actions.analytics` |
-| 861 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 870 | With default value | `gettingStarted.complete.message` |
-| 881 | With default value | `gettingStarted.complete.shortcuts.title` |
+| Line | Pattern                                | Key                                                  |
+| ---- | -------------------------------------- | ---------------------------------------------------- |
+| 130  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                        |
+| 134  | With default value                     | `gettingStarted.errors.saveFailed`                   |
+| 135  | With default value                     | `gettingStarted.errors.saveFailed`                   |
+| 218  | With default value                     | `gettingStarted.defaultUser`                         |
+| 236  | With default value                     | `gettingStarted.defaultUser`                         |
+| 286  | With default value                     | `gettingStarted.skipAriaLabel`                       |
+| 288  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                        |
+| 327  | Dynamic/variable key                   | `[DYNAMIC] step.titleKey`                            |
+| 337  | Dynamic/variable key                   | `[DYNAMIC] step.descriptionKey`                      |
+| 343  | With default value                     | `gettingStarted.stepNavigation`                      |
+| 350  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                        |
+| 387  | With default value                     | `common.back`                                        |
+| 393  | With default value                     | `gettingStarted.startCreating`                       |
+| 397  | With default value                     | `common.next`                                        |
+| 415  | With default value                     | `gettingStarted.welcome.steps.create`                |
+| 416  | With default value                     | `gettingStarted.welcome.steps.share`                 |
+| 417  | With default value                     | `gettingStarted.welcome.steps.analyze`               |
+| 437  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                        |
+| 446  | With default value                     | `gettingStarted.welcome.message`                     |
+| 486  | With default value                     | `gettingStarted.workspace.intro`                     |
+| 495  | With default value                     | `gettingStarted.workspace.benefits.title`            |
+| 499  | With default value                     | `gettingStarted.workspace.benefits.organize`         |
+| 500  | With default value                     | `gettingStarted.workspace.benefits.collaborate`      |
+| 501  | With default value                     | `gettingStarted.workspace.benefits.separate`         |
+| 512  | With default value                     | `gettingStarted.workspace.hint`                      |
+| 524  | With default value                     | `gettingStarted.createSurvey.methods.scratch.title`  |
+| 525  | With default value                     | `gettingStarted.createSurvey.methods.scratch.desc`   |
+| 529  | With default value                     | `gettingStarted.createSurvey.methods.template.title` |
+| 530  | With default value                     | `gettingStarted.createSurvey.methods.template.desc`  |
+| 537  | With default value                     | `gettingStarted.createSurvey.intro`                  |
+| 562  | With default value                     | `gettingStarted.createSurvey.shortcut`               |
+| 572  | With default value                     | `gettingStarted.questions.types.multipleChoice`      |
+| 573  | With default value                     | `gettingStarted.questions.types.text`                |
+| 574  | With default value                     | `gettingStarted.questions.types.rating`              |
+| 575  | With default value                     | `gettingStarted.questions.types.nps`                 |
+| 581  | With default value                     | `gettingStarted.questions.intro`                     |
+| 602  | With default value                     | `gettingStarted.questions.builderFeatures.title`     |
+| 606  | With default value                     | `gettingStarted.questions.builderFeatures.dragDrop`  |
+| 610  | With default value                     | `gettingStarted.questions.builderFeatures.autosave`  |
+| 614  | With default value                     | `gettingStarted.questions.builderFeatures.undoRedo`  |
+| 634  | With default value                     | `gettingStarted.themes.intro`                        |
+| 638  | With default value                     | `gettingStarted.themes.customize.title`              |
+| 641  | With default value                     | `gettingStarted.themes.customize.colors`             |
+| 642  | With default value                     | `gettingStarted.themes.customize.fonts`              |
+| 643  | With default value                     | `gettingStarted.themes.customize.logo`               |
+| 644  | With default value                     | `gettingStarted.themes.customize.background`         |
+| 655  | With default value                     | `gettingStarted.themes.hint`                         |
+| 673  | With default value                     | `gettingStarted.preview.intro`                       |
+| 677  | With default value                     | `gettingStarted.preview.features.title`              |
+| 680  | With default value                     | `gettingStarted.preview.features.desktop`            |
+| 681  | With default value                     | `gettingStarted.preview.features.test`               |
+| 682  | With default value                     | `gettingStarted.preview.features.logic`              |
+| 693  | With default value                     | `gettingStarted.preview.hint`                        |
+| 705  | With default value                     | `gettingStarted.distribute.methods.link.title`       |
+| 706  | With default value                     | `gettingStarted.distribute.methods.link.desc`        |
+| 710  | With default value                     | `gettingStarted.distribute.methods.email.title`      |
+| 711  | With default value                     | `gettingStarted.distribute.methods.email.desc`       |
+| 718  | With default value                     | `gettingStarted.distribute.intro`                    |
+| 742  | With default value                     | `gettingStarted.distribute.hint`                     |
+| 760  | With default value                     | `gettingStarted.responses.intro`                     |
+| 764  | With default value                     | `gettingStarted.responses.features.title`            |
+| 767  | With default value                     | `gettingStarted.responses.features.realtime`         |
+| 768  | With default value                     | `gettingStarted.responses.features.individual`       |
+| 769  | With default value                     | `gettingStarted.responses.features.export`           |
+| 786  | With default value                     | `gettingStarted.analytics.features.charts`           |
+| 787  | With default value                     | `gettingStarted.analytics.features.trends`           |
+| 788  | With default value                     | `gettingStarted.analytics.features.export`           |
+| 794  | With default value                     | `gettingStarted.analytics.intro`                     |
+| 815  | With default value                     | `gettingStarted.analytics.insights.title`            |
+| 818  | With default value                     | `gettingStarted.analytics.insights.completion`       |
+| 819  | With default value                     | `gettingStarted.analytics.insights.response`         |
+| 820  | With default value                     | `gettingStarted.analytics.insights.nps`              |
+| 837  | With default value                     | `gettingStarted.complete.actions.surveys`            |
+| 838  | With default value                     | `gettingStarted.complete.actions.templates`          |
+| 839  | With default value                     | `gettingStarted.complete.actions.analytics`          |
+| 861  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                        |
+| 870  | With default value                     | `gettingStarted.complete.message`                    |
+| 881  | With default value                     | `gettingStarted.complete.shortcuts.title`            |
 
 ### src/components/ui/HeroHeader.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 76 | Standard hook call | `common.close` |
+| Line | Pattern            | Key            |
+| ---- | ------------------ | -------------- |
+| 76   | Standard hook call | `common.close` |
 
 ### src/components/ui/ImageUploader.tsx (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 98 | With default value | `imageUploader.errors.invalidType` |
-| 104 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 126 | With default value | `imageUploader.errors.noUploadFunction` |
-| 138 | With default value | `imageUploader.errors.uploadFailed` |
-| 229 | With default value | `imageUploader.upload` |
-| 243 | With default value | `imageUploader.url` |
-| 260 | Standard hook call | `a11y.preview` |
-| 296 | With default value | `imageUploader.selectFile` |
-| 302 | With default value | `imageUploader.uploading` |
-| 307 | With default value | `imageUploader.dragDrop` |
-| 309 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 339 | With default value | `imageUploader.apply` |
-| 349 | With default value | `imageUploader.remove` |
+| Line | Pattern                                | Key                                     |
+| ---- | -------------------------------------- | --------------------------------------- |
+| 98   | With default value                     | `imageUploader.errors.invalidType`      |
+| 104  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`           |
+| 126  | With default value                     | `imageUploader.errors.noUploadFunction` |
+| 138  | With default value                     | `imageUploader.errors.uploadFailed`     |
+| 229  | With default value                     | `imageUploader.upload`                  |
+| 243  | With default value                     | `imageUploader.url`                     |
+| 260  | Standard hook call                     | `a11y.preview`                          |
+| 296  | With default value                     | `imageUploader.selectFile`              |
+| 302  | With default value                     | `imageUploader.uploading`               |
+| 307  | With default value                     | `imageUploader.dragDrop`                |
+| 309  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`           |
+| 339  | With default value                     | `imageUploader.apply`                   |
+| 349  | With default value                     | `imageUploader.remove`                  |
 
 ### src/components/ui/LanguageSwitcher.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 65 | Standard hook call | `common.changeLanguage` |
-| 81 | Standard hook call | `common.selectLanguage` |
-| 117 | Standard hook call | `common.changeLanguage` |
-| 137 | Standard hook call | `common.selectLanguage` |
+| Line | Pattern            | Key                     |
+| ---- | ------------------ | ----------------------- |
+| 65   | Standard hook call | `common.changeLanguage` |
+| 81   | Standard hook call | `common.selectLanguage` |
+| 117  | Standard hook call | `common.changeLanguage` |
+| 137  | Standard hook call | `common.selectLanguage` |
 
 ### src/components/ui/LoadingState.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 42 | Standard hook call | `common.loading` |
+| Line | Pattern            | Key              |
+| ---- | ------------------ | ---------------- |
+| 42   | Standard hook call | `common.loading` |
 
 ### src/components/ui/OfflineIndicator.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 129 | Standard hook call | `offline.backOnline` |
-| 129 | Standard hook call | `offline.message` |
-| 144 | Standard hook call | `offline.retry` |
-| 150 | Standard hook call | `offline.dismiss` |
+| Line | Pattern            | Key                  |
+| ---- | ------------------ | -------------------- |
+| 129  | Standard hook call | `offline.backOnline` |
+| 129  | Standard hook call | `offline.message`    |
+| 144  | Standard hook call | `offline.retry`      |
+| 150  | Standard hook call | `offline.dismiss`    |
 
 ### src/components/ui/OnboardingWizard.tsx (51)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 262 | With default value | `onboarding.completedSuccessfully` |
-| 266 | With default value | `onboarding.errors.saveFailed` |
-| 267 | With default value | `onboarding.errors.saveFailed` |
-| 364 | Standard hook call | `onboarding.defaultUser` |
-| 403 | Standard hook call | `onboarding.defaultUser` |
-| 447 | With default value | `onboarding.skipAriaLabel` |
-| 449 | Standard hook call | `onboarding.skip` |
-| 488 | Dynamic/variable key | `[DYNAMIC] step.titleKey` |
-| 498 | Dynamic/variable key | `[DYNAMIC] step.descriptionKey` |
-| 504 | With default value | `onboarding.stepNavigation` |
-| 511 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 548 | Standard hook call | `common.back` |
-| 554 | Standard hook call | `onboarding.getStarted` |
-| 558 | Standard hook call | `common.next` |
-| 586 | With options object | `onboarding.welcome.greeting` |
-| 594 | Standard hook call | `onboarding.welcome.message` |
-| 603 | Standard hook call | `onboarding.features.customize` |
-| 604 | Standard hook call | `onboarding.features.language` |
-| 605 | Standard hook call | `onboarding.features.notifications` |
-| 643 | Standard hook call | `onboarding.profile.firstName` |
-| 646 | Standard hook call | `onboarding.profile.firstNamePlaceholder` |
-| 649 | Standard hook call | `onboarding.profile.lastName` |
-| 652 | Standard hook call | `onboarding.profile.lastNamePlaceholder` |
-| 656 | Standard hook call | `onboarding.profile.hint` |
-| 675 | Standard hook call | `onboarding.appearance.themeMode` |
-| 688 | Standard hook call | `onboarding.appearance.${mode.id}` |
-| 697 | Standard hook call | `onboarding.appearance.colorPalette` |
-| 714 | Standard hook call | `onboarding.appearance.palette.${palette.id}` |
-| 742 | Standard hook call | `onboarding.language.description` |
-| 812 | Standard hook call | `onboarding.notifications.email` |
-| 813 | Standard hook call | `onboarding.notifications.emailDesc` |
-| 821 | Standard hook call | `onboarding.notifications.responses` |
-| 822 | Standard hook call | `onboarding.notifications.responsesDesc` |
-| 830 | Standard hook call | `onboarding.notifications.digest` |
-| 831 | Standard hook call | `onboarding.notifications.digestDesc` |
-| 836 | Standard hook call | `onboarding.notifications.hint` |
-| 873 | With default value | `onboarding.accessibility.intro` |
-| 881 | With default value | `onboarding.accessibility.reducedMotion` |
-| 882 | With default value | `onboarding.accessibility.reducedMotionDesc` |
-| 890 | With default value | `onboarding.accessibility.highContrast` |
-| 891 | With default value | `onboarding.accessibility.highContrastDesc` |
-| 899 | With default value | `onboarding.accessibility.largeText` |
-| 900 | With default value | `onboarding.accessibility.largeTextDesc` |
-| 908 | With default value | `onboarding.accessibility.dyslexiaFont` |
-| 909 | With default value | `onboarding.accessibility.dyslexiaFontDesc` |
-| 915 | With default value | `onboarding.accessibility.hint` |
-| 925 | Standard hook call | `onboarding.complete.createSurvey` |
-| 926 | Standard hook call | `onboarding.complete.viewAnalytics` |
-| 927 | Standard hook call | `onboarding.complete.distribute` |
-| 944 | With options object | `onboarding.complete.ready` |
-| 953 | Standard hook call | `onboarding.complete.message` |
+| Line | Pattern                                | Key                                          |
+| ---- | -------------------------------------- | -------------------------------------------- |
+| 237  | With default value                     | `onboarding.completedSuccessfully`           |
+| 241  | With default value                     | `onboarding.errors.saveFailed`               |
+| 242  | With default value                     | `onboarding.errors.saveFailed`               |
+| 339  | Standard hook call                     | `onboarding.defaultUser`                     |
+| 378  | Standard hook call                     | `onboarding.defaultUser`                     |
+| 422  | With default value                     | `onboarding.skipAriaLabel`                   |
+| 424  | Standard hook call                     | `onboarding.skip`                            |
+| 463  | Dynamic/variable key                   | `[DYNAMIC] step.titleKey`                    |
+| 473  | Dynamic/variable key                   | `[DYNAMIC] step.descriptionKey`              |
+| 479  | With default value                     | `onboarding.stepNavigation`                  |
+| 486  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`                |
+| 523  | Standard hook call                     | `common.back`                                |
+| 529  | Standard hook call                     | `onboarding.getStarted`                      |
+| 533  | Standard hook call                     | `common.next`                                |
+| 561  | With options object                    | `onboarding.welcome.greeting`                |
+| 569  | Standard hook call                     | `onboarding.welcome.message`                 |
+| 578  | Standard hook call                     | `onboarding.features.customize`              |
+| 579  | Standard hook call                     | `onboarding.features.language`               |
+| 580  | Standard hook call                     | `onboarding.features.notifications`          |
+| 618  | Standard hook call                     | `onboarding.profile.firstName`               |
+| 621  | Standard hook call                     | `onboarding.profile.firstNamePlaceholder`    |
+| 624  | Standard hook call                     | `onboarding.profile.lastName`                |
+| 627  | Standard hook call                     | `onboarding.profile.lastNamePlaceholder`     |
+| 631  | Standard hook call                     | `onboarding.profile.hint`                    |
+| 650  | Standard hook call                     | `onboarding.appearance.themeMode`            |
+| 662  | Dynamic/variable key                   | `[DYNAMIC] mode.labelKey`                    |
+| 670  | Standard hook call                     | `onboarding.appearance.colorPalette`         |
+| 687  | Dynamic/variable key                   | `[DYNAMIC] palette.labelKey`                 |
+| 715  | Standard hook call                     | `onboarding.language.description`            |
+| 785  | Standard hook call                     | `onboarding.notifications.email`             |
+| 786  | Standard hook call                     | `onboarding.notifications.emailDesc`         |
+| 794  | Standard hook call                     | `onboarding.notifications.responses`         |
+| 795  | Standard hook call                     | `onboarding.notifications.responsesDesc`     |
+| 803  | Standard hook call                     | `onboarding.notifications.digest`            |
+| 804  | Standard hook call                     | `onboarding.notifications.digestDesc`        |
+| 809  | Standard hook call                     | `onboarding.notifications.hint`              |
+| 846  | With default value                     | `onboarding.accessibility.intro`             |
+| 854  | With default value                     | `onboarding.accessibility.reducedMotion`     |
+| 855  | With default value                     | `onboarding.accessibility.reducedMotionDesc` |
+| 863  | With default value                     | `onboarding.accessibility.highContrast`      |
+| 864  | With default value                     | `onboarding.accessibility.highContrastDesc`  |
+| 872  | With default value                     | `onboarding.accessibility.largeText`         |
+| 873  | With default value                     | `onboarding.accessibility.largeTextDesc`     |
+| 881  | With default value                     | `onboarding.accessibility.dyslexiaFont`      |
+| 882  | With default value                     | `onboarding.accessibility.dyslexiaFontDesc`  |
+| 888  | With default value                     | `onboarding.accessibility.hint`              |
+| 898  | Standard hook call                     | `onboarding.complete.createSurvey`           |
+| 899  | Standard hook call                     | `onboarding.complete.viewAnalytics`          |
+| 900  | Standard hook call                     | `onboarding.complete.distribute`             |
+| 917  | With options object                    | `onboarding.complete.ready`                  |
+| 926  | Standard hook call                     | `onboarding.complete.message`                |
 
 ### src/components/ui/Progress.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 30 | Standard hook call | `common.progress` |
-| 86 | Standard hook call | `common.progress` |
+| Line | Pattern            | Key               |
+| ---- | ------------------ | ----------------- |
+| 30   | Standard hook call | `common.progress` |
+| 86   | Standard hook call | `common.progress` |
 
 ### src/components/ui/SearchInput.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 54 | Standard hook call | `common.searchDots` |
-| 62 | Standard hook call | `common.clearSearch` |
+| Line | Pattern            | Key                  |
+| ---- | ------------------ | -------------------- |
+| 54   | Standard hook call | `common.searchDots`  |
+| 62   | Standard hook call | `common.clearSearch` |
 
 ### src/components/ui/Select.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 148 | Standard hook call | `common.select` |
-| 180 | Standard hook call | `common.searchDots` |
-| 194 | Standard hook call | `common.noOptionsFound` |
+| Line | Pattern            | Key                     |
+| ---- | ------------------ | ----------------------- |
+| 148  | Standard hook call | `common.select`         |
+| 180  | Standard hook call | `common.searchDots`     |
+| 194  | Standard hook call | `common.noOptionsFound` |
 
 ### src/components/ui/TimePicker.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 300 | Standard hook call | `common.hour` |
-| 334 | Standard hook call | `common.minute` |
-| 460 | Standard hook call | `timePicker.selectTime` |
-| 489 | Standard hook call | `timePicker.switchToKeyboard` |
-| 489 | Standard hook call | `timePicker.switchToDial` |
-| 497 | Standard hook call | `common.cancel` |
-| 557 | Standard hook call | `timePicker.selectTime` |
-| 560 | Standard hook call | `timePicker.clearTime` |
-| 568 | Standard hook call | `timePicker.selectTime` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 300  | Standard hook call | `common.hour`                 |
+| 334  | Standard hook call | `common.minute`               |
+| 460  | Standard hook call | `timePicker.selectTime`       |
+| 489  | Standard hook call | `timePicker.switchToKeyboard` |
+| 489  | Standard hook call | `timePicker.switchToDial`     |
+| 497  | Standard hook call | `common.cancel`               |
+| 557  | Standard hook call | `timePicker.selectTime`       |
+| 560  | Standard hook call | `timePicker.clearTime`        |
+| 568  | Standard hook call | `timePicker.selectTime`       |
 
 ### src/components/ui/ViewModeToggle.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 44 | Standard hook call | `common.viewMode` |
-| 51 | Standard hook call | `common.gridView` |
-| 61 | Standard hook call | `common.listView` |
+| Line | Pattern            | Key               |
+| ---- | ------------------ | ----------------- |
+| 44   | Standard hook call | `common.viewMode` |
+| 51   | Standard hook call | `common.gridView` |
+| 61   | Standard hook call | `common.listView` |
 
 ### src/hooks/queries/useQuestionLogic.ts (25)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 393 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsAnswered]` |
-| 394 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsNotAnswered]` |
-| 395 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsEmpty]` |
-| 396 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsNotEmpty]` |
-| 406 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]` |
-| 407 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]` |
-| 408 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Contains]` |
-| 409 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotContains]` |
-| 417 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]` |
-| 418 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]` |
-| 419 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Contains]` |
-| 420 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotContains]` |
-| 428 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]` |
-| 429 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]` |
-| 430 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.GreaterThan]` |
-| 431 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.GreaterThanOrEquals]` |
-| 432 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.LessThan]` |
-| 433 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.LessThanOrEquals]` |
-| 439 | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]` |
-| 440 | Standard hook call | `conditionalLogic.operators.after` |
-| 441 | Standard hook call | `conditionalLogic.operators.onOrAfter` |
-| 442 | Standard hook call | `conditionalLogic.operators.before` |
-| 443 | Standard hook call | `conditionalLogic.operators.onOrBefore` |
-| 459 | Dynamic/variable key | `[DYNAMIC] key` |
-| 470 | Dynamic/variable key | `[DYNAMIC] key` |
+| Line | Pattern              | Key                                                                    |
+| ---- | -------------------- | ---------------------------------------------------------------------- |
+| 393  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsAnswered]`          |
+| 394  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsNotAnswered]`       |
+| 395  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsEmpty]`             |
+| 396  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.IsNotEmpty]`          |
+| 406  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]`              |
+| 407  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]`           |
+| 408  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Contains]`            |
+| 409  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotContains]`         |
+| 417  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]`              |
+| 418  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]`           |
+| 419  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Contains]`            |
+| 420  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotContains]`         |
+| 428  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]`              |
+| 429  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.NotEquals]`           |
+| 430  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.GreaterThan]`         |
+| 431  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.GreaterThanOrEquals]` |
+| 432  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.LessThan]`            |
+| 433  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.LessThanOrEquals]`    |
+| 439  | Dynamic/variable key | `[DYNAMIC] operatorTranslationKeys[LogicOperator.Equals]`              |
+| 440  | Standard hook call   | `conditionalLogic.operators.after`                                     |
+| 441  | Standard hook call   | `conditionalLogic.operators.onOrAfter`                                 |
+| 442  | Standard hook call   | `conditionalLogic.operators.before`                                    |
+| 443  | Standard hook call   | `conditionalLogic.operators.onOrBefore`                                |
+| 459  | Dynamic/variable key | `[DYNAMIC] key`                                                        |
+| 470  | Dynamic/variable key | `[DYNAMIC] key`                                                        |
 
 ### src/hooks/useConfirmDialog.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 28 | Standard hook call | `common.confirm` |
-| 29 | Standard hook call | `common.cancel` |
-| 41 | Standard hook call | `common.confirm` |
-| 42 | Standard hook call | `common.cancel` |
-| 122 | With options object | `dialogs.deleteTitle` |
-| 123 | With options object | `dialogs.deleteDescription` |
-| 123 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 124 | Standard hook call | `common.delete` |
-| 125 | Standard hook call | `common.cancel` |
+| Line | Pattern                                | Key                           |
+| ---- | -------------------------------------- | ----------------------------- |
+| 28   | Standard hook call                     | `common.confirm`              |
+| 29   | Standard hook call                     | `common.cancel`               |
+| 41   | Standard hook call                     | `common.confirm`              |
+| 42   | Standard hook call                     | `common.cancel`               |
+| 122  | With options object                    | `dialogs.deleteTitle`         |
+| 123  | With options object                    | `dialogs.deleteDescription`   |
+| 123  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 124  | Standard hook call                     | `common.delete`               |
+| 125  | Standard hook call                     | `common.cancel`               |
 
 ### src/hooks/useCopyToClipboard.ts (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 37 | Standard hook call | `settings.keyCopied` |
-| 38 | Standard hook call | `settings.copyFailed` |
-| 54 | Standard hook call | `common.copied` |
-| 54 | Standard hook call | `common.copyFailed` |
+| Line | Pattern            | Key                   |
+| ---- | ------------------ | --------------------- |
+| 37   | Standard hook call | `settings.keyCopied`  |
+| 38   | Standard hook call | `settings.copyFailed` |
+| 54   | Standard hook call | `common.copied`       |
+| 54   | Standard hook call | `common.copyFailed`   |
 
 ### src/hooks/useEntityActions.ts (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 56 | With default value | `common.operationFailed` |
-| 116 | With default value | `common.confirm` |
-| 117 | With default value | `common.operationFailed` |
-| 223 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 224 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 228 | With default value | `common.delete` |
-| 237 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 242 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 257 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 262 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 281 | With default value | `dialogs.confirmDescription` |
-| 284 | With default value | `dialogs.confirmAction` |
-| 296 | With default value | `common.operationFailed` |
+| Line | Pattern                                | Key                           |
+| ---- | -------------------------------------- | ----------------------------- |
+| 56   | With default value                     | `common.operationFailed`      |
+| 116  | With default value                     | `common.confirm`              |
+| 117  | With default value                     | `common.operationFailed`      |
+| 223  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 224  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 228  | With default value                     | `common.delete`               |
+| 237  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 242  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 257  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 262  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| 281  | With default value                     | `dialogs.confirmDescription`  |
+| 284  | With default value                     | `dialogs.confirmAction`       |
+| 296  | With default value                     | `common.operationFailed`      |
 
 ### src/hooks/useTranslatedNav.ts (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 54 | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[pageId]` |
-| 55 | Dynamic/variable key | `[DYNAMIC] PAGE_DESCRIPTION_KEYS[pageId]` |
-| 71 | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[id]` |
-| 72 | Dynamic/variable key | `[DYNAMIC] PAGE_DESCRIPTION_KEYS[id]` |
-| 83 | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[pageId]` |
+| Line | Pattern              | Key                                       |
+| ---- | -------------------- | ----------------------------------------- |
+| 54   | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[pageId]`       |
+| 55   | Dynamic/variable key | `[DYNAMIC] PAGE_DESCRIPTION_KEYS[pageId]` |
+| 71   | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[id]`           |
+| 72   | Dynamic/variable key | `[DYNAMIC] PAGE_DESCRIPTION_KEYS[id]`     |
+| 83   | Dynamic/variable key | `[DYNAMIC] PAGE_LABEL_KEYS[pageId]`       |
 
 ### src/lib/validations.ts (68)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 5 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 11 | Standard hook call | `validation.emailRequired` |
-| 12 | Standard hook call | `validation.email` |
-| 16 | Standard hook call | `validation.passwordRequired` |
-| 17 | Standard hook call | `validation.passwordMinLength` |
-| 21 | Standard hook call | `validation.passwordRequired` |
-| 22 | Standard hook call | `validation.passwordMinLength` |
-| 23 | Standard hook call | `validation.passwordUppercase` |
-| 24 | Standard hook call | `validation.passwordLowercase` |
-| 25 | Standard hook call | `validation.passwordNumber` |
-| 26 | Standard hook call | `validation.passwordSpecial` |
-| 31 | With options object | `validation.fieldRequired` |
-| 32 | With options object | `validation.minLength` |
-| 33 | With options object | `validation.nameMaxLength` |
-| 35 | With options object | `validation.fieldRequired` |
-| 53 | Standard hook call | `validation.confirmPasswordRequired` |
-| 56 | Standard hook call | `validation.passwordMismatch` |
-| 65 | Standard hook call | `validation.confirmPasswordRequired` |
-| 68 | Standard hook call | `validation.passwordMismatch` |
-| 79 | Standard hook call | `validation.primaryColorRequired` |
-| 82 | Standard hook call | `validation.backgroundColorRequired` |
-| 113 | Standard hook call | `validation.operatorRequired` |
-| 115 | Standard hook call | `validation.actionRequired` |
-| 130 | Standard hook call | `validation.invalidTimeFormat` |
-| 160 | Standard hook call | `password.requirements.minChars` |
-| 161 | Standard hook call | `password.requirements.uppercase` |
-| 162 | Standard hook call | `password.requirements.lowercase` |
-| 163 | Standard hook call | `password.requirements.number` |
-| 164 | Standard hook call | `password.requirements.specialChar` |
-| 186 | Standard hook call | `password.strength.veryWeak` |
-| 187 | Standard hook call | `password.strength.weak` |
-| 188 | Standard hook call | `password.strength.fair` |
-| 189 | Standard hook call | `password.strength.good` |
-| 190 | Standard hook call | `password.strength.strong` |
-| 218 | Standard hook call | `validation.emailRequired` |
-| 221 | Standard hook call | `validation.email` |
-| 228 | Standard hook call | `validation.passwordRequired` |
-| 231 | Standard hook call | `validation.passwordMinLength` |
-| 238 | Standard hook call | `validation.confirmPasswordRequired` |
-| 241 | Standard hook call | `validation.passwordMismatch` |
-| 248 | With options object | `validation.fieldRequired` |
-| 251 | With options object | `validation.minLength` |
-| 254 | With options object | `validation.nameMaxLength` |
-| 261 | With options object | `validation.fieldRequired` |
-| 268 | With options object | `validation.minLength` |
-| 275 | With options object | `validation.maxLength` |
-| 283 | Standard hook call | `validation.titleRequired` |
-| 292 | Standard hook call | `validation.nameRequired` |
-| 294 | Standard hook call | `validation.categoryRequired` |
-| 303 | Standard hook call | `validation.titleRequired` |
-| 312 | Standard hook call | `validation.templateNameRequired` |
-| 343 | Standard hook call | `validation.linksRequired` |
-| 349 | With options object | `validation.mustBeBetween` |
-| 365 | Standard hook call | `validation.nameRequired` |
-| 366 | Standard hook call | `validation.nameMinLength` |
-| 367 | With options object | `validation.nameMaxLength` |
-| 370 | Standard hook call | `validation.slugRequired` |
-| 371 | Standard hook call | `validation.slugMinLength` |
-| 372 | With options object | `validation.slugMaxLength` |
-| 373 | Standard hook call | `validation.slugFormat` |
-| 382 | Standard hook call | `validation.nameRequired` |
-| 383 | Standard hook call | `validation.nameMinLength` |
-| 398 | Standard hook call | `validation.url` |
-| 416 | Standard hook call | `validation.keyNameRequired` |
-| 417 | Standard hook call | `validation.scopeRequired` |
-| 434 | Standard hook call | `validation.currentPasswordRequired` |
-| 436 | Standard hook call | `validation.confirmPasswordRequired` |
-| 439 | Standard hook call | `validation.passwordMismatch` |
+| Line | Pattern                      | Key                                  |
+| ---- | ---------------------------- | ------------------------------------ |
+| 5    | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]`        |
+| 11   | Standard hook call           | `validation.emailRequired`           |
+| 12   | Standard hook call           | `validation.email`                   |
+| 16   | Standard hook call           | `validation.passwordRequired`        |
+| 17   | Standard hook call           | `validation.passwordMinLength`       |
+| 21   | Standard hook call           | `validation.passwordRequired`        |
+| 22   | Standard hook call           | `validation.passwordMinLength`       |
+| 23   | Standard hook call           | `validation.passwordUppercase`       |
+| 24   | Standard hook call           | `validation.passwordLowercase`       |
+| 25   | Standard hook call           | `validation.passwordNumber`          |
+| 26   | Standard hook call           | `validation.passwordSpecial`         |
+| 31   | With options object          | `validation.fieldRequired`           |
+| 32   | With options object          | `validation.minLength`               |
+| 33   | With options object          | `validation.nameMaxLength`           |
+| 35   | With options object          | `validation.fieldRequired`           |
+| 53   | Standard hook call           | `validation.confirmPasswordRequired` |
+| 56   | Standard hook call           | `validation.passwordMismatch`        |
+| 65   | Standard hook call           | `validation.confirmPasswordRequired` |
+| 68   | Standard hook call           | `validation.passwordMismatch`        |
+| 79   | Standard hook call           | `validation.primaryColorRequired`    |
+| 82   | Standard hook call           | `validation.backgroundColorRequired` |
+| 113  | Standard hook call           | `validation.operatorRequired`        |
+| 115  | Standard hook call           | `validation.actionRequired`          |
+| 130  | Standard hook call           | `validation.invalidTimeFormat`       |
+| 160  | Standard hook call           | `password.requirements.minChars`     |
+| 161  | Standard hook call           | `password.requirements.uppercase`    |
+| 162  | Standard hook call           | `password.requirements.lowercase`    |
+| 163  | Standard hook call           | `password.requirements.number`       |
+| 164  | Standard hook call           | `password.requirements.specialChar`  |
+| 186  | Standard hook call           | `password.strength.veryWeak`         |
+| 187  | Standard hook call           | `password.strength.weak`             |
+| 188  | Standard hook call           | `password.strength.fair`             |
+| 189  | Standard hook call           | `password.strength.good`             |
+| 190  | Standard hook call           | `password.strength.strong`           |
+| 218  | Standard hook call           | `validation.emailRequired`           |
+| 221  | Standard hook call           | `validation.email`                   |
+| 228  | Standard hook call           | `validation.passwordRequired`        |
+| 231  | Standard hook call           | `validation.passwordMinLength`       |
+| 238  | Standard hook call           | `validation.confirmPasswordRequired` |
+| 241  | Standard hook call           | `validation.passwordMismatch`        |
+| 248  | With options object          | `validation.fieldRequired`           |
+| 251  | With options object          | `validation.minLength`               |
+| 254  | With options object          | `validation.nameMaxLength`           |
+| 261  | With options object          | `validation.fieldRequired`           |
+| 268  | With options object          | `validation.minLength`               |
+| 275  | With options object          | `validation.maxLength`               |
+| 283  | Standard hook call           | `validation.titleRequired`           |
+| 292  | Standard hook call           | `validation.nameRequired`            |
+| 294  | Standard hook call           | `validation.categoryRequired`        |
+| 303  | Standard hook call           | `validation.titleRequired`           |
+| 312  | Standard hook call           | `validation.templateNameRequired`    |
+| 343  | Standard hook call           | `validation.linksRequired`           |
+| 349  | With options object          | `validation.mustBeBetween`           |
+| 365  | Standard hook call           | `validation.nameRequired`            |
+| 366  | Standard hook call           | `validation.nameMinLength`           |
+| 367  | With options object          | `validation.nameMaxLength`           |
+| 370  | Standard hook call           | `validation.slugRequired`            |
+| 371  | Standard hook call           | `validation.slugMinLength`           |
+| 372  | With options object          | `validation.slugMaxLength`           |
+| 373  | Standard hook call           | `validation.slugFormat`              |
+| 382  | Standard hook call           | `validation.nameRequired`            |
+| 383  | Standard hook call           | `validation.nameMinLength`           |
+| 398  | Standard hook call           | `validation.url`                     |
+| 416  | Standard hook call           | `validation.keyNameRequired`         |
+| 417  | Standard hook call           | `validation.scopeRequired`           |
+| 434  | Standard hook call           | `validation.currentPasswordRequired` |
+| 436  | Standard hook call           | `validation.confirmPasswordRequired` |
+| 439  | Standard hook call           | `validation.passwordMismatch`        |
 
 ### src/pages/Analytics/AnalyticsPage.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 45 | Standard hook call | `analytics.selectSurvey` |
-| 51 | Standard hook call | `surveys.responses` |
+| Line | Pattern            | Key                      |
+| ---- | ------------------ | ------------------------ |
+| 45   | Standard hook call | `analytics.selectSurvey` |
+| 51   | Standard hook call | `surveys.responses`      |
 
 ### src/pages/Analytics/sections/AnalyticsContent.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 25 | Standard hook call | `analytics.responseTrend` |
-| 25 | Standard hook call | `analytics.responseTrendDesc` |
-| 33 | Standard hook call | `analytics.responseDistribution` |
-| 34 | Standard hook call | `analytics.completionBreakdown` |
-| 61 | Standard hook call | `analytics.completed` |
-| 67 | Standard hook call | `analytics.partial` |
-| 80 | Standard hook call | `analytics.questionInsights` |
-| 92 | Standard hook call | `analytics.npsQuestions` |
+| Line | Pattern            | Key                              |
+| ---- | ------------------ | -------------------------------- |
+| 25   | Standard hook call | `analytics.responseTrend`        |
+| 25   | Standard hook call | `analytics.responseTrendDesc`    |
+| 33   | Standard hook call | `analytics.responseDistribution` |
+| 34   | Standard hook call | `analytics.completionBreakdown`  |
+| 61   | Standard hook call | `analytics.completed`            |
+| 67   | Standard hook call | `analytics.partial`              |
+| 80   | Standard hook call | `analytics.questionInsights`     |
+| 92   | Standard hook call | `analytics.npsQuestions`         |
 
 ### src/pages/Analytics/sections/AnalyticsEmptyStates.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 11 | Standard hook call | `analytics.selectSurveyTitle` |
-| 12 | Standard hook call | `analytics.selectSurveyDesc` |
-| 29 | Standard hook call | `analytics.loadError` |
-| 30 | Standard hook call | `analytics.loadErrorDesc` |
-| 34 | Standard hook call | `errors.tryAgain` |
-| 69 | Standard hook call | `analytics.noResponses` |
-| 70 | Standard hook call | `analytics.noResponsesDesc` |
-| 74 | Standard hook call | `analytics.viewSurvey` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 11   | Standard hook call | `analytics.selectSurveyTitle` |
+| 12   | Standard hook call | `analytics.selectSurveyDesc`  |
+| 29   | Standard hook call | `analytics.loadError`         |
+| 30   | Standard hook call | `analytics.loadErrorDesc`     |
+| 34   | Standard hook call | `errors.tryAgain`             |
+| 69   | Standard hook call | `analytics.noResponses`       |
+| 70   | Standard hook call | `analytics.noResponsesDesc`   |
+| 74   | Standard hook call | `analytics.viewSurvey`        |
 
 ### src/pages/Analytics/sections/AnalyticsHeader.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 22 | Standard hook call | `analytics.title` |
-| 23 | Standard hook call | `analytics.description` |
-| 23 | Standard hook call | `analytics.selectSurveyDesc` |
-| 34 | Standard hook call | `responses.export` |
+| Line | Pattern            | Key                          |
+| ---- | ------------------ | ---------------------------- |
+| 22   | Standard hook call | `analytics.title`            |
+| 23   | Standard hook call | `analytics.description`      |
+| 23   | Standard hook call | `analytics.selectSurveyDesc` |
+| 34   | Standard hook call | `responses.export`           |
 
 ### src/pages/AzureCallback/AzureCallbackPage.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 57 | With default value | `auth.authenticationFailed` |
-| 60 | With default value | `auth.returnToLogin` |
-| 72 | With default value | `auth.completingSignIn` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 57   | With default value | `auth.authenticationFailed` |
+| 60   | With default value | `auth.returnToLogin`        |
+| 72   | With default value | `auth.completingSignIn`     |
 
 ### src/pages/Dashboard/DashboardPage.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 34 | Standard hook call | `common.greetingFallback` |
-| 37 | Standard hook call | `dashboard.greeting.morning` |
-| 38 | Standard hook call | `dashboard.greeting.afternoon` |
-| 39 | Standard hook call | `dashboard.greeting.evening` |
+| Line | Pattern            | Key                            |
+| ---- | ------------------ | ------------------------------ |
+| 34   | Standard hook call | `common.greetingFallback`      |
+| 37   | Standard hook call | `dashboard.greeting.morning`   |
+| 38   | Standard hook call | `dashboard.greeting.afternoon` |
+| 39   | Standard hook call | `dashboard.greeting.evening`   |
 
 ### src/pages/Dashboard/sections/DashboardContent.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 24 | Standard hook call | `dashboard.recentSurveys` |
-| 26 | Standard hook call | `common.viewAll` |
-| 39 | Standard hook call | `dashboard.noSurveysYet` |
-| 40 | Standard hook call | `dashboard.createFirstSurvey` |
-| 43 | Standard hook call | `dashboard.createSurvey` |
-| 58 | Standard hook call | `dashboard.quickActions` |
-| 62 | Standard hook call | `dashboard.createSurvey` |
-| 63 | Standard hook call | `dashboard.startFromScratch` |
-| 68 | Standard hook call | `dashboard.useTemplate` |
-| 69 | Standard hook call | `dashboard.preBuiltTemplates` |
-| 74 | Standard hook call | `dashboard.distribute` |
-| 75 | Standard hook call | `dashboard.shareYourSurveys` |
-| 80 | Standard hook call | `dashboard.viewAnalytics` |
-| 81 | Standard hook call | `dashboard.insightsReports` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 24   | Standard hook call | `dashboard.recentSurveys`     |
+| 26   | Standard hook call | `common.viewAll`              |
+| 39   | Standard hook call | `dashboard.noSurveysYet`      |
+| 40   | Standard hook call | `dashboard.createFirstSurvey` |
+| 43   | Standard hook call | `dashboard.createSurvey`      |
+| 58   | Standard hook call | `dashboard.quickActions`      |
+| 62   | Standard hook call | `dashboard.createSurvey`      |
+| 63   | Standard hook call | `dashboard.startFromScratch`  |
+| 68   | Standard hook call | `dashboard.useTemplate`       |
+| 69   | Standard hook call | `dashboard.preBuiltTemplates` |
+| 74   | Standard hook call | `dashboard.distribute`        |
+| 75   | Standard hook call | `dashboard.shareYourSurveys`  |
+| 80   | Standard hook call | `dashboard.viewAnalytics`     |
+| 81   | Standard hook call | `dashboard.insightsReports`   |
 
 ### src/pages/Dashboard/sections/DashboardHero.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 23 | Standard hook call | `dashboard.personalWorkspace` |
-| 28 | Standard hook call | `dashboard.subtitle` |
-| 33 | Standard hook call | `common.viewAll` |
-| 37 | Standard hook call | `dashboard.newSurvey` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 23   | Standard hook call | `dashboard.personalWorkspace` |
+| 28   | Standard hook call | `dashboard.subtitle`          |
+| 33   | Standard hook call | `common.viewAll`              |
+| 37   | Standard hook call | `dashboard.newSurvey`         |
 
 ### src/pages/Dashboard/sections/DashboardStats.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 22 | Standard hook call | `dashboard.stats.totalSurveys` |
-| 24 | Standard hook call | `dashboard.stats.allTimeSurveys` |
-| 30 | Standard hook call | `dashboard.stats.activeSurveys` |
-| 32 | Standard hook call | `dashboard.stats.currentlyCollecting` |
-| 38 | Standard hook call | `dashboard.stats.draftSurveys` |
-| 40 | Standard hook call | `dashboard.stats.readyToPublish` |
-| 46 | Standard hook call | `dashboard.stats.totalResponses` |
-| 48 | Standard hook call | `dashboard.stats.acrossAllSurveys` |
+| Line | Pattern            | Key                                   |
+| ---- | ------------------ | ------------------------------------- |
+| 22   | Standard hook call | `dashboard.stats.totalSurveys`        |
+| 24   | Standard hook call | `dashboard.stats.allTimeSurveys`      |
+| 30   | Standard hook call | `dashboard.stats.activeSurveys`       |
+| 32   | Standard hook call | `dashboard.stats.currentlyCollecting` |
+| 38   | Standard hook call | `dashboard.stats.draftSurveys`        |
+| 40   | Standard hook call | `dashboard.stats.readyToPublish`      |
+| 46   | Standard hook call | `dashboard.stats.totalResponses`      |
+| 48   | Standard hook call | `dashboard.stats.acrossAllSurveys`    |
 
 ### src/pages/Dashboard/sections/RecentSurveyItem.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 39 | Standard hook call | `surveys.responses` |
+| Line | Pattern            | Key                 |
+| ---- | ------------------ | ------------------- |
+| 33   | Standard hook call | `surveys.responses` |
 
 ### src/pages/DevTest/sections/ButtonShowcaseSection.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 92 | Standard hook call | `devTest.like` |
-| 95 | Standard hook call | `devTest.favorite` |
-| 98 | Standard hook call | `devTest.notifications` |
-| 101 | Standard hook call | `devTest.settings` |
+| Line | Pattern            | Key                     |
+| ---- | ------------------ | ----------------------- |
+| 92   | Standard hook call | `devTest.like`          |
+| 95   | Standard hook call | `devTest.favorite`      |
+| 98   | Standard hook call | `devTest.notifications` |
+| 101  | Standard hook call | `devTest.settings`      |
+
+### src/pages/DevTest/sections/ThemeControlsSection.tsx (3)
+
+| Line | Pattern              | Key                          |
+| ---- | -------------------- | ---------------------------- |
+| 43   | Dynamic/variable key | `[DYNAMIC] palette.labelKey` |
+| 73   | Dynamic/variable key | `[DYNAMIC] mode.labelKey`    |
+| 74   | Dynamic/variable key | `[DYNAMIC] mode.descKey`     |
 
 ### src/pages/Distributions/DistributionsPage.tsx (22)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 94 | Standard hook call | `navigation.distributions` |
-| 94 | Standard hook call | `distributions.description` |
-| 102 | Standard hook call | `distributions.surveyLinks` |
-| 106 | Standard hook call | `distributions.emailCampaigns` |
-| 114 | Standard hook call | `common.loading` |
-| 114 | Standard hook call | `distributions.selectSurvey` |
-| 136 | Standard hook call | `distributions.selectASurvey` |
-| 137 | Standard hook call | `distributions.selectSurveyForLinks` |
-| 154 | Standard hook call | `common.all` |
-| 155 | Standard hook call | `distributions.statusDraft` |
-| 156 | Standard hook call | `distributions.statusScheduled` |
-| 157 | Standard hook call | `distributions.statusSent` |
-| 164 | Standard hook call | `distributions.searchPlaceholder` |
-| 173 | Standard hook call | `distributions.newDistribution` |
-| 185 | Standard hook call | `distributions.selectASurvey` |
-| 186 | Standard hook call | `distributions.selectSurveyForEmail` |
-| 199 | Standard hook call | `distributions.noFound` |
-| 199 | Standard hook call | `distributions.createFirst` |
-| 200 | Standard hook call | `distributions.tryAdjustFilters` |
-| 200 | Standard hook call | `distributions.createFirstDesc` |
-| 206 | Standard hook call | `distributions.newDistribution` |
-| 250 | Standard hook call | `distributions.distributionDetails` |
+| Line | Pattern            | Key                                  |
+| ---- | ------------------ | ------------------------------------ |
+| 94   | Standard hook call | `navigation.distributions`           |
+| 94   | Standard hook call | `distributions.description`          |
+| 102  | Standard hook call | `distributions.surveyLinks`          |
+| 106  | Standard hook call | `distributions.emailCampaigns`       |
+| 114  | Standard hook call | `common.loading`                     |
+| 114  | Standard hook call | `distributions.selectSurvey`         |
+| 136  | Standard hook call | `distributions.selectASurvey`        |
+| 137  | Standard hook call | `distributions.selectSurveyForLinks` |
+| 154  | Standard hook call | `common.all`                         |
+| 155  | Standard hook call | `distributions.statusDraft`          |
+| 156  | Standard hook call | `distributions.statusScheduled`      |
+| 157  | Standard hook call | `distributions.statusSent`           |
+| 164  | Standard hook call | `distributions.searchPlaceholder`    |
+| 173  | Standard hook call | `distributions.newDistribution`      |
+| 185  | Standard hook call | `distributions.selectASurvey`        |
+| 186  | Standard hook call | `distributions.selectSurveyForEmail` |
+| 199  | Standard hook call | `distributions.noFound`              |
+| 199  | Standard hook call | `distributions.createFirst`          |
+| 200  | Standard hook call | `distributions.tryAdjustFilters`     |
+| 200  | Standard hook call | `distributions.createFirstDesc`      |
+| 206  | Standard hook call | `distributions.newDistribution`      |
+| 250  | Standard hook call | `distributions.distributionDetails`  |
 
 ### src/pages/Distributions/components/DistributionCard.tsx (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 41 | Standard hook call | `distributions.untitledDistribution` |
-| 43 | Standard hook call | `distributions.created` |
-| 55 | Standard hook call | `distributions.viewDetails` |
-| 59 | Standard hook call | `distributions.cancelSchedule` |
-| 64 | Standard hook call | `distributions.sending` |
-| 64 | Standard hook call | `distributions.sendNow` |
-| 69 | Standard hook call | `common.delete` |
-| 79 | Standard hook call | `distributions.openRate` |
-| 87 | With options object | `distributions.sentCountLabel` |
-| 97 | Standard hook call | `distributions.scheduledFor` |
-| 106 | With options object | `distributions.readyToSend` |
-| 114 | With options object | `distributions.recipientsCount` |
-| 117 | Dynamic/variable key | `[DYNAMIC] config.labelKey` |
+| Line | Pattern              | Key                                  |
+| ---- | -------------------- | ------------------------------------ |
+| 41   | Standard hook call   | `distributions.untitledDistribution` |
+| 43   | Standard hook call   | `distributions.created`              |
+| 55   | Standard hook call   | `distributions.viewDetails`          |
+| 59   | Standard hook call   | `distributions.cancelSchedule`       |
+| 64   | Standard hook call   | `distributions.sending`              |
+| 64   | Standard hook call   | `distributions.sendNow`              |
+| 69   | Standard hook call   | `common.delete`                      |
+| 79   | Standard hook call   | `distributions.openRate`             |
+| 87   | With options object  | `distributions.sentCountLabel`       |
+| 97   | Standard hook call   | `distributions.scheduledFor`         |
+| 106  | With options object  | `distributions.readyToSend`          |
+| 114  | With options object  | `distributions.recipientsCount`      |
+| 117  | Dynamic/variable key | `[DYNAMIC] config.labelKey`          |
 
 ### src/pages/Distributions/hooks/useDistributionsPage.ts (18)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 85 | Standard hook call | `distributions.sendDistribution` |
-| 86 | Standard hook call | `distributions.sendConfirm` |
-| 87 | Standard hook call | `distributions.sendNow` |
-| 94 | Standard hook call | `distributions.sendSuccess` |
-| 98 | Standard hook call | `common.unknownError` |
-| 99 | Standard hook call | `distributions.sendError` |
-| 108 | Standard hook call | `distributions.cancelDistribution` |
-| 109 | Standard hook call | `distributions.cancelConfirm` |
-| 110 | Standard hook call | `distributions.cancelDistribution` |
-| 118 | Standard hook call | `distributions.cancelSuccess` |
-| 120 | Standard hook call | `common.unknownError` |
-| 121 | Standard hook call | `distributions.cancelError` |
-| 130 | Standard hook call | `distributions.deleteDistribution` |
-| 131 | Standard hook call | `distributions.deleteConfirm` |
-| 132 | Standard hook call | `common.delete` |
-| 140 | Standard hook call | `distributions.deleteSuccess` |
-| 142 | Standard hook call | `common.unknownError` |
-| 143 | Standard hook call | `distributions.deleteError` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 85   | Standard hook call | `distributions.sendDistribution`   |
+| 86   | Standard hook call | `distributions.sendConfirm`        |
+| 87   | Standard hook call | `distributions.sendNow`            |
+| 94   | Standard hook call | `distributions.sendSuccess`        |
+| 98   | Standard hook call | `common.unknownError`              |
+| 99   | Standard hook call | `distributions.sendError`          |
+| 108  | Standard hook call | `distributions.cancelDistribution` |
+| 109  | Standard hook call | `distributions.cancelConfirm`      |
+| 110  | Standard hook call | `distributions.cancelDistribution` |
+| 118  | Standard hook call | `distributions.cancelSuccess`      |
+| 120  | Standard hook call | `common.unknownError`              |
+| 121  | Standard hook call | `distributions.cancelError`        |
+| 130  | Standard hook call | `distributions.deleteDistribution` |
+| 131  | Standard hook call | `distributions.deleteConfirm`      |
+| 132  | Standard hook call | `common.delete`                    |
+| 140  | Standard hook call | `distributions.deleteSuccess`      |
+| 142  | Standard hook call | `common.unknownError`              |
+| 143  | Standard hook call | `distributions.deleteError`        |
 
 ### src/pages/EmailTemplateEditor/EmailTemplateEditorPage.tsx (15)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 32 | With default value | `emailEditor.saved` |
-| 44 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 45 | With default value | `emailTemplates.editor.visual` |
-| 45 | With default value | `emailTemplates.editor.code` |
-| 59 | Standard hook call | `common.loading` |
-| 71 | With default value | `emailEditor.errors.loadFailed` |
-| 72 | With default value | `emailEditor.errors.loadFailedDescription` |
-| 75 | Standard hook call | `common.back` |
-| 90 | With default value | `emailEditor.errors.noTemplate` |
-| 91 | With default value | `emailEditor.errors.noTemplateDescription` |
-| 94 | With default value | `emailTemplates.backToTemplates` |
-| 107 | With default value | `emailTemplates.editor.visualMode` |
-| 107 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 117 | With default value | `emailTemplates.editor.codeMode` |
-| 117 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| Line | Pattern                                | Key                                        |
+| ---- | -------------------------------------- | ------------------------------------------ |
+| 32   | With default value                     | `emailEditor.saved`                        |
+| 44   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`              |
+| 45   | With default value                     | `emailTemplates.editor.visual`             |
+| 45   | With default value                     | `emailTemplates.editor.code`               |
+| 59   | Standard hook call                     | `common.loading`                           |
+| 71   | With default value                     | `emailEditor.errors.loadFailed`            |
+| 72   | With default value                     | `emailEditor.errors.loadFailedDescription` |
+| 75   | Standard hook call                     | `common.back`                              |
+| 90   | With default value                     | `emailEditor.errors.noTemplate`            |
+| 91   | With default value                     | `emailEditor.errors.noTemplateDescription` |
+| 94   | With default value                     | `emailTemplates.backToTemplates`           |
+| 107  | With default value                     | `emailTemplates.editor.visualMode`         |
+| 107  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`              |
+| 117  | With default value                     | `emailTemplates.editor.codeMode`           |
+| 117  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`              |
 
 ### src/pages/EmailTemplates/EmailTemplatesPage.tsx (16)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 83 | Standard hook call | `emailTemplates.errors.cannotDeleteDefault` |
-| 92 | Standard hook call | `common.copy` |
-| 135 | Standard hook call | `emailTemplates.title` |
-| 136 | Standard hook call | `emailTemplates.description` |
-| 140 | Standard hook call | `emailTemplates.newTemplate` |
-| 146 | Standard hook call | `emailTemplates.searchPlaceholder` |
-| 149 | Standard hook call | `common.all` |
-| 150 | Standard hook call | `emailTemplates.types.invitation` |
-| 151 | Standard hook call | `emailTemplates.types.reminder` |
-| 152 | Standard hook call | `emailTemplates.types.thankYou` |
-| 153 | Standard hook call | `emailTemplates.types.custom` |
-| 171 | Standard hook call | `emailTemplates.errors.loadFailed` |
-| 172 | Standard hook call | `emailTemplates.errors.loadFailedDescription` |
-| 175 | Standard hook call | `common.retry` |
-| 215 | Standard hook call | `common.default` |
-| 240 | Standard hook call | `emailTemplates.newTemplate` |
+| Line | Pattern            | Key                                           |
+| ---- | ------------------ | --------------------------------------------- |
+| 83   | Standard hook call | `emailTemplates.errors.cannotDeleteDefault`   |
+| 92   | Standard hook call | `common.copy`                                 |
+| 135  | Standard hook call | `emailTemplates.title`                        |
+| 136  | Standard hook call | `emailTemplates.description`                  |
+| 140  | Standard hook call | `emailTemplates.newTemplate`                  |
+| 146  | Standard hook call | `emailTemplates.searchPlaceholder`            |
+| 149  | Standard hook call | `common.all`                                  |
+| 150  | Standard hook call | `emailTemplates.types.invitation`             |
+| 151  | Standard hook call | `emailTemplates.types.reminder`               |
+| 152  | Standard hook call | `emailTemplates.types.thankYou`               |
+| 153  | Standard hook call | `emailTemplates.types.custom`                 |
+| 171  | Standard hook call | `emailTemplates.errors.loadFailed`            |
+| 172  | Standard hook call | `emailTemplates.errors.loadFailedDescription` |
+| 175  | Standard hook call | `common.retry`                                |
+| 215  | Standard hook call | `common.default`                              |
+| 240  | Standard hook call | `emailTemplates.newTemplate`                  |
 
 ### src/pages/Error/ErrorPage.tsx (16)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 48 | Standard hook call | `errors.serverError` |
-| 49 | Standard hook call | `errors.serverErrorDesc` |
-| 54 | Standard hook call | `errors.notFound` |
-| 55 | Standard hook call | `errors.notFoundDesc` |
-| 57 | Standard hook call | `errors.accessDenied` |
-| 58 | Standard hook call | `errors.accessDeniedDesc` |
-| 60 | Standard hook call | `errors.unauthorized` |
-| 61 | Standard hook call | `errors.unauthorizedDesc` |
-| 64 | Standard hook call | `errors.serverErrorDesc` |
-| 126 | Standard hook call | `errors.hideDetails` |
-| 126 | Standard hook call | `errors.showDetails` |
-| 141 | Standard hook call | `errors.goHome` |
-| 145 | Standard hook call | `errors.tryAgain` |
-| 151 | Standard hook call | `errors.thinkBug` |
-| 154 | Standard hook call | `errors.reportIssue` |
-| 162 | Standard hook call | `errors.errorId` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 48   | Standard hook call | `errors.serverError`      |
+| 49   | Standard hook call | `errors.serverErrorDesc`  |
+| 54   | Standard hook call | `errors.notFound`         |
+| 55   | Standard hook call | `errors.notFoundDesc`     |
+| 57   | Standard hook call | `errors.accessDenied`     |
+| 58   | Standard hook call | `errors.accessDeniedDesc` |
+| 60   | Standard hook call | `errors.unauthorized`     |
+| 61   | Standard hook call | `errors.unauthorizedDesc` |
+| 64   | Standard hook call | `errors.serverErrorDesc`  |
+| 126  | Standard hook call | `errors.hideDetails`      |
+| 126  | Standard hook call | `errors.showDetails`      |
+| 141  | Standard hook call | `errors.goHome`           |
+| 145  | Standard hook call | `errors.tryAgain`         |
+| 151  | Standard hook call | `errors.thinkBug`         |
+| 154  | Standard hook call | `errors.reportIssue`      |
+| 162  | Standard hook call | `errors.errorId`          |
 
 ### src/pages/ForgotPassword/ForgotPasswordPage.tsx (17)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 40 | Standard hook call | `forgotPassword.toast.success` |
-| 40 | Standard hook call | `forgotPassword.toast.successDescription` |
-| 42 | Standard hook call | `forgotPassword.toast.error` |
-| 44 | Standard hook call | `forgotPassword.toast.requestFailed` |
-| 58 | Standard hook call | `forgotPassword.emailSent.title` |
-| 67 | Standard hook call | `forgotPassword.emailSent.description` |
-| 69 | Standard hook call | `forgotPassword.emailSent.expiry` |
-| 78 | Standard hook call | `forgotPassword.emailSent.tryAgain` |
-| 84 | Standard hook call | `auth.backToLogin` |
-| 101 | Standard hook call | `forgotPassword.title` |
-| 102 | Standard hook call | `forgotPassword.subtitle` |
-| 107 | Standard hook call | `forgotPassword.cardTitle` |
-| 108 | Standard hook call | `forgotPassword.cardDescription` |
-| 121 | Standard hook call | `auth.email` |
-| 123 | Standard hook call | `auth.forgotPasswordEmailPlaceholder` |
-| 133 | Standard hook call | `forgotPassword.sendResetLink` |
-| 137 | Standard hook call | `auth.backToLogin` |
+| Line | Pattern            | Key                                       |
+| ---- | ------------------ | ----------------------------------------- |
+| 40   | Standard hook call | `forgotPassword.toast.success`            |
+| 40   | Standard hook call | `forgotPassword.toast.successDescription` |
+| 42   | Standard hook call | `forgotPassword.toast.error`              |
+| 44   | Standard hook call | `forgotPassword.toast.requestFailed`      |
+| 58   | Standard hook call | `forgotPassword.emailSent.title`          |
+| 67   | Standard hook call | `forgotPassword.emailSent.description`    |
+| 69   | Standard hook call | `forgotPassword.emailSent.expiry`         |
+| 78   | Standard hook call | `forgotPassword.emailSent.tryAgain`       |
+| 84   | Standard hook call | `auth.backToLogin`                        |
+| 101  | Standard hook call | `forgotPassword.title`                    |
+| 102  | Standard hook call | `forgotPassword.subtitle`                 |
+| 107  | Standard hook call | `forgotPassword.cardTitle`                |
+| 108  | Standard hook call | `forgotPassword.cardDescription`          |
+| 121  | Standard hook call | `auth.email`                              |
+| 123  | Standard hook call | `auth.forgotPasswordEmailPlaceholder`     |
+| 133  | Standard hook call | `forgotPassword.sendResetLink`            |
+| 137  | Standard hook call | `auth.backToLogin`                        |
 
 ### src/pages/Login/LoginPage.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 64 | Standard hook call | `auth.welcomeBack` |
-| 67 | Standard hook call | `auth.invalidCredentials` |
-| 69 | Standard hook call | `auth.loginFailed` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 64   | Standard hook call | `auth.welcomeBack`        |
+| 67   | Standard hook call | `auth.invalidCredentials` |
+| 69   | Standard hook call | `auth.loginFailed`        |
 
 ### src/pages/Login/sections/IllustrationPanel.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | With default value | `auth.illustrationTitle` |
-| 22 | With default value | `auth.illustrationSubtitle` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 20   | With default value | `auth.illustrationTitle`    |
+| 22   | With default value | `auth.illustrationSubtitle` |
 
 ### src/pages/Login/sections/LoginForm.tsx (12)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 39 | With default value | `auth.welcomeBack` |
-| 40 | With default value | `auth.signInToContinue` |
-| 55 | Standard hook call | `auth.email` |
-| 59 | Standard hook call | `auth.emailPlaceholder` |
-| 68 | Standard hook call | `auth.password` |
-| 72 | Standard hook call | `auth.passwordPlaceholder` |
-| 92 | Standard hook call | `auth.rememberMe` |
-| 95 | Standard hook call | `auth.forgotPassword` |
-| 101 | Standard hook call | `auth.signIn` |
-| 111 | With default value | `auth.orContinueWith` |
-| 119 | Standard hook call | `auth.dontHaveAccount` |
-| 121 | Standard hook call | `auth.signUp` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 39   | With default value | `auth.welcomeBack`         |
+| 40   | With default value | `auth.signInToContinue`    |
+| 55   | Standard hook call | `auth.email`               |
+| 59   | Standard hook call | `auth.emailPlaceholder`    |
+| 68   | Standard hook call | `auth.password`            |
+| 72   | Standard hook call | `auth.passwordPlaceholder` |
+| 92   | Standard hook call | `auth.rememberMe`          |
+| 95   | Standard hook call | `auth.forgotPassword`      |
+| 101  | Standard hook call | `auth.signIn`              |
+| 111  | With default value | `auth.orContinueWith`      |
+| 119  | Standard hook call | `auth.dontHaveAccount`     |
+| 121  | Standard hook call | `auth.signUp`              |
 
 ### src/pages/NamespaceSettings/NamespaceSettingsPage.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 25 | Standard hook call | `workspaceSettings.tabs.general` |
-| 26 | Standard hook call | `workspaceSettings.tabs.members` |
-| 27 | Standard hook call | `workspaceSettings.tabs.integrations` |
-| 28 | Standard hook call | `workspaceSettings.tabs.billing` |
-| 36 | Standard hook call | `workspaceSettings.errors.loadFailed` |
-| 37 | Standard hook call | `workspaceSettings.errors.loadFailedDescription` |
-| 41 | Standard hook call | `workspaceSettings.backToWorkspaces` |
-| 58 | Standard hook call | `common.back` |
+| Line | Pattern            | Key                                              |
+| ---- | ------------------ | ------------------------------------------------ |
+| 25   | Standard hook call | `workspaceSettings.tabs.general`                 |
+| 26   | Standard hook call | `workspaceSettings.tabs.members`                 |
+| 27   | Standard hook call | `workspaceSettings.tabs.integrations`            |
+| 28   | Standard hook call | `workspaceSettings.tabs.billing`                 |
+| 36   | Standard hook call | `workspaceSettings.errors.loadFailed`            |
+| 37   | Standard hook call | `workspaceSettings.errors.loadFailedDescription` |
+| 41   | Standard hook call | `workspaceSettings.backToWorkspaces`             |
+| 58   | Standard hook call | `common.back`                                    |
 
 ### src/pages/NamespaceSettings/config.ts (21)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 7 | Standard hook call | `workspaceSettings.billing.tiers.free.label` |
-| 8 | Standard hook call | `workspaceSettings.billing.tiers.free.description` |
-| 12 | Standard hook call | `workspaceSettings.billing.tiers.free.features.surveys` |
-| 13 | Standard hook call | `workspaceSettings.billing.tiers.free.features.responses` |
-| 14 | Standard hook call | `workspaceSettings.billing.tiers.free.features.analytics` |
-| 15 | Standard hook call | `workspaceSettings.billing.tiers.free.features.teamMembers` |
-| 19 | Standard hook call | `workspaceSettings.billing.tiers.pro.label` |
-| 20 | Standard hook call | `workspaceSettings.billing.tiers.pro.description` |
-| 24 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.surveys` |
-| 25 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.responses` |
-| 26 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.analytics` |
-| 27 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.teamMembers` |
-| 28 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.branding` |
-| 29 | Standard hook call | `workspaceSettings.billing.tiers.pro.features.support` |
-| 33 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.label` |
-| 34 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.description` |
-| 38 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.unlimited` |
-| 39 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.integrations` |
-| 40 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.support` |
-| 41 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.security` |
-| 42 | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.sla` |
+| Line | Pattern            | Key                                                                |
+| ---- | ------------------ | ------------------------------------------------------------------ |
+| 7    | Standard hook call | `workspaceSettings.billing.tiers.free.label`                       |
+| 8    | Standard hook call | `workspaceSettings.billing.tiers.free.description`                 |
+| 12   | Standard hook call | `workspaceSettings.billing.tiers.free.features.surveys`            |
+| 13   | Standard hook call | `workspaceSettings.billing.tiers.free.features.responses`          |
+| 14   | Standard hook call | `workspaceSettings.billing.tiers.free.features.analytics`          |
+| 15   | Standard hook call | `workspaceSettings.billing.tiers.free.features.teamMembers`        |
+| 19   | Standard hook call | `workspaceSettings.billing.tiers.pro.label`                        |
+| 20   | Standard hook call | `workspaceSettings.billing.tiers.pro.description`                  |
+| 24   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.surveys`             |
+| 25   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.responses`           |
+| 26   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.analytics`           |
+| 27   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.teamMembers`         |
+| 28   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.branding`            |
+| 29   | Standard hook call | `workspaceSettings.billing.tiers.pro.features.support`             |
+| 33   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.label`                 |
+| 34   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.description`           |
+| 38   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.unlimited`    |
+| 39   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.integrations` |
+| 40   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.support`      |
+| 41   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.security`     |
+| 42   | Standard hook call | `workspaceSettings.billing.tiers.enterprise.features.sla`          |
 
 ### src/pages/NamespaceSettings/sections/BillingSettings.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 21 | Standard hook call | `workspaceSettings.billing.title` |
-| 22 | Standard hook call | `workspaceSettings.billing.description` |
-| 33 | Standard hook call | `workspaceSettings.billing.currentPlan` |
-| 51 | Standard hook call | `workspaceSettings.billing.upgradePlan` |
+| Line | Pattern            | Key                                     |
+| ---- | ------------------ | --------------------------------------- |
+| 21   | Standard hook call | `workspaceSettings.billing.title`       |
+| 22   | Standard hook call | `workspaceSettings.billing.description` |
+| 33   | Standard hook call | `workspaceSettings.billing.currentPlan` |
+| 51   | Standard hook call | `workspaceSettings.billing.upgradePlan` |
 
 ### src/pages/NamespaceSettings/sections/DangerZone.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 21 | Standard hook call | `workspaceSettings.dangerZone.deleteTitle` |
-| 22 | With options object | `workspaceSettings.dangerZone.deleteConfirmation` |
-| 23 | Standard hook call | `workspaceSettings.dangerZone.deleteTitle` |
-| 41 | Standard hook call | `workspaceSettings.dangerZone.title` |
-| 43 | Standard hook call | `workspaceSettings.dangerZone.description` |
-| 48 | Standard hook call | `workspaceSettings.dangerZone.deleteWorkspace` |
-| 49 | Standard hook call | `workspaceSettings.dangerZone.deleteWarning` |
-| 58 | Standard hook call | `common.deleting` |
-| 58 | Standard hook call | `workspaceSettings.dangerZone.deleteTitle` |
+| Line | Pattern             | Key                                               |
+| ---- | ------------------- | ------------------------------------------------- |
+| 21   | Standard hook call  | `workspaceSettings.dangerZone.deleteTitle`        |
+| 22   | With options object | `workspaceSettings.dangerZone.deleteConfirmation` |
+| 23   | Standard hook call  | `workspaceSettings.dangerZone.deleteTitle`        |
+| 41   | Standard hook call  | `workspaceSettings.dangerZone.title`              |
+| 43   | Standard hook call  | `workspaceSettings.dangerZone.description`        |
+| 48   | Standard hook call  | `workspaceSettings.dangerZone.deleteWorkspace`    |
+| 49   | Standard hook call  | `workspaceSettings.dangerZone.deleteWarning`      |
+| 58   | Standard hook call  | `common.deleting`                                 |
+| 58   | Standard hook call  | `workspaceSettings.dangerZone.deleteTitle`        |
 
 ### src/pages/NamespaceSettings/sections/GeneralSettings.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 79 | Standard hook call | `workspaceSettings.general.title` |
-| 80 | Standard hook call | `workspaceSettings.general.description` |
-| 86 | Standard hook call | `workspaceSettings.general.logo` |
-| 89 | Standard hook call | `workspaceSettings.general.logoHelperText` |
-| 97 | Standard hook call | `workspaceSettings.general.name` |
-| 106 | Standard hook call | `workspaceSettings.general.url` |
-| 107 | Standard hook call | `workspaceSettings.general.urlHelperText` |
-| 112 | Standard hook call | `workspaceSettings.general.descriptionLabel` |
-| 115 | Standard hook call | `workspaceSettings.general.descriptionPlaceholder` |
-| 126 | Standard hook call | `common.saving` |
-| 126 | Standard hook call | `common.saveChanges` |
+| Line | Pattern            | Key                                                |
+| ---- | ------------------ | -------------------------------------------------- |
+| 79   | Standard hook call | `workspaceSettings.general.title`                  |
+| 80   | Standard hook call | `workspaceSettings.general.description`            |
+| 86   | Standard hook call | `workspaceSettings.general.logo`                   |
+| 89   | Standard hook call | `workspaceSettings.general.logoHelperText`         |
+| 97   | Standard hook call | `workspaceSettings.general.name`                   |
+| 106  | Standard hook call | `workspaceSettings.general.url`                    |
+| 107  | Standard hook call | `workspaceSettings.general.urlHelperText`          |
+| 112  | Standard hook call | `workspaceSettings.general.descriptionLabel`       |
+| 115  | Standard hook call | `workspaceSettings.general.descriptionPlaceholder` |
+| 126  | Standard hook call | `common.saving`                                    |
+| 126  | Standard hook call | `common.saveChanges`                               |
 
 ### src/pages/NamespaceSettings/sections/IntegrationsSettings.tsx (31)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 24 | Standard hook call | `workspaceSettings.integrations.apiKeys.copied` |
-| 29 | Standard hook call | `workspaceSettings.integrations.apiKeys.regenerateComingSoon` |
-| 33 | Standard hook call | `workspaceSettings.integrations.apiKeys.createComingSoon` |
-| 40 | Standard hook call | `workspaceSettings.integrations.apps.slack` |
-| 48 | Standard hook call | `workspaceSettings.integrations.apps.zapier` |
-| 56 | Standard hook call | `workspaceSettings.integrations.apps.googleSheets` |
-| 64 | Standard hook call | `workspaceSettings.integrations.apps.salesforce` |
-| 80 | Standard hook call | `workspaceSettings.integrations.apiKeys.title` |
-| 82 | Standard hook call | `workspaceSettings.integrations.apiKeys.description` |
-| 86 | Standard hook call | `workspaceSettings.integrations.apiKeys.createKey` |
-| 95 | Standard hook call | `workspaceSettings.integrations.apiKeys.emptyTitle` |
-| 96 | Standard hook call | `workspaceSettings.integrations.apiKeys.emptyDescription` |
-| 101 | Standard hook call | `workspaceSettings.integrations.apiKeys.createKey` |
-| 123 | Standard hook call | `workspaceSettings.integrations.apiKeys.lastUsed` |
-| 128 | Standard hook call | `common.copy` |
-| 133 | Standard hook call | `workspaceSettings.integrations.apiKeys.regenerate` |
-| 151 | Standard hook call | `workspaceSettings.integrations.webhooks.title` |
-| 153 | Standard hook call | `workspaceSettings.integrations.webhooks.description` |
-| 159 | Standard hook call | `common.enabled` |
-| 159 | Standard hook call | `common.disabled` |
-| 167 | Standard hook call | `workspaceSettings.integrations.webhooks.endpointUrl` |
-| 171 | Standard hook call | `common.save` |
-| 177 | Standard hook call | `workspaceSettings.integrations.webhooks.events` |
-| 177 | Standard hook call | `workspaceSettings.integrations.webhooks.eventsList` |
-| 184 | Standard hook call | `workspaceSettings.integrations.webhooks.disabledTitle` |
-| 185 | Standard hook call | `workspaceSettings.integrations.webhooks.disabledDescription` |
-| 197 | Standard hook call | `workspaceSettings.integrations.connectedApps.title` |
-| 199 | Standard hook call | `workspaceSettings.integrations.connectedApps.description` |
-| 215 | Standard hook call | `common.comingSoon` |
-| 224 | Standard hook call | `common.disconnect` |
-| 227 | Standard hook call | `common.connect` |
+| Line | Pattern            | Key                                                           |
+| ---- | ------------------ | ------------------------------------------------------------- |
+| 24   | Standard hook call | `workspaceSettings.integrations.apiKeys.copied`               |
+| 29   | Standard hook call | `workspaceSettings.integrations.apiKeys.regenerateComingSoon` |
+| 33   | Standard hook call | `workspaceSettings.integrations.apiKeys.createComingSoon`     |
+| 40   | Standard hook call | `workspaceSettings.integrations.apps.slack`                   |
+| 48   | Standard hook call | `workspaceSettings.integrations.apps.zapier`                  |
+| 56   | Standard hook call | `workspaceSettings.integrations.apps.googleSheets`            |
+| 64   | Standard hook call | `workspaceSettings.integrations.apps.salesforce`              |
+| 80   | Standard hook call | `workspaceSettings.integrations.apiKeys.title`                |
+| 82   | Standard hook call | `workspaceSettings.integrations.apiKeys.description`          |
+| 86   | Standard hook call | `workspaceSettings.integrations.apiKeys.createKey`            |
+| 95   | Standard hook call | `workspaceSettings.integrations.apiKeys.emptyTitle`           |
+| 96   | Standard hook call | `workspaceSettings.integrations.apiKeys.emptyDescription`     |
+| 101  | Standard hook call | `workspaceSettings.integrations.apiKeys.createKey`            |
+| 123  | Standard hook call | `workspaceSettings.integrations.apiKeys.lastUsed`             |
+| 128  | Standard hook call | `common.copy`                                                 |
+| 133  | Standard hook call | `workspaceSettings.integrations.apiKeys.regenerate`           |
+| 151  | Standard hook call | `workspaceSettings.integrations.webhooks.title`               |
+| 153  | Standard hook call | `workspaceSettings.integrations.webhooks.description`         |
+| 159  | Standard hook call | `common.enabled`                                              |
+| 159  | Standard hook call | `common.disabled`                                             |
+| 167  | Standard hook call | `workspaceSettings.integrations.webhooks.endpointUrl`         |
+| 171  | Standard hook call | `common.save`                                                 |
+| 177  | Standard hook call | `workspaceSettings.integrations.webhooks.events`              |
+| 177  | Standard hook call | `workspaceSettings.integrations.webhooks.eventsList`          |
+| 184  | Standard hook call | `workspaceSettings.integrations.webhooks.disabledTitle`       |
+| 185  | Standard hook call | `workspaceSettings.integrations.webhooks.disabledDescription` |
+| 197  | Standard hook call | `workspaceSettings.integrations.connectedApps.title`          |
+| 199  | Standard hook call | `workspaceSettings.integrations.connectedApps.description`    |
+| 215  | Standard hook call | `common.comingSoon`                                           |
+| 224  | Standard hook call | `common.disconnect`                                           |
+| 227  | Standard hook call | `common.connect`                                              |
 
 ### src/pages/Namespaces/NamespacesPage.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 73 | With options object | `workspaces.switchedTo` |
-| 90 | Standard hook call | `workspaces.title` |
-| 91 | Standard hook call | `workspaces.description` |
-| 95 | Standard hook call | `workspaces.newWorkspace` |
-| 101 | Standard hook call | `workspaces.searchPlaceholder` |
-| 116 | Standard hook call | `workspaces.loadError` |
-| 117 | Standard hook call | `workspaces.loadErrorDesc` |
-| 120 | Standard hook call | `errors.tryAgain` |
+| Line | Pattern             | Key                            |
+| ---- | ------------------- | ------------------------------ |
+| 73   | With options object | `workspaces.switchedTo`        |
+| 90   | Standard hook call  | `workspaces.title`             |
+| 91   | Standard hook call  | `workspaces.description`       |
+| 95   | Standard hook call  | `workspaces.newWorkspace`      |
+| 101  | Standard hook call  | `workspaces.searchPlaceholder` |
+| 116  | Standard hook call  | `workspaces.loadError`         |
+| 117  | Standard hook call  | `workspaces.loadErrorDesc`     |
+| 120  | Standard hook call  | `errors.tryAgain`              |
 
 ### src/pages/Namespaces/components/NamespaceCard.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 28 | Standard hook call | `common.workspaceOptions` |
-| 41 | Standard hook call | `workspaces.switchTo` |
-| 50 | Standard hook call | `workspaces.settings` |
-| 63 | Standard hook call | `workspaces.deleteWorkspace` |
-| 84 | Standard hook call | `workspaces.active` |
-| 93 | Standard hook call | `workspaces.roles.owner` |
+| Line | Pattern            | Key                          |
+| ---- | ------------------ | ---------------------------- |
+| 28   | Standard hook call | `common.workspaceOptions`    |
+| 41   | Standard hook call | `workspaces.switchTo`        |
+| 50   | Standard hook call | `workspaces.settings`        |
+| 63   | Standard hook call | `workspaces.deleteWorkspace` |
+| 84   | Standard hook call | `workspaces.active`          |
+| 93   | Standard hook call | `workspaces.roles.owner`     |
 
 ### src/pages/Namespaces/components/NamespacesEmptyState.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 15 | Standard hook call | `workspaces.workspace` |
-| 19 | Standard hook call | `workspaces.welcome` |
-| 20 | Standard hook call | `workspaces.tryAdjustSearch` |
-| 20 | Standard hook call | `workspaces.welcomeDescription` |
-| 21 | Standard hook call | `workspaces.createFirst` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 15   | Standard hook call | `workspaces.workspace`          |
+| 19   | Standard hook call | `workspaces.welcome`            |
+| 20   | Standard hook call | `workspaces.tryAdjustSearch`    |
+| 20   | Standard hook call | `workspaces.welcomeDescription` |
+| 21   | Standard hook call | `workspaces.createFirst`        |
 
 ### src/pages/NotFound/NotFoundPage.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 44 | Standard hook call | `errors.notFound` |
-| 48 | Standard hook call | `errors.notFoundDesc` |
-| 59 | Standard hook call | `errors.goBack` |
-| 63 | Standard hook call | `errors.goHome` |
-| 69 | Standard hook call | `common.search` |
-| 72 | Standard hook call | `navigation.surveys` |
-| 75 | Standard hook call | `navigation.templates` |
-| 78 | Standard hook call | `navigation.responses` |
-| 86 | Standard hook call | `errors.generic` |
+| Line | Pattern            | Key                    |
+| ---- | ------------------ | ---------------------- |
+| 44   | Standard hook call | `errors.notFound`      |
+| 48   | Standard hook call | `errors.notFoundDesc`  |
+| 59   | Standard hook call | `errors.goBack`        |
+| 63   | Standard hook call | `errors.goHome`        |
+| 69   | Standard hook call | `common.search`        |
+| 72   | Standard hook call | `navigation.surveys`   |
+| 75   | Standard hook call | `navigation.templates` |
+| 78   | Standard hook call | `navigation.responses` |
+| 86   | Standard hook call | `errors.generic`       |
 
 ### src/pages/PublicSurvey/PublicSurveyPage.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 112 | Standard hook call | `publicSurveyPage.notAvailable` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 112  | Standard hook call | `publicSurveyPage.notAvailable` |
 
 ### src/pages/PublicSurvey/components/PublicSurveyLayout.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Standard hook call | `common.surveyFallback` |
-| 22 | Standard hook call | `common.surveyFallback` |
-| 25 | Standard hook call | `common.appTitle` |
-| 79 | Standard hook call | `a11y.surveyLogo` |
-| 98 | Standard hook call | `publicSurveyPage.poweredBy` |
+| Line | Pattern            | Key                          |
+| ---- | ------------------ | ---------------------------- |
+| 20   | Standard hook call | `common.surveyFallback`      |
+| 22   | Standard hook call | `common.surveyFallback`      |
+| 25   | Standard hook call | `common.appTitle`            |
+| 79   | Standard hook call | `a11y.surveyLogo`            |
+| 98   | Standard hook call | `publicSurveyPage.poweredBy` |
 
 ### src/pages/PublicSurvey/sections/OneByOneSection.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 40 | Dynamic/variable key | `[DYNAMIC] error` |
-| 78 | Standard hook call | `publicSurveyPage.submitError` |
+| Line | Pattern              | Key                            |
+| ---- | -------------------- | ------------------------------ |
+| 40   | Dynamic/variable key | `[DYNAMIC] error`              |
+| 78   | Standard hook call   | `publicSurveyPage.submitError` |
 
 ### src/pages/PublicSurvey/sections/StatesSections.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 16 | Standard hook call | `publicSurveyPage.loading` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 16   | Standard hook call | `publicSurveyPage.loading` |
 
 ### src/pages/RecurringSurveys/RecurringSurveysPage.tsx (16)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 104 | Standard hook call | `recurringSurveys.deleteConfirm.title` |
-| 105 | Standard hook call | `recurringSurveys.deleteConfirm.description` |
-| 106 | Standard hook call | `common.delete` |
-| 134 | Standard hook call | `recurringSurveys.triggerConfirm.title` |
-| 135 | Standard hook call | `recurringSurveys.triggerConfirm.description` |
-| 136 | Standard hook call | `recurringSurveys.runNow` |
-| 174 | Standard hook call | `recurringSurveys.title` |
-| 175 | Standard hook call | `recurringSurveys.description` |
-| 180 | Standard hook call | `recurringSurveys.createSchedule` |
-| 186 | Standard hook call | `recurringSurveys.searchPlaceholder` |
-| 189 | Standard hook call | `recurringSurveys.tabs.all` |
-| 190 | Standard hook call | `recurringSurveys.tabs.active` |
-| 191 | Standard hook call | `recurringSurveys.tabs.paused` |
-| 216 | Standard hook call | `recurringSurveys.loadError` |
-| 217 | Standard hook call | `recurringSurveys.loadErrorDesc` |
-| 220 | Standard hook call | `errors.tryAgain` |
+| Line | Pattern            | Key                                           |
+| ---- | ------------------ | --------------------------------------------- |
+| 104  | Standard hook call | `recurringSurveys.deleteConfirm.title`        |
+| 105  | Standard hook call | `recurringSurveys.deleteConfirm.description`  |
+| 106  | Standard hook call | `common.delete`                               |
+| 134  | Standard hook call | `recurringSurveys.triggerConfirm.title`       |
+| 135  | Standard hook call | `recurringSurveys.triggerConfirm.description` |
+| 136  | Standard hook call | `recurringSurveys.runNow`                     |
+| 174  | Standard hook call | `recurringSurveys.title`                      |
+| 175  | Standard hook call | `recurringSurveys.description`                |
+| 180  | Standard hook call | `recurringSurveys.createSchedule`             |
+| 186  | Standard hook call | `recurringSurveys.searchPlaceholder`          |
+| 189  | Standard hook call | `recurringSurveys.tabs.all`                   |
+| 190  | Standard hook call | `recurringSurveys.tabs.active`                |
+| 191  | Standard hook call | `recurringSurveys.tabs.paused`                |
+| 216  | Standard hook call | `recurringSurveys.loadError`                  |
+| 217  | Standard hook call | `recurringSurveys.loadErrorDesc`              |
+| 220  | Standard hook call | `errors.tryAgain`                             |
 
 ### src/pages/RecurringSurveys/sections/StatsCards.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 41 | Standard hook call | `recurringSurveys.stats.total` |
-| 53 | Standard hook call | `recurringSurveys.stats.active` |
-| 65 | Standard hook call | `recurringSurveys.stats.paused` |
-| 77 | Standard hook call | `recurringSurveys.stats.totalRuns` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 41   | Standard hook call | `recurringSurveys.stats.total`     |
+| 53   | Standard hook call | `recurringSurveys.stats.active`    |
+| 65   | Standard hook call | `recurringSurveys.stats.paused`    |
+| 77   | Standard hook call | `recurringSurveys.stats.totalRuns` |
 
 ### src/pages/RecurringSurveys/sections/UpcomingRunsPreview.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 40 | Standard hook call | `recurringSurveys.upcomingRuns` |
-| 62 | Standard hook call | `recurringSurveys.soon` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 40   | Standard hook call | `recurringSurveys.upcomingRuns` |
+| 62   | Standard hook call | `recurringSurveys.soon`         |
 
 ### src/pages/Register/RegisterPage.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 51 | Standard hook call | `auth.registrationSuccess` |
-| 51 | Standard hook call | `auth.welcomeBack` |
-| 54 | Standard hook call | `errors.generic` |
-| 56 | Standard hook call | `errors.generic` |
-| 77 | Standard hook call | `auth.createAccount` |
-| 78 | With default value | `auth.joinUs` |
-| 95 | With default value | `auth.registerIllustrationTitle` |
-| 97 | With default value | `auth.registerIllustrationSubtitle` |
+| Line | Pattern            | Key                                 |
+| ---- | ------------------ | ----------------------------------- |
+| 51   | Standard hook call | `auth.registrationSuccess`          |
+| 51   | Standard hook call | `auth.welcomeBack`                  |
+| 54   | Standard hook call | `errors.generic`                    |
+| 56   | Standard hook call | `errors.generic`                    |
+| 77   | Standard hook call | `auth.createAccount`                |
+| 78   | With default value | `auth.joinUs`                       |
+| 95   | With default value | `auth.registerIllustrationTitle`    |
+| 97   | With default value | `auth.registerIllustrationSubtitle` |
 
 ### src/pages/Register/sections/RegisterForm.tsx (13)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 45 | Standard hook call | `register.firstName` |
-| 48 | Standard hook call | `register.firstNamePlaceholder` |
-| 53 | Standard hook call | `register.lastName` |
-| 56 | Standard hook call | `register.lastNamePlaceholder` |
-| 64 | Standard hook call | `auth.email` |
-| 68 | Standard hook call | `auth.emailPlaceholder` |
-| 77 | Standard hook call | `auth.password` |
-| 81 | Standard hook call | `register.createPassword` |
-| 100 | Standard hook call | `auth.confirmPassword` |
-| 104 | Standard hook call | `auth.confirmPassword` |
-| 121 | Standard hook call | `auth.createAccount` |
-| 127 | Standard hook call | `auth.alreadyHaveAccount` |
-| 129 | Standard hook call | `auth.signIn` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 45   | Standard hook call | `register.firstName`            |
+| 48   | Standard hook call | `register.firstNamePlaceholder` |
+| 53   | Standard hook call | `register.lastName`             |
+| 56   | Standard hook call | `register.lastNamePlaceholder`  |
+| 64   | Standard hook call | `auth.email`                    |
+| 68   | Standard hook call | `auth.emailPlaceholder`         |
+| 77   | Standard hook call | `auth.password`                 |
+| 81   | Standard hook call | `register.createPassword`       |
+| 100  | Standard hook call | `auth.confirmPassword`          |
+| 104  | Standard hook call | `auth.confirmPassword`          |
+| 121  | Standard hook call | `auth.createAccount`            |
+| 127  | Standard hook call | `auth.alreadyHaveAccount`       |
+| 129  | Standard hook call | `auth.signIn`                   |
 
 ### src/pages/ResetPassword/ResetPasswordPage.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 27 | Standard hook call | `resetPassword.successTitle` |
-| 27 | Standard hook call | `resetPassword.successDescription` |
-| 29 | Standard hook call | `resetPassword.errors.failed` |
-| 31 | Standard hook call | `resetPassword.errors.resetFailed` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 27   | Standard hook call | `resetPassword.successTitle`       |
+| 27   | Standard hook call | `resetPassword.successDescription` |
+| 29   | Standard hook call | `resetPassword.errors.failed`      |
+| 31   | Standard hook call | `resetPassword.errors.resetFailed` |
 
 ### src/pages/ResetPassword/sections/InvalidLinkState.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 18 | Standard hook call | `resetPassword.invalidLink.title` |
-| 23 | Standard hook call | `resetPassword.invalidLink.description` |
-| 27 | Standard hook call | `resetPassword.invalidLink.requestNewLink` |
-| 31 | Standard hook call | `auth.backToLogin` |
+| Line | Pattern            | Key                                        |
+| ---- | ------------------ | ------------------------------------------ |
+| 18   | Standard hook call | `resetPassword.invalidLink.title`          |
+| 23   | Standard hook call | `resetPassword.invalidLink.description`    |
+| 27   | Standard hook call | `resetPassword.invalidLink.requestNewLink` |
+| 31   | Standard hook call | `auth.backToLogin`                         |
 
 ### src/pages/ResetPassword/sections/ResetPasswordForm.tsx (10)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 54 | Standard hook call | `resetPassword.title` |
-| 56 | Standard hook call | `resetPassword.subtitle` |
-| 62 | Standard hook call | `resetPassword.newPassword` |
-| 63 | Standard hook call | `resetPassword.description` |
-| 77 | Standard hook call | `resetPassword.newPasswordLabel` |
-| 79 | Standard hook call | `resetPassword.newPasswordPlaceholder` |
-| 100 | Standard hook call | `resetPassword.confirmPasswordLabel` |
-| 102 | Standard hook call | `resetPassword.confirmPasswordPlaceholder` |
-| 120 | Standard hook call | `resetPassword.submit` |
-| 124 | Standard hook call | `auth.backToLogin` |
+| Line | Pattern            | Key                                        |
+| ---- | ------------------ | ------------------------------------------ |
+| 54   | Standard hook call | `resetPassword.title`                      |
+| 56   | Standard hook call | `resetPassword.subtitle`                   |
+| 62   | Standard hook call | `resetPassword.newPassword`                |
+| 63   | Standard hook call | `resetPassword.description`                |
+| 77   | Standard hook call | `resetPassword.newPasswordLabel`           |
+| 79   | Standard hook call | `resetPassword.newPasswordPlaceholder`     |
+| 100  | Standard hook call | `resetPassword.confirmPasswordLabel`       |
+| 102  | Standard hook call | `resetPassword.confirmPasswordPlaceholder` |
+| 120  | Standard hook call | `resetPassword.submit`                     |
+| 124  | Standard hook call | `auth.backToLogin`                         |
 
 ### src/pages/ResetPassword/sections/SuccessState.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 17 | Standard hook call | `resetPassword.success.title` |
-| 22 | Standard hook call | `resetPassword.success.description` |
-| 26 | Standard hook call | `resetPassword.success.goToLogin` |
+| Line | Pattern            | Key                                 |
+| ---- | ------------------ | ----------------------------------- |
+| 17   | Standard hook call | `resetPassword.success.title`       |
+| 22   | Standard hook call | `resetPassword.success.description` |
+| 26   | Standard hook call | `resetPassword.success.goToLogin`   |
 
 ### src/pages/Responses/ResponsesPage.tsx (12)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 116 | Standard hook call | `responses.allSurveys` |
-| 173 | Standard hook call | `responses.deleteResponses` |
-| 174 | With options object | `responses.deleteConfirm` |
-| 175 | Standard hook call | `common.delete` |
-| 176 | Standard hook call | `common.cancel` |
-| 213 | Standard hook call | `responses.title` |
-| 214 | Standard hook call | `responses.description` |
-| 220 | Standard hook call | `common.refresh` |
-| 224 | Standard hook call | `responses.export` |
-| 263 | Standard hook call | `responses.selectSurveyTitle` |
-| 264 | Standard hook call | `responses.selectSurveyDesc` |
-| 322 | Standard hook call | `common.loading` |
+| Line | Pattern             | Key                           |
+| ---- | ------------------- | ----------------------------- |
+| 116  | Standard hook call  | `responses.allSurveys`        |
+| 173  | Standard hook call  | `responses.deleteResponses`   |
+| 174  | With options object | `responses.deleteConfirm`     |
+| 175  | Standard hook call  | `common.delete`               |
+| 176  | Standard hook call  | `common.cancel`               |
+| 213  | Standard hook call  | `responses.title`             |
+| 214  | Standard hook call  | `responses.description`       |
+| 220  | Standard hook call  | `common.refresh`              |
+| 224  | Standard hook call  | `responses.export`            |
+| 263  | Standard hook call  | `responses.selectSurveyTitle` |
+| 264  | Standard hook call  | `responses.selectSurveyDesc`  |
+| 322  | Standard hook call  | `common.loading`              |
 
 ### src/pages/Responses/components/BulkActionsBar.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 29 | With options object | `responses.selected` |
-| 33 | Standard hook call | `responses.deleteSelected` |
+| Line | Pattern             | Key                        |
+| ---- | ------------------- | -------------------------- |
+| 29   | With options object | `responses.selected`       |
+| 33   | Standard hook call  | `responses.deleteSelected` |
 
 ### src/pages/Responses/components/FiltersBar.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 49 | Standard hook call | `responses.selectSurvey` |
-| 56 | Standard hook call | `common.all` |
-| 57 | Standard hook call | `responses.complete` |
-| 58 | Standard hook call | `responses.incomplete` |
-| 65 | With options object | `responses.responseCount` |
-| 75 | Standard hook call | `responses.searchPlaceholder` |
+| Line | Pattern             | Key                           |
+| ---- | ------------------- | ----------------------------- |
+| 49   | Standard hook call  | `responses.selectSurvey`      |
+| 56   | Standard hook call  | `common.all`                  |
+| 57   | Standard hook call  | `responses.complete`          |
+| 58   | Standard hook call  | `responses.incomplete`        |
+| 65   | With options object | `responses.responseCount`     |
+| 75   | Standard hook call  | `responses.searchPlaceholder` |
 
 ### src/pages/Responses/components/ResponseRow.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 53 | Standard hook call | `responses.anonymous` |
-| 54 | Standard hook call | `surveys.unknown` |
-| 69 | Standard hook call | `responses.complete` |
-| 73 | Standard hook call | `responses.partial` |
+| Line | Pattern            | Key                   |
+| ---- | ------------------ | --------------------- |
+| 53   | Standard hook call | `responses.anonymous` |
+| 54   | Standard hook call | `surveys.unknown`     |
+| 69   | Standard hook call | `responses.complete`  |
+| 73   | Standard hook call | `responses.partial`   |
 
 ### src/pages/Responses/components/ResponsesEmptyState.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 15 | Standard hook call | `responses.noFound` |
-| 15 | Standard hook call | `responses.noResponses` |
-| 16 | Standard hook call | `responses.noFoundDesc` |
-| 16 | Standard hook call | `responses.noResponsesDesc` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 15   | Standard hook call | `responses.noFound`         |
+| 15   | Standard hook call | `responses.noResponses`     |
+| 16   | Standard hook call | `responses.noFoundDesc`     |
+| 16   | Standard hook call | `responses.noResponsesDesc` |
 
 ### src/pages/Responses/components/ResponsesTableHeader.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 23 | Standard hook call | `responses.respondent` |
-| 24 | Standard hook call | `responses.duration` |
-| 25 | Standard hook call | `responses.submitted` |
-| 26 | Standard hook call | `common.status` |
+| Line | Pattern            | Key                    |
+| ---- | ------------------ | ---------------------- |
+| 23   | Standard hook call | `responses.respondent` |
+| 24   | Standard hook call | `responses.duration`   |
+| 25   | Standard hook call | `responses.submitted`  |
+| 26   | Standard hook call | `common.status`        |
 
 ### src/pages/Settings/SettingsPage.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 173 | Standard hook call | `settings.title` |
-| 174 | Standard hook call | `settings.description` |
-| 183 | Dynamic/variable key | `[DYNAMIC] group.titleKey` |
-| 189 | Dynamic/variable key | `[DYNAMIC] item.labelKey` |
-| 209 | Standard hook call | `settings.title` |
-| 219 | Dynamic/variable key | `[DYNAMIC] group.titleKey` |
-| 222 | Dynamic/variable key | `[DYNAMIC] item.labelKey` |
-| 241 | Dynamic/variable key | `[DYNAMIC] currentItem.labelKey` |
-| 242 | Dynamic/variable key | `[DYNAMIC] currentItem.descriptionKey` |
+| Line | Pattern              | Key                                    |
+| ---- | -------------------- | -------------------------------------- |
+| 173  | Standard hook call   | `settings.title`                       |
+| 174  | Standard hook call   | `settings.description`                 |
+| 183  | Dynamic/variable key | `[DYNAMIC] group.titleKey`             |
+| 189  | Dynamic/variable key | `[DYNAMIC] item.labelKey`              |
+| 209  | Standard hook call   | `settings.title`                       |
+| 219  | Dynamic/variable key | `[DYNAMIC] group.titleKey`             |
+| 222  | Dynamic/variable key | `[DYNAMIC] item.labelKey`              |
+| 241  | Dynamic/variable key | `[DYNAMIC] currentItem.labelKey`       |
+| 242  | Dynamic/variable key | `[DYNAMIC] currentItem.descriptionKey` |
 
 ### src/pages/Settings/sections/AboutSection.tsx (24)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 94 | Standard hook call | `settings.about.title` |
-| 95 | Standard hook call | `settings.about.description` |
-| 102 | Standard hook call | `common.appName` |
-| 103 | With options object | `settings.about.version` |
-| 107 | Standard hook call | `settings.about.madeWith` |
-| 121 | Standard hook call | `settings.about.setupWizard` |
-| 122 | Standard hook call | `settings.about.setupWizardDescription` |
-| 130 | Standard hook call | `onboarding.restartOnboarding` |
-| 131 | Standard hook call | `onboarding.restartOnboardingDescription` |
-| 135 | Standard hook call | `settings.about.onboardingCompleted` |
-| 141 | Standard hook call | `settings.about.onboardingSkipped` |
-| 147 | Standard hook call | `settings.about.restart` |
-| 162 | Standard hook call | `gettingStarted.trigger.title` |
-| 163 | Standard hook call | `gettingStarted.trigger.description` |
-| 171 | Standard hook call | `gettingStarted.welcome.title` |
-| 172 | Standard hook call | `gettingStarted.welcome.description` |
-| 176 | Standard hook call | `settings.about.onboardingCompleted` |
-| 182 | Standard hook call | `gettingStarted.trigger.restart` |
-| 197 | Standard hook call | `settings.about.resources` |
-| 198 | Standard hook call | `settings.about.resourcesDescription` |
-| 205 | Standard hook call | `settings.about.documentation` |
-| 206 | Standard hook call | `settings.about.support` |
-| 207 | Standard hook call | `settings.about.privacy` |
-| 208 | Standard hook call | `settings.about.terms` |
+| Line | Pattern             | Key                                       |
+| ---- | ------------------- | ----------------------------------------- |
+| 94   | Standard hook call  | `settings.about.title`                    |
+| 95   | Standard hook call  | `settings.about.description`              |
+| 102  | Standard hook call  | `common.appName`                          |
+| 103  | With options object | `settings.about.version`                  |
+| 107  | Standard hook call  | `settings.about.madeWith`                 |
+| 121  | Standard hook call  | `settings.about.setupWizard`              |
+| 122  | Standard hook call  | `settings.about.setupWizardDescription`   |
+| 130  | Standard hook call  | `onboarding.restartOnboarding`            |
+| 131  | Standard hook call  | `onboarding.restartOnboardingDescription` |
+| 135  | Standard hook call  | `settings.about.onboardingCompleted`      |
+| 141  | Standard hook call  | `settings.about.onboardingSkipped`        |
+| 147  | Standard hook call  | `settings.about.restart`                  |
+| 162  | Standard hook call  | `gettingStarted.trigger.title`            |
+| 163  | Standard hook call  | `gettingStarted.trigger.description`      |
+| 171  | Standard hook call  | `gettingStarted.welcome.title`            |
+| 172  | Standard hook call  | `gettingStarted.welcome.description`      |
+| 176  | Standard hook call  | `settings.about.onboardingCompleted`      |
+| 182  | Standard hook call  | `gettingStarted.trigger.restart`          |
+| 197  | Standard hook call  | `settings.about.resources`                |
+| 198  | Standard hook call  | `settings.about.resourcesDescription`     |
+| 205  | Standard hook call  | `settings.about.documentation`            |
+| 206  | Standard hook call  | `settings.about.support`                  |
+| 207  | Standard hook call  | `settings.about.privacy`                  |
+| 208  | Standard hook call  | `settings.about.terms`                    |
 
 ### src/pages/Settings/sections/AccessibilitySection.tsx (19)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 52 | Standard hook call | `settings.accessibility.visual.title` |
-| 54 | Standard hook call | `settings.accessibility.visual.description` |
-| 59 | Standard hook call | `settings.accessibility.highContrast.title` |
-| 60 | Standard hook call | `settings.accessibility.highContrast.description` |
-| 68 | Standard hook call | `settings.accessibility.screenReader.title` |
-| 69 | Standard hook call | `settings.accessibility.screenReader.description` |
-| 83 | Standard hook call | `settings.accessibility.motion.title` |
-| 85 | Standard hook call | `settings.accessibility.motion.description` |
-| 89 | Standard hook call | `settings.accessibility.reducedMotion.title` |
-| 90 | Standard hook call | `settings.accessibility.reducedMotion.description` |
-| 103 | Standard hook call | `settings.accessibility.font.title` |
-| 105 | Standard hook call | `settings.accessibility.font.description` |
-| 109 | Standard hook call | `settings.accessibility.fontSize.title` |
-| 127 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
-| 140 | Standard hook call | `settings.accessibility.dyslexiaFont.title` |
-| 141 | Standard hook call | `settings.accessibility.dyslexiaFont.description` |
-| 155 | Standard hook call | `settings.accessibility.preview.title` |
-| 169 | Standard hook call | `settings.accessibility.preview.sampleTitle` |
-| 170 | Standard hook call | `settings.accessibility.preview.sampleText` |
+| Line | Pattern              | Key                                                |
+| ---- | -------------------- | -------------------------------------------------- |
+| 46   | Standard hook call   | `settings.accessibility.visual.title`              |
+| 48   | Standard hook call   | `settings.accessibility.visual.description`        |
+| 53   | Standard hook call   | `settings.accessibility.highContrast.title`        |
+| 54   | Standard hook call   | `settings.accessibility.highContrast.description`  |
+| 62   | Standard hook call   | `settings.accessibility.screenReader.title`        |
+| 63   | Standard hook call   | `settings.accessibility.screenReader.description`  |
+| 77   | Standard hook call   | `settings.accessibility.motion.title`              |
+| 79   | Standard hook call   | `settings.accessibility.motion.description`        |
+| 83   | Standard hook call   | `settings.accessibility.reducedMotion.title`       |
+| 84   | Standard hook call   | `settings.accessibility.reducedMotion.description` |
+| 97   | Standard hook call   | `settings.accessibility.font.title`                |
+| 99   | Standard hook call   | `settings.accessibility.font.description`          |
+| 103  | Standard hook call   | `settings.accessibility.fontSize.title`            |
+| 121  | Dynamic/variable key | `[DYNAMIC] option.labelKey`                        |
+| 134  | Standard hook call   | `settings.accessibility.dyslexiaFont.title`        |
+| 135  | Standard hook call   | `settings.accessibility.dyslexiaFont.description`  |
+| 149  | Standard hook call   | `settings.accessibility.preview.title`             |
+| 163  | Standard hook call   | `settings.accessibility.preview.sampleTitle`       |
+| 164  | Standard hook call   | `settings.accessibility.preview.sampleText`        |
 
 ### src/pages/Settings/sections/ApiKeysSection.tsx (28)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 62 | Standard hook call | `apiKeys.createSuccess` |
-| 66 | Standard hook call | `settings.security.keyCopied` |
-| 72 | Standard hook call | `apiKeys.deleteSuccess` |
-| 89 | Standard hook call | `settings.security.apiKeys` |
-| 91 | Standard hook call | `settings.security.apiKeysDesc` |
-| 95 | Standard hook call | `settings.security.createApiKey` |
-| 103 | Standard hook call | `settings.security.noApiKeys` |
-| 104 | Standard hook call | `settings.security.noApiKeysDesc` |
-| 107 | Standard hook call | `settings.security.createApiKey` |
-| 168 | Standard hook call | `apiKeys.documentation` |
-| 169 | Standard hook call | `apiKeys.documentationDesc` |
-| 171 | Standard hook call | `apiKeys.viewDocs` |
-| 181 | Standard hook call | `settings.security.createApiKey` |
-| 181 | Standard hook call | `apiKeys.createDesc` |
-| 185 | Standard hook call | `settings.security.keyName` |
-| 186 | Standard hook call | `settings.security.keyNamePlaceholder` |
-| 191 | Standard hook call | `settings.security.keyScopes` |
-| 216 | Standard hook call | `common.cancel` |
-| 218 | Standard hook call | `settings.security.createKey` |
-| 230 | Standard hook call | `settings.security.apiKeyCreated` |
-| 231 | Standard hook call | `settings.security.apiKeyCreatedDesc` |
-| 241 | Standard hook call | `settings.security.apiKeyWarning` |
-| 247 | Standard hook call | `settings.security.copyKey` |
-| 250 | Standard hook call | `common.close` |
-| 262 | Standard hook call | `settings.security.deleteKey` |
-| 263 | Standard hook call | `settings.security.deleteKeyConfirm` |
-| 270 | Standard hook call | `common.cancel` |
-| 273 | Standard hook call | `common.delete` |
+| Line | Pattern            | Key                                    |
+| ---- | ------------------ | -------------------------------------- |
+| 62   | Standard hook call | `apiKeys.createSuccess`                |
+| 66   | Standard hook call | `settings.security.keyCopied`          |
+| 72   | Standard hook call | `apiKeys.deleteSuccess`                |
+| 89   | Standard hook call | `settings.security.apiKeys`            |
+| 91   | Standard hook call | `settings.security.apiKeysDesc`        |
+| 95   | Standard hook call | `settings.security.createApiKey`       |
+| 103  | Standard hook call | `settings.security.noApiKeys`          |
+| 104  | Standard hook call | `settings.security.noApiKeysDesc`      |
+| 107  | Standard hook call | `settings.security.createApiKey`       |
+| 168  | Standard hook call | `apiKeys.documentation`                |
+| 169  | Standard hook call | `apiKeys.documentationDesc`            |
+| 171  | Standard hook call | `apiKeys.viewDocs`                     |
+| 181  | Standard hook call | `settings.security.createApiKey`       |
+| 181  | Standard hook call | `apiKeys.createDesc`                   |
+| 185  | Standard hook call | `settings.security.keyName`            |
+| 186  | Standard hook call | `settings.security.keyNamePlaceholder` |
+| 191  | Standard hook call | `settings.security.keyScopes`          |
+| 216  | Standard hook call | `common.cancel`                        |
+| 218  | Standard hook call | `settings.security.createKey`          |
+| 230  | Standard hook call | `settings.security.apiKeyCreated`      |
+| 231  | Standard hook call | `settings.security.apiKeyCreatedDesc`  |
+| 241  | Standard hook call | `settings.security.apiKeyWarning`      |
+| 247  | Standard hook call | `settings.security.copyKey`            |
+| 250  | Standard hook call | `common.close`                         |
+| 262  | Standard hook call | `settings.security.deleteKey`          |
+| 263  | Standard hook call | `settings.security.deleteKeyConfirm`   |
+| 270  | Standard hook call | `common.cancel`                        |
+| 273  | Standard hook call | `common.delete`                        |
 
 ### src/pages/Settings/sections/AppearanceSection.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 45 | Standard hook call | `settings.appearance.theme` |
-| 47 | Standard hook call | `settings.appearance.description` |
-| 67 | Dynamic/variable key | `[DYNAMIC] mode.labelKey` |
-| 68 | Dynamic/variable key | `[DYNAMIC] mode.descKey` |
-| 82 | Standard hook call | `settings.appearance.colorPalette` |
-| 84 | Standard hook call | `settings.appearance.colorDesc` |
-| 106 | Dynamic/variable key | `[DYNAMIC] palette.labelKey` |
+| Line | Pattern              | Key                                |
+| ---- | -------------------- | ---------------------------------- |
+| 45   | Standard hook call   | `settings.appearance.theme`        |
+| 47   | Standard hook call   | `settings.appearance.description`  |
+| 67   | Dynamic/variable key | `[DYNAMIC] mode.labelKey`          |
+| 68   | Dynamic/variable key | `[DYNAMIC] mode.descKey`           |
+| 82   | Standard hook call   | `settings.appearance.colorPalette` |
+| 84   | Standard hook call   | `settings.appearance.colorDesc`    |
+| 106  | Dynamic/variable key | `[DYNAMIC] palette.labelKey`       |
 
 ### src/pages/Settings/sections/DashboardSection.tsx (20)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 106 | Standard hook call | `settings.dashboard.viewMode` |
-| 108 | Standard hook call | `settings.dashboard.viewModeDesc` |
-| 127 | Dynamic/variable key | `[DYNAMIC] mode.labelKey` |
-| 140 | Standard hook call | `settings.dashboard.listingPreferences` |
-| 142 | Standard hook call | `settings.dashboard.listingPreferencesDesc` |
-| 147 | Standard hook call | `settings.dashboard.itemsPerPage` |
-| 154 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 157 | Standard hook call | `settings.dashboard.itemsPerPageHint` |
-| 163 | Standard hook call | `settings.dashboard.sortBy` |
-| 170 | Dynamic/variable key | `[DYNAMIC] field.labelKey` |
-| 175 | Standard hook call | `settings.dashboard.sortOrder` |
-| 182 | Dynamic/variable key | `[DYNAMIC] order.labelKey` |
-| 195 | Standard hook call | `settings.dashboard.sidebarBehavior` |
-| 197 | Standard hook call | `settings.dashboard.sidebarBehaviorDesc` |
-| 202 | Standard hook call | `settings.dashboard.collapsedByDefault` |
-| 203 | Standard hook call | `settings.dashboard.collapsedByDefaultDesc` |
-| 215 | Standard hook call | `settings.dashboard.homeWidgets` |
-| 217 | Standard hook call | `settings.dashboard.homeWidgetsDesc` |
-| 231 | Dynamic/variable key | `[DYNAMIC] widget.labelKey` |
-| 232 | Dynamic/variable key | `[DYNAMIC] widget.descKey` |
+| Line | Pattern                                | Key                                         |
+| ---- | -------------------------------------- | ------------------------------------------- |
+| 106  | Standard hook call                     | `settings.dashboard.viewMode`               |
+| 108  | Standard hook call                     | `settings.dashboard.viewModeDesc`           |
+| 127  | Dynamic/variable key                   | `[DYNAMIC] mode.labelKey`                   |
+| 140  | Standard hook call                     | `settings.dashboard.listingPreferences`     |
+| 142  | Standard hook call                     | `settings.dashboard.listingPreferencesDesc` |
+| 147  | Standard hook call                     | `settings.dashboard.itemsPerPage`           |
+| 154  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`               |
+| 157  | Standard hook call                     | `settings.dashboard.itemsPerPageHint`       |
+| 163  | Standard hook call                     | `settings.dashboard.sortBy`                 |
+| 170  | Dynamic/variable key                   | `[DYNAMIC] field.labelKey`                  |
+| 175  | Standard hook call                     | `settings.dashboard.sortOrder`              |
+| 182  | Dynamic/variable key                   | `[DYNAMIC] order.labelKey`                  |
+| 195  | Standard hook call                     | `settings.dashboard.sidebarBehavior`        |
+| 197  | Standard hook call                     | `settings.dashboard.sidebarBehaviorDesc`    |
+| 202  | Standard hook call                     | `settings.dashboard.collapsedByDefault`     |
+| 203  | Standard hook call                     | `settings.dashboard.collapsedByDefaultDesc` |
+| 215  | Standard hook call                     | `settings.dashboard.homeWidgets`            |
+| 217  | Standard hook call                     | `settings.dashboard.homeWidgetsDesc`        |
+| 231  | Dynamic/variable key                   | `[DYNAMIC] widget.labelKey`                 |
+| 232  | Dynamic/variable key                   | `[DYNAMIC] widget.descKey`                  |
 
 ### src/pages/Settings/sections/NotificationsSection.tsx (17)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 15 | Standard hook call | `notifications.allDisabled` |
-| 26 | Standard hook call | `notifications.emailNotifications` |
-| 28 | Standard hook call | `notifications.description` |
-| 33 | Standard hook call | `notifications.settings.allEmails.title` |
-| 34 | Standard hook call | `notifications.settings.allEmails.description` |
-| 41 | Standard hook call | `notifications.settings.responseAlerts.title` |
-| 42 | Standard hook call | `notifications.settings.responseAlerts.description` |
-| 50 | Standard hook call | `notifications.settings.completionAlerts.title` |
-| 51 | Standard hook call | `notifications.settings.completionAlerts.description` |
-| 59 | Standard hook call | `notifications.settings.weeklyDigest.title` |
-| 60 | Standard hook call | `notifications.settings.weeklyDigest.description` |
-| 68 | Standard hook call | `notifications.settings.distributionReports.title` |
-| 69 | Standard hook call | `notifications.settings.distributionReports.description` |
-| 77 | Standard hook call | `notifications.settings.marketing.title` |
-| 78 | Standard hook call | `notifications.settings.marketing.description` |
-| 94 | Standard hook call | `notifications.aboutTitle` |
-| 95 | Standard hook call | `notifications.aboutDescription` |
+| Line | Pattern            | Key                                                      |
+| ---- | ------------------ | -------------------------------------------------------- |
+| 15   | Standard hook call | `notifications.allDisabled`                              |
+| 26   | Standard hook call | `notifications.emailNotifications`                       |
+| 28   | Standard hook call | `notifications.description`                              |
+| 33   | Standard hook call | `notifications.settings.allEmails.title`                 |
+| 34   | Standard hook call | `notifications.settings.allEmails.description`           |
+| 41   | Standard hook call | `notifications.settings.responseAlerts.title`            |
+| 42   | Standard hook call | `notifications.settings.responseAlerts.description`      |
+| 50   | Standard hook call | `notifications.settings.completionAlerts.title`          |
+| 51   | Standard hook call | `notifications.settings.completionAlerts.description`    |
+| 59   | Standard hook call | `notifications.settings.weeklyDigest.title`              |
+| 60   | Standard hook call | `notifications.settings.weeklyDigest.description`        |
+| 68   | Standard hook call | `notifications.settings.distributionReports.title`       |
+| 69   | Standard hook call | `notifications.settings.distributionReports.description` |
+| 77   | Standard hook call | `notifications.settings.marketing.title`                 |
+| 78   | Standard hook call | `notifications.settings.marketing.description`           |
+| 94   | Standard hook call | `notifications.aboutTitle`                               |
+| 95   | Standard hook call | `notifications.aboutDescription`                         |
 
 ### src/pages/Settings/sections/ProfileSection.tsx (23)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 34 | Standard hook call | `profile.firstName` |
-| 34 | With options object | `validation.required` |
-| 34 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 37 | Standard hook call | `profile.lastName` |
-| 37 | With options object | `validation.required` |
-| 37 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 40 | Standard hook call | `profile.email` |
-| 40 | With options object | `validation.required` |
-| 40 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 42 | Standard hook call | `validation.invalidEmail` |
-| 60 | Standard hook call | `profile.avatar.updated` |
-| 65 | Standard hook call | `profile.avatar.removed` |
-| 100 | Standard hook call | `profile.avatar.title` |
-| 102 | Standard hook call | `profile.avatar.description` |
-| 122 | Standard hook call | `profile.title` |
-| 124 | Standard hook call | `profile.description` |
-| 129 | Standard hook call | `profile.firstName` |
-| 133 | Standard hook call | `profile.firstNamePlaceholder` |
-| 136 | Standard hook call | `profile.lastName` |
-| 140 | Standard hook call | `profile.lastNamePlaceholder` |
-| 144 | Standard hook call | `profile.email` |
-| 149 | Standard hook call | `profile.emailPlaceholder` |
-| 156 | Standard hook call | `profile.saveChanges` |
+| Line | Pattern                                | Key                            |
+| ---- | -------------------------------------- | ------------------------------ |
+| 34   | Standard hook call                     | `profile.firstName`            |
+| 34   | With options object                    | `validation.required`          |
+| 34   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`  |
+| 37   | Standard hook call                     | `profile.lastName`             |
+| 37   | With options object                    | `validation.required`          |
+| 37   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`  |
+| 40   | Standard hook call                     | `profile.email`                |
+| 40   | With options object                    | `validation.required`          |
+| 40   | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`  |
+| 42   | Standard hook call                     | `validation.invalidEmail`      |
+| 60   | Standard hook call                     | `profile.avatar.updated`       |
+| 65   | Standard hook call                     | `profile.avatar.removed`       |
+| 100  | Standard hook call                     | `profile.avatar.title`         |
+| 102  | Standard hook call                     | `profile.avatar.description`   |
+| 122  | Standard hook call                     | `profile.title`                |
+| 124  | Standard hook call                     | `profile.description`          |
+| 129  | Standard hook call                     | `profile.firstName`            |
+| 133  | Standard hook call                     | `profile.firstNamePlaceholder` |
+| 136  | Standard hook call                     | `profile.lastName`             |
+| 140  | Standard hook call                     | `profile.lastNamePlaceholder`  |
+| 144  | Standard hook call                     | `profile.email`                |
+| 149  | Standard hook call                     | `profile.emailPlaceholder`     |
+| 156  | Standard hook call                     | `profile.saveChanges`          |
 
 ### src/pages/Settings/sections/RegionalSection.tsx (16)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 106 | Standard hook call | `settings.regional.language.title` |
-| 108 | Standard hook call | `settings.regional.language.description` |
-| 141 | Standard hook call | `settings.regional.dateTime.title` |
-| 143 | Standard hook call | `settings.regional.dateTime.description` |
-| 147 | Standard hook call | `settings.regional.dateFormat.title` |
-| 172 | Standard hook call | `settings.regional.timeFormat.title` |
-| 187 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
-| 197 | Standard hook call | `settings.regional.timezone.title` |
-| 206 | Standard hook call | `settings.regional.timezone.placeholder` |
-| 209 | Standard hook call | `settings.regional.timezone.helper` |
-| 219 | Standard hook call | `settings.regional.numbers.title` |
-| 221 | Standard hook call | `settings.regional.numbers.description` |
-| 225 | Standard hook call | `settings.regional.decimal.title` |
-| 239 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
-| 248 | Standard hook call | `settings.regional.thousands.title` |
-| 263 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
+| Line | Pattern              | Key                                      |
+| ---- | -------------------- | ---------------------------------------- |
+| 106  | Standard hook call   | `settings.regional.language.title`       |
+| 108  | Standard hook call   | `settings.regional.language.description` |
+| 141  | Standard hook call   | `settings.regional.dateTime.title`       |
+| 143  | Standard hook call   | `settings.regional.dateTime.description` |
+| 147  | Standard hook call   | `settings.regional.dateFormat.title`     |
+| 172  | Standard hook call   | `settings.regional.timeFormat.title`     |
+| 187  | Dynamic/variable key | `[DYNAMIC] option.labelKey`              |
+| 197  | Standard hook call   | `settings.regional.timezone.title`       |
+| 206  | Standard hook call   | `settings.regional.timezone.placeholder` |
+| 209  | Standard hook call   | `settings.regional.timezone.helper`      |
+| 219  | Standard hook call   | `settings.regional.numbers.title`        |
+| 221  | Standard hook call   | `settings.regional.numbers.description`  |
+| 225  | Standard hook call   | `settings.regional.decimal.title`        |
+| 239  | Dynamic/variable key | `[DYNAMIC] option.labelKey`              |
+| 248  | Standard hook call   | `settings.regional.thousands.title`      |
+| 263  | Dynamic/variable key | `[DYNAMIC] option.labelKey`              |
 
 ### src/pages/Settings/sections/SecuritySection.tsx (38)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 75 | Standard hook call | `twoFactor.enabledSuccess` |
-| 81 | Standard hook call | `twoFactor.disabledSuccess` |
-| 91 | Standard hook call | `twoFactor.title` |
-| 93 | Standard hook call | `twoFactor.description` |
-| 104 | Standard hook call | `twoFactor.enabled` |
-| 106 | With options object | `twoFactor.usingMethod` |
-| 106 | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]` |
-| 109 | Standard hook call | `twoFactor.authenticatorApp` |
-| 111 | Standard hook call | `twoFactor.sms` |
-| 112 | Standard hook call | `auth.email` |
-| 117 | With options object | `twoFactor.backupCodesRemaining` |
-| 121 | Standard hook call | `common.status` |
-| 128 | Standard hook call | `twoFactor.regenerateBackupCodes` |
-| 132 | Standard hook call | `twoFactor.disable` |
-| 144 | Standard hook call | `twoFactor.notEnabled` |
-| 145 | Standard hook call | `twoFactor.recommendation` |
-| 152 | Standard hook call | `twoFactor.enable` |
-| 164 | Standard hook call | `passwordChange.title` |
-| 166 | Standard hook call | `passwordChange.description` |
-| 171 | Standard hook call | `passwordChange.currentPassword` |
-| 175 | Standard hook call | `passwordChange.placeholders.current` |
-| 183 | Standard hook call | `passwordChange.newPassword` |
-| 187 | Standard hook call | `passwordChange.placeholders.new` |
-| 195 | Standard hook call | `passwordChange.confirmPassword` |
-| 199 | Standard hook call | `passwordChange.placeholders.confirm` |
-| 229 | Standard hook call | `passwordChange.strength.tooShort` |
-| 231 | Standard hook call | `passwordChange.strength.addMore` |
-| 233 | Standard hook call | `passwordChange.strength.strong` |
-| 234 | Standard hook call | `passwordChange.strength.good` |
-| 242 | Standard hook call | `passwordChange.changeButton` |
-| 254 | Standard hook call | `twoFactor.enableTitle` |
-| 255 | Standard hook call | `twoFactor.enableDesc` |
-| 281 | Dynamic/variable key | `[DYNAMIC] method.labelKey` |
-| 282 | Dynamic/variable key | `[DYNAMIC] method.descKey` |
-| 297 | Standard hook call | `twoFactor.disableTitle` |
-| 298 | Standard hook call | `twoFactor.disableDesc` |
-| 305 | Standard hook call | `common.cancel` |
-| 308 | Standard hook call | `twoFactor.disable` |
+| Line | Pattern                                | Key                                   |
+| ---- | -------------------------------------- | ------------------------------------- |
+| 75   | Standard hook call                     | `twoFactor.enabledSuccess`            |
+| 81   | Standard hook call                     | `twoFactor.disabledSuccess`           |
+| 91   | Standard hook call                     | `twoFactor.title`                     |
+| 93   | Standard hook call                     | `twoFactor.description`               |
+| 104  | Standard hook call                     | `twoFactor.enabled`                   |
+| 106  | With options object                    | `twoFactor.usingMethod`               |
+| 106  | ⚠️ ANY standalone t() call (catch-all) | `[UNKNOWN - Review manually]`         |
+| 109  | Standard hook call                     | `twoFactor.authenticatorApp`          |
+| 111  | Standard hook call                     | `twoFactor.sms`                       |
+| 112  | Standard hook call                     | `auth.email`                          |
+| 117  | With options object                    | `twoFactor.backupCodesRemaining`      |
+| 121  | Standard hook call                     | `common.status`                       |
+| 128  | Standard hook call                     | `twoFactor.regenerateBackupCodes`     |
+| 132  | Standard hook call                     | `twoFactor.disable`                   |
+| 144  | Standard hook call                     | `twoFactor.notEnabled`                |
+| 145  | Standard hook call                     | `twoFactor.recommendation`            |
+| 152  | Standard hook call                     | `twoFactor.enable`                    |
+| 164  | Standard hook call                     | `passwordChange.title`                |
+| 166  | Standard hook call                     | `passwordChange.description`          |
+| 171  | Standard hook call                     | `passwordChange.currentPassword`      |
+| 175  | Standard hook call                     | `passwordChange.placeholders.current` |
+| 183  | Standard hook call                     | `passwordChange.newPassword`          |
+| 187  | Standard hook call                     | `passwordChange.placeholders.new`     |
+| 195  | Standard hook call                     | `passwordChange.confirmPassword`      |
+| 199  | Standard hook call                     | `passwordChange.placeholders.confirm` |
+| 229  | Standard hook call                     | `passwordChange.strength.tooShort`    |
+| 231  | Standard hook call                     | `passwordChange.strength.addMore`     |
+| 233  | Standard hook call                     | `passwordChange.strength.strong`      |
+| 234  | Standard hook call                     | `passwordChange.strength.good`        |
+| 242  | Standard hook call                     | `passwordChange.changeButton`         |
+| 254  | Standard hook call                     | `twoFactor.enableTitle`               |
+| 255  | Standard hook call                     | `twoFactor.enableDesc`                |
+| 281  | Dynamic/variable key                   | `[DYNAMIC] method.labelKey`           |
+| 282  | Dynamic/variable key                   | `[DYNAMIC] method.descKey`            |
+| 297  | Standard hook call                     | `twoFactor.disableTitle`              |
+| 298  | Standard hook call                     | `twoFactor.disableDesc`               |
+| 305  | Standard hook call                     | `common.cancel`                       |
+| 308  | Standard hook call                     | `twoFactor.disable`                   |
 
 ### src/pages/Settings/sections/SurveyBuilderSection.tsx (26)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 129 | Standard hook call | `settings.surveyBuilder.questionDefaults` |
-| 131 | Standard hook call | `settings.surveyBuilder.questionDefaultsDesc` |
-| 137 | Standard hook call | `settings.surveyBuilder.requiredByDefault` |
-| 138 | Standard hook call | `settings.surveyBuilder.requiredByDefaultDesc` |
-| 148 | Standard hook call | `settings.surveyBuilder.showDescriptions` |
-| 149 | Standard hook call | `settings.surveyBuilder.showDescriptionsDesc` |
-| 166 | Standard hook call | `settings.surveyBuilder.numberingStyle` |
-| 168 | Standard hook call | `settings.surveyBuilder.numberingStyleDesc` |
-| 185 | Dynamic/variable key | `[DYNAMIC] style.labelKey` |
-| 198 | Standard hook call | `settings.surveyBuilder.defaultTheme` |
-| 200 | Standard hook call | `settings.surveyBuilder.defaultThemeDesc` |
-| 207 | Standard hook call | `settings.surveyBuilder.selectTheme` |
-| 209 | Standard hook call | `settings.surveyBuilder.noDefaultTheme` |
-| 224 | Standard hook call | `settings.surveyBuilder.defaultMessages` |
-| 226 | Standard hook call | `settings.surveyBuilder.defaultMessagesDesc` |
-| 232 | Standard hook call | `settings.surveyBuilder.welcomeMessage` |
-| 238 | Standard hook call | `settings.surveyBuilder.welcomeMessagePlaceholder` |
-| 246 | Standard hook call | `settings.surveyBuilder.thankYouMessage` |
-| 252 | Standard hook call | `settings.surveyBuilder.thankYouMessagePlaceholder` |
-| 265 | Standard hook call | `settings.surveyBuilder.autoSave` |
-| 267 | Standard hook call | `settings.surveyBuilder.autoSaveDesc` |
-| 276 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
-| 287 | Standard hook call | `settings.surveyBuilder.pageBreakBehavior` |
-| 289 | Standard hook call | `settings.surveyBuilder.pageBreakBehaviorDesc` |
-| 304 | Dynamic/variable key | `[DYNAMIC] option.labelKey` |
-| 305 | Dynamic/variable key | `[DYNAMIC] option.descKey` |
+| Line | Pattern              | Key                                                 |
+| ---- | -------------------- | --------------------------------------------------- |
+| 129  | Standard hook call   | `settings.surveyBuilder.questionDefaults`           |
+| 131  | Standard hook call   | `settings.surveyBuilder.questionDefaultsDesc`       |
+| 137  | Standard hook call   | `settings.surveyBuilder.requiredByDefault`          |
+| 138  | Standard hook call   | `settings.surveyBuilder.requiredByDefaultDesc`      |
+| 148  | Standard hook call   | `settings.surveyBuilder.showDescriptions`           |
+| 149  | Standard hook call   | `settings.surveyBuilder.showDescriptionsDesc`       |
+| 166  | Standard hook call   | `settings.surveyBuilder.numberingStyle`             |
+| 168  | Standard hook call   | `settings.surveyBuilder.numberingStyleDesc`         |
+| 185  | Dynamic/variable key | `[DYNAMIC] style.labelKey`                          |
+| 198  | Standard hook call   | `settings.surveyBuilder.defaultTheme`               |
+| 200  | Standard hook call   | `settings.surveyBuilder.defaultThemeDesc`           |
+| 207  | Standard hook call   | `settings.surveyBuilder.selectTheme`                |
+| 209  | Standard hook call   | `settings.surveyBuilder.noDefaultTheme`             |
+| 224  | Standard hook call   | `settings.surveyBuilder.defaultMessages`            |
+| 226  | Standard hook call   | `settings.surveyBuilder.defaultMessagesDesc`        |
+| 232  | Standard hook call   | `settings.surveyBuilder.welcomeMessage`             |
+| 238  | Standard hook call   | `settings.surveyBuilder.welcomeMessagePlaceholder`  |
+| 246  | Standard hook call   | `settings.surveyBuilder.thankYouMessage`            |
+| 252  | Standard hook call   | `settings.surveyBuilder.thankYouMessagePlaceholder` |
+| 265  | Standard hook call   | `settings.surveyBuilder.autoSave`                   |
+| 267  | Standard hook call   | `settings.surveyBuilder.autoSaveDesc`               |
+| 276  | Dynamic/variable key | `[DYNAMIC] option.labelKey`                         |
+| 287  | Standard hook call   | `settings.surveyBuilder.pageBreakBehavior`          |
+| 289  | Standard hook call   | `settings.surveyBuilder.pageBreakBehaviorDesc`      |
+| 304  | Dynamic/variable key | `[DYNAMIC] option.labelKey`                         |
+| 305  | Dynamic/variable key | `[DYNAMIC] option.descKey`                          |
 
 ### src/pages/SurveyBuilder/SurveyBuilderPage.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 224 | Standard hook call | `common.loading` |
-| 236 | Standard hook call | `surveys.unknown` |
-| 237 | Standard hook call | `errors.notFoundDesc` |
-| 238 | Standard hook call | `surveyBuilder.backToSurveys` |
-| 309 | Standard hook call | `surveyBuilder.noQuestions` |
-| 309 | With default value | `surveyBuilder.selectQuestion` |
-| 312 | Standard hook call | `surveyBuilder.addFirstQuestion` |
-| 313 | With default value | `surveyBuilder.selectQuestionDesc` |
-| 320 | Standard hook call | `surveyBuilder.addQuestion` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 224  | Standard hook call | `common.loading`                   |
+| 236  | Standard hook call | `surveys.unknown`                  |
+| 237  | Standard hook call | `errors.notFoundDesc`              |
+| 238  | Standard hook call | `surveyBuilder.backToSurveys`      |
+| 309  | Standard hook call | `surveyBuilder.noQuestions`        |
+| 309  | With default value | `surveyBuilder.selectQuestion`     |
+| 312  | Standard hook call | `surveyBuilder.addFirstQuestion`   |
+| 313  | With default value | `surveyBuilder.selectQuestionDesc` |
+| 320  | Standard hook call | `surveyBuilder.addQuestion`        |
 
 ### src/pages/SurveyBuilder/components/QuestionListSidebar.tsx (8)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 230 | Standard hook call | `surveyBuilder.questions` |
-| 232 | With default value | `common.item` |
-| 232 | With default value | `common.items` |
-| 239 | With default value | `surveyBuilder.add` |
-| 252 | With default value | `surveyBuilder.dragToReorder` |
-| 290 | Standard hook call | `surveyBuilder.noQuestions` |
-| 302 | With default value | `surveyBuilder.addFirstQuestionDesc` |
-| 357 | Standard hook call | `surveyBuilder.addQuestion` |
+| Line | Pattern            | Key                                  |
+| ---- | ------------------ | ------------------------------------ |
+| 230  | Standard hook call | `surveyBuilder.questions`            |
+| 232  | With default value | `common.item`                        |
+| 232  | With default value | `common.items`                       |
+| 239  | With default value | `surveyBuilder.add`                  |
+| 252  | With default value | `surveyBuilder.dragToReorder`        |
+| 290  | Standard hook call | `surveyBuilder.noQuestions`          |
+| 302  | With default value | `surveyBuilder.addFirstQuestionDesc` |
+| 357  | Standard hook call | `surveyBuilder.addQuestion`          |
 
 ### src/pages/SurveyBuilder/components/SurveyBuilderHeader.tsx (21)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 81 | With default value | `surveyBuilder.readOnlyBanner` |
-| 88 | Standard hook call | `surveyBuilder.backToSurveys` |
-| 91 | With default value | `common.back` |
-| 99 | Standard hook call | `surveyBuilder.untitledSurvey` |
-| 106 | Standard hook call | `surveyBuilder.untitledSurvey` |
-| 111 | Standard hook call | `surveys.questions` |
-| 122 | Standard hook call | `surveyBuilder.unsaved` |
-| 132 | Standard hook call | `surveyBuilder.undo` |
-| 133 | Standard hook call | `surveyBuilder.undo` |
-| 137 | Standard hook call | `surveyBuilder.redo` |
-| 138 | Standard hook call | `surveyBuilder.redo` |
-| 149 | With default value | `surveyBuilder.viewOnly` |
-| 162 | Standard hook call | `surveyBuilder.saving` |
-| 167 | Standard hook call | `surveyBuilder.unsaved` |
-| 172 | Standard hook call | `surveyBuilder.saved` |
-| 194 | Standard hook call | `surveyBuilder.toggleThemePanel` |
-| 199 | Standard hook call | `surveyBuilder.toggleThemePanel` |
-| 208 | Standard hook call | `surveyBuilder.settingsAriaLabel` |
-| 209 | Standard hook call | `surveyBuilder.settingsAriaLabel` |
-| 220 | Standard hook call | `surveyBuilder.preview` |
-| 227 | Standard hook call | `common.save` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 81   | With default value | `surveyBuilder.readOnlyBanner`    |
+| 88   | Standard hook call | `surveyBuilder.backToSurveys`     |
+| 91   | With default value | `common.back`                     |
+| 99   | Standard hook call | `surveyBuilder.untitledSurvey`    |
+| 106  | Standard hook call | `surveyBuilder.untitledSurvey`    |
+| 111  | Standard hook call | `surveys.questions`               |
+| 122  | Standard hook call | `surveyBuilder.unsaved`           |
+| 132  | Standard hook call | `surveyBuilder.undo`              |
+| 133  | Standard hook call | `surveyBuilder.undo`              |
+| 137  | Standard hook call | `surveyBuilder.redo`              |
+| 138  | Standard hook call | `surveyBuilder.redo`              |
+| 149  | With default value | `surveyBuilder.viewOnly`          |
+| 162  | Standard hook call | `surveyBuilder.saving`            |
+| 167  | Standard hook call | `surveyBuilder.unsaved`           |
+| 172  | Standard hook call | `surveyBuilder.saved`             |
+| 194  | Standard hook call | `surveyBuilder.toggleThemePanel`  |
+| 199  | Standard hook call | `surveyBuilder.toggleThemePanel`  |
+| 208  | Standard hook call | `surveyBuilder.settingsAriaLabel` |
+| 209  | Standard hook call | `surveyBuilder.settingsAriaLabel` |
+| 220  | Standard hook call | `surveyBuilder.preview`           |
+| 227  | Standard hook call | `common.save`                     |
 
 ### src/pages/SurveyBuilder/components/SurveyBuilderTabs.tsx (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 77 | With default value | `surveyBuilder.tabs.questions` |
-| 83 | With default value | `surveyBuilder.tabs.languages` |
+| Line | Pattern            | Key                            |
+| ---- | ------------------ | ------------------------------ |
+| 77   | With default value | `surveyBuilder.tabs.questions` |
+| 83   | With default value | `surveyBuilder.tabs.languages` |
 
 ### src/pages/SurveyBuilder/components/SurveySettingsDialog.tsx (11)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 34 | Standard hook call | `surveyBuilder.settings` |
-| 35 | Standard hook call | `surveyBuilder.settings` |
-| 41 | Standard hook call | `common.description` |
-| 44 | Standard hook call | `surveys.form.descriptionPlaceholder` |
-| 50 | Standard hook call | `surveyBuilder.thankYouMessage` |
-| 53 | Standard hook call | `surveyBuilder.thankYouMessage` |
-| 54 | Standard hook call | `surveyBuilder.thankYouMessageDesc` |
-| 60 | Standard hook call | `surveyBuilder.welcomeMessage` |
-| 63 | Standard hook call | `surveyBuilder.welcomeMessage` |
-| 64 | Standard hook call | `surveyBuilder.welcomeMessageDesc` |
-| 70 | Standard hook call | `common.close` |
+| Line | Pattern            | Key                                   |
+| ---- | ------------------ | ------------------------------------- |
+| 34   | Standard hook call | `surveyBuilder.settings`              |
+| 35   | Standard hook call | `surveyBuilder.settings`              |
+| 41   | Standard hook call | `common.description`                  |
+| 44   | Standard hook call | `surveys.form.descriptionPlaceholder` |
+| 50   | Standard hook call | `surveyBuilder.thankYouMessage`       |
+| 53   | Standard hook call | `surveyBuilder.thankYouMessage`       |
+| 54   | Standard hook call | `surveyBuilder.thankYouMessageDesc`   |
+| 60   | Standard hook call | `surveyBuilder.welcomeMessage`        |
+| 63   | Standard hook call | `surveyBuilder.welcomeMessage`        |
+| 64   | Standard hook call | `surveyBuilder.welcomeMessageDesc`    |
+| 70   | Standard hook call | `common.close`                        |
 
 ### src/pages/SurveyBuilder/components/UnsavedChangesDialog.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 22 | Standard hook call | `surveyBuilder.unsavedChanges` |
-| 23 | Standard hook call | `surveyBuilder.unsavedChangesDesc` |
-| 30 | Standard hook call | `surveyBuilder.discardChanges` |
-| 33 | Standard hook call | `common.cancel` |
-| 39 | Standard hook call | `surveyBuilder.saving` |
-| 42 | Standard hook call | `common.save` |
+| Line | Pattern            | Key                                |
+| ---- | ------------------ | ---------------------------------- |
+| 22   | Standard hook call | `surveyBuilder.unsavedChanges`     |
+| 23   | Standard hook call | `surveyBuilder.unsavedChangesDesc` |
+| 30   | Standard hook call | `surveyBuilder.discardChanges`     |
+| 33   | Standard hook call | `common.cancel`                    |
+| 39   | Standard hook call | `surveyBuilder.saving`             |
+| 42   | Standard hook call | `common.save`                      |
 
 ### src/pages/SurveyPreview/SurveyPreviewPage.tsx (12)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 320 | Standard hook call | `surveyPreview.screenshotSuccess` |
-| 323 | Standard hook call | `surveyPreview.screenshotInfo` |
-| 324 | Standard hook call | `surveyPreview.screenshotHint` |
-| 332 | Standard hook call | `surveyPreview.linkCopied` |
-| 333 | Standard hook call | `surveyPreview.linkCopyError` |
-| 366 | Dynamic/variable key | `[DYNAMIC] errorKey` |
-| 380 | Dynamic/variable key | `[DYNAMIC] errorKey` |
-| 409 | Standard hook call | `surveyPreview.completeRequired` |
-| 417 | Standard hook call | `surveyPreview.testSubmitSuccess` |
-| 468 | Standard hook call | `surveyPreview.loadingPreview` |
-| 477 | Standard hook call | `surveys.unknown` |
-| 478 | Standard hook call | `surveyBuilder.backToSurveys` |
+| Line | Pattern              | Key                               |
+| ---- | -------------------- | --------------------------------- |
+| 320  | Standard hook call   | `surveyPreview.screenshotSuccess` |
+| 323  | Standard hook call   | `surveyPreview.screenshotInfo`    |
+| 324  | Standard hook call   | `surveyPreview.screenshotHint`    |
+| 332  | Standard hook call   | `surveyPreview.linkCopied`        |
+| 333  | Standard hook call   | `surveyPreview.linkCopyError`     |
+| 366  | Dynamic/variable key | `[DYNAMIC] errorKey`              |
+| 380  | Dynamic/variable key | `[DYNAMIC] errorKey`              |
+| 409  | Standard hook call   | `surveyPreview.completeRequired`  |
+| 417  | Standard hook call   | `surveyPreview.testSubmitSuccess` |
+| 468  | Standard hook call   | `surveyPreview.loadingPreview`    |
+| 477  | Standard hook call   | `surveys.unknown`                 |
+| 478  | Standard hook call   | `surveyBuilder.backToSurveys`     |
 
 ### src/pages/SurveyPreview/components/DevicePreview.tsx (1)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 102 | Standard hook call | `a11y.surveyLogo` |
+| Line | Pattern            | Key               |
+| ---- | ------------------ | ----------------- |
+| 102  | Standard hook call | `a11y.surveyLogo` |
 
 ### src/pages/SurveyPreview/components/PreviewContent.tsx (9)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 58 | Standard hook call | `publicSurvey.thankYouTitle` |
-| 59 | Standard hook call | `surveyPreview.responseRecorded` |
-| 65 | Standard hook call | `surveyPreview.testMode` |
-| 67 | Standard hook call | `surveyPreview.testSubmissionMessage` |
-| 73 | Standard hook call | `surveyPreview.previewAgain` |
-| 102 | Standard hook call | `surveyPreview.keyboardShortcuts` |
-| 105 | Standard hook call | `surveyPreview.nextField` |
-| 108 | Standard hook call | `surveyPreview.submit` |
-| 112 | Standard hook call | `surveyPreview.navigate` |
+| Line | Pattern            | Key                                   |
+| ---- | ------------------ | ------------------------------------- |
+| 58   | Standard hook call | `publicSurvey.thankYouTitle`          |
+| 59   | Standard hook call | `surveyPreview.responseRecorded`      |
+| 65   | Standard hook call | `surveyPreview.testMode`              |
+| 67   | Standard hook call | `surveyPreview.testSubmissionMessage` |
+| 73   | Standard hook call | `surveyPreview.previewAgain`          |
+| 102  | Standard hook call | `surveyPreview.keyboardShortcuts`     |
+| 105  | Standard hook call | `surveyPreview.nextField`             |
+| 108  | Standard hook call | `surveyPreview.submit`                |
+| 112  | Standard hook call | `surveyPreview.navigate`              |
 
 ### src/pages/SurveyPreview/components/PreviewLanguageSwitcher.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 78 | With default value | `surveyPreview.switchPreviewLanguage` |
-| 88 | With default value | `surveyPreview.switchPreviewLanguage` |
-| 108 | With default value | `surveyPreview.selectLanguage` |
-| 112 | With default value | `surveyPreview.previewLanguage` |
-| 139 | With default value | `localization.default` |
+| Line | Pattern            | Key                                   |
+| ---- | ------------------ | ------------------------------------- |
+| 78   | With default value | `surveyPreview.switchPreviewLanguage` |
+| 88   | With default value | `surveyPreview.switchPreviewLanguage` |
+| 108  | With default value | `surveyPreview.selectLanguage`        |
+| 112  | With default value | `surveyPreview.previewLanguage`       |
+| 139  | With default value | `localization.default`                |
 
 ### src/pages/SurveyPreview/components/PreviewStatusBar.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 31 | With options object | `surveyPreview.questionCount` |
-| 42 | Standard hook call | `surveyPreview.mode` |
-| 48 | With options object | `surveyPreview.questionProgress` |
-| 50 | With options object | `surveyPreview.answeredCount` |
+| Line | Pattern             | Key                              |
+| ---- | ------------------- | -------------------------------- |
+| 31   | With options object | `surveyPreview.questionCount`    |
+| 42   | Standard hook call  | `surveyPreview.mode`             |
+| 48   | With options object | `surveyPreview.questionProgress` |
+| 50   | With options object | `surveyPreview.answeredCount`    |
 
 ### src/pages/SurveyPreview/components/PreviewToolbar.tsx (42)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 124 | Standard hook call | `surveyPreview.backToEditor` |
-| 130 | Standard hook call | `surveyPreview.title` |
-| 178 | Standard hook call | `surveyPreview.${category}` |
-| 208 | Standard hook call | `surveyPreview.customDimensions` |
-| 215 | Standard hook call | `surveyPreview.width` |
-| 227 | Standard hook call | `surveyPreview.height` |
-| 241 | Standard hook call | `common.apply` |
-| 252 | Standard hook call | `surveyPreview.toggleOrientation` |
-| 254 | Standard hook call | `surveyPreview.toggleOrientation` |
-| 273 | Standard hook call | `surveyPreview.zoomOut` |
-| 274 | Standard hook call | `surveyPreview.zoomOut` |
-| 278 | Standard hook call | `surveyPreview.resetZoom` |
-| 286 | Standard hook call | `surveyPreview.zoomIn` |
-| 287 | Standard hook call | `surveyPreview.zoomIn` |
-| 297 | Standard hook call | `surveyPreview.lightMode` |
-| 308 | Standard hook call | `surveyPreview.darkMode` |
-| 332 | With default value | `surveyPreview.testModeDesc` |
-| 332 | With default value | `surveyPreview.testModeOff` |
-| 340 | Standard hook call | `surveyPreview.testMode` |
-| 345 | Standard hook call | `surveyPreview.showQRCode` |
-| 346 | Standard hook call | `surveyPreview.showQRCode` |
-| 351 | Standard hook call | `surveyPreview.captureScreenshot` |
-| 352 | Standard hook call | `surveyPreview.captureScreenshot` |
-| 357 | With default value | `surveyPreview.keyboardHintsDesc` |
-| 361 | Standard hook call | `surveyPreview.keyboardMode` |
-| 368 | Standard hook call | `surveyPreview.toggleResponses` |
-| 372 | Standard hook call | `surveyPreview.toggleResponses` |
-| 379 | Standard hook call | `surveyPreview.resetPreview` |
-| 380 | Standard hook call | `surveyPreview.resetPreview` |
-| 385 | Standard hook call | `surveyPreview.toggleFullscreen` |
-| 386 | Standard hook call | `surveyPreview.toggleFullscreen` |
-| 394 | Standard hook call | `surveyPreview.previewSettings` |
-| 403 | Standard hook call | `surveyPreview.displayMode` |
-| 404 | With default value | `surveyPreview.displayModeDesc` |
-| 415 | Standard hook call | `surveyPreview.oneByOne` |
-| 426 | Standard hook call | `surveyPreview.allAtOnce` |
-| 435 | Standard hook call | `surveyPreview.testModeLabel` |
-| 436 | With default value | `surveyPreview.testModeDesc` |
-| 443 | Standard hook call | `surveyPreview.keyboardHints` |
-| 444 | With default value | `surveyPreview.keyboardHintsDesc` |
-| 459 | Standard hook call | `surveyPreview.copyLink` |
-| 468 | Standard hook call | `surveyPreview.openInNewTab` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 124  | Standard hook call | `surveyPreview.backToEditor`      |
+| 130  | Standard hook call | `surveyPreview.title`             |
+| 178  | Standard hook call | `surveyPreview.${category}`       |
+| 208  | Standard hook call | `surveyPreview.customDimensions`  |
+| 215  | Standard hook call | `surveyPreview.width`             |
+| 227  | Standard hook call | `surveyPreview.height`            |
+| 241  | Standard hook call | `common.apply`                    |
+| 252  | Standard hook call | `surveyPreview.toggleOrientation` |
+| 254  | Standard hook call | `surveyPreview.toggleOrientation` |
+| 273  | Standard hook call | `surveyPreview.zoomOut`           |
+| 274  | Standard hook call | `surveyPreview.zoomOut`           |
+| 278  | Standard hook call | `surveyPreview.resetZoom`         |
+| 286  | Standard hook call | `surveyPreview.zoomIn`            |
+| 287  | Standard hook call | `surveyPreview.zoomIn`            |
+| 297  | Standard hook call | `surveyPreview.lightMode`         |
+| 308  | Standard hook call | `surveyPreview.darkMode`          |
+| 332  | With default value | `surveyPreview.testModeDesc`      |
+| 332  | With default value | `surveyPreview.testModeOff`       |
+| 340  | Standard hook call | `surveyPreview.testMode`          |
+| 345  | Standard hook call | `surveyPreview.showQRCode`        |
+| 346  | Standard hook call | `surveyPreview.showQRCode`        |
+| 351  | Standard hook call | `surveyPreview.captureScreenshot` |
+| 352  | Standard hook call | `surveyPreview.captureScreenshot` |
+| 357  | With default value | `surveyPreview.keyboardHintsDesc` |
+| 361  | Standard hook call | `surveyPreview.keyboardMode`      |
+| 368  | Standard hook call | `surveyPreview.toggleResponses`   |
+| 372  | Standard hook call | `surveyPreview.toggleResponses`   |
+| 379  | Standard hook call | `surveyPreview.resetPreview`      |
+| 380  | Standard hook call | `surveyPreview.resetPreview`      |
+| 385  | Standard hook call | `surveyPreview.toggleFullscreen`  |
+| 386  | Standard hook call | `surveyPreview.toggleFullscreen`  |
+| 394  | Standard hook call | `surveyPreview.previewSettings`   |
+| 403  | Standard hook call | `surveyPreview.displayMode`       |
+| 404  | With default value | `surveyPreview.displayModeDesc`   |
+| 415  | Standard hook call | `surveyPreview.oneByOne`          |
+| 426  | Standard hook call | `surveyPreview.allAtOnce`         |
+| 435  | Standard hook call | `surveyPreview.testModeLabel`     |
+| 436  | With default value | `surveyPreview.testModeDesc`      |
+| 443  | Standard hook call | `surveyPreview.keyboardHints`     |
+| 444  | With default value | `surveyPreview.keyboardHintsDesc` |
+| 459  | Standard hook call | `surveyPreview.copyLink`          |
+| 468  | Standard hook call | `surveyPreview.openInNewTab`      |
 
 ### src/pages/SurveyPreview/components/QRCodeDialog.tsx (7)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 22 | Standard hook call | `surveyPreview.qrCodeTitle` |
-| 23 | Standard hook call | `surveyPreview.qrCodeDescription` |
-| 30 | Standard hook call | `a11y.qrCode` |
-| 36 | Standard hook call | `surveyPreview.scanOrCopy` |
-| 44 | Standard hook call | `surveyPreview.copyLink` |
-| 54 | Standard hook call | `surveyPreview.openInNewTab` |
-| 58 | Standard hook call | `surveyPreview.copyLink` |
+| Line | Pattern            | Key                               |
+| ---- | ------------------ | --------------------------------- |
+| 22   | Standard hook call | `surveyPreview.qrCodeTitle`       |
+| 23   | Standard hook call | `surveyPreview.qrCodeDescription` |
+| 30   | Standard hook call | `a11y.qrCode`                     |
+| 36   | Standard hook call | `surveyPreview.scanOrCopy`        |
+| 44   | Standard hook call | `surveyPreview.copyLink`          |
+| 54   | Standard hook call | `surveyPreview.openInNewTab`      |
+| 58   | Standard hook call | `surveyPreview.copyLink`          |
 
 ### src/pages/SurveyPreview/components/ResponseDrawer.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 32 | Standard hook call | `surveyPreview.responseSummary` |
-| 34 | Standard hook call | `surveyPreview.answered` |
-| 37 | Standard hook call | `common.close` |
-| 69 | Standard hook call | `surveyPreview.notAnswered` |
-| 78 | Standard hook call | `surveyPreview.noQuestions` |
-| 84 | Standard hook call | `surveyPreview.progress` |
+| Line | Pattern            | Key                             |
+| ---- | ------------------ | ------------------------------- |
+| 32   | Standard hook call | `surveyPreview.responseSummary` |
+| 34   | Standard hook call | `surveyPreview.answered`        |
+| 37   | Standard hook call | `common.close`                  |
+| 69   | Standard hook call | `surveyPreview.notAnswered`     |
+| 78   | Standard hook call | `surveyPreview.noQuestions`     |
+| 84   | Standard hook call | `surveyPreview.progress`        |
 
 ### src/pages/Surveys/SurveysPage.tsx (14)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 138 | Standard hook call | `surveys.publishSurvey` |
-| 139 | With options object | `surveys.publishConfirm` |
-| 140 | Standard hook call | `surveys.publishSurvey` |
-| 147 | Standard hook call | `surveys.publishSuccess` |
-| 149 | Standard hook call | `surveys.publishError` |
-| 160 | Standard hook call | `surveys.closeSurvey` |
-| 161 | With options object | `surveys.closeConfirm` |
-| 162 | Standard hook call | `surveys.closeSurvey` |
-| 169 | Standard hook call | `surveys.closeSuccess` |
-| 171 | Standard hook call | `surveys.closeError` |
-| 225 | Standard hook call | `distributions.linkCopied` |
-| 242 | Standard hook call | `workspaces.selectWorkspace` |
-| 243 | Standard hook call | `workspaces.selectWorkspaceDesc` |
-| 271 | Standard hook call | `surveys.searchPlaceholder` |
+| Line | Pattern             | Key                              |
+| ---- | ------------------- | -------------------------------- |
+| 138  | Standard hook call  | `surveys.publishSurvey`          |
+| 139  | With options object | `surveys.publishConfirm`         |
+| 140  | Standard hook call  | `surveys.publishSurvey`          |
+| 147  | Standard hook call  | `surveys.publishSuccess`         |
+| 149  | Standard hook call  | `surveys.publishError`           |
+| 160  | Standard hook call  | `surveys.closeSurvey`            |
+| 161  | With options object | `surveys.closeConfirm`           |
+| 162  | Standard hook call  | `surveys.closeSurvey`            |
+| 169  | Standard hook call  | `surveys.closeSuccess`           |
+| 171  | Standard hook call  | `surveys.closeError`             |
+| 225  | Standard hook call  | `distributions.linkCopied`       |
+| 242  | Standard hook call  | `workspaces.selectWorkspace`     |
+| 243  | Standard hook call  | `workspaces.selectWorkspaceDesc` |
+| 271  | Standard hook call  | `surveys.searchPlaceholder`      |
 
 ### src/pages/Surveys/sections/SurveysContent.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 111 | Standard hook call | `common.loading` |
-| 117 | With options object | `surveys.showingAll` |
-| 118 | With options object | `surveys.showingOf` |
+| Line | Pattern             | Key                  |
+| ---- | ------------------- | -------------------- |
+| 111  | Standard hook call  | `common.loading`     |
+| 117  | With options object | `surveys.showingAll` |
+| 118  | With options object | `surveys.showingOf`  |
 
 ### src/pages/Surveys/sections/SurveysHeader.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 24 | Standard hook call | `surveys.title` |
-| 25 | Standard hook call | `common.loading` |
-| 25 | With options object | `surveys.count` |
-| 31 | Standard hook call | `common.refresh` |
-| 35 | Standard hook call | `surveys.createSurvey` |
+| Line | Pattern             | Key                    |
+| ---- | ------------------- | ---------------------- |
+| 24   | Standard hook call  | `surveys.title`        |
+| 25   | Standard hook call  | `common.loading`       |
+| 25   | With options object | `surveys.count`        |
+| 31   | Standard hook call  | `common.refresh`       |
+| 35   | Standard hook call  | `surveys.createSurvey` |
 
 ### src/pages/Surveys/sections/SurveysToolbar.tsx (5)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 39 | Standard hook call | `surveys.filters.all` |
-| 40 | Standard hook call | `surveys.filters.draft` |
-| 41 | Standard hook call | `surveys.filters.published` |
-| 42 | Standard hook call | `surveys.filters.closed` |
-| 43 | Standard hook call | `surveys.status.archived` |
+| Line | Pattern            | Key                         |
+| ---- | ------------------ | --------------------------- |
+| 39   | Standard hook call | `surveys.filters.all`       |
+| 40   | Standard hook call | `surveys.filters.draft`     |
+| 41   | Standard hook call | `surveys.filters.published` |
+| 42   | Standard hook call | `surveys.filters.closed`    |
+| 43   | Standard hook call | `surveys.status.archived`   |
 
 ### src/pages/Templates/sections/TemplatesContent.tsx (6)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 63 | Standard hook call | `templates.loadError` |
-| 63 | Standard hook call | `templates.loadErrorDesc` |
-| 69 | Standard hook call | `templates.noFound` |
-| 70 | Standard hook call | `templates.noFoundFilters` |
-| 70 | Standard hook call | `templates.noFoundDesc` |
-| 75 | Standard hook call | `templates.createTemplate` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 63   | Standard hook call | `templates.loadError`      |
+| 63   | Standard hook call | `templates.loadErrorDesc`  |
+| 69   | Standard hook call | `templates.noFound`        |
+| 70   | Standard hook call | `templates.noFoundFilters` |
+| 70   | Standard hook call | `templates.noFoundDesc`    |
+| 75   | Standard hook call | `templates.createTemplate` |
 
 ### src/pages/Templates/sections/TemplatesHeader.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Standard hook call | `templates.title` |
-| 21 | Standard hook call | `templates.description` |
-| 26 | Standard hook call | `templates.createTemplate` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 20   | Standard hook call | `templates.title`          |
+| 21   | Standard hook call | `templates.description`    |
+| 26   | Standard hook call | `templates.createTemplate` |
 
 ### src/pages/Templates/sections/TemplatesToolbar.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 30 | Standard hook call | `templates.searchPlaceholder` |
-| 33 | Standard hook call | `common.all` |
-| 34 | Standard hook call | `templates.public` |
-| 35 | Standard hook call | `templates.myTemplates` |
+| Line | Pattern            | Key                           |
+| ---- | ------------------ | ----------------------------- |
+| 30   | Standard hook call | `templates.searchPlaceholder` |
+| 33   | Standard hook call | `common.all`                  |
+| 34   | Standard hook call | `templates.public`            |
+| 35   | Standard hook call | `templates.myTemplates`       |
 
 ### src/pages/Themes/sections/ThemesEmptyState.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 21 | Standard hook call | `themes.theme` |
-| 25 | Standard hook call | `themes.emptyDescription` |
-| 26 | Standard hook call | `themes.createTheme` |
+| Line | Pattern            | Key                       |
+| ---- | ------------------ | ------------------------- |
+| 21   | Standard hook call | `themes.theme`            |
+| 25   | Standard hook call | `themes.emptyDescription` |
+| 26   | Standard hook call | `themes.createTheme`      |
 
 ### src/pages/Themes/sections/ThemesHeader.tsx (3)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 21 | Standard hook call | `navigation.themes` |
-| 22 | Standard hook call | `themes.description` |
-| 26 | Standard hook call | `themes.createTheme` |
+| Line | Pattern            | Key                  |
+| ---- | ------------------ | -------------------- |
+| 21   | Standard hook call | `navigation.themes`  |
+| 22   | Standard hook call | `themes.description` |
+| 26   | Standard hook call | `themes.createTheme` |
 
 ### src/pages/Themes/sections/ThemesToolbar.tsx (4)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 20 | Standard hook call | `themes.searchPlaceholder` |
-| 23 | Standard hook call | `common.all` |
-| 24 | Standard hook call | `themes.system` |
-| 25 | Standard hook call | `themes.custom` |
+| Line | Pattern            | Key                        |
+| ---- | ------------------ | -------------------------- |
+| 20   | Standard hook call | `themes.searchPlaceholder` |
+| 23   | Standard hook call | `common.all`               |
+| 24   | Standard hook call | `themes.system`            |
+| 25   | Standard hook call | `themes.custom`            |
 
 ### src/types/enums.ts (2)
 
-| Line | Pattern | Key |
-|------|---------|-----|
-| 329 | i18n.Direct instance call | `${translationKeyPrefix}.${key}` |
-| 329 | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]` |
+| Line | Pattern                      | Key                              |
+| ---- | ---------------------------- | -------------------------------- |
+| 329  | i18n.Direct instance call    | `${translationKeyPrefix}.${key}` |
+| 329  | ⚠️ ANY .t() call (catch-all) | `[UNKNOWN - Review manually]`    |
 
 ---
 
@@ -10089,37 +10149,37 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/analytics/ChoiceChart.tsx",
-    "lineNumber": 55,
+    "lineNumber": 53,
     "pattern": "t() - Standard hook call",
     "full": "t('charts.noResponsesYet')",
-    "line": "<p className=\"text-sm text-on-surface-variant\">{t('charts.noResponsesYet')}</p>",
+    "line": "<p className='text-sm text-on-surface-variant'>{t('charts.noResponsesYet')}</p>",
     "key": "charts.noResponsesYet",
     "defaultValue": null
   },
   {
     "file": "src/components/features/analytics/ChoiceChart.tsx",
-    "lineNumber": 66,
+    "lineNumber": 64,
     "pattern": "t() - With options object",
     "full": "t('charts.responseCount', { count: totalAnswers })",
-    "line": "<p className=\"text-xs text-on-surface-variant\">{t('charts.responseCount', { count: totalAnswers })}</p>",
+    "line": "<p className='text-xs text-on-surface-variant'>{t('charts.responseCount', { count: totalAnswers })}</p>",
     "key": "charts.responseCount",
     "defaultValue": null
   },
   {
     "file": "src/components/features/analytics/ChoiceChart.tsx",
-    "lineNumber": 126,
+    "lineNumber": 123,
     "pattern": "t() - With options object",
     "full": "t('charts.moreOptions', { count: sortedData.length - 5 })",
-    "line": "<p className=\"text-xs text-on-surface-variant\">{t('charts.moreOptions', { count: sortedData.length - 5 })}</p>",
+    "line": "{sortedData.length > 5 && <p className='text-xs text-on-surface-variant'>{t('charts.moreOptions', { count: sortedData.length - 5 })}</p>}",
     "key": "charts.moreOptions",
     "defaultValue": null
   },
   {
     "file": "src/components/features/analytics/ChoiceChart.tsx",
-    "lineNumber": 140,
+    "lineNumber": 136,
     "pattern": "t() - With options object",
     "full": "t('charts.responseCount', { count: totalAnswers })",
-    "line": "<p className=\"text-xs text-on-surface-variant\">{t('charts.responseCount', { count: totalAnswers })}</p>",
+    "line": "<p className='text-xs text-on-surface-variant'>{t('charts.responseCount', { count: totalAnswers })}</p>",
     "key": "charts.responseCount",
     "defaultValue": null
   },
@@ -18459,55 +18519,37 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 196,
+    "lineNumber": 37,
     "pattern": "t() - Dynamic/variable key",
-    "full": "t(info.labelKey)",
-    "line": "label: t(info.labelKey),",
-    "key": "[DYNAMIC] info.labelKey",
+    "full": "t(config.labelKey)",
+    "line": "label: t(config.labelKey),",
+    "key": "[DYNAMIC] config.labelKey",
     "defaultValue": null
   },
   {
     "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 197,
+    "lineNumber": 38,
     "pattern": "t() - Dynamic/variable key",
-    "full": "t(info.descriptionKey)",
-    "line": "description: t(info.descriptionKey),",
-    "key": "[DYNAMIC] info.descriptionKey",
+    "full": "t(config.descriptionKey)",
+    "line": "description: t(config.descriptionKey),",
+    "key": "[DYNAMIC] config.descriptionKey",
     "defaultValue": null
   },
   {
     "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 178,
-    "pattern": "i18n.t() - Dynamic key",
-    "full": "i18n.t(info.labelKey)",
-    "line": "return i18n.t(info.labelKey);",
-    "key": "[DYNAMIC] info.labelKey",
-    "defaultValue": null
-  },
-  {
-    "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 183,
-    "pattern": "i18n.t() - Dynamic key",
-    "full": "i18n.t(info.descriptionKey)",
-    "line": "return i18n.t(info.descriptionKey);",
-    "key": "[DYNAMIC] info.descriptionKey",
-    "defaultValue": null
-  },
-  {
-    "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 178,
+    "lineNumber": 23,
     "pattern": "⚠️ ANY .t() call (catch-all)",
-    "full": ".t(info.labelKey)",
-    "line": "return i18n.t(info.labelKey);",
+    "full": ".t(getQuestionTypeLabelKey(type)",
+    "line": "return i18n.t(getQuestionTypeLabelKey(type));",
     "key": "[UNKNOWN - Review manually]",
     "defaultValue": null
   },
   {
     "file": "src/components/features/questions/QuestionTypeInfo.tsx",
-    "lineNumber": 183,
+    "lineNumber": 27,
     "pattern": "⚠️ ANY .t() call (catch-all)",
-    "full": ".t(info.descriptionKey)",
-    "line": "return i18n.t(info.descriptionKey);",
+    "full": ".t(getQuestionTypeDescriptionKey(type)",
+    "line": "return i18n.t(getQuestionTypeDescriptionKey(type));",
     "key": "[UNKNOWN - Review manually]",
     "defaultValue": null
   },
@@ -19539,7 +19581,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 34,
+    "lineNumber": 25,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.question')",
     "line": "label={t('questionEditor.question')}",
@@ -19548,7 +19590,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 37,
+    "lineNumber": 28,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.enterQuestion')",
     "line": "placeholder={t('questionEditor.common.enterQuestion')}",
@@ -19557,7 +19599,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 42,
+    "lineNumber": 33,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.descriptionOptional')",
     "line": "label={t('questionEditor.common.descriptionOptional')}",
@@ -19566,7 +19608,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 45,
+    "lineNumber": 36,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.addHelpText')",
     "line": "placeholder={t('questionEditor.common.addHelpText')}",
@@ -19575,7 +19617,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 46,
+    "lineNumber": 37,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.textBelowQuestion')",
     "line": "helperText={t('questionEditor.common.textBelowQuestion')}",
@@ -19584,16 +19626,16 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 76,
+    "lineNumber": 67,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.options.maxRating')",
-    "line": "<label className=\"block text-sm font-medium text-on-surface-variant mb-2\">{t('questionEditor.options.maxRating')}</label>",
+    "line": "<label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.options.maxRating')}</label>",
     "key": "questionEditor.options.maxRating",
     "defaultValue": null
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 101,
+    "lineNumber": 92,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.rating.lowLabel')",
     "line": "label={t('questionEditor.rating.lowLabel')}",
@@ -19602,7 +19644,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 104,
+    "lineNumber": 95,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.rating.lowPlaceholder')",
     "line": "placeholder={t('questionEditor.rating.lowPlaceholder')}",
@@ -19611,7 +19653,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 107,
+    "lineNumber": 98,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.rating.highLabel')",
     "line": "label={t('questionEditor.rating.highLabel')}",
@@ -19620,7 +19662,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 110,
+    "lineNumber": 101,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.rating.highPlaceholder')",
     "line": "placeholder={t('questionEditor.rating.highPlaceholder')}",
@@ -19629,10 +19671,10 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/RatingEditor.tsx",
-    "lineNumber": 51,
+    "lineNumber": 42,
     "pattern": "t() - With default value",
     "full": "t('questionEditor.rating.style', 'Rating Style')",
-    "line": "<label className=\"block text-sm font-medium text-on-surface-variant mb-2\">{t('questionEditor.rating.style', 'Rating Style')}</label>",
+    "line": "<label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.rating.style', 'Rating Style')}</label>",
     "key": "questionEditor.rating.style",
     "defaultValue": "Rating Style"
   },
@@ -20115,7 +20157,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 32,
+    "lineNumber": 24,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.question')",
     "line": "label={t('questionEditor.question')}",
@@ -20124,7 +20166,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 35,
+    "lineNumber": 27,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.enterQuestion')",
     "line": "placeholder={t('questionEditor.common.enterQuestion')}",
@@ -20133,7 +20175,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 40,
+    "lineNumber": 32,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.descriptionOptional')",
     "line": "label={t('questionEditor.common.descriptionOptional')}",
@@ -20142,7 +20184,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 43,
+    "lineNumber": 35,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.addHelpText')",
     "line": "placeholder={t('questionEditor.common.addHelpText')}",
@@ -20151,7 +20193,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 44,
+    "lineNumber": 36,
     "pattern": "t() - Standard hook call",
     "full": "t('questionEditor.common.textBelowQuestion')",
     "line": "helperText={t('questionEditor.common.textBelowQuestion')}",
@@ -20160,10 +20202,10 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/questions/editors/YesNoEditor.tsx",
-    "lineNumber": 49,
+    "lineNumber": 41,
     "pattern": "t() - With default value",
     "full": "t('questionEditor.yesNo.style', 'Display Style')",
-    "line": "<label className=\"block text-sm font-medium text-on-surface-variant mb-2\">{t('questionEditor.yesNo.style', 'Display Style')}</label>",
+    "line": "<label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('questionEditor.yesNo.style', 'Display Style')}</label>",
     "key": "questionEditor.yesNo.style",
     "defaultValue": "Display Style"
   },
@@ -21339,7 +21381,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 214,
+    "lineNumber": 181,
     "pattern": "t() - Standard hook call",
     "full": "t('search.placeholder')",
     "line": "placeholder={t('search.placeholder')}",
@@ -21348,16 +21390,16 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 221,
+    "lineNumber": 188,
     "pattern": "t() - Standard hook call",
     "full": "t('a11y.closeSearch')",
-    "line": "<IconButton variant=\"ghost\" size=\"sm\" onClick={closeSearch} aria-label={t('a11y.closeSearch')}>",
+    "line": "<IconButton variant='ghost' size='sm' onClick={closeSearch} aria-label={t('a11y.closeSearch')}>",
     "key": "a11y.closeSearch",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 231,
+    "lineNumber": 198,
     "pattern": "t() - Standard hook call",
     "full": "t('search.results')",
     "line": "{searchQuery.length >= 2 ? t('search.results') : t('search.recent')}",
@@ -21366,7 +21408,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 231,
+    "lineNumber": 198,
     "pattern": "t() - Standard hook call",
     "full": "t('search.recent')",
     "line": "{searchQuery.length >= 2 ? t('search.results') : t('search.recent')}",
@@ -21375,43 +21417,43 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 254,
+    "lineNumber": 221,
     "pattern": "t() - Standard hook call",
     "full": "t('search.noResults')",
-    "line": "<p className=\"text-on-surface font-medium\">{t('search.noResults')}</p>",
+    "line": "<p className='text-on-surface font-medium'>{t('search.noResults')}</p>",
     "key": "search.noResults",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 255,
+    "lineNumber": 222,
     "pattern": "t() - Standard hook call",
     "full": "t('search.tryDifferentKeywords')",
-    "line": "<p className=\"text-on-surface-variant text-sm mt-1\">{t('search.tryDifferentKeywords')}</p>",
+    "line": "<p className='text-on-surface-variant text-sm mt-1'>{t('search.tryDifferentKeywords')}</p>",
     "key": "search.tryDifferentKeywords",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 265,
+    "lineNumber": 232,
     "pattern": "t() - Standard hook call",
     "full": "t('search.noRecentItems')",
-    "line": "<p className=\"text-on-surface font-medium\">{t('search.noRecentItems')}</p>",
+    "line": "<p className='text-on-surface font-medium'>{t('search.noRecentItems')}</p>",
     "key": "search.noRecentItems",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 266,
+    "lineNumber": 233,
     "pattern": "t() - Standard hook call",
     "full": "t('search.startTyping')",
-    "line": "<p className=\"text-on-surface-variant text-sm mt-1\">{t('search.startTyping')}</p>",
+    "line": "<p className='text-on-surface-variant text-sm mt-1'>{t('search.startTyping')}</p>",
     "key": "search.startTyping",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 277,
+    "lineNumber": 244,
     "pattern": "t() - Standard hook call",
     "full": "t('search.toSelect')",
     "line": "<span>{t('search.toSelect')}</span>",
@@ -21420,7 +21462,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 286,
+    "lineNumber": 253,
     "pattern": "t() - Standard hook call",
     "full": "t('search.toNavigate')",
     "line": "<span>{t('search.toNavigate')}</span>",
@@ -21429,7 +21471,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 290,
+    "lineNumber": 257,
     "pattern": "t() - Standard hook call",
     "full": "t('search.toClose')",
     "line": "<span>{t('search.toClose')}</span>",
@@ -21438,7 +21480,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/GlobalSearch.tsx",
-    "lineNumber": 293,
+    "lineNumber": 260,
     "pattern": "t() - Standard hook call",
     "full": "t('emptyState.search.openWith')",
     "line": "<span>{t('emptyState.search.openWith')}</span>",
@@ -21501,19 +21543,19 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/search/RecentItems.tsx",
-    "lineNumber": 127,
+    "lineNumber": 104,
     "pattern": "t() - Standard hook call",
     "full": "t('emptyState.search.noRecentItems')",
-    "line": "<p className=\"text-sm text-on-surface-variant\">{t('emptyState.search.noRecentItems')}</p>",
+    "line": "<p className='text-sm text-on-surface-variant'>{t('emptyState.search.noRecentItems')}</p>",
     "key": "emptyState.search.noRecentItems",
     "defaultValue": null
   },
   {
     "file": "src/components/features/search/RecentItems.tsx",
-    "lineNumber": 137,
+    "lineNumber": 114,
     "pattern": "t() - Standard hook call",
     "full": "t('common.recent')",
-    "line": "<h3 className=\"text-xs font-semibold text-on-surface-variant uppercase tracking-wider\">{t('common.recent')}</h3>",
+    "line": "<h3 className='text-xs font-semibold text-on-surface-variant uppercase tracking-wider'>{t('common.recent')}</h3>",
     "key": "common.recent",
     "defaultValue": null
   },
@@ -22860,7 +22902,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 150,
+    "lineNumber": 88,
     "pattern": "t() - Standard hook call",
     "full": "t('common.public')",
     "line": "{template.isPublic ? t('common.public') : t('common.private')}",
@@ -22869,7 +22911,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 150,
+    "lineNumber": 88,
     "pattern": "t() - Standard hook call",
     "full": "t('common.private')",
     "line": "{template.isPublic ? t('common.public') : t('common.private')}",
@@ -22878,7 +22920,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 169,
+    "lineNumber": 107,
     "pattern": "t() - Standard hook call",
     "full": "t('templates.untitledQuestion')",
     "line": "text: q.text || t('templates.untitledQuestion'),",
@@ -22887,7 +22929,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 182,
+    "lineNumber": 120,
     "pattern": "t() - Standard hook call",
     "full": "t('templates.noQuestions')",
     "line": "<p className='text-sm font-medium text-on-surface'>{t('templates.noQuestions')}</p>",
@@ -22896,7 +22938,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 183,
+    "lineNumber": 121,
     "pattern": "t() - Standard hook call",
     "full": "t('templates.questionsWillAppear')",
     "line": "<p className='text-xs text-on-surface-variant mt-1'>{t('templates.questionsWillAppear')}</p>",
@@ -22905,7 +22947,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 192,
+    "lineNumber": 130,
     "pattern": "t() - Standard hook call",
     "full": "t('templates.useThis')",
     "line": "{t('templates.useThis')}",
@@ -22914,7 +22956,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/templates/TemplatePreviewDrawer.tsx",
-    "lineNumber": 259,
+    "lineNumber": 197,
     "pattern": "t() - Standard hook call",
     "full": "t('templates.loadError')",
     "line": "<p className='text-error'>{t('templates.loadError')}</p>",
@@ -23022,7 +23064,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 252,
+    "lineNumber": 202,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.validation.nameRequired')",
     "line": "newErrors.name = t('themeEditor.validation.nameRequired');",
@@ -23031,7 +23073,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 255,
+    "lineNumber": 205,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.validation.primaryColorRequired')",
     "line": "newErrors.primaryColor = t('themeEditor.validation.primaryColorRequired');",
@@ -23040,7 +23082,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 258,
+    "lineNumber": 208,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.validation.backgroundColorRequired')",
     "line": "newErrors.backgroundColor = t('themeEditor.validation.backgroundColorRequired');",
@@ -23049,7 +23091,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 267,
+    "lineNumber": 217,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.toast.validationError')",
     "line": "toast.error(t('themeEditor.toast.validationError'));",
@@ -23058,7 +23100,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 317,
+    "lineNumber": 267,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.editTitle')",
     "line": "title={isEditing ? t('themeEditor.editTitle') : t('themeEditor.createTitle')}",
@@ -23067,7 +23109,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 317,
+    "lineNumber": 267,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.createTitle')",
     "line": "title={isEditing ? t('themeEditor.editTitle') : t('themeEditor.createTitle')}",
@@ -23076,7 +23118,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 318,
+    "lineNumber": 268,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.editDescription')",
     "line": "description={isEditing ? t('themeEditor.editDescription') : t('themeEditor.createDescription')}",
@@ -23085,7 +23127,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 318,
+    "lineNumber": 268,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.createDescription')",
     "line": "description={isEditing ? t('themeEditor.editDescription') : t('themeEditor.createDescription')}",
@@ -23094,7 +23136,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 329,
+    "lineNumber": 279,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.livePreview')",
     "line": "{t('themeEditor.livePreview')}",
@@ -23103,7 +23145,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 355,
+    "lineNumber": 305,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.themeName')",
     "line": "label={t('themeEditor.themeName')}",
@@ -23112,7 +23154,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 359,
+    "lineNumber": 309,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.themeNamePlaceholder')",
     "line": "placeholder={t('themeEditor.themeNamePlaceholder')}",
@@ -23121,7 +23163,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 367,
+    "lineNumber": 317,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.tabs.colors')",
     "line": "<Palette className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.colors')}",
@@ -23130,7 +23172,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 370,
+    "lineNumber": 320,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.tabs.typography')",
     "line": "<Type className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.typography')}",
@@ -23139,7 +23181,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 376,
+    "lineNumber": 326,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.tabs.branding')",
     "line": "<Image className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.branding')}",
@@ -23148,7 +23190,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 379,
+    "lineNumber": 329,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.tabs.advanced')",
     "line": "<Code className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.advanced')}",
@@ -23157,7 +23199,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 389,
+    "lineNumber": 339,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.quickPresets')",
     "line": "{t('themeEditor.quickPresets')}",
@@ -23166,7 +23208,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 419,
+    "lineNumber": 369,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.colors.primary')",
     "line": "label={t('themeEditor.colors.primary')}",
@@ -23175,7 +23217,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 424,
+    "lineNumber": 374,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.colors.secondary')",
     "line": "<ColorPicker label={t('themeEditor.colors.secondary')} value={formData.secondaryColor} onChange={(v) => updateField('secondaryColor', v)} />",
@@ -23184,7 +23226,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 438,
+    "lineNumber": 388,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.colors.background')",
     "line": "label={t('themeEditor.colors.background')}",
@@ -23193,7 +23235,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 448,
+    "lineNumber": 398,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.colors.text')",
     "line": "<ColorPicker label={t('themeEditor.colors.text')} value={formData.textColor} onChange={(v) => updateField('textColor', v)} />",
@@ -23202,7 +23244,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 514,
+    "lineNumber": 464,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.buttonStyle')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.buttonStyle')}</span>",
@@ -23211,7 +23253,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 693,
+    "lineNumber": 643,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.logoUrl')",
     "line": "label={t('themeEditor.logoUrl')}",
@@ -23220,7 +23262,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 697,
+    "lineNumber": 647,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.logoUrlHelperText')",
     "line": "helperText={t('themeEditor.logoUrlHelperText')}",
@@ -23229,7 +23271,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 704,
+    "lineNumber": 654,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.logoSize')",
     "line": "<label className='text-sm font-semibold text-on-surface mb-3 block'>{t('themeEditor.branding.logoSize')}</label>",
@@ -23238,7 +23280,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 707,
+    "lineNumber": 657,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.sizes.small')",
     "line": "{ name: t('themeEditor.branding.sizes.small'), value: 0 },",
@@ -23247,7 +23289,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 708,
+    "lineNumber": 658,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.sizes.medium')",
     "line": "{ name: t('themeEditor.branding.sizes.medium'), value: 1 },",
@@ -23256,7 +23298,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 709,
+    "lineNumber": 659,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.sizes.large')",
     "line": "{ name: t('themeEditor.branding.sizes.large'), value: 2 },",
@@ -23265,7 +23307,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 710,
+    "lineNumber": 660,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.sizes.extraLarge')",
     "line": "{ name: t('themeEditor.branding.sizes.extraLarge'), value: 3 },",
@@ -23274,7 +23316,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 732,
+    "lineNumber": 682,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.showLogoBackground')",
     "line": "<label className='text-sm font-semibold text-on-surface'>{t('themeEditor.branding.showLogoBackground')}</label>",
@@ -23283,7 +23325,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 770,
+    "lineNumber": 720,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingTitle')",
     "line": "<label className='text-sm font-semibold text-on-surface mb-2 block'>{t('themeEditor.branding.brandingTitle')}</label>",
@@ -23292,7 +23334,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 774,
+    "lineNumber": 724,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingTitlePlaceholder')",
     "line": "placeholder={t('themeEditor.branding.brandingTitlePlaceholder')}",
@@ -23301,7 +23343,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 777,
+    "lineNumber": 727,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingTitleHelper')",
     "line": "<p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.branding.brandingTitleHelper')}</p>",
@@ -23310,7 +23352,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 782,
+    "lineNumber": 732,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingSubtitle')",
     "line": "<label className='text-sm font-semibold text-on-surface mb-2 block'>{t('themeEditor.branding.brandingSubtitle')}</label>",
@@ -23319,7 +23361,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 786,
+    "lineNumber": 736,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingSubtitlePlaceholder')",
     "line": "placeholder={t('themeEditor.branding.brandingSubtitlePlaceholder')}",
@@ -23328,7 +23370,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 789,
+    "lineNumber": 739,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.branding.brandingSubtitleHelper')",
     "line": "<p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.branding.brandingSubtitleHelper')}</p>",
@@ -23337,7 +23379,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 793,
+    "lineNumber": 743,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.backgroundImageUrl')",
     "line": "label={t('themeEditor.backgroundImageUrl')}",
@@ -23346,7 +23388,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 797,
+    "lineNumber": 747,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.backgroundImageUrlHelperText')",
     "line": "helperText={t('themeEditor.backgroundImageUrlHelperText')}",
@@ -23355,7 +23397,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 809,
+    "lineNumber": 759,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.customCss')",
     "line": "{t('themeEditor.customCss')}",
@@ -23364,7 +23406,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 814,
+    "lineNumber": 764,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.customCssPlaceholder')",
     "line": "placeholder={t('themeEditor.customCssPlaceholder')}",
@@ -23373,7 +23415,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 819,
+    "lineNumber": 769,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.customCssHelperText')",
     "line": "{t('themeEditor.customCssHelperText')} <code className='bg-surface-container-high px-1 rounded'>var(--theme-primary)</code>",
@@ -23382,7 +23424,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 826,
+    "lineNumber": 776,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.generatedCssPreview')",
     "line": "{t('themeEditor.generatedCssPreview')}",
@@ -23391,7 +23433,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 837,
+    "lineNumber": 787,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.livePreview')",
     "line": "{t('themeEditor.livePreview')}",
@@ -23400,7 +23442,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 857,
+    "lineNumber": 807,
     "pattern": "t() - Standard hook call",
     "full": "t('common.cancel')",
     "line": "{t('common.cancel')}",
@@ -23409,7 +23451,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 860,
+    "lineNumber": 810,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.saveChanges')",
     "line": "{isEditing ? t('themeEditor.saveChanges') : t('themeEditor.createTheme')}",
@@ -23418,7 +23460,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 860,
+    "lineNumber": 810,
     "pattern": "t() - Standard hook call",
     "full": "t('themeEditor.createTheme')",
     "line": "{isEditing ? t('themeEditor.saveChanges') : t('themeEditor.createTheme')}",
@@ -23427,7 +23469,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 331,
+    "lineNumber": 281,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.livePreviewHint', 'Changes update in real-time')",
     "line": "<p className='text-xs text-on-surface-variant mt-1'>{t('themeEditor.livePreviewHint', 'Changes update in real-time')}</p>",
@@ -23436,7 +23478,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 373,
+    "lineNumber": 323,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.tabs.layout', 'Layout')",
     "line": "<Sliders className='h-4 w-4 mr-2' /> {t('themeEditor.tabs.layout', 'Layout')}",
@@ -23445,7 +23487,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 416,
+    "lineNumber": 366,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.brandColors', 'Brand Colors')",
     "line": "<span className='text-xs font-medium text-on-surface-variant block mb-3'>{t('themeEditor.brandColors', 'Brand Colors')}</span>",
@@ -23454,7 +23496,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 426,
+    "lineNumber": 376,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.colors.accent', 'Accent')",
     "line": "label={t('themeEditor.colors.accent', 'Accent')}",
@@ -23463,7 +23505,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 435,
+    "lineNumber": 385,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.surfaceColors', 'Surface Colors')",
     "line": "<span className='text-xs font-medium text-on-surface-variant block mb-3'>{t('themeEditor.surfaceColors', 'Surface Colors')}</span>",
@@ -23472,7 +23514,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 444,
+    "lineNumber": 394,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.colors.surface', 'Surface')",
     "line": "label={t('themeEditor.colors.surface', 'Surface')}",
@@ -23481,7 +23523,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 457,
+    "lineNumber": 407,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.bodyFont', 'Body Font')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.bodyFont', 'Body Font')}</span>",
@@ -23490,7 +23532,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 486,
+    "lineNumber": 436,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.headingFont', 'Heading Font')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.headingFont', 'Heading Font')}</span>",
@@ -23499,7 +23541,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 544,
+    "lineNumber": 494,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.cornerRadius', 'Corner Radius')",
     "line": "{t('themeEditor.cornerRadius', 'Corner Radius')}",
@@ -23508,7 +23550,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 568,
+    "lineNumber": 518,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.containerWidth', 'Container Width')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.containerWidth', 'Container Width')}</span>",
@@ -23517,7 +23559,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 591,
+    "lineNumber": 541,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.spacing', 'Spacing')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.spacing', 'Spacing')}</span>",
@@ -23526,7 +23568,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 613,
+    "lineNumber": 563,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.progressIndicator', 'Progress Indicator')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.progressIndicator', 'Progress Indicator')}</span>",
@@ -23535,7 +23577,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 625,
+    "lineNumber": 575,
     "pattern": "t() - With default value",
     "full": "t('common.none', 'None')",
     "line": "<span className='text-xs'>{t('common.none', 'None')}</span>",
@@ -23544,7 +23586,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 651,
+    "lineNumber": 601,
     "pattern": "t() - With default value",
     "full": "t('themeEditor.questionNumbers', 'Question Numbers')",
     "line": "<span className='text-sm font-semibold text-on-surface block mb-3'>{t('themeEditor.questionNumbers', 'Question Numbers')}</span>",
@@ -23553,7 +23595,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/features/themes/ThemeEditorDrawer.tsx",
-    "lineNumber": 663,
+    "lineNumber": 613,
     "pattern": "t() - With default value",
     "full": "t('common.none', 'None')",
     "line": "<span className='text-xs'>{t('common.none', 'None')}</span>",
@@ -25533,7 +25575,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 364,
+    "lineNumber": 339,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.defaultUser')",
     "line": "return <WelcomeStep userName={user?.firstName || t('onboarding.defaultUser')} />;",
@@ -25542,7 +25584,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 403,
+    "lineNumber": 378,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.defaultUser')",
     "line": "return <CompleteStep userName={firstName || user?.firstName || t('onboarding.defaultUser')} />;",
@@ -25551,7 +25593,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 449,
+    "lineNumber": 424,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.skip')",
     "line": "{t('onboarding.skip')}",
@@ -25560,7 +25602,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 548,
+    "lineNumber": 523,
     "pattern": "t() - Standard hook call",
     "full": "t('common.back')",
     "line": "{t('common.back')}",
@@ -25569,7 +25611,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 554,
+    "lineNumber": 529,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.getStarted')",
     "line": "{t('onboarding.getStarted')}",
@@ -25578,7 +25620,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 558,
+    "lineNumber": 533,
     "pattern": "t() - Standard hook call",
     "full": "t('common.next')",
     "line": "{t('common.next')}",
@@ -25587,7 +25629,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 594,
+    "lineNumber": 569,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.welcome.message')",
     "line": "{t('onboarding.welcome.message')}",
@@ -25596,7 +25638,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 603,
+    "lineNumber": 578,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.features.customize')",
     "line": "{ icon: Palette, label: t('onboarding.features.customize') },",
@@ -25605,7 +25647,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 604,
+    "lineNumber": 579,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.features.language')",
     "line": "{ icon: Globe, label: t('onboarding.features.language') },",
@@ -25614,7 +25656,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 605,
+    "lineNumber": 580,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.features.notifications')",
     "line": "{ icon: Bell, label: t('onboarding.features.notifications') },",
@@ -25623,7 +25665,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 643,
+    "lineNumber": 618,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.profile.firstName')",
     "line": "label={t('onboarding.profile.firstName')}",
@@ -25632,7 +25674,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 646,
+    "lineNumber": 621,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.profile.firstNamePlaceholder')",
     "line": "placeholder={t('onboarding.profile.firstNamePlaceholder')}",
@@ -25641,7 +25683,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 649,
+    "lineNumber": 624,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.profile.lastName')",
     "line": "label={t('onboarding.profile.lastName')}",
@@ -25650,7 +25692,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 652,
+    "lineNumber": 627,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.profile.lastNamePlaceholder')",
     "line": "placeholder={t('onboarding.profile.lastNamePlaceholder')}",
@@ -25659,7 +25701,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 656,
+    "lineNumber": 631,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.profile.hint')",
     "line": "<p className='text-sm text-on-surface-variant text-center'>{t('onboarding.profile.hint')}</p>",
@@ -25668,7 +25710,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 675,
+    "lineNumber": 650,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.appearance.themeMode')",
     "line": "<h4 className='text-sm font-medium text-on-surface mb-3'>{t('onboarding.appearance.themeMode')}</h4>",
@@ -25677,16 +25719,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 688,
-    "pattern": "t() - Standard hook call",
-    "full": "t(`onboarding.appearance.${mode.id}`)",
-    "line": "{t(`onboarding.appearance.${mode.id}`)}",
-    "key": "onboarding.appearance.${mode.id}",
-    "defaultValue": null
-  },
-  {
-    "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 697,
+    "lineNumber": 670,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.appearance.colorPalette')",
     "line": "<h4 className='text-sm font-medium text-on-surface mb-3'>{t('onboarding.appearance.colorPalette')}</h4>",
@@ -25695,16 +25728,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 714,
-    "pattern": "t() - Standard hook call",
-    "full": "t(`onboarding.appearance.palette.${palette.id}`)",
-    "line": "{t(`onboarding.appearance.palette.${palette.id}`)}",
-    "key": "onboarding.appearance.palette.${palette.id}",
-    "defaultValue": null
-  },
-  {
-    "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 742,
+    "lineNumber": 715,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.language.description')",
     "line": "<p className='text-center text-on-surface-variant mb-6'>{t('onboarding.language.description')}</p>",
@@ -25713,7 +25737,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 812,
+    "lineNumber": 785,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.email')",
     "line": "label={t('onboarding.notifications.email')}",
@@ -25722,7 +25746,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 813,
+    "lineNumber": 786,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.emailDesc')",
     "line": "description={t('onboarding.notifications.emailDesc')}",
@@ -25731,7 +25755,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 821,
+    "lineNumber": 794,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.responses')",
     "line": "label={t('onboarding.notifications.responses')}",
@@ -25740,7 +25764,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 822,
+    "lineNumber": 795,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.responsesDesc')",
     "line": "description={t('onboarding.notifications.responsesDesc')}",
@@ -25749,7 +25773,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 830,
+    "lineNumber": 803,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.digest')",
     "line": "label={t('onboarding.notifications.digest')}",
@@ -25758,7 +25782,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 831,
+    "lineNumber": 804,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.digestDesc')",
     "line": "description={t('onboarding.notifications.digestDesc')}",
@@ -25767,7 +25791,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 836,
+    "lineNumber": 809,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.notifications.hint')",
     "line": "<p className='text-xs text-on-surface-variant text-center'>{t('onboarding.notifications.hint')}</p>",
@@ -25776,7 +25800,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 925,
+    "lineNumber": 898,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.complete.createSurvey')",
     "line": "{ icon: FileText, label: t('onboarding.complete.createSurvey'), color: 'text-primary' },",
@@ -25785,7 +25809,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 926,
+    "lineNumber": 899,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.complete.viewAnalytics')",
     "line": "{ icon: BarChart3, label: t('onboarding.complete.viewAnalytics'), color: 'text-secondary' },",
@@ -25794,7 +25818,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 927,
+    "lineNumber": 900,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.complete.distribute')",
     "line": "{ icon: Send, label: t('onboarding.complete.distribute'), color: 'text-tertiary' },",
@@ -25803,7 +25827,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 953,
+    "lineNumber": 926,
     "pattern": "t() - Standard hook call",
     "full": "t('onboarding.complete.message')",
     "line": "{t('onboarding.complete.message')}",
@@ -25812,7 +25836,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 262,
+    "lineNumber": 237,
     "pattern": "t() - With default value",
     "full": "t('onboarding.completedSuccessfully', 'Setup completed successfully!')",
     "line": "toast.success(t('onboarding.completedSuccessfully', 'Setup completed successfully!'));",
@@ -25821,7 +25845,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 266,
+    "lineNumber": 241,
     "pattern": "t() - With default value",
     "full": "t('onboarding.errors.saveFailed', 'Failed to save your preferences. Please try again.')",
     "line": "setError(t('onboarding.errors.saveFailed', 'Failed to save your preferences. Please try again.'));",
@@ -25830,7 +25854,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 267,
+    "lineNumber": 242,
     "pattern": "t() - With default value",
     "full": "t('onboarding.errors.saveFailed', 'Failed to save your preferences')",
     "line": "toast.error(t('onboarding.errors.saveFailed', 'Failed to save your preferences'));",
@@ -25839,7 +25863,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 447,
+    "lineNumber": 422,
     "pattern": "t() - With default value",
     "full": "t('onboarding.skipAriaLabel', 'Skip onboarding wizard')",
     "line": "aria-label={t('onboarding.skipAriaLabel', 'Skip onboarding wizard')}",
@@ -25848,7 +25872,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 504,
+    "lineNumber": 479,
     "pattern": "t() - With default value",
     "full": "t('onboarding.stepNavigation', 'Wizard steps')",
     "line": "<nav aria-label={t('onboarding.stepNavigation', 'Wizard steps')}>",
@@ -25857,7 +25881,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 873,
+    "lineNumber": 846,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.intro', 'Customize your experience for better accessibility')",
     "line": "{t('onboarding.accessibility.intro', 'Customize your experience for better accessibility')}",
@@ -25866,7 +25890,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 881,
+    "lineNumber": 854,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.reducedMotion', 'Reduce Motion')",
     "line": "label={t('onboarding.accessibility.reducedMotion', 'Reduce Motion')}",
@@ -25875,7 +25899,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 882,
+    "lineNumber": 855,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.reducedMotionDesc', 'Minimize animations and transitions')",
     "line": "description={t('onboarding.accessibility.reducedMotionDesc', 'Minimize animations and transitions')}",
@@ -25884,7 +25908,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 890,
+    "lineNumber": 863,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.highContrast', 'High Contrast')",
     "line": "label={t('onboarding.accessibility.highContrast', 'High Contrast')}",
@@ -25893,7 +25917,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 891,
+    "lineNumber": 864,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.highContrastDesc', 'Increase color contrast for better visibility')",
     "line": "description={t('onboarding.accessibility.highContrastDesc', 'Increase color contrast for better visibility')}",
@@ -25902,7 +25926,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 899,
+    "lineNumber": 872,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.largeText', 'Large Text')",
     "line": "label={t('onboarding.accessibility.largeText', 'Large Text')}",
@@ -25911,7 +25935,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 900,
+    "lineNumber": 873,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.largeTextDesc', 'Increase font size throughout the app')",
     "line": "description={t('onboarding.accessibility.largeTextDesc', 'Increase font size throughout the app')}",
@@ -25920,7 +25944,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 908,
+    "lineNumber": 881,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.dyslexiaFont', 'Dyslexia-Friendly Font')",
     "line": "label={t('onboarding.accessibility.dyslexiaFont', 'Dyslexia-Friendly Font')}",
@@ -25929,7 +25953,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 909,
+    "lineNumber": 882,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.dyslexiaFontDesc', 'Use a font designed for easier reading')",
     "line": "description={t('onboarding.accessibility.dyslexiaFontDesc', 'Use a font designed for easier reading')}",
@@ -25938,7 +25962,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 915,
+    "lineNumber": 888,
     "pattern": "t() - With default value",
     "full": "t('onboarding.accessibility.hint', 'You can adjust these settings anytime in Settings → Accessibility')",
     "line": "{t('onboarding.accessibility.hint', 'You can adjust these settings anytime in Settings → Accessibility')}",
@@ -25947,7 +25971,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 586,
+    "lineNumber": 561,
     "pattern": "t() - With options object",
     "full": "t('onboarding.welcome.greeting', { name: userName })",
     "line": "{t('onboarding.welcome.greeting', { name: userName })}",
@@ -25956,7 +25980,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 944,
+    "lineNumber": 917,
     "pattern": "t() - With options object",
     "full": "t('onboarding.complete.ready', { name: userName })",
     "line": "{t('onboarding.complete.ready', { name: userName })}",
@@ -25965,7 +25989,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 488,
+    "lineNumber": 463,
     "pattern": "t() - Dynamic/variable key",
     "full": "t(step.titleKey)",
     "line": "{t(step.titleKey)}",
@@ -25974,7 +25998,7 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 498,
+    "lineNumber": 473,
     "pattern": "t() - Dynamic/variable key",
     "full": "t(step.descriptionKey)",
     "line": "{t(step.descriptionKey)}",
@@ -25983,7 +26007,25 @@ workspaces.workspace
   },
   {
     "file": "src/components/ui/OnboardingWizard.tsx",
-    "lineNumber": 511,
+    "lineNumber": 662,
+    "pattern": "t() - Dynamic/variable key",
+    "full": "t(mode.labelKey)",
+    "line": "<span className={cn('text-sm font-medium', selectedTheme === mode.id ? 'text-primary' : 'text-on-surface')}>{t(mode.labelKey)}</span>",
+    "key": "[DYNAMIC] mode.labelKey",
+    "defaultValue": null
+  },
+  {
+    "file": "src/components/ui/OnboardingWizard.tsx",
+    "lineNumber": 687,
+    "pattern": "t() - Dynamic/variable key",
+    "full": "t(palette.labelKey)",
+    "line": "{t(palette.labelKey)}",
+    "key": "[DYNAMIC] palette.labelKey",
+    "defaultValue": null
+  },
+  {
+    "file": "src/components/ui/OnboardingWizard.tsx",
+    "lineNumber": 486,
     "pattern": "⚠️ ANY standalone t() call (catch-all)",
     "full": "t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })",
     "line": "aria-label={t('onboarding.stepLabel', 'Step {{current}} of {{total}}', { current: idx + 1, total: STEPS.length })}",
@@ -27774,7 +27816,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Dashboard/sections/RecentSurveyItem.tsx",
-    "lineNumber": 39,
+    "lineNumber": 33,
     "pattern": "t() - Standard hook call",
     "full": "t('surveys.responses')",
     "line": "{survey.responseCount} {t('surveys.responses')}",
@@ -27815,6 +27857,33 @@ workspaces.workspace
     "full": "t('devTest.settings')",
     "line": "<IconButton variant=\"outlined\" aria-label={t('devTest.settings')}>",
     "key": "devTest.settings",
+    "defaultValue": null
+  },
+  {
+    "file": "src/pages/DevTest/sections/ThemeControlsSection.tsx",
+    "lineNumber": 43,
+    "pattern": "t() - Dynamic/variable key",
+    "full": "t(palette.labelKey)",
+    "line": "<span className='text-xs font-medium text-on-surface'>{t(palette.labelKey)}</span>",
+    "key": "[DYNAMIC] palette.labelKey",
+    "defaultValue": null
+  },
+  {
+    "file": "src/pages/DevTest/sections/ThemeControlsSection.tsx",
+    "lineNumber": 73,
+    "pattern": "t() - Dynamic/variable key",
+    "full": "t(mode.labelKey)",
+    "line": "<span className='text-sm font-medium text-on-surface'>{t(mode.labelKey)}</span>",
+    "key": "[DYNAMIC] mode.labelKey",
+    "defaultValue": null
+  },
+  {
+    "file": "src/pages/DevTest/sections/ThemeControlsSection.tsx",
+    "lineNumber": 74,
+    "pattern": "t() - Dynamic/variable key",
+    "full": "t(mode.descKey)",
+    "line": "<span className='text-xs text-on-surface-variant'>{t(mode.descKey)}</span>",
+    "key": "[DYNAMIC] mode.descKey",
     "defaultValue": null
   },
   {
@@ -31275,7 +31344,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 52,
+    "lineNumber": 46,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.visual.title')",
     "line": "{t('settings.accessibility.visual.title')}",
@@ -31284,7 +31353,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 54,
+    "lineNumber": 48,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.visual.description')",
     "line": "<CardDescription>{t('settings.accessibility.visual.description')}</CardDescription>",
@@ -31293,7 +31362,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 59,
+    "lineNumber": 53,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.highContrast.title')",
     "line": "label={t('settings.accessibility.highContrast.title')}",
@@ -31302,7 +31371,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 60,
+    "lineNumber": 54,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.highContrast.description')",
     "line": "description={t('settings.accessibility.highContrast.description')}",
@@ -31311,7 +31380,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 68,
+    "lineNumber": 62,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.screenReader.title')",
     "line": "label={t('settings.accessibility.screenReader.title')}",
@@ -31320,7 +31389,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 69,
+    "lineNumber": 63,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.screenReader.description')",
     "line": "description={t('settings.accessibility.screenReader.description')}",
@@ -31329,7 +31398,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 83,
+    "lineNumber": 77,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.motion.title')",
     "line": "{t('settings.accessibility.motion.title')}",
@@ -31338,7 +31407,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 85,
+    "lineNumber": 79,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.motion.description')",
     "line": "<CardDescription>{t('settings.accessibility.motion.description')}</CardDescription>",
@@ -31347,7 +31416,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 89,
+    "lineNumber": 83,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.reducedMotion.title')",
     "line": "label={t('settings.accessibility.reducedMotion.title')}",
@@ -31356,7 +31425,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 90,
+    "lineNumber": 84,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.reducedMotion.description')",
     "line": "description={t('settings.accessibility.reducedMotion.description')}",
@@ -31365,7 +31434,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 103,
+    "lineNumber": 97,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.font.title')",
     "line": "{t('settings.accessibility.font.title')}",
@@ -31374,7 +31443,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 105,
+    "lineNumber": 99,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.font.description')",
     "line": "<CardDescription>{t('settings.accessibility.font.description')}</CardDescription>",
@@ -31383,7 +31452,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 109,
+    "lineNumber": 103,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.fontSize.title')",
     "line": "<SelectionField label={t('settings.accessibility.fontSize.title')}>",
@@ -31392,7 +31461,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 140,
+    "lineNumber": 134,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.dyslexiaFont.title')",
     "line": "label={t('settings.accessibility.dyslexiaFont.title')}",
@@ -31401,7 +31470,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 141,
+    "lineNumber": 135,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.dyslexiaFont.description')",
     "line": "description={t('settings.accessibility.dyslexiaFont.description')}",
@@ -31410,7 +31479,7 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 155,
+    "lineNumber": 149,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.preview.title')",
     "line": "{t('settings.accessibility.preview.title')}",
@@ -31419,25 +31488,25 @@ workspaces.workspace
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 169,
+    "lineNumber": 163,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.preview.sampleTitle')",
-    "line": "<h4 className=\"font-semibold text-on-surface mb-2\">{t('settings.accessibility.preview.sampleTitle')}</h4>",
+    "line": "<h4 className='font-semibold text-on-surface mb-2'>{t('settings.accessibility.preview.sampleTitle')}</h4>",
     "key": "settings.accessibility.preview.sampleTitle",
     "defaultValue": null
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 170,
+    "lineNumber": 164,
     "pattern": "t() - Standard hook call",
     "full": "t('settings.accessibility.preview.sampleText')",
-    "line": "<p className=\"text-on-surface-variant\">{t('settings.accessibility.preview.sampleText')}</p>",
+    "line": "<p className='text-on-surface-variant'>{t('settings.accessibility.preview.sampleText')}</p>",
     "key": "settings.accessibility.preview.sampleText",
     "defaultValue": null
   },
   {
     "file": "src/pages/Settings/sections/AccessibilitySection.tsx",
-    "lineNumber": 127,
+    "lineNumber": 121,
     "pattern": "t() - Dynamic/variable key",
     "full": "t(option.labelKey)",
     "line": "{t(option.labelKey)}",
