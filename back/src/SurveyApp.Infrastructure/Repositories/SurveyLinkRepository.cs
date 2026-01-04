@@ -154,12 +154,15 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
 
         if (startDate.HasValue)
         {
-            query = query.Where(c => c.ClickedAt >= startDate.Value);
+            var startOfDay = startDate.Value.Date;
+            query = query.Where(c => c.ClickedAt >= startOfDay);
         }
 
         if (endDate.HasValue)
         {
-            query = query.Where(c => c.ClickedAt <= endDate.Value);
+            // EndDate should be inclusive - include all clicks up to end of that day
+            var endOfDay = endDate.Value.Date.AddDays(1);
+            query = query.Where(c => c.ClickedAt < endOfDay);
         }
 
         return await query.OrderByDescending(c => c.ClickedAt).ToListAsync(cancellationToken);
@@ -176,5 +179,61 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
         {
             click.AssociateResponse(responseId);
         }
+    }
+
+    public async Task<int> GetClickCountAsync(
+        Guid surveyLinkId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _context
+            .LinkClicks.AsNoTracking()
+            .CountAsync(c => c.SurveyLinkId == surveyLinkId, cancellationToken);
+    }
+
+    public async Task<Dictionary<Guid, int>> GetClickCountsAsync(
+        IEnumerable<Guid> surveyLinkIds,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var linkIdList = surveyLinkIds.ToList();
+        if (linkIdList.Count == 0)
+            return [];
+
+        return await _context
+            .LinkClicks.AsNoTracking()
+            .Where(c => linkIdList.Contains(c.SurveyLinkId))
+            .GroupBy(c => c.SurveyLinkId)
+            .Select(g => new { SurveyLinkId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.SurveyLinkId, x => x.Count, cancellationToken);
+    }
+
+    public async Task<int> GetResponseCountAsync(
+        Guid surveyLinkId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _context
+            .SurveyResponses.AsNoTracking()
+            .CountAsync(r => r.SurveyLinkId == surveyLinkId && r.IsComplete, cancellationToken);
+    }
+
+    public async Task<Dictionary<Guid, int>> GetResponseCountsAsync(
+        IEnumerable<Guid> surveyLinkIds,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var linkIdList = surveyLinkIds.ToList();
+        if (linkIdList.Count == 0)
+            return [];
+
+        return await _context
+            .SurveyResponses.AsNoTracking()
+            .Where(r =>
+                r.SurveyLinkId.HasValue && linkIdList.Contains(r.SurveyLinkId.Value) && r.IsComplete
+            )
+            .GroupBy(r => r.SurveyLinkId!.Value)
+            .Select(g => new { SurveyLinkId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.SurveyLinkId, x => x.Count, cancellationToken);
     }
 }

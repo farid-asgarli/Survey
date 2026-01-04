@@ -242,14 +242,18 @@ public class SurveyResponseRepository(ApplicationDbContext context) : ISurveyRes
         }
 
         // Apply date range filter
+        // Use .Date for comparison to ensure full day inclusion
         if (startDate.HasValue)
         {
-            query = query.Where(r => r.StartedAt >= startDate.Value);
+            var startOfDay = startDate.Value.Date;
+            query = query.Where(r => r.StartedAt >= startOfDay);
         }
 
         if (endDate.HasValue)
         {
-            query = query.Where(r => r.StartedAt <= endDate.Value);
+            // EndDate should be inclusive - include all records up to end of that day
+            var endOfDay = endDate.Value.Date.AddDays(1);
+            query = query.Where(r => r.StartedAt < endOfDay);
         }
 
         // Apply email filter with case-insensitive search

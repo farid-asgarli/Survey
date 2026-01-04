@@ -139,6 +139,20 @@ public static class DependencyInjection
         services.AddScoped<IEmailDistributionService, EmailDistributionService>();
         services.AddScoped<ILinkUrlService, LinkUrlService>();
 
+        // Geolocation service configuration
+        var geoLocationOptions = new GeoLocationOptions();
+        configuration.Bind(GeoLocationOptions.SectionName, geoLocationOptions);
+        services.Configure<GeoLocationOptions>(
+            configuration.GetSection(GeoLocationOptions.SectionName)
+        );
+
+        // Geolocation service with HttpClient and caching
+        services.AddMemoryCache();
+        services.AddHttpClient<IGeoLocationService, GeoLocationService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(geoLocationOptions.TimeoutSeconds);
+        });
+
         // Database seeder
         services.AddScoped<Persistence.DatabaseSeeder>();
 

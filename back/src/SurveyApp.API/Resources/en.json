@@ -277,6 +277,8 @@
   "Application.SurveyLink.LinkDeactivated": "This survey link has been deactivated.",
   "Application.SurveyLink.LinkExpired": "This survey link has expired.",
   "Application.SurveyLink.MaxUsageReached": "This survey link has reached its maximum usage limit.",
+  "Application.SurveyLink.LinkAlreadyUsed": "This survey link has already been used. One-time links can only be used once.",
+  "Application.SurveyLink.LinkInvalid": "This survey link is no longer valid.",
   "Application.SurveyLink.InvalidPassword": "Invalid password for this survey link.",
   "Application.SurveyLink.SurveyMustBePublished": "Survey must be published before creating links. Please publish the survey first.",
   "Application.SurveyLink.DoesNotBelongToSurvey": "Survey link does not belong to this survey.",

@@ -15,7 +15,8 @@ public class StartResponseCommandHandler(
     ISurveyLinkRepository surveyLinkRepository,
     ISurveyResponseRepository responseRepository,
     IUnitOfWork unitOfWork,
-    ICurrentUserService currentUserService
+    ICurrentUserService currentUserService,
+    IGeoLocationService geoLocationService
 ) : IRequestHandler<StartResponseCommand, Result<StartResponseResult>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
@@ -23,6 +24,7 @@ public class StartResponseCommandHandler(
     private readonly ISurveyResponseRepository _responseRepository = responseRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly IGeoLocationService _geoLocationService = geoLocationService;
 
     public async Task<Result<StartResponseResult>> Handle(
         StartResponseCommand request,
@@ -64,19 +66,39 @@ public class StartResponseCommandHandler(
             if (surveyLink == null)
                 return Result<StartResponseResult>.Failure("Errors.InvalidSurveyLink");
 
-            // Validate the link
-            if (!surveyLink.IsActive)
-                return Result<StartResponseResult>.Failure(
-                    "Application.SurveyLink.LinkDeactivated"
-                );
+            // Use the domain's IsValid() method for comprehensive validation
+            if (!surveyLink.IsValid())
+            {
+                // Provide specific error messages for different failure reasons
+                if (!surveyLink.IsActive)
+                    return Result<StartResponseResult>.Failure(
+                        "Application.SurveyLink.LinkDeactivated"
+                    );
 
-            if (surveyLink.ExpiresAt.HasValue && DateTime.UtcNow > surveyLink.ExpiresAt.Value)
-                return Result<StartResponseResult>.Failure("Errors.SurveyLinkExpired");
+                if (surveyLink.ExpiresAt.HasValue && DateTime.UtcNow > surveyLink.ExpiresAt.Value)
+                    return Result<StartResponseResult>.Failure("Errors.SurveyLinkExpired");
 
-            if (surveyLink.MaxUses.HasValue && surveyLink.UsageCount >= surveyLink.MaxUses.Value)
-                return Result<StartResponseResult>.Failure(
-                    "Application.SurveyLink.MaxUsageReached"
-                );
+                // Check for unique (one-time) link that was already used
+                if (
+                    surveyLink.Type == Domain.Enums.SurveyLinkType.Unique
+                    && surveyLink.UsageCount >= 1
+                )
+                    return Result<StartResponseResult>.Failure(
+                        "Application.SurveyLink.LinkAlreadyUsed"
+                    );
+
+                // Check for max uses reached (for non-unique links with limits)
+                if (
+                    surveyLink.MaxUses.HasValue
+                    && surveyLink.UsageCount >= surveyLink.MaxUses.Value
+                )
+                    return Result<StartResponseResult>.Failure(
+                        "Application.SurveyLink.MaxUsageReached"
+                    );
+
+                // Fallback for any other invalid state
+                return Result<StartResponseResult>.Failure("Application.SurveyLink.LinkInvalid");
+            }
 
             // Verify link belongs to this survey
             if (surveyLink.SurveyId != survey.Id)
@@ -125,6 +147,19 @@ public class StartResponseCommandHandler(
 
             // Parse user agent for device info
             SetDeviceInfoFromUserAgent(click, request.UserAgent);
+
+            // Get geolocation data (non-blocking - failures are ignored)
+            if (!string.IsNullOrEmpty(request.IpAddress))
+            {
+                var geoLocation = await _geoLocationService.GetLocationAsync(
+                    request.IpAddress,
+                    cancellationToken
+                );
+                if (geoLocation != null)
+                {
+                    click.SetGeolocation(geoLocation.Country, geoLocation.City);
+                }
+            }
 
             await _surveyLinkRepository.AddClickAsync(click, cancellationToken);
         }

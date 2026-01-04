@@ -40,27 +40,49 @@ public class GetPublicSurveyQueryHandler(
 
             if (surveyLink != null)
             {
-                // Validate the link
-                if (!surveyLink.IsActive)
+                // Use the domain's IsValid() method for comprehensive validation
+                if (!surveyLink.IsValid())
                 {
-                    return Result<PublicSurveyDto>.Failure(
-                        "Application.SurveyLink.LinkDeactivated"
-                    );
-                }
+                    // Provide specific error messages for different failure reasons
+                    if (!surveyLink.IsActive)
+                    {
+                        return Result<PublicSurveyDto>.Failure(
+                            "Application.SurveyLink.LinkDeactivated"
+                        );
+                    }
 
-                if (surveyLink.ExpiresAt.HasValue && DateTime.UtcNow > surveyLink.ExpiresAt.Value)
-                {
-                    return Result<PublicSurveyDto>.Failure("Errors.SurveyLinkExpired");
-                }
+                    if (
+                        surveyLink.ExpiresAt.HasValue
+                        && DateTime.UtcNow > surveyLink.ExpiresAt.Value
+                    )
+                    {
+                        return Result<PublicSurveyDto>.Failure("Errors.SurveyLinkExpired");
+                    }
 
-                if (
-                    surveyLink.MaxUses.HasValue
-                    && surveyLink.UsageCount >= surveyLink.MaxUses.Value
-                )
-                {
-                    return Result<PublicSurveyDto>.Failure(
-                        "Application.SurveyLink.MaxUsageReached"
-                    );
+                    // Check for unique (one-time) link that was already used
+                    if (
+                        surveyLink.Type == Domain.Enums.SurveyLinkType.Unique
+                        && surveyLink.UsageCount >= 1
+                    )
+                    {
+                        return Result<PublicSurveyDto>.Failure(
+                            "Application.SurveyLink.LinkAlreadyUsed"
+                        );
+                    }
+
+                    // Check for max uses reached (for non-unique links with limits)
+                    if (
+                        surveyLink.MaxUses.HasValue
+                        && surveyLink.UsageCount >= surveyLink.MaxUses.Value
+                    )
+                    {
+                        return Result<PublicSurveyDto>.Failure(
+                            "Application.SurveyLink.MaxUsageReached"
+                        );
+                    }
+
+                    // Fallback for any other invalid state
+                    return Result<PublicSurveyDto>.Failure("Application.SurveyLink.LinkInvalid");
                 }
 
                 // Get the survey associated with this link

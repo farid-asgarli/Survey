@@ -104,4 +104,33 @@ public interface ISurveyLinkRepository
         Guid responseId,
         CancellationToken cancellationToken = default
     );
+
+    /// <summary>
+    /// Gets the click count for a survey link.
+    /// </summary>
+    Task<int> GetClickCountAsync(Guid surveyLinkId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets click counts for multiple survey links at once.
+    /// </summary>
+    Task<Dictionary<Guid, int>> GetClickCountsAsync(
+        IEnumerable<Guid> surveyLinkIds,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Gets the completed response count for a survey link.
+    /// </summary>
+    Task<int> GetResponseCountAsync(
+        Guid surveyLinkId,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Gets completed response counts for multiple survey links at once.
+    /// </summary>
+    Task<Dictionary<Guid, int>> GetResponseCountsAsync(
+        IEnumerable<Guid> surveyLinkIds,
+        CancellationToken cancellationToken = default
+    );
 }

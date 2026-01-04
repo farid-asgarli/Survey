@@ -57,9 +57,13 @@ public class SurveysController(IMediator mediator) : ApiControllerBase
     /// <summary>
     /// Get a public survey by share token (no auth required)
     /// </summary>
+    /// <remarks>
+    /// Note: Output caching is disabled for this endpoint because survey links
+    /// may have usage limits (one-time links) that require real-time validation.
+    /// </remarks>
     [HttpGet("public/{shareToken}")]
     [AllowAnonymous]
-    [OutputCache(PolicyName = "PublicSurvey")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     [ProducesResponseType(typeof(PublicSurveyDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPublicSurvey(string shareToken)

@@ -40,6 +40,8 @@
   "Application.SurveyLink.InvalidSurveyLink": "Недействительная ссылка на опрос.",
   "Application.SurveyLink.LinkDeactivated": "Эта ссылка на опрос была деактивирована.",
   "Application.SurveyLink.LinkExpired": "Срок действия этой ссылки на опрос истек.",
+  "Application.SurveyLink.LinkAlreadyUsed": "Эта ссылка на опрос уже использована. Одноразовые ссылки можно использовать только один раз.",
+  "Application.SurveyLink.LinkInvalid": "Эта ссылка на опрос больше недействительна.",
   "Application.SurveyLink.MaxUsageReached": "Эта ссылка на опрос достигла максимального лимита использования.",
   "Application.SurveyLink.SurveyMustBePublished": "Перед созданием ссылок опрос должен быть опубликован. Сначала опубликуйте опрос.",
   "CxMetric.CES.FollowUp": "Что мы могли бы сделать, чтобы облегчить ваш опыт?",

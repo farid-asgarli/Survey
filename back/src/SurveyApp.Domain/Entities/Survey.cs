@@ -164,9 +164,15 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     }
 
     /// <summary>
-    /// Gets the questions in the survey.
+    /// Gets the active (non-deleted) questions in the survey.
     /// </summary>
-    public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
+    public IReadOnlyCollection<Question> Questions =>
+        _questions.Where(q => !q.IsDeleted).ToList().AsReadOnly();
+
+    /// <summary>
+    /// Gets all questions including deleted ones (for EF Core tracking purposes).
+    /// </summary>
+    internal IReadOnlyCollection<Question> AllQuestions => _questions.AsReadOnly();
 
     /// <summary>
     /// Gets the responses to the survey.
@@ -468,17 +474,24 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     }
 
     /// <summary>
-    /// Removes a question from the survey.
+    /// Removes a question from the survey by soft-deleting it.
+    /// Note: The question remains in the collection but is marked as deleted.
+    /// EF Core's global query filter will exclude it from future queries.
     /// </summary>
     public void RemoveQuestion(Guid questionId)
     {
         EnsureDraft();
 
-        var question = _questions.FirstOrDefault(q => q.Id == questionId);
+        var question = _questions.FirstOrDefault(q => q.Id == questionId && !q.IsDeleted);
         if (question == null)
             throw new DomainException("Domain.Survey.QuestionNotInSurvey");
 
-        _questions.Remove(question);
+        // Soft delete the question - DO NOT remove from collection
+        // EF Core needs the entity to remain in the tracked collection to persist the change
+        question.IsDeleted = true;
+        question.DeletedAt = DateTime.UtcNow;
+
+        // Reorder remaining non-deleted questions
         ReorderQuestions();
     }
 
@@ -490,12 +503,14 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         EnsureDraft();
 
         var questionIdList = questionIds.ToList();
-        if (questionIdList.Count != _questions.Count)
+        var activeQuestions = _questions.Where(q => !q.IsDeleted).ToList();
+
+        if (questionIdList.Count != activeQuestions.Count)
             throw new DomainException("Domain.Survey.QuestionIdsMismatch");
 
         for (int i = 0; i < questionIdList.Count; i++)
         {
-            var question = _questions.FirstOrDefault(q => q.Id == questionIdList[i]);
+            var question = activeQuestions.FirstOrDefault(q => q.Id == questionIdList[i]);
             if (question == null)
                 throw new DomainException("Domain.Survey.QuestionNotFoundById", questionIdList[i]);
 
@@ -633,7 +648,8 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
 
     private void ReorderQuestions()
     {
-        var orderedQuestions = _questions.OrderBy(q => q.Order).ToList();
+        // Only reorder non-deleted questions
+        var orderedQuestions = _questions.Where(q => !q.IsDeleted).OrderBy(q => q.Order).ToList();
         for (int i = 0; i < orderedQuestions.Count; i++)
         {
             orderedQuestions[i].UpdateOrder(i + 1);

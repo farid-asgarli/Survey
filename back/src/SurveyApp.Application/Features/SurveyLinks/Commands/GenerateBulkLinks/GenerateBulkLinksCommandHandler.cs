@@ -95,8 +95,8 @@ public class GenerateBulkLinksCommandHandler(
                 link.SetExpiration(request.ExpiresAt.Value);
             }
 
-            // Unique links can only be used once
-            link.SetMaxUses(1);
+            // Note: Unique links are single-use by Type definition (enforced in domain IsValid())
+            // No need to set MaxUses - the Type itself determines the behavior
 
             links.Add(link);
         }

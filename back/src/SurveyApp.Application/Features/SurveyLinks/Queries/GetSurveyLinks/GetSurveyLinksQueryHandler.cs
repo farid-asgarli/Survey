@@ -65,11 +65,25 @@ public class GetSurveyLinksQueryHandler(
             cancellationToken
         );
 
+        // Get actual counts from database for accuracy
+        var linkIds = links.Select(l => l.Id).ToList();
+        var clickCounts = await _surveyLinkRepository.GetClickCountsAsync(
+            linkIds,
+            cancellationToken
+        );
+        var responseCounts = await _surveyLinkRepository.GetResponseCountsAsync(
+            linkIds,
+            cancellationToken
+        );
+
         var dtos = links
             .Select(l =>
             {
                 var dto = _mapper.Map<SurveyLinkDto>(l);
                 dto.FullUrl = _linkUrlService.BuildLinkUrl(l.Token);
+                // Override with actual counts from database
+                dto.UsageCount = clickCounts.GetValueOrDefault(l.Id, 0);
+                dto.ResponseCount = responseCounts.GetValueOrDefault(l.Id, 0);
                 return dto;
             })
             .ToList();

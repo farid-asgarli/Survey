@@ -1,6 +1,7 @@
 using System.Text.Json;
 using MediatR;
 using SurveyApp.Application.Common;
+using SurveyApp.Application.Common.Interfaces;
 using SurveyApp.Domain.Entities;
 using SurveyApp.Domain.Interfaces;
 
@@ -12,12 +13,14 @@ namespace SurveyApp.Application.Features.SurveyLinks.Commands.RecordLinkClick;
 public class RecordLinkClickCommandHandler(
     ISurveyLinkRepository surveyLinkRepository,
     ISurveyRepository surveyRepository,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    IGeoLocationService geoLocationService
 ) : IRequestHandler<RecordLinkClickCommand, Result<RecordLinkClickResult>>
 {
     private readonly ISurveyLinkRepository _surveyLinkRepository = surveyLinkRepository;
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IGeoLocationService _geoLocationService = geoLocationService;
 
     public async Task<Result<RecordLinkClickResult>> Handle(
         RecordLinkClickCommand request,
@@ -78,6 +81,19 @@ public class RecordLinkClickCommandHandler(
 
         // Parse user agent for device info (simplified)
         SetDeviceInfoFromUserAgent(click, request.UserAgent);
+
+        // Get geolocation data (non-blocking - failures are ignored)
+        if (!string.IsNullOrEmpty(request.IpAddress))
+        {
+            var geoLocation = await _geoLocationService.GetLocationAsync(
+                request.IpAddress,
+                cancellationToken
+            );
+            if (geoLocation != null)
+            {
+                click.SetGeolocation(geoLocation.Country, geoLocation.City);
+            }
+        }
 
         link.RecordUsage();
 

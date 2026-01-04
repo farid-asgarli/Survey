@@ -66,14 +66,18 @@ public class GetLinkAnalyticsQueryHandler(
         }
 
         // Filter clicks by date range if specified
+        // Use .Date for comparison to ensure full day inclusion
         var clicks = link.Clicks.AsEnumerable();
         if (request.StartDate.HasValue)
         {
-            clicks = clicks.Where(c => c.ClickedAt >= request.StartDate.Value);
+            var startOfDay = request.StartDate.Value.Date;
+            clicks = clicks.Where(c => c.ClickedAt >= startOfDay);
         }
         if (request.EndDate.HasValue)
         {
-            clicks = clicks.Where(c => c.ClickedAt <= request.EndDate.Value);
+            // EndDate should be inclusive - include all clicks up to end of that day
+            var endOfDay = request.EndDate.Value.Date.AddDays(1);
+            clicks = clicks.Where(c => c.ClickedAt < endOfDay);
         }
 
         var clickList = clicks.ToList();

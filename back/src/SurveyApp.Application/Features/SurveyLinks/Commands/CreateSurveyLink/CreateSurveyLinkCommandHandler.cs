@@ -87,7 +87,9 @@ public class CreateSurveyLinkCommandHandler(
             link.SetExpiration(request.ExpiresAt.Value);
         }
 
-        if (request.MaxUses.HasValue)
+        // MaxUses is optional for non-Unique links (Unique links are enforced by Type in domain)
+        // For Unique links, MaxUses is ignored since Type determines single-use behavior
+        if (request.Type != SurveyLinkType.Unique && request.MaxUses.HasValue)
         {
             link.SetMaxUses(request.MaxUses.Value);
         }

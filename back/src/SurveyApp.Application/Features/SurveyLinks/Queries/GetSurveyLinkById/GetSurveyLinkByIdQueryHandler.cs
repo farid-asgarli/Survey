@@ -71,6 +71,13 @@ public class GetSurveyLinkByIdQueryHandler(
         var dto = _mapper.Map<SurveyLinkDetailsDto>(link);
         dto.FullUrl = _linkUrlService.BuildLinkUrl(link.Token);
 
+        // Get actual counts from database for accuracy
+        dto.UsageCount = await _surveyLinkRepository.GetClickCountAsync(link.Id, cancellationToken);
+        dto.ResponseCount = await _surveyLinkRepository.GetResponseCountAsync(
+            link.Id,
+            cancellationToken
+        );
+
         // Parse prefill data if present
         if (!string.IsNullOrEmpty(link.PrefillDataJson))
         {

@@ -40,6 +40,8 @@
   "Application.SurveyLink.InvalidSurveyLink": "Etibarsız sorğu linki.",
   "Application.SurveyLink.LinkDeactivated": "Bu sorğu linki deaktiv edilib.",
   "Application.SurveyLink.LinkExpired": "Bu sorğu linkinin müddəti bitib.",
+  "Application.SurveyLink.LinkAlreadyUsed": "Bu sorğu linki artıq istifadə edilib. Birdəfəlik linklər yalnız bir dəfə istifadə edilə bilər.",
+  "Application.SurveyLink.LinkInvalid": "Bu sorğu linki artıq etibarlı deyil.",
   "Application.SurveyLink.MaxUsageReached": "Bu sorğu linki maksimum istifadə limitinə çatıb.",
   "Application.SurveyLink.SurveyMustBePublished": "Link yaratmadan əvvəl sorğu dərc edilməlidir. Zəhmət olmasa əvvəlcə sorğunu dərc edin.",
   "CxMetric.CES.FollowUp": "Təcrübənizi asanlaşdırmaq üçün nə edə bilərik?",
