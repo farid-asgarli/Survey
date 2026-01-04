@@ -46,8 +46,11 @@ public class DuplicateSurveyCommandHandler(
             return Result<SurveyDto>.Failure("Errors.NamespaceRequired");
         }
 
-        // Get the original survey with all data
-        var original = await _surveyRepository.GetByIdAsync(request.SurveyId, cancellationToken);
+        // Get the original survey with all data including questions
+        var original = await _surveyRepository.GetByIdWithQuestionsAsync(
+            request.SurveyId,
+            cancellationToken
+        );
         if (original == null)
         {
             return Result<SurveyDto>.NotFound($"Errors.EntityNotFound|Survey|{request.SurveyId}");

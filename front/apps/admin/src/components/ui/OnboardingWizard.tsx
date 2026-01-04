@@ -27,9 +27,9 @@ import { LogoIcon } from './Logo';
 import { usePreferencesStore } from '@/stores/preferencesStore';
 import { useAuthStore } from '@/stores/authStore';
 import { preferencesApi, usersApi } from '@/services/api';
-import { useUserAvatarUrl } from '@/hooks/useUserAvatarUrl';
 import { COLOR_PALETTES, THEME_MODES, UI_LANGUAGES } from '@/config';
 import type { ThemeMode, ColorPalette, SupportedLanguage } from '@/types';
+import { useUserAvatar } from '@/hooks';
 
 interface OnboardingWizardProps {
   onComplete?: () => void;
@@ -94,7 +94,7 @@ export function OnboardingWizard({ onComplete, onSkip }: OnboardingWizardProps) 
   const updateUser = useAuthStore((state) => state.updateUser);
 
   // Get the resolved avatar URL for display
-  const avatarUrl = useUserAvatarUrl();
+  const { avatarUrl } = useUserAvatar();
 
   const {
     preferences,

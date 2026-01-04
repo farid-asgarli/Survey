@@ -2,7 +2,7 @@ export { useAuth } from './useAuth';
 export { useAzureAuth, useAzureAdEnabled } from './useAzureAuth';
 export { useAzureAdPhoto } from './useAzureAdPhoto';
 export type { UseAzureAdPhotoReturn } from './useAzureAdPhoto';
-export { useUserAvatar, useUserAvatarUrl } from './useUserAvatarUrl';
+export { useUserAvatar } from './useUserAvatarUrl';
 export type { UseUserAvatarReturn } from './useUserAvatarUrl';
 export { useNamespace } from './useNamespace';
 export { useViewTransitionNavigate } from './useViewTransitionNavigate';

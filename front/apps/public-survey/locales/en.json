@@ -7,6 +7,7 @@
     "submit": "Submit",
     "submitting": "Submitting...",
     "starting": "Starting...",
+    "loading": "Loading...",
     "progress": "Progress",
     "question": "Question",
     "questions": "questions",
@@ -27,6 +28,14 @@
     "continue": "Continue Survey",
     "startFresh": "Start Fresh"
   },
+  "errors": {
+    "generic": "Something went wrong. Please try again later.",
+    "linkAlreadyUsed": "This survey link has already been used. One-time links can only be used once.",
+    "linkExpired": "This survey link has expired and is no longer valid.",
+    "linkDeactivated": "This survey link has been deactivated.",
+    "linkInvalid": "This survey link is not valid.",
+    "linkMaxUsesReached": "This survey link has reached its maximum usage limit."
+  },
   "error": {
     "title": "Something went wrong",
     "description": "We couldn't load the survey. Please try again later.",
@@ -35,7 +44,47 @@
       "title": "Survey Not Found",
       "description": "The survey you're looking for doesn't exist, has been removed, or the link may have expired.",
       "hint": "If you believe this is an error, please contact the survey administrator."
+    },
+    "linkAlreadyUsed": {
+      "title": "Link Already Used",
+      "description": "This survey link has already been used. One-time links can only be used once.",
+      "hint": "If you need to complete another survey, please request a new link from the survey administrator."
+    },
+    "linkExpired": {
+      "title": "Link Expired",
+      "description": "This survey link has expired and is no longer valid.",
+      "hint": "Please contact the survey administrator for a new link."
+    },
+    "linkDeactivated": {
+      "title": "Link Deactivated",
+      "description": "This survey link has been deactivated by the administrator.",
+      "hint": "Please contact the survey administrator for assistance."
+    },
+    "linkInvalid": {
+      "title": "Invalid Link",
+      "description": "This survey link is no longer valid.",
+      "hint": "Please check the link and try again, or contact the survey administrator."
+    },
+    "maxUsageReached": {
+      "title": "Link Usage Limit Reached",
+      "description": "This survey link has reached its maximum usage limit.",
+      "hint": "Please contact the survey administrator for a new link."
+    },
+    "surveyNotAccepting": {
+      "title": "Survey Closed",
+      "description": "This survey is not currently accepting responses.",
+      "hint": "The survey may have been closed or has not yet started."
     }
+  },
+  "password": {
+    "title": "Password Required",
+    "description": "This survey requires a password to access.",
+    "surveyLabel": "Survey",
+    "inputLabel": "Enter password",
+    "placeholder": "Enter the survey password",
+    "submit": "Continue",
+    "verifying": "Verifying...",
+    "incorrect": "Incorrect password. Please try again."
   },
   "validation": {
     "required": "This field is required",

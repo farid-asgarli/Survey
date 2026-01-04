@@ -13,7 +13,7 @@ builder
     .Services.AddApiServices(builder.Configuration)
     .AddApiVersioningConfiguration()
     .AddRateLimitingPolicies()
-    .AddOutputCachePolicies()
+    // .AddOutputCachePolicies()
     .AddHealthCheckServices(builder.Configuration)
     .AddSwaggerDocumentation()
     .AddCorsPolicies(builder.Configuration);
@@ -35,7 +35,8 @@ app.UseExceptionHandling();
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseOutputCache();
+
+// app.UseOutputCache();
 app.UseNamespaceContext();
 app.UseLanguageContext();
 

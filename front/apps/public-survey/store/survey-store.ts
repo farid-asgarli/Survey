@@ -14,7 +14,7 @@ import { create } from 'zustand';
 import { QuestionType } from '@survey/types';
 import type { PublicSurvey, PublicQuestion, AnswerValue, PublicSurveyViewMode, SubmitAnswerRequest, QuestionOption } from '@survey/types';
 import { validateAnswer } from '@survey/validation';
-import { startSurveyResponse, submitSurveyResponse } from '@survey/api-client';
+import { startSurveyResponse, submitSurveyResponse, validateLinkByToken, accessSurveyLink } from '@survey/api-client';
 import { getVisibleQuestions, shouldEndSurvey, type QuestionWithLogic } from '@/lib/logic-evaluator';
 import { loadProgress, clearProgress, createAutoSaver, type AutoSaver } from '@/lib/progress-persistence';
 import type { SupportedLanguage } from '@/lib/i18n';
@@ -58,6 +58,11 @@ interface SurveyState {
 
   // Auto-save
   autoSaver: AutoSaver | null;
+
+  // Password protection
+  requiresPassword: boolean;
+  passwordError: string | null;
+  isPasswordVerified: boolean;
 }
 
 interface SurveyActions {
@@ -90,6 +95,9 @@ interface SurveyActions {
   setViewMode: (mode: PublicSurveyViewMode) => void;
   startSurvey: () => void;
   completeSurvey: () => void;
+
+  // Password
+  verifyPassword: (password: string) => Promise<boolean>;
 
   // API operations
   startResponse: () => Promise<void>;
@@ -133,6 +141,9 @@ const initialState: SurveyState = {
   error: null,
   hasRestoredProgress: false,
   autoSaver: null,
+  requiresPassword: false,
+  passwordError: null,
+  isPasswordVerified: false,
 };
 
 // ============ Helpers ============
@@ -275,17 +286,61 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
     // Create auto-saver
     const autoSaver = createAutoSaver(shareToken, survey.id);
 
+    // Set initial state (will be updated after link validation)
     set({
       survey: { ...survey, questions: sortedQuestions },
       shareToken,
       apiBaseUrl,
       language,
       visibleQuestions,
-      viewMode: hasWelcome ? 'welcome' : 'questions',
-      isLoading: false,
+      viewMode: hasWelcome ? 'welcome' : 'questions', // Will be updated if password is required
+      isLoading: true, // Set loading while we validate the link
       error: null,
       autoSaver,
+      requiresPassword: false,
+      passwordError: null,
+      isPasswordVerified: false,
     });
+
+    // Validate the link to check if password is required
+    validateLinkByToken(apiBaseUrl, shareToken)
+      .then((linkInfo) => {
+        if (linkInfo.requiresPassword) {
+          // Password required - show password prompt
+          set({
+            requiresPassword: true,
+            viewMode: 'password',
+            isLoading: false,
+          });
+        } else {
+          // No password required - proceed normally
+          set({
+            isPasswordVerified: true,
+            isLoading: false,
+            viewMode: hasWelcome ? 'welcome' : 'questions',
+          });
+
+          // For surveys without welcome page, automatically start the response
+          if (!hasWelcome) {
+            get().startResponse();
+          }
+        }
+      })
+      .catch((error) => {
+        // If link validation fails, still allow access but log the error
+        // This handles cases where the link validation endpoint isn't available
+        console.warn('Link validation failed:', error);
+        set({
+          isPasswordVerified: true,
+          isLoading: false,
+          viewMode: hasWelcome ? 'welcome' : 'questions',
+        });
+
+        // For surveys without welcome page, automatically start the response
+        if (!hasWelcome) {
+          get().startResponse();
+        }
+      });
   },
 
   // ============ Display Mode ============
@@ -510,10 +565,63 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
     set({ viewMode: 'thank-you' });
   },
 
+  // ============ Password Verification ============
+
+  verifyPassword: async (password: string) => {
+    const { apiBaseUrl, shareToken, survey } = get();
+    if (!shareToken) return false;
+
+    set({ isLoading: true, passwordError: null });
+
+    try {
+      // Call the access endpoint with the password
+      await accessSurveyLink(apiBaseUrl, shareToken, { password });
+
+      const hasWelcome = !!survey?.welcomeMessage;
+
+      set({
+        isPasswordVerified: true,
+        requiresPassword: false,
+        passwordError: null,
+        isLoading: false,
+        viewMode: hasWelcome ? 'welcome' : 'questions',
+      });
+
+      // For surveys without welcome page, automatically start the response
+      if (!hasWelcome) {
+        get().startResponse();
+      }
+
+      return true;
+    } catch (error: unknown) {
+      const apiError = error as { message?: string };
+      const errorMessage = apiError?.message || 'Invalid password';
+
+      // Map backend error to user-friendly message
+      let userMessage = 'Incorrect password. Please try again.';
+      if (errorMessage.includes('InvalidSurveyLinkPassword')) {
+        userMessage = 'Incorrect password. Please try again.';
+      } else if (errorMessage.includes('LinkDeactivated')) {
+        userMessage = 'This link has been deactivated.';
+      } else if (errorMessage.includes('LinkExpired')) {
+        userMessage = 'This link has expired.';
+      } else if (errorMessage.includes('MaxUsageReached')) {
+        userMessage = 'This link has reached its maximum usage limit.';
+      }
+
+      set({
+        passwordError: userMessage,
+        isLoading: false,
+      });
+
+      return false;
+    }
+  },
+
   // ============ API Operations ============
 
   startResponse: async () => {
-    const { apiBaseUrl, survey } = get();
+    const { apiBaseUrl, survey, shareToken } = get();
     if (!survey) return;
 
     set({ isLoading: true, error: null });
@@ -521,6 +629,7 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
     try {
       const result = await startSurveyResponse(apiBaseUrl, {
         surveyId: survey.id,
+        linkToken: shareToken || undefined,
       });
 
       set({
@@ -529,8 +638,31 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
         isLoading: false,
         viewMode: 'questions',
       });
-    } catch (error) {
-      // If start fails, continue anyway - submit will create response
+    } catch (error: unknown) {
+      // Check if this is a link validation error that should block the user
+      const apiError = error as { status?: number; message?: string };
+      const errorMessage = apiError?.message || '';
+
+      // Link validation errors should prevent the user from continuing
+      const isLinkError =
+        errorMessage.includes('LinkAlreadyUsed') ||
+        errorMessage.includes('LinkDeactivated') ||
+        errorMessage.includes('LinkExpired') ||
+        errorMessage.includes('MaxUsageReached') ||
+        errorMessage.includes('LinkInvalid') ||
+        errorMessage.includes('InvalidSurveyLink');
+
+      if (isLinkError || apiError?.status === 400 || apiError?.status === 403) {
+        // Set error state and stay on welcome/error view
+        set({
+          isLoading: false,
+          error: errorMessage || 'This survey link is no longer valid',
+          viewMode: 'welcome', // Stay on welcome to show error
+        });
+        return;
+      }
+
+      // For other errors (network issues, etc.), allow continuing - submit will create response
       console.warn('Failed to start response:', error);
       set({
         isLoading: false,
@@ -540,7 +672,7 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
   },
 
   submitResponse: async () => {
-    const { apiBaseUrl, survey, responseId, answers, validateAllQuestions } = get();
+    const { apiBaseUrl, survey, responseId, shareToken, answers, validateAllQuestions } = get();
 
     if (!survey) return;
 
@@ -570,6 +702,8 @@ export const useSurveyStore = create<SurveyState & SurveyActions>((set, get) => 
       await submitSurveyResponse(apiBaseUrl, {
         responseId: responseId || undefined,
         surveyId: survey.id,
+        // Include linkToken for legacy flow (when responseId is not set)
+        linkToken: !responseId && shareToken ? shareToken : undefined,
         answers: submitAnswers,
       });
 

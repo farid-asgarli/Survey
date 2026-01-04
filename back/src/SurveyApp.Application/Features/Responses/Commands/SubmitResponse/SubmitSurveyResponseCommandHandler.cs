@@ -192,6 +192,18 @@ public class SubmitSurveyResponseCommandHandler(
                     link.ResponseCount
                 );
                 link.RecordResponse();
+
+                // For unique links, also record usage on completion
+                // This marks the link as "used" only when the response is actually submitted
+                if (link.Type == Domain.Enums.SurveyLinkType.Unique)
+                {
+                    link.RecordUsage();
+                    _logger.LogWarning(
+                        "DEBUG: Unique link - recorded usage on completion. UsageCount: {UsageCount}",
+                        link.UsageCount
+                    );
+                }
+
                 _logger.LogWarning(
                     "DEBUG: Link ResponseCount after RecordResponse: {ResponseCount}",
                     link.ResponseCount
@@ -269,8 +281,12 @@ public class SubmitSurveyResponseCommandHandler(
             );
             if (surveyLink != null && surveyLink.SurveyId == survey.Id)
             {
-                // Record usage for legacy flow
-                surveyLink.RecordUsage();
+                // For legacy flow, record usage only for non-unique links here
+                // Unique links will have usage recorded after completion along with RecordResponse
+                if (surveyLink.Type != Domain.Enums.SurveyLinkType.Unique)
+                {
+                    surveyLink.RecordUsage();
+                }
             }
             else
             {
@@ -306,6 +322,14 @@ public class SubmitSurveyResponseCommandHandler(
         if (surveyLink != null)
         {
             surveyLink.RecordResponse();
+
+            // For unique links, also record usage on completion
+            // This marks the link as "used" only when the response is actually submitted
+            if (surveyLink.Type == Domain.Enums.SurveyLinkType.Unique)
+            {
+                surveyLink.RecordUsage();
+            }
+
             _surveyLinkRepository.Update(surveyLink);
         }
 

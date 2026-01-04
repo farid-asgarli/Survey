@@ -113,7 +113,7 @@ CHECK FOR BACKEND AND FRONTEND (npx tsc -p tsconfig.app.json) ERRORS/ WARNINGS A
 
 ---
 
-BREAKING CHANGES ARE WELCOME as this project is WIP and suggest improvement if these two are related. See if the functions etc. are properly implemented.
+BREAKING CHANGES ARE WELCOME as this project is still in development and suggest improvement if these two are related. See if the functions etc. are properly implemented.
 
 DO NOT MAKE ASSUMPTIONS, NEED PROPER AND QUALITY IMPLEMENTATION.
 

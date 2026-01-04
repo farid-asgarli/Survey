@@ -14,8 +14,8 @@ import { Sun, Palette } from 'lucide-react';
 import { usePreferencesStore } from '@/stores';
 import { useUpdateSinglePreference } from '@/hooks';
 import { cn } from '@/lib/utils';
-import { COLOR_PALETTES, THEME_MODES } from '../constants';
 import type { ThemeMode, ColorPalette } from '@/types';
+import { COLOR_PALETTES, THEME_MODES } from '@/config/theme';
 
 export function AppearanceSection() {
   const { t } = useTranslation();

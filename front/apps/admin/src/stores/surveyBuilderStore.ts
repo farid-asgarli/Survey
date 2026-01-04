@@ -130,7 +130,17 @@ interface SurveyBuilderActions {
 
 // ============ Helpers ============
 
-const generateId = () => `temp_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
+/** Generate temporary ID for questions (used to identify new questions) */
+const generateTempId = () => `temp_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
+
+/** Generate UUID v4 for option IDs (backend requires valid GUIDs) */
+const generateUUID = (): string => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
 
 const getDefaultSettings = (type: QuestionType): QuestionSettings => {
   switch (type) {
@@ -168,14 +178,14 @@ const getDefaultOptions = (type: QuestionType): DraftOption[] => {
     ).includes(type)
   ) {
     return [
-      { id: generateId(), text: 'Option 1', order: 0 },
-      { id: generateId(), text: 'Option 2', order: 1 },
+      { id: generateUUID(), text: 'Option 1', order: 0 },
+      { id: generateUUID(), text: 'Option 2', order: 1 },
     ];
   }
   if (type === QuestionType.YesNo) {
     return [
-      { id: generateId(), text: 'Yes', order: 0 },
-      { id: generateId(), text: 'No', order: 1 },
+      { id: generateUUID(), text: 'Yes', order: 0 },
+      { id: generateUUID(), text: 'No', order: 1 },
     ];
   }
   return [];
@@ -298,7 +308,7 @@ export const useSurveyBuilderStore = create<SurveyBuilderState & SurveyBuilderAc
 
       addQuestion: (type, afterQuestionId) => {
         const newQuestion: DraftQuestion = {
-          id: generateId(),
+          id: generateTempId(),
           type,
           text: `New ${getQuestionTypeLabel(type)} Question`,
           description: '',
@@ -397,11 +407,11 @@ export const useSurveyBuilderStore = create<SurveyBuilderState & SurveyBuilderAc
           if (question) {
             const duplicate: DraftQuestion = {
               ...JSON.parse(JSON.stringify(question)),
-              id: generateId(),
+              id: generateTempId(),
               text: `${question.text} (Copy)`,
               options: question.options.map((o: DraftOption) => ({
                 ...o,
-                id: generateId(),
+                id: generateUUID(),
               })),
             };
 
@@ -454,7 +464,7 @@ export const useSurveyBuilderStore = create<SurveyBuilderState & SurveyBuilderAc
           const question = state.questions.find((q: DraftQuestion) => q.id === questionId);
           if (question) {
             const newOption: DraftOption = {
-              id: generateId(),
+              id: generateUUID(),
               text: `Option ${question.options.length + 1}`,
               order: question.options.length,
             };

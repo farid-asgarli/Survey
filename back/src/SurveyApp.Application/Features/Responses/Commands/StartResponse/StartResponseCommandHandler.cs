@@ -78,10 +78,11 @@ public class StartResponseCommandHandler(
                 if (surveyLink.ExpiresAt.HasValue && DateTime.UtcNow > surveyLink.ExpiresAt.Value)
                     return Result<StartResponseResult>.Failure("Errors.SurveyLinkExpired");
 
-                // Check for unique (one-time) link that was already used
+                // Check for unique (one-time) link that was already completed
+                // Use ResponseCount instead of UsageCount to check if a response was actually submitted
                 if (
                     surveyLink.Type == Domain.Enums.SurveyLinkType.Unique
-                    && surveyLink.UsageCount >= 1
+                    && surveyLink.ResponseCount >= 1
                 )
                     return Result<StartResponseResult>.Failure(
                         "Application.SurveyLink.LinkAlreadyUsed"
@@ -104,9 +105,13 @@ public class StartResponseCommandHandler(
             if (surveyLink.SurveyId != survey.Id)
                 return Result<StartResponseResult>.Failure("Application.SurveyLink.SurveyMismatch");
 
-            // Record the link usage (click/start)
-            // Note: surveyLink is already tracked, changes will be saved automatically
-            surveyLink.RecordUsage();
+            // Record the link usage (click/start) for non-unique links only
+            // For unique links, usage is recorded only when the response is completed
+            // This prevents marking the link as "used" when someone just opens the survey without completing it
+            if (surveyLink.Type != Domain.Enums.SurveyLinkType.Unique)
+            {
+                surveyLink.RecordUsage();
+            }
         }
 
         // Determine respondent email

@@ -137,6 +137,11 @@ export function createTranslator(lang: SupportedLanguage) {
 }
 
 /**
+ * Type for translator function returned by createTranslator
+ */
+export type Translator = ReturnType<typeof createTranslator>;
+
+/**
  * Gets question labels for the QuestionRenderer component
  */
 export function getQuestionLabels(lang: SupportedLanguage): QuestionLabels {

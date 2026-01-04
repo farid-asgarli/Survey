@@ -95,7 +95,13 @@ public class RecordLinkClickCommandHandler(
             }
         }
 
-        link.RecordUsage();
+        // Record usage for non-unique links only
+        // For unique links, usage is recorded only when the response is completed
+        // This prevents marking the link as "used" when someone just opens the survey without completing it
+        if (link.Type != Domain.Enums.SurveyLinkType.Unique)
+        {
+            link.RecordUsage();
+        }
 
         await _surveyLinkRepository.AddClickAsync(click, cancellationToken);
         _surveyLinkRepository.Update(link);

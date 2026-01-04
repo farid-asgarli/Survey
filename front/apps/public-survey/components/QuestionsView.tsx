@@ -27,6 +27,7 @@ export function QuestionsView({ survey, labels = defaultQuestionLabels, t }: Que
     currentQuestionIndex,
     answers,
     errors,
+    error: submitError,
     progress,
     isSubmitting,
     displayMode,
@@ -153,6 +154,13 @@ export function QuestionsView({ survey, labels = defaultQuestionLabels, t }: Que
           </div>
         </article>
 
+        {/* Submission Error */}
+        {submitError && (
+          <div className="mt-4 p-4 bg-error-container rounded-xl border border-error/30" role="alert">
+            <p className="text-sm text-on-error-container font-medium">{submitError}</p>
+          </div>
+        )}
+
         {/* Navigation */}
         <nav className="flex items-center justify-between mt-6 sm:mt-8 gap-4" aria-label="Question navigation">
           <Button
@@ -260,6 +268,13 @@ export function QuestionsView({ survey, labels = defaultQuestionLabels, t }: Que
           );
         })}
       </div>
+
+      {/* Submission Error */}
+      {submitError && (
+        <div className="mt-4 p-4 bg-error-container rounded-xl border border-error/30" role="alert">
+          <p className="text-sm text-on-error-container font-medium">{submitError}</p>
+        </div>
+      )}
 
       {/* Submit button */}
       <div className="mt-6 sm:mt-8 md:mt-10 flex justify-center sm:justify-end">

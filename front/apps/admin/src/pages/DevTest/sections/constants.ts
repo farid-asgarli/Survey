@@ -1,9 +1,6 @@
 // Shared constants for DevTest sections
 import type { SelectOption } from '@/components/ui';
 
-// Re-export theme config from centralized location
-export { COLOR_PALETTES as colorPalettes, THEME_MODES as themeModes } from '@/config/theme';
-
 // Sample select options
 export const countryOptions: SelectOption[] = [
   { value: 'us', label: 'United States' },

@@ -194,6 +194,7 @@ export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = f
                 <span className="text-sm text-on-surface-variant">{t('createSurvey.language', 'Language')}:</span>
                 <Menu
                   align="start"
+                  side="top"
                   trigger={
                     <button
                       disabled={isLoading}

@@ -1,12 +1,7 @@
 // Types for public survey (respondent-facing)
 // Shared between admin and public-survey apps
 
-import type {
-  QuestionType,
-  NpsQuestionType,
-  RatingStyle,
-  YesNoStyle,
-} from './enums.js';
+import type { QuestionType, NpsQuestionType, RatingStyle, YesNoStyle } from './enums.js';
 
 // ============ Question Option ============
 
@@ -184,13 +179,7 @@ export interface SubmitResponseResult {
 
 // ============ Answer Value Types ============
 
-export type AnswerValue =
-  | string
-  | string[]
-  | number
-  | Record<string, string>
-  | File[]
-  | null;
+export type AnswerValue = string | string[] | number | Record<string, string> | File[] | null;
 
 export interface QuestionAnswer {
   questionId: string;
@@ -201,11 +190,7 @@ export interface QuestionAnswer {
 
 // ============ Survey State Types ============
 
-export type PublicSurveyViewMode =
-  | 'welcome'
-  | 'questions'
-  | 'thank-you'
-  | 'error';
+export type PublicSurveyViewMode = 'welcome' | 'password' | 'questions' | 'thank-you' | 'error';
 
 export interface PublicSurveyState {
   survey: PublicSurvey | null;
@@ -225,7 +210,29 @@ export interface ValidationResult {
   errorMessage?: string;
 }
 
-export type QuestionValidator = (
-  value: AnswerValue,
-  question: PublicQuestion
-) => ValidationResult;
+export type QuestionValidator = (value: AnswerValue, question: PublicQuestion) => ValidationResult;
+
+// ============ Link Access Types ============
+
+/** Result from GET /api/s/{token} - validates link before accessing survey */
+export interface LinkByTokenResult {
+  linkId: string;
+  surveyId: string;
+  surveyTitle: string;
+  isValid: boolean;
+  invalidReason?: string;
+  requiresPassword: boolean;
+}
+
+/** Request body for POST /api/s/{token}/access */
+export interface LinkAccessRequest {
+  password?: string;
+}
+
+/** Result from POST /api/s/{token}/access - records click and provides survey access */
+export interface LinkAccessResult {
+  surveyId: string;
+  surveyAccessToken: string;
+  clickId: string;
+  prefillData?: Record<string, string>;
+}

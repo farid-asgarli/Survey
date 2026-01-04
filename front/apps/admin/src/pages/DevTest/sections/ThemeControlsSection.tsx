@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils';
 import { useThemeStore } from '@/stores/themeStore';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Badge } from '@/components/ui';
 import { Palette, Check } from 'lucide-react';
-import { colorPalettes, themeModes } from './constants';
 import { useTranslation } from 'react-i18next';
+import { COLOR_PALETTES, THEME_MODES } from '@/config';
 
 export function ThemeControlsSection() {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export function ThemeControlsSection() {
         <div className="space-y-3">
           <h3 className="text-sm font-medium text-on-surface">Color Scheme</h3>
           <div className="grid grid-cols-3 gap-3">
-            {colorPalettes.map((palette) => (
+            {COLOR_PALETTES.map((palette) => (
               <button
                 key={palette.id}
                 onClick={() => setColorPalette(palette.id)}
@@ -55,7 +55,7 @@ export function ThemeControlsSection() {
         <div className="space-y-3">
           <h3 className="text-sm font-medium text-on-surface">Theme Mode</h3>
           <div className="flex gap-2">
-            {themeModes.map((mode) => {
+            {THEME_MODES.map((mode) => {
               const Icon = mode.icon;
               return (
                 <button

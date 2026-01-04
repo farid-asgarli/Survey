@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useUser, useAuthStore } from '@/stores';
 import { Avatar, Divider, LanguageSwitcher } from '@/components/ui';
 import { User, Settings, LogOut, Palette } from 'lucide-react';
-import { useUserAvatarUrl } from '@/hooks/useUserAvatarUrl';
+import { useUserAvatar } from '@/hooks';
 
 interface UserMenuProps extends HTMLAttributes<HTMLDivElement> {
   onSettingsClick?: () => void;
@@ -40,7 +40,7 @@ export function UserMenu({ className, onSettingsClick, onLogoutClick, ...props }
   };
 
   // Get the resolved avatar URL (3D avatar or Azure AD photo)
-  const avatarUrl = useUserAvatarUrl();
+  const { avatarUrl } = useUserAvatar();
 
   if (!user) return null;
 

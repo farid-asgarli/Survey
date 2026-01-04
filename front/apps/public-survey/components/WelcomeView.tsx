@@ -17,11 +17,21 @@ interface WelcomeViewProps {
 }
 
 export function WelcomeView({ survey, t }: WelcomeViewProps) {
-  const { startSurvey, isLoading, hasRestoredProgress } = useSurveyStore();
+  const { startSurvey, isLoading, hasRestoredProgress, error } = useSurveyStore();
   const estimatedMinutes = Math.ceil(survey.questions.length * 0.5);
 
   const handleStart = () => {
     startSurvey();
+  };
+
+  // Map API error messages to localized error keys
+  const getErrorMessage = (errorMessage: string): string => {
+    if (errorMessage.includes('LinkAlreadyUsed')) return t('errors.linkAlreadyUsed');
+    if (errorMessage.includes('LinkDeactivated')) return t('errors.linkDeactivated');
+    if (errorMessage.includes('LinkExpired') || errorMessage.includes('Expired')) return t('errors.linkExpired');
+    if (errorMessage.includes('MaxUsageReached')) return t('errors.linkMaxUsesReached');
+    if (errorMessage.includes('LinkInvalid') || errorMessage.includes('InvalidSurveyLink')) return t('errors.linkInvalid');
+    return t('errors.generic');
   };
 
   // Logo size mapping (matches admin: 0=small, 1=medium, 2=large, 3=extra-large)
@@ -117,9 +127,16 @@ export function WelcomeView({ survey, t }: WelcomeViewProps) {
         )}
 
         {/* ========== RESUME NOTIFICATION ========== */}
-        {hasRestoredProgress && (
+        {hasRestoredProgress && !error && (
           <div className="w-full max-w-md mb-6 p-4 bg-secondary-container/50 rounded-xl border border-secondary/20" role="alert">
             <p className="text-sm text-on-secondary-container font-medium">{t('survey.resumeNotice')}</p>
+          </div>
+        )}
+
+        {/* ========== ERROR MESSAGE ========== */}
+        {error && (
+          <div className="w-full max-w-md mb-6 p-4 bg-error-container rounded-xl border border-error/30" role="alert">
+            <p className="text-sm text-on-error-container font-medium">{getErrorMessage(error)}</p>
           </div>
         )}
 
@@ -152,7 +169,7 @@ export function WelcomeView({ survey, t }: WelcomeViewProps) {
             variant="filled"
             size="xl"
             onClick={handleStart}
-            disabled={isLoading}
+            disabled={isLoading || !!error}
             loading={isLoading}
             aria-busy={isLoading}
             className="gap-3 px-10 sm:px-12 group"
@@ -162,7 +179,7 @@ export function WelcomeView({ survey, t }: WelcomeViewProps) {
           </Button>
 
           {/* Helper text */}
-          <p className="mt-4 sm:mt-5 text-xs sm:text-sm text-on-surface-variant/60 font-medium">{t('survey.anonymousNote')}</p>
+          <p className="mt-4 sm:mt-5 text-xs sm:text-sm text-on-surface-variant/60 font-medium">{error ? '' : t('survey.anonymousNote')}</p>
         </div>
       </div>
     </section>

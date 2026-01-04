@@ -1,10 +1,11 @@
-import { fetchPublicSurveySSR } from '@survey/api-client';
+import { fetchPublicSurveySSR, type ApiError } from '@survey/api-client';
 import { config } from '@/lib/config';
-import { resolveLanguage, type SupportedLanguage } from '@/lib/i18n';
+import { resolveLanguage, createTranslator, type SupportedLanguage } from '@/lib/i18n';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { SurveyClient } from './survey-client';
+import { LinkErrorView, mapBackendErrorToType } from '@/components/LinkErrorView';
 
 interface SurveyPageProps {
   params: Promise<{
@@ -95,7 +96,7 @@ export default async function SurveyPage({ params, searchParams }: SurveyPagePro
 
   try {
     const survey = await fetchPublicSurveySSR(config.apiBaseUrl, shareToken, initialLang, { revalidate: config.cache.surveyRevalidate });
-
+    console.log('survey_response_data', survey);
     // Refine language based on survey's available languages
     language = resolveLanguage(queryLang, acceptLanguage, survey.availableLanguages) as SupportedLanguage;
 
@@ -109,6 +110,25 @@ export default async function SurveyPage({ params, searchParams }: SurveyPagePro
         : survey;
   } catch (error) {
     console.error('Failed to fetch survey:', error);
+
+    // Handle specific API errors with localized messages
+    const apiError = error as ApiError;
+    if (apiError?.message) {
+      // Determine language for error page
+      const errorLang = resolveLanguage(queryLang, acceptLanguage) as SupportedLanguage;
+      const t = createTranslator(errorLang);
+      const errorType = mapBackendErrorToType(apiError.message);
+
+      // For 404 errors, use Next.js not found
+      if (apiError.status === 404 && errorType === 'notFound') {
+        notFound();
+      }
+
+      // Show specific error page for link-related errors
+      return <LinkErrorView errorType={errorType} t={t} />;
+    }
+
+    // Fallback to not found for unknown errors
     notFound();
   }
 

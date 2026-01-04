@@ -17,7 +17,7 @@ import {
   useTranslatedPageConfig,
   useDialogState,
   useCurrentUser,
-  useUserAvatarUrl,
+  useUserAvatar,
 } from '@/hooks';
 import { useSearchStore, useShortcutsStore, useKeyboardShortcut, useGlobalKeyboardListener, useUser, useAuthStore } from '@/stores';
 import { Bell, User, Settings, LogOut } from 'lucide-react';
@@ -34,7 +34,7 @@ function CompactUserProfile({ onSettingsClick, onLogoutClick }: { onSettingsClic
   const logout = useAuthStore((s) => s.logout);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const avatarUrl = useUserAvatarUrl();
+  const { avatarUrl } = useUserAvatar();
 
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 

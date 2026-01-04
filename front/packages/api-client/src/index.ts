@@ -1,7 +1,16 @@
 // @survey/api-client - Shared API utilities for the survey platform
 // This package contains API client utilities for public survey
 
-import type { PublicSurvey, StartResponseRequest, StartResponseResult, SubmitResponseRequest, SubmitResponseResult } from '@survey/types';
+import type {
+  PublicSurvey,
+  StartResponseRequest,
+  StartResponseResult,
+  SubmitResponseRequest,
+  SubmitResponseResult,
+  LinkByTokenResult,
+  LinkAccessRequest,
+  LinkAccessResult,
+} from '@survey/types';
 
 // ============ API Configuration ============
 
@@ -112,6 +121,33 @@ export async function submitSurveyResponse(baseUrl: string, request: SubmitRespo
   return handleResponse<SubmitResponseResult>(response);
 }
 
+// ============ Link Validation API ============
+
+/**
+ * Validates a survey link by token (checks if link is valid and if password is required)
+ */
+export async function validateLinkByToken(baseUrl: string, token: string): Promise<LinkByTokenResult> {
+  const response = await fetch(`${baseUrl}/api/s/${token}`, {
+    method: 'GET',
+    headers: createHeaders(),
+  });
+
+  return handleResponse<LinkByTokenResult>(response);
+}
+
+/**
+ * Accesses a survey via link (records click, validates password if required)
+ */
+export async function accessSurveyLink(baseUrl: string, token: string, request?: LinkAccessRequest): Promise<LinkAccessResult> {
+  const response = await fetch(`${baseUrl}/api/s/${token}/access`, {
+    method: 'POST',
+    headers: createHeaders(),
+    body: JSON.stringify(request ?? {}),
+  });
+
+  return handleResponse<LinkAccessResult>(response);
+}
+
 // ============ Server-side API (for Next.js SSR) ============
 
 // Next.js extends RequestInit with additional options
@@ -142,12 +178,16 @@ export async function fetchPublicSurveySSR(
     headers: createHeaders(language),
   };
 
-  // Next.js caching options
-  if (options?.cache) {
+  // Handle caching options
+  // If revalidate is 0 or explicitly set to 'no-store', disable caching entirely
+  // This is important for one-time links that need real-time validation
+  if (options?.revalidate === 0) {
+    fetchOptions.cache = 'no-store';
+  } else if (options?.cache) {
     fetchOptions.cache = options.cache;
   }
 
-  if (options?.revalidate !== undefined) {
+  if (options?.revalidate !== undefined && options.revalidate > 0) {
     fetchOptions.next = { revalidate: options.revalidate };
   }
 
@@ -173,4 +213,7 @@ export type {
   PublicSurveyViewMode,
   PublicSurveyState,
   ValidationResult,
+  LinkByTokenResult,
+  LinkAccessRequest,
+  LinkAccessResult,
 } from '@survey/types';

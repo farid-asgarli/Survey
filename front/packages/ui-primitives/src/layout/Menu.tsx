@@ -24,6 +24,7 @@ interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
 function Menu({ trigger, children, align = 'start', side = 'bottom', className }: MenuProps) {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+  const [actualSide, setActualSide] = useState<'top' | 'bottom'>(side);
   const triggerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -33,8 +34,45 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
       if (!triggerRef.current) return null;
 
       const rect = triggerRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const gap = 6;
 
-      let top = side === 'bottom' ? rect.bottom + 6 : rect.top - menuHeight - 6;
+      // Calculate available space above and below the trigger
+      const spaceBelow = viewportHeight - rect.bottom - gap;
+      const spaceAbove = rect.top - gap;
+
+      // Determine the best side to open the menu
+      let preferredSide = side;
+      
+      // If preferred side doesn't have enough space, try the other side
+      if (preferredSide === 'bottom' && menuHeight > spaceBelow) {
+        // Not enough space below - check if there's more space above
+        if (spaceAbove > spaceBelow) {
+          preferredSide = 'top';
+        }
+      } else if (preferredSide === 'top' && menuHeight > spaceAbove) {
+        // Not enough space above - check if there's more space below
+        if (spaceBelow > spaceAbove) {
+          preferredSide = 'bottom';
+        }
+      }
+
+      // Update actual side for animation origin
+      setActualSide(preferredSide);
+
+      // Calculate top position based on the chosen side
+      let top = preferredSide === 'bottom' ? rect.bottom + gap : rect.top - menuHeight - gap;
+
+      // Final bounds check - ensure menu stays within viewport
+      if (top + menuHeight > viewportHeight) {
+        top = viewportHeight - menuHeight - gap;
+      }
+      if (top < gap) {
+        top = gap;
+      }
+
+      // Calculate left position
       let left = rect.left;
 
       if (align === 'center') {
@@ -43,12 +81,13 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
         left = rect.right;
       }
 
-      // Adjust if menu would go off screen
-      if (top + menuHeight > window.innerHeight) {
-        top = rect.top - menuHeight - 6;
+      // Ensure menu doesn't overflow horizontally
+      const menuWidth = 208; // min-w-52 = 13rem = 208px
+      if (align === 'start' && left + menuWidth > viewportWidth) {
+        left = viewportWidth - menuWidth - gap;
       }
-      if (top < 0) {
-        top = rect.bottom + 6;
+      if (left < gap) {
+        left = gap;
       }
 
       return { top, left };
@@ -104,10 +143,19 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
     return () => document.removeEventListener('keydown', handleEscape);
   }, [open]);
 
-  const alignClasses = {
-    start: 'origin-top-left',
-    center: 'origin-top -translate-x-1/2',
-    end: 'origin-top-right -translate-x-full',
+  // Dynamic origin classes based on align and actual side
+  const getOriginClass = () => {
+    const isTop = actualSide === 'top';
+    if (align === 'start') return isTop ? 'origin-bottom-left' : 'origin-top-left';
+    if (align === 'center') return isTop ? 'origin-bottom' : 'origin-top';
+    if (align === 'end') return isTop ? 'origin-bottom-right' : 'origin-top-right';
+    return 'origin-top-left';
+  };
+
+  const translateClass = {
+    start: '',
+    center: '-translate-x-1/2',
+    end: '-translate-x-full',
   };
 
   return (
@@ -126,7 +174,8 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
               'bg-surface-container-lowest border border-outline-variant/20',
               'shadow-xl shadow-scrim/15',
               'animate-in fade-in zoom-in-95 duration-150',
-              alignClasses[align],
+              getOriginClass(),
+              translateClass[align],
               className
             )}
             style={{

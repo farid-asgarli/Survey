@@ -7,6 +7,7 @@
     "submit": "Göndər",
     "submitting": "Göndərilir...",
     "starting": "Başlanır...",
+    "loading": "Yüklənir...",
     "progress": "İrəliləyiş",
     "question": "Sual",
     "questions": "sual",
@@ -27,6 +28,14 @@
     "continue": "Davam et",
     "startFresh": "Yenidən başla"
   },
+  "errors": {
+    "generic": "Xəta baş verdi. Zəhmət olmasa sonra yenidən cəhd edin.",
+    "linkAlreadyUsed": "Bu keçid artıq istifadə edilib. Birdəfəlik keçidlər yalnız bir dəfə istifadə edilə bilər.",
+    "linkExpired": "Bu keçidin müddəti bitib.",
+    "linkDeactivated": "Bu keçid deaktiv edilib.",
+    "linkInvalid": "Bu keçid etibarsızdır.",
+    "linkMaxUsesReached": "Bu keçid maksimum istifadə limitinə çatıb."
+  },
   "error": {
     "title": "Xəta baş verdi",
     "description": "Sorğu yüklənə bilmədi. Zəhmət olmasa sonra yenidən cəhd edin.",
@@ -35,7 +44,47 @@
       "title": "Sorğu tapılmadı",
       "description": "Axtardığınız sorğu mövcud deyil, silinib və ya keçidin vaxtı bitib.",
       "hint": "Əgər bu bir xəta olduğunu düşünürsünüzsə, sorğu administratoru ilə əlaqə saxlayın."
+    },
+    "linkAlreadyUsed": {
+      "title": "Keçid artıq istifadə edilib",
+      "description": "Bu sorğu keçidi artıq istifadə edilib. Birdəfəlik keçidlər yalnız bir dəfə istifadə edilə bilər.",
+      "hint": "Başqa bir sorğu keçməlisinizsə, administratordan yeni keçid istəyin."
+    },
+    "linkExpired": {
+      "title": "Keçidin müddəti bitib",
+      "description": "Bu sorğu keçidinin müddəti bitib və artıq etibarlı deyil.",
+      "hint": "Zəhmət olmasa yeni keçid üçün administratorla əlaqə saxlayın."
+    },
+    "linkDeactivated": {
+      "title": "Keçid deaktiv edilib",
+      "description": "Bu sorğu keçidi administrator tərəfindən deaktiv edilib.",
+      "hint": "Zəhmət olmasa kömək üçün administratorla əlaqə saxlayın."
+    },
+    "linkInvalid": {
+      "title": "Etibarsız keçid",
+      "description": "Bu sorğu keçidi artıq etibarlı deyil.",
+      "hint": "Zəhmət olmasa keçidi yoxlayın və yenidən cəhd edin, və ya administratorla əlaqə saxlayın."
+    },
+    "maxUsageReached": {
+      "title": "İstifadə limiti çatdı",
+      "description": "Bu sorğu keçidi maksimum istifadə limitinə çatıb.",
+      "hint": "Zəhmət olmasa yeni keçid üçün administratorla əlaqə saxlayın."
+    },
+    "surveyNotAccepting": {
+      "title": "Sorğu bağlıdır",
+      "description": "Bu sorğu hazırda cavab qəbul etmir.",
+      "hint": "Sorğu bağlanmış ola bilər və ya hələ başlamamışdır."
     }
+  },
+  "password": {
+    "title": "Şifrə tələb olunur",
+    "description": "Bu sorğuya giriş üçün şifrə tələb olunur.",
+    "surveyLabel": "Sorğu",
+    "inputLabel": "Şifrəni daxil edin",
+    "placeholder": "Sorğu şifrəsini daxil edin",
+    "submit": "Davam et",
+    "verifying": "Yoxlanılır...",
+    "incorrect": "Yanlış şifrə. Zəhmət olmasa yenidən cəhd edin."
   },
   "validation": {
     "required": "Bu sahə məcburidir",

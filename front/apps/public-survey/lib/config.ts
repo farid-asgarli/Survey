@@ -41,7 +41,8 @@ export const config = {
   // Cache configuration (in seconds)
   cache: {
     // How long to cache survey data on SSR
-    surveyRevalidate: 60,
+    // Set to 0 to disable caching - required for one-time links to work properly
+    surveyRevalidate: 0,
     // How long to cache OG images
     ogImageRevalidate: 300,
   },

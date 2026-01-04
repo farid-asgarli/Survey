@@ -59,10 +59,11 @@ public class GetPublicSurveyQueryHandler(
                         return Result<PublicSurveyDto>.Failure("Errors.SurveyLinkExpired");
                     }
 
-                    // Check for unique (one-time) link that was already used
+                    // Check for unique (one-time) link that was already completed
+                    // Use ResponseCount instead of UsageCount to check if a response was actually submitted
                     if (
                         surveyLink.Type == Domain.Enums.SurveyLinkType.Unique
-                        && surveyLink.UsageCount >= 1
+                        && surveyLink.ResponseCount >= 1
                     )
                     {
                         return Result<PublicSurveyDto>.Failure(

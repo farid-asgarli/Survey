@@ -20,7 +20,7 @@ export function SurveyShell({ theme, children }: SurveyShellProps) {
   }, [theme]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background" style={themeStyles}>
+    <div className="min-h-screen flex flex-col bg-background relative" style={themeStyles}>
       {children}
     </div>
   );

@@ -2,10 +2,10 @@
 // This package contains types shared between admin and public-survey apps
 
 // Re-export all enums
-export * from "./enums.js";
+export * from './enums.js';
 
 // Re-export all public survey types (including QuestionOption, AnswerValue, etc.)
-export * from "./public.js";
+export * from './public.js';
 
 // Explicit type re-exports for better IDE support
 export type {
@@ -32,4 +32,8 @@ export type {
   // Validation types
   ValidationResult,
   QuestionValidator,
-} from "./public.js";
+  // Link access types
+  LinkByTokenResult,
+  LinkAccessRequest,
+  LinkAccessResult,
+} from './public.js';

@@ -226,8 +226,9 @@ public class SurveyLink : Entity<Guid>
         if (ExpiresAt.HasValue && DateTime.UtcNow > ExpiresAt.Value)
             return false;
 
-        // Unique links are single-use by definition (Type determines behavior)
-        if (Type == Enums.SurveyLinkType.Unique && UsageCount >= 1)
+        // Unique links are single-use by definition - check ResponseCount (completed responses)
+        // This ensures the link is only marked as "used" when a response is actually submitted
+        if (Type == Enums.SurveyLinkType.Unique && ResponseCount >= 1)
             return false;
 
         // MaxUses provides optional additional limit for other link types

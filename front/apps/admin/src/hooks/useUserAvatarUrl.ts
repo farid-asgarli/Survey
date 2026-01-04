@@ -54,14 +54,3 @@ export function useUserAvatar(): UseUserAvatarReturn {
     isLoading: azureAdPhoto.isLoading,
   };
 }
-
-/**
- * Simple hook that returns just the avatar URL.
- * For components that only need the URL and don't need Azure AD details.
- *
- * @deprecated Prefer using `useUserAvatar()` for more complete information.
- */
-export function useUserAvatarUrl(): string | undefined {
-  const { avatarUrl } = useUserAvatar();
-  return avatarUrl;
-}

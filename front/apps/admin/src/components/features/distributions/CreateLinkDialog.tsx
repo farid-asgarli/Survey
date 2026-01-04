@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, Sparkles, Code, Calendar, Lock, Users, Link2, Tag, ChevronDown, ChevronUp, Info, Check } from 'lucide-react';
 import {
@@ -134,6 +134,14 @@ export function CreateLinkDialog({ open, onOpenChange, surveyId, surveyTitle }: 
   const linkType = watch('linkType');
   const expiresAt = watch('expiresAt');
 
+  // Reset max responses toggle when switching to Unique type (single-use by design)
+  useEffect(() => {
+    if (linkType === 'Unique') {
+      setEnableMaxResponses(false);
+      setValue('maxResponses', '');
+    }
+  }, [linkType, setValue]);
+
   const createMutation = useCreateLink(surveyId);
 
   const resetForm = useCallback(() => {
@@ -225,34 +233,36 @@ export function CreateLinkDialog({ open, onOpenChange, surveyId, surveyTitle }: 
                 </CardContent>
               </Card>
 
-              {/* Max Responses */}
-              <Card variant="outlined" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container">
-                        <Users className="w-4 h-4 text-on-surface-variant" />
+              {/* Max Responses - Hidden for Unique links (single-use by design) */}
+              {linkType !== 'Unique' && (
+                <Card variant="outlined" className="overflow-hidden">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container">
+                          <Users className="w-4 h-4 text-on-surface-variant" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-sm">{t('createLinkDialog.responseLimit')}</p>
+                          <p className="text-xs text-on-surface-variant">{t('createLinkDialog.responseLimitDescription')}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-sm">{t('createLinkDialog.responseLimit')}</p>
-                        <p className="text-xs text-on-surface-variant">{t('createLinkDialog.responseLimitDescription')}</p>
+                      <Switch checked={enableMaxResponses} onChange={(e) => setEnableMaxResponses(e.target.checked)} />
+                    </div>
+                    {enableMaxResponses && (
+                      <div className="mt-4 pl-12">
+                        <Input
+                          type="number"
+                          min={1}
+                          placeholder={t('createLinkDialog.maxResponsesPlaceholder')}
+                          {...register('maxResponses')}
+                          size="sm"
+                        />
                       </div>
-                    </div>
-                    <Switch checked={enableMaxResponses} onChange={(e) => setEnableMaxResponses(e.target.checked)} />
-                  </div>
-                  {enableMaxResponses && (
-                    <div className="mt-4 pl-12">
-                      <Input
-                        type="number"
-                        min={1}
-                        placeholder={t('createLinkDialog.maxResponsesPlaceholder')}
-                        {...register('maxResponses')}
-                        size="sm"
-                      />
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Password Protection */}
               <Card variant="outlined" className="overflow-hidden">
