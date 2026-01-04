@@ -233,13 +233,15 @@ export function DistributionsPage() {
         )}
       </div>
 
-      {/* Create Distribution Dialog */}
-      <CreateDistributionDialog
-        surveyId={selectedSurveyId}
-        surveyTitle={selectedSurvey?.title}
-        open={createDialog.isOpen}
-        onOpenChange={createDialog.setOpen}
-      />
+      {/* Create Distribution Dialog - only mount when open to avoid unnecessary API calls */}
+      {createDialog.isOpen && (
+        <CreateDistributionDialog
+          surveyId={selectedSurveyId}
+          surveyTitle={selectedSurvey?.title}
+          open={createDialog.isOpen}
+          onOpenChange={createDialog.setOpen}
+        />
+      )}
 
       {/* Distribution Stats Drawer */}
       <Drawer open={statsDrawer.isOpen} onOpenChange={statsDrawer.setOpen} side="right">

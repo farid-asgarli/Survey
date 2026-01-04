@@ -195,6 +195,7 @@ export function CreateSurveyDialog({ open, onOpenChange, onSubmit, isLoading = f
                 <Menu
                   align="start"
                   side="top"
+                  maxHeight="280px"
                   trigger={
                     <button
                       disabled={isLoading}
@@ -527,10 +528,10 @@ function NpsSurveyMockup({ t, currentMetric }: { t: TFunction; currentMetric: Cx
               i === 9
                 ? 'bg-primary text-on-primary'
                 : i <= 6
-                ? 'bg-error-container/30 text-on-error-container hover:bg-error-container/50'
-                : i <= 8
-                ? 'bg-warning-container/30 text-on-surface hover:bg-warning-container/50'
-                : 'bg-success-container/30 text-on-surface hover:bg-success-container/50'
+                  ? 'bg-error-container/30 text-on-error-container hover:bg-error-container/50'
+                  : i <= 8
+                    ? 'bg-warning-container/30 text-on-surface hover:bg-warning-container/50'
+                    : 'bg-success-container/30 text-on-surface hover:bg-success-container/50'
             )}
           >
             {i}

@@ -783,7 +783,9 @@ export const linksApi = {
    * Backend accepts CreateSurveyLinkCommand, returns SurveyLinkDto
    */
   create: async (surveyId: string, data: CreateLinkRequest): Promise<SurveyLink> => {
-    const response = await apiClient.post<SurveyLink>(API_ENDPOINTS.surveys.links(surveyId), data);
+    const response = await apiClient.post<SurveyLink>(API_ENDPOINTS.surveys.links(surveyId), data, {
+      headers: { 'X-Suppress-Toast': 'true' },
+    });
     return response.data;
   },
 

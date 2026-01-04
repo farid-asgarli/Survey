@@ -8,6 +8,8 @@ interface MenuProps {
   align?: 'start' | 'center' | 'end';
   side?: 'top' | 'bottom';
   className?: string;
+  /** Maximum height of the menu content area (e.g., '300px', '50vh'). Adds scrolling when content exceeds this height. */
+  maxHeight?: string;
 }
 
 interface MenuItemProps extends HTMLAttributes<HTMLButtonElement> {
@@ -21,7 +23,7 @@ interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
 }
 
-function Menu({ trigger, children, align = 'start', side = 'bottom', className }: MenuProps) {
+function Menu({ trigger, children, align = 'start', side = 'bottom', className, maxHeight }: MenuProps) {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const [actualSide, setActualSide] = useState<'top' | 'bottom'>(side);
@@ -44,7 +46,7 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
 
       // Determine the best side to open the menu
       let preferredSide = side;
-      
+
       // If preferred side doesn't have enough space, try the other side
       if (preferredSide === 'bottom' && menuHeight > spaceBelow) {
         // Not enough space below - check if there's more space above
@@ -185,6 +187,8 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className }
           >
             {/* Pass close function to children */}
             <div
+              className={cn(maxHeight && 'overflow-y-auto')}
+              style={maxHeight ? { maxHeight } : undefined}
               onClick={() => {
                 setOpen(false);
                 setPosition(null);
