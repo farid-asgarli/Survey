@@ -7,6 +7,7 @@ using SurveyApp.Application.Features.Users.Commands.UpdateProfile;
 using SurveyApp.Application.Features.Users.Commands.UpdateUserPreferences;
 using SurveyApp.Application.Features.Users.Queries.GetCurrentUser;
 using SurveyApp.Application.Features.Users.Queries.GetUserPreferences;
+using SurveyApp.Application.Features.Users.Queries.SearchUsers;
 
 namespace SurveyApp.API.Controllers;
 
@@ -123,5 +124,27 @@ public class UsersController(IMediator mediator) : ApiControllerBase
         }
 
         return Ok(new { message = "Avatar cleared successfully" });
+    }
+
+    /// <summary>
+    /// Search for users by name or email (for autocomplete)
+    /// </summary>
+    /// <remarks>
+    /// Used for inviting members to workspaces. Returns users matching the query.
+    /// If excludeFromNamespaceId is provided, excludes users already in that namespace.
+    /// Requires at least 2 characters in the query.
+    /// </remarks>
+    [HttpGet("search")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> SearchUsers(
+        [FromQuery] string query,
+        [FromQuery] Guid? excludeFromNamespaceId = null,
+        [FromQuery] int maxResults = 10
+    )
+    {
+        var result = await _mediator.Send(
+            new SearchUsersQuery(query, excludeFromNamespaceId, Math.Min(maxResults, 20))
+        );
+        return HandleResult(result);
     }
 }

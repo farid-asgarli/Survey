@@ -1268,9 +1268,15 @@
       "description": "Manage who has access to this workspace",
       "invite": "Invite Member",
       "inviteTitle": "Invite Team Member",
-      "inviteDescription": "Send an invitation to join this workspace",
+      "inviteDescription": "Search for existing users or enter an email to invite someone new",
       "emailLabel": "Email Address",
       "emailPlaceholder": "colleague@example.com",
+      "searchOrEmailLabel": "Search user or enter email",
+      "searchOrEmailPlaceholder": "Search by name or email...",
+      "searchUsers": "Search users...",
+      "noUsersFound": "No users found",
+      "typeEmailToInvite": "Enter an email address to invite a new user",
+      "enterValidEmail": "Enter a valid email address to invite",
       "roleLabel": "Role",
       "selectRole": "Select a role",
       "roleDescriptions": {
@@ -2268,6 +2274,92 @@
   "notifications": {
     "title": "Notifications",
     "description": "Manage your email notification preferences",
+    "markAllAsRead": "Mark all as read",
+    "viewAll": "View all notifications",
+    "empty": {
+      "title": "No notifications",
+      "description": "You're all caught up! New notifications will appear here."
+    },
+    "types": {
+      "system": {
+        "label": "System",
+        "title": "System Notification",
+        "message": "You have a system notification"
+      },
+      "workspaceInvitation": {
+        "label": "Invitation",
+        "title": "Workspace Invitation",
+        "message": "{{inviterName}} invited you to join {{workspaceName}} as {{roleName}}"
+      },
+      "newResponse": {
+        "label": "New Response",
+        "title": "New Survey Response",
+        "message": "Someone responded to your survey \"{{surveyTitle}}\""
+      },
+      "surveyPublished": {
+        "label": "Published",
+        "title": "Survey Published",
+        "message": "Your survey \"{{surveyTitle}}\" has been published"
+      },
+      "surveyMilestone": {
+        "label": "Milestone",
+        "title": "Survey Milestone Reached",
+        "message": "\"{{surveyTitle}}\" has reached {{responseCount}} responses!"
+      },
+      "memberJoined": {
+        "label": "Member Joined",
+        "title": "New Team Member",
+        "message": "{{memberName}} joined {{workspaceName}}"
+      },
+      "memberLeft": {
+        "label": "Member Left",
+        "title": "Member Left",
+        "message": "{{memberName}} left {{workspaceName}}"
+      },
+      "digest": {
+        "label": "Digest",
+        "title": "Weekly Digest",
+        "message": "Your weekly survey performance summary is ready"
+      },
+      "distributionComplete": {
+        "label": "Distribution",
+        "title": "Distribution Complete",
+        "message": "Your email distribution has been completed"
+      },
+      "linkExpiration": {
+        "label": "Expiring Soon",
+        "title": "Link Expiring Soon",
+        "message": "Your survey link will expire soon"
+      },
+      "systemAnnouncement": {
+        "label": "Announcement",
+        "title": "Announcement",
+        "message": "{{message}}"
+      },
+      "security": {
+        "label": "Security",
+        "title": "Security Alert",
+        "message": "There was a security-related activity on your account"
+      },
+      "roleChanged": {
+        "label": "Role Changed",
+        "title": "Role Updated",
+        "message": "Your role in {{workspaceName}} has been changed to {{roleName}}"
+      },
+      "recurringSurveyRun": {
+        "label": "Recurring Survey",
+        "title": "Recurring Survey Run",
+        "message": "Your recurring survey \"{{surveyTitle}}\" has been executed"
+      }
+    },
+    "actions": {
+      "viewWorkspace": "View Workspace",
+      "viewResponse": "View Response",
+      "viewSurvey": "View Survey",
+      "viewResponses": "View Responses",
+      "viewMembers": "View Members",
+      "learnMore": "Learn More"
+    },
     "emailNotifications": "Email Notifications",
     "pushNotifications": "Push Notifications",
     "allDisabled": "All email notifications disabled",
@@ -4376,6 +4468,22 @@
       "center": "Center",
       "topLeft": "Top Left",
       "topRight": "Top Right"
+    },
+    "notificationType": {
+      "system": "System",
+      "workspaceInvitation": "Workspace Invitation",
+      "newResponse": "New Response",
+      "surveyPublished": "Survey Published",
+      "surveyMilestone": "Survey Milestone",
+      "memberJoined": "Member Joined",
+      "memberLeft": "Member Left",
+      "digest": "Weekly Digest",
+      "distributionComplete": "Distribution Complete",
+      "linkExpiration": "Link Expiring",
+      "systemAnnouncement": "Announcement",
+      "security": "Security Alert",
+      "roleChanged": "Role Changed",
+      "recurringSurveyRun": "Recurring Survey Run"
     }
   },
   "onboarding": {

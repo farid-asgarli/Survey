@@ -3,6 +3,7 @@ export { NavigationRail, NavigationRailItem, NavigationBar, NavigationBarItem } 
 export { AppBar } from './AppBar';
 export { NamespaceSelector } from './NamespaceSelector';
 export { UserMenu } from './UserMenu';
+export { NotificationCenter } from './NotificationCenter';
 export { PageHeader, CompactPageHeader, SectionHeader } from './PageHeader';
 export type { PageHeaderProps } from './PageHeader';
 export { ListPageLayout, useListPageContext } from './ListPageLayout';

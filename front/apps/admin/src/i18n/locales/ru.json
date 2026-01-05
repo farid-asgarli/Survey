@@ -1470,6 +1470,22 @@
       "topLeft": "Сверху слева",
       "topRight": "Сверху справа"
     },
+    "notificationType": {
+      "system": "Система",
+      "workspaceInvitation": "Приглашение в пространство",
+      "newResponse": "Новый ответ",
+      "surveyPublished": "Опрос опубликован",
+      "surveyMilestone": "Этап опроса",
+      "memberJoined": "Участник присоединился",
+      "memberLeft": "Участник вышел",
+      "digest": "Еженедельная сводка",
+      "distributionComplete": "Рассылка завершена",
+      "linkExpiration": "Ссылка истекает",
+      "systemAnnouncement": "Объявление",
+      "security": "Безопасность",
+      "roleChanged": "Роль изменена",
+      "recurringSurveyRun": "Запуск повторяющегося опроса"
+    },
     "buttonStyle": {
       "pill": "Капсула",
       "rounded": "Скруглённые",
@@ -2219,6 +2235,93 @@
     "aboutTitle": "Об уведомлениях",
     "allDisabled": "Все email-уведомления отключены",
     "description": "Управляйте настройками email-уведомлений",
+    "markAllAsRead": "Отметить все как прочитанные",
+    "viewAll": "Все уведомления",
+    "empty": {
+      "title": "Нет уведомлений",
+      "description": "Вы всё прочитали! Новые уведомления появятся здесь."
+    },
+    "types": {
+      "system": {
+        "label": "Система",
+        "title": "Системное уведомление",
+        "message": "{{content}}"
+      },
+      "workspaceInvitation": {
+        "label": "Приглашение",
+        "title": "Приглашение в пространство",
+        "message": "{{inviterName}} пригласил вас присоединиться к {{workspaceName}} в роли {{roleName}}"
+      },
+      "newResponse": {
+        "label": "Новый ответ",
+        "title": "Новый ответ на опрос",
+        "message": "Ваш опрос «{{surveyName}}» получил новый ответ"
+      },
+      "surveyPublished": {
+        "label": "Опубликовано",
+        "title": "Опрос опубликован",
+        "message": "Опрос «{{surveyName}}» успешно опубликован"
+      },
+      "surveyMilestone": {
+        "label": "Этап",
+        "title": "Этап достигнут!",
+        "message": "Ваш опрос «{{surveyName}}» достиг {{count}} ответов"
+      },
+      "memberJoined": {
+        "label": "Новый участник",
+        "title": "Новый участник",
+        "message": "{{memberName}} присоединился к {{workspaceName}}"
+      },
+      "memberLeft": {
+        "label": "Участник вышел",
+        "title": "Участник покинул пространство",
+        "message": "{{memberName}} покинул {{workspaceName}}"
+      },
+      "digest": {
+        "label": "Сводка",
+        "title": "Еженедельная сводка",
+        "message": "Ваша еженедельная сводка активности готова"
+      },
+      "distributionComplete": {
+        "label": "Рассылка",
+        "title": "Рассылка завершена",
+        "message": "Рассылка опроса «{{surveyName}}» завершена"
+      },
+      "linkExpiration": {
+        "label": "Скоро истекает",
+        "title": "Срок ссылки истекает",
+        "message": "Срок действия ссылки на опрос «{{surveyName}}» истекает {{expirationDate}}"
+      },
+      "systemAnnouncement": {
+        "label": "Объявление",
+        "title": "Системное объявление",
+        "message": "{{content}}"
+      },
+      "security": {
+        "label": "Безопасность",
+        "title": "Предупреждение безопасности",
+        "message": "{{content}}"
+      },
+      "roleChanged": {
+        "label": "Роль изменена",
+        "title": "Роль обновлена",
+        "message": "Ваша роль в {{workspaceName}} изменена на {{newRole}}"
+      },
+      "recurringSurveyRun": {
+        "label": "Повторяющийся опрос",
+        "title": "Запущен повторяющийся опрос",
+        "message": "Ваш повторяющийся опрос «{{surveyName}}» создал новый экземпляр"
+      }
+    },
+    "actions": {
+      "viewWorkspace": "Просмотреть пространство",
+      "viewSurvey": "Просмотреть опрос",
+      "viewResponse": "Просмотреть ответ",
+      "viewResults": "Просмотреть результаты",
+      "viewDigest": "Просмотреть сводку",
+      "viewDetails": "Подробнее",
+      "dismiss": "Закрыть"
+    },
     "emailNotifications": "Email-уведомления",
     "pushNotifications": "Push-уведомления",
     "saveSuccess": "Настройки уведомлений сохранены",
@@ -4622,10 +4725,16 @@
       "description": "Управляйте доступом к этому пространству",
       "emailLabel": "Email адрес",
       "emailPlaceholder": "коллега@example.com",
+      "searchOrEmailLabel": "Поиск пользователя или ввод email",
+      "searchOrEmailPlaceholder": "Поиск по имени или email...",
+      "searchUsers": "Поиск пользователей...",
+      "noUsersFound": "Пользователи не найдены",
+      "typeEmailToInvite": "Введите email адрес для приглашения нового пользователя",
+      "enterValidEmail": "Введите корректный email адрес для приглашения",
       "failedToLoad": "Не удалось загрузить участников",
       "invitationSent": "Приглашение отправлено на {{email}}",
       "invite": "Пригласить участника",
-      "inviteDescription": "Отправить приглашение присоединиться к этому пространству",
+      "inviteDescription": "Найдите существующих пользователей или введите email для приглашения нового",
       "inviteError": "Не удалось отправить приглашение",
       "inviteFirst": "Пригласить первого участника",
       "inviteTitle": "Пригласить участника команды",

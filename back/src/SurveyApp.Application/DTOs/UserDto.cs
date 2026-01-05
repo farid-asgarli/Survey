@@ -43,3 +43,16 @@ public class UserNamespaceMembershipDto
     public string Role { get; set; } = null!;
     public DateTime JoinedAt { get; set; }
 }
+
+/// <summary>
+/// DTO for user search results (autocomplete).
+/// </summary>
+public class UserSearchResultDto
+{
+    public Guid Id { get; set; }
+    public string Email { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
+    public string FullName { get; set; } = null!;
+    public string? AvatarId { get; set; }
+}

@@ -10,12 +10,14 @@ namespace SurveyApp.Application.Features.Namespaces.Commands.InviteUser;
 public class InviteUserToNamespaceCommandHandler(
     INamespaceRepository namespaceRepository,
     IUserRepository userRepository,
+    INotificationRepository notificationRepository,
     IUnitOfWork unitOfWork,
     ICurrentUserService currentUserService
 ) : IRequestHandler<InviteUserToNamespaceCommand, Result<InviteUserResult>>
 {
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly INotificationRepository _notificationRepository = notificationRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ICurrentUserService _currentUserService = currentUserService;
 
@@ -81,6 +83,26 @@ public class InviteUserToNamespaceCommandHandler(
 
             // Add existing user
             @namespace.AddMember(existingUser, request.Role);
+
+            // Get inviter's name for the notification
+            var inviter = await _userRepository.GetByIdAsync(
+                currentUserId.Value,
+                cancellationToken
+            );
+            var inviterName =
+                inviter != null ? $"{inviter.FirstName} {inviter.LastName}".Trim() : "Someone";
+            if (string.IsNullOrEmpty(inviterName))
+                inviterName = inviter?.Email ?? "Someone";
+
+            // Create notification for the invited user
+            var notification = Notification.CreateWorkspaceInvitation(
+                existingUser.Id,
+                @namespace.Name,
+                request.Role.ToString(),
+                inviterName,
+                @namespace.Id
+            );
+            await _notificationRepository.AddAsync(notification, cancellationToken);
         }
         else
         {

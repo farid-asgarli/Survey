@@ -104,6 +104,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddScoped<IEmailDistributionRepository, EmailDistributionRepository>();
         services.AddScoped<ISurveyLinkRepository, SurveyLinkRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // Generic specification repository (open generic registration)

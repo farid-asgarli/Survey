@@ -1470,6 +1470,22 @@
       "topLeft": "Yuxarı sol",
       "topRight": "Yuxarı sağ"
     },
+    "notificationType": {
+      "system": "Sistem",
+      "workspaceInvitation": "İş sahəsinə dəvət",
+      "newResponse": "Yeni cavab",
+      "surveyPublished": "Sorğu dərc edildi",
+      "surveyMilestone": "Sorğu mərhələsi",
+      "memberJoined": "Üzv qoşuldu",
+      "memberLeft": "Üzv ayrıldı",
+      "digest": "Həftəlik xülasə",
+      "distributionComplete": "Paylanma tamamlandı",
+      "linkExpiration": "Link bitir",
+      "systemAnnouncement": "Elan",
+      "security": "Təhlükəsizlik",
+      "roleChanged": "Rol dəyişdirildi",
+      "recurringSurveyRun": "Təkrarlanan sorğu işə salındı"
+    },
     "buttonStyle": {
       "pill": "Oval",
       "rounded": "Yuvarlaq",
@@ -2209,6 +2225,93 @@
     "aboutTitle": "Bildirişlər haqqında",
     "allDisabled": "Bütün e-poçt bildirişləri deaktiv edildi",
     "description": "E-poçt bildiriş seçimlərinizi idarə edin",
+    "markAllAsRead": "Hamısını oxunmuş kimi işarələ",
+    "viewAll": "Bütün bildirişlər",
+    "empty": {
+      "title": "Bildiriş yoxdur",
+      "description": "Hamısını oxudunuz! Yeni bildirişlər burada görünəcək."
+    },
+    "types": {
+      "system": {
+        "label": "Sistem",
+        "title": "Sistem bildirişi",
+        "message": "{{content}}"
+      },
+      "workspaceInvitation": {
+        "label": "Dəvət",
+        "title": "İş sahəsinə dəvət",
+        "message": "{{inviterName}} sizi {{workspaceName}} iş sahəsinə {{roleName}} kimi qoşulmağa dəvət etdi"
+      },
+      "newResponse": {
+        "label": "Yeni cavab",
+        "title": "Yeni sorğu cavabı",
+        "message": "«{{surveyName}}» sorğunuz yeni cavab aldı"
+      },
+      "surveyPublished": {
+        "label": "Dərc edildi",
+        "title": "Sorğu dərc edildi",
+        "message": "«{{surveyName}}» sorğusu uğurla dərc edildi"
+      },
+      "surveyMilestone": {
+        "label": "Mərhələ",
+        "title": "Mərhələyə çatıldı!",
+        "message": "«{{surveyName}}» sorğunuz {{count}} cavaba çatdı"
+      },
+      "memberJoined": {
+        "label": "Yeni üzv",
+        "title": "Yeni üzv qoşuldu",
+        "message": "{{memberName}} {{workspaceName}} iş sahəsinə qoşuldu"
+      },
+      "memberLeft": {
+        "label": "Üzv ayrıldı",
+        "title": "Üzv ayrıldı",
+        "message": "{{memberName}} {{workspaceName}} iş sahəsindən ayrıldı"
+      },
+      "digest": {
+        "label": "Xülasə",
+        "title": "Həftəlik xülasə",
+        "message": "Həftəlik fəaliyyət xülasəniz hazırdır"
+      },
+      "distributionComplete": {
+        "label": "Paylanma",
+        "title": "Paylanma tamamlandı",
+        "message": "«{{surveyName}}» sorğusunun paylanması tamamlandı"
+      },
+      "linkExpiration": {
+        "label": "Tezliklə bitəcək",
+        "title": "Link tezliklə bitəcək",
+        "message": "«{{surveyName}}» sorğu linkinin müddəti {{expirationDate}} tarixində bitəcək"
+      },
+      "systemAnnouncement": {
+        "label": "Elan",
+        "title": "Sistem elanı",
+        "message": "{{content}}"
+      },
+      "security": {
+        "label": "Təhlükəsizlik",
+        "title": "Təhlükəsizlik xəbərdarlığı",
+        "message": "{{content}}"
+      },
+      "roleChanged": {
+        "label": "Rol dəyişdirildi",
+        "title": "Rol yeniləndi",
+        "message": "{{workspaceName}} iş sahəsindəki rolunuz {{newRole}} olaraq dəyişdirildi"
+      },
+      "recurringSurveyRun": {
+        "label": "Təkrarlanan sorğu",
+        "title": "Təkrarlanan sorğu işə salındı",
+        "message": "«{{surveyName}}» təkrarlanan sorğunuz yeni nüsxə yaratdı"
+      }
+    },
+    "actions": {
+      "viewWorkspace": "İş sahəsini göstər",
+      "viewSurvey": "Sorğunu göstər",
+      "viewResponse": "Cavabı göstər",
+      "viewResults": "Nəticələri göstər",
+      "viewDigest": "Xülasəni göstər",
+      "viewDetails": "Ətraflı",
+      "dismiss": "Bağla"
+    },
     "emailNotifications": "E-poçt bildirişləri",
     "pushNotifications": "Ani bildirişlər",
     "saveSuccess": "Bildiriş seçimləri saxlanıldı",
@@ -4612,10 +4715,16 @@
       "description": "Bu iş sahəsinə kimin girişi olduğunu idarə edin",
       "emailLabel": "E-poçt Ünvanı",
       "emailPlaceholder": "həmkar@example.com",
+      "searchOrEmailLabel": "İstifadəçi axtar və ya e-poçt daxil et",
+      "searchOrEmailPlaceholder": "Ad və ya e-poçt ilə axtar...",
+      "searchUsers": "İstifadəçiləri axtar...",
+      "noUsersFound": "İstifadəçi tapılmadı",
+      "typeEmailToInvite": "Yeni istifadəçini dəvət etmək üçün e-poçt ünvanı daxil edin",
+      "enterValidEmail": "Dəvət üçün düzgün e-poçt ünvanı daxil edin",
       "failedToLoad": "Üzvlər yüklənə bilmədi",
       "invitationSent": "{{email}} ünvanına dəvət göndərildi",
       "invite": "Üzv Dəvət Et",
-      "inviteDescription": "Bu iş sahəsinə qoşulmaq üçün dəvət göndərin",
+      "inviteDescription": "Mövcud istifadəçiləri axtarın və ya yeni birini dəvət etmək üçün e-poçt daxil edin",
       "inviteError": "Dəvət göndərilə bilmədi",
       "inviteFirst": "İlk üzvünüzü dəvət edin",
       "inviteTitle": "Komanda Üzvü Dəvət Et",

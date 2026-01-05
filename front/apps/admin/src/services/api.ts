@@ -77,6 +77,9 @@ import type {
   AzureAdConfig,
   AzureAdLoginRequest,
   AzureAdLinkRequest,
+  NotificationsResponse,
+  NotificationCount,
+  UserSearchResult,
 } from '@/types';
 
 // Create axios instance with base configuration
@@ -468,6 +471,19 @@ export const usersApi = {
    */
   clearAvatar: async (): Promise<MessageResponse> => {
     const response = await apiClient.delete<MessageResponse>(API_ENDPOINTS.users.avatar);
+    return response.data;
+  },
+
+  /**
+   * Search for users by name or email (for autocomplete).
+   * @param query - Search query (min 2 characters)
+   * @param excludeFromNamespaceId - Optional: exclude users already in this namespace
+   * @param maxResults - Maximum results to return (default 10, max 20)
+   */
+  searchUsers: async (query: string, excludeFromNamespaceId?: string, maxResults = 10): Promise<UserSearchResult[]> => {
+    const response = await apiClient.get<UserSearchResult[]>(API_ENDPOINTS.users.search, {
+      params: { query, excludeFromNamespaceId, maxResults },
+    });
     return response.data;
   },
 };
@@ -1615,5 +1631,40 @@ export const filesApi = {
    */
   getDownloadUrl: (fileId: string): string => {
     return `${getApiBaseUrl()}${API_ENDPOINTS.files.download(fileId)}`;
+  },
+};
+
+// ============ Notifications API ============
+export const notificationsApi = {
+  /**
+   * Get paginated notifications for the current user
+   */
+  getNotifications: async (pageNumber = 1, pageSize = 20, includeRead = true): Promise<NotificationsResponse> => {
+    const response = await apiClient.get<NotificationsResponse>(API_ENDPOINTS.notifications.list, {
+      params: { pageNumber, pageSize, includeRead },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get unread notification count
+   */
+  getUnreadCount: async (): Promise<NotificationCount> => {
+    const response = await apiClient.get<NotificationCount>(API_ENDPOINTS.notifications.unreadCount);
+    return response.data;
+  },
+
+  /**
+   * Mark a single notification as read
+   */
+  markAsRead: async (id: string): Promise<void> => {
+    await apiClient.post(API_ENDPOINTS.notifications.markAsRead(id));
+  },
+
+  /**
+   * Mark all notifications as read
+   */
+  markAllAsRead: async (): Promise<void> => {
+    await apiClient.post(API_ENDPOINTS.notifications.markAllAsRead);
   },
 };

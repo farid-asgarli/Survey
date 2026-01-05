@@ -42,6 +42,8 @@
   "Errors.TranslationNotFound": "Translation not found.",
   "Errors.FileTooSmallForImage": "File is too small to be a valid image.",
   "Errors.InvalidSvgFormat": "File does not appear to be a valid SVG.",
+  "Errors.NotificationNotFound": "Notification not found.",
+  "Errors.NotificationAccessDenied": "You do not have access to this notification.",,
 
   "Validation.CountGreaterThanZero": "Count must be greater than 0.",
   "Validation.SurveyIdRequired": "Survey ID is required.",

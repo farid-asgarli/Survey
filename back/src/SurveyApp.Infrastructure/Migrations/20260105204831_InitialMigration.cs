@@ -284,6 +284,44 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "notifications",
+                schema: "core",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Message = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    ActionUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    ActionLabel = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    ReadAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Metadata = table.Column<string>(type: "jsonb", nullable: true),
+                    RelatedEntityId = table.Column<Guid>(type: "uuid", nullable: true),
+                    RelatedEntityType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    IsArchived = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_notifications_users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "core",
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_preferences",
                 schema: "core",
                 columns: table => new
@@ -1180,6 +1218,30 @@ namespace SurveyApp.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_notifications_Type",
+                schema: "core",
+                table: "notifications",
+                column: "Type");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_notifications_UserId",
+                schema: "core",
+                table: "notifications",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_notifications_UserId_CreatedAt",
+                schema: "core",
+                table: "notifications",
+                columns: new[] { "UserId", "CreatedAt" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_notifications_UserId_IsRead_IsArchived",
+                schema: "core",
+                table: "notifications",
+                columns: new[] { "UserId", "IsRead", "IsArchived" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_question_logics_IsDeleted",
                 schema: "survey",
                 table: "question_logics",
@@ -1618,6 +1680,10 @@ namespace SurveyApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "namespace_memberships",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "notifications",
                 schema: "core");
 
             migrationBuilder.DropTable(

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -6,7 +7,6 @@ import {
   CardContent,
   Button,
   IconButton,
-  Input,
   Select,
   Avatar,
   Skeleton,
@@ -19,14 +19,13 @@ import {
   DialogFooter,
 } from '@/components/ui';
 import { getAvatarUrl } from '@/components/features/profile/AvatarSelector';
+import { UserAutocomplete } from './UserAutocomplete';
 import { UserPlus, MoreVertical, Mail, Shield, Crown, User, Trash2 } from 'lucide-react';
 import { useNamespaceMembers, useInviteMember, useRemoveMember, useDialogState } from '@/hooks';
 import { useConfirmDialog } from '@/hooks';
 import { toast } from '@/components/ui';
 import { cn } from '@/lib/utils';
-import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
-import { inviteMemberSchema, type InviteMemberFormData } from '@/lib/validations';
-import type { NamespaceMembership } from '@/types';
+import type { NamespaceMembership, UserSearchResult } from '@/types';
 import { MemberRole } from '@/types/enums';
 import { useTranslation } from 'react-i18next';
 
@@ -61,10 +60,17 @@ const roleColors: Record<MemberRoleKey, string> = {
   Respondent: 'bg-outline/10 text-outline border-outline/20',
 };
 
+type InviteRole = 'Admin' | 'Member' | 'Viewer';
+
 export function MembersManagement({ namespaceId, currentUserId, isOwner }: MembersManagementProps) {
   const { t } = useTranslation();
 
-  const roleOptions: { value: InviteMemberFormData['role']; label: string }[] = [
+  // Invite dialog state
+  const [selectedUser, setSelectedUser] = useState<UserSearchResult | null>(null);
+  const [emailInput, setEmailInput] = useState('');
+  const [selectedRole, setSelectedRole] = useState<InviteRole>('Member');
+
+  const roleOptions: { value: InviteRole; label: string }[] = [
     { value: 'Admin', label: t('workspaces.roles.admin') },
     { value: 'Member', label: t('workspaces.roles.member') },
     { value: 'Viewer', label: t('workspaces.roles.viewer') },
@@ -75,37 +81,44 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
   const removeMember = useRemoveMember();
   const { confirm, ConfirmDialog } = useConfirmDialog();
 
-  // React Hook Form setup for invite form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, touchedFields },
-    reset,
-    watch,
-    setValue,
-  } = useForm<InviteMemberFormData>({
-    resolver: zodResolver(inviteMemberSchema),
-    defaultValues: {
-      email: '',
-      role: 'Member',
-    },
-    mode: 'onBlur',
-  });
+  // Reset form state when dialog closes
+  const resetInviteForm = () => {
+    setSelectedUser(null);
+    setEmailInput('');
+    setSelectedRole('Member');
+  };
 
   // Dialog state with form reset on close
   const inviteDialog = useDialogState({
-    onClose: () => reset(),
+    onClose: resetInviteForm,
   });
 
-  const watchedRole = watch('role');
+  // Check if we have a valid email to invite
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
-  const onSubmit: SubmitHandler<InviteMemberFormData> = async (data) => {
+  // Get the email to use for invitation
+  const getInviteEmail = () => {
+    if (selectedUser) {
+      return selectedUser.email;
+    }
+    return emailInput.trim();
+  };
+
+  const canSubmit = selectedUser || isValidEmail(emailInput);
+
+  const handleInviteSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = getInviteEmail();
+    if (!email) return;
+
     try {
       await inviteMember.mutateAsync({
         namespaceId,
-        data: { email: data.email.trim(), role: MemberRole[data.role] },
+        data: { email, role: MemberRole[selectedRole] },
       });
-      toast.success(t('workspaces.team.invitationSent', { email: data.email }));
+      toast.success(t('workspaces.team.invitationSent', { email }));
       inviteDialog.close();
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } } };
@@ -270,30 +283,39 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
             showClose
           />
 
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleInviteSubmit}>
             <DialogBody className="space-y-4">
-              <Input
-                label={t('workspaces.team.emailLabel')}
-                type="email"
-                placeholder={t('workspaces.team.emailPlaceholder')}
-                {...register('email')}
-                error={touchedFields.email ? errors.email?.message : undefined}
-                startIcon={<Mail className="h-5 w-5" />}
-                autoFocus
+              <UserAutocomplete
+                namespaceId={namespaceId}
+                label={t('workspaces.team.searchOrEmailLabel')}
+                placeholder={t('workspaces.team.searchOrEmailPlaceholder')}
+                selectedUser={selectedUser}
+                onSelect={(user) => {
+                  setSelectedUser(user);
+                  setEmailInput('');
+                }}
+                onInputChange={(value) => {
+                  setEmailInput(value);
+                }}
+                onClear={() => {
+                  setSelectedUser(null);
+                  setEmailInput('');
+                }}
+                helperText={!selectedUser && emailInput && !isValidEmail(emailInput) ? t('workspaces.team.enterValidEmail') : undefined}
               />
 
               <div>
                 <label className="block text-sm font-medium text-on-surface-variant mb-1.5">{t('workspaces.team.roleLabel')}</label>
                 <Select
-                  value={watchedRole}
-                  onChange={(value) => setValue('role', value as InviteMemberFormData['role'])}
+                  value={selectedRole}
+                  onChange={(value) => setSelectedRole(value as InviteRole)}
                   options={roleOptions}
                   placeholder={t('workspaces.team.selectRole')}
                 />
                 <p className="mt-1.5 text-xs text-on-surface-variant">
-                  {watchedRole === 'Admin' && t('workspaces.team.roleDescriptions.admin')}
-                  {watchedRole === 'Member' && t('workspaces.team.roleDescriptions.member')}
-                  {watchedRole === 'Viewer' && t('workspaces.team.roleDescriptions.viewer')}
+                  {selectedRole === 'Admin' && t('workspaces.team.roleDescriptions.admin')}
+                  {selectedRole === 'Member' && t('workspaces.team.roleDescriptions.member')}
+                  {selectedRole === 'Viewer' && t('workspaces.team.roleDescriptions.viewer')}
                 </p>
               </div>
             </DialogBody>
@@ -302,7 +324,7 @@ export function MembersManagement({ namespaceId, currentUserId, isOwner }: Membe
               <Button type="button" variant="text" onClick={inviteDialog.close} disabled={inviteMember.isPending}>
                 {t('common.cancel')}
               </Button>
-              <Button type="submit" disabled={inviteMember.isPending}>
+              <Button type="submit" disabled={inviteMember.isPending || !canSubmit}>
                 {inviteMember.isPending ? t('workspaces.team.sending') : t('workspaces.team.sendInvitation')}
               </Button>
             </DialogFooter>

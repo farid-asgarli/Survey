@@ -7,6 +7,7 @@ import { NavigationRail, NavigationRailItem, NavigationBar, NavigationBarItem } 
 import { AppBar } from './AppBar';
 import { NamespaceSelector } from './NamespaceSelector';
 import { UserMenu } from './UserMenu';
+import { NotificationCenter } from './NotificationCenter';
 import { ToastContainer, Avatar, Divider, LanguageSwitcher } from '@/components/ui';
 import { CreateNamespaceDialog } from '@/components/features/namespaces';
 import { GlobalSearch, SearchButton, KeyboardShortcutsHelp } from '@/components/features/search';
@@ -20,7 +21,7 @@ import {
   useUserAvatar,
 } from '@/hooks';
 import { useSearchStore, useShortcutsStore, useKeyboardShortcut, useGlobalKeyboardListener, useUser, useAuthStore } from '@/stores';
-import { Bell, User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -349,17 +350,7 @@ export function Layout({ children }: LayoutProps) {
                 <SearchButton variant="compact" className="hidden lg:flex" />
                 <SearchButton variant="icon" className="lg:hidden" />
 
-                <button
-                  aria-label={t('common.notifications')}
-                  className={cn(
-                    'relative p-2.5 rounded-full',
-                    'hover:bg-surface-container-high transition-all duration-200',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
-                  )}
-                >
-                  <Bell className="h-5 w-5 text-on-surface-variant" />
-                  <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-error" />
-                </button>
+                <NotificationCenter />
                 <UserMenu onSettingsClick={() => navigate('/settings')} onLogoutClick={() => navigate('/login')} />
               </div>
             }

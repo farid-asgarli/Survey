@@ -57,6 +57,9 @@ public class ApplicationDbContext(
         Set<EmailTemplateTranslation>();
     public DbSet<SurveyThemeTranslation> SurveyThemeTranslations => Set<SurveyThemeTranslation>();
 
+    // Notification entities
+    public DbSet<Notification> Notifications => Set<Notification>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

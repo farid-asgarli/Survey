@@ -45,6 +45,13 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.SurveyCount,
                 opt => opt.MapFrom(s => s.Surveys.Count(survey => !survey.IsDeleted))
+            )
+            .ForMember(
+                d => d.OwnerId,
+                opt =>
+                    opt.MapFrom(s =>
+                        s.Memberships.FirstOrDefault(m => m.Role == NamespaceRole.Owner)!.UserId
+                    )
             );
 
         CreateMap<Namespace, NamespaceDetailsDto>()
@@ -53,12 +60,26 @@ public class MappingProfile : Profile
                 d => d.SurveyCount,
                 opt => opt.MapFrom(s => s.Surveys.Count(survey => !survey.IsDeleted))
             )
-            .ForMember(d => d.Members, opt => opt.MapFrom(s => s.Memberships));
+            .ForMember(d => d.Members, opt => opt.MapFrom(s => s.Memberships))
+            .ForMember(
+                d => d.OwnerId,
+                opt =>
+                    opt.MapFrom(s =>
+                        s.Memberships.FirstOrDefault(m => m.Role == NamespaceRole.Owner)!.UserId
+                    )
+            );
 
         CreateMap<NamespaceMembership, NamespaceMemberDto>()
             .ForMember(d => d.Email, opt => opt.MapFrom(s => s.User.Email))
             .ForMember(d => d.FullName, opt => opt.MapFrom(s => s.User.FullName))
             .ForMember(d => d.AvatarId, opt => opt.MapFrom(s => s.User.AvatarId));
+
+        // Notification mappings
+        CreateMap<Notification, NotificationDto>()
+            .ForMember(
+                d => d.Metadata,
+                opt => opt.MapFrom(s => DeserializeNotificationMetadata(s.Metadata))
+            );
 
         // User mappings
         CreateMap<User, UserDto>();
@@ -460,5 +481,46 @@ public class MappingProfile : Profile
         {
             return null;
         }
+    }
+
+    private static Dictionary<string, object>? DeserializeNotificationMetadata(string? metadata)
+    {
+        if (string.IsNullOrEmpty(metadata))
+            return null;
+
+        try
+        {
+            var jsonDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, System.Text.Json.JsonElement>>(
+                metadata
+            );
+            
+            if (jsonDict == null)
+                return null;
+
+            // Convert JsonElement values to their underlying types for proper serialization
+            var result = new Dictionary<string, object>();
+            foreach (var kvp in jsonDict)
+            {
+                result[kvp.Key] = ConvertJsonElement(kvp.Value);
+            }
+            return result;
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            return null;
+        }
+    }
+
+    private static object ConvertJsonElement(System.Text.Json.JsonElement element)
+    {
+        return element.ValueKind switch
+        {
+            System.Text.Json.JsonValueKind.String => element.GetString() ?? string.Empty,
+            System.Text.Json.JsonValueKind.Number => element.TryGetInt64(out var l) ? l : element.GetDouble(),
+            System.Text.Json.JsonValueKind.True => true,
+            System.Text.Json.JsonValueKind.False => false,
+            System.Text.Json.JsonValueKind.Null => null!,
+            _ => element.ToString()
+        };
     }
 }

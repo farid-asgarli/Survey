@@ -18,16 +18,10 @@ export {
   YesNoStyleLabels as SharedYesNoStyleLabels,
   ButtonStyleLabels as SharedButtonStyleLabels,
   ProgressBarStyleLabels as SharedProgressBarStyleLabels,
-} from "@survey/types";
+} from '@survey/types';
 
 // Re-import types for use in this file
-import type {
-  QuestionType,
-  RatingStyle,
-  YesNoStyle,
-  ButtonStyle,
-  ProgressBarStyle,
-} from "@survey/types";
+import type { QuestionType, RatingStyle, YesNoStyle, ButtonStyle, ProgressBarStyle } from '@survey/types';
 
 // ============ Admin-Only Enums ============
 
@@ -176,8 +170,7 @@ export const BackgroundImagePosition = {
   TopLeft: 4,
   TopRight: 5,
 } as const;
-export type BackgroundImagePosition =
-  (typeof BackgroundImagePosition)[keyof typeof BackgroundImagePosition];
+export type BackgroundImagePosition = (typeof BackgroundImagePosition)[keyof typeof BackgroundImagePosition];
 
 // Recurring Survey Enums
 export const RecurrencePattern = {
@@ -277,22 +270,15 @@ export const DayOfWeek = {
 export type DayOfWeek = (typeof DayOfWeek)[keyof typeof DayOfWeek];
 
 // ============ Helper functions for enum display ============
-import i18n from "@/i18n";
+import i18n from '@/i18n';
 
-export function getEnumDisplayName<T extends Record<string, number | string>>(
-  enumObj: T,
-  value: number
-): string {
+export function getEnumDisplayName<T extends Record<string, number | string>>(enumObj: T, value: number): string {
   const entry = Object.entries(enumObj).find(([, v]) => v === value);
   return entry ? entry[0] : String(value);
 }
 
 // Generic enum label getter with localization
-export function getEnumLabel(
-  translationKeyPrefix: string,
-  enumKeyMap: Record<number, string>,
-  value: number
-): string {
+export function getEnumLabel(translationKeyPrefix: string, enumKeyMap: Record<number, string>, value: number): string {
   const key = enumKeyMap[value];
   return key ? i18n.t(`${translationKeyPrefix}.${key}`) : String(value);
 }
@@ -301,509 +287,540 @@ export function getEnumLabel(
 
 // Subscription Tier
 const subscriptionTierKeys: Record<SubscriptionTier, string> = {
-  [SubscriptionTier.Free]: "free",
-  [SubscriptionTier.Pro]: "pro",
-  [SubscriptionTier.Enterprise]: "enterprise",
+  [SubscriptionTier.Free]: 'free',
+  [SubscriptionTier.Pro]: 'pro',
+  [SubscriptionTier.Enterprise]: 'enterprise',
 };
-export const getSubscriptionTierLabel = (value: SubscriptionTier): string =>
-  getEnumLabel("enums.subscriptionTier", subscriptionTierKeys, value);
+export const getSubscriptionTierLabel = (value: SubscriptionTier): string => getEnumLabel('enums.subscriptionTier', subscriptionTierKeys, value);
 export const SubscriptionTierLabels: Record<SubscriptionTier, string> = {
-  [SubscriptionTier.Free]: "Free",
-  [SubscriptionTier.Pro]: "Pro",
-  [SubscriptionTier.Enterprise]: "Enterprise",
+  [SubscriptionTier.Free]: 'Free',
+  [SubscriptionTier.Pro]: 'Pro',
+  [SubscriptionTier.Enterprise]: 'Enterprise',
 };
 
 // Member Role
 const memberRoleKeys: Record<MemberRole, string> = {
-  [MemberRole.Owner]: "owner",
-  [MemberRole.Admin]: "admin",
-  [MemberRole.Member]: "member",
-  [MemberRole.Viewer]: "viewer",
-  [MemberRole.Respondent]: "respondent",
+  [MemberRole.Owner]: 'owner',
+  [MemberRole.Admin]: 'admin',
+  [MemberRole.Member]: 'member',
+  [MemberRole.Viewer]: 'viewer',
+  [MemberRole.Respondent]: 'respondent',
 };
-export const getMemberRoleLabel = (value: MemberRole): string =>
-  getEnumLabel("enums.memberRole", memberRoleKeys, value);
+export const getMemberRoleLabel = (value: MemberRole): string => getEnumLabel('enums.memberRole', memberRoleKeys, value);
 export const MemberRoleLabels: Record<MemberRole, string> = {
-  [MemberRole.Owner]: "Owner",
-  [MemberRole.Admin]: "Admin",
-  [MemberRole.Member]: "Member",
-  [MemberRole.Viewer]: "Viewer",
-  [MemberRole.Respondent]: "Respondent",
+  [MemberRole.Owner]: 'Owner',
+  [MemberRole.Admin]: 'Admin',
+  [MemberRole.Member]: 'Member',
+  [MemberRole.Viewer]: 'Viewer',
+  [MemberRole.Respondent]: 'Respondent',
 };
 
 // Survey Status
 const surveyStatusKeys: Record<SurveyStatus, string> = {
-  [SurveyStatus.Draft]: "draft",
-  [SurveyStatus.Published]: "published",
-  [SurveyStatus.Closed]: "closed",
-  [SurveyStatus.Archived]: "archived",
+  [SurveyStatus.Draft]: 'draft',
+  [SurveyStatus.Published]: 'published',
+  [SurveyStatus.Closed]: 'closed',
+  [SurveyStatus.Archived]: 'archived',
 };
-export const getSurveyStatusLabel = (value: SurveyStatus): string =>
-  getEnumLabel("enums.surveyStatus", surveyStatusKeys, value);
+export const getSurveyStatusLabel = (value: SurveyStatus): string => getEnumLabel('enums.surveyStatus', surveyStatusKeys, value);
 export const SurveyStatusLabels: Record<SurveyStatus, string> = {
-  [SurveyStatus.Draft]: "Draft",
-  [SurveyStatus.Published]: "Published",
-  [SurveyStatus.Closed]: "Closed",
-  [SurveyStatus.Archived]: "Archived",
+  [SurveyStatus.Draft]: 'Draft',
+  [SurveyStatus.Published]: 'Published',
+  [SurveyStatus.Closed]: 'Closed',
+  [SurveyStatus.Archived]: 'Archived',
 };
 
 // Question Type (shared enum, admin-specific localized labels)
-import { QuestionType as QT } from "@survey/types";
+import { QuestionType as QT } from '@survey/types';
 const questionTypeKeys: Record<QuestionType, string> = {
-  [QT.SingleChoice]: "singleChoice",
-  [QT.MultipleChoice]: "multipleChoice",
-  [QT.Text]: "text",
-  [QT.LongText]: "longText",
-  [QT.Rating]: "rating",
-  [QT.Scale]: "scale",
-  [QT.Matrix]: "matrix",
-  [QT.Date]: "date",
-  [QT.DateTime]: "dateTime",
-  [QT.FileUpload]: "fileUpload",
-  [QT.YesNo]: "yesNo",
-  [QT.Dropdown]: "dropdown",
-  [QT.NPS]: "nps",
-  [QT.Checkbox]: "checkbox",
-  [QT.Number]: "number",
-  [QT.ShortText]: "shortText",
-  [QT.Email]: "email",
-  [QT.Phone]: "phone",
-  [QT.Url]: "url",
-  [QT.Ranking]: "ranking",
+  [QT.SingleChoice]: 'singleChoice',
+  [QT.MultipleChoice]: 'multipleChoice',
+  [QT.Text]: 'text',
+  [QT.LongText]: 'longText',
+  [QT.Rating]: 'rating',
+  [QT.Scale]: 'scale',
+  [QT.Matrix]: 'matrix',
+  [QT.Date]: 'date',
+  [QT.DateTime]: 'dateTime',
+  [QT.FileUpload]: 'fileUpload',
+  [QT.YesNo]: 'yesNo',
+  [QT.Dropdown]: 'dropdown',
+  [QT.NPS]: 'nps',
+  [QT.Checkbox]: 'checkbox',
+  [QT.Number]: 'number',
+  [QT.ShortText]: 'shortText',
+  [QT.Email]: 'email',
+  [QT.Phone]: 'phone',
+  [QT.Url]: 'url',
+  [QT.Ranking]: 'ranking',
 };
-export const getQuestionTypeLabel = (value: QuestionType): string =>
-  getEnumLabel("enums.questionType", questionTypeKeys, value);
+export const getQuestionTypeLabel = (value: QuestionType): string => getEnumLabel('enums.questionType', questionTypeKeys, value);
 export const QuestionTypeLabels: Record<QuestionType, string> = {
-  [QT.SingleChoice]: "Single Choice",
-  [QT.MultipleChoice]: "Multiple Choice",
-  [QT.Text]: "Text",
-  [QT.LongText]: "Long Text",
-  [QT.Rating]: "Rating",
-  [QT.Scale]: "Scale",
-  [QT.Matrix]: "Matrix",
-  [QT.Date]: "Date",
-  [QT.DateTime]: "Date & Time",
-  [QT.FileUpload]: "File Upload",
-  [QT.YesNo]: "Yes/No",
-  [QT.Dropdown]: "Dropdown",
-  [QT.NPS]: "NPS",
-  [QT.Checkbox]: "Checkbox",
-  [QT.Number]: "Number",
-  [QT.ShortText]: "Short Text",
-  [QT.Email]: "Email",
-  [QT.Phone]: "Phone",
-  [QT.Url]: "URL",
-  [QT.Ranking]: "Ranking",
+  [QT.SingleChoice]: 'Single Choice',
+  [QT.MultipleChoice]: 'Multiple Choice',
+  [QT.Text]: 'Text',
+  [QT.LongText]: 'Long Text',
+  [QT.Rating]: 'Rating',
+  [QT.Scale]: 'Scale',
+  [QT.Matrix]: 'Matrix',
+  [QT.Date]: 'Date',
+  [QT.DateTime]: 'Date & Time',
+  [QT.FileUpload]: 'File Upload',
+  [QT.YesNo]: 'Yes/No',
+  [QT.Dropdown]: 'Dropdown',
+  [QT.NPS]: 'NPS',
+  [QT.Checkbox]: 'Checkbox',
+  [QT.Number]: 'Number',
+  [QT.ShortText]: 'Short Text',
+  [QT.Email]: 'Email',
+  [QT.Phone]: 'Phone',
+  [QT.Url]: 'URL',
+  [QT.Ranking]: 'Ranking',
 };
 
 // Rating Style (shared enum, admin-specific localized labels)
-import { RatingStyle as RS } from "@survey/types";
+import { RatingStyle as RS } from '@survey/types';
 const ratingStyleKeys: Record<RatingStyle, string> = {
-  [RS.Stars]: "stars",
-  [RS.Hearts]: "hearts",
-  [RS.Thumbs]: "thumbs",
-  [RS.Smileys]: "smileys",
-  [RS.Numbers]: "numbers",
+  [RS.Stars]: 'stars',
+  [RS.Hearts]: 'hearts',
+  [RS.Thumbs]: 'thumbs',
+  [RS.Smileys]: 'smileys',
+  [RS.Numbers]: 'numbers',
 };
-export const getRatingStyleLabel = (value: RatingStyle): string =>
-  getEnumLabel("enums.ratingStyle", ratingStyleKeys, value);
+export const getRatingStyleLabel = (value: RatingStyle): string => getEnumLabel('enums.ratingStyle', ratingStyleKeys, value);
 export const RatingStyleLabels: Record<RatingStyle, string> = {
-  [RS.Stars]: "Stars",
-  [RS.Hearts]: "Hearts",
-  [RS.Thumbs]: "Thumbs",
-  [RS.Smileys]: "Smileys",
-  [RS.Numbers]: "Numbers",
+  [RS.Stars]: 'Stars',
+  [RS.Hearts]: 'Hearts',
+  [RS.Thumbs]: 'Thumbs',
+  [RS.Smileys]: 'Smileys',
+  [RS.Numbers]: 'Numbers',
 };
 
 // Yes/No Style (shared enum, admin-specific localized labels)
-import { YesNoStyle as YNS } from "@survey/types";
+import { YesNoStyle as YNS } from '@survey/types';
 const yesNoStyleKeys: Record<YesNoStyle, string> = {
-  [YNS.Text]: "text",
-  [YNS.Thumbs]: "thumbs",
-  [YNS.Toggle]: "toggle",
-  [YNS.CheckX]: "checkX",
+  [YNS.Text]: 'text',
+  [YNS.Thumbs]: 'thumbs',
+  [YNS.Toggle]: 'toggle',
+  [YNS.CheckX]: 'checkX',
 };
-export const getYesNoStyleLabel = (value: YesNoStyle): string =>
-  getEnumLabel("enums.yesNoStyle", yesNoStyleKeys, value);
+export const getYesNoStyleLabel = (value: YesNoStyle): string => getEnumLabel('enums.yesNoStyle', yesNoStyleKeys, value);
 export const YesNoStyleLabels: Record<YesNoStyle, string> = {
-  [YNS.Text]: "Text",
-  [YNS.Thumbs]: "Thumbs Up/Down",
-  [YNS.Toggle]: "Toggle Switch",
-  [YNS.CheckX]: "Check/X",
+  [YNS.Text]: 'Text',
+  [YNS.Thumbs]: 'Thumbs Up/Down',
+  [YNS.Toggle]: 'Toggle Switch',
+  [YNS.CheckX]: 'Check/X',
 };
 
 // Logic Operator
 const logicOperatorKeys: Record<LogicOperator, string> = {
-  [LogicOperator.Equals]: "equals",
-  [LogicOperator.NotEquals]: "notEquals",
-  [LogicOperator.Contains]: "contains",
-  [LogicOperator.NotContains]: "notContains",
-  [LogicOperator.GreaterThan]: "greaterThan",
-  [LogicOperator.LessThan]: "lessThan",
-  [LogicOperator.GreaterThanOrEquals]: "greaterThanOrEquals",
-  [LogicOperator.LessThanOrEquals]: "lessThanOrEquals",
-  [LogicOperator.IsEmpty]: "isEmpty",
-  [LogicOperator.IsNotEmpty]: "isNotEmpty",
-  [LogicOperator.IsAnswered]: "isAnswered",
-  [LogicOperator.IsNotAnswered]: "isNotAnswered",
+  [LogicOperator.Equals]: 'equals',
+  [LogicOperator.NotEquals]: 'notEquals',
+  [LogicOperator.Contains]: 'contains',
+  [LogicOperator.NotContains]: 'notContains',
+  [LogicOperator.GreaterThan]: 'greaterThan',
+  [LogicOperator.LessThan]: 'lessThan',
+  [LogicOperator.GreaterThanOrEquals]: 'greaterThanOrEquals',
+  [LogicOperator.LessThanOrEquals]: 'lessThanOrEquals',
+  [LogicOperator.IsEmpty]: 'isEmpty',
+  [LogicOperator.IsNotEmpty]: 'isNotEmpty',
+  [LogicOperator.IsAnswered]: 'isAnswered',
+  [LogicOperator.IsNotAnswered]: 'isNotAnswered',
 };
-export const getLogicOperatorLabel = (value: LogicOperator): string =>
-  getEnumLabel("enums.logicOperator", logicOperatorKeys, value);
+export const getLogicOperatorLabel = (value: LogicOperator): string => getEnumLabel('enums.logicOperator', logicOperatorKeys, value);
 export const LogicOperatorLabels: Record<LogicOperator, string> = {
-  [LogicOperator.Equals]: "Equals",
-  [LogicOperator.NotEquals]: "Not Equals",
-  [LogicOperator.Contains]: "Contains",
-  [LogicOperator.NotContains]: "Does Not Contain",
-  [LogicOperator.GreaterThan]: "Greater Than",
-  [LogicOperator.LessThan]: "Less Than",
-  [LogicOperator.GreaterThanOrEquals]: "Greater Than or Equals",
-  [LogicOperator.LessThanOrEquals]: "Less Than or Equals",
-  [LogicOperator.IsEmpty]: "Is Empty",
-  [LogicOperator.IsNotEmpty]: "Is Not Empty",
-  [LogicOperator.IsAnswered]: "Is Answered",
-  [LogicOperator.IsNotAnswered]: "Is Not Answered",
+  [LogicOperator.Equals]: 'Equals',
+  [LogicOperator.NotEquals]: 'Not Equals',
+  [LogicOperator.Contains]: 'Contains',
+  [LogicOperator.NotContains]: 'Does Not Contain',
+  [LogicOperator.GreaterThan]: 'Greater Than',
+  [LogicOperator.LessThan]: 'Less Than',
+  [LogicOperator.GreaterThanOrEquals]: 'Greater Than or Equals',
+  [LogicOperator.LessThanOrEquals]: 'Less Than or Equals',
+  [LogicOperator.IsEmpty]: 'Is Empty',
+  [LogicOperator.IsNotEmpty]: 'Is Not Empty',
+  [LogicOperator.IsAnswered]: 'Is Answered',
+  [LogicOperator.IsNotAnswered]: 'Is Not Answered',
 };
 
 // Logic Action
 const logicActionKeys: Record<LogicAction, string> = {
-  [LogicAction.Show]: "show",
-  [LogicAction.Hide]: "hide",
-  [LogicAction.Skip]: "skip",
-  [LogicAction.JumpTo]: "jumpTo",
-  [LogicAction.EndSurvey]: "endSurvey",
+  [LogicAction.Show]: 'show',
+  [LogicAction.Hide]: 'hide',
+  [LogicAction.Skip]: 'skip',
+  [LogicAction.JumpTo]: 'jumpTo',
+  [LogicAction.EndSurvey]: 'endSurvey',
 };
-export const getLogicActionLabel = (value: LogicAction): string =>
-  getEnumLabel("enums.logicAction", logicActionKeys, value);
+export const getLogicActionLabel = (value: LogicAction): string => getEnumLabel('enums.logicAction', logicActionKeys, value);
 export const LogicActionLabels: Record<LogicAction, string> = {
-  [LogicAction.Show]: "Show",
-  [LogicAction.Hide]: "Hide",
-  [LogicAction.Skip]: "Skip",
-  [LogicAction.JumpTo]: "Jump To",
-  [LogicAction.EndSurvey]: "End Survey",
+  [LogicAction.Show]: 'Show',
+  [LogicAction.Hide]: 'Hide',
+  [LogicAction.Skip]: 'Skip',
+  [LogicAction.JumpTo]: 'Jump To',
+  [LogicAction.EndSurvey]: 'End Survey',
 };
 
 // Link Type
 const linkTypeKeys: Record<LinkType, string> = {
-  [LinkType.Public]: "public",
-  [LinkType.Unique]: "unique",
-  [LinkType.Campaign]: "campaign",
-  [LinkType.Embedded]: "embedded",
-  [LinkType.QrCode]: "qrCode",
+  [LinkType.Public]: 'public',
+  [LinkType.Unique]: 'unique',
+  [LinkType.Campaign]: 'campaign',
+  [LinkType.Embedded]: 'embedded',
+  [LinkType.QrCode]: 'qrCode',
 };
-export const getLinkTypeLabel = (value: LinkType): string =>
-  getEnumLabel("enums.linkType", linkTypeKeys, value);
+export const getLinkTypeLabel = (value: LinkType): string => getEnumLabel('enums.linkType', linkTypeKeys, value);
 export const LinkTypeLabels: Record<LinkType, string> = {
-  [LinkType.Public]: "Public",
-  [LinkType.Unique]: "Unique",
-  [LinkType.Campaign]: "Campaign",
-  [LinkType.Embedded]: "Embedded",
-  [LinkType.QrCode]: "QR Code",
+  [LinkType.Public]: 'Public',
+  [LinkType.Unique]: 'Unique',
+  [LinkType.Campaign]: 'Campaign',
+  [LinkType.Embedded]: 'Embedded',
+  [LinkType.QrCode]: 'QR Code',
 };
 
 // Distribution Status
 const distributionStatusKeys: Record<DistributionStatus, string> = {
-  [DistributionStatus.Draft]: "draft",
-  [DistributionStatus.Scheduled]: "scheduled",
-  [DistributionStatus.Sending]: "sending",
-  [DistributionStatus.Sent]: "sent",
-  [DistributionStatus.PartiallyFailed]: "partiallyFailed",
-  [DistributionStatus.Failed]: "failed",
-  [DistributionStatus.Cancelled]: "cancelled",
+  [DistributionStatus.Draft]: 'draft',
+  [DistributionStatus.Scheduled]: 'scheduled',
+  [DistributionStatus.Sending]: 'sending',
+  [DistributionStatus.Sent]: 'sent',
+  [DistributionStatus.PartiallyFailed]: 'partiallyFailed',
+  [DistributionStatus.Failed]: 'failed',
+  [DistributionStatus.Cancelled]: 'cancelled',
 };
 export const getDistributionStatusLabel = (value: DistributionStatus): string =>
-  getEnumLabel("enums.distributionStatus", distributionStatusKeys, value);
+  getEnumLabel('enums.distributionStatus', distributionStatusKeys, value);
 export const DistributionStatusLabels: Record<DistributionStatus, string> = {
-  [DistributionStatus.Draft]: "Draft",
-  [DistributionStatus.Scheduled]: "Scheduled",
-  [DistributionStatus.Sending]: "Sending",
-  [DistributionStatus.Sent]: "Sent",
-  [DistributionStatus.PartiallyFailed]: "Partially Failed",
-  [DistributionStatus.Failed]: "Failed",
-  [DistributionStatus.Cancelled]: "Cancelled",
+  [DistributionStatus.Draft]: 'Draft',
+  [DistributionStatus.Scheduled]: 'Scheduled',
+  [DistributionStatus.Sending]: 'Sending',
+  [DistributionStatus.Sent]: 'Sent',
+  [DistributionStatus.PartiallyFailed]: 'Partially Failed',
+  [DistributionStatus.Failed]: 'Failed',
+  [DistributionStatus.Cancelled]: 'Cancelled',
 };
 
 // Recipient Status
 const recipientStatusKeys: Record<RecipientStatus, string> = {
-  [RecipientStatus.Pending]: "pending",
-  [RecipientStatus.Sent]: "sent",
-  [RecipientStatus.Delivered]: "delivered",
-  [RecipientStatus.Opened]: "opened",
-  [RecipientStatus.Clicked]: "clicked",
-  [RecipientStatus.Bounced]: "bounced",
-  [RecipientStatus.Unsubscribed]: "unsubscribed",
-  [RecipientStatus.Failed]: "failed",
+  [RecipientStatus.Pending]: 'pending',
+  [RecipientStatus.Sent]: 'sent',
+  [RecipientStatus.Delivered]: 'delivered',
+  [RecipientStatus.Opened]: 'opened',
+  [RecipientStatus.Clicked]: 'clicked',
+  [RecipientStatus.Bounced]: 'bounced',
+  [RecipientStatus.Unsubscribed]: 'unsubscribed',
+  [RecipientStatus.Failed]: 'failed',
 };
-export const getRecipientStatusLabel = (value: RecipientStatus): string =>
-  getEnumLabel("enums.recipientStatus", recipientStatusKeys, value);
+export const getRecipientStatusLabel = (value: RecipientStatus): string => getEnumLabel('enums.recipientStatus', recipientStatusKeys, value);
 export const RecipientStatusLabels: Record<RecipientStatus, string> = {
-  [RecipientStatus.Pending]: "Pending",
-  [RecipientStatus.Sent]: "Sent",
-  [RecipientStatus.Delivered]: "Delivered",
-  [RecipientStatus.Opened]: "Opened",
-  [RecipientStatus.Clicked]: "Clicked",
-  [RecipientStatus.Bounced]: "Bounced",
-  [RecipientStatus.Unsubscribed]: "Unsubscribed",
-  [RecipientStatus.Failed]: "Failed",
+  [RecipientStatus.Pending]: 'Pending',
+  [RecipientStatus.Sent]: 'Sent',
+  [RecipientStatus.Delivered]: 'Delivered',
+  [RecipientStatus.Opened]: 'Opened',
+  [RecipientStatus.Clicked]: 'Clicked',
+  [RecipientStatus.Bounced]: 'Bounced',
+  [RecipientStatus.Unsubscribed]: 'Unsubscribed',
+  [RecipientStatus.Failed]: 'Failed',
 };
 
 // Email Template Type
 const emailTemplateTypeKeys: Record<EmailTemplateType, string> = {
-  [EmailTemplateType.SurveyInvitation]: "surveyInvitation",
-  [EmailTemplateType.SurveyReminder]: "surveyReminder",
-  [EmailTemplateType.ThankYou]: "thankYou",
-  [EmailTemplateType.Custom]: "custom",
+  [EmailTemplateType.SurveyInvitation]: 'surveyInvitation',
+  [EmailTemplateType.SurveyReminder]: 'surveyReminder',
+  [EmailTemplateType.ThankYou]: 'thankYou',
+  [EmailTemplateType.Custom]: 'custom',
 };
-export const getEmailTemplateTypeLabel = (value: EmailTemplateType): string =>
-  getEnumLabel("enums.emailTemplateType", emailTemplateTypeKeys, value);
+export const getEmailTemplateTypeLabel = (value: EmailTemplateType): string => getEnumLabel('enums.emailTemplateType', emailTemplateTypeKeys, value);
 export const EmailTemplateTypeLabels: Record<EmailTemplateType, string> = {
-  [EmailTemplateType.SurveyInvitation]: "Survey Invitation",
-  [EmailTemplateType.SurveyReminder]: "Survey Reminder",
-  [EmailTemplateType.ThankYou]: "Thank You",
-  [EmailTemplateType.Custom]: "Custom",
+  [EmailTemplateType.SurveyInvitation]: 'Survey Invitation',
+  [EmailTemplateType.SurveyReminder]: 'Survey Reminder',
+  [EmailTemplateType.ThankYou]: 'Thank You',
+  [EmailTemplateType.Custom]: 'Custom',
 };
 
 // Button Style (shared enum, admin-specific localized labels)
-import { ButtonStyle as BS } from "@survey/types";
+import { ButtonStyle as BS } from '@survey/types';
 const buttonStyleKeys: Record<ButtonStyle, string> = {
-  [BS.Rounded]: "rounded",
-  [BS.Square]: "square",
-  [BS.Pill]: "pill",
+  [BS.Rounded]: 'rounded',
+  [BS.Square]: 'square',
+  [BS.Pill]: 'pill',
 };
-export const getButtonStyleLabel = (value: ButtonStyle): string =>
-  getEnumLabel("enums.buttonStyle", buttonStyleKeys, value);
+export const getButtonStyleLabel = (value: ButtonStyle): string => getEnumLabel('enums.buttonStyle', buttonStyleKeys, value);
 export const ButtonStyleLabels: Record<ButtonStyle, string> = {
-  [BS.Rounded]: "Rounded",
-  [BS.Square]: "Square",
-  [BS.Pill]: "Pill",
+  [BS.Rounded]: 'Rounded',
+  [BS.Square]: 'Square',
+  [BS.Pill]: 'Pill',
 };
 
 // Theme Layout
 const themeLayoutKeys: Record<ThemeLayout, string> = {
-  [ThemeLayout.Classic]: "classic",
-  [ThemeLayout.Card]: "card",
-  [ThemeLayout.Conversational]: "conversational",
-  [ThemeLayout.Minimal]: "minimal",
+  [ThemeLayout.Classic]: 'classic',
+  [ThemeLayout.Card]: 'card',
+  [ThemeLayout.Conversational]: 'conversational',
+  [ThemeLayout.Minimal]: 'minimal',
 };
-export const getThemeLayoutLabel = (value: ThemeLayout): string =>
-  getEnumLabel("enums.themeLayout", themeLayoutKeys, value);
+export const getThemeLayoutLabel = (value: ThemeLayout): string => getEnumLabel('enums.themeLayout', themeLayoutKeys, value);
 export const ThemeLayoutLabels: Record<ThemeLayout, string> = {
-  [ThemeLayout.Classic]: "Classic",
-  [ThemeLayout.Card]: "Card",
-  [ThemeLayout.Conversational]: "Conversational",
-  [ThemeLayout.Minimal]: "Minimal",
+  [ThemeLayout.Classic]: 'Classic',
+  [ThemeLayout.Card]: 'Card',
+  [ThemeLayout.Conversational]: 'Conversational',
+  [ThemeLayout.Minimal]: 'Minimal',
 };
 
 // Logo Position
 const logoPositionKeys: Record<LogoPosition, string> = {
-  [LogoPosition.TopLeft]: "topLeft",
-  [LogoPosition.TopCenter]: "topCenter",
-  [LogoPosition.TopRight]: "topRight",
-  [LogoPosition.BottomLeft]: "bottomLeft",
-  [LogoPosition.BottomCenter]: "bottomCenter",
-  [LogoPosition.BottomRight]: "bottomRight",
+  [LogoPosition.TopLeft]: 'topLeft',
+  [LogoPosition.TopCenter]: 'topCenter',
+  [LogoPosition.TopRight]: 'topRight',
+  [LogoPosition.BottomLeft]: 'bottomLeft',
+  [LogoPosition.BottomCenter]: 'bottomCenter',
+  [LogoPosition.BottomRight]: 'bottomRight',
 };
-export const getLogoPositionLabel = (value: LogoPosition): string =>
-  getEnumLabel("enums.logoPosition", logoPositionKeys, value);
+export const getLogoPositionLabel = (value: LogoPosition): string => getEnumLabel('enums.logoPosition', logoPositionKeys, value);
 export const LogoPositionLabels: Record<LogoPosition, string> = {
-  [LogoPosition.TopLeft]: "Top Left",
-  [LogoPosition.TopCenter]: "Top Center",
-  [LogoPosition.TopRight]: "Top Right",
-  [LogoPosition.BottomLeft]: "Bottom Left",
-  [LogoPosition.BottomCenter]: "Bottom Center",
-  [LogoPosition.BottomRight]: "Bottom Right",
+  [LogoPosition.TopLeft]: 'Top Left',
+  [LogoPosition.TopCenter]: 'Top Center',
+  [LogoPosition.TopRight]: 'Top Right',
+  [LogoPosition.BottomLeft]: 'Bottom Left',
+  [LogoPosition.BottomCenter]: 'Bottom Center',
+  [LogoPosition.BottomRight]: 'Bottom Right',
 };
 
 // Progress Bar Style (shared enum, admin-specific localized labels)
-import { ProgressBarStyle as PBS } from "@survey/types";
+import { ProgressBarStyle as PBS } from '@survey/types';
 const progressBarStyleKeys: Record<ProgressBarStyle, string> = {
-  [PBS.None]: "none",
-  [PBS.Bar]: "bar",
-  [PBS.Percentage]: "percentage",
-  [PBS.Steps]: "steps",
-  [PBS.Dots]: "dots",
+  [PBS.None]: 'none',
+  [PBS.Bar]: 'bar',
+  [PBS.Percentage]: 'percentage',
+  [PBS.Steps]: 'steps',
+  [PBS.Dots]: 'dots',
 };
-export const getProgressBarStyleLabel = (value: ProgressBarStyle): string =>
-  getEnumLabel("enums.progressBarStyle", progressBarStyleKeys, value);
+export const getProgressBarStyleLabel = (value: ProgressBarStyle): string => getEnumLabel('enums.progressBarStyle', progressBarStyleKeys, value);
 export const ProgressBarStyleLabels: Record<ProgressBarStyle, string> = {
-  [PBS.None]: "None",
-  [PBS.Bar]: "Bar",
-  [PBS.Percentage]: "Percentage",
-  [PBS.Steps]: "Steps",
-  [PBS.Dots]: "Dots",
+  [PBS.None]: 'None',
+  [PBS.Bar]: 'Bar',
+  [PBS.Percentage]: 'Percentage',
+  [PBS.Steps]: 'Steps',
+  [PBS.Dots]: 'Dots',
 };
 
 // Background Image Position
 const backgroundImagePositionKeys: Record<BackgroundImagePosition, string> = {
-  [BackgroundImagePosition.Cover]: "cover",
-  [BackgroundImagePosition.Contain]: "contain",
-  [BackgroundImagePosition.Tile]: "tile",
-  [BackgroundImagePosition.Center]: "center",
-  [BackgroundImagePosition.TopLeft]: "topLeft",
-  [BackgroundImagePosition.TopRight]: "topRight",
+  [BackgroundImagePosition.Cover]: 'cover',
+  [BackgroundImagePosition.Contain]: 'contain',
+  [BackgroundImagePosition.Tile]: 'tile',
+  [BackgroundImagePosition.Center]: 'center',
+  [BackgroundImagePosition.TopLeft]: 'topLeft',
+  [BackgroundImagePosition.TopRight]: 'topRight',
 };
 export const getBackgroundImagePositionLabel = (value: BackgroundImagePosition): string =>
-  getEnumLabel("enums.backgroundImagePosition", backgroundImagePositionKeys, value);
+  getEnumLabel('enums.backgroundImagePosition', backgroundImagePositionKeys, value);
 export const BackgroundImagePositionLabels: Record<BackgroundImagePosition, string> = {
-  [BackgroundImagePosition.Cover]: "Cover",
-  [BackgroundImagePosition.Contain]: "Contain",
-  [BackgroundImagePosition.Tile]: "Tile",
-  [BackgroundImagePosition.Center]: "Center",
-  [BackgroundImagePosition.TopLeft]: "Top Left",
-  [BackgroundImagePosition.TopRight]: "Top Right",
+  [BackgroundImagePosition.Cover]: 'Cover',
+  [BackgroundImagePosition.Contain]: 'Contain',
+  [BackgroundImagePosition.Tile]: 'Tile',
+  [BackgroundImagePosition.Center]: 'Center',
+  [BackgroundImagePosition.TopLeft]: 'Top Left',
+  [BackgroundImagePosition.TopRight]: 'Top Right',
 };
 
 // Recurrence Pattern
 const recurrencePatternKeys: Record<RecurrencePattern, string> = {
-  [RecurrencePattern.Daily]: "daily",
-  [RecurrencePattern.Weekly]: "weekly",
-  [RecurrencePattern.BiWeekly]: "biWeekly",
-  [RecurrencePattern.Monthly]: "monthly",
-  [RecurrencePattern.Quarterly]: "quarterly",
-  [RecurrencePattern.Custom]: "custom",
+  [RecurrencePattern.Daily]: 'daily',
+  [RecurrencePattern.Weekly]: 'weekly',
+  [RecurrencePattern.BiWeekly]: 'biWeekly',
+  [RecurrencePattern.Monthly]: 'monthly',
+  [RecurrencePattern.Quarterly]: 'quarterly',
+  [RecurrencePattern.Custom]: 'custom',
 };
-export const getRecurrencePatternLabel = (value: RecurrencePattern): string =>
-  getEnumLabel("enums.recurrencePattern", recurrencePatternKeys, value);
+export const getRecurrencePatternLabel = (value: RecurrencePattern): string => getEnumLabel('enums.recurrencePattern', recurrencePatternKeys, value);
 export const RecurrencePatternLabels: Record<RecurrencePattern, string> = {
-  [RecurrencePattern.Daily]: "Daily",
-  [RecurrencePattern.Weekly]: "Weekly",
-  [RecurrencePattern.BiWeekly]: "Bi-Weekly",
-  [RecurrencePattern.Monthly]: "Monthly",
-  [RecurrencePattern.Quarterly]: "Quarterly",
-  [RecurrencePattern.Custom]: "Custom",
+  [RecurrencePattern.Daily]: 'Daily',
+  [RecurrencePattern.Weekly]: 'Weekly',
+  [RecurrencePattern.BiWeekly]: 'Bi-Weekly',
+  [RecurrencePattern.Monthly]: 'Monthly',
+  [RecurrencePattern.Quarterly]: 'Quarterly',
+  [RecurrencePattern.Custom]: 'Custom',
 };
 
 // Run Status
 const runStatusKeys: Record<RunStatus, string> = {
-  [RunStatus.Scheduled]: "scheduled",
-  [RunStatus.Running]: "running",
-  [RunStatus.Completed]: "completed",
-  [RunStatus.PartiallyCompleted]: "partiallyCompleted",
-  [RunStatus.Failed]: "failed",
-  [RunStatus.Cancelled]: "cancelled",
+  [RunStatus.Scheduled]: 'scheduled',
+  [RunStatus.Running]: 'running',
+  [RunStatus.Completed]: 'completed',
+  [RunStatus.PartiallyCompleted]: 'partiallyCompleted',
+  [RunStatus.Failed]: 'failed',
+  [RunStatus.Cancelled]: 'cancelled',
 };
-export const getRunStatusLabel = (value: RunStatus): string =>
-  getEnumLabel("enums.runStatus", runStatusKeys, value);
+export const getRunStatusLabel = (value: RunStatus): string => getEnumLabel('enums.runStatus', runStatusKeys, value);
 export const RunStatusLabels: Record<RunStatus, string> = {
-  [RunStatus.Scheduled]: "Scheduled",
-  [RunStatus.Running]: "Running",
-  [RunStatus.Completed]: "Completed",
-  [RunStatus.PartiallyCompleted]: "Partially Completed",
-  [RunStatus.Failed]: "Failed",
-  [RunStatus.Cancelled]: "Cancelled",
+  [RunStatus.Scheduled]: 'Scheduled',
+  [RunStatus.Running]: 'Running',
+  [RunStatus.Completed]: 'Completed',
+  [RunStatus.PartiallyCompleted]: 'Partially Completed',
+  [RunStatus.Failed]: 'Failed',
+  [RunStatus.Cancelled]: 'Cancelled',
 };
 
 // Audience Type
 const audienceTypeKeys: Record<AudienceType, string> = {
-  [AudienceType.StaticList]: "staticList",
-  [AudienceType.DynamicList]: "dynamicList",
-  [AudienceType.AllContacts]: "allContacts",
-  [AudienceType.PreviousRespondents]: "previousRespondents",
+  [AudienceType.StaticList]: 'staticList',
+  [AudienceType.DynamicList]: 'dynamicList',
+  [AudienceType.AllContacts]: 'allContacts',
+  [AudienceType.PreviousRespondents]: 'previousRespondents',
 };
-export const getAudienceTypeLabel = (value: AudienceType): string =>
-  getEnumLabel("enums.audienceType", audienceTypeKeys, value);
+export const getAudienceTypeLabel = (value: AudienceType): string => getEnumLabel('enums.audienceType', audienceTypeKeys, value);
 export const AudienceTypeLabels: Record<AudienceType, string> = {
-  [AudienceType.StaticList]: "Static List",
-  [AudienceType.DynamicList]: "Dynamic List",
-  [AudienceType.AllContacts]: "All Contacts",
-  [AudienceType.PreviousRespondents]: "Previous Respondents",
+  [AudienceType.StaticList]: 'Static List',
+  [AudienceType.DynamicList]: 'Dynamic List',
+  [AudienceType.AllContacts]: 'All Contacts',
+  [AudienceType.PreviousRespondents]: 'Previous Respondents',
 };
 
 // NPS Category
 const npsCategoryKeys: Record<NpsCategory, string> = {
-  [NpsCategory.NeedsImprovement]: "needsImprovement",
-  [NpsCategory.Good]: "good",
-  [NpsCategory.Great]: "great",
-  [NpsCategory.Excellent]: "excellent",
+  [NpsCategory.NeedsImprovement]: 'needsImprovement',
+  [NpsCategory.Good]: 'good',
+  [NpsCategory.Great]: 'great',
+  [NpsCategory.Excellent]: 'excellent',
 };
-export const getNpsCategoryLabel = (value: NpsCategory): string =>
-  getEnumLabel("enums.npsCategory", npsCategoryKeys, value);
+export const getNpsCategoryLabel = (value: NpsCategory): string => getEnumLabel('enums.npsCategory', npsCategoryKeys, value);
 export const NpsCategoryLabels: Record<NpsCategory, string> = {
-  [NpsCategory.NeedsImprovement]: "Needs Improvement",
-  [NpsCategory.Good]: "Good",
-  [NpsCategory.Great]: "Great",
-  [NpsCategory.Excellent]: "Excellent",
+  [NpsCategory.NeedsImprovement]: 'Needs Improvement',
+  [NpsCategory.Good]: 'Good',
+  [NpsCategory.Great]: 'Great',
+  [NpsCategory.Excellent]: 'Excellent',
 };
 
 // NPS Segment By
 const npsSegmentByKeys: Record<NpsSegmentBy, string> = {
-  [NpsSegmentBy.Date]: "date",
-  [NpsSegmentBy.Question]: "question",
-  [NpsSegmentBy.CompletionStatus]: "completionStatus",
+  [NpsSegmentBy.Date]: 'date',
+  [NpsSegmentBy.Question]: 'question',
+  [NpsSegmentBy.CompletionStatus]: 'completionStatus',
 };
-export const getNpsSegmentByLabel = (value: NpsSegmentBy): string =>
-  getEnumLabel("enums.npsSegmentBy", npsSegmentByKeys, value);
+export const getNpsSegmentByLabel = (value: NpsSegmentBy): string => getEnumLabel('enums.npsSegmentBy', npsSegmentByKeys, value);
 export const NpsSegmentByLabels: Record<NpsSegmentBy, string> = {
-  [NpsSegmentBy.Date]: "Date",
-  [NpsSegmentBy.Question]: "Question",
-  [NpsSegmentBy.CompletionStatus]: "Completion Status",
+  [NpsSegmentBy.Date]: 'Date',
+  [NpsSegmentBy.Question]: 'Question',
+  [NpsSegmentBy.CompletionStatus]: 'Completion Status',
 };
 
 // Export Format
 const exportFormatKeys: Record<ExportFormat, string> = {
-  [ExportFormat.Csv]: "csv",
-  [ExportFormat.Excel]: "excel",
-  [ExportFormat.Json]: "json",
+  [ExportFormat.Csv]: 'csv',
+  [ExportFormat.Excel]: 'excel',
+  [ExportFormat.Json]: 'json',
 };
-export const getExportFormatLabel = (value: ExportFormat): string =>
-  getEnumLabel("enums.exportFormat", exportFormatKeys, value);
+export const getExportFormatLabel = (value: ExportFormat): string => getEnumLabel('enums.exportFormat', exportFormatKeys, value);
 export const ExportFormatLabels: Record<ExportFormat, string> = {
-  [ExportFormat.Csv]: "CSV",
-  [ExportFormat.Excel]: "Excel",
-  [ExportFormat.Json]: "JSON",
+  [ExportFormat.Csv]: 'CSV',
+  [ExportFormat.Excel]: 'Excel',
+  [ExportFormat.Json]: 'JSON',
 };
 
 // Namespace Permission
 const namespacePermissionKeys: Record<NamespacePermission, string> = {
-  [NamespacePermission.ViewSurveys]: "viewSurveys",
-  [NamespacePermission.CreateSurvey]: "createSurvey",
-  [NamespacePermission.CreateSurveys]: "createSurveys",
-  [NamespacePermission.EditSurvey]: "editSurvey",
-  [NamespacePermission.EditSurveys]: "editSurveys",
-  [NamespacePermission.DeleteSurvey]: "deleteSurvey",
-  [NamespacePermission.DeleteSurveys]: "deleteSurveys",
-  [NamespacePermission.ViewResponses]: "viewResponses",
-  [NamespacePermission.ManageUsers]: "manageUsers",
-  [NamespacePermission.ManageMembers]: "manageMembers",
-  [NamespacePermission.ManageNamespace]: "manageNamespace",
-  [NamespacePermission.ManageSettings]: "manageSettings",
-  [NamespacePermission.DeleteNamespace]: "deleteNamespace",
+  [NamespacePermission.ViewSurveys]: 'viewSurveys',
+  [NamespacePermission.CreateSurvey]: 'createSurvey',
+  [NamespacePermission.CreateSurveys]: 'createSurveys',
+  [NamespacePermission.EditSurvey]: 'editSurvey',
+  [NamespacePermission.EditSurveys]: 'editSurveys',
+  [NamespacePermission.DeleteSurvey]: 'deleteSurvey',
+  [NamespacePermission.DeleteSurveys]: 'deleteSurveys',
+  [NamespacePermission.ViewResponses]: 'viewResponses',
+  [NamespacePermission.ManageUsers]: 'manageUsers',
+  [NamespacePermission.ManageMembers]: 'manageMembers',
+  [NamespacePermission.ManageNamespace]: 'manageNamespace',
+  [NamespacePermission.ManageSettings]: 'manageSettings',
+  [NamespacePermission.DeleteNamespace]: 'deleteNamespace',
 };
 export const getNamespacePermissionLabel = (value: NamespacePermission): string =>
-  getEnumLabel("enums.namespacePermission", namespacePermissionKeys, value);
+  getEnumLabel('enums.namespacePermission', namespacePermissionKeys, value);
 export const NamespacePermissionLabels: Record<NamespacePermission, string> = {
-  [NamespacePermission.ViewSurveys]: "View Surveys",
-  [NamespacePermission.CreateSurvey]: "Create Survey",
-  [NamespacePermission.CreateSurveys]: "Create Surveys",
-  [NamespacePermission.EditSurvey]: "Edit Survey",
-  [NamespacePermission.EditSurveys]: "Edit Surveys",
-  [NamespacePermission.DeleteSurvey]: "Delete Survey",
-  [NamespacePermission.DeleteSurveys]: "Delete Surveys",
-  [NamespacePermission.ViewResponses]: "View Responses",
-  [NamespacePermission.ManageUsers]: "Manage Users",
-  [NamespacePermission.ManageMembers]: "Manage Members",
-  [NamespacePermission.ManageNamespace]: "Manage Namespace",
-  [NamespacePermission.ManageSettings]: "Manage Settings",
-  [NamespacePermission.DeleteNamespace]: "Delete Namespace",
+  [NamespacePermission.ViewSurveys]: 'View Surveys',
+  [NamespacePermission.CreateSurvey]: 'Create Survey',
+  [NamespacePermission.CreateSurveys]: 'Create Surveys',
+  [NamespacePermission.EditSurvey]: 'Edit Survey',
+  [NamespacePermission.EditSurveys]: 'Edit Surveys',
+  [NamespacePermission.DeleteSurvey]: 'Delete Survey',
+  [NamespacePermission.DeleteSurveys]: 'Delete Surveys',
+  [NamespacePermission.ViewResponses]: 'View Responses',
+  [NamespacePermission.ManageUsers]: 'Manage Users',
+  [NamespacePermission.ManageMembers]: 'Manage Members',
+  [NamespacePermission.ManageNamespace]: 'Manage Namespace',
+  [NamespacePermission.ManageSettings]: 'Manage Settings',
+  [NamespacePermission.DeleteNamespace]: 'Delete Namespace',
 };
 
 // Day of Week
 const dayOfWeekKeys: Record<DayOfWeek, string> = {
-  [DayOfWeek.Sunday]: "sunday",
-  [DayOfWeek.Monday]: "monday",
-  [DayOfWeek.Tuesday]: "tuesday",
-  [DayOfWeek.Wednesday]: "wednesday",
-  [DayOfWeek.Thursday]: "thursday",
-  [DayOfWeek.Friday]: "friday",
-  [DayOfWeek.Saturday]: "saturday",
+  [DayOfWeek.Sunday]: 'sunday',
+  [DayOfWeek.Monday]: 'monday',
+  [DayOfWeek.Tuesday]: 'tuesday',
+  [DayOfWeek.Wednesday]: 'wednesday',
+  [DayOfWeek.Thursday]: 'thursday',
+  [DayOfWeek.Friday]: 'friday',
+  [DayOfWeek.Saturday]: 'saturday',
 };
-export const getDayOfWeekLabel = (value: DayOfWeek): string =>
-  getEnumLabel("enums.dayOfWeek", dayOfWeekKeys, value);
+export const getDayOfWeekLabel = (value: DayOfWeek): string => getEnumLabel('enums.dayOfWeek', dayOfWeekKeys, value);
 export const DayOfWeekLabels: Record<DayOfWeek, string> = {
-  [DayOfWeek.Sunday]: "Sunday",
-  [DayOfWeek.Monday]: "Monday",
-  [DayOfWeek.Tuesday]: "Tuesday",
-  [DayOfWeek.Wednesday]: "Wednesday",
-  [DayOfWeek.Thursday]: "Thursday",
-  [DayOfWeek.Friday]: "Friday",
-  [DayOfWeek.Saturday]: "Saturday",
+  [DayOfWeek.Sunday]: 'Sunday',
+  [DayOfWeek.Monday]: 'Monday',
+  [DayOfWeek.Tuesday]: 'Tuesday',
+  [DayOfWeek.Wednesday]: 'Wednesday',
+  [DayOfWeek.Thursday]: 'Thursday',
+  [DayOfWeek.Friday]: 'Friday',
+  [DayOfWeek.Saturday]: 'Saturday',
+};
+
+// ============ Notification Type ============
+export const NotificationType = {
+  System: 0,
+  WorkspaceInvitation: 1,
+  NewResponse: 2,
+  SurveyPublished: 3,
+  SurveyMilestone: 4,
+  MemberJoined: 5,
+  MemberLeft: 6,
+  Digest: 7,
+  DistributionComplete: 8,
+  LinkExpiration: 9,
+  SystemAnnouncement: 10,
+  Security: 11,
+  RoleChanged: 12,
+  RecurringSurveyRun: 13,
+} as const;
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
+
+const notificationTypeKeys: Record<NotificationType, string> = {
+  [NotificationType.System]: 'system',
+  [NotificationType.WorkspaceInvitation]: 'workspaceInvitation',
+  [NotificationType.NewResponse]: 'newResponse',
+  [NotificationType.SurveyPublished]: 'surveyPublished',
+  [NotificationType.SurveyMilestone]: 'surveyMilestone',
+  [NotificationType.MemberJoined]: 'memberJoined',
+  [NotificationType.MemberLeft]: 'memberLeft',
+  [NotificationType.Digest]: 'digest',
+  [NotificationType.DistributionComplete]: 'distributionComplete',
+  [NotificationType.LinkExpiration]: 'linkExpiration',
+  [NotificationType.SystemAnnouncement]: 'systemAnnouncement',
+  [NotificationType.Security]: 'security',
+  [NotificationType.RoleChanged]: 'roleChanged',
+  [NotificationType.RecurringSurveyRun]: 'recurringSurveyRun',
+};
+export const getNotificationTypeLabel = (value: NotificationType): string => getEnumLabel('enums.notificationType', notificationTypeKeys, value);
+export const NotificationTypeLabels: Record<NotificationType, string> = {
+  [NotificationType.System]: 'System',
+  [NotificationType.WorkspaceInvitation]: 'Workspace Invitation',
+  [NotificationType.NewResponse]: 'New Response',
+  [NotificationType.SurveyPublished]: 'Survey Published',
+  [NotificationType.SurveyMilestone]: 'Survey Milestone',
+  [NotificationType.MemberJoined]: 'Member Joined',
+  [NotificationType.MemberLeft]: 'Member Left',
+  [NotificationType.Digest]: 'Digest',
+  [NotificationType.DistributionComplete]: 'Distribution Complete',
+  [NotificationType.LinkExpiration]: 'Link Expiration',
+  [NotificationType.SystemAnnouncement]: 'System Announcement',
+  [NotificationType.Security]: 'Security',
+  [NotificationType.RoleChanged]: 'Role Changed',
+  [NotificationType.RecurringSurveyRun]: 'Recurring Survey Run',
 };

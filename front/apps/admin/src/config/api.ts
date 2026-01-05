@@ -72,6 +72,7 @@ export const API_ENDPOINTS = {
     settings: '/api/users/settings',
     changePassword: '/api/users/me/password',
     avatar: '/api/users/me/avatar',
+    search: '/api/users/search',
   },
   // Namespace endpoints
   namespaces: {
@@ -173,5 +174,12 @@ export const API_ENDPOINTS = {
   shortLinks: {
     byToken: (token: string) => `/api/s/${token}`,
     access: (token: string) => `/api/s/${token}/access`,
+  },
+  // Notifications endpoints
+  notifications: {
+    list: '/api/notifications',
+    unreadCount: '/api/notifications/unread-count',
+    markAsRead: (id: string) => `/api/notifications/${id}/read`,
+    markAllAsRead: '/api/notifications/read-all',
   },
 } as const;

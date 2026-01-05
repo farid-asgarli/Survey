@@ -258,6 +258,51 @@ export interface UpdateMemberRoleResponse {
   role: MemberRole;
 }
 
+// ============ User Search ============
+
+/** User search result for autocomplete */
+export interface UserSearchResult {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  avatarId?: string;
+}
+
+// ============ Notifications ============
+import { NotificationType } from './enums';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  actionUrl?: string;
+  actionLabel?: string;
+  isRead: boolean;
+  readAt?: string;
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface NotificationCount {
+  unreadCount: number;
+  totalCount: number;
+}
+
+export interface NotificationsResponse {
+  items: Notification[];
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
 // ============ Survey ============
 export interface Survey {
   id: string;

@@ -88,4 +88,59 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     {
         _context.Users.Remove(user);
     }
+
+    public async Task<IReadOnlyList<User>> SearchAsync(
+        string query,
+        int maxResults = 10,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return [];
+
+        var normalizedQuery = query.Trim().ToLower();
+
+        return await _context
+            .Users.AsNoTracking()
+            .Where(u =>
+                u.Email.ToLower().Contains(normalizedQuery)
+                || u.FirstName.ToLower().Contains(normalizedQuery)
+                || u.LastName.ToLower().Contains(normalizedQuery)
+                || (u.FirstName + " " + u.LastName).ToLower().Contains(normalizedQuery)
+            )
+            .OrderBy(u => u.FirstName)
+            .ThenBy(u => u.LastName)
+            .Take(maxResults)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<User>> SearchForNamespaceInviteAsync(
+        string query,
+        Guid namespaceId,
+        int maxResults = 10,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return [];
+
+        var normalizedQuery = query.Trim().ToLower();
+
+        // Get users who are NOT already members of this namespace
+        return await _context
+            .Users.AsNoTracking()
+            .Where(u =>
+                !u.Memberships.Any(m => m.NamespaceId == namespaceId)
+                && (
+                    u.Email.ToLower().Contains(normalizedQuery)
+                    || u.FirstName.ToLower().Contains(normalizedQuery)
+                    || u.LastName.ToLower().Contains(normalizedQuery)
+                    || (u.FirstName + " " + u.LastName).ToLower().Contains(normalizedQuery)
+                )
+            )
+            .OrderBy(u => u.FirstName)
+            .ThenBy(u => u.LastName)
+            .Take(maxResults)
+            .ToListAsync(cancellationToken);
+    }
 }

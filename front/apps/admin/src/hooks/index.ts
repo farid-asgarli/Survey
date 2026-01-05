@@ -72,6 +72,8 @@ export * from './queries/useRecurringSurveys';
 export * from './queries/useAnalytics';
 export * from './queries/usePreferences';
 export * from './queries/useTranslations';
+export * from './queries/useNotifications';
+export * from './queries/useUserSearch';
 
 // Translation content hooks
 export * from './useTranslatedContent';

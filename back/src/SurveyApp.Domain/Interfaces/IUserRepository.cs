@@ -54,4 +54,23 @@ public interface IUserRepository
     /// Deletes a user.
     /// </summary>
     void Delete(User user);
+
+    /// <summary>
+    /// Searches for users by name or email (for autocomplete).
+    /// </summary>
+    Task<IReadOnlyList<User>> SearchAsync(
+        string query,
+        int maxResults = 10,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Searches for users that can be invited to a namespace (not already members).
+    /// </summary>
+    Task<IReadOnlyList<User>> SearchForNamespaceInviteAsync(
+        string query,
+        Guid namespaceId,
+        int maxResults = 10,
+        CancellationToken cancellationToken = default
+    );
 }
