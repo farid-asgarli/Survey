@@ -490,10 +490,10 @@ public class MappingProfile : Profile
 
         try
         {
-            var jsonDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, System.Text.Json.JsonElement>>(
-                metadata
-            );
-            
+            var jsonDict = System.Text.Json.JsonSerializer.Deserialize<
+                Dictionary<string, System.Text.Json.JsonElement>
+            >(metadata);
+
             if (jsonDict == null)
                 return null;
 
@@ -516,11 +516,13 @@ public class MappingProfile : Profile
         return element.ValueKind switch
         {
             System.Text.Json.JsonValueKind.String => element.GetString() ?? string.Empty,
-            System.Text.Json.JsonValueKind.Number => element.TryGetInt64(out var l) ? l : element.GetDouble(),
+            System.Text.Json.JsonValueKind.Number => element.TryGetInt64(out var l)
+                ? l
+                : element.GetDouble(),
             System.Text.Json.JsonValueKind.True => true,
             System.Text.Json.JsonValueKind.False => false,
             System.Text.Json.JsonValueKind.Null => null!,
-            _ => element.ToString()
+            _ => element.ToString(),
         };
     }
 }
