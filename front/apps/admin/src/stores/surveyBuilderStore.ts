@@ -68,7 +68,7 @@ interface SurveyBuilderActions {
   initializeSurvey: (survey: Survey) => void;
   updateSurveyMetadata: (
     updates: Partial<
-      Pick<Survey, 'title' | 'description' | 'welcomeMessage' | 'thankYouMessage' | 'themeId' | 'presetThemeId' | 'themeCustomizations'>
+      Pick<Survey, 'title' | 'description' | 'welcomeMessage' | 'thankYouMessage' | 'themeId' | 'presetThemeId' | 'themeCustomizations' | 'categoryId'>
     >
   ) => void;
   resetBuilder: () => void;
@@ -173,9 +173,9 @@ const getDefaultSettings = (type: QuestionType): QuestionSettings => {
 
 const getDefaultOptions = (type: QuestionType): DraftOption[] => {
   if (
-    (
-      [QuestionType.SingleChoice, QuestionType.MultipleChoice, QuestionType.Ranking, QuestionType.Dropdown, QuestionType.Checkbox] as QuestionType[]
-    ).includes(type)
+    ([QuestionType.SingleChoice, QuestionType.MultipleChoice, QuestionType.Ranking, QuestionType.Dropdown, QuestionType.Checkbox] as QuestionType[]).includes(
+      type
+    )
   ) {
     return [
       { id: generateUUID(), text: 'Option 1', order: 0 },

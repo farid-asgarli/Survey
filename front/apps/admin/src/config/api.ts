@@ -132,6 +132,14 @@ export const API_ENDPOINTS = {
     setDefault: (id: string) => `/api/themes/${id}/set-default`,
     applyToSurvey: (surveyId: string) => `/api/surveys/${surveyId}/theme`,
   },
+  // Category endpoints
+  categories: {
+    list: '/api/categories',
+    options: '/api/categories/options',
+    byId: (id: string) => `/api/categories/${id}`,
+    setDefault: (id: string) => `/api/categories/${id}/set-default`,
+    reorder: '/api/categories/reorder',
+  },
   // Email template endpoints
   emailTemplates: {
     list: '/api/email-templates',

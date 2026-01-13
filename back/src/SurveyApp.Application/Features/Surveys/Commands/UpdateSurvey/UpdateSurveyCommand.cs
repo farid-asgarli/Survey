@@ -25,6 +25,11 @@ public record UpdateSurveyCommand : IRequest<Result<SurveyDto>>, INamespaceComma
     public DateTime? EndsAt { get; init; }
 
     /// <summary>
+    /// The category ID for this survey. Pass null to remove the category.
+    /// </summary>
+    public Guid? CategoryId { get; init; }
+
+    /// <summary>
     /// The language code for the content being updated. If not provided, updates the default language.
     /// </summary>
     public string? LanguageCode { get; init; }

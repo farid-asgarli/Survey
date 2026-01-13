@@ -18,6 +18,7 @@ namespace SurveyApp.Application.Features.Surveys.Commands.CreateSurvey;
 /// </summary>
 public class CreateSurveyCommandHandler(
     ISurveyRepository surveyRepository,
+    ISurveyCategoryRepository categoryRepository,
     INamespaceRepository namespaceRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext,
@@ -27,6 +28,7 @@ public class CreateSurveyCommandHandler(
 ) : IRequestHandler<CreateSurveyCommand, Result<SurveyDto>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
+    private readonly ISurveyCategoryRepository _categoryRepository = categoryRepository;
     private readonly INamespaceRepository _namespaceRepository = namespaceRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
@@ -54,6 +56,19 @@ public class CreateSurveyCommandHandler(
             return Result<SurveyDto>.Failure($"Errors.SurveyLimitReached|{@namespace.MaxSurveys}");
         }
 
+        // Validate category if provided
+        if (request.CategoryId.HasValue)
+        {
+            var category = await _categoryRepository.GetByIdAsync(
+                request.CategoryId.Value,
+                cancellationToken
+            );
+            if (category == null || category.NamespaceId != ctx.NamespaceId)
+            {
+                return Result<SurveyDto>.Failure("Errors.CategoryNotFound");
+            }
+        }
+
         // Create survey with type and localized content
         var survey = Survey.Create(
             ctx.NamespaceId,
@@ -66,6 +81,12 @@ public class CreateSurveyCommandHandler(
             request.WelcomeMessage,
             request.ThankYouMessage
         );
+
+        // Set category if provided
+        if (request.CategoryId.HasValue)
+        {
+            survey.SetCategory(request.CategoryId.Value);
+        }
 
         if (request.IsAnonymous)
         {

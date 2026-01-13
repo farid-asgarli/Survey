@@ -70,32 +70,35 @@ function GeneratedLinksView({ links, onClose }: { links: SurveyLink[]; onClose: 
   return (
     <>
       <DialogBody>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-on-surface-variant">{t('bulkLinkDialog.generatedCount', { count: links.length })}</p>
-            <div className="flex items-center gap-2">
-              <Button variant="text" size="sm" onClick={handleCopyAll}>
-                <Copy className="w-4 h-4 mr-1.5" />
+        <div className='space-y-4'>
+          <div className='flex items-center justify-between'>
+            <p className='text-sm text-on-surface-variant'>{t('bulkLinkDialog.generatedCount', { count: links.length })}</p>
+            <div className='flex items-center gap-2'>
+              <Button variant='text' size='sm' onClick={handleCopyAll}>
+                <Copy className='w-4 h-4 mr-1.5' />
                 {t('bulkLinkDialog.copyAll')}
               </Button>
-              <Button variant="tonal" size="sm" onClick={handleDownloadCSV}>
-                <Download className="w-4 h-4 mr-1.5" />
+              <Button variant='tonal' size='sm' onClick={handleDownloadCSV}>
+                <Download className='w-4 h-4 mr-1.5' />
                 {t('bulkLinkDialog.downloadCSV')}
               </Button>
             </div>
           </div>
 
-          <div className="max-h-80 overflow-y-auto space-y-2">
+          <div className='max-h-80 overflow-y-auto space-y-2'>
             {links.map((link, index) => (
-              <div key={link.id} className="flex items-center gap-2 p-2 bg-surface-container rounded-xl group">
-                <code className="flex-1 text-xs text-on-surface-variant truncate">{link.fullUrl}</code>
+              <div key={link.id} className='flex items-center gap-2 p-2 bg-surface-container rounded-xl group'>
+                <div className='flex-1 min-w-0'>
+                  {link.name && <p className='text-sm font-medium text-on-surface truncate'>{link.name}</p>}
+                  <code className='text-xs text-on-surface-variant truncate block'>{link.fullUrl}</code>
+                </div>
                 <Button
-                  variant="text"
-                  size="icon-sm"
+                  variant='text'
+                  size='icon-sm'
                   onClick={() => handleCopy(link.fullUrl, index)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  className='opacity-0 group-hover:opacity-100 transition-opacity'
                 >
-                  {copiedIndex === index ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
+                  {copiedIndex === index ? <Check className='w-4 h-4 text-success' /> : <Copy className='w-4 h-4' />}
                 </Button>
               </div>
             ))}
@@ -190,10 +193,10 @@ export function BulkLinkGenerationDialog({ open, onOpenChange, surveyId, surveyT
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent size="lg" showClose={false}>
+      <DialogContent size='lg' showClose={false}>
         <DialogHeader
           hero
-          icon={<Link2 className="h-7 w-7" />}
+          icon={<Link2 className='h-7 w-7' />}
           title={t('bulkLinkDialog.title')}
           description={surveyTitle ? t('bulkLinkDialog.descriptionWithTitle', { title: surveyTitle }) : t('bulkLinkDialog.description')}
           showClose
@@ -203,12 +206,12 @@ export function BulkLinkGenerationDialog({ open, onOpenChange, surveyId, surveyT
           <GeneratedLinksView links={generatedLinks} onClose={handleClose} />
         ) : (
           <form onSubmit={handleSubmit(onFormSubmit)}>
-            <DialogBody className="space-y-6">
+            <DialogBody className='space-y-6'>
               {/* Count Input */}
               <div>
-                <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('bulkLinkDialog.numberOfLinks')}</label>
+                <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('bulkLinkDialog.numberOfLinks')}</label>
                 <Input
-                  type="number"
+                  type='number'
                   min={1}
                   max={1000}
                   placeholder={t('bulkLinkDialog.numberOfLinksPlaceholder')}
@@ -216,33 +219,33 @@ export function BulkLinkGenerationDialog({ open, onOpenChange, surveyId, surveyT
                   error={errors.count?.message}
                   required
                 />
-                <p className="text-xs text-on-surface-variant mt-1">{t('bulkLinkDialog.numberOfLinksHint')}</p>
+                <p className='text-xs text-on-surface-variant mt-1'>{t('bulkLinkDialog.numberOfLinksHint')}</p>
               </div>
 
               {/* Name Prefix */}
               <div>
-                <label className="block text-sm font-medium text-on-surface-variant mb-2">{t('bulkLinkDialog.namePrefix')}</label>
+                <label className='block text-sm font-medium text-on-surface-variant mb-2'>{t('bulkLinkDialog.namePrefix')}</label>
                 <Input placeholder={t('bulkLinkDialog.namePrefixPlaceholder')} {...register('namePrefix')} />
-                <p className="text-xs text-on-surface-variant mt-1">{t('bulkLinkDialog.namePrefixHint', { prefix: namePrefix || 'Link' })}</p>
+                <p className='text-xs text-on-surface-variant mt-1'>{t('bulkLinkDialog.namePrefixHint', { prefix: namePrefix || 'Link' })}</p>
               </div>
 
               {/* Expiration */}
-              <Card variant="outlined" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container">
-                        <Tag className="w-4 h-4 text-on-surface-variant" />
+              <Card variant='outlined' className='overflow-hidden'>
+                <CardContent className='p-4'>
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center gap-3'>
+                      <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container'>
+                        <Tag className='w-4 h-4 text-on-surface-variant' />
                       </div>
                       <div>
-                        <p className="font-medium text-sm">{t('bulkLinkDialog.expirationDate')}</p>
-                        <p className="text-xs text-on-surface-variant">{t('bulkLinkDialog.expirationDateDescription')}</p>
+                        <p className='font-medium text-sm'>{t('bulkLinkDialog.expirationDate')}</p>
+                        <p className='text-xs text-on-surface-variant'>{t('bulkLinkDialog.expirationDateDescription')}</p>
                       </div>
                     </div>
                     <Switch checked={enableExpiration} onChange={(e) => setEnableExpiration(e.target.checked)} />
                   </div>
                   {enableExpiration && (
-                    <div className="mt-4 pl-12">
+                    <div className='mt-4 pl-12'>
                       <DatePicker value={expiresAt || undefined} onChange={(date) => setValue('expiresAt', date || '')} minDate={minDateString} />
                     </div>
                   )}
@@ -251,55 +254,55 @@ export function BulkLinkGenerationDialog({ open, onOpenChange, surveyId, surveyT
 
               {/* Advanced Options Toggle */}
               <button
-                type="button"
+                type='button'
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                className='flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors'
               >
-                {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                {showAdvanced ? <ChevronUp className='w-4 h-4' /> : <ChevronDown className='w-4 h-4' />}
                 {t('bulkLinkDialog.advancedOptions')}
               </button>
 
               {/* Advanced Options */}
               {showAdvanced && (
-                <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className='space-y-4 animate-in fade-in slide-in-from-top-2 duration-200'>
                   {/* UTM Parameters */}
-                  <Card variant="outlined" className="overflow-hidden">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container">
-                            <Tag className="w-4 h-4 text-on-surface-variant" />
+                  <Card variant='outlined' className='overflow-hidden'>
+                    <CardContent className='p-4'>
+                      <div className='flex items-center justify-between mb-4'>
+                        <div className='flex items-center gap-3'>
+                          <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-surface-container'>
+                            <Tag className='w-4 h-4 text-on-surface-variant' />
                           </div>
                           <div>
-                            <p className="font-medium text-sm flex items-center gap-1.5">
+                            <p className='font-medium text-sm flex items-center gap-1.5'>
                               {t('bulkLinkDialog.utmParameters')}
                               <Tooltip content={t('bulkLinkDialog.utmTooltip')}>
-                                <Info className="w-3.5 h-3.5 text-on-surface-variant" />
+                                <Info className='w-3.5 h-3.5 text-on-surface-variant' />
                               </Tooltip>
                             </p>
-                            <p className="text-xs text-on-surface-variant">{t('bulkLinkDialog.utmDescription')}</p>
+                            <p className='text-xs text-on-surface-variant'>{t('bulkLinkDialog.utmDescription')}</p>
                           </div>
                         </div>
                         <Switch checked={enableUTM} onChange={(e) => setEnableUTM(e.target.checked)} />
                       </div>
                       {enableUTM && (
-                        <div className="space-y-3 pl-12">
+                        <div className='space-y-3 pl-12'>
                           <Input
                             placeholder={t('bulkLinkDialog.utmSourcePlaceholder')}
                             {...register('utmSource')}
-                            size="sm"
+                            size='sm'
                             label={t('bulkLinkDialog.utmSource')}
                           />
                           <Input
                             placeholder={t('bulkLinkDialog.utmMediumPlaceholder')}
                             {...register('utmMedium')}
-                            size="sm"
+                            size='sm'
                             label={t('bulkLinkDialog.utmMedium')}
                           />
                           <Input
                             placeholder={t('bulkLinkDialog.utmCampaignPlaceholder')}
                             {...register('utmCampaign')}
-                            size="sm"
+                            size='sm'
                             label={t('bulkLinkDialog.utmCampaign')}
                           />
                         </div>
@@ -311,10 +314,10 @@ export function BulkLinkGenerationDialog({ open, onOpenChange, surveyId, surveyT
             </DialogBody>
 
             <DialogFooter>
-              <Button type="button" variant="text" onClick={handleClose}>
+              <Button type='button' variant='text' onClick={handleClose}>
                 {t('common.cancel')}
               </Button>
-              <Button type="submit" disabled={generateMutation.isPending}>
+              <Button type='submit' disabled={generateMutation.isPending}>
                 {generateMutation.isPending ? t('bulkLinkDialog.generating') : t('bulkLinkDialog.generate')}
               </Button>
             </DialogFooter>

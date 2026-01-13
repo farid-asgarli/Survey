@@ -14,12 +14,14 @@ namespace SurveyApp.Application.Features.Surveys.Commands.UpdateSurvey;
 /// </summary>
 public class UpdateSurveyCommandHandler(
     ISurveyRepository surveyRepository,
+    ISurveyCategoryRepository categoryRepository,
     IUnitOfWork unitOfWork,
     INamespaceCommandContext commandContext,
     IMapper mapper
 ) : IRequestHandler<UpdateSurveyCommand, Result<SurveyDto>>
 {
     private readonly ISurveyRepository _surveyRepository = surveyRepository;
+    private readonly ISurveyCategoryRepository _categoryRepository = categoryRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly INamespaceCommandContext _commandContext = commandContext;
     private readonly IMapper _mapper = mapper;
@@ -47,6 +49,19 @@ public class UpdateSurveyCommandHandler(
             return Result<SurveyDto>.Failure("Errors.OnlyDraftSurveysEditable");
         }
 
+        // Validate category if provided
+        if (request.CategoryId.HasValue)
+        {
+            var category = await _categoryRepository.GetByIdAsync(
+                request.CategoryId.Value,
+                cancellationToken
+            );
+            if (category == null || category.NamespaceId != ctx.NamespaceId)
+            {
+                return Result<SurveyDto>.Failure("Errors.CategoryNotFound");
+            }
+        }
+
         // Determine the language to update
         var languageCode = request.LanguageCode ?? survey.DefaultLanguage;
 
@@ -66,6 +81,9 @@ public class UpdateSurveyCommandHandler(
             request.MaxResponses
         );
         survey.SetSchedule(request.StartsAt, request.EndsAt);
+
+        // Update category
+        survey.SetCategory(request.CategoryId);
 
         _surveyRepository.Update(survey);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

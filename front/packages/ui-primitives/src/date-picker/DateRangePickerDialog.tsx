@@ -31,27 +31,27 @@ interface TabSwitcherProps {
 
 const TabSwitcher = memo(function TabSwitcher({ activeTab, onTabChange, presetsLabel, customLabel }: TabSwitcherProps) {
   return (
-    <div className="flex mx-3 mt-3 p-1 bg-surface-container rounded-full" role="tablist">
+    <div className='flex mx-3 mt-3 p-1 bg-surface-container rounded-full' role='tablist'>
       <button
-        type="button"
-        role="tab"
+        type='button'
+        role='tab'
         aria-selected={activeTab === 'presets'}
         onClick={() => onTabChange('presets')}
         className={cn(
-          'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-colors',
-          activeTab === 'presets' ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant hover:text-on-surface'
+          'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-all',
+          activeTab === 'presets' ? 'bg-surface text-on-surface shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
         )}
       >
         {presetsLabel}
       </button>
       <button
-        type="button"
-        role="tab"
+        type='button'
+        role='tab'
         aria-selected={activeTab === 'custom'}
         onClick={() => onTabChange('custom')}
         className={cn(
-          'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-colors',
-          activeTab === 'custom' ? 'bg-secondary-container text-on-secondary-container' : 'text-on-surface-variant hover:text-on-surface'
+          'flex-1 px-4 py-2 text-sm font-medium rounded-full transition-all',
+          activeTab === 'custom' ? 'bg-surface text-on-surface shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
         )}
       >
         {customLabel}
@@ -68,25 +68,23 @@ interface PresetListProps {
 
 const PresetList = memo(function PresetList({ presets, selectedPresetId, onSelect }: PresetListProps) {
   return (
-    <div className="p-3 max-h-72 overflow-y-auto" role="listbox" aria-label="Date range presets">
-      <div className="space-y-0.5">
+    <div className='p-3 max-h-72 overflow-y-auto' role='listbox' aria-label='Date range presets'>
+      <div className='space-y-0.5'>
         {presets.map((preset) => (
           <button
             key={preset.id}
-            type="button"
-            role="option"
+            type='button'
+            role='option'
             aria-selected={selectedPresetId === preset.id}
             onClick={() => onSelect(preset)}
             className={cn(
               'w-full flex items-center justify-between px-4 py-3 rounded-full text-sm',
               'transition-colors',
-              selectedPresetId === preset.id
-                ? 'bg-secondary-container text-on-secondary-container font-medium'
-                : 'hover:bg-on-surface/8 text-on-surface'
+              selectedPresetId === preset.id ? 'bg-secondary-container text-on-secondary-container font-medium' : 'hover:bg-on-surface/8 text-on-surface'
             )}
           >
             <span>{preset.label}</span>
-            {selectedPresetId === preset.id && <Check className="h-4 w-4" aria-hidden="true" />}
+            {selectedPresetId === preset.id && <Check className='h-4 w-4' aria-hidden='true' />}
           </button>
         ))}
       </div>
@@ -228,14 +226,9 @@ export const DateRangePickerDialog = memo(function DateRangePickerDialog({
     : mergedLabels.selectDate;
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="date-range-picker-title"
-    >
+    <div className='fixed inset-0 z-50 flex items-center justify-center p-4' role='dialog' aria-modal='true' aria-labelledby='date-range-picker-title'>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-scrim/32 animate-in fade-in duration-200" onClick={onClose} aria-hidden="true" />
+      <div className='fixed inset-0 bg-scrim/32 animate-in fade-in duration-200' onClick={onClose} aria-hidden='true' />
 
       {/* Dialog */}
       <div
@@ -246,22 +239,20 @@ export const DateRangePickerDialog = memo(function DateRangePickerDialog({
         )}
       >
         {/* Header */}
-        <div className="px-6 pt-5 pb-5 border-b border-outline-variant/20">
-          <p id="date-range-picker-title" className="text-sm text-on-surface-variant mb-3">
+        <div className='px-6 pt-5 pb-5 border-b border-outline-variant/20'>
+          <p id='date-range-picker-title' className='text-sm text-on-surface-variant mb-3'>
             {mergedLabels.selectDateRange}
           </p>
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-normal text-on-surface truncate pr-2">{displayRange}</h2>
-            <IconButton variant="standard" size="sm" onClick={onClose} className="text-on-surface-variant shrink-0" aria-label={mergedLabels.close}>
-              <X className="h-5 w-5" />
+          <div className='flex items-center justify-between'>
+            <h2 className='text-2xl font-normal text-on-surface truncate pr-2'>{displayRange}</h2>
+            <IconButton variant='standard' size='sm' onClick={onClose} className='text-on-surface-variant shrink-0' aria-label={mergedLabels.close}>
+              <X className='h-5 w-5' />
             </IconButton>
           </div>
         </div>
 
         {/* Tab Switcher */}
-        {showPresets && (
-          <TabSwitcher activeTab={activeTab} onTabChange={setActiveTab} presetsLabel={mergedLabels.presets} customLabel={mergedLabels.custom} />
-        )}
+        {showPresets && <TabSwitcher activeTab={activeTab} onTabChange={setActiveTab} presetsLabel={mergedLabels.presets} customLabel={mergedLabels.custom} />}
 
         {/* Content */}
         {activeTab === 'presets' && showPresets ? (
@@ -301,11 +292,11 @@ export const DateRangePickerDialog = memo(function DateRangePickerDialog({
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 px-4 py-3">
-          <Button variant="text" onClick={onClose}>
+        <div className='flex items-center justify-end gap-2 px-4 py-3'>
+          <Button variant='text' onClick={onClose}>
             {mergedLabels.cancel}
           </Button>
-          <Button variant="text" onClick={handleConfirm} disabled={!rangeStart}>
+          <Button variant='text' onClick={handleConfirm} disabled={!rangeStart}>
             {mergedLabels.ok}
           </Button>
         </div>

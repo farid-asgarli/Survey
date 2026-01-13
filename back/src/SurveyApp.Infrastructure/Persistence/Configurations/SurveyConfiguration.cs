@@ -95,6 +95,8 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
             .IsRequired(false)
             .OnDelete(DeleteBehavior.SetNull);
 
+        // Category relationship is configured from SurveyCategoryConfiguration
+
         // Indexes
         builder.HasIndex(s => s.NamespaceId);
         builder.HasIndex(s => s.Type);
@@ -104,5 +106,6 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
         builder.HasIndex(s => s.IsDeleted);
         builder.HasIndex(s => s.ThemeId);
         builder.HasIndex(s => s.PresetThemeId);
+        builder.HasIndex(s => s.CategoryId);
     }
 }

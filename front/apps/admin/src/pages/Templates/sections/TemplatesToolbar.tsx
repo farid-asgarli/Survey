@@ -28,20 +28,15 @@ export function TemplatesToolbar({ visibility, category, onVisibilityChange, onC
 
   return (
     <ListPageLayout.Toolbar showSearch showViewModeToggle={false} searchPlaceholder={t('templates.searchPlaceholder')}>
-      <Tabs value={visibility} onValueChange={(v) => onVisibilityChange(v as VisibilityFilter)} variant="segmented">
+      <Tabs value={visibility} onValueChange={(v) => onVisibilityChange(v as VisibilityFilter)}>
         <TabsList>
-          <TabsTrigger value="all">{t('common.all')}</TabsTrigger>
-          <TabsTrigger value="public">{t('templates.public')}</TabsTrigger>
-          <TabsTrigger value="private">{t('templates.myTemplates')}</TabsTrigger>
+          <TabsTrigger value='all'>{t('common.all')}</TabsTrigger>
+          <TabsTrigger value='public'>{t('templates.public')}</TabsTrigger>
+          <TabsTrigger value='private'>{t('templates.myTemplates')}</TabsTrigger>
         </TabsList>
       </Tabs>
 
-      <Select
-        options={categoryOptions}
-        value={category}
-        onChange={(v) => onCategoryChange(v as TemplateCategory | 'all')}
-        className="w-full sm:w-44"
-      />
+      <Select options={categoryOptions} value={category} onChange={(v) => onCategoryChange(v as TemplateCategory | 'all')} className='w-full sm:w-44' />
     </ListPageLayout.Toolbar>
   );
 }

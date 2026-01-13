@@ -30,6 +30,8 @@ export interface CreateSurveyFormData {
   cxMetricType?: CxMetricType;
   /** Language code for the survey's default language */
   languageCode: string;
+  /** Optional category ID for the survey */
+  categoryId?: string;
 }
 
 export interface CreateSurveyDialogProps {

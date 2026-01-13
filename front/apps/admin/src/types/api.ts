@@ -124,6 +124,8 @@ export interface SurveyListParams extends PaginationParams {
   fromDate?: string;
   /** Filter surveys created on or before this date (ISO 8601 format) */
   toDate?: string;
+  /** Filter by category ID */
+  categoryId?: string;
   /** Field to sort by */
   sortBy?: 'title' | 'createdAt' | 'updatedAt' | 'status' | 'responseCount' | 'questionCount';
   /** Sort in descending order (default: true) */

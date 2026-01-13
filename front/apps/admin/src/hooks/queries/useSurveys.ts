@@ -24,6 +24,8 @@ export interface SurveyFilters {
   fromDate?: string;
   /** Filter surveys created on or before this date (ISO string) */
   toDate?: string;
+  /** Filter by category ID */
+  categoryId?: string;
   /** Sort field: 'title', 'createdAt', 'updatedAt', 'status', 'responseCount', 'questionCount' */
   sortBy?: SurveyListParams['sortBy'];
   /** Sort direction: 'asc' for ascending, 'desc' for descending (default) */
@@ -44,6 +46,7 @@ function buildSurveyListParams(filters?: SurveyFilters, pageNumber?: number): Su
     ...(filters?.search ? { searchTerm: filters.search } : {}),
     ...(filters?.fromDate ? { fromDate: filters.fromDate } : {}),
     ...(filters?.toDate ? { toDate: filters.toDate } : {}),
+    ...(filters?.categoryId ? { categoryId: filters.categoryId } : {}),
     ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
     ...(filters?.sortOrder ? { sortDescending: filters.sortOrder === 'desc' } : {}),
   };

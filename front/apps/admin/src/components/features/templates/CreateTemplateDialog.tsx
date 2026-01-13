@@ -1,20 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FileStack, FileText, Globe, Lock, Sparkles, ChevronDown, Check } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Button,
-  Input,
-  Textarea,
-  Select,
-  Switch,
-  Menu,
-  MenuItem,
-} from '@/components/ui';
+import { Dialog, DialogContent, DialogHeader, DialogBody, DialogFooter, Button, Input, Textarea, Select, Switch, Menu, MenuItem } from '@/components/ui';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
 import { useForm, zodResolver, type SubmitHandler } from '@/lib/form';
 import { createTemplateSchema, type CreateTemplateFormData } from '@/lib/validations';
@@ -62,7 +49,7 @@ function ModeCard({
 }) {
   return (
     <button
-      type="button"
+      type='button'
       onClick={() => onSelect(mode)}
       className={cn(
         'flex-1 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200',
@@ -76,11 +63,11 @@ function ModeCard({
           selected ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface-variant'
         )}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className='h-5 w-5' />
       </div>
-      <div className="text-center">
+      <div className='text-center'>
         <p className={cn('text-sm font-medium', selected ? 'text-primary' : 'text-on-surface')}>{title}</p>
-        <p className="text-xs text-on-surface-variant mt-0.5">{description}</p>
+        <p className='text-xs text-on-surface-variant mt-0.5'>{description}</p>
       </div>
     </button>
   );
@@ -156,12 +143,49 @@ function CreateTemplateForm({
   }));
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col flex-1 min-h-0 overflow-hidden">
-      <DialogBody className="space-y-5">
+    <form onSubmit={handleSubmit(onFormSubmit)} className='flex flex-col flex-1 min-h-0 overflow-hidden'>
+      {/* Configuration Bar */}
+      <div className='flex items-center gap-2 px-6 py-3 bg-surface-container-lowest border-b border-outline-variant/30'>
+        <Globe className='h-4 w-4 text-on-surface-variant' />
+        <span className='text-sm text-on-surface-variant'>{t('templates.form.language', 'Language')}:</span>
+        <Menu
+          align='start'
+          side='bottom'
+          trigger={
+            <button
+              type='button'
+              disabled={isLoading}
+              className={cn(
+                'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+                'bg-surface-container hover:bg-surface-container-high border border-outline-variant/40',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
+                isLoading && 'opacity-50 cursor-not-allowed'
+              )}
+            >
+              <span>{getLanguageInfo(languageCode).flag}</span>
+              <span>{getLanguageInfo(languageCode).nativeName}</span>
+              <ChevronDown className='h-3.5 w-3.5 text-on-surface-variant' />
+            </button>
+          }
+        >
+          {SUPPORTED_LANGUAGES.map((lang) => {
+            const isSelected = languageCode === lang.code;
+            return (
+              <MenuItem key={lang.code} onClick={() => setLanguageCode(lang.code)} className={cn(isSelected && 'bg-primary/8')}>
+                <span className='mr-2'>{lang.flag}</span>
+                <span className='flex-1'>{lang.nativeName}</span>
+                {isSelected && <Check className='h-4 w-4 text-primary' />}
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      </div>
+
+      <DialogBody className='space-y-5'>
         {/* Mode selector - card style */}
-        <div className="flex gap-3">
+        <div className='flex gap-3'>
           <ModeCard
-            mode="scratch"
+            mode='scratch'
             selected={mode === 'scratch'}
             onSelect={setMode}
             icon={Sparkles}
@@ -169,7 +193,7 @@ function CreateTemplateForm({
             description={t('templates.form.modes.scratchDescription')}
           />
           <ModeCard
-            mode="survey"
+            mode='survey'
             selected={mode === 'survey'}
             onSelect={setMode}
             icon={FileText}
@@ -191,7 +215,7 @@ function CreateTemplateForm({
         )}
 
         {/* Template details section */}
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {/* Template name */}
           <Input
             label={t('templates.form.name')}
@@ -224,7 +248,7 @@ function CreateTemplateForm({
 
         {/* Visibility toggle - improved design */}
         <button
-          type="button"
+          type='button'
           onClick={() => setValue('isPublic', !isPublic)}
           disabled={isLoading}
           className={cn(
@@ -238,13 +262,11 @@ function CreateTemplateForm({
               isPublic ? 'bg-success/15 text-success' : 'bg-surface-container-high text-on-surface-variant'
             )}
           >
-            {isPublic ? <Globe className="h-5 w-5" /> : <Lock className="h-5 w-5" />}
+            {isPublic ? <Globe className='h-5 w-5' /> : <Lock className='h-5 w-5' />}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-on-surface">
-              {isPublic ? t('templates.form.visibility.public') : t('templates.form.visibility.private')}
-            </p>
-            <p className="text-xs text-on-surface-variant">
+          <div className='flex-1 min-w-0'>
+            <p className='text-sm font-medium text-on-surface'>{isPublic ? t('templates.form.visibility.public') : t('templates.form.visibility.private')}</p>
+            <p className='text-xs text-on-surface-variant'>
               {isPublic ? t('templates.form.visibility.publicDescription') : t('templates.form.visibility.privateDescription')}
             </p>
           </div>
@@ -253,45 +275,10 @@ function CreateTemplateForm({
       </DialogBody>
 
       <DialogFooter>
-        {/* Language Selector - Dropdown Menu */}
-        <div className="flex items-center gap-2 mr-auto">
-          <Globe className="h-4 w-4 text-on-surface-variant" />
-          <span className="text-sm text-on-surface-variant">{t('templates.form.language', 'Language')}:</span>
-          <Menu
-            align="start"
-            trigger={
-              <button
-                type="button"
-                disabled={isLoading}
-                className={cn(
-                  'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
-                  'bg-surface-container hover:bg-surface-container-high border border-outline-variant/40',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30',
-                  isLoading && 'opacity-50 cursor-not-allowed'
-                )}
-              >
-                <span>{getLanguageInfo(languageCode).flag}</span>
-                <span>{getLanguageInfo(languageCode).nativeName}</span>
-                <ChevronDown className="h-3.5 w-3.5 text-on-surface-variant" />
-              </button>
-            }
-          >
-            {SUPPORTED_LANGUAGES.map((lang) => {
-              const isSelected = languageCode === lang.code;
-              return (
-                <MenuItem key={lang.code} onClick={() => setLanguageCode(lang.code)} className={cn(isSelected && 'bg-primary/8')}>
-                  <span className="mr-2">{lang.flag}</span>
-                  <span className="flex-1">{lang.nativeName}</span>
-                  {isSelected && <Check className="h-4 w-4 text-primary" />}
-                </MenuItem>
-              );
-            })}
-          </Menu>
-        </div>
-        <Button type="button" variant="text" onClick={onCancel} disabled={isLoading}>
+        <Button type='button' variant='text' onClick={onCancel} disabled={isLoading}>
           {t('common.cancel')}
         </Button>
-        <Button type="submit" variant="filled" disabled={!isValid || isLoading} loading={isLoading}>
+        <Button type='submit' variant='filled' disabled={!isValid || isLoading} loading={isLoading}>
           {t('templates.createTemplate')}
         </Button>
       </DialogFooter>
@@ -303,16 +290,10 @@ export function CreateTemplateDialog({ open, onOpenChange, onSubmit, isLoading =
   const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent size="lg" showClose={false}>
-        <DialogHeader
-          hero
-          icon={<FileStack className="h-7 w-7" />}
-          title={t('templates.form.title')}
-          description={t('templates.form.description')}
-          showClose
-        />
+      <DialogContent size='lg' showClose={false}>
+        <DialogHeader hero icon={<FileStack className='h-7 w-7' />} title={t('templates.form.title')} description={t('templates.form.description')} showClose />
 
-        {open && <CreateTemplateForm key="create-template-form" onSubmit={onSubmit} onCancel={() => onOpenChange(false)} isLoading={isLoading} />}
+        {open && <CreateTemplateForm key='create-template-form' onSubmit={onSubmit} onCancel={() => onOpenChange(false)} isLoading={isLoading} />}
       </DialogContent>
     </Dialog>
   );

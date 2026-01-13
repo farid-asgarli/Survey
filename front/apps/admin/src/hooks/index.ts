@@ -48,13 +48,7 @@ export {
   STALE_TIMES,
   GC_TIMES,
 } from './queries/queryUtils';
-export type {
-  EntityQueryKeys,
-  InvalidatingMutationOptions,
-  UpdatingMutationOptions,
-  OptimisticMutationOptions,
-  ApiProblemDetails,
-} from './queries/queryUtils';
+export type { EntityQueryKeys, InvalidatingMutationOptions, UpdatingMutationOptions, OptimisticMutationOptions, ApiProblemDetails } from './queries/queryUtils';
 
 // React Query hooks
 export * from './queries/useUser';
@@ -62,6 +56,7 @@ export * from './queries/useNamespaces';
 export * from './queries/useSurveys';
 export * from './queries/useQuestions';
 export * from './queries/useThemes';
+export * from './queries/useCategories';
 export * from './queries/useQuestionLogic';
 export * from './queries/useLinks';
 export * from './queries/useDistributions';
@@ -84,15 +79,7 @@ export { useDateTimeFormatter, getDateTimePreferences } from './useDateTimeForma
 export type { DateTimeFormatterFunctions } from './useDateTimeFormatter';
 
 // Media Query / Responsive hooks
-export {
-  useMediaQuery,
-  useIsMobile,
-  useIsTablet,
-  useIsDesktop,
-  useIsLargeDesktop,
-  usePrefersReducedMotion,
-  usePrefersDarkMode,
-} from './useMediaQuery';
+export { useMediaQuery, useIsMobile, useIsTablet, useIsDesktop, useIsLargeDesktop, usePrefersReducedMotion, usePrefersDarkMode } from './useMediaQuery';
 
 // Drag and Drop
 export { useSortableList, reorderArray } from './useSortableList';

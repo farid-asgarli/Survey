@@ -392,10 +392,7 @@ public class SurveyTheme : AggregateRoot<Guid>, ILocalizable<SurveyThemeTranslat
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(translation.Name, description);
-        }
+        translation?.Update(translation.Name, description);
     }
 
     /// <summary>

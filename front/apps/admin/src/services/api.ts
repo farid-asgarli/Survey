@@ -150,13 +150,10 @@ const createApiClient = (): AxiosInstance => {
           const { tokens } = useAuthStore.getState();
           if (tokens?.refreshToken && tokens?.accessToken) {
             // Backend expects both token (expired access token) and refreshToken
-            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(
-              `${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`,
-              {
-                token: tokens.accessToken,
-                refreshToken: tokens.refreshToken,
-              }
-            );
+            const response = await axios.post<{ token: string; refreshToken: string; expiresAt: string }>(`${getApiBaseUrl()}${API_ENDPOINTS.auth.refresh}`, {
+              token: tokens.accessToken,
+              refreshToken: tokens.refreshToken,
+            });
 
             const newTokens = {
               accessToken: response.data.token,
@@ -734,10 +731,7 @@ export const logicApi = {
   },
 
   create: async (surveyId: string, questionId: string, data: CreateLogicRequest): Promise<QuestionLogic> => {
-    const response = await apiClient.post<QuestionLogic>(
-      API_ENDPOINTS.surveys.questionLogic(surveyId, questionId),
-      transformCreateLogicRequest(data)
-    );
+    const response = await apiClient.post<QuestionLogic>(API_ENDPOINTS.surveys.questionLogic(surveyId, questionId), transformCreateLogicRequest(data));
     return response.data;
   },
 
@@ -1057,6 +1051,86 @@ export const themesApi = {
   applyToSurvey: async (surveyId: string, data: { themeId?: string; presetThemeId?: string; themeCustomizations?: string }): Promise<void> => {
     // Backend uses PUT /api/surveys/{id}/theme
     await apiClient.put(API_ENDPOINTS.themes.applyToSurvey(surveyId), data);
+  },
+};
+
+// ============ Categories API ============
+import type { SurveyCategory, SurveyCategorySummary, CategoryOption, CreateCategoryRequest, UpdateCategoryRequest, ReorderCategoriesRequest } from '@/types';
+
+// Paginated response for category summaries (list view)
+export interface CategoriesListResponse {
+  items: SurveyCategorySummary[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export const categoriesApi = {
+  /**
+   * List categories for the current namespace
+   */
+  list: async (params?: { pageNumber?: number; pageSize?: number; searchTerm?: string; includeInactive?: boolean }): Promise<CategoriesListResponse> => {
+    const response = await apiClient.get<CategoriesListResponse>(API_ENDPOINTS.categories.list, { params });
+    return response.data;
+  },
+
+  /**
+   * Get category options for dropdowns (simplified list)
+   */
+  getOptions: async (): Promise<CategoryOption[]> => {
+    const response = await apiClient.get<CategoryOption[]>(API_ENDPOINTS.categories.options);
+    return response.data;
+  },
+
+  /**
+   * Get a single category by ID
+   */
+  getById: async (id: string): Promise<SurveyCategory> => {
+    const response = await apiClient.get<SurveyCategory>(API_ENDPOINTS.categories.byId(id));
+    return response.data;
+  },
+
+  /**
+   * Create a new category
+   */
+  create: async (data: CreateCategoryRequest): Promise<SurveyCategory> => {
+    const response = await apiClient.post<SurveyCategory>(API_ENDPOINTS.categories.list, data);
+    return response.data;
+  },
+
+  /**
+   * Update a category
+   */
+  update: async (id: string, data: UpdateCategoryRequest): Promise<SurveyCategory> => {
+    const response = await apiClient.put<SurveyCategory>(API_ENDPOINTS.categories.byId(id), {
+      ...data,
+      categoryId: id,
+    });
+    return response.data;
+  },
+
+  /**
+   * Delete a category
+   */
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(API_ENDPOINTS.categories.byId(id));
+  },
+
+  /**
+   * Set a category as the default for the namespace
+   */
+  setDefault: async (id: string): Promise<void> => {
+    await apiClient.post(API_ENDPOINTS.categories.setDefault(id));
+  },
+
+  /**
+   * Reorder categories
+   */
+  reorder: async (data: ReorderCategoriesRequest): Promise<void> => {
+    await apiClient.post(API_ENDPOINTS.categories.reorder, data);
   },
 };
 

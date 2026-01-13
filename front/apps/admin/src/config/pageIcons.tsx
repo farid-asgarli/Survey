@@ -18,6 +18,7 @@ import {
   RefreshCw,
   Mail,
   Share2,
+  Tags,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -32,6 +33,7 @@ export type PageId =
   | 'analytics'
   | 'templates'
   | 'themes'
+  | 'categories'
   | 'recurring-surveys'
   | 'workspaces'
   | 'email-templates'
@@ -101,6 +103,13 @@ export const PAGE_CONFIG: Record<PageId, PageConfig> = {
     path: '/themes',
     description: 'Customize the look and feel of your surveys',
   },
+  categories: {
+    id: 'categories',
+    icon: Tags,
+    label: 'Categories',
+    path: '/categories',
+    description: 'Organize surveys into categories for better management',
+  },
   'recurring-surveys': {
     id: 'recurring-surveys',
     icon: RefreshCw,
@@ -152,7 +161,7 @@ export const NAV_GROUPS = {
   /** Main navigation - core features */
   main: ['dashboard', 'surveys', 'distributions', 'responses', 'analytics'] as PageId[],
   /** Secondary navigation - settings/config */
-  secondary: ['templates', 'themes', 'recurring-surveys', 'email-templates', 'workspaces'] as PageId[],
+  secondary: ['templates', 'themes', 'categories', 'recurring-surveys', 'email-templates', 'workspaces'] as PageId[],
   /** Bottom navigation items */
   bottom: ['settings'] as PageId[],
 } as const;

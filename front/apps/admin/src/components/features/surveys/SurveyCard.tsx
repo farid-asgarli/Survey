@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { MoreVertical, Edit, Eye, Copy, ExternalLink, Trash2, Send, Archive, FileText, Users, BarChart3 } from 'lucide-react';
+import { MoreVertical, Edit, Eye, Copy, ExternalLink, Trash2, Send, Archive, FileText, Users, BarChart3, Tags } from 'lucide-react';
 import { Card, CardHeader, CardContent, IconButton, Menu, MenuItem, MenuSeparator, Tooltip } from '@/components/ui';
 import { SurveyStatusBadge } from './SurveyStatusBadge';
 import { useViewTransitionNavigate, useDateTimeFormatter } from '@/hooks';
@@ -37,7 +37,7 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
   };
 
   return (
-    <Card variant='elevated' className={cn('group cursor-pointer', isArchived && 'opacity-70', className)} onClick={handleCardClick}>
+    <Card variant='elevated' className={cn('group cursor-pointer flex flex-col h-full', isArchived && 'opacity-70', className)} onClick={handleCardClick}>
       <CardHeader className='pb-2'>
         <div className='flex items-start justify-between gap-2'>
           <div
@@ -93,11 +93,12 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
         </div>
       </CardHeader>
 
-      <CardContent>
-        <h3 className='font-medium text-on-surface mb-1 group-hover:text-primary transition-colors truncate'>{survey.title}</h3>
-        {survey.description && <p className='text-sm text-on-surface-variant line-clamp-2 mb-3'>{survey.description}</p>}
-        {!survey.description && <div className='mb-3' />}
-        <div className='flex items-center justify-between text-xs text-on-surface-variant'>
+      <CardContent className='flex flex-col flex-1'>
+        <div className='flex-1'>
+          <h3 className='font-medium text-on-surface mb-1 group-hover:text-primary transition-colors truncate'>{survey.title}</h3>
+          {survey.description && <p className='text-sm text-on-surface-variant line-clamp-2'>{survey.description}</p>}
+        </div>
+        <div className='flex items-center justify-between text-xs text-on-surface-variant mt-3'>
           <div className='flex items-center gap-3'>
             <span className='flex items-center gap-1'>
               <FileText className='h-3 w-3' />
@@ -107,6 +108,14 @@ export function SurveyCard({ survey, onEdit, onPreview, onDuplicate, onShare, on
               <Users className='h-3 w-3' />
               {formatNumber(survey.responseCount)} {t('surveys.responses')}
             </span>
+            {survey.categoryName && (
+              <Tooltip content={t('categories.title')}>
+                <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container/40 text-on-primary-container text-xs font-medium'>
+                  <Tags className='h-3 w-3' />
+                  {survey.categoryName}
+                </span>
+              </Tooltip>
+            )}
           </div>
           <SurveyStatusBadge status={survey.status} size='sm' />
         </div>
@@ -180,6 +189,17 @@ export function SurveyListItem({ survey, onEdit, onPreview, onDuplicate, onShare
           <span>
             {formatNumber(survey.responseCount)} {t('surveys.responses')}
           </span>
+          {survey.categoryName && (
+            <>
+              <span>·</span>
+              <Tooltip content={t('categories.title')}>
+                <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-container/40 text-on-primary-container font-medium'>
+                  <Tags className='h-3 w-3' />
+                  {survey.categoryName}
+                </span>
+              </Tooltip>
+            </>
+          )}
           <span>·</span>
           <span>
             {t('common.updated')} {formatRelativeTime(survey.updatedAt)}

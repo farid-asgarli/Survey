@@ -24,6 +24,12 @@ public record CreateSurveyCommand : IRequest<Result<SurveyDto>>, INamespaceComma
     public int? MaxResponses { get; init; }
     public DateTime? StartDate { get; init; }
     public DateTime? EndDate { get; init; }
+
+    /// <summary>
+    /// Optional category ID for the survey.
+    /// </summary>
+    public Guid? CategoryId { get; init; }
+
     public List<CreateQuestionDto> Questions { get; init; } = [];
 
     /// <summary>

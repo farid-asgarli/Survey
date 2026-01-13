@@ -175,10 +175,7 @@ public class SurveyLinkRepository(ApplicationDbContext context) : ISurveyLinkRep
     )
     {
         var click = await _context.LinkClicks.FindAsync([clickId], cancellationToken);
-        if (click != null)
-        {
-            click.AssociateResponse(responseId);
-        }
+        click?.AssociateResponse(responseId);
     }
 
     public async Task<int> GetClickCountAsync(

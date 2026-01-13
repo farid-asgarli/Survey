@@ -12,7 +12,7 @@ using SurveyApp.Infrastructure.Persistence;
 namespace SurveyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260105204831_InitialMigration")]
+    [Migration("20260113074210_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -1140,6 +1140,9 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("ClosedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1214,6 +1217,8 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("AccessToken")
                         .IsUnique();
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("IsDeleted");
@@ -1229,6 +1234,122 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.HasIndex("Type");
 
                     b.ToTable("surveys", "survey");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DefaultLanguage")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasDefaultValue("en");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("NamespaceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("NamespaceId");
+
+                    b.HasIndex("NamespaceId", "DisplayOrder");
+
+                    b.HasIndex("NamespaceId", "IsDefault");
+
+                    b.ToTable("survey_categories", "survey");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyCategoryTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("LanguageCode");
+
+                    b.HasIndex("CategoryId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("survey_category_translations", "i18n");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyLink", b =>
@@ -2578,6 +2699,11 @@ namespace SurveyApp.Infrastructure.Migrations
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.Survey", b =>
                 {
+                    b.HasOne("SurveyApp.Domain.Entities.SurveyCategory", "Category")
+                        .WithMany("Surveys")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("SurveyApp.Domain.Entities.Namespace", "Namespace")
                         .WithMany("Surveys")
                         .HasForeignKey("NamespaceId")
@@ -2589,9 +2715,33 @@ namespace SurveyApp.Infrastructure.Migrations
                         .HasForeignKey("ThemeId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.Navigation("Category");
+
                     b.Navigation("Namespace");
 
                     b.Navigation("Theme");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyCategory", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.Namespace", "Namespace")
+                        .WithMany()
+                        .HasForeignKey("NamespaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Namespace");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyCategoryTranslation", b =>
+                {
+                    b.HasOne("SurveyApp.Domain.Entities.SurveyCategory", "Category")
+                        .WithMany("Translations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyLink", b =>
@@ -2750,6 +2900,13 @@ namespace SurveyApp.Infrastructure.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("Responses");
+
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("SurveyApp.Domain.Entities.SurveyCategory", b =>
+                {
+                    b.Navigation("Surveys");
 
                     b.Navigation("Translations");
                 });

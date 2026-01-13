@@ -23,6 +23,7 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
+    "preview": "Preview",
     "submit": "Submit",
     "search": "Search",
     "filter": "Filter",
@@ -121,7 +122,9 @@
     "entityDuplicateFailed": "Failed to duplicate {{entity}}",
     "item": "item",
     "items": "items",
-    "apply": "Apply"
+    "apply": "Apply",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "theme": {
     "palette": {
@@ -333,6 +336,7 @@
     "analytics": "Analytics",
     "templates": "Templates",
     "themes": "Themes",
+    "categories": "Categories",
     "distributions": "Distribute",
     "emailTemplates": "Email Templates",
     "recurringSurveys": "Recurring Surveys",
@@ -752,6 +756,34 @@
     "layoutSpacing": "Layout & Spacing",
     "containerWidth": "Container Width",
     "spacing": "Spacing"
+  },
+  "categories": {
+    "title": "Categories",
+    "description": "Organize surveys into categories for better management",
+    "createCategory": "Create Category",
+    "editCategory": "Edit Category",
+    "createDescription": "Create a new category to organize your surveys",
+    "editDescription": "Update the category details",
+    "deleteCategory": "Delete Category",
+    "namePlaceholder": "Category name",
+    "descriptionPlaceholder": "Optional description for this category",
+    "color": "Color",
+    "icon": "Icon",
+    "setAsDefault": "Set as Default",
+    "activeDescription": "Inactive categories are hidden from category selection dropdowns",
+    "surveyCount": "{{count}} surveys",
+    "surveyCount_one": "{{count}} survey",
+    "surveyCount_other": "{{count}} surveys",
+    "searchPlaceholder": "Search categories...",
+    "empty": "No categories yet",
+    "emptyDescription": "Create your first category to organize your surveys",
+    "noResults": "No categories found",
+    "noResultsDescription": "Try adjusting your search or filters",
+    "allCategories": "All Categories",
+    "uncategorized": "Uncategorized",
+    "badges": {
+      "default": "Default"
+    }
   },
   "distributions": {
     "title": "Distribute",
@@ -3690,7 +3722,7 @@
     "numberOfLinksHint": "Maximum 1000 links per batch",
     "namePrefix": "Name Prefix",
     "namePrefixPlaceholder": "e.g., campaign-",
-    "namePrefixHint": "Links will be named: prefix-1, prefix-2, etc.",
+    "namePrefixHint": "Links will be named: prefix 1, prefix 2, etc.",
     "expirationDate": "Expiration Date",
     "expirationDateDescription": "All links will expire on this date",
     "advancedOptions": "Advanced Options",

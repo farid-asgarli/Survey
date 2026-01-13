@@ -189,16 +189,13 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                subject,
-                translation.HtmlBody,
-                translation.PlainTextBody,
-                translation.DesignJson
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            subject,
+            translation.HtmlBody,
+            translation.PlainTextBody,
+            translation.DesignJson
+        );
     }
 
     /// <summary>
@@ -212,16 +209,13 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Subject,
-                htmlBody,
-                translation.PlainTextBody,
-                translation.DesignJson
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Subject,
+            htmlBody,
+            translation.PlainTextBody,
+            translation.DesignJson
+        );
     }
 
     /// <summary>
@@ -232,16 +226,13 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Subject,
-                translation.HtmlBody,
-                plainTextBody,
-                translation.DesignJson
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Subject,
+            translation.HtmlBody,
+            plainTextBody,
+            translation.DesignJson
+        );
     }
 
     /// <summary>
@@ -252,16 +243,13 @@ public class EmailTemplate : AggregateRoot<Guid>, ILocalizable<EmailTemplateTran
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Subject,
-                translation.HtmlBody,
-                translation.PlainTextBody,
-                designJson
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Subject,
+            translation.HtmlBody,
+            translation.PlainTextBody,
+            designJson
+        );
     }
 
     /// <summary>

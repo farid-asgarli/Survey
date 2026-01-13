@@ -22,6 +22,11 @@ public record GetSurveysQuery : PagedQuery, IRequest<Result<PagedResponse<Survey
     /// </summary>
     public DateTime? ToDate { get; init; }
 
+    /// <summary>
+    /// Filter surveys by category ID.
+    /// </summary>
+    public Guid? CategoryId { get; init; }
+
     public string? SortBy { get; init; }
     public bool SortDescending { get; init; } = true;
 }

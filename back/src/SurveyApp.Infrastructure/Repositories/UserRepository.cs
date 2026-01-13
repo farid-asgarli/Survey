@@ -103,10 +103,10 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         return await _context
             .Users.AsNoTracking()
             .Where(u =>
-                u.Email.ToLower().Contains(normalizedQuery)
-                || u.FirstName.ToLower().Contains(normalizedQuery)
-                || u.LastName.ToLower().Contains(normalizedQuery)
-                || (u.FirstName + " " + u.LastName).ToLower().Contains(normalizedQuery)
+                EF.Functions.ILike(u.Email, $"%{normalizedQuery}%")
+                || EF.Functions.ILike(u.FirstName, $"%{normalizedQuery}%")
+                || EF.Functions.ILike(u.LastName, $"%{normalizedQuery}%")
+                || EF.Functions.ILike(u.FirstName + " " + u.LastName, $"%{normalizedQuery}%")
             )
             .OrderBy(u => u.FirstName)
             .ThenBy(u => u.LastName)

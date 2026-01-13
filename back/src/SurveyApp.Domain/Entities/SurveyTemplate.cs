@@ -344,16 +344,13 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                description,
-                translation.Category,
-                translation.WelcomeMessage,
-                translation.ThankYouMessage
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            description,
+            translation.Category,
+            translation.WelcomeMessage,
+            translation.ThankYouMessage
+        );
     }
 
     /// <summary>
@@ -365,16 +362,13 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Description,
-                category,
-                translation.WelcomeMessage,
-                translation.ThankYouMessage
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Description,
+            category,
+            translation.WelcomeMessage,
+            translation.ThankYouMessage
+        );
     }
 
     /// <summary>
@@ -394,16 +388,13 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Description,
-                translation.Category,
-                message,
-                translation.ThankYouMessage
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Description,
+            translation.Category,
+            message,
+            translation.ThankYouMessage
+        );
     }
 
     /// <summary>
@@ -415,16 +406,13 @@ public class SurveyTemplate : AggregateRoot<Guid>, ILocalizable<SurveyTemplateTr
     {
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Name,
-                translation.Description,
-                translation.Category,
-                translation.WelcomeMessage,
-                message
-            );
-        }
+        translation?.Update(
+            translation.Name,
+            translation.Description,
+            translation.Category,
+            translation.WelcomeMessage,
+            message
+        );
     }
 
     /// <summary>

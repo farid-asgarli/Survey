@@ -27,6 +27,8 @@ public class SurveyDto
     public Guid? ThemeId { get; set; }
     public string? PresetThemeId { get; set; }
     public string? ThemeCustomizations { get; set; }
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; set; }
     public int QuestionCount { get; set; }
     public int ResponseCount { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -67,6 +69,8 @@ public class SurveyListItemDto
     public SurveyType Type { get; set; }
     public CxMetricType? CxMetricType { get; set; }
     public SurveyStatus Status { get; set; }
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; set; }
     public int QuestionCount { get; set; }
     public int ResponseCount { get; set; }
     public DateTime CreatedAt { get; set; }

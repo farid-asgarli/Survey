@@ -284,62 +284,57 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
   const previewHtml = useMemo(() => renderPreview(previewContent, editorMode === 'html'), [previewContent, editorMode]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className='flex flex-col h-full'>
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface">
-        <div className="flex items-center gap-4">
+      <div className='flex items-center justify-between px-6 py-4 border-b border-outline-variant/30 bg-surface'>
+        <div className='flex items-center gap-4'>
           {onBack && <BackButton onClick={onBack} label={t('emailTemplates.editor.back')} hideTooltip />}
           <div>
-            <h1 className="text-xl font-semibold text-on-surface">{t('emailTemplates.editor.title')}</h1>
-            <p className="text-sm text-on-surface-variant">{hasChanges ? t('emailTemplates.editor.unsavedChanges') : t('common.saved')}</p>
+            <h1 className='text-xl font-semibold text-on-surface'>{t('emailTemplates.editor.title')}</h1>
+            <p className='text-sm text-on-surface-variant'>{hasChanges ? t('emailTemplates.editor.unsavedChanges') : t('common.saved')}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           {/* View mode toggle */}
-          <div className="flex items-center bg-surface-container rounded-full p-1">
-            <Button variant={viewMode === 'edit' ? 'tonal' : 'text'} size="sm" className="rounded-full px-3" onClick={() => setViewMode('edit')}>
-              <Code className="h-4 w-4 mr-1" />
+          <div className='flex items-center bg-surface-container rounded-full p-1'>
+            <Button variant={viewMode === 'edit' ? 'tonal' : 'text'} size='sm' className='rounded-full px-3' onClick={() => setViewMode('edit')}>
+              <Code className='h-4 w-4 mr-1' />
               {t('emailTemplates.editor.viewModes.edit')}
             </Button>
-            <Button variant={viewMode === 'split' ? 'tonal' : 'text'} size="sm" className="rounded-full px-3" onClick={() => setViewMode('split')}>
+            <Button variant={viewMode === 'split' ? 'tonal' : 'text'} size='sm' className='rounded-full px-3' onClick={() => setViewMode('split')}>
               {t('emailTemplates.editor.viewModes.split')}
             </Button>
-            <Button
-              variant={viewMode === 'preview' ? 'tonal' : 'text'}
-              size="sm"
-              className="rounded-full px-3"
-              onClick={() => setViewMode('preview')}
-            >
-              <Eye className="h-4 w-4 mr-1" />
+            <Button variant={viewMode === 'preview' ? 'tonal' : 'text'} size='sm' className='rounded-full px-3' onClick={() => setViewMode('preview')}>
+              <Eye className='h-4 w-4 mr-1' />
               {t('emailTemplates.editor.viewModes.preview')}
             </Button>
           </div>
 
           {/* Undo/Redo */}
-          <div className="flex items-center gap-1 ml-2">
+          <div className='flex items-center gap-1 ml-2'>
             <Tooltip content={`${t('emailTemplates.editor.toolbar.undo')} (Ctrl+Z)`}>
-              <Button variant="text" size="icon-sm" onClick={handleUndo} disabled={!canUndo}>
-                <Undo2 className="h-4 w-4" />
+              <Button variant='text' size='icon-sm' onClick={handleUndo} disabled={!canUndo}>
+                <Undo2 className='h-4 w-4' />
               </Button>
             </Tooltip>
             <Tooltip content={`${t('emailTemplates.editor.toolbar.redo')} (Ctrl+Shift+Z)`}>
-              <Button variant="text" size="icon-sm" onClick={handleRedo} disabled={!canRedo}>
-                <Redo2 className="h-4 w-4" />
+              <Button variant='text' size='icon-sm' onClick={handleRedo} disabled={!canRedo}>
+                <Redo2 className='h-4 w-4' />
               </Button>
             </Tooltip>
           </div>
 
           {/* Save button */}
           <Button onClick={handleSave} loading={updateTemplate.isPending} disabled={!hasChanges}>
-            <Save className="h-4 w-4 mr-2" />
+            <Save className='h-4 w-4 mr-2' />
             {t('common.save')}
           </Button>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className='flex-1 flex overflow-hidden'>
         {/* Editor panel */}
         <div
           className={cn(
@@ -348,19 +343,19 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
           )}
         >
           {/* Template settings */}
-          <div className="p-4 space-y-4 border-b border-outline-variant/30 bg-surface-container/30">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-on-surface">{t('emailTemplates.editor.templateName')}</label>
+          <div className='p-4 space-y-4 border-b border-outline-variant/30 bg-surface-container/30'>
+            <div className='grid grid-cols-2 gap-4'>
+              <div className='space-y-1.5'>
+                <label className='text-sm font-medium text-on-surface'>{t('emailTemplates.editor.templateName')}</label>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t('emailTemplates.editor.templateNamePlaceholder')}
-                  startIcon={<FileText className="h-4 w-4" />}
+                  startIcon={<FileText className='h-4 w-4' />}
                 />
               </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-on-surface">{t('emailTemplates.form.type')}</label>
+              <div className='space-y-1.5'>
+                <label className='text-sm font-medium text-on-surface'>{t('emailTemplates.form.type')}</label>
                 <Select
                   value={String(type)}
                   onChange={(value) => setType(parseInt(value) as EmailTemplateType)}
@@ -368,29 +363,29 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
                 />
               </div>
             </div>
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-on-surface">{t('emailTemplates.editor.subject')}</label>
+            <div className='space-y-1.5'>
+              <label className='text-sm font-medium text-on-surface'>{t('emailTemplates.editor.subject')}</label>
               <Input
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder={t('emailTemplates.editor.subjectPlaceholder')}
-                startIcon={<Mail className="h-4 w-4" />}
+                startIcon={<Mail className='h-4 w-4' />}
               />
             </div>
           </div>
 
           {/* Editor mode tabs and Placeholders */}
-          <div className="p-4 border-b border-outline-variant/30 space-y-3">
+          <div className='p-4 border-b border-outline-variant/30 space-y-3'>
             {/* Editor mode selector */}
-            <div className="flex items-center justify-between">
-              <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as EditorMode)} variant="segmented">
+            <div className='flex items-center justify-between'>
+              <Tabs value={editorMode} onValueChange={(v) => setEditorMode(v as EditorMode)}>
                 <TabsList>
-                  <TabsTrigger value="html" className="gap-1.5">
-                    <FileCode className="h-3.5 w-3.5" />
+                  <TabsTrigger value='html' className='gap-1.5'>
+                    <FileCode className='h-3.5 w-3.5' />
                     {t('emailTemplates.editor.contentModes.html')}
                   </TabsTrigger>
-                  <TabsTrigger value="plaintext" className="gap-1.5">
-                    <FileType className="h-3.5 w-3.5" />
+                  <TabsTrigger value='plaintext' className='gap-1.5'>
+                    <FileType className='h-3.5 w-3.5' />
                     {t('emailTemplates.editor.contentModes.plainText')}
                   </TabsTrigger>
                 </TabsList>
@@ -398,30 +393,30 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
 
               {/* HTML formatting buttons */}
               {editorMode === 'html' && (
-                <div className="flex items-center gap-1">
+                <div className='flex items-center gap-1'>
                   <Tooltip content={t('emailTemplates.editor.toolbar.bold')}>
-                    <Button variant="text" size="icon-sm" onClick={() => insertFormatting('<strong>', '</strong>')}>
-                      <Bold className="h-4 w-4" />
+                    <Button variant='text' size='icon-sm' onClick={() => insertFormatting('<strong>', '</strong>')}>
+                      <Bold className='h-4 w-4' />
                     </Button>
                   </Tooltip>
                   <Tooltip content={t('emailTemplates.editor.toolbar.italic')}>
-                    <Button variant="text" size="icon-sm" onClick={() => insertFormatting('<em>', '</em>')}>
-                      <Italic className="h-4 w-4" />
+                    <Button variant='text' size='icon-sm' onClick={() => insertFormatting('<em>', '</em>')}>
+                      <Italic className='h-4 w-4' />
                     </Button>
                   </Tooltip>
                   <Tooltip content={t('emailTemplates.editor.toolbar.link')}>
-                    <Button variant="text" size="icon-sm" onClick={() => insertFormatting('<a href="">', '</a>')}>
-                      <Link className="h-4 w-4" />
+                    <Button variant='text' size='icon-sm' onClick={() => insertFormatting('<a href="">', '</a>')}>
+                      <Link className='h-4 w-4' />
                     </Button>
                   </Tooltip>
                   <Tooltip content={t('emailTemplates.editor.toolbar.bulletList')}>
-                    <Button variant="text" size="icon-sm" onClick={() => insertFormatting('<ul>\n  <li>', '</li>\n</ul>')}>
-                      <List className="h-4 w-4" />
+                    <Button variant='text' size='icon-sm' onClick={() => insertFormatting('<ul>\n  <li>', '</li>\n</ul>')}>
+                      <List className='h-4 w-4' />
                     </Button>
                   </Tooltip>
                   <Tooltip content={t('emailTemplates.editor.toolbar.numberedList')}>
-                    <Button variant="text" size="icon-sm" onClick={() => insertFormatting('<ol>\n  <li>', '</li>\n</ol>')}>
-                      <ListOrdered className="h-4 w-4" />
+                    <Button variant='text' size='icon-sm' onClick={() => insertFormatting('<ol>\n  <li>', '</li>\n</ol>')}>
+                      <ListOrdered className='h-4 w-4' />
                     </Button>
                   </Tooltip>
                 </div>
@@ -430,24 +425,24 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
 
             {/* Placeholders */}
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Variable className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-on-surface">{t('emailTemplates.editor.availablePlaceholders')}</span>
-                <span className="text-xs text-on-surface-variant">({t('common.clickToInsert')})</span>
+              <div className='flex items-center gap-2 mb-2'>
+                <Variable className='h-4 w-4 text-primary' />
+                <span className='text-sm font-medium text-on-surface'>{t('emailTemplates.editor.availablePlaceholders')}</span>
+                <span className='text-xs text-on-surface-variant'>({t('common.clickToInsert')})</span>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className='flex flex-wrap gap-2'>
                 {placeholders.map(({ key, label }) => (
                   <Tooltip key={key} content={`${t('common.insert')}: ${key}`}>
                     <Chip
-                      size="sm"
-                      variant="assist"
+                      size='sm'
+                      variant='assist'
                       className={cn(
                         'cursor-pointer hover:bg-primary-container/50 transition-colors',
                         copiedPlaceholder === key && 'bg-success-container text-on-success-container'
                       )}
                       onClick={() => insertPlaceholder(key)}
                     >
-                      {copiedPlaceholder === key ? <Check className="h-3 w-3 mr-1" /> : <Copy className="h-3 w-3 mr-1" />}
+                      {copiedPlaceholder === key ? <Check className='h-3 w-3 mr-1' /> : <Copy className='h-3 w-3 mr-1' />}
                       {label}
                     </Chip>
                   </Tooltip>
@@ -457,12 +452,10 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
           </div>
 
           {/* Body editor */}
-          <div className="flex-1 p-4 overflow-auto">
-            <label className="text-sm font-medium text-on-surface block mb-2">
+          <div className='flex-1 p-4 overflow-auto'>
+            <label className='text-sm font-medium text-on-surface block mb-2'>
               {editorMode === 'html' ? t('emailTemplates.editor.contentModes.html') : t('emailTemplates.editor.contentModes.plainText')}
-              {editorMode === 'plaintext' && (
-                <span className="text-xs text-on-surface-variant ml-2">({t('emailTemplates.editor.plainTextFallback')})</span>
-              )}
+              {editorMode === 'plaintext' && <span className='text-xs text-on-surface-variant ml-2'>({t('emailTemplates.editor.plainTextFallback')})</span>}
             </label>
             {editorMode === 'html' ? (
               <Textarea
@@ -470,7 +463,7 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
                 value={htmlBody}
                 onChange={(e) => setHtmlBody(e.target.value)}
                 placeholder={t('emailTemplates.editor.htmlPlaceholder')}
-                className="w-full h-[calc(100%-2rem)] min-h-75 font-mono text-sm resize-none"
+                className='w-full h-[calc(100%-2rem)] min-h-75 font-mono text-sm resize-none'
               />
             ) : (
               <Textarea
@@ -478,7 +471,7 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
                 value={plainTextBody}
                 onChange={(e) => setPlainTextBody(e.target.value)}
                 placeholder={t('emailTemplates.editor.plainTextPlaceholder')}
-                className="w-full h-[calc(100%-2rem)] min-h-75 font-mono text-sm resize-none"
+                className='w-full h-[calc(100%-2rem)] min-h-75 font-mono text-sm resize-none'
               />
             )}
           </div>
@@ -491,59 +484,59 @@ export function EmailTemplateEditor({ template, onBack, onSaved }: EmailTemplate
             viewMode === 'edit' ? 'w-0 opacity-0' : viewMode === 'split' ? 'w-1/2' : 'w-full'
           )}
         >
-          <div className="p-4 border-b border-outline-variant/30 bg-surface">
-            <h3 className="text-sm font-medium text-on-surface flex items-center gap-2">
-              <Eye className="h-4 w-4" />
+          <div className='p-4 border-b border-outline-variant/30 bg-surface'>
+            <h3 className='text-sm font-medium text-on-surface flex items-center gap-2'>
+              <Eye className='h-4 w-4' />
               {t('emailTemplates.editor.preview')}
-              <Chip size="sm" variant="assist" className="ml-2">
+              <Chip size='sm' variant='assist' className='ml-2'>
                 {editorMode === 'html' ? t('emailTemplates.editor.contentModes.html') : t('emailTemplates.editor.contentModes.plainText')}
               </Chip>
             </h3>
           </div>
 
           {/* Email preview */}
-          <div className="flex-1 p-6 overflow-auto">
-            <div className="max-w-2xl mx-auto bg-surface rounded-2xl border border-outline-variant/20 overflow-hidden">
+          <div className='flex-1 p-6 overflow-auto'>
+            <div className='max-w-2xl mx-auto bg-surface rounded-2xl border border-outline-variant/20 overflow-hidden'>
               {/* Email header */}
-              <div className="p-4 border-b border-outline-variant/20 bg-surface-container/50">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="h-10 w-10 rounded-full bg-primary-container flex items-center justify-center">
-                    <User className="h-5 w-5 text-on-primary-container" />
+              <div className='p-4 border-b border-outline-variant/20 bg-surface-container/50'>
+                <div className='flex items-center gap-3 mb-3'>
+                  <div className='h-10 w-10 rounded-full bg-primary-container flex items-center justify-center'>
+                    <User className='h-5 w-5 text-on-primary-container' />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-on-surface">
+                    <p className='text-sm font-medium text-on-surface'>
                       {t('emailTemplates.preview.from')}: {t('emailTemplates.preview.yourCompany')}
                     </p>
-                    <p className="text-xs text-on-surface-variant">noreply@yourcompany.com</p>
+                    <p className='text-xs text-on-surface-variant'>noreply@yourcompany.com</p>
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-on-surface-variant">{t('emailTemplates.preview.to')}:</span>
-                    <span className="text-on-surface">recipient@example.com</span>
+                <div className='space-y-1'>
+                  <div className='flex items-center gap-2 text-sm'>
+                    <span className='text-on-surface-variant'>{t('emailTemplates.preview.to')}:</span>
+                    <span className='text-on-surface'>recipient@example.com</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-on-surface-variant">{t('emailTemplates.editor.subject')}:</span>
-                    <span className="text-sm font-medium text-on-surface" dangerouslySetInnerHTML={{ __html: renderPreview(subject, false) }} />
+                  <div className='flex items-center gap-2'>
+                    <span className='text-sm text-on-surface-variant'>{t('emailTemplates.editor.subject')}:</span>
+                    <span className='text-sm font-medium text-on-surface' dangerouslySetInnerHTML={{ __html: renderPreview(subject, false) }} />
                   </div>
                 </div>
               </div>
 
               {/* Email body */}
-              <div className="p-6 text-sm text-on-surface leading-relaxed" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+              <div className='p-6 text-sm text-on-surface leading-relaxed' dangerouslySetInnerHTML={{ __html: previewHtml }} />
             </div>
 
             {/* Placeholder legend */}
-            <div className="mt-6 p-4 bg-surface rounded-xl border border-outline-variant/20">
-              <div className="flex items-center gap-2 mb-3">
-                <AlertCircle className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-on-surface">{t('emailTemplates.preview.placeholderReference')}</span>
+            <div className='mt-6 p-4 bg-surface rounded-xl border border-outline-variant/20'>
+              <div className='flex items-center gap-2 mb-3'>
+                <AlertCircle className='h-4 w-4 text-primary' />
+                <span className='text-sm font-medium text-on-surface'>{t('emailTemplates.preview.placeholderReference')}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className='grid grid-cols-2 gap-2 text-xs'>
                 {placeholders.map(({ key, description }) => (
-                  <div key={key} className="flex items-center gap-2">
-                    <code className="px-1.5 py-0.5 rounded bg-primary-container/50 text-on-primary-container font-mono">{key}</code>
-                    <span className="text-on-surface-variant">{description}</span>
+                  <div key={key} className='flex items-center gap-2'>
+                    <code className='px-1.5 py-0.5 rounded bg-primary-container/50 text-on-primary-container font-mono'>{key}</code>
+                    <span className='text-on-surface-variant'>{description}</span>
                   </div>
                 ))}
               </div>

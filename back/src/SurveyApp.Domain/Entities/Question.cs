@@ -178,10 +178,7 @@ public class Question : Entity<Guid>, ILocalizable<QuestionTranslation>
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(translation.Text, description, translation.GetTranslatedSettings());
-        }
+        translation?.Update(translation.Text, description, translation.GetTranslatedSettings());
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-import { type ReactNode, type HTMLAttributes, type Ref } from 'react';
+import { type ReactNode, type HTMLAttributes, type Ref, isValidElement, createElement } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '..';
 import { Button, type ButtonProps } from '../buttons/Button';
@@ -98,17 +98,20 @@ function EmptyState({
   ref,
   ...props
 }: EmptyStateProps) {
-  // Resolve icon - check if it's a LucideIcon component or ReactNode
-  const isLucideIcon = typeof icon === 'function';
-
   // Build the icon element to render
   let iconElement: ReactNode;
-  if (isLucideIcon) {
-    const IconComponent = icon as LucideIcon;
-    iconElement = <IconComponent className={cn(iconVariants({ size, variant: iconVariant }))} />;
-  } else if (icon) {
+
+  if (!icon) {
+    // No icon provided - use default
+    iconElement = <Inbox className={cn(iconVariants({ size, variant: iconVariant }))} />;
+  } else if (isValidElement(icon)) {
+    // Icon is already a rendered React element - use it directly
     iconElement = icon;
+  } else if (typeof icon === 'function' || (typeof icon === 'object' && icon !== null)) {
+    // Icon is a component (function, class, or forwardRef) - render it using createElement
+    iconElement = createElement(icon as any, { className: cn(iconVariants({ size, variant: iconVariant })) });
   } else {
+    // Fallback to default
     iconElement = <Inbox className={cn(iconVariants({ size, variant: iconVariant }))} />;
   }
 

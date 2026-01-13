@@ -41,6 +41,11 @@ public record SurveyFilterCriteria
     public DateTime? ToDate { get; init; }
 
     /// <summary>
+    /// Gets or sets the optional category ID filter.
+    /// </summary>
+    public Guid? CategoryId { get; init; }
+
+    /// <summary>
     /// Gets or sets the sorting parameters.
     /// </summary>
     public SortingParameters Sorting { get; init; } = SortingParameters.Default;
@@ -71,7 +76,9 @@ public sealed class SurveysFilteredSpec : NamespaceScopedSpecification<Survey>
         Query
             .Include(s => s.Translations)
             .Include(s => s.Questions)
-            .ThenInclude(q => q.Translations);
+            .ThenInclude(q => q.Translations)
+            .Include(s => s.Category!)
+            .ThenInclude(c => c.Translations);
 
         if (criteria.IncludeResponses)
         {
@@ -113,6 +120,12 @@ public sealed class SurveysFilteredSpec : NamespaceScopedSpecification<Survey>
             // Include the entire day for ToDate
             var endOfDay = criteria.ToDate.Value.Date.AddDays(1).AddTicks(-1);
             Query.Where(s => s.CreatedAt <= endOfDay);
+        }
+
+        // Apply category filter
+        if (criteria.CategoryId.HasValue)
+        {
+            Query.Where(s => s.CategoryId == criteria.CategoryId.Value);
         }
 
         // Apply sorting

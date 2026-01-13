@@ -77,9 +77,22 @@ public class GenerateBulkLinksCommandHandler(
 
         for (int i = 1; i <= request.Count; i++)
         {
-            var name = string.IsNullOrEmpty(request.NamePrefix)
-                ? $"Link {i}"
-                : $"{request.NamePrefix} {i}";
+            string name;
+            if (string.IsNullOrEmpty(request.NamePrefix))
+            {
+                name = $"Link {i}";
+            }
+            else
+            {
+                // If prefix ends with a separator, don't add an extra space
+                var trimmedPrefix = request.NamePrefix.TrimEnd();
+                var needsSpace =
+                    !trimmedPrefix.EndsWith('-')
+                    && !trimmedPrefix.EndsWith('_')
+                    && !trimmedPrefix.EndsWith('.')
+                    && !trimmedPrefix.EndsWith(' ');
+                name = needsSpace ? $"{trimmedPrefix} {i}" : $"{trimmedPrefix}{i}";
+            }
 
             var link = SurveyLink.Create(
                 request.SurveyId,

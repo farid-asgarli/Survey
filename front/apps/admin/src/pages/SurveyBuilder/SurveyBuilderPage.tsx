@@ -192,10 +192,10 @@ export function SurveyBuilderPage() {
   // Using isLoading (not isFetching) prevents flash during autosave refetches
   if (!activeNamespace || isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-surface">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <p className="text-on-surface-variant">{t('common.loading')}</p>
+      <div className='h-screen flex items-center justify-center bg-surface'>
+        <div className='flex flex-col items-center gap-4'>
+          <Loader2 className='w-8 h-8 animate-spin text-primary' />
+          <p className='text-on-surface-variant'>{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -204,11 +204,11 @@ export function SurveyBuilderPage() {
   // Error state
   if (error || !surveyData) {
     return (
-      <div className="h-screen flex items-center justify-center bg-surface">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <AlertTriangle className="w-12 h-12 text-error" />
-          <h2 className="text-xl font-semibold text-on-surface">{t('surveys.unknown')}</h2>
-          <p className="text-on-surface-variant">{t('errors.notFoundDesc')}</p>
+      <div className='h-screen flex items-center justify-center bg-surface'>
+        <div className='flex flex-col items-center gap-4 text-center'>
+          <AlertTriangle className='w-12 h-12 text-error' />
+          <h2 className='text-xl font-semibold text-on-surface'>{t('surveys.unknown')}</h2>
+          <p className='text-on-surface-variant'>{t('errors.notFoundDesc')}</p>
           <Button onClick={() => navigate('/surveys')}>{t('surveyBuilder.backToSurveys')}</Button>
         </div>
       </div>
@@ -216,7 +216,7 @@ export function SurveyBuilderPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-surface-container-lowest overflow-hidden">
+    <div className='h-screen flex flex-col bg-surface-container-lowest overflow-hidden'>
       {/* Top App Bar */}
       <SurveyBuilderHeader
         surveyTitle={survey?.title || ''}
@@ -246,7 +246,7 @@ export function SurveyBuilderPage() {
       />
 
       {/* Main Content - Questions panel layout */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className='flex-1 flex overflow-hidden'>
         {/* Left Panel - Question List */}
         <QuestionListSidebar
           questions={questions}
@@ -261,13 +261,13 @@ export function SurveyBuilderPage() {
         />
 
         {/* Center Panel - Question Editor */}
-        <main className="flex-1 flex flex-col overflow-hidden">
+        <main className='flex-1 flex flex-col overflow-hidden'>
           {selectedQuestion ? (
             <QuestionEditor question={selectedQuestion} isReadOnly={isReadOnly} />
           ) : (
-            <div className="flex-1 flex items-center justify-center p-8">
+            <div className='flex-1 flex items-center justify-center p-8'>
               <EmptyState
-                icon={<Plus className="h-6 w-6" />}
+                icon={<Plus className='h-6 w-6' />}
                 title={questions.length === 0 ? t('surveyBuilder.noQuestions') : t('surveyBuilder.selectQuestion', 'Select a question')}
                 description={
                   questions.length === 0
@@ -275,13 +275,13 @@ export function SurveyBuilderPage() {
                     : t('surveyBuilder.selectQuestionDesc', 'Choose a question from the list to edit, or add a new one')
                 }
                 iconVariant={questions.length === 0 ? 'primary' : 'default'}
-                size="default"
+                size='default'
                 action={
                   !isReadOnly
                     ? {
                         label: t('surveyBuilder.addQuestion'),
                         onClick: () => setIsAddMenuOpen(true),
-                        icon: <Plus className="h-4 w-4" />,
+                        icon: <Plus className='h-4 w-4' />,
                       }
                     : undefined
                 }
@@ -301,10 +301,12 @@ export function SurveyBuilderPage() {
           description={survey?.description || ''}
           thankYouMessage={survey?.thankYouMessage || ''}
           welcomeMessage={survey?.welcomeMessage || ''}
+          categoryId={survey?.categoryId}
           onOpenChange={settingsDialog.setOpen}
           onDescriptionChange={(value) => updateSurveyMetadata({ description: value })}
           onThankYouMessageChange={(value) => updateSurveyMetadata({ thankYouMessage: value })}
           onWelcomeMessageChange={(value) => updateSurveyMetadata({ welcomeMessage: value })}
+          onCategoryChange={(categoryId) => updateSurveyMetadata({ categoryId })}
         />
       )}
 
@@ -370,26 +372,26 @@ export function SurveyBuilderPage() {
       )}
 
       {/* Theme Preview Drawer */}
-      <Drawer open={showThemePanel} onOpenChange={setShowThemePanel} side="right">
-        <DrawerContent className="w-full max-w-md" showClose={false}>
+      <Drawer open={showThemePanel} onOpenChange={setShowThemePanel} side='right'>
+        <DrawerContent className='w-full max-w-md' showClose={false}>
           <DrawerHeader
             hero
-            icon={<Palette className="w-5 h-5" />}
+            icon={<Palette className='w-5 h-5' />}
             title={t('surveyBuilder.themePreview', 'Theme & Style')}
             description={t('surveyBuilder.themePreviewDescription', 'Customize how your survey looks')}
-            variant="primary"
+            variant='primary'
             showClose
           />
-          <DrawerBody className="p-0">
-            <ThemePreviewPanel isReadOnly={isReadOnly} headless className="border-none rounded-none h-full w-full" />
+          <DrawerBody className='p-0'>
+            <ThemePreviewPanel isReadOnly={isReadOnly} headless className='border-none rounded-none h-full w-full' />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
 
       {/* Languages Management Drawer - Wide for better translation UX */}
-      <Drawer open={languagesDrawer.isOpen} onOpenChange={languagesDrawer.setOpen} side="right">
-        <DrawerContent className="w-full max-w-7xl" showClose={false}>
-          <DrawerBody className="p-0 overflow-hidden">
+      <Drawer open={languagesDrawer.isOpen} onOpenChange={languagesDrawer.setOpen} side='right'>
+        <DrawerContent className='w-full max-w-7xl' showClose={false}>
+          <DrawerBody className='p-0 overflow-hidden'>
             {survey?.id && (
               <LanguagesTab
                 surveyId={survey.id}

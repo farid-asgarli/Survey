@@ -23,6 +23,7 @@ public class ApplicationDbContext(
 
     // Survey schema entities
     public DbSet<Survey> Surveys => Set<Survey>();
+    public DbSet<SurveyCategory> SurveyCategories => Set<SurveyCategory>();
     public DbSet<Question> Questions => Set<Question>();
     public DbSet<QuestionLogic> QuestionLogics => Set<QuestionLogic>();
     public DbSet<SurveyResponse> SurveyResponses => Set<SurveyResponse>();
@@ -56,6 +57,8 @@ public class ApplicationDbContext(
     public DbSet<EmailTemplateTranslation> EmailTemplateTranslations =>
         Set<EmailTemplateTranslation>();
     public DbSet<SurveyThemeTranslation> SurveyThemeTranslations => Set<SurveyThemeTranslation>();
+    public DbSet<SurveyCategoryTranslation> SurveyCategoryTranslations =>
+        Set<SurveyCategoryTranslation>();
 
     // Notification entities
     public DbSet<Notification> Notifications => Set<Notification>();

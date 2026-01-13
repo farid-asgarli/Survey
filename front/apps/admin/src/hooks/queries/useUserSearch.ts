@@ -25,7 +25,7 @@ export function useUserSearch(query: string, excludeFromNamespaceId?: string, en
     queryKey: userSearchKeys.search(trimmedQuery, excludeFromNamespaceId),
     queryFn: () => usersApi.searchUsers(trimmedQuery, excludeFromNamespaceId, 10),
     enabled: enabled && shouldSearch,
-    staleTime: STALE_TIMES.standard, // Cache for a bit to reduce API calls
+    staleTime: STALE_TIMES.MEDIUM, // Cache for a bit to reduce API calls
     gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
     placeholderData: [], // Start with empty array
   });

@@ -2,13 +2,16 @@ import { useState, useLayoutEffect, useEffect, useRef, useCallback, type ReactNo
 import { createPortal } from 'react-dom';
 import { cn } from '..';
 
+/** Default maximum height for menu dropdowns (200px) */
+const DEFAULT_MAX_HEIGHT = '280px';
+
 interface MenuProps {
   trigger: ReactNode;
   children: ReactNode;
   align?: 'start' | 'center' | 'end';
   side?: 'top' | 'bottom';
   className?: string;
-  /** Maximum height of the menu content area (e.g., '300px', '50vh'). Adds scrolling when content exceeds this height. */
+  /** Maximum height of the menu content area (e.g., '300px', '50vh'). Defaults to 200px. Set to 'none' to disable. */
   maxHeight?: string;
 }
 
@@ -23,12 +26,15 @@ interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
 }
 
-function Menu({ trigger, children, align = 'start', side = 'bottom', className, maxHeight }: MenuProps) {
+function Menu({ trigger, children, align = 'start', side = 'bottom', className, maxHeight = DEFAULT_MAX_HEIGHT }: MenuProps) {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const [actualSide, setActualSide] = useState<'top' | 'bottom'>(side);
   const triggerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Resolve the effective maxHeight (handle 'none' case)
+  const effectiveMaxHeight = maxHeight === 'none' ? undefined : maxHeight;
 
   // Calculate menu position
   const calculatePosition = useCallback(
@@ -162,7 +168,7 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className, 
 
   return (
     <>
-      <div ref={triggerRef} onClick={handleToggle} className="inline-flex cursor-pointer">
+      <div ref={triggerRef} onClick={handleToggle} className='inline-flex cursor-pointer'>
         {trigger}
       </div>
 
@@ -185,10 +191,10 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className, 
               left: position.left,
             }}
           >
-            {/* Pass close function to children */}
+            {/* Scrollable content area with max height */}
             <div
-              className={cn(maxHeight && 'overflow-y-auto')}
-              style={maxHeight ? { maxHeight } : undefined}
+              className={cn(effectiveMaxHeight && 'overflow-y-auto scrollbar-thin scrollbar-thumb-outline-variant/30 scrollbar-track-transparent')}
+              style={effectiveMaxHeight ? { maxHeight: effectiveMaxHeight } : undefined}
               onClick={() => {
                 setOpen(false);
                 setPosition(null);
@@ -206,11 +212,11 @@ function Menu({ trigger, children, align = 'start', side = 'bottom', className, 
 function MenuItem({ className, icon, destructive = false, disabled = false, ref, children, ...props }: MenuItemProps) {
   return (
     <button
-      type="button"
+      type='button'
       ref={ref}
       disabled={disabled}
       className={cn(
-        'w-full flex items-center gap-3 px-4 py-3 mx-1.5 text-sm text-left transition-colors rounded-xl',
+        'w-full flex items-center gap-3 px-4 py-3 mx-1.5 text-sm font-medium text-left transition-colors rounded-xl whitespace-nowrap',
         'focus-visible:outline-none focus-visible:bg-surface-container-high',
         destructive ? 'text-error hover:bg-error/8' : 'text-on-surface hover:bg-surface-container-high',
         disabled && 'opacity-50 cursor-not-allowed',
@@ -219,8 +225,8 @@ function MenuItem({ className, icon, destructive = false, disabled = false, ref,
       style={{ width: 'calc(100% - 12px)' }}
       {...props}
     >
-      {icon && <span className="shrink-0 w-5 h-5 [&>svg]:w-5 [&>svg]:h-5">{icon}</span>}
-      <span className="flex-1 font-medium">{children}</span>
+      {icon && <span className='shrink-0 w-5 h-5 [&>svg]:w-5 [&>svg]:h-5'>{icon}</span>}
+      {children}
     </button>
   );
 }

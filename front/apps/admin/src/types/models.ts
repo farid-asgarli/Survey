@@ -332,6 +332,9 @@ export interface Survey {
   themeId?: string;
   presetThemeId?: string;
   themeCustomizations?: string;
+  // Category
+  categoryId?: string;
+  categoryName?: string;
   // Counts - questionCount is used in list views, questions array in detail views
   questionCount: number;
   responseCount: number;
@@ -367,6 +370,8 @@ export interface CreateSurveyRequest {
   questions?: CreateQuestionRequest[];
   /** Language code for the initial translation */
   languageCode: string;
+  /** Category ID for the survey */
+  categoryId?: string;
 }
 
 export interface UpdateSurveyRequest {
@@ -383,6 +388,8 @@ export interface UpdateSurveyRequest {
   endsAt?: string;
   /** Language code for the translation to update */
   languageCode?: string;
+  /** Category ID for the survey */
+  categoryId?: string;
 }
 
 // ============ Question ============
@@ -944,6 +951,91 @@ export interface SurveyTheme {
   availableLanguages: string[];
 }
 
+// ============ Survey Categories ============
+/**
+ * Summary DTO for category listings (list endpoint).
+ * Matches backend SurveyCategorySummaryDto - used in list views.
+ */
+export interface SurveyCategorySummary {
+  id: string;
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  displayOrder: number;
+  isDefault: boolean;
+  isActive: boolean;
+  surveyCount: number;
+  createdAt: string;
+}
+
+/**
+ * Full category DTO with all details (detail endpoint).
+ * Matches backend SurveyCategoryDto.
+ */
+export interface SurveyCategory {
+  id: string;
+  namespaceId: string;
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  displayOrder: number;
+  isDefault: boolean;
+  isActive: boolean;
+  surveyCount: number;
+  createdAt: string;
+  updatedAt?: string;
+
+  // Localization
+  /** The default language code for this category */
+  defaultLanguage: string;
+  /** The language of the returned content (based on request) */
+  language: string;
+  /** List of available language codes for this category */
+  availableLanguages: string[];
+}
+
+/**
+ * Category option for dropdowns.
+ * Matches backend CategoryOptionDto.
+ */
+export interface CategoryOption {
+  id: string;
+  name: string;
+  color?: string;
+  icon?: string;
+  isDefault: boolean;
+}
+
+/** Request to create a new category */
+export interface CreateCategoryRequest {
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  displayOrder?: number;
+  /** Language code for the initial translation */
+  languageCode?: string;
+}
+
+/** Request to update a category */
+export interface UpdateCategoryRequest {
+  name: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+  /** Language code for the translation to update */
+  languageCode?: string;
+}
+
+/** Request to reorder categories */
+export interface ReorderCategoriesRequest {
+  categoryIds: string[];
+}
+
 // ============ Survey Templates ============
 export type TemplateCategory = 'feedback' | 'hr' | 'research' | 'events' | 'education' | 'marketing' | 'healthcare' | 'other';
 
@@ -1403,19 +1495,7 @@ export interface ResponseTrend {
 // ============ User Preferences/Settings ============
 
 export type ThemeMode = 'light' | 'dark' | 'system';
-export type ColorPalette =
-  | 'purple'
-  | 'blue'
-  | 'green'
-  | 'orange'
-  | 'pink'
-  | 'teal'
-  | 'amber'
-  | 'indigo'
-  | 'coral'
-  | 'midnight'
-  | 'monochrome'
-  | 'slate';
+export type ColorPalette = 'purple' | 'blue' | 'green' | 'orange' | 'pink' | 'teal' | 'amber' | 'indigo' | 'coral' | 'midnight' | 'monochrome' | 'slate';
 export type FontSizeScale = 'small' | 'medium' | 'large' | 'extra-large';
 export type DateFormatOption = 'MM/DD/YYYY' | 'DD/MM/YYYY' | 'YYYY-MM-DD';
 export type TimeFormatOption = '12h' | '24h';

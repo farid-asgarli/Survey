@@ -140,6 +140,38 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "survey_categories",
+                schema: "survey",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    NamespaceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
+                    Color = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Icon = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    DisplayOrder = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_survey_categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_survey_categories_namespaces_NamespaceId",
+                        column: x => x.NamespaceId,
+                        principalSchema: "core",
+                        principalTable: "namespaces",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "survey_templates",
                 schema: "templates",
                 columns: table => new
@@ -392,6 +424,32 @@ namespace SurveyApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "survey_category_translations",
+                schema: "i18n",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    LanguageCode = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    LastModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_survey_category_translations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_survey_category_translations_survey_categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalSchema: "survey",
+                        principalTable: "survey_categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "survey_template_translations",
                 schema: "i18n",
                 columns: table => new
@@ -496,6 +554,7 @@ namespace SurveyApp.Infrastructure.Migrations
                     AllowMultipleResponses = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     MaxResponses = table.Column<int>(type: "integer", nullable: true),
                     ThemeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     PresetThemeId = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     ThemeCustomizations = table.Column<string>(type: "jsonb", nullable: true),
                     DefaultLanguage = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false, defaultValue: "en"),
@@ -517,6 +576,13 @@ namespace SurveyApp.Infrastructure.Migrations
                         principalTable: "namespaces",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_surveys_survey_categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalSchema: "survey",
+                        principalTable: "survey_categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_surveys_survey_themes_ThemeId",
                         column: x => x.ThemeId,
@@ -1369,6 +1435,49 @@ namespace SurveyApp.Infrastructure.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_survey_categories_IsDeleted",
+                schema: "survey",
+                table: "survey_categories",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_categories_NamespaceId",
+                schema: "survey",
+                table: "survey_categories",
+                column: "NamespaceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_categories_NamespaceId_DisplayOrder",
+                schema: "survey",
+                table: "survey_categories",
+                columns: new[] { "NamespaceId", "DisplayOrder" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_categories_NamespaceId_IsDefault",
+                schema: "survey",
+                table: "survey_categories",
+                columns: new[] { "NamespaceId", "IsDefault" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_category_translations_CategoryId",
+                schema: "i18n",
+                table: "survey_category_translations",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_category_translations_CategoryId_LanguageCode",
+                schema: "i18n",
+                table: "survey_category_translations",
+                columns: new[] { "CategoryId", "LanguageCode" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_survey_category_translations_LanguageCode",
+                schema: "i18n",
+                table: "survey_category_translations",
+                column: "LanguageCode");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_survey_links_CreatedAt",
                 schema: "distribution",
                 table: "survey_links",
@@ -1554,6 +1663,12 @@ namespace SurveyApp.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_surveys_CategoryId",
+                schema: "survey",
+                table: "surveys",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_surveys_CreatedAt",
                 schema: "survey",
                 table: "surveys",
@@ -1699,6 +1814,10 @@ namespace SurveyApp.Infrastructure.Migrations
                 schema: "scheduling");
 
             migrationBuilder.DropTable(
+                name: "survey_category_translations",
+                schema: "i18n");
+
+            migrationBuilder.DropTable(
                 name: "survey_template_translations",
                 schema: "i18n");
 
@@ -1756,6 +1875,10 @@ namespace SurveyApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "surveys",
+                schema: "survey");
+
+            migrationBuilder.DropTable(
+                name: "survey_categories",
                 schema: "survey");
 
             migrationBuilder.DropTable(

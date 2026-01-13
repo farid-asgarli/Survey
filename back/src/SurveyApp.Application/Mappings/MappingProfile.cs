@@ -102,6 +102,10 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.AvailableLanguages,
                 opt => opt.MapFrom(s => s.GetAvailableLanguages())
+            )
+            .ForMember(
+                d => d.CategoryName,
+                opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null)
             );
 
         CreateMap<Survey, SurveyDetailsDto>()
@@ -115,6 +119,10 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.AvailableLanguages,
                 opt => opt.MapFrom(s => s.GetAvailableLanguages())
+            )
+            .ForMember(
+                d => d.CategoryName,
+                opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null)
             );
 
         CreateMap<Survey, SurveyListItemDto>()
@@ -122,6 +130,10 @@ public class MappingProfile : Profile
             .ForMember(
                 d => d.ResponseCount,
                 opt => opt.MapFrom(s => s.Responses.Count(r => r.IsComplete))
+            )
+            .ForMember(
+                d => d.CategoryName,
+                opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : null)
             );
 
         CreateMap<Survey, PublicSurveyDto>()
@@ -291,6 +303,18 @@ public class MappingProfile : Profile
             );
 
         CreateMap<SurveyTheme, SurveyThemeSummaryDto>();
+
+        // SurveyCategory mappings
+        CreateMap<SurveyCategory, SurveyCategoryDto>()
+            .ForMember(d => d.Language, opt => opt.MapFrom(s => s.DefaultLanguage))
+            .ForMember(
+                d => d.AvailableLanguages,
+                opt => opt.MapFrom(s => s.GetAvailableLanguages())
+            );
+
+        CreateMap<SurveyCategory, SurveyCategorySummaryDto>();
+
+        CreateMap<SurveyCategory, CategoryOptionDto>();
 
         // RecurringSurvey mappings
         ConfigureRecurringSurveyMappings();

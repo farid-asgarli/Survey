@@ -17,6 +17,7 @@ const ResponsesPage = lazy(() => import('@/pages/Responses').then((m) => ({ defa
 const AnalyticsPage = lazy(() => import('@/pages/Analytics/AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
 const TemplatesPage = lazy(() => import('@/pages/Templates/TemplatesPage').then((m) => ({ default: m.TemplatesPage })));
 const ThemesPage = lazy(() => import('@/pages/Themes/ThemesPage').then((m) => ({ default: m.ThemesPage })));
+const CategoriesPage = lazy(() => import('@/pages/Categories/CategoriesPage').then((m) => ({ default: m.CategoriesPage })));
 const DistributionsPage = lazy(() => import('@/pages/Distributions/DistributionsPage').then((m) => ({ default: m.DistributionsPage })));
 const EmailTemplatesPage = lazy(() => import('@/pages/EmailTemplates/EmailTemplatesPage').then((m) => ({ default: m.EmailTemplatesPage })));
 const EmailTemplateEditorPage = lazy(() => import('@/pages/EmailTemplateEditor/EmailTemplateEditorPage').then((m) => ({ default: m.EmailTemplateEditorPage })));
@@ -194,6 +195,16 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <SuspenseWrapper>
               <ThemesPage />
+            </SuspenseWrapper>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/categories',
+        element: (
+          <ProtectedRoute>
+            <SuspenseWrapper>
+              <CategoriesPage />
             </SuspenseWrapper>
           </ProtectedRoute>
         ),

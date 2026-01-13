@@ -219,7 +219,7 @@
     "generatedCount": "{{count}} ссылок сгенерировано",
     "generating": "Генерация...",
     "namePrefix": "Префикс названия",
-    "namePrefixHint": "Ссылки будут названы: префикс-1, префикс-2 и т.д.",
+    "namePrefixHint": "Ссылки будут названы: префикс 1, префикс 2 и т.д.",
     "namePrefixPlaceholder": "напр., кампания-",
     "numberOfLinks": "Количество ссылок",
     "numberOfLinksHint": "Максимум 1000 ссылок за раз",
@@ -242,6 +242,34 @@
     "utmSource": "UTM-источник",
     "utmSourcePlaceholder": "напр., newsletter",
     "utmTooltip": "Отслеживайте эффективность массовых ссылок"
+  },
+  "categories": {
+    "title": "Категории",
+    "description": "Организуйте опросы по категориям для лучшего управления",
+    "createCategory": "Создать категорию",
+    "editCategory": "Редактировать категорию",
+    "createDescription": "Создайте новую категорию для организации ваших опросов",
+    "editDescription": "Обновите данные категории",
+    "deleteCategory": "Удалить категорию",
+    "namePlaceholder": "Название категории",
+    "descriptionPlaceholder": "Необязательное описание для этой категории",
+    "color": "Цвет",
+    "icon": "Иконка",
+    "setAsDefault": "Установить по умолчанию",
+    "activeDescription": "Неактивные категории скрыты из выпадающих списков выбора категорий",
+    "surveyCount": "{{count}} опросов",
+    "surveyCount_one": "{{count}} опрос",
+    "surveyCount_other": "{{count}} опросов",
+    "searchPlaceholder": "Поиск категорий...",
+    "empty": "Категорий пока нет",
+    "emptyDescription": "Создайте первую категорию для организации ваших опросов",
+    "noResults": "Категории не найдены",
+    "noResultsDescription": "Попробуйте изменить поиск или фильтры",
+    "allCategories": "Все категории",
+    "uncategorized": "Без категории",
+    "badges": {
+      "default": "По умолчанию"
+    }
   },
   "charts": {
     "averageRatingOutOf": "Средний рейтинг из {{max}}",

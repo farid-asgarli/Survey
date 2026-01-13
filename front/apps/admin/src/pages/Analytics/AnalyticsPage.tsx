@@ -5,15 +5,7 @@ import { Layout } from '@/components/layout';
 import { getDefaultDateRange, type DateRange } from '@/components/features/analytics';
 import { useSurveyAnalytics, useSurveyNps } from '@/hooks/queries/useAnalytics';
 import { useSurveysList } from '@/hooks/queries/useSurveys';
-import {
-  AnalyticsHeader,
-  AnalyticsFilters,
-  AnalyticsContent,
-  NoSurveySelected,
-  ErrorState,
-  LoadingState,
-  NoResponsesState,
-} from './sections';
+import { AnalyticsHeader, AnalyticsFilters, AnalyticsContent, NoSurveySelected, ErrorState, LoadingState, NoResponsesState } from './sections';
 
 export function AnalyticsPage() {
   const { t } = useTranslation();
@@ -30,12 +22,7 @@ export function AnalyticsPage() {
   const activeSurveyId = urlSurveyId || selectedSurveyId;
 
   // Fetch analytics data
-  const {
-    data: analytics,
-    isLoading: analyticsLoading,
-    error: analyticsError,
-    refetch: refetchAnalytics,
-  } = useSurveyAnalytics(activeSurveyId || undefined);
+  const { data: analytics, isLoading: analyticsLoading, error: analyticsError, refetch: refetchAnalytics } = useSurveyAnalytics(activeSurveyId || undefined);
 
   // Fetch NPS data (will be empty if survey has no NPS questions)
   const { data: npsData } = useSurveyNps(activeSurveyId || undefined);
@@ -91,9 +78,9 @@ export function AnalyticsPage() {
 
         {/* Filters Bar */}
         <AnalyticsFilters
-          showSurveySelector={!urlSurveyId}
+          showSurveySelector={true}
           surveyOptions={surveyOptions}
-          selectedSurveyId={selectedSurveyId}
+          selectedSurveyId={activeSurveyId}
           surveysLoading={surveysLoading}
           dateRange={dateRange}
           onSurveyChange={handleSurveyChange}

@@ -146,16 +146,15 @@ function Toolbar({ children, showSearch = true, searchPlaceholder, showViewModeT
       {children}
 
       {/* Right side: search, view toggle, actions */}
-      <div className="flex items-center gap-3 sm:ml-auto">
+      <div className='flex items-center gap-3 sm:ml-auto'>
         {showSearch && <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder={searchPlaceholder ?? t('common.searchDots')} />}
 
+        {actions}
         {showViewModeToggle && (
-          <div className="hidden md:block">
+          <div className='hidden md:block'>
             <ViewModeToggle value={viewMode} onChange={setViewMode} />
           </div>
         )}
-
-        {actions}
       </div>
     </div>
   );

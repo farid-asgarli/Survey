@@ -105,6 +105,11 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     public Guid? ThemeId { get; private set; }
 
     /// <summary>
+    /// Gets the category ID for this survey (optional).
+    /// </summary>
+    public Guid? CategoryId { get; private set; }
+
+    /// <summary>
     /// Gets the preset theme identifier (e.g., "midnight", "ocean") for preset themes.
     /// </summary>
     public string? PresetThemeId { get; private set; }
@@ -113,6 +118,11 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
     /// Gets the theme navigation property.
     /// </summary>
     public SurveyTheme? Theme { get; private set; }
+
+    /// <summary>
+    /// Gets the category navigation property.
+    /// </summary>
+    public SurveyCategory? Category { get; private set; }
 
     /// <summary>
     /// Gets the theme customizations JSON (optional per-survey overrides).
@@ -316,15 +326,12 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Title,
-                description,
-                translation.WelcomeMessage,
-                translation.ThankYouMessage
-            );
-        }
+        translation?.Update(
+            translation.Title,
+            description,
+            translation.WelcomeMessage,
+            translation.ThankYouMessage
+        );
     }
 
     /// <summary>
@@ -335,15 +342,12 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Title,
-                translation.Description,
-                message,
-                translation.ThankYouMessage
-            );
-        }
+        translation?.Update(
+            translation.Title,
+            translation.Description,
+            message,
+            translation.ThankYouMessage
+        );
     }
 
     /// <summary>
@@ -354,15 +358,12 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         var lang = languageCode ?? DefaultLanguage;
         var translation = GetTranslation(lang);
 
-        if (translation != null)
-        {
-            translation.Update(
-                translation.Title,
-                translation.Description,
-                translation.WelcomeMessage,
-                message
-            );
-        }
+        translation?.Update(
+            translation.Title,
+            translation.Description,
+            translation.WelcomeMessage,
+            message
+        );
     }
 
     /// <summary>
@@ -617,6 +618,24 @@ public class Survey : AggregateRoot<Guid>, ILocalizable<SurveyTranslation>
         PresetThemeId = null;
         ThemeCustomizations = null;
         Theme = null;
+    }
+
+    /// <summary>
+    /// Sets the category for this survey.
+    /// </summary>
+    /// <param name="categoryId">The category ID. Pass null to remove the category.</param>
+    public void SetCategory(Guid? categoryId)
+    {
+        CategoryId = categoryId;
+    }
+
+    /// <summary>
+    /// Removes the category from this survey.
+    /// </summary>
+    public void RemoveCategory()
+    {
+        CategoryId = null;
+        Category = null;
     }
 
     /// <summary>

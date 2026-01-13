@@ -9,7 +9,8 @@
  * - User preferences integration for view mode, sorting, etc.
  */
 
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, FileText } from 'lucide-react';
 import { useViewTransitionNavigate, useCopyToClipboard } from '@/hooks';
@@ -40,6 +41,7 @@ type StatusFilter = SurveyStatus | 'all';
 
 type SurveyListFilters = {
   status: StatusFilter;
+  categoryId: string | undefined;
 };
 
 /** Filter configuration for the surveys list page */
@@ -59,6 +61,10 @@ export function SurveysPage() {
   const navigate = useViewTransitionNavigate();
   const { activeNamespace } = useNamespaceStore();
   const { copy } = useCopyToClipboard();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get category from URL
+  const categoryFromUrl = searchParams.get('category') || undefined;
 
   // Get user preferences for default view mode and sorting
   const dashboardPrefs = usePreferencesStore((s) => s.preferences.dashboard);
@@ -69,13 +75,15 @@ export function SurveysPage() {
   const createDialog = useDialogState();
 
   // Use the combined list page state hook with preferences as initial values
-  const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters, hasActiveFilters } =
-    useListPageState<Survey, SurveyListFilters>({
-      initialFilters: { status: 'all' },
-      filterConfigs: FILTER_CONFIGS,
-      items: [], // We use server-side filtering for surveys, so no items here
-      initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
-    });
+  const { viewMode, setViewMode, searchQuery, setSearchQuery, filters, setFilter, activeFilters, clearAllFilters, hasActiveFilters } = useListPageState<
+    Survey,
+    SurveyListFilters
+  >({
+    initialFilters: { status: 'all', categoryId: categoryFromUrl },
+    filterConfigs: FILTER_CONFIGS,
+    items: [], // We use server-side filtering for surveys, so no items here
+    initialViewMode: dashboardPrefs.defaultViewMode as ViewMode,
+  });
 
   // Build filters object for API - use preferences for sort and pagination
   const apiFilters: SurveyFilters = useMemo(
@@ -84,11 +92,21 @@ export function SurveysPage() {
       search: searchQuery || undefined,
       fromDate,
       toDate,
+      categoryId: filters.categoryId,
       sortBy: dashboardPrefs.defaultSortField,
       sortOrder: dashboardPrefs.defaultSortOrder,
       pageSize: dashboardPrefs.itemsPerPage,
     }),
-    [filters.status, searchQuery, fromDate, toDate, dashboardPrefs.defaultSortField, dashboardPrefs.defaultSortOrder, dashboardPrefs.itemsPerPage]
+    [
+      filters.status,
+      filters.categoryId,
+      searchQuery,
+      fromDate,
+      toDate,
+      dashboardPrefs.defaultSortField,
+      dashboardPrefs.defaultSortOrder,
+      dashboardPrefs.itemsPerPage,
+    ]
   );
 
   // Infinite scroll query
@@ -198,6 +216,7 @@ export function SurveysPage() {
       type: data.surveyType,
       cxMetricType: data.cxMetricType,
       languageCode: data.languageCode,
+      categoryId: data.categoryId,
     });
     createDialog.close();
     navigate(`/surveys/${newSurvey.id}/edit`);
@@ -229,18 +248,23 @@ export function SurveysPage() {
     clearAllFilters();
     setFromDate(undefined);
     setToDate(undefined);
-  }, [clearAllFilters]);
+    // Clear URL params
+    setSearchParams((prev) => {
+      prev.delete('category');
+      return prev;
+    });
+  }, [clearAllFilters, setSearchParams]);
 
   // No namespace selected
   if (!activeNamespace) {
     return (
       <ListPageLayout viewMode={viewMode} onViewModeChange={setViewMode}>
         <EmptyState
-          icon={<FileText className="h-7 w-7" />}
+          icon={<FileText className='h-7 w-7' />}
           title={t('workspaces.selectWorkspace')}
           description={t('workspaces.selectWorkspaceDesc')}
-          iconVariant="default"
-          size="full"
+          iconVariant='default'
+          size='full'
         />
       </ListPageLayout>
     );
@@ -275,6 +299,19 @@ export function SurveysPage() {
           setFromDate(from);
           setToDate(to);
         }}
+        categoryFilter={filters.categoryId}
+        onCategoryFilterChange={(categoryId) => {
+          setFilter('categoryId', categoryId);
+          // Sync to URL
+          setSearchParams((prev) => {
+            if (categoryId) {
+              prev.set('category', categoryId);
+            } else {
+              prev.delete('category');
+            }
+            return prev;
+          });
+        }}
       />
 
       {/* Active filters bar */}
@@ -305,15 +342,10 @@ export function SurveysPage() {
       </ListPageLayout.Content>
 
       {/* FAB for mobile */}
-      <ListPageLayout.FAB icon={<Plus className="h-6 w-6" />} onClick={() => createDialog.open()} />
+      <ListPageLayout.FAB icon={<Plus className='h-6 w-6' />} onClick={() => createDialog.open()} />
 
       {/* Dialogs */}
-      <CreateSurveyDialog
-        open={createDialog.isOpen}
-        onOpenChange={createDialog.setOpen}
-        onSubmit={handleCreateSurvey}
-        isLoading={createSurvey.isPending}
-      />
+      <CreateSurveyDialog open={createDialog.isOpen} onOpenChange={createDialog.setOpen} onSubmit={handleCreateSurvey} isLoading={createSurvey.isPending} />
 
       <ConfirmDialog />
       <PublishConfirmDialog />

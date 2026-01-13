@@ -42,7 +42,7 @@ type MotionSafeHTMLAttributes<T> = Omit<HTMLAttributes<T>, 'onDrag' | 'onDragSta
 
 interface DialogContentProps extends MotionSafeHTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
-  size?: 'sm' | 'default' | 'lg' | 'xl' | 'full';
+  size?: 'sm' | 'default' | 'lg' | 'xl' | '2xl' | 'full';
   showClose?: boolean;
   onClose?: () => void;
   /** Labels for i18n - pass pre-translated strings */
@@ -155,20 +155,21 @@ function DialogContent({ className, children, size = 'default', showClose = true
     default: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-4xl',
+    '2xl': 'max-w-5xl',
     full: 'max-w-[90vw] h-[90vh]',
   };
 
   return createPortal(
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode='wait'>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className='fixed inset-0 z-50 flex items-center justify-center p-4'>
           {/* Backdrop with fade animation */}
           <motion.div
-            className="fixed inset-0 bg-scrim/30 backdrop-blur-sm"
+            className='fixed inset-0 bg-scrim/30 backdrop-blur-sm'
             variants={backdropVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            initial='hidden'
+            animate='visible'
+            exit='hidden'
             transition={dialogTransition}
             onClick={handleClose}
           />
@@ -176,12 +177,12 @@ function DialogContent({ className, children, size = 'default', showClose = true
           {/* Dialog */}
           <motion.div
             ref={ref}
-            role="dialog"
-            aria-modal="true"
+            role='dialog'
+            aria-modal='true'
             variants={dialogVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial='hidden'
+            animate='visible'
+            exit='exit'
             transition={dialogTransition}
             className={cn(
               'relative z-50 w-full',
@@ -195,8 +196,8 @@ function DialogContent({ className, children, size = 'default', showClose = true
             {...props}
           >
             {showClose && (
-              <IconButton aria-label={mergedLabels.close} variant="standard" size="sm" className="absolute right-4 top-4 z-10" onClick={handleClose}>
-                <X className="h-5 w-5" />
+              <IconButton aria-label={mergedLabels.close} variant='standard' size='sm' className='absolute right-4 top-4 z-10' onClick={handleClose}>
+                <X className='h-5 w-5' />
               </IconButton>
             )}
             {children}
